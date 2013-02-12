@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.pin_cab), value.VehicleNumber, point);
                    this.Overlays.Add(_taxiLocationPin);
                 }
-                Invalidate();
+                PostInvalidateDelayed(100);
             }
         }
 
@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					_pickupPin = null;
 
 					ShowDropoffPin(Dropoff);
-					Invalidate();
+                    PostInvalidateDelayed(100);
 				}
 				else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
 				{
@@ -253,13 +253,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					_dropoffPin = null;
 
 					ShowPickupPin(Pickup);
-					Invalidate();
+                    PostInvalidateDelayed(100);
 				}
 				else 
 				{
 					ShowDropoffPin(Dropoff);
 					ShowPickupPin(Pickup);
-					Invalidate();
+                    PostInvalidateDelayed(100);
 				}
 			}
 		}
@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
             }
-
+            PostInvalidateDelayed(100);
         }
 
         public override bool OnTouchEvent(Android.Views.MotionEvent e)

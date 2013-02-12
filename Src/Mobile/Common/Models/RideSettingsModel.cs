@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { Data.Phone = value; }
         }
 
-        public int VehicleTypeId
+        public int? VehicleTypeId
         {
             get { return Data.VehicleTypeId; }
             set
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return _companyList.SingleOrDefault(v => v.Id == ProviderId).SelectOrDefault(v => v.Display, ""); }            
         }
 
-        public int ChargeTypeId
+        public int? ChargeTypeId
         {
             get { return Data.ChargeTypeId; }
             set

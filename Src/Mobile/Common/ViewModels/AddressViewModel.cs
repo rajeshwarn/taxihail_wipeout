@@ -4,9 +4,11 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class AddressViewModel
+	public class AddressViewModel : BaseViewModel
 	{
 		
+        //public AddressViewModel( ObservableCollection< AddressViewMod
+
 
 		public Address Address { get; set; }
 
@@ -46,9 +48,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool ShowRightArrow { get; set; }
 		public bool ShowPlusSign { get; set; }
-		public bool IsFirst { get; set; }
-        public bool IsLast { get; set; }
-		public bool IsAddNew { get; set; }
+        public string Icon { get; set; }
+		
+        public bool IsFirst { get{return _isFirst;} 
+            set 
+            {
+                _isFirst = value;
+                FirePropertyChanged( () => IsFirst );
+            }
+        }
+
+        public bool IsLast { get{return _isLast;} 
+            set 
+            {
+                _isLast = value;
+                FirePropertyChanged( () => IsLast );
+            }
+        }
+
+		
+        private bool _isFirst;
+        private bool _isLast;
+
+        public bool IsAddNew { get; set; }
+
+
+
 	}
 }
 

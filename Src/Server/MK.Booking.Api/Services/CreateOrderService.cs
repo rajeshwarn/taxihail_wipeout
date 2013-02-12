@@ -16,6 +16,7 @@ using AutoMapper;
 using ServiceStack.Common.Web;
 using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
 using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
+using System.Net;
 
 
 namespace apcurium.MK.Booking.Api.Services
@@ -26,12 +27,13 @@ namespace apcurium.MK.Booking.Api.Services
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IConfigurationManager _configManager;
         private IAccountDao _accountDao;
-
+        private IRuleDao _ruleDao;
         private ReferenceDataService _referenceDataService;
 
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IAccountDao accountDao, 
+                                    IRuleDao ruleDao,
                                     IConfigurationManager configManager,
                                     ReferenceDataService referenceDataService)
         {
@@ -40,11 +42,20 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
+            _ruleDao = ruleDao;
         }
 
         public override object OnPost(CreateOrder request)
         {
             Trace.WriteLine("Create order request : " + request);
+
+            var rule = _ruleDao.GetActiveDisableRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime());
+            if (rule != null)
+            {
+                var err = new HttpError(  HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);                
+                throw err;
+            }
+
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
@@ -84,6 +95,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 _commandBus.Send(emailCommand);
             }
+
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
         }
 

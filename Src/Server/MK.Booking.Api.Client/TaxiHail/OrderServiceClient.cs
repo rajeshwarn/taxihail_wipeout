@@ -76,5 +76,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             return Client.Get<Common.Entity.OrderRatings>(req);
         }
+
+
+        public OrderValidationResult ValidateOrder(CreateOrder order)
+        {
+
+            var req = string.Format("/account/orders/validate");
+            return Client.Post<OrderValidationResult>( req, order );
+        }
     }
 }

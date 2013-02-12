@@ -218,6 +218,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (_accountService.CurrentAccount != null)
             {
                 Order.Settings = _accountService.CurrentAccount.Settings;
+                Task.Factory.SafeStartNew( () => 
+                                          {
+                    var account = TinyIoCContainer.Current.Resolve<IAccountService>().RefreshAccount (); 
+                    if ( account == null )
+                    {
+                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut ();         
+                        RequestNavigate<LoginViewModel> (true);
+                        RequestClose( this );
+                    }
+                    else
+                    {
+                        Order.Settings = account.Settings;
+                    }
+                });
             }
             else
             {
@@ -528,12 +542,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    if (string.IsNullOrEmpty(Order.Settings.Phone))
-                    {
-                        var account = _accountService.CurrentAccount;
-                        Order.Settings = account.Settings;
-                    }
-
+                   
                     bool isValid = _bookingService.IsValid(Order);
                     if (!isValid)
                     {

@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationController.NavigationBar.Hidden = false;
         }
 		
+      
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();		
@@ -46,11 +48,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStreetName.Font = AppStyle.BoldTextFont;
             lblStreetName.TextColor = AppStyle.DarkText;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
-
+            AppButtons.FormatStandardButton((GradientButton)btnPlaces, Resources.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
+            ((GradientButton)btnSearch).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+            ((GradientButton)btnPlaces).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
 
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();
                 return true;
+            };
+
+
+            txtStreetNumber.ShouldChangeCharacters = (textField, range, replacementString) => 
+            {
+                using (NSString original = new NSString(textField.Text), replace = new NSString(replacementString.ToUpper()))
+                {
+                    return original.Replace (range, replace).Length <= ViewModel.NumberOfCharAllowed;
+                }
+                //return false;
             };
 
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
@@ -60,7 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.AddBindings(new Dictionary<object, string>() {
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
-                { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},
+                { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},               
+                { btnPlaces, "{'TouchUpInside': {'Path': 'NavigateToPlaces'}}" },
                 { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
             });
             

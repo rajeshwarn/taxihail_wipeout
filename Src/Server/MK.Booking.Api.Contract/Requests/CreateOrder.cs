@@ -7,7 +7,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders", "POST")]
+    [RestService("/account/orders", "POST")]    
     public class CreateOrder : BaseDTO
     {
 

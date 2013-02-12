@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void SetAdapter()
         {
-                var adapter = new GroupedLocationListAdapter(this);
+            var adapter = new MvxBindableListAdapter(this);
 
                 RunOnUiThread(() =>
                 {

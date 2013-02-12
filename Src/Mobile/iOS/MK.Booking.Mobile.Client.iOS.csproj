@@ -590,6 +590,14 @@
     <Content Include="Assets\CreditCard\delete_card_btn%402x.png" />
     <Content Include="Assets\Cells\add_btn.png" />
     <Content Include="Assets\Cells\add_btn%402x.png" />
+    <Content Include="Assets\favorites.png" />
+    <Content Include="Assets\favorites%402x.png" />
+    <Content Include="Assets\history.png" />
+    <Content Include="Assets\history%402x.png" />
+    <Content Include="Assets\address.png" />
+    <Content Include="Assets\address%402x.png" />
+    <Content Include="Assets\Search\SearchPlace.png" />
+    <Content Include="Assets\Search\SearchPlace%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

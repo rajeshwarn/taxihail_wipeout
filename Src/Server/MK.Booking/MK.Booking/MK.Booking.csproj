@@ -97,6 +97,7 @@
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />
@@ -108,11 +109,13 @@
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
+    <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
     <Compile Include="ReadModel\Query\ICreditCardDao.cs" />
     <Compile Include="ReadModel\Query\IOrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\IRatingTypeDao.cs" />
+    <Compile Include="ReadModel\Query\IRuleDao.cs" />
     <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="ReadModel\Query\TariffDao.cs" />
     <Compile Include="ReadModel\Query\PopularAddressDao.cs" />
+    <Compile Include="ReadModel\RuleDetail.cs" />
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />

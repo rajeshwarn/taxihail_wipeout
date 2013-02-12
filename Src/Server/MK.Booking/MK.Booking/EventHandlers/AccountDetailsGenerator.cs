@@ -101,15 +101,44 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 var settings = account.Settings ?? new BookingSettingsDetails();
                 settings.Name = @event.Name;
-                settings.ChargeTypeId = @event.ChargeTypeId;
+
+                if (settings.ChargeTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                {
+                    settings.ChargeTypeId = null;
+                }
+
+
+                if (settings.VehicleTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                {
+                    settings.VehicleTypeId = null;
+                }
+
+                if (settings.ProviderId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                {
+                    settings.ProviderId = null;
+                }
+
+
+
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
                 settings.Phone = @event.Phone;
-                settings.ProviderId = @event.ProviderId;
-                settings.VehicleTypeId = @event.VehicleTypeId;
 
                 account.Settings = settings;
                 context.Save(account);
+            }
+        }
+
+        private int? ParseToNullable(string val)
+        {
+            int result;
+            if (int.TryParse(val, out result))
+            {
+                return result;
+            }
+            else
+            {
+                return default(int?);
             }
         }
 

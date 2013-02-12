@@ -21,6 +21,10 @@
 
         clearCurrentOrder: function () {
             this.store.removeItem(currentOrderKey);
+        },
+
+        validate: function (order) {
+            return $.post('api/account/orders/validate', order.toJSON(), function () { }, 'json');
         }
     });
 

@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private bool _showPlusSign;
 		private bool _showArrow;
 		private float _rowHeight = 44f;
+        private string _icon;
 		public TwoLinesCell (IntPtr handle, string bindingText) : base(bindingText, handle)
 		{		
 		}
@@ -46,6 +47,19 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 		}
 
+        public string Icon { 
+            get { return _icon; }
+            set { 
+                _icon = value;
+                if ( ShowPlusSign )
+                {
+                    return;
+                }
+                ImageView.Image = value.HasValue () ? UIImage.FromFile(string.Format ("Assets/{0}.png", value)) : null;
+            }
+        }
+
+
 		public bool ShowRightArrow { 
 			get { return _showArrow; }
 			set { 
@@ -67,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 				((CustomCellBackgroundView)BackgroundView).IsBottom = _isLast;
 			}
 		}
+
         public bool IsAddNewCell {
             set {
                 ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;

@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int VehicleTypeId {
+        public int? VehicleTypeId {
 			get {
 				return _bookingSettings.VehicleTypeId;
 			}
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int ChargeTypeId {
+        public int? ChargeTypeId {
             get {
                 return _bookingSettings.ChargeTypeId;
             }

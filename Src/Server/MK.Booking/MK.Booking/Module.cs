@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IRuleDao>(new RuleDao  (() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
 
@@ -71,6 +72,7 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<Address, PopularAddressDetails>();
             AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
+            AutoMapper.Mapper.CreateMap<RuleDetail, Rule>();
             AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
@@ -87,6 +89,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
+            container.RegisterType<IEventHandler, RuleDetailsGenerator>("RuleDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
