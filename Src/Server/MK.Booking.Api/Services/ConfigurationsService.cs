@@ -38,12 +38,12 @@ namespace apcurium.MK.Booking.Api.Services
             else //AppSettingsType.Mobile
             {
                 keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", 
-                    "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton", "Client.HideReportProblem", "Client.NumberOfCharInRefineAddress" };
+                    "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton", "Client.HideReportProblem", "Client.NumberOfCharInRefineAddress"};
             }
 
             var allKeys = _configManager.GetSettings();
 
-            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(s => s.Key, s => s.Value);
+            var result = allKeys.Where(k => keys.Contains(k.Key) || k.Key.StartsWith("Client.")).ToDictionary(s => s.Key, s => s.Value);
 
             return result;
         }
