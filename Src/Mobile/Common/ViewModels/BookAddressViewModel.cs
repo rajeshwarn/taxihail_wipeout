@@ -216,7 +216,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content, true);
+            if ( selected.Content != null )
+            {
+                SetAddress(selected.Content, true);
+            }
+            else
+            {
+                ClearAddress ();
+            }
+
         }
 
         public bool IsExecuting

@@ -8,6 +8,7 @@ using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -51,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
                 controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
+                newDvc.Title = new CultureInfo("en-US",false).TextInfo.ToTitleCase ( _rootElement[0].Caption ); 
             }
         }
 

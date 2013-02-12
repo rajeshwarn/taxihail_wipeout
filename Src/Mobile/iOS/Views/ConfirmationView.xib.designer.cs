@@ -12,6 +12,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPickupDateTime { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel txtPickupDateTime { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
 
 		[Outlet]
@@ -30,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }
@@ -49,6 +55,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPickupDateTime != null) {
+				lblPickupDateTime.Dispose ();
+				lblPickupDateTime = null;
+			}
+
+			if (txtPickupDateTime != null) {
+				txtPickupDateTime.Dispose ();
+				txtPickupDateTime = null;
+			}
+
 			if (lblApartment != null) {
 				lblApartment.Dispose ();
 				lblApartment = null;

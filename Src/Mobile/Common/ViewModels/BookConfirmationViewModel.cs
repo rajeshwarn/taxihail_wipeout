@@ -73,6 +73,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool ShowRingCodeField {
+            get
+            {
+                return TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.ShowRingCodeField" ) != "false" ;
+            }
+
+        }
+
         public void SetVehicleTypeId( int? id )
         {
             if (id == ListItem.NullId) {
@@ -201,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             RequestNavigate<BookPaymentSettingsViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
 
                         }else{
-            					Order.Id = Guid.NewGuid ();
+                        Order.Id = Guid.NewGuid ();
             					try {
             					MessageService.ShowProgress (true);
             					var orderInfo = _bookingService.CreateOrder (Order);
@@ -312,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string FormatDateTime(DateTime? pickupDate )
 		{
             var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
-			string format = "{0:ddd, MMM d}, {0:"+formatTime+"}";
+			string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
 			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
 			return result;
 		}

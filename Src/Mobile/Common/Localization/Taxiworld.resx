@@ -139,7 +139,9 @@
     <value>Building name</value>
   </data>   
   <data name="DateTimePickerSetButton" xml:space="preserve">
-    <value>Pick Me Up Later</value>
+    <value>Ok</value>
   </data>
-  
+    <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
 </root>

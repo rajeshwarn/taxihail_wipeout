@@ -194,7 +194,7 @@
 "EmailLabel"="Email";
 "CreateAccountPassword"="Password";
 "DestinationMapTitle"="Destination location";
-"LocationDetailGiveItANameLabel"="Give it a name";
+"LocationDetailGiveItANameLabel"="Friendly Name";
 "Submit"="Submit";
 "StatusDescription"="Confirmation #{0}";
 "HistoryViewSendReceiptError"="Error sending receipt for this order";
@@ -351,7 +351,7 @@
 "CreateAccountCreate"="Create";
 "Tuto02Bottom"="If it's a little off, simply reposition the map to your actual location.";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
-"CreditCardCCV"="CCV";
+"CreditCardCCV"="CVV";
 "AddReminderTitle"="Scheduled Pick-Up";
 "View_PaymentPreference"="Payment Preference";
 "AddCreditCardTitle"="Add a credit card";
@@ -382,3 +382,8 @@
 "NoPhoneNumberTitle"="Invalid phone Number";
 "DriverInfoMake"="Make:";
 "DriverInfoColor"="Color:";
+"ContinueButton"="Continue";
+"StreetNumberPlacesBt"="Search for places";
+"WarningTitle"="Warning";
+"View_SearchAddress"="Address Search";
+"DeleteAddressBt"="Delete Address";
