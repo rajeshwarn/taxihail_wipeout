@@ -10,6 +10,11 @@ using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
 using TinyMessenger;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -34,6 +39,26 @@ namespace apcurium.MK.Booking.Mobile
                 FirePropertyChanged(() => StreetNumberOrBuildingName);
             }
             _token = MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _ownerId);
+        }
+
+        public int NumberOfCharAllowed
+        {
+            get{
+
+                    
+                var max =  TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>( "Client.NumberOfCharInRefineAddress");
+                Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
+                int m;
+                if ( int.TryParse( max , out m ) )
+                {
+                    return m;
+                }
+                else
+                {
+                    return 10;
+                }
+            }
+
         }
 
         string _streetNumberOrBuildingName;
@@ -72,7 +97,21 @@ namespace apcurium.MK.Booking.Mobile
                     _token.Dispose ();
                     _token = null;
 
-                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId });                    
+                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId , places = "false"});                                       
+                    RequestClose( this );
+                });
+            }
+        }
+
+        public IMvxCommand NavigateToPlaces {
+            get {
+                return GetCommand(() =>
+                                  {
+                    MessengerHub.Unsubscribe<AddressSelected> ( _token );
+                    _token.Dispose ();
+                    _token = null; 
+                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
+                    RequestClose( this );
                 });
             }
         }

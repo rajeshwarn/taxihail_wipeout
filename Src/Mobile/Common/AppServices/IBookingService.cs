@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         OrderStatusDetail CreateOrder(CreateOrder info);
 
+        OrderValidationResult ValidateOrder (CreateOrder order);
+
         OrderStatusDetail GetOrderStatus(Guid orderId);
         Task<OrderStatusDetail> GetLastOrderStatus();
         void ClearLastOrder();

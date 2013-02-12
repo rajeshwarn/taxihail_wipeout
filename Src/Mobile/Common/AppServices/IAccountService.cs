@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void EnsureListLoaded();
 
+        Account RefreshAccount();
+
         Account CurrentAccount { get; }
 
 		IEnumerable<ListItem> GetCompaniesList( );

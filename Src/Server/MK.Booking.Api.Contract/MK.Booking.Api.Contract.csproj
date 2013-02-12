@@ -106,6 +106,9 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\RuleActivateRequest.cs" />
+    <Compile Include="Requests\RuleDeactivateRequest.cs" />
+    <Compile Include="Requests\RuleRequest.cs" />
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\PopularAddress.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
@@ -138,6 +142,9 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\OrderStatusDetail.cs" />
+    <Compile Include="Resources\OrderStatus.cs" />
+    <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Security\AuthenticationData.cs" />

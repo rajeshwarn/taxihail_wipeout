@@ -36,15 +36,49 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public string TextLine1 { get; set; }
 		public string TextLine2 { get; set; }
 
-		public bool IsTop { get; set; }
-		public bool IsBottom { get; set; }
+        private bool _isTop;
+
+        public bool IsTop { 
+            get{ return _isTop;} 
+            set
+            { 
+                _isTop = value; 
+                Invalidate();
+            
+            } 
+        }
+		
+        private bool _isBottom;
+        public bool IsBottom { get{ return _isBottom;} 
+            set
+            { 
+                _isBottom = value; 
+                Invalidate();
+                if ( TextLine1.StartsWith( "ass") )
+                {
+                    Console.WriteLine ( "ISBOTTOM : " + value.ToString() );
+                }
+
+            } 
+        }
+
         public bool ShowRightArrow { get; set; }
         public bool ShowPlusSign { get; set; }
+
+        public string Icon { get; set; }
+
+
 
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
-            var textX = ShowPlusSign ? DrawHelper.GetPixels(65) : DrawHelper.GetPixels(8);
+            var textX =  ShowPlusSign ? DrawHelper.GetPixels(65) : DrawHelper.GetPixels(8);
+
+            if ( !ShowPlusSign &&( Icon.HasValue() ))
+            {
+                textX =   DrawHelper.GetPixels(40) ;
+            }
+
 			if( !TextLine1.IsNullOrEmpty() )
 			{
                 DrawText(canvas, TextLine1 ?? "", textX, DrawHelper.GetPixels( 21 ), DrawHelper.GetPixels( 16 ), AppFonts.Bold,new Color( 50,50,50,255 ));
@@ -64,35 +98,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			{
                 canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), DrawHelper.GetPixels(6), DrawHelper.GetPixels(10), null);
 			}
+            else if ( Icon.HasValue() )
+            {
+                var identifier = Context.Resources.GetIdentifier(  Icon, "drawable", Context.PackageName);
+                //return _context.Resources.GetString(identifier);
+
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier ), DrawHelper.GetPixels(6), DrawHelper.GetPixels(10), null);
+            }
 
 
 
-            var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state : Resource.Drawable.cell_middle_state;
+            var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.cell_bottom_state : IsTop && IsBottom ? Resource.Drawable.cell_full_state : Resource.Drawable.cell_middle_state;
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );
 
-//			if( IsTop )
-//			{
-//				Paint paint = new Paint(PaintFlags.AntiAlias);            
-//				paint.StrokeWidth = 1;
-//				paint.Color = Android.Graphics.Color.Black;
-//				paint.SetStyle(Android.Graphics.Paint.Style.Stroke);
-//				paint.AntiAlias = true;
-//				var path = new Path();
-//				path.Reset();
-//				path.SetFillType(Path.FillType.InverseEvenOdd);      
-//				path.MoveTo(0,canvas.Height-1 );
-//				path.LineTo(0, 0);
-//				path.LineTo(canvas.Width-1, 0);
-//				path.LineTo(canvas.Width-1, canvas.Height - 1);
-//				path.LineTo(0, canvas.Height -1 );
-//				canvas.DrawPath(path, paint);
-//
-//				paint = new Paint(PaintFlags.AntiAlias); 
-//				paint.Color = Android.Graphics.Color.White;
-//				paint.SetStyle(Android.Graphics.Paint.Style.Fill);
-//				canvas.DrawPath(path, paint);
-//
-//			}
+
 
 
         }
@@ -118,5 +137,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             canvas.DrawText(ellipsizedText, x, y, paintText);
 
         }
-		    }
+    }
 }

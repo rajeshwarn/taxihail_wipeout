@@ -95,6 +95,9 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderStatus.cs" />
     <Compile Include="Entity\OrderStatusDetail.cs" />
+    <Compile Include="Entity\Rule.cs" />
+    <Compile Include="Entity\RuleCategory.cs" />
+    <Compile Include="Entity\RuleType.cs" />
     <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingScore.cs" />

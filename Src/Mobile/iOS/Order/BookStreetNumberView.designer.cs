@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookStreetNumberView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnPlaces { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblStreetNumber { get; set; }
 
 		[Outlet]
@@ -28,6 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnPlaces != null) {
+				btnPlaces.Dispose ();
+				btnPlaces = null;
+			}
+
 			if (lblStreetNumber != null) {
 				lblStreetNumber.Dispose ();
 				lblStreetNumber = null;

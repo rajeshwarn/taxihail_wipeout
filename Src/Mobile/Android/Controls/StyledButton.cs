@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public StyledButton(Context context)
             : base(context)
         {
+
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]

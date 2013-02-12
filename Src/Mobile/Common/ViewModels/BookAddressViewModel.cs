@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id });
+                        RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id, places = "false" });
                     }
 
                 });

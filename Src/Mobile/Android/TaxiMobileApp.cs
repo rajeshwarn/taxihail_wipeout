@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.OnTerminate ();
 		}
 
-        
+
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try

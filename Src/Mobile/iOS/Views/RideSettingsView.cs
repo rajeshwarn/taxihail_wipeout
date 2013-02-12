@@ -66,11 +66,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.RightBarButtonItem = button;
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
 
-            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
+            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId.Value, x=> {
+
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
 
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId.Value, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 

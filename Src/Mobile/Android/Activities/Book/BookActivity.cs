@@ -72,6 +72,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			ViewModel.Load();
 
+            
+            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+
+
         }
 
         void HandleSignOutButtonClick (object sender, EventArgs e)
@@ -115,12 +119,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.Invalidate();
-            mainLayout.ClearAnimation();
-            mainLayout.DrawingCacheEnabled = true;
-            mainLayout.RefreshDrawableState();
 
-            FindViewById<TouchMap>(Resource.Id.mapPickup).Invalidate();
-            FindViewById<TouchMap>(Resource.Id.mapPickup).RefreshDrawableState();
+            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
 
 
         }

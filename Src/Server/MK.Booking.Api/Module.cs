@@ -60,8 +60,10 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
-            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
-            Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
+            AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+ 
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
@@ -69,7 +71,28 @@ namespace apcurium.MK.Booking.Api
                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-  			Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.CreateRule>()
+                .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
+                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.UpdateRule>()
+                .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
+                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
+               .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
+               .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleActivateRequest, Commands.ActivateRule>()               
+               .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
+
+            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleDeactivateRequest, Commands.DeactivateRule>()
+               .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
+
+            
+
+  			AutoMapper.Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
                 .ForMember(x => x.CreditCardId, opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
 
             Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>();

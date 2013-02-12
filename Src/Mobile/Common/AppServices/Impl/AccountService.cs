@@ -6,6 +6,7 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -33,7 +34,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _creditCardsCacheKey = "Account.CreditCards";
-
         private static ReferenceData _refData;
 
         public void EnsureListLoaded ()
@@ -207,35 +207,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
                 var removed = list.Remove (toDelete);
                 TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, list.ToArray ());
-				return removed;
+                return removed;
             }
-			return false;
+            return false;
         }
 
         public Address FindInAccountAddresses (double latitude, double longitude)
         {
-            Address found = GetAddresseInRange( GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position( latitude, longitude ), 100);                   
+            Address found = GetAddresseInRange (GetFavoriteAddresses (), new apcurium.MK.Booking.Maps.Geo.Position (latitude, longitude), 100);                   
             if (found == null) {
-                found = GetAddresseInRange( GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(  latitude,  longitude ), 75);
+                found = GetAddresseInRange (GetHistoryAddresses (), new apcurium.MK.Booking.Maps.Geo.Position (latitude, longitude), 75);
             }
             return found;
 
         }
 
-
-        private Address GetAddresseInRange(IEnumerable<Address> addresses, apcurium.MK.Booking.Maps.Geo.Position position, float range)
+        private Address GetAddresseInRange (IEnumerable<Address> addresses, apcurium.MK.Booking.Maps.Geo.Position position, float range)
         {             
             const double R = 6378137;
             
             var addressesInRange = from a in addresses
-                let distance = position.DistanceTo(new apcurium.MK.Booking.Maps.Geo.Position(a.Latitude, a.Longitude))
+                let distance = position.DistanceTo (new apcurium.MK.Booking.Maps.Geo.Position (a.Latitude, a.Longitude))
                     where distance <= range
                     orderby distance ascending
                     select a;
             
             return addressesInRange.FirstOrDefault ();
         }
-
         
         public Account CurrentAccount {
             get {
@@ -299,7 +297,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string response = null;
             response = UseServiceClient<IAccountServiceClient> (service => {                     
                 service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
-            }, ex => { throw ex; });
+            }, ex => {
+                throw ex; });
 
             return response;
         }
@@ -382,11 +381,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return data;
         }
 
+        public Account RefreshAccount ()
+        {
+            try {
+                var service = TinyIoCContainer.Current.Resolve<IAccountServiceClient> ("Authenticate");
+                var account = service.GetMyAccount ();
+                CurrentAccount = account;
+
+            
+                return account;
+            } catch {
+                return null;
+            }
+        }
+
         public void ResetPassword (string email)
         {
             UseServiceClient<IAccountServiceClient> ("NotAuthenticated", service => {               
                 service.ResetPassword (email);               
-            }, ex => { throw ex; });  
+            }, ex => {
+                throw ex; });  
         }
 
         public bool Register (RegisterAccount data, out string error)
@@ -445,10 +459,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 address.Id = Guid.NewGuid ();
             }
 
-            if (address.IsHistoric)
-            {
+            if (address.IsHistoric) {
                 address.IsHistoric = false;
-                RemoveFromCacheArray<Address>(_historyAddressesCacheKey, address.Id, (id, a) => a.Id == id);
+                RemoveFromCacheArray<Address> (_historyAddressesCacheKey, address.Id, (id, a) => a.Id == id);
             }
             UpdateCacheArray (_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
@@ -487,17 +500,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return _refData.VehiclesList;
         }
 
-
-
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             EnsureListLoaded ();
             //add credit card on file if not already included and feature enabled
             if (TinyIoCContainer.Current.Resolve<IAppSettings> ().PayByCreditCardEnabled
                 && _refData.PaymentsList != null
-                && _refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType)) {
+                && _refData.PaymentsList.None (x => x.Id == ReferenceData.CreditCardOnFileType)) {
 
-                _refData.PaymentsList.Add(new ListItem
+                _refData.PaymentsList.Add (new ListItem
                           { 
                             Id = ReferenceData.CreditCardOnFileType, 
                             Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
@@ -507,17 +518,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return _refData.PaymentsList;
         }
 
-        public IEnumerable<CreditCardDetails> GetCreditCards()
+        public IEnumerable<CreditCardDetails> GetCreditCards ()
         {
             var cache = TinyIoCContainer.Current.Resolve<ICacheService> ();
             var cached = cache.Get<CreditCardDetails[]> (_creditCardsCacheKey);
             
-            if (cached != null)
-            {
+            if (cached != null) {
                 return cached;
-            }
-            else
-            {
+            } else {
                 IEnumerable<CreditCardDetails> result = new CreditCardDetails[0];
                 UseServiceClient<IAccountServiceClient> (service =>
                 {
@@ -528,20 +536,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void RemoveCreditCard(Guid creditCardId)
+        public void RemoveCreditCard (Guid creditCardId)
         {
-            UseServiceClient<IAccountServiceClient>(client =>
+            UseServiceClient<IAccountServiceClient> (client =>
             {
-                client.RemoveCreditCard(creditCardId);
-            }, ex => { throw ex; });
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
+                client.RemoveCreditCard (creditCardId);
+            }, ex => {
+                throw ex; });
+            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
         }
 
         public void AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService>();
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService> ();
 
-            creditCard.Token = creditAuthorizationService.Authorize(creditCard);
+            creditCard.Token = creditAuthorizationService.Authorize (creditCard);
 
             var request = new CreditCardRequest
             {
@@ -553,9 +562,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
             UseServiceClient<IAccountServiceClient> (client => {               
-                client.AddCreditCard(request); 
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
-            }, ex => { throw ex; });  
+                client.AddCreditCard (request); 
+                TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
+            }, ex => {
+                throw ex; });  
         }
 
 

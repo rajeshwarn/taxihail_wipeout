@@ -4,6 +4,7 @@ using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Extensions;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Threading.Tasks;
@@ -32,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile
         public void Start ()
         {
             TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
+
+            Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
                 RequestNavigate<LoginViewModel> ();

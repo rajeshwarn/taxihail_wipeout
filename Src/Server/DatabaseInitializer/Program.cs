@@ -27,7 +27,7 @@ namespace DatabaseInitializer
 
     public class Program
     {
-        public static int  Main(string[] args)
+        public static int Main(string[] args)
         {
             var loggger = LogManager.GetLogger("DatabaseInitializer");
             try
@@ -38,7 +38,7 @@ namespace DatabaseInitializer
                     companyName = args[0];
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb", string.Format( "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName ));
+                var connectionString = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName));
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
                 //Init or Update
@@ -64,7 +64,7 @@ namespace DatabaseInitializer
                     Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER");
                     var userSqlInstance = Console.ReadLine();
 
-                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ?"MSSQL10_50.MSSQLSERVER" : userSqlInstance;
+                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ? "MSSQL10_50.MSSQLSERVER" : userSqlInstance;
                 }
 
                 var creatorDb = new DatabaseCreator();
@@ -75,10 +75,10 @@ namespace DatabaseInitializer
                 IDictionary<string, string> settingsInDb = null;
                 if (isUpdate)
                 {
-                   settingsInDb = configurationManager.GetSettings();
+                    settingsInDb = configurationManager.GetSettings();
                     //version would be updated from information in the Configuraton Manager DB
-                   settingsInDb.Remove("TaxiHail.Version");
-                   oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
+                    settingsInDb.Remove("TaxiHail.Version");
+                    oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
                 creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
@@ -105,7 +105,7 @@ namespace DatabaseInitializer
 
                 var commandBus = container.Resolve<ICommandBus>();
 
-                bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") >0;
+                bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
 
                 if (!companyIsCreated)
                 {
@@ -122,7 +122,7 @@ namespace DatabaseInitializer
                 var appSettings = new Dictionary<string, string>();
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
-                if(isUpdate)
+                if (isUpdate)
                 {
                     settingsInDb.ForEach(setting =>
                                              {
@@ -131,7 +131,7 @@ namespace DatabaseInitializer
                 }
                 foreach (var token in objectSettings)
                 {
-                   appSettings[token.Key] = token.Value.ToString();
+                    appSettings[token.Key] = token.Value.ToString();
                 }
 
                 jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
@@ -145,7 +145,7 @@ namespace DatabaseInitializer
                     appSettings[token.Key] = token.Value.ToString();
                 }
 
-               //Save settings so that next calls to referenceDataService has the IBS Url
+                //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
                 if (isUpdate)
@@ -162,38 +162,41 @@ namespace DatabaseInitializer
                     replayService.ReplayAllEvents();
 
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    if(tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
+                    if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
-                       // Default rate does not exist for this company 
+                        // Default rate does not exist for this company 
                         CreateDefaultTariff(configurationManager, commandBus);
                     }
+
+                    CreateDefaultRules(connectionString, configurationManager, commandBus);
+
                 }
                 else
                 {
                     appSettings.Clear();
                     // Create default rate for company
                     CreateDefaultTariff(configurationManager, commandBus);
-
+                    CreateDefaultRules(connectionString, configurationManager, commandBus);
 
                     //Get default settings from IBS
                     var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
-                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) 
+                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                                         ?? referenceDataService.GetCompaniesList().FirstOrDefault();
-                    
-                    if(defaultCompany != null)
+
+                    if (defaultCompany != null)
                     {
-                       appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
+                        appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                         var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
                                               referenceDataService.GetVehiclesList(defaultCompany).First();
-                       appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
-                        
+                        appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
+
                         var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
 
-                        
+
                         appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
-                        
+
                     }
 
                     //Save settings so that registerAccountCommand succeed
@@ -201,15 +204,15 @@ namespace DatabaseInitializer
                     appSettings.Clear();
 
                     //Register normal account
-                   var registerAccountCommand = new RegisterAccount
-                                                     {
-                                                         Id = Guid.NewGuid(),
-                                                         AccountId = Guid.NewGuid(),
-                                                         Email = "john@taxihail.com",
-                                                         Name = "John Doe",
-                                                         Phone = "5146543024",
-                                                         Password = "password"
-                                                     };
+                    var registerAccountCommand = new RegisterAccount
+                                                      {
+                                                          Id = Guid.NewGuid(),
+                                                          AccountId = Guid.NewGuid(),
+                                                          Email = "john@taxihail.com",
+                                                          Name = "John Doe",
+                                                          Phone = "5146543024",
+                                                          Password = "password"
+                                                      };
 
                     var confirmationToken = Guid.NewGuid();
                     registerAccountCommand.ConfimationToken = confirmationToken.ToString();
@@ -295,17 +298,54 @@ namespace DatabaseInitializer
                     Name = "Safety",
                     RatingTypeId = Guid.NewGuid()
                 });
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
-                Console.WriteLine(e.Message + " " +e.StackTrace);
+                Console.WriteLine(e.Message + " " + e.StackTrace);
                 loggger.Fatal(e.Message, e);
                 return 1;
             }
             return 0;
         }
 
-        private static  void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
-        { 
+        private static void CreateDefaultRules(ConnectionStringSettings connectionString, IConfigurationManager configurationManager, ICommandBus commandBus)
+        {
+            var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
+            if (rules.GetAll().None(r => (r.Category == (int)RuleCategory.WarningRule) && (r.Type == (int)RuleType.Default)))
+            {
+                // Default rate does not exist for this company 
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.WarningRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    RuleId = Guid.NewGuid(),
+                    IsActive = false,
+                    Message = "Due to the current volume of calls, please note that pickup may be delayed.",
+                });
+            }
+
+            if (rules.GetAll().None(r => (r.Category == (int)RuleCategory.DisableRule) && (r.Type == (int)RuleType.Default)))
+            {
+                // Default rate does not exist for this company 
+                commandBus.Send(new CreateRule
+                {
+                    Type = RuleType.Default,
+                    Category = RuleCategory.DisableRule,
+                    CompanyId = AppConstants.CompanyId,
+                    AppliesToCurrentBooking = true,
+                    AppliesToFutureBooking = true,
+                    RuleId = Guid.NewGuid(),
+                    Message = "Service is temporarily unavailable. Please call dispatch center for service.",
+                });
+            }
+
+        }
+
+        private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+        {
             commandBus.Send(new AddOrUpdateAppSettings
                             {
                                 AppSettings = appSettings,
@@ -313,15 +353,15 @@ namespace DatabaseInitializer
                             });
 
         }
-            
+
         private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
 
-            
+
             var flatRate = configurationManager.GetSetting("Direction.FlateRate");
             var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
 
-            
+
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
@@ -333,6 +373,9 @@ namespace DatabaseInitializer
                 TariffId = Guid.NewGuid(),
             });
         }
+
+
+
 
         static public string AssemblyDirectory
         {

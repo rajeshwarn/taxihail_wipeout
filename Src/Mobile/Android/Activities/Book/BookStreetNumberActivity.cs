@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,12 +27,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void OnViewModelSet()
 		{
 			SetContentView(Resource.Layout.View_BookStreetNumber);
-			var buttonSearch = FindViewById<SearchButton>(Resource.Id.StreetNumberBtSearch);
-			buttonSearch.Text = Resources.GetString(Resource.String.StreetNumberSearchBt);
-
+//			var buttonSearch = FindViewById<SearchButton>(Resource.Id.StreetNumberBtSearch);
+//			buttonSearch.Text = Resources.GetString(Resource.String.StreetNumberSearchBt);
+//
 		    var streetNumberText = FindViewById<EditText>(Resource.Id.streetNumberText);
+
+            streetNumberText.SetFilters(new IInputFilter[] { new Android.Text.InputFilterLengthFilter(ViewModel.NumberOfCharAllowed) });
+
+        
 		    streetNumberText.RequestFocus();
             streetNumberText.SelectAll();
+
+
 		}
 	}
 }

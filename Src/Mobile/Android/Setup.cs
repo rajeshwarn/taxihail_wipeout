@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.FillTargetFactories (registry);
 			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem", spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsBottom)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsTop)));
 		}
 
 
