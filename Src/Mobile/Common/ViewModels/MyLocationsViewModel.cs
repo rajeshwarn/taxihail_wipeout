@@ -71,6 +71,13 @@ namespace apcurium.MK.Booking.Mobile
             return Task.Factory.ContinueWhenAll<AddressViewModel[]>(tasks, t => {
 
                 AllAddresses.Clear ();
+                AllAddresses.Add (new AddressViewModel{ Address =  new Address
+                    {
+                        FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
+                        FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
+                    }, IsAddNew = true, ShowPlusSign=true});
+
+
                 if(t[0].Status == TaskStatus.RanToCompletion)
                 {
                     AllAddresses.AddRange(t[0].Result);
@@ -81,12 +88,7 @@ namespace apcurium.MK.Booking.Mobile
                     AllAddresses.AddRange(t[1].Result);
                 }
 
-                AllAddresses.Add (new AddressViewModel{ Address =  new Address
-                          {
-                            FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
-                            FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
-                    }, IsAddNew = true, ShowPlusSign=true});
-
+           
 
                 AllAddresses.ForEach ( a=> 
                                            {

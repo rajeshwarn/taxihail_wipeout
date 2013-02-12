@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnStyle.TextColor.Maybe( c => button.TitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
 			btnStyle.SelectedTextColor.Maybe( c => button.SelectedTitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
             button.TitleFont = AppStyle.ButtonFont;
+             
         }
 
 		public static UIView GetAccessoryView( string leftBtnTitle, UIColor leftBtnTitleColor, Action leftBtnAction, AppStyle.ButtonColor leftBtnColor, string rightBtnTitle, UIColor rightBtnTitleColor, Action rightBtnAction, AppStyle.ButtonColor rightBtnColor )

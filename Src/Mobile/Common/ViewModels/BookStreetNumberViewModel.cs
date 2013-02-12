@@ -96,8 +96,9 @@ namespace apcurium.MK.Booking.Mobile
                     MessengerHub.Unsubscribe<AddressSelected> ( _token );
                     _token.Dispose ();
                     _token = null;
-                    RequestClose( this );
+
                     RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId , places = "false"});                                       
+                    RequestClose( this );
                 });
             }
         }
@@ -108,9 +109,9 @@ namespace apcurium.MK.Booking.Mobile
                                   {
                     MessengerHub.Unsubscribe<AddressSelected> ( _token );
                     _token.Dispose ();
-                    _token = null;
-                    RequestClose( this );
+                    _token = null; 
                     RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
+                    RequestClose( this );
                 });
             }
         }
