@@ -133,7 +133,7 @@
     <value>No flat</value>
   </data>
    <data name="ApartmentLabel" xml:space="preserve">
-    <value>Flat</value>
+    <value>Flat / Building Name</value>
   </data>
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>Building name</value>

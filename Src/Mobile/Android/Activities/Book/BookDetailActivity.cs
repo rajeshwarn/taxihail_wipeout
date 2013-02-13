@@ -35,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {            
             SetContentView(Resource.Layout.View_BookingDetail);
+
+            if ( !ViewModel.ShowRingCodeField )
+            {
+                FindViewById<TableLayout>( Resource.Id.tableAptRingCode ).Visibility = Android.Views.ViewStates.Gone;
+            }
 			ViewModel.Load();
         }
     }

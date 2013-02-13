@@ -41,6 +41,7 @@
             <TableLayout
                 local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowRingCodeField&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}"
                 android:layout_width="fill_parent"
+                android:id="@+id/tableAptRingCode"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
