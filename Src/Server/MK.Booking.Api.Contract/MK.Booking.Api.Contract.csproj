@@ -142,8 +142,6 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
-    <Compile Include="Resources\OrderStatusDetail.cs" />
-    <Compile Include="Resources\OrderStatus.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
