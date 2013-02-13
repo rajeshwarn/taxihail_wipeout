@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString();
 			ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString();
 			ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString();
+            ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString();
 			SetContentView(Resource.Layout.View_CreditCardAdd);
 		}
 

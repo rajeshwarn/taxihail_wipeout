@@ -360,7 +360,7 @@
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
 "CreateAccountCancel"="Cancel";
 "Tuto05Bottom"="Or Tap the Later button to schedule your pickup for a future time or date.";
-"PaymentDetails.CreditCardLabel"="Credit Card";
+"PaymentDetails.CreditCardLabel"="Cards";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
 "ReminderTitle"="{0} Booked";
 "CreditCardRequiredFields"="All the fields are required";

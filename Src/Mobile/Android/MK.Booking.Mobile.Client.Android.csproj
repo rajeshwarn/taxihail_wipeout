@@ -222,7 +222,9 @@
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <Compile Include="Controls\UnderlineTextView.cs" />
+    <Compile Include="Controls\UnderlineTextView.cs">
+      <DependentUpon>UnderlineTextView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StyledButton.cs" />
     <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
       <SubType>Designer</SubType>
@@ -274,6 +276,8 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
+    <AndroidResource Include="Resources\Drawable\visa_electron.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

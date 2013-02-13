@@ -1122,7 +1122,7 @@
     <value>Credit Cards On File</value>
   </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
-    <value>Credit Card</value>
+    <value>Cards</value>
   </data>
   <data name="PaymentDetails.Optional" xml:space="preserve">
     <value>(Optional)</value>

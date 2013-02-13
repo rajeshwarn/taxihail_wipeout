@@ -153,6 +153,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return FormatDateTime(Order.PickupDate);
 			}
 		}
+
+        public bool IsFutureBooking{
+            get {
+                return Order.PickupDate.HasValue;
+            }
+        }
 		private string _fareEstimate;
 		public string FareEstimate {
 			get {
