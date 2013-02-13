@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             p.SetTypeface(typeface);
 
             p.TextSize = textSize;
-            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - 45, TextUtils.TruncateAt.End);
+            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - 80, TextUtils.TruncateAt.End);
             if (ellipsizedText.IsNullOrEmpty())
             {
                 ellipsizedText = text;
