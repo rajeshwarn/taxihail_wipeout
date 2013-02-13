@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Google.Impl
 
         public Place[] GetNearbyPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList == null ? new PlaceTypes().GetPipedTypeList() : pipedTypeList;
+            pipedTypeList = pipedTypeList == null ? new PlaceTypes(_conifManager).GetPipedTypeList() : pipedTypeList;
             var url = name != null ? PlacesTextServiceUrl : PlacesServiceUrl;
             var client = new JsonServiceClient(url);
 
