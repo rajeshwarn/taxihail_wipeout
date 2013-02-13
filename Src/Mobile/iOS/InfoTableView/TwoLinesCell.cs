@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		public TwoLinesCell (string cellIdentifier, string bindingText) : base( bindingText, UITableViewCellStyle.Subtitle, new NSString(cellIdentifier), UITableViewCellAccessory.None   )
 		{					
 			SelectionStyle = UITableViewCellSelectionStyle.None;
-			Accessory = UITableViewCellAccessory.None;
+			
 			Initialize ();
 		}
 
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		}
 
 		public string SecondLine { get { return DetailTextLabel.Text; }
-			set { DetailTextLabel.Text = value; }
+			set { DetailTextLabel.Text = value;}
 		}
 
 		public string test{get;set;}
@@ -101,12 +101,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			DetailTextLabel.TextColor = AppStyle.CellSecondLineTextColor;
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
 			DetailTextLabel.Font = AppStyle.NormalTextFont;
-			_arrowImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
+
+			//_arrowImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
+            _arrowImage = new UIImageView (new RectangleF (0,0, 14, 15 )); 
 			_arrowImage.BackgroundColor = UIColor.Clear;
 			_arrowImage.ContentMode = UIViewContentMode.ScaleAspectFit;
 			_arrowImage.Image = UIImage.FromFile("Assets/Cells/rightArrow.png");
 			_arrowImage.Hidden = true;
-			AddSubview ( _arrowImage );	
+
+            AccessoryView = _arrowImage;
+			//AddSubview ( _arrowImage );	
 	
 		}
 	
