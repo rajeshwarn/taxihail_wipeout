@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId);
             var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 100);
-            var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 1);
+            var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 10);
 
             Assert.IsNotEmpty(greatRadius);
             Assert.IsNotEmpty(smallRadius);
