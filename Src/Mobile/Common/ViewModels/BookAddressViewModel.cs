@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         CancelCurrentLocation();
                     }
 
-                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place") ) // This should only be true when using an address from a version smaller than 1.3                    
+                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
                     {
                         var a = this.GetService<IGeolocService>().SearchAddress(address.FullAddress, null , null );
                         if ( a.Count() > 0 )
