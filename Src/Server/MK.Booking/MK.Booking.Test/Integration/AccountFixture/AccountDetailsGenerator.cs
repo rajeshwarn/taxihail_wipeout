@@ -326,9 +326,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 }
             }
 
-
             [Test]
-            public void when_settings_updated_with_default_values_then_account_dto_not_updated()
+            public void when_settings_updated_with_default_values_then_account_dto_populated()
             {
                 this.sut.Handle(new BookingSettingsUpdated
                 {
@@ -347,9 +346,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     var dto = context.Find<AccountDetail>(_accountId);
 
                     Assert.NotNull(dto);
-                    Assert.AreEqual(null, dto.Settings.ChargeTypeId);
-                    Assert.AreEqual(null, dto.Settings.ProviderId);
-                    Assert.AreEqual(null, dto.Settings.VehicleTypeId);
+                    Assert.IsNull(dto.Settings.ChargeTypeId);
+                    Assert.IsNull(dto.Settings.ProviderId);
+                    Assert.IsNull( dto.Settings.VehicleTypeId);
                 }
             }
 

@@ -101,8 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             DetailTextLabel.TextColor = AppStyle.CellSecondLineTextColor;
             DetailTextLabel.BackgroundColor = UIColor.Clear;
             DetailTextLabel.Font = AppStyle.NormalTextFont;
-            
-            //_arrowImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
+    
             _arrowImage = new UIImageView (new RectangleF (0,0, 14, 15 )); 
             _arrowImage.BackgroundColor = UIColor.Clear;
             _arrowImage.ContentMode = UIViewContentMode.ScaleAspectFit;
@@ -110,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             _arrowImage.Hidden = true;
             
             AccessoryView = _arrowImage;
-            //AddSubview ( _arrowImage );   
+         
             
         }
         

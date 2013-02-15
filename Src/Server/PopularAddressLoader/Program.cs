@@ -15,8 +15,8 @@ namespace PopularAddressLoader
     {
         static void Main(string[] args)
         {
-            string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
-            //string url = @"http://localhost/apcurium.MK.Web/Api/";
+            //string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
+            string url = @"http://localhost/apcurium.MK.Web/Api/";
 
             
             var auth = new AuthServiceClient(url, null);
