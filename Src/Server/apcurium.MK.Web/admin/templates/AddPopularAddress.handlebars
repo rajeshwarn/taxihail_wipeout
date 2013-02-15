@@ -5,66 +5,11 @@
 
   <form class="form-horizontal clearfix" >
 
-    <div class="clearfix">
-      <div class="control-group left-control-group">
-        <label class="control-label">{{localize 'StreetNumber'}}</label>
+    <div class="control-group">
+        <label class="control-label">{{localize 'Full Address'}}</label>
         <div class="controls">
-          <input type="text"  name="streetNumber"  value="{{streetNumber}}" class='input-block-level'>
-              </div>
-      </div>
-
-      <div class="control-group right-control-group">
-        <label class="control-label" >{{localize "Street"}}</label>
-        <div class="controls">
-          <input type="text" name="street" value="{{street}}" class='input-block-level'>
+          <input type="text" id="inputFullAddress" name="fullAddress"  value="{{fullAddress}}" class='input-block-level'>
         </div>
-      </div>
-    </div>
-
-    <div class="clearfix">
-      <div class="control-group left-control-group">
-        <label class="control-label">{{localize 'City'}}</label>
-        <div class="controls">
-          <input type="text"  name="city"  value="{{city}}" class='input-block-level'>
-            </div>
-      </div>
-
-      <div class="control-group right-control-group">
-        <label class="control-label" >{{localize "ZipCode"}}</label>
-        <div class="controls">
-          <input type="text" name="zipCode" value="{{zipCode}}" class='input-block-level'>
-            </div>
-      </div>
-    </div>
-        
-        <div class="control-group left-control-group">
-            <label class="control-label">{{localize 'Apartment'}}</label>
-            <div class="controls">
-                <input type="text" id="inputApartment" name="apartment" value="{{apartment}}" class='input-block-level'>
-            </div>
-        </div>
-
-        <div class="control-group right-control-group">
-            <label class="control-label">{{localize 'Ring Code'}}</label>
-            <div class="controls">
-                <input type="text" id="inputRingCode" name="ringCode"  value="{{ringCode}}" class='input-block-level'>
-            </div>
-        </div>
-
-    <div class="clearfix">
-      <div class="control-group left-control-group">
-        <label class="control-label">{{localize 'State'}}</label>
-        <div class="controls">
-          <input type="text" name="state" value="{{state}}" class='input-block-level'>
-            </div>
-      </div>
-
-      <div class="control-group right-control-group">
-        <label class="control-label" >{{localize "Building Name"}}</label>
-        <div class="controls">
-          <input type="text" name="buildingName" value="{{buildingName}}" class='input-block-level'>
-            </div>
-      </div>
     </div>
 
     <div class="clearfix">
@@ -72,30 +17,28 @@
         <label class="control-label">{{localize 'Latitude'}}</label>
         <div class="controls">
           <input type="text"  name="latitude"  value="{{latitude}}" class='input-block-level'>
-            </div>
+        </div>
       </div>
-
       <div class="control-group right-control-group">
         <label class="control-label" >{{localize "Longitude"}}</label>
         <div class="controls">
           <input type="text" name="longitude" value="{{longitude}}" class='input-block-level'>
-            </div>
+        </div>
       </div>
     </div>
-
-        <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
-        <div class="control-group no-label">
-            <div class="controls">
-                <input type="text" id="inputFriendlyName" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
-            </div>
+    <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
+    <div class="control-group no-label">
+        <div class="controls">
+            <input type="text" id="inputFriendlyName" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
         </div>
+    </div>
 
-        <div class="control-group btn-right-alignment" >
-            <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
-          <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
-          {{#unless isNew }}
-          <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Remove"}}</a>
-          {{/unless}}
-        </div>
-    </form>
+    <div class="control-group btn-right-alignment" >
+        <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
+      <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+      {{#unless isNew }}
+      <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Remove"}}</a>
+      {{/unless}}
+    </div>
+  </form>
 </div>

@@ -21,11 +21,6 @@
                 rules: {
                     friendlyName: "required",
                     fullAddress: "required",
-                    streetNumber: "required",
-                    street: "required",
-                    city: "required",
-                    zipCode: "required",
-                    state: "required",
                     latitude: {
                         required: true,
                         number: true
@@ -38,21 +33,6 @@
                 messages: {
                     friendlyName: {
                         required: TaxiHail.localize('error.friendlyNameRequired')
-                    },
-                    streetNumber: {
-                        required: TaxiHail.localize('error.streetNumberRequired')
-                    },
-                    street: {
-                        required: TaxiHail.localize('error.streetRequired')
-                    },
-                    city: {
-                        required: TaxiHail.localize('error.cityRequired')
-                    },
-                    zipCode: {
-                        required: TaxiHail.localize('error.zipCodeRequired')
-                    },
-                    state: {
-                        required: TaxiHail.localize('error.stateRequired')
                     },
                     fullAddress: {
                         required: TaxiHail.localize('error.fullAddressRequired')
@@ -74,8 +54,6 @@
 
         save: function (form) {
             var address = this.serializeForm(form);
-            var address = _.extend(this.model.toJSON(), address);
-            address.fullAddress = address.streetNumber + " " + address.street + ", " + address.city + ", " + address.state + " " + address.zipCode;
             
             this.model.save(address, {
                 success: _.bind(function(model){
