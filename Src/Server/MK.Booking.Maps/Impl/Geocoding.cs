@@ -93,6 +93,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                                    orderby distance ascending
                                    select a;
 
+            addressesInRange.ForEach(a => a.AddressType = "popular");
             return addressesInRange.ToArray();
         }
 
