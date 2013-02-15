@@ -399,7 +399,9 @@
     <Content Include="localization\OrderItem.json" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
-    <Content Include="admin\templates\ManageTariffs.handlebars" />
+    <Content Include="admin\templates\ManageTariffs.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\TariffItem.handlebars" />
     <Content Include="themes\Taxiworld\less\combined-responsive.less" />
     <Content Include="themes\Taxiworld\less\combined.less" />
