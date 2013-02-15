@@ -326,6 +326,33 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 }
             }
 
+
+            [Test]
+            public void when_settings_updated_with_default_values_then_account_dto_not_updated()
+            {
+                this.sut.Handle(new BookingSettingsUpdated
+                {
+                    SourceId = _accountId,
+                    Name = "Robert",
+                    ChargeTypeId = 1,
+                    NumberOfTaxi = 3,
+                    Phone = "123",
+                    Passengers = 3,
+                    ProviderId = 13,
+                    VehicleTypeId = 1
+                });
+
+                using (var context = new BookingDbContext(dbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+
+                    Assert.NotNull(dto);
+                    Assert.AreEqual(null, dto.Settings.ChargeTypeId);
+                    Assert.AreEqual(null, dto.Settings.ProviderId);
+                    Assert.AreEqual(null, dto.Settings.VehicleTypeId);
+                }
+            }
+
             [Test]
             public void when_account_granted_admin_access_then_account_dto_populated()
             {
