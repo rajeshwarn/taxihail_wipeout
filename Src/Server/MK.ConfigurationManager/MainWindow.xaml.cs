@@ -257,8 +257,8 @@ namespace MK.ConfigurationManager
             command = string.Format(command, keystoreFile, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyAlias").Value, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyPassStorePass").Value, CurrentCompany.Name);
 
 
-            //const string pathToKeyToo = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe";
-            const string pathToKeyToo = @"C:\Program Files\Java\jdk1.7.0_10\bin\keytool.exe";
+            const string pathToKeyToo = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe";
+            
             var generateKeyTool = new ProcessStartInfo
                                 {
                                     FileName = pathToKeyToo,
