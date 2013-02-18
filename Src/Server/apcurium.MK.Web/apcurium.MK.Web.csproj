@@ -301,6 +301,9 @@
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="themes\CasinoTaxi\img\logo.png" />
+    <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
+    <Content Include="themes\DispatchTaxi\img\location.png" />
+    <Content Include="themes\DispatchTaxi\img\logo.png" />
     <Content Include="themes\DiamondCab\img\logo.png" />
     <Content Include="themes\FreedomTaxi\img\logo.png" />
     <Content Include="themes\MississaugaTaxi\img\logo.png" />
@@ -448,6 +451,10 @@
     <Content Include="themes\CasinoTaxi\less\combined.less" />
     <Content Include="themes\CasinoTaxi\less\style.less" />
     <Content Include="themes\CasinoTaxi\less\variables.less" />
+    <Content Include="themes\DispatchTaxi\less\combined-responsive.less" />
+    <Content Include="themes\DispatchTaxi\less\combined.less" />
+    <Content Include="themes\DispatchTaxi\less\style.less" />
+    <Content Include="themes\DispatchTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
