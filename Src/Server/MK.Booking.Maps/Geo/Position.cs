@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Maps.Geo
 
         }
 
-        private static double CalculateDistance(double latitude1, double longitude1, double latitude2, double longitude2)
+        public static double CalculateDistance(double latitude1, double longitude1, double latitude2, double longitude2)
         {
             const int R = 6378137;
             var d =

@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationDetail"), true);
             
             
-            lblSaveAsAFavorite.Text = Resources.LocationDetailInstructionLabel;
+
             lblName.Text = Resources.LocationDetailGiveItANameLabel;
 
             ((TextField)txtAddress).PaddingLeft = 3;
@@ -79,8 +79,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
+            if ( !ViewModel.ShowRingCodeField )
+            {
+                txtRingCode.Hidden = true;
+                txtAptNumber.Frame = new System.Drawing.RectangleF( txtAptNumber.Frame.X, txtAptNumber.Frame.Y, txtAddress.Frame.Width, txtAptNumber.Frame.Height );
+            }
+
             this.AddBindings(new Dictionary<object, string>{
-                { txtAddress, "{'Text': {'Path': 'FullAddress'}, 'Ended': {'Path': 'ValidateAddress'}}" },
+                { txtAddress, "{'Text': {'Path': 'BookAddress'}, 'Ended': {'Path': 'ValidateAddress'}}" },
                 { txtAptNumber, "{'Text': {'Path': 'Apartment'}}" },
                 { txtRingCode, "{'Text': {'Path': 'RingCode'}}" },
                 { txtName, "{'Text': {'Path': 'FriendlyName'}}" },
@@ -89,14 +95,25 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnDelete, "{'TouchUpInside': {'Path': 'DeleteAddress'}, 'Hidden': {'Path': 'IsNew'}}" },
             });
 
+            btnBook.Hidden = true;
+            btnSave.Hidden = true;
+
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(  Resources.SaveButton , UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute () );
+
+
+            this.View.ApplyAppFont ();
         }
 
-        private bool HandleShouldReturn (UITextField textField)
+        public override void ViewWillDisappear (bool animated)
+        {
+            ViewModel.StopValidatingAddresses();
+        }
+
+        bool HandleShouldReturn (UITextField textField)
         {
             return textField.ResignFirstResponder();
         }
 
-       
     }
 }
 

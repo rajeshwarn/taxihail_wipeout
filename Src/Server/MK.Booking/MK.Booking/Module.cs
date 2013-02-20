@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -11,12 +10,15 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.PushNotifications;
+using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking
@@ -34,6 +36,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IRuleDao>(new RuleDao  (() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
 
@@ -41,10 +44,14 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
 
+            container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
+
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
 
+            
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
@@ -53,44 +60,49 @@ namespace apcurium.MK.Booking
         public void RegisterMaps()
         {
             AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
-            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
+            AutoMapper.Mapper.CreateMap<Address, AddressDetails>();
 
             AutoMapper.Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
 
-            AutoMapper.Mapper.CreateMap<OrderCreated, AddressDetails>()
-                .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupAddress.Apartment))
-                .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress.FullAddress))
-                .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupAddress.RingCode))
-                .ForMember(p => p.BuildingName, opt => opt.MapFrom(m => m.PickupAddress.BuildingName))
-                .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupAddress.Latitude))
-                .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupAddress.Longitude));
-
             AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, AddressDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>()
-                .ForMember(p => p.Id, options => options.MapFrom(m => m.AddressId));
+            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
+            AutoMapper.Mapper.CreateMap<Address, DefaultAddressDetails>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
-
-            AutoMapper.Mapper.CreateMap<PopularAddressAdded, PopularAddressDetails>();
-            AutoMapper.Mapper.CreateMap<PopularAddressUpdated, PopularAddressDetails>();
+            AutoMapper.Mapper.CreateMap<Address, PopularAddressDetails>();
             AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
+            AutoMapper.Mapper.CreateMap<RuleDetail, Rule>();
+            AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
+            AutoMapper.Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
+
+            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
+            AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
         {
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
+            container.RegisterType<IEventHandler, DeviceDetailsGenerator>("DeviceDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
+            container.RegisterType<IEventHandler, RuleDetailsGenerator>("RuleDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
+            container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
+            
+            // Integration event handlers
+            container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
+            container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

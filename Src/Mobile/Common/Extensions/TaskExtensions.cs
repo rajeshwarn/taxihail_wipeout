@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class TaskExtensions
     {
@@ -13,10 +13,7 @@ namespace apcurium.MK.Booking.Mobile
 
                 var logger = TinyIoCContainer.Current.Resolve<ILogger>();
 
-                t.Exception.Handle(x=>{
-                    logger.LogError(x);
-                    return true;
-                });
+                logger.LogError(t.Exception);
 
             }, TaskContinuationOptions.OnlyOnFaulted);
 
@@ -38,6 +35,17 @@ namespace apcurium.MK.Booking.Mobile
             
             return task;
         }
+
+
+//        public static Task<T> ContinueWithOnSucess<T>(this Task<T> task, Func<Task,T> func)
+//        {
+//            return task.ContinueWith(  func , TaskContinuationOptions.OnlyOnRanToCompletion );
+//        }
+//
+//        public static Task ContinueWithOnSucess(this Task task, Action<Task> action)
+//        {
+//            return task.ContinueWith(  action , TaskContinuationOptions.OnlyOnRanToCompletion );
+//        }
 
     }
 }

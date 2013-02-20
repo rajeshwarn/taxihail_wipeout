@@ -177,10 +177,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(dto.Settings.Phone  , dto.Phone);
 
                 var config = new TestConfigurationManager();                
-                Assert.AreEqual(dto.Settings.ChargeTypeId.ToString(), config.GetSetting("DefaultBookingSettings.ChargeTypeId"));
+                Assert.IsNull(dto.Settings.ChargeTypeId);
                 Assert.AreEqual(dto.Settings.Passengers.ToString(), config.GetSetting("DefaultBookingSettings.NbPassenger"));
-                Assert.AreEqual(dto.Settings.VehicleTypeId.ToString(), config.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-                Assert.AreEqual(dto.Settings.ProviderId.ToString(), config.GetSetting("DefaultBookingSettings.ProviderId"));
+                Assert.IsNull(dto.Settings.VehicleTypeId);
+                Assert.IsNull(dto.Settings.ProviderId);
                 
             }
         }
@@ -327,6 +327,32 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             }
 
             [Test]
+            public void when_settings_updated_with_default_values_then_account_dto_populated()
+            {
+                this.sut.Handle(new BookingSettingsUpdated
+                {
+                    SourceId = _accountId,
+                    Name = "Robert",
+                    ChargeTypeId = 1,
+                    NumberOfTaxi = 3,
+                    Phone = "123",
+                    Passengers = 3,
+                    ProviderId = 13,
+                    VehicleTypeId = 1
+                });
+
+                using (var context = new BookingDbContext(dbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+
+                    Assert.NotNull(dto);
+                    Assert.IsNull(dto.Settings.ChargeTypeId);
+                    Assert.IsNull(dto.Settings.ProviderId);
+                    Assert.IsNull( dto.Settings.VehicleTypeId);
+                }
+            }
+
+            [Test]
             public void when_account_granted_admin_access_then_account_dto_populated()
             {
                 this.sut.Handle(new AdminRightGranted()
@@ -338,6 +364,32 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 {
                     var dto = context.Find<AccountDetail>(_accountId);
                     Assert.AreEqual(true, dto.IsAdmin);
+                }
+            }
+
+            [Test]
+            public void when_update_payment_profile_then_account_dto_updated()
+            {
+                Guid? creditCardId = Guid.NewGuid();
+                double? tipAmount = 10.0;
+                double? defaultTipPercent = 15.0;
+
+                this.sut.Handle(new PaymentProfileUpdated
+                {
+                    SourceId = _accountId,
+                    DefaultTipAmount = tipAmount,
+                    DefaultCreditCard = creditCardId,
+                    DefaultTipPercent = defaultTipPercent
+                });
+
+                using (var context = new BookingDbContext(dbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+
+                    Assert.NotNull(dto);
+                    Assert.AreEqual(creditCardId, dto.DefaultCreditCard);
+                    Assert.AreEqual(tipAmount, dto.DefaultTipAmount);
+                    Assert.AreEqual(defaultTipPercent, dto.DefaultTipPercent);
                 }
             }
 

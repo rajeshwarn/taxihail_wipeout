@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -13,24 +14,27 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private const int _invalidZoneErrorCode = -1002;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private WebDriverService _webDriverService;
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, WebDriverService webDriverService)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
+            _webDriverService = webDriverService;
+
         }
 
         protected override string GetUrl()
         {
             return base.GetUrl() + "IWEBOrder_7";
         }
-
-        public IBSOrderStauts GetOrderStatus(int orderId, int accountId)
+        
+        public IBSOrderStauts GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
             var status = new IBSOrderStauts { Status = TWEBOrderStatusValue.wosNone.ToString() };
             UseService(service =>
             {
-                var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, string.Empty, string.Empty, accountId);
+                var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty, accountId);
                 status.Status = orderStatus.ToString();
 
                 double latitude = 0;
@@ -59,17 +63,70 @@ namespace apcurium.MK.Booking.IBS.Impl
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
                     result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
+                    result.CallNumber = order.CallNumber;
                 }
             });
             return result;
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
+        public IBSDriverInfos GetDriverInfos(string driverId)
+        {
+            var infos = new IBSDriverInfos();
+            var webDriver = _webDriverService.GetWEBDriver(UserNameApp, PasswordApp, driverId);
+            infos.FirstName = webDriver.FirstName;
+            infos.LastName = webDriver.LastName;
+            infos.MobilePhone = webDriver.MobilePhone;
+            infos.VehicleColor = webDriver.VehicleColor;
+            infos.VehicleMake = webDriver.VehicleMake;
+            infos.VehicleModel = webDriver.VehicleModel;
+            infos.VehicleRegistration = webDriver.VehicleRegistration;
+            infos.VehicleType = webDriver.VehicleType;
+            return infos;
+        }
+
+        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        {
+            var result = new List<IBSOrderInformation>();
+            UseService(service =>
+                {
+                    var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
+                    foreach (var orderInfoFromIBS in status)
+                    {
+                        Logger.LogMessage("Status from IBS");
+                        Logger.LogMessage(orderInfoFromIBS.Dump());
+                        var statusInfos = new IBSOrderInformation();
+                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
+                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
+                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? null : orderInfoFromIBS.VehicleNumber.Trim(); ;
+                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
+                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
+                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
+                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
+                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
+                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
+                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
+                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
+                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
+                        statusInfos.Fare = orderInfoFromIBS.Fare;
+                        statusInfos.Tip = orderInfoFromIBS.Tips;
+                        statusInfos.Toll = orderInfoFromIBS.Tolls;
+                        statusInfos.Eta = orderInfoFromIBS.ETATime == null || orderInfoFromIBS.ETATime.Year < DateTime.Now.Year ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
+                                                                                                            orderInfoFromIBS.ETATime.Month, orderInfoFromIBS.ETATime.Day,
+                                                                                                            orderInfoFromIBS.ETATime.Hour, orderInfoFromIBS.ETATime.Minute,
+                                                                                                            orderInfoFromIBS.ETATime.Second);
+                        result.Add(statusInfos);
+                    }
+                });
+
+            return result;
+        }
+
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
 
-            order.ServiceProviderID = providerId;
+            order.ServiceProviderID = providerId ?? 0;
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
@@ -81,13 +138,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
-            order.ChargeTypeID = chargeTypeId;
+            order.ChargeTypeID = chargeTypeId ?? 0;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
 
-            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
-            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
+            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude, Postal = pickup.ZipCode };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude, Postal = dropoff.ZipCode };
             order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId;
+            order.VehicleTypeID = vehicleTypeId ?? 0;
             order.Note = note;
             order.ContactPhone = phone;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
@@ -136,7 +193,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
             if (isValidationEnabled)
             {
+
+                Logger.LogMessage("Validating Zone " + JsonSerializer.SerializeToString(tWEBAddress, typeof(TWEBAddress)));
+                
                 var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
+
+                Logger.LogMessage("Zone returned : " + zone.ToSafeString() );
+
                 if ( zone.ToSafeString().Trim().IsNullOrEmpty())
                 {
                     return false;

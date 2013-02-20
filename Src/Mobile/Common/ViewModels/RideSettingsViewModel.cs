@@ -10,22 +10,45 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Common.Entity;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseSubViewModel<BookingSettings>,
+	public class RideSettingsViewModel: BaseViewModel,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
-		public RideSettingsViewModel (string messageId, string bookingSettings)
-			:base(messageId)
+        private readonly IAccountService _accountService;
+		public RideSettingsViewModel (string bookingSettings)
 		{
             this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
-            var accountService = this.GetService<IAccountService>();
+            _accountService = this.GetService<IAccountService>();
+            
+            _vehicules = _accountService.GetVehiclesList().ToArray();
+            _payments = _accountService.GetPaymentsList().ToArray();
 
-            _vehicules = accountService.GetVehiclesList().ToArray();
-            _payments = accountService.GetPaymentsList().ToArray();
+            var account = _accountService.CurrentAccount;
+            var paymentInformation = new PaymentInformation {
+                CreditCardId = account.DefaultCreditCard,
+                TipAmount = account.DefaultTipAmount,
+                TipPercent = account.DefaultTipPercent,
+            };
+            PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
 		}
+
+        public override void Restart ()
+        {
+            base.Restart ();
+            PaymentPreferences.LoadCreditCards();
+        }
+
+        public PaymentDetailsViewModel PaymentPreferences {
+            get;
+            private set;
+        }
+
 
         private ListItem[] _vehicules;
         public ListItem[] Vehicles {
@@ -41,26 +64,53 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int VehicleTypeId {
+        public int? VehicleTypeId {
 			get {
-				return _bookingSettings.VehicleTypeId;
+				return _bookingSettings.VehicleTypeId ?? ListItem.NullId;
 			}
 			set {
-				if(value != _bookingSettings.VehicleTypeId){
-					_bookingSettings.VehicleTypeId = value;
+				var id = value == ListItem.NullId ? default(int?) : value;
+				if(id != _bookingSettings.VehicleTypeId){
+					_bookingSettings.VehicleTypeId = id;
+                    FirePropertyChanged("VehicleTypeId");
+                    FirePropertyChanged("VehicleTypeName");
 				}
 			}
         }
 
-        public int ChargeTypeId {
+        public string VehicleTypeName {
+            get {
+
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
+
+                var vehicle = this.Vehicles.FirstOrDefault(x=>x.Id == VehicleTypeId);
+                if(vehicle == null) return null;
+                return vehicle.Display;
+            }
+        }
+
+        public int? ChargeTypeId {
             get {
                 return _bookingSettings.ChargeTypeId;
             }
 			set {
 				if(value != _bookingSettings.ChargeTypeId){
 					_bookingSettings.ChargeTypeId = value;
+                    FirePropertyChanged("ChargeTypeId");
+                    FirePropertyChanged("ChargeTypeName");
 				}
 			}
+        }
+
+        public string ChargeTypeName {
+            get {
+                var chargeType = this.Payments.FirstOrDefault(x=>x.Id == ChargeTypeId);
+                if(chargeType == null) return null;
+                return chargeType.Display; 
+            }
         }
 
         public string Name {
@@ -89,36 +139,34 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int Passengers {
-            get {
-                return _bookingSettings.Passengers;
-            }
-            set {
-                if(value != _bookingSettings.Passengers)
-                {
-                    _bookingSettings.Passengers = value;
-                    FirePropertyChanged("Passengers");
-                }
-            }
-        }
-
         public IMvxCommand SetVehiculeType {
             get {
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
-                    _bookingSettings.VehicleTypeId = id;
+                    VehicleTypeId = id;
 
                 });
             }
 
         }
-        
+
+        public IMvxCommand NavigateToUpdatePassword
+        {
+            get
+            {
+                return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+            }
+        }
+
+
         public IMvxCommand SetChargeType
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
-                    _bookingSettings.ChargeTypeId = id;
+                    ChargeTypeId = id;
 
                 });
             }
@@ -127,7 +175,8 @@ namespace apcurium.MK.Booking.Mobile
         public IMvxCommand SetCompany
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     _bookingSettings.ProviderId = id;
 
@@ -139,15 +188,15 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                                            {
-					if(ValidateRideSettings())
+					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
 					{
-                    	ReturnResult(_bookingSettings);
-					}
-					else
-					{
-                		base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
+                        var tipAmount = PaymentPreferences.IsTipInPercent ? default(double?) : PaymentPreferences.TipDouble;
+                        var tipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : default(double?);
+                        Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
+                        _accountService.UpdateSettings (_bookingSettings, creditCard, tipAmount, tipPercent);
+                        Close();
 					}
                 });
             }
@@ -156,11 +205,17 @@ namespace apcurium.MK.Booking.Mobile
 		private bool ValidateRideSettings()
 		{
 			if (string.IsNullOrEmpty(Name) 
-			    || string.IsNullOrEmpty(Phone)
-			    || Passengers <= 0)
+			    || string.IsNullOrEmpty(Phone))
 			{
+                base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
 				return false;
 			}
+            if ( Phone.Count(x => Char.IsDigit(x)) < 10 )
+            {
+                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
+                return false;
+            }
+
 			return true;
 		}
 

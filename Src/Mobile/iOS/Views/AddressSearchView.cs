@@ -20,16 +20,17 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>, INavigationView
+    public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
 	{
 		private const string CELLID = "AdressCell";
 
 		const string CellBindingText = @"
                 {
-                   'FirstLine':{'Path':'Address.FriendlyName'},
-                   'SecondLine':{'Path':'Address.FullAddress'},
+                   'FirstLine':{'Path':'DisplayLine1'},
+                   'SecondLine':{'Path':'DisplayLine2'},
 				   'ShowRightArrow':{'Path':'ShowRightArrow'},
 				   'ShowPlusSign':{'Path':'ShowPlusSign'},
+                   'Icon':{'Path':'Icon'},
 				   'IsFirst':{'Path':'IsFirst'},
 				   'IsLast':{'Path':'IsLast'},
 				}";
@@ -50,10 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }	
 		#endregion
 
-        public bool HideNavigationBar
-        {
-            get { return true;}
-        }
+     
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
@@ -65,22 +63,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			NavigationController.NavigationBar.Hidden=true;
-
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-
-			var searchBtn = TopBar.AddButton( Resources.TabSearch, "SearchBtn" );
-			var favoritesBtn = TopBar.AddButton( Resources.TabFavorites, "FavoritesBtn" );
-			var contactsBtn = TopBar.AddButton( Resources.TabContacts, "ContactsBtn" );
-			var placesBtn = TopBar.AddButton( Resources.TabPlaces, "PlacesBtn" );
-			TopBar.SetSelected( 0 );
+            			
+			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));            		
 
 			((SearchTextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
 			SearchTextField.Placeholder = Resources.SearchHint;
-
-			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
-
+            			
 			var source = new BindableAddressTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
@@ -90,16 +78,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
 
-            this.AddBindings(new Dictionary<object, string>(){
-				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
-				{source, "{'ItemsSource':{'Path':'AllAddresses'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,
-				{favoritesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
-				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
-				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
-				{searchBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
-                {SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
+            this.AddBindings(new Dictionary<object, string>(){			
+                {source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,				
+                {SearchTextField, "{'Text':{'Path':'Criteria'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
 			});
 
+            AddressListView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             AddressListView.Source = source;
 
             SearchTextField.ReturnKeyType = UIReturnKeyType.Done;
@@ -107,7 +91,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
 				return SearchTextField.ResignFirstResponder();
             };
+
+            this.View.ApplyAppFont ();
 		}
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SearchAddress"), true);
+        
+            this.NavigationController.SetViewControllers(this.NavigationController.ViewControllers.Where ( v=> v.GetType () != typeof(  BookStreetNumberView ) ).ToArray (), false );
+        }
 
 		public override void ViewDidUnload ()
 		{
@@ -126,21 +119,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// Return true for supported orientations
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
-
-		public string GetTitle()
-        {
-            return "";
-        }
-        
-      	public bool IsTopView
-        {
-            get { return this.NavigationController.TopViewController is AddressSearchView; }
-        }
-
-        public UIView GetTopView()
-        {
-            return null;
-        }
+//
+//		public string GetTitle()
+//        {
+//            return "";
+//        }
+//        
+//      	public bool IsTopView
+//        {
+//            get { return this.NavigationController.TopViewController is AddressSearchView; }
+//        }
+//
+//        public UIView GetTopView()
+//        {
+//            return null;
+//        }
 	}
 }
 

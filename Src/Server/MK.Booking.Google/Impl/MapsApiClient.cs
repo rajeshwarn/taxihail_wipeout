@@ -6,6 +6,7 @@ using System.Text;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Google.Impl
 {
@@ -17,8 +18,10 @@ namespace apcurium.MK.Booking.Google.Impl
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
 
         private IConfigurationManager _conifManager;
-        public MapsApiClient(IConfigurationManager conifManager)
+        private ILogger _logger;
+        public MapsApiClient(IConfigurationManager conifManager, ILogger logger)
         {
+            _logger = logger;
             _conifManager = conifManager;
         }
 
@@ -32,8 +35,10 @@ namespace apcurium.MK.Booking.Google.Impl
 
         public Place[] GetNearbyPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList == null ? new PlaceTypes().GetPipedTypeList() : pipedTypeList;
-            var client = name != null ? new JsonServiceClient(PlacesTextServiceUrl) : new JsonServiceClient(PlacesServiceUrl);
+            pipedTypeList = pipedTypeList == null ? new PlaceTypes(_conifManager).GetPipedTypeList() : pipedTypeList;
+            var url = name != null ? PlacesTextServiceUrl : PlacesServiceUrl;
+            var client = new JsonServiceClient(url);
+
             var @params = new Dictionary<string, string>
             {
                 { "sensor", sensor.ToString(CultureInfo.InvariantCulture).ToLowerInvariant() },
@@ -42,6 +47,11 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "language", languageCode  },
                 { "types", pipedTypeList},
             };
+
+            if ( name != null )
+            {
+                @params.Add ( "rankby", "distance");
+            }
 
             if (latitude != null
                 && longitude != null)
@@ -55,7 +65,10 @@ namespace apcurium.MK.Booking.Google.Impl
             }
 
             var r = "json" + BuildQueryString(@params);
-            Console.WriteLine(r);
+
+
+            _logger.LogMessage ("Places API : " + url + r );
+
             return client.Get<PlacesResponse>(r).Results.ToArray();
 
         }
@@ -70,14 +83,16 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "key",  PlacesApiKey },            
             };
 
-            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;
+            var qry = "json" + BuildQueryString(@params);
+            Console.WriteLine ( qry );
+            return client.Get<PlaceDetailResponse>(qry).Result;
         }
 
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=false", originLat, originLng, destLat, destLng);
+            var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
             return client.Get<DirectionResult>(resource);
         }
@@ -86,7 +101,10 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", address);
+            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
+
+            _logger.LogMessage ("GeocodeLocation : " + MapsServiceUrl + resource );
+
 
             return client.Get<GeoResult>(resource);
         }
@@ -95,7 +113,9 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=false", latitude, longitude);
+            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true", latitude, longitude);
+
+            _logger.LogMessage ("GeocodeLocation : " + MapsServiceUrl + resource );
 
             return client.Get<GeoResult>(resource);
         }

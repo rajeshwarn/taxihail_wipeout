@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         {
             get
             {
-                return new MvxRelayCommand<object>(param => param.Maybe(tag =>
+                return GetCommand<object>(param => param.Maybe(tag =>
                     {
 					RatingState state;
 					if(CanRating

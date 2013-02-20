@@ -16,21 +16,50 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
+using System.Globalization;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryViewModel : BaseViewModel
     {
-        //TODO : a remplacer quand les strings seront globalisee
-        private const string titleFormat = "Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
-        private ObservableCollection<OrderViewModel> _orders;
 
+        private ObservableCollection<OrderViewModel> _orders;
+        private TinyMessageSubscriptionToken orderDeletedToken = null;
+
+        public HistoryViewModel()
+        {
+            HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
+            orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            LoadOrders ();
+        }
         public ObservableCollection<OrderViewModel> Orders
         {
             get { return _orders; }
             set { _orders = value; FirePropertyChanged("Orders"); }
         }
 
+        private string FormatDateTime(DateTime date )
+        {
+            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+            string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
+            string result = string.Format(format, date) ;
+            return result;
+        }
+        public string CultureInfoString
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
+            }
+        }
         private bool _hasOrders;
         public bool HasOrders {
             get {
@@ -44,14 +73,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryViewModel()
+
+
+        private void OnOrderDeleted(Guid orderId)
         {
-			LoadOrders ();
+            Task.Factory.StartNew(() =>
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel()
+                {
+                    IBSOrderId = x.IBSOrderId,
+                    Id = x.Id,
+                    CreatedDate = x.CreatedDate,
+                    PickupAddress = x.PickupAddress,
+                    PickupDate = x.PickupDate,
+                    IsCompleted = x.IsCompleted,
+                    Title = FormatDateTime( x.PickupDate ), // piString.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+                    IsFirst = x.Equals(Orders.First()),
+                    IsLast = x.Equals(Orders.Last()),
+                    ShowRightArrow = true
+                }));
+                HasOrders = Orders.Any();
+            });
         }
 
-		public Task LoadOrders ()
+        public Task LoadOrders ()
 		{
 			return Task.Factory.StartNew (() => {
+
 				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ().ToArray();
 				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
 					{
@@ -61,12 +109,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						PickupAddress = x.PickupAddress,
 						PickupDate = x.PickupDate, 
 						IsCompleted = x.IsCompleted,
-						Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+						//Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+                        Title = FormatDateTime( x.PickupDate ),
 						IsFirst = x.Equals(orders.First()),
 						IsLast = x.Equals(orders.Last()),
 						ShowRightArrow = true
 					}));
-
                 HasOrders = orders.Any();
 			});
 		}
@@ -76,9 +124,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
+                return GetCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
                     new {orderId = vm.Id}));
             }
         }
+
+        public override void Unload ()
+        {
+            base.Unload ();
+            MessengerHub.Unsubscribe<OrderDeleted>(orderDeletedToken);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.Cmt;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 
@@ -31,20 +32,19 @@ namespace apcurium.CMT.Web.Tests
         [Test]
         public void when_sending_guide()
         {
-            Credentials.AccessToken = "toto";
-            Credentials.AccessTokenSecret = "titi";
-            Credentials.SessionId = "SessoionId";
-            Credentials.AccountId = "one";
+            
 
-            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
-            var newAccount = new PreCogRequest
+            var sut = new CmtPreCogServiceClient(BaseUrl, null);
+            var statusRequest = new PreCogRequest
                                  {
-                                     DestDesc = "moma",
-                                     Init = false,
-                                     LinkedVehiculeId = "514896",
-                                     Type = PreCogType.Guide
+                                     LocLon = -73.97547,
+                                     LocLat = 40.77690,
+                                     LocTime = DateTime.Now,
+                                     LocDesc = string.Empty,
+                                     Init = true,
+                                     Type = PreCogType.Status
                                  };
-            sut.Send(newAccount);
+            sut.Send(statusRequest);
         }
 
     }

@@ -26,6 +26,10 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_updating_successfully()
         {
+            Guid? creditCardId = Guid.NewGuid();
+            double? tipAmount = 10.0;
+            double? defaultTipPercent = 15.0;
+
             this._sut.When(new UpdateBookingSettings
                                {
                                    AccountId = _accountId,
@@ -35,10 +39,13 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                                    Phone = "123",
                                    Passengers = 3,
                                    ProviderId = 85,
-                                   VehicleTypeId = 69
+                                   VehicleTypeId = 69,
+                                   DefaultCreditCard = creditCardId,
+                                   DefaultTipAmount = tipAmount,
+                                   DefaultTipPercent = defaultTipPercent
                                });
 
-            var @event = _sut.ThenHasSingle<BookingSettingsUpdated>();
+            var @event = _sut.ThenHasOne<BookingSettingsUpdated>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual("Robert2 Smither2", @event.Name);            
@@ -48,6 +55,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(3, @event.Passengers);
             Assert.AreEqual(85, @event.ProviderId);
             Assert.AreEqual(69, @event.VehicleTypeId);
+
+            var @eventPayment = _sut.ThenHasOne<PaymentProfileUpdated>();
+            Assert.AreEqual(_accountId, @eventPayment.SourceId);
+            Assert.AreEqual(creditCardId, @eventPayment.DefaultCreditCard);
+            Assert.AreEqual(tipAmount, @eventPayment.DefaultTipAmount);
+            Assert.AreEqual(defaultTipPercent, @eventPayment.DefaultTipPercent);
         }
     }
 }

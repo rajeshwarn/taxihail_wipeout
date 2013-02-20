@@ -19,17 +19,17 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IConfigurationManager _configManager;
         private readonly ICommandBus _commandBus;
-
+        
         public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus)
         {
             _configManager = configManager;
             _commandBus = commandBus;
         }
-
+        
         public override object OnGet(ConfigurationsRequest request)
         {
             var keys = new string[0];
-
+            
             if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
                 var listKeys = _configManager.GetSetting("Admin.CompanySettings");
@@ -37,17 +37,16 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else //AppSettingsType.Mobile
             {
-                keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", 
-                    "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton" };
+                keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey"};
             }
-
+            
             var allKeys = _configManager.GetSettings();
-
-            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(s => s.Key, s => s.Value);
-
+            
+            var result = allKeys.Where(k => keys.Contains(k.Key) || k.Key.StartsWith("Client.")|| k.Key.StartsWith("GeoLoc.")).ToDictionary(s => s.Key, s => s.Value);
+            
             return result;
         }
-
+        
         public override object OnPost(ConfigurationsRequest request)
         {
             if (request.AppSettings.Any())
@@ -55,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings,  CompanyId = AppConstants.CompanyId };
                 _commandBus.Send(command);
             }
-
+            
             return "";
         }
     }

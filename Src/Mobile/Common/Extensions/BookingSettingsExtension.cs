@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
@@ -14,7 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
             var copy = new BookingSettings();
             copy.Name = instance.Name;            
             copy.Phone = instance.Phone;
-            copy.Passengers = instance.Passengers;
             copy.VehicleTypeId = instance.VehicleTypeId;
             copy.ChargeTypeId = instance.ChargeTypeId;
             copy.ProviderId = instance.ProviderId;

@@ -1,7 +1,16 @@
 {
+  "UseCustomFonts" : "true",
+  "CustomRegularFont" : "SourceSansPro-Regular",
+  "CustomBoldFont" : "SourceSansPro-Semibold",
+  "CustomMediumFont" : "SourceSansPro-Semibold",
+  "CustomItalicFont" : "SourceSansPro-It",
+  "ButtonFontSize" : "20",
+  "ButtonCornerRadius" : "5",  
+  "TextboxCornerRadius" : "4",  
+  "CenterLogo" : "true",  
   "LightCorporateTextColor" : { "Red": "188", "Green": "217", "Blue": "242", "Alpha": "255",  "Location": "1"  },
   "NavigationTitleColor" : { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "255",   "Location": "1"  },
-  "NavigationBarColor" : { "Red": "0", "Green": "78", "Blue": "145", "Alpha": "255", "Location": "1"  },
+  "NavigationBarColor" : { "Red": "30", "Green": "30", "Blue": "30", "Alpha": "255",   "Location": "1"  },
   "Buttons": [
     {
       "Key": "CorporateColor",
@@ -18,15 +27,16 @@
     },
     {
       "Key": "AlternateCorporateColor",
-      "Colors": [  {  "Red": "13", "Green": "69", "Blue": "119",   "Alpha": "255", "Location": "1"     }   ],
-      "StrokeColor": { "Red": "7", "Green": "34", "Blue": "57", "Alpha": "255",  "Location": "1"  },
-      "TextColor": {  "Red": "188", "Green": "217",  "Blue": "242", "Alpha": "255",  "Location": "1"  },
+      "Colors": [  { "Red": "255", "Green": "206", "Blue": "33", "Alpha": "255",  "Location": "0"  } ,
+                    { "Red": "255", "Green": "152", "Blue": "20", "Alpha": "255",  "Location": "1"  } ],
+      "StrokeColor": {  "Red": "175", "Green": "62",  "Blue": "0", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
-      "DropShadow": {
+      "InnerShadow": {
         "BlurRadius": "1",
         "OffsetX": "0",
         "OffsetY": "1",
-        "Color": { "Red": "38", "Green": "105", "Blue": "164",  "Alpha": "255", "Location": "1"  }
+        "Color": { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "128", "Location": "1"  }
       }
     },
     {
@@ -83,9 +93,9 @@
     ,
     {
       "Key": "Green",
-      "Colors": [  { "Red": "143", "Green": "207", "Blue": "15", "Alpha": "255",  "Location": "0"  } ,
-                    { "Red": "87", "Green": "177", "Blue": "9", "Alpha": "255",  "Location": "1"  } ],
-      "StrokeColor": {  "Red": "69", "Green": "103",  "Blue": "24", "Alpha": "255",  "Location": "1"  },
+      "Colors": [  { "Red": "255", "Green": "155", "Blue": "0", "Alpha": "255",  "Location": "0"  } ,
+                    { "Red": "255", "Green": "100", "Blue": "0", "Alpha": "255",  "Location": "1"  } ],
+      "StrokeColor": {  "Red": "175", "Green": "62",  "Blue": "0", "Alpha": "255",  "Location": "1"  },
       "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "InnerShadow": {
@@ -138,12 +148,10 @@
 	      "Key": "LightBlue",
           "Colors": [  { "Red": "240", "Green": "240", "Blue": "240", "Alpha": "255",  "Location": "0"  } ,
                     { "Red": "222", "Green": "222", "Blue": "222", "Alpha": "255",  "Location": "0.93"  } ,
-                    { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],
-	      "SelectedColors": [  { "Red": "41", "Green": "90", "Blue": "178", "Alpha": "255",  "Location": "0"  } ,
-                    { "Red": "64", "Green": "133", "Blue": "236", "Alpha": "255",  "Location": "0.4"  },
-                    { "Red": "82", "Green": "146", "Blue": "241", "Alpha": "255",  "Location": "0.7"  },
-                    { "Red": "118", "Green": "173", "Blue": "252", "Alpha": "255",  "Location": "1"  } ],
-          "StrokeColor": {  "Red": "87", "Green": "87",  "Blue": "87", "Alpha": "255",  "Location": "1"  },
+                    { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],	     
+        "SelectedColors": [  { "Red": "255", "Green": "206", "Blue": "33", "Alpha": "255",  "Location": "0"  } ,
+                    { "Red": "255", "Green": "152", "Blue": "20", "Alpha": "255",  "Location": "1"  } ],
+          "StrokeColor": {  "Red": "175", "Green": "62",  "Blue": "0", "Alpha": "255",  "Location": "1"  },
 	      "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
 	      "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
 	      "InnerShadow": {
@@ -160,6 +168,34 @@
 	        "Color": { "Red": "0", "Green": "0", "Blue": "0", "Alpha": "76", "Location": "1"  }
         }
 
+    },
+    {
+      "Key": "SegmentedLightBlue",
+      "Colors": [  { "Red": "240", "Green": "240", "Blue": "240", "Alpha": "255",  "Location": "0"  } ,
+                { "Red": "222", "Green": "222", "Blue": "222", "Alpha": "255",  "Location": "0.93"  } ,
+                { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],
+          "SelectedColors": [  { "Red": "41", "Green": "90", "Blue": "178", "Alpha": "255",  "Location": "0"  } ,
+                { "Red": "64", "Green": "133", "Blue": "236", "Alpha": "255",  "Location": "0.4"  },
+                { "Red": "82", "Green": "146", "Blue": "241", "Alpha": "255",  "Location": "0.7"  },
+                { "Red": "118", "Green": "173", "Blue": "252", "Alpha": "255",  "Location": "1"  } ],
+      "StrokeColor": {  "Red": "155", "Green": "155",  "Blue": "155", "Alpha": "255",  "Location": "1"  },
+      "SelectedStrokeColor": {  "Red": "4", "Green": "49",  "Blue": "74", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "112", "Green": "112",  "Blue": "112", "Alpha": "255",  "Location": "1"  },
+      "SelectedTextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
+      "SelectedTextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
+      "InnerShadow": {
+        "BlurRadius": "1",
+        "OffsetX": "0",
+        "OffsetY": "1",
+        "Color": { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "128", "Location": "1"  }
+      },
+
+      "DropShadow": {
+        "BlurRadius": "1",
+        "OffsetX": "0",
+        "OffsetY": "0",
+        "Color": { "Red": "0", "Green": "0", "Blue": "0", "Alpha": "76", "Location": "1"  }
+      }
     }                              
   ]
 }

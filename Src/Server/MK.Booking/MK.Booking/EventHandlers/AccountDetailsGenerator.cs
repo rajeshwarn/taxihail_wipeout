@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -15,7 +16,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
-        IEventHandler<AdminRightGranted>
+        IEventHandler<AdminRightGranted>,
+        IEventHandler<PaymentProfileUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private IConfigurationManager _configurationManager;
@@ -45,16 +47,13 @@ namespace apcurium.MK.Booking.EventHandlers
                                  };
 
 
-                var chargeTypeId = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId"));
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                var vehicleTypeId= int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-                var providerId= int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId"));
-
-                account.Settings = new BookingSettingsDetails { ChargeTypeId = chargeTypeId, Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone, ProviderId = providerId, VehicleTypeId = vehicleTypeId };
+                account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
 
                 context.Save(account);
                 var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
                                              select a).ToList();
+                
                 //add default company favorite address
                 defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails()
                 {
@@ -82,9 +81,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
                 context.Save(account);
-                
-                //context.SaveChanges();
-
             }
         }
 
@@ -104,17 +100,50 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var settings = account.Settings ?? new BookingSettingsDetails();
+                var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
+
                 settings.ChargeTypeId = @event.ChargeTypeId;
-                settings.NumberOfTaxi = @event.NumberOfTaxi;
-                settings.Passengers = @event.Passengers;
-                settings.Phone = @event.Phone;
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
+                if (settings.ChargeTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                {
+                    settings.ChargeTypeId = null;
+                }
+
+
+                if (settings.VehicleTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                {
+                    settings.VehicleTypeId = null;
+                }
+
+                if (settings.ProviderId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                {
+                    settings.ProviderId = null;
+                }
+
+
+
+                settings.NumberOfTaxi = @event.NumberOfTaxi;
+                settings.Passengers = @event.Passengers;
+                settings.Phone = @event.Phone;
+
                 account.Settings = settings;
                 context.Save(account);
+            }
+        }
+
+        private int? ParseToNullable(string val)
+        {
+            int result;
+            if (int.TryParse(val, out result))
+            {
+                return result;
+            }
+            else
+            {
+                return default(int?);
             }
         }
 
@@ -143,6 +172,18 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsAdmin = true;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(PaymentProfileUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = @event.DefaultCreditCard;
+                account.DefaultTipAmount = @event.DefaultTipAmount;
+                account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
             }
         }

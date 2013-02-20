@@ -6,6 +6,7 @@ using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -36,10 +37,14 @@ namespace apcurium.MK.Web.Tests
             sut.AddPopularAddress(new PopularAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
-                FriendlyName = "La Boite à Jojo le barjo popular",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                              {
+                                  FriendlyName = "La Boite à Jojo le barjo popular",
+                                  FullAddress = "1234 rue Saint-Denis",
+                                  Latitude = 45.515065,
+                                  Longitude = -73.558064
+                              }
+               
             });
         }
 
@@ -52,13 +57,16 @@ namespace apcurium.MK.Web.Tests
             sut.AddPopularAddress(new PopularAddress
             {
                 Id = addressId,
-                FriendlyName = "Chez François Cuvelier le bg popular",
-                Apartment = "39398",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                             {
+                                 FriendlyName = "Chez François Cuvelier le bg popular",
+                                 Apartment = "39398",
+                                 FullAddress = "1234 rue Saint-Hubert",
+                                 RingCode = "3131",
+                                 BuildingName = "Hôtel de Ville",
+                                 Latitude = 45.515065,
+                                 Longitude = -73.558064
+                             }
             });
 
             var addresses = sut.GetPopularAddresses();
@@ -89,13 +97,16 @@ namespace apcurium.MK.Web.Tests
             sut.UpdatePopularAddress(new PopularAddress
             {
                 Id = _knownAddressId,
-                FriendlyName = "Chez François Cuvelier popular",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Le Manoir playboy",
-                Latitude = 12,
-                Longitude = 34
+                Address = new Address
+                             {
+                                 FriendlyName = "Chez François Cuvelier popular",
+                                 Apartment = "3939",
+                                 FullAddress = "1234 rue Saint-Hubert",
+                                 RingCode = "3131",
+                                 BuildingName = "Le Manoir playboy",
+                                 Latitude = 12,
+                                 Longitude = 34
+                             }
             });
 
             var address = sut.GetPopularAddresses().Single(x => x.Id == _knownAddressId);
@@ -119,14 +130,17 @@ namespace apcurium.MK.Web.Tests
                 .UpdatePopularAddress(new PopularAddress
                 {
                     Id = _knownAddressId,
-                    FriendlyName =
-                        "Chez François Cuvelier",
-                    Apartment = "3939",
-                    FullAddress =
-                        "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    Latitude = double.NaN,
-                    Longitude = double.NaN
+                    Address = new Address
+                             {
+                                 FriendlyName =
+                                     "Chez François Cuvelier",
+                                 Apartment = "3939",
+                                 FullAddress =
+                                     "1234 rue Saint-Hubert",
+                                 RingCode = "3131",
+                                 Latitude = double.NaN,
+                                 Longitude = double.NaN
+                             }
                 }));
 
         }

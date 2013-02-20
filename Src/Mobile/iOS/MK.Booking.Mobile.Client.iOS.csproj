@@ -22,15 +22,16 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/LocalizationTool.exe&quot; -t ios -s &quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d &quot;$(ProjectDir)/en.lproj/localizable.strings&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
+    <MtouchUseSGen>True</MtouchUseSGen>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -44,6 +45,11 @@
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchArch>ARMv7</MtouchArch>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>True</DebugSymbols>
@@ -54,7 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -64,7 +70,7 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>7B7390D8-92CE-4B20-AD8B-A18546B72C4A</CodesignProvision>
+    <CodesignProvision>8062329E-30CA-4B23-93B4-6800BDD1DCD1</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -85,6 +91,11 @@
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -162,7 +173,6 @@
     <Compile Include="Controls\Binding\Binding.cs" />
     <Compile Include="Controls\ISelectableViewController.cs" />
     <Compile Include="Controls\IRefreshableViewController.cs" />
-    <Compile Include="Settings\RideSettingsView.cs" />
     <Compile Include="Settings\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -170,8 +180,6 @@
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShinnyButton.cs" />
-    <Compile Include="Settings\CreateAccountView.cs" />
-    <Compile Include="Settings\ResetPasswordView.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -184,29 +192,12 @@
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\StatusView.xib.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\StatusView.xib.designer.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\BookItButton.cs" />
-    <Compile Include="Order\SimilarAddressTableDelegate.cs" />
-    <Compile Include="Order\SimilarAddressTableDatasource.cs" />
     <Compile Include="Order\ConfirmationCall.cs" />
-    <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
     <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
     <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
-    <Compile Include="InfoTableView\TwoLinesAddressCell.cs" />
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\WindowDisplay.cs" />
@@ -250,7 +241,6 @@
     <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
-    <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Controls\Binding\BindableAddressTableViewSource.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
@@ -321,20 +311,83 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\TutorialView.cs" />
+    <Compile Include="Views\TutorialView.designer.cs">
+      <DependentUpon>TutorialView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UndelinedLabel.cs" />
+    <Compile Include="Controls\TitleView.cs" />
+    <Compile Include="Views\BookViewActionsView.cs" />
+    <Compile Include="Views\RideSettingsView.cs" />
+    <Compile Include="Views\RideSettingsView.designer.cs">
+      <DependentUpon>RideSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ModalTextField.cs" />
+    <Compile Include="Views\CreateAccountView.cs" />
+    <Compile Include="Views\CreateAccountView.designer.cs">
+      <DependentUpon>CreateAccountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FormLabel.cs" />
+    <Compile Include="Views\BaseViewController.cs" />
+    <Compile Include="Views\BaseViewController.designer.cs">
+      <DependentUpon>BaseViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\UIResponderExtensions.cs" />
+    <Compile Include="Order\BookStreetNumberView.cs" />
+    <Compile Include="Order\BookStreetNumberView.designer.cs">
+      <DependentUpon>BookStreetNumberView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ValignLabel.cs" />
+    <Compile Include="Views\ConfirmationView.xib.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationView.xib.designer.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResetPasswordView.designer.cs">
+      <DependentUpon>ResetPasswordView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResetPasswordView.cs" />
+    <Compile Include="Views\StatusView.xib.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusView.xib.designer.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreditCardAddView.cs" />
+    <Compile Include="Views\CreditCardAddView.designer.cs">
+      <DependentUpon>CreditCardAddView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreditCardsListView.cs" />
+    <Compile Include="Views\CreditCardsListView.designer.cs">
+      <DependentUpon>CreditCardsListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
+    <Compile Include="Controls\CreditCardButton.cs" />
+    <Compile Include="Views\BookPaymentSettingsView.cs" />
+    <Compile Include="Views\BookPaymentSettingsView.designer.cs">
+      <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextFieldWithArrow.cs" />
+    <Compile Include="Controls\NavigateTextField.cs" />
+    <Compile Include="Controls\TipButtons.cs" />
+    <Compile Include="Controls\SegmentedGradientButton.cs" />
+    <Compile Include="Controls\TextView.cs" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
         <Policies>
-          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileName" />
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileName" />
         </Policies>
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Helper\" />
-    <Folder Include="fr.lproj\" />
     <Folder Include="en.lproj\" />
     <Folder Include="Localization\" />
     <Folder Include="Locations\" />
@@ -353,12 +406,13 @@
     <Folder Include="Animations\" />
     <Folder Include="Converters\" />
     <Folder Include="Navigation\" />
+    <Folder Include="Assets\Tutorial\" />
+    <Folder Include="Assets\CreditCard\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Order\ConfirmationView.xib" />
-    <InterfaceDefinition Include="Order\StatusView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -371,10 +425,19 @@
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
+    <InterfaceDefinition Include="Views\TutorialView.xib" />
+    <InterfaceDefinition Include="Views\RideSettingsView.xib" />
+    <InterfaceDefinition Include="Views\CreateAccountView.xib" />
+    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
+    <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
+    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
+    <InterfaceDefinition Include="Views\StatusView.xib" />
+    <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
+    <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
+    <InterfaceDefinition Include="Views\BookPaymentSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
-    <Content Include="fr.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
     <Content Include="app.png" />
     <Content Include="Default.png" />
@@ -433,12 +496,6 @@
     <Content Include="Assets\Logo%402x.png" />
     <Content Include="Assets\navBar.png" />
     <Content Include="Assets\navBar%402x.png" />
-    <Content Include="Assets\taxi-label.png" />
-    <Content Include="Assets\taxi-label%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Lg.png" />
-    <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Sm.png" />
-    <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
     <Content Include="Assets\Social\FB\fbIcon.png" />
     <Content Include="Assets\Social\FB\fbIcon%402x.png" />
     <Content Include="Assets\Social\FB\login.png" />
@@ -453,8 +510,6 @@
     <Content Include="Assets\Social\TW\twIcon%402x.png" />
     <Content Include="Assets\server.png" />
     <Content Include="Assets\server%402x.png" />
-    <Content Include="Assets\Cells\plusSign.png" />
-    <Content Include="Assets\Cells\plusSign%402x.png" />
     <Content Include="Assets\Cells\rightArrow.png" />
     <Content Include="Assets\Cells\rightArrow%402x.png" />
     <Content Include="Assets\VerticalButtonBar\wheel.png" />
@@ -467,10 +522,6 @@
     <Content Include="Assets\VerticalButtonBar\settings%402x.png" />
     <Content Include="Assets\VerticalButtonBar\locations.png" />
     <Content Include="Assets\VerticalButtonBar\locations%402x.png" />
-    <Content Include="Assets\Cells\addNewBackground.png" />
-    <Content Include="Assets\Cells\addNewBackground%402x.png" />
-    <Content Include="Assets\Cells\addNewBackgroundSelected.png" />
-    <Content Include="Assets\Cells\addNewBackgroundSelected%402x.png" />
     <Content Include="Assets\gpsRefreshIcon.png" />
     <Content Include="Assets\gpsRefreshIcon%402x.png" />
     <Content Include="Assets\bookLaterIcon.png" />
@@ -485,16 +536,8 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Assets\pin.png" />
-    <Content Include="Assets\pin%402x.png" />
-    <Content Include="Assets\pin_selected.png" />
-    <Content Include="Assets\pin_selected%402x.png" />
-    <Content Include="Assets\pin_green.png" />
-    <Content Include="Assets\pin_red.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\cancel%402x.png" />
-    <Content Include="Assets\pin_green%402x.png" />
-    <Content Include="Assets\pin_red%402x.png" />
     <Content Include="Default-568h%402x.png" />
     <Content Include="Assets\Rating\ecstatic.png" />
     <Content Include="Assets\Rating\ecstatic%402x.png" />
@@ -516,6 +559,67 @@
     <Content Include="Assets\Rating\unhappy%402x.png" />
     <Content Include="Assets\Rating\unhappy-selected.png" />
     <Content Include="Assets\Rating\unhappy-selected%402x.png" />
+    <Content Include="Assets\pin_cab.png" />
+    <Content Include="Assets\pin_cab%402x.png" />
+    <Content Include="Assets\pin_destination.png" />
+    <Content Include="Assets\pin_destination%402x.png" />
+    <Content Include="Assets\pin_hail.png" />
+    <Content Include="Assets\pin_hail%402x.png" />
+    <Content Include="Assets\flag.png" />
+    <Content Include="Assets\flag%402x.png" />
+    <Content Include="Assets\hail.png" />
+    <Content Include="Assets\hail%402x.png" />
+    <Content Include="Assets\flag_selected.png" />
+    <Content Include="Assets\flag_selected%402x.png" />
+    <Content Include="Assets\hail_selected.png" />
+    <Content Include="Assets\hail_selected%402x.png" />
+    <Content Include="Assets\closeButton.png" />
+    <Content Include="Assets\closeButton%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_background.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08%402x.png" />
+    <Content Include="Assets\CreditCard\amex.png" />
+    <Content Include="Assets\CreditCard\amex%402x.png" />
+    <Content Include="Assets\CreditCard\mastercard.png" />
+    <Content Include="Assets\CreditCard\mastercard%402x.png" />
+    <Content Include="Assets\CreditCard\visa.png" />
+    <Content Include="Assets\CreditCard\visa%402x.png" />
+    <Content Include="Assets\CreditCard\delete_card_btn.png" />
+    <Content Include="Assets\CreditCard\delete_card_btn%402x.png" />
+    <Content Include="Assets\Cells\add_btn.png" />
+    <Content Include="Assets\Cells\add_btn%402x.png" />
+    <Content Include="Assets\driverInfosBackGrey.png" />
+    <Content Include="Assets\driverInfosBackLightGrey.png" />
+    <Content Include="Assets\grip%402x.png" />
+    <Content Include="Assets\grip.png" />
+    <Content Include="Assets\phone.png" />
+    <Content Include="Assets\phone%402x.png" />
+    <Content Include="Assets\favorites.png" />
+    <Content Include="Assets\favorites%402x.png" />
+    <Content Include="Assets\history.png" />
+    <Content Include="Assets\history%402x.png" />
+    <Content Include="Assets\address.png" />
+    <Content Include="Assets\address%402x.png" />
+    <Content Include="Assets\Search\SearchPlace.png" />
+    <Content Include="Assets\Search\SearchPlace%402x.png" />
+    <Content Include="Assets\Search\cancel.png" />
+    <Content Include="Assets\Search\cancel%402x.png" />
+    <Content Include="Assets\CreditCard\visa_electron.png" />
+    <Content Include="Assets\CreditCard\visa_electron%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
@@ -554,5 +658,11 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Assets\AppFont_Regular.otf" />
+    <BundleResource Include="Assets\AppFont_Bold.otf" />
+    <BundleResource Include="Assets\AppFont_Italic.otf" />
+    <BundleResource Include="Assets\AppFont_Medium.otf" />
   </ItemGroup>
 </Project>

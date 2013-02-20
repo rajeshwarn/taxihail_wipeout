@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             throw new System.NotImplementedException();
         }
 
+        #region IAuthServiceClient implementation
         public AuthenticationData Authenticate(string email, string password)
         {
             var response = Client.Get<CmtAuthResponse>(string.Format("/auth?emailAddress={0}&password={1}", email, password));
@@ -29,5 +30,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
                            AccountId = response.AccountId
                        };
         }
+
+
+
+        public AuthenticationData AuthenticateTwitter (string twitterId)
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        public AuthenticationData AuthenticateFacebook (string twitterId)
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        #endregion
     }
 }

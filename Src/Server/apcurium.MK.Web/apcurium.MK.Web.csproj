@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Web</RootNamespace>
     <AssemblyName>apcurium.MK.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -26,6 +26,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +42,7 @@
     </DeployIisAppPath>
     <PackageAsSingleFile>false</PackageAsSingleFile>
     <PublishDatabases>false</PublishDatabases>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,6 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxMin">
@@ -60,8 +63,13 @@
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.3.0.5\lib\dotless.Core.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -77,71 +85,105 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp">
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Android, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Apple, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Apple.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Blackberry">
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Blackberry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Common">
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.Windows">
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PushSharp.WindowsPhone">
+      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.26.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.SqlServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.25\lib\net35\ServiceStack.Redis.dll</HintPath>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\packages\ServiceStack.Redis.3.9.29\lib\net35\ServiceStack.Redis.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.27.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.29\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\RulesController.js" />
     <Content Include="admin\controllers\DefaultAddressesController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
     <Content Include="admin\localization\ManageExclusions.json" />
@@ -153,6 +195,10 @@
     <Content Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
+    <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\RuleItemView.js" />
+    <Content Include="admin\views\ManageRulesView.js" />
+    <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
@@ -189,10 +235,21 @@
     <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
     <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\css\jquery.jreject.css" />
     <Content Include="assets\img\facebook-button.jpg" />
+    <Content Include="assets\img\spacer.png" />
+    <Content Include="assets\img\jreject\background_browser.gif" />
+    <Content Include="assets\img\jreject\browser_chrome.gif" />
+    <Content Include="assets\img\jreject\browser_firefox.gif" />
+    <Content Include="assets\img\jreject\browser_gcf.gif" />
+    <Content Include="assets\img\jreject\browser_konqueror.gif" />
+    <Content Include="assets\img\jreject\browser_msie.gif" />
+    <Content Include="assets\img\jreject\browser_opera.gif" />
+    <Content Include="assets\img\jreject\browser_safari.gif" />
+    <Content Include="assets\js\jquery.jreject.min.js" />
     <Content Include="assets\js\json2.js" />
+    <Content Include="assets\js\localstorage-polyfill.js" />
     <Content Include="assets\js\modernizr.min.js" />
-    <Content Include="assets\js\persist-min.js" />
     <Content Include="assets\bootstrap\js\tests\index.html" />
     <Content Include="assets\bootstrap\js\tests\phantom.js" />
     <Content Include="assets\bootstrap\js\tests\server.js" />
@@ -282,6 +339,14 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\CasinoTaxi\img\logo.png" />
+    <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
+    <Content Include="themes\DispatchTaxi\img\location.png" />
+    <Content Include="themes\DispatchTaxi\img\logo.png" />
+    <Content Include="themes\DiamondCab\img\logo.png" />
+    <Content Include="themes\FreedomTaxi\img\logo.png" />
+    <Content Include="themes\MississaugaTaxi\img\logo.png" />
+    <Content Include="themes\Taxi303\img\logo.png" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
@@ -299,6 +364,11 @@
     <Content Include="themes\BostonCab\img\header-bg.png" />
     <Content Include="themes\BostonCab\img\location.png" />
     <Content Include="themes\BostonCab\img\logo.png" />
+    <Content Include="themes\BarrieTaxi\img\cancel-icon.png" />
+    <Content Include="themes\BarrieTaxi\img\location.png" />
+    <Content Include="themes\BarrieTaxi\img\logo.png" />
+    <Content Include="themes\FlashCab\img\logo.png" />
+    <Content Include="themes\Nawlins\img\logo.png" />
     <Content Include="themes\Taxiworld\img\header-bg.png" />
     <Content Include="themes\Taxiworld\img\logo.png" />
     <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
@@ -372,7 +442,9 @@
     <Content Include="localization\OrderItem.json" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
-    <Content Include="admin\templates\ManageTariffs.handlebars" />
+    <Content Include="admin\templates\ManageTariffs.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\TariffItem.handlebars" />
     <Content Include="themes\Taxiworld\less\combined-responsive.less" />
     <Content Include="themes\Taxiworld\less\combined.less" />
@@ -380,6 +452,48 @@
     <Content Include="admin\templates\SettingsItem.handlebars" />
     <Content Include="themes\TaxiHail\less\variables.less" />
     <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
+    <Content Include="themes\BarrieTaxi\less\combined-responsive.less" />
+    <Content Include="themes\BarrieTaxi\less\combined.less" />
+    <Content Include="themes\BarrieTaxi\less\style.less" />
+    <Content Include="themes\BarrieTaxi\less\variables.less" />
+    <Content Include="themes\Taxi303\less\combined-responsive.less" />
+    <Content Include="themes\Taxi303\less\combined.less" />
+    <Content Include="themes\Taxi303\less\style.less" />
+    <Content Include="themes\Taxi303\less\variables.less" />
+    <Content Include="themes\FlashCab\less\combined-responsive.less" />
+    <Content Include="themes\FlashCab\less\combined.less" />
+    <Content Include="themes\FlashCab\less\style.less" />
+    <Content Include="themes\FlashCab\less\variables.less" />
+    <Content Include="themes\Nawlins\less\combined-responsive.less" />
+    <Content Include="themes\Nawlins\less\combined.less" />
+    <Content Include="themes\Nawlins\less\style.less" />
+    <Content Include="themes\Nawlins\less\variables.less" />
+    <Content Include="themes\FreedomTaxi\less\combined-responsive.less" />
+    <Content Include="themes\FreedomTaxi\less\combined.less" />
+    <Content Include="themes\FreedomTaxi\less\style.less" />
+    <Content Include="themes\FreedomTaxi\less\variables.less" />
+    <Content Include="themes\MississaugaTaxi\less\combined-responsive.less" />
+    <Content Include="themes\MississaugaTaxi\less\combined.less" />
+    <Content Include="themes\MississaugaTaxi\less\style.less" />
+    <Content Include="themes\MississaugaTaxi\less\variables.less" />
+    <Content Include="themes\DiamondCab\less\combined-responsive.less" />
+    <Content Include="themes\DiamondCab\less\combined.less" />
+    <Content Include="themes\DiamondCab\less\style.less" />
+    <Content Include="themes\DiamondCab\less\variables.less" />
+    <Content Include="admin\templates\ConfirmEmail.handlebars" />
+    <Content Include="admin\localization\ConfirmEmail.json" />
+    <Content Include="admin\templates\ManageRules.handlebars" />
+    <Content Include="admin\localization\ManageRules.json" />
+    <Content Include="admin\templates\EditRule.handlebars" />
+    <Content Include="admin\localization\EditRule.json" />
+    <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
+    <Content Include="themes\CasinoTaxi\less\combined.less" />
+    <Content Include="themes\CasinoTaxi\less\style.less" />
+    <Content Include="themes\CasinoTaxi\less\variables.less" />
+    <Content Include="themes\DispatchTaxi\less\combined-responsive.less" />
+    <Content Include="themes\DispatchTaxi\less\combined.less" />
+    <Content Include="themes\DispatchTaxi\less\style.less" />
+    <Content Include="themes\DispatchTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -466,6 +580,10 @@
     <ProjectReference Include="..\MK.Booking.Maps\MK.Booking.Maps.csproj">
       <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
       <Name>MK.Booking.Maps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
+      <Project>{20aea350-ad91-4053-a8b5-582e13ed43aa}</Project>
+      <Name>MK.Booking.Commands</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
       <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>

@@ -18,6 +18,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Put<string>(req, request);
         }
 
+        public void ConfirmAccount(AdminConfirmAccountRequest request)
+        {
+            var req = string.Format("/account/adminconfirm");
+            Client.Put<string>(req, request);
+        }
+
         public IList<Address> GetDefaultFavoriteAddresses()
         {
             var req = string.Format("/admin/addresses");

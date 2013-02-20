@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private int _toastDuration = 2; //seconds
 
 		private double _animationDuration = 2;
-		private float _minimumToastHeight = 50f;
+		private float _minimumToastHeight = 30f;
 
 
 		public ToastMessage ( UIView owner, string msg ) : base ()
@@ -32,10 +32,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void Initialize()
 		{
-			this.BackgroundColor = UIColor.FromRGBA( 0, 0, 0, 128 );
-            this.Layer.CornerRadius = 3; //AppStyle.ButtonCornerRadius;
+			this.BackgroundColor = UIColor.FromRGBA( 0, 0, 0, 100 );
+            this.Layer.CornerRadius = 6; //AppStyle.ButtonCornerRadius;
 			this.Layer.BorderWidth = 1;
-			this.Layer.BorderColor = UIColor.FromRGBA(0,0,0,192).CGColor;
+			this.Layer.BorderColor = UIColor.FromRGBA(0,0,0,110).CGColor;
 
 			var screenSize = UIScreen.MainScreen.Bounds;
 			var textSize = ((NSString)_msg).StringSize(AppStyle.NormalTextFont, screenSize.Width - ((_sidePadding + _interiorPadding) *2), UILineBreakMode.TailTruncation );

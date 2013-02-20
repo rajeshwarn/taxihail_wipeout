@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
+using System.Linq;
 using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -10,6 +11,8 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 
 namespace DatabaseInitializer
@@ -23,9 +26,14 @@ namespace DatabaseInitializer
             new apcurium.MK.Common.Module().Init(container);
             new apcurium.MK.Booking.Module().Init(container);
             new apcurium.MK.Booking.IBS.Module().Init(container);
+            new apcurium.MK.Booking.Api.Module().Init(container);
+            new apcurium.MK.Booking.Google.Module().Init(container);
+            new apcurium.MK.Booking.Maps.Module().Init(container);
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
+            container.RegisterType(typeof(IEventsMigrator), typeof(AddressEventsMigrator), "AdresseEventsMigrator", null);
+            container.RegisterType(typeof(IEventsMigrator), typeof(OrderStatusEventsMigrator), "OrderStatusEventsMigrator", null); 
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
@@ -76,8 +84,13 @@ namespace DatabaseInitializer
         private static void RegisterEventHandlers(IUnityContainer unityContainer)
         {
             var eventHandlerRegistry = unityContainer.Resolve<IEventHandlerRegistry>();
+            // Filter out Integration Event Handlers
+            // They should never replay events
+            var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
+                                              .Where(x=> !(x is IIntegrationEventHandler))
+                                              .ToArray();
 
-            foreach (var eventHandler in unityContainer.ResolveAll<IEventHandler>())
+            foreach (var eventHandler in eventHandlers)
             {
                 eventHandlerRegistry.Register(eventHandler);
             }

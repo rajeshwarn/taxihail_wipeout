@@ -45,14 +45,17 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             this.sut.Handle(new FavoriteAddressAdded
             {
                 SourceId = accountId,
-                AddressId = addressId,
-                FriendlyName = "Chez François",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                {
+                    Id = addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -80,14 +83,17 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             this.sut.Handle(new DefaultFavoriteAddressAdded
             {
-                AddressId = addressId,
-                FriendlyName = "Chez François",
-                Apartment = "3938",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                   {
+                       Id = addressId,
+                       FriendlyName = "Chez François",
+                       Apartment = "3938",
+                       FullAddress = "1234 rue Saint-Hubert",
+                       RingCode = "3131",
+                       BuildingName = "Hôtel de Ville",
+                       Latitude = 45.515065,
+                       Longitude = -73.558064
+                   }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -114,14 +120,17 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             this.sut.Handle(new PopularAddressAdded
             {
-                AddressId = addressId,
-                FriendlyName = "Chez François popular",
-                Apartment = "3938",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                             {
+                                 Id = addressId,
+                                 FriendlyName = "Chez François popular",
+                                 Apartment = "3938",
+                                 FullAddress = "1234 rue Saint-Hubert",
+                                 RingCode = "3131",
+                                 BuildingName = "Hôtel de Ville",
+                                 Latitude = 45.515065,
+                                 Longitude = -73.558064
+                             }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -158,36 +167,45 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             _companyDefaultAddressId = Guid.NewGuid();
             sut.Handle(new FavoriteAddressAdded
                            {
-                               AddressId = _addressId,
                                SourceId = _accountId,
-                               FriendlyName = "Chez François",
-                               Apartment = Guid.NewGuid().ToString(),
-                               FullAddress = "1234 rue Saint-Hubert",
-                               RingCode = "3131",
-                               Latitude = 45.515065,
-                               Longitude = -73.558064
+                               Address = new Address
+                                {
+                                    Id = _addressId,
+                                    FriendlyName = "Chez François",
+                                    Apartment = Guid.NewGuid().ToString(),
+                                    FullAddress = "1234 rue Saint-Hubert",
+                                    RingCode = "3131",
+                                    Latitude = 45.515065,
+                                    Longitude = -73.558064
+                                }
                            });
 
             sut.Handle(new DefaultFavoriteAddressAdded
             {
-                AddressId = _addressId,
-                FriendlyName = "Chez François",
-                Apartment = Guid.NewGuid().ToString(),
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                {
+                    Id = _addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = Guid.NewGuid().ToString(),
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
             });
 
             sut.Handle(new PopularAddressAdded
             {
-                AddressId = _popularAddressId,
-                FriendlyName = "Chez François popular",
-                Apartment = Guid.NewGuid().ToString(),
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                             {
+                                 Id = _popularAddressId,
+                                 FriendlyName = "Chez François popular",
+                                 Apartment = Guid.NewGuid().ToString(),
+                                 FullAddress = "1234 rue Saint-Hubert",
+                                 RingCode = "3131",
+                                 Latitude = 45.515065,
+                                 Longitude = -73.558064
+                             }
             });
 
         }
@@ -244,10 +262,13 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             this.sut.Handle(new FavoriteAddressUpdated
                                 {
                                     SourceId = _accountId,
-                                    AddressId = _addressId,
-                                    FriendlyName = "Chez Costo !",
-                                    FullAddress = "25 rue Berri Montreal",
-                                    BuildingName = "Hôtel de Ville",
+                                    Address = new Address
+               {
+                   Id = _addressId,
+                   FriendlyName = "Chez Costo !",
+                   FullAddress = "25 rue Berri Montreal",
+                   BuildingName = "Hôtel de Ville",
+               }
                                 });
 
             using (var context = new BookingDbContext(dbName))
@@ -270,10 +291,13 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
         {
             this.sut.Handle(new DefaultFavoriteAddressUpdated
             {
-                AddressId = _addressId,
-                FriendlyName = "Chez Costo2 !",
-                FullAddress = "25 rue Berri Montreal",
-                BuildingName = "Hôtel de Ville",
+                Address = new Address
+                {
+                    Id = _addressId,
+                    FriendlyName = "Chez Costo2 !",
+                    FullAddress = "25 rue Berri Montreal",
+                    BuildingName = "Hôtel de Ville",
+                }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -296,10 +320,13 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
         {
             this.sut.Handle(new PopularAddressUpdated
             {
-                AddressId = _popularAddressId,
-                FriendlyName = "Chez Costo2 popular !",
-                FullAddress = "25 rue Berri Montreal",
-                BuildingName = "Hôtel de Ville",
+                Address = new Address
+                             {
+                                 Id = _popularAddressId,
+                                FriendlyName = "Chez Costo2 popular !",
+                                FullAddress = "25 rue Berri Montreal",
+                                BuildingName = "Hôtel de Ville",
+                             }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -339,14 +366,18 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             this.sut.Handle(new FavoriteAddressAdded()
                                 {
                                     SourceId = accountId,
-                                    Apartment = "3939",
-                                    RingCode = "3131",
-                                    FriendlyName = "La Boite à Jojo",
-                                    BuildingName = "Hôtel de Ville",
-                                    FullAddress = address,
-                                    Longitude = -73.558064,
-                                    Latitude = 45.515065,
-                                    AddressId = addressId
+                                    Address = new Address
+               {
+                   Id = addressId,
+                   Apartment = "3939",
+                   RingCode = "3131",
+                   FriendlyName = "La Boite à Jojo",
+                   BuildingName = "Hôtel de Ville",
+                   FullAddress = address,
+                   Longitude = -73.558064,
+                   Latitude = 45.515065
+               }
+
                                 });
 
             using (var context = new BookingDbContext(dbName))

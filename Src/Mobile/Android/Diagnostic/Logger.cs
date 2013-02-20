@@ -134,6 +134,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             try
             {
                
+                if (File.Exists (LogFilename)) {
+                    var f = new FileInfo (LogFilename);
+                    var lenKb = f.Length / 1024;
+                    if (lenKb > 375) {
+                        File.Delete (LogFilename);
+                    }
+                }
+
                 using (var fs = new FileStream(LogFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     using (var w = new StreamWriter(fs))

@@ -20,7 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         string PhoneNumberDisplay(int providerId);
         string DefaultServiceUrl{ get; }
 
-        bool TwitterEnabled{ get; }        
+        bool TutorialEnabled{ get; }        
+
+        bool TwitterEnabled{ get; }       
+
+
         string TwitterConsumerKey{ get; }
         string TwitterCallback{ get; }
         string TwitterConsumerSecret{ get; }
@@ -34,6 +38,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         string SupportEmail { get; }
 
         bool RatingEnabled { get; }
+
+        bool IsCMT { get; }
+        
+         bool StreetNumberScreenEnabled { get; }
+
+
+        bool PayByCreditCardEnabled { get; }
 	}
 }
 

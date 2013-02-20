@@ -35,7 +35,7 @@ namespace apcurium.CMT.Web.Tests
         public void when_registering_a_new_account()
         {
             var sut = new CmtAccountServiceClient(BaseUrl, null);
-            var newAccount = new RegisterAccount { Phone = "5146543024", Email = GetTempEmail(),FirstName = "FirstName Test",LastName = "LastName Test", Password = "password" };
+            var newAccount = new RegisterAccount { Phone = "5146543024", Email = GetTempEmail(),FirstName = "Matthieu",LastName = "Guyonnet-Duluc", Password = "ApAssword" };
             sut.RegisterAccount(newAccount);
 
             //Assert.Throws<WebServiceException>(() => new AuthServiceClient(BaseUrl, SessionId).Authenticate(newAccount.Email, newAccount.Password));

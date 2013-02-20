@@ -9,7 +9,6 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
-
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Drawing;
@@ -26,6 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register ("TouchMap")]
     public class TouchMap : MKMapView
     {
+        private UIImageView _pickupCenterPin;
+        private UIImageView _dropoffCenterPin;
+
         private TouchGesture _gesture;
         private IMvxCommand _mapMoved;
         private Address _pickup;
@@ -62,23 +64,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
+
+
         private void Initialize()
         {   
-            _cancelToken = new CancellationTokenSource();
+           /// _cancelToken = new CancellationTokenSource();
+
+            ShowsUserLocation = true;
+            if (_pickupCenterPin == null) {
+                _pickupCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Pickup)));
+                _pickupCenterPin.BackgroundColor = UIColor.Clear;
+                _pickupCenterPin.ContentMode = UIViewContentMode.Center;
+                AddSubview(_pickupCenterPin);
+                _pickupCenterPin.Hidden = true;                
+            }
+            if (_dropoffCenterPin == null) {
+                _dropoffCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Destination)));
+                _dropoffCenterPin.BackgroundColor = UIColor.Clear;
+                _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
+                AddSubview(_dropoffCenterPin);
+                
+                _dropoffCenterPin.Hidden = true;
+            }
+        }
+
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
 
 
-            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
-                if (t.IsCompleted && !t.IsCanceled)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
-                        {
-                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
-                        }
-                    });
-                }
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
+            var p = this.ConvertCoordinate(this.CenterCoordinate,this);
+            _pickupCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57); //Image is 42 x 57           
+            _dropoffCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
         }
 
         public void OnRegionChanged()
@@ -146,11 +164,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             t.Start();
         }
 
-        void HandleTouchBegin(object sender, EventArgs e)
+        void HandleTouchBegin (object sender, EventArgs e)
         {
             CancelMoveMap();
         }
-
+               
         public IMvxCommand MapMoved
         {
             get{ return _mapMoved;} 
@@ -163,9 +181,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             } 
         }
-        
-        private MKAnnotation _pickupPin;
-        private MKAnnotation _dropoffPin;
+
+        private AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode {
+            get {
+                return _addressSelectionMode;
+            }
+            set {
+                _addressSelectionMode = value;
+                if(_addressSelectionMode == Data.AddressSelectionMode.PickupSelection)
+                {
+                    _pickupCenterPin.Hidden = false;
+                    if(_pickupPin != null) RemoveAnnotation(_pickupPin);
+                    _pickupPin = null;
+
+                    ShowDropOffPin(Dropoff);
+                    SetNeedsDisplay();
+                }
+                else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
+                {
+                    _dropoffCenterPin.Hidden = false;
+                    if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
+                    _dropoffPin = null;
+
+                    ShowPickupPin(Pickup);
+                    SetNeedsDisplay();
+                }
+                else
+                {
+                    ShowDropOffPin(Dropoff);
+                    ShowPickupPin(Pickup);
+                    SetNeedsDisplay();
+                }
+            }
+        }
+
+        private AddressAnnotation _pickupPin;
+        private AddressAnnotation _dropoffPin;
         
         public Address Pickup
         {
@@ -173,21 +225,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _pickup = value;
-                if (_pickupPin != null)
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
                 {
-                    RemoveAnnotation(_pickupPin);
-                    _pickupPin = null;
+                    ShowPickupPin(value);
                 }
-                
-                
-                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
-                {
-                    var coord = _pickup.GetCoordinate();
-                    _pickupPin = new AddressAnnotation(coord, AddressAnnotationType.Pickup, Resources.PickupMapTitle, _pickup.Display());
-                    AddAnnotation(_pickupPin);
-                }
-                
-                SetNeedsDisplay();
             }
         }
         
@@ -197,24 +238,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _dropoff = value;
-                if (_dropoffPin != null)
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
                 {
-                    RemoveAnnotation(_dropoffPin);
-                    _dropoffPin = null;
+                    ShowDropOffPin(value);
                 }
-                
-                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
-                {
-                    var coord = _dropoff.GetCoordinate();
-                    _dropoffPin = new AddressAnnotation(coord, AddressAnnotationType.Destination, Resources.DestinationMapTitle, _dropoff.Display());
-                    AddAnnotation(_dropoffPin);
-                }
-                                                   
-                SetNeedsDisplay();
             }
         }
         
-        private bool _isDropoffActive;
         private IEnumerable<CoordinateViewModel> _center;
 
         public IEnumerable<CoordinateViewModel> MapCenter
@@ -358,6 +388,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
             
+        }
+
+        private void ShowDropOffPin (Address address)
+        {
+            if (_dropoffPin != null) {
+                RemoveAnnotation (_dropoffPin);
+                _dropoffPin = null;
+            }
+
+            if(address == null)
+                return;
+            var coords = address.GetCoordinate();
+            if (coords.Latitude != 0 && coords.Longitude != 0) {
+                _dropoffPin = new AddressAnnotation (coords, AddressAnnotationType.Destination, Resources.DestinationMapTitle, address.Display ());
+                AddAnnotation (_dropoffPin);
+            }
+            if( _dropoffCenterPin!= null) _dropoffCenterPin.Hidden = true;
+
+        }
+
+        private void ShowPickupPin (Address address)
+        {
+            if (_pickupPin != null) {
+                RemoveAnnotation (_pickupPin);
+                _pickupPin = null;
+            }
+
+            if(address == null)
+                return;
+            var coords = address.GetCoordinate();
+            if (coords.Latitude != 0 && coords.Longitude != 0) {
+                _pickupPin = new AddressAnnotation (coords, AddressAnnotationType.Pickup, Resources.PickupMapTitle, address.Display ());
+                AddAnnotation (_pickupPin);
+            }
+            if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
         }
     }
 }

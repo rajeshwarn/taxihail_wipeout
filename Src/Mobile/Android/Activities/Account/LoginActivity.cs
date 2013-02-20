@@ -23,11 +23,13 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
 using System.Collections.Generic;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Style;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, LaunchMode=Android.Content.PM.LaunchMode.SingleInstance)]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait )]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
         public static LoginActivity TopInstance{get;set;}
@@ -55,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		public LoginActivity ()
 		{
 			TopInstance = this;
+
 		}
 
         protected override int ViewTitleResourceId
@@ -65,6 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {            
 
+
             SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
@@ -72,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
+				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
             }
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
@@ -84,18 +88,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
             else
             {
-                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Invisible;
             }
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
             {
-				FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }           
+
+            var linkResetPassword = FindViewById<UnderlineTextView>( Resource.Id.ForgotPasswordButton );
+
+            linkResetPassword.SetTextColor( StyleManager.Current.NavigationTitleColor.ConvertToColor() );
 
 #if DEBUG
             FindViewById<EditText>(Resource.Id.Username).Text = "john@taxihail.com";
             FindViewById<EditText>(Resource.Id.Password).Text = "password";            
 #endif 
+
         }
 
         private void HideProgressDialog()
@@ -162,6 +171,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             base.OnDestroy();           
             GC.Collect();
         }
+
+		public override void Finish ()
+		{
+			base.Finish ();
+		}
+
+		public override void FinishActivity (int requestCode)
+		{
+			base.FinishActivity (requestCode);
+		}
+
+		public override void FinishFromChild (Activity child)
+		{
+			base.FinishFromChild (child);
+		}
+
+
 
     }
 }

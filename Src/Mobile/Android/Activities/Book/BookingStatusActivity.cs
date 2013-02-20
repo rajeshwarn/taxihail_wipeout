@@ -25,11 +25,12 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class BookingStatusActivity : MvxBindingMapActivityView<BookingStatusViewModel>
+	public class BookingStatusActivity : BaseMapActivity<BookingStatusViewModel>
     {
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
@@ -61,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_BookingStatus);
+			ViewModel.Load();
         }
 
         protected override void OnResume()
@@ -78,11 +80,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _isInit = true;
 
-            var map = FindViewById<MapView>(Resource.Id.mapStatus);
+			var map = FindViewById<TouchMap>(Resource.Id.mapStatus);
             map.SetBuiltInZoomControls(false);
             map.Clickable = true;
             map.Traffic = false;
             map.Satellite = false;
+
+			map.AddressSelectionMode = Data.AddressSelectionMode.None;
 
         }
     }

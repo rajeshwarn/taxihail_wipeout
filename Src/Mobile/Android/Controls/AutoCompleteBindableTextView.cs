@@ -5,6 +5,7 @@ using Android.Text;
 using Android.Util;
 using Android.Widget;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -30,25 +31,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Init()
         {
-            var subsciption = Observable.FromEvent<TextChangedEventArgs>(
-           ev => this.TextChanged += (sender2, e2) => { ev(e2); },
-           ev => this.TextChanged -= (sender3, e3) => { ev(e3); });
+            
 
-            subsciption.Throttle(TimeSpan.FromMilliseconds(700))
-            .Subscribe(ExecuteCommand);
+            
         }
 
-
-
-        private void ExecuteCommand(TextChangedEventArgs textChangedEvent)
+        private IDisposable _subscription;
+        private IDisposable _subscriptionTypeStart;
+        protected override void OnVisibilityChanged(Android.Views.View changedView, Android.Views.ViewStates visibility)
         {
-            if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
+            base.OnVisibilityChanged(changedView, visibility);
+
+            if (_subscription != null)
             {
-                TextChangedCommand.Execute(textChangedEvent.Text != null ? textChangedEvent.Text.ToString() : null);
+                _subscription.Dispose();
+                _subscription = null;
+            }
+
+            if (_subscriptionTypeStart != null)
+            {
+                _subscriptionTypeStart.Dispose();
+                _subscriptionTypeStart = null;
+            }
+
+            if (visibility == Android.Views.ViewStates.Visible)
+            {
+                var subsciption = Observable.FromEvent<TextChangedEventArgs>(
+                            ev => this.TextChanged += (sender2, e2) => { ev(e2); },
+                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(x=>x.Text.ToString());
+
+                _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(700)).Subscribe(ExecuteCommand);
+                _subscriptionTypeStart = subsciption.Subscribe(_ =>
+                                                                   {
+                                                                       if (IsAddressSearching)
+                                                                       {
+                                                                           OnTypeStarted.Execute();
+                                                                       }
+                                                                   });
+
+                if (Text.HasValue())
+                {
+                    ExecuteCommand(Text);
+                }
             }
         }
 
+		private void ExecuteCommand(string text)
+		{
+            if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
+            {
+                TextChangedCommand.Execute(text);
+             }
+         }
+
         public IMvxCommand TextChangedCommand { get; set; }
+
+        public IMvxCommand OnTypeStarted { get; set; }
+
+        public bool IsAddressSearching { get; set; }
 
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using RestSharp.Deserializers;
 using Microsoft.Practices.ServiceLocation;
 using RestSharp.Serializers;
+using ServiceStack.Text;
 
 namespace TaxiMobileApp.Lib.GoogleServices
 {

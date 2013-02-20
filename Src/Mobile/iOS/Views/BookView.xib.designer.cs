@@ -15,22 +15,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.GradientButton cancelBtn { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel pickupDtaeLabel { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel pickupDateLabel { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupActivationButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.GradientButton pickupActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffActivationButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.GradientButton dropoffActivationButton { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
@@ -64,16 +58,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (cancelBtn != null) {
 				cancelBtn.Dispose ();
 				cancelBtn = null;
-			}
-
-			if (pickupDtaeLabel != null) {
-				pickupDtaeLabel.Dispose ();
-				pickupDtaeLabel = null;
-			}
-
-			if (pickupDateLabel != null) {
-				pickupDateLabel.Dispose ();
-				pickupDateLabel = null;
 			}
 
 			if (navBar != null) {

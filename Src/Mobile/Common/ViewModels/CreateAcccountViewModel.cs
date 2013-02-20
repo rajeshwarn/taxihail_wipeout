@@ -1,4 +1,5 @@
 using System;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using Cirrious.MvvmCross.Commands;
@@ -39,19 +40,20 @@ namespace apcurium.MK.Booking.Mobile
 				return (false);
 		}
 
-		public MvxRelayCommand Cancel
+		public IMvxCommand Cancel
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {  Close();});
+                return GetCommand(() => { Close(); });
 			}
 		}
 
-		public MvxRelayCommand CreateAccount
+		public IMvxCommand CreateAccount
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 					
 					if (!IsEmail(Data.Email))
 					{
@@ -59,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile
 						return;
 					}
 					
-					bool hasEmail = Data.Password.HasValue() && ConfirmPassword.HasValue();
-					if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasEmail && !HasSocialInfo))
+					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
+                    if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
 						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountEmptyField"));
 						return;
@@ -74,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile
 					
 					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
 					{
-						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountInvalidPhone"));
+						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
 						return;
 					}
 					else

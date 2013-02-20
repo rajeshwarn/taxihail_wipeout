@@ -5,6 +5,8 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
@@ -12,22 +14,28 @@ namespace apcurium.MK.Booking.Domain
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
+        private double? _defaultTipAmount;
+        private double? _defaultTipPercent;
+        private int _creditCardCount;
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
-            base.Handles<AccountConfirmed>(OnAccountConfirmed);
-            base.Handles<AccountUpdated>(OnAccountUpdated);
+            base.Handles<AccountConfirmed>(NoAction);
+            base.Handles<AccountUpdated>(NoAction);
             base.Handles<FavoriteAddressAdded>(OnAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
             base.Handles<FavoriteAddressUpdated>(OnAddressUpdated);
-            base.Handles<AccountPasswordReset>(OnAccountPasswordReset);
-            base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
-            base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
-            base.Handles<AddressRemovedFromHistory>(OnAddressRemoved);
-            base.Handles<AdminRightGranted>(OnAdminRightGranted);
+            base.Handles<AccountPasswordReset>(NoAction);
+            base.Handles<BookingSettingsUpdated>(NoAction);
+            base.Handles<AccountPasswordUpdated>(NoAction);
+            base.Handles<AddressRemovedFromHistory>(NoAction);
+            base.Handles<AdminRightGranted>(NoAction);
+            base.Handles<CreditCardAdded>(OnCreditCardAdded);
+            base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
+            base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
+            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
-
-        
 
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -146,37 +154,23 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void AddFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressAdded
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude,
+                Address = address
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void UpdateFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressUpdated()
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude
+               Address = address
             });
         }
 
@@ -193,9 +187,83 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void RemoveAddressFromHistory(Guid addressId)
+        {
+            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
+        }
+
+
+        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits, string token)
+        {
+            this.Update(new CreditCardAdded
+            {
+                CreditCardCompany = creditCardCompany,
+                CreditCardId = creditCardId,
+                FriendlyName = friendlyName,
+                Last4Digits = last4Digits,
+                Token = token
+            });
+
+            // Automatically set first credit card as default
+            if (_creditCardCount == 1)
+            {
+                this.Update(new PaymentProfileUpdated
+                {
+                    DefaultCreditCard = creditCardId,
+                    DefaultTipAmount = _defaultTipAmount,
+                    DefaultTipPercent = _defaultTipPercent
+                });
+            }
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            this.Update(new CreditCardRemoved
+            {
+                CreditCardId = creditCardId
+            });
+        }
+
+        public void UpdatePaymentProfile(Guid? defaultCreditCard, double? defaultTipAmount, double? defaultTipPercent)
+        {
+            this.Update(new PaymentProfileUpdated
+            {
+                DefaultCreditCard = defaultCreditCard,
+                DefaultTipAmount = defaultTipAmount,
+                DefaultTipPercent = defaultTipPercent
+            });
+        }
+
         public void GrantAdminRight()
         {
             this.Update(new AdminRightGranted());
+        }
+
+        public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)
+        {
+            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing device token");
+            }
+
+            this.Update(new DeviceRegisteredForPushNotifications
+            {
+                 DeviceToken = deviceToken,
+                 Platform = platform,
+            });
+        }
+
+        public void UnregisterDeviceForPushNotifications(string deviceToken)
+        {
+            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing device token");
+            }
+
+            this.Update(new DeviceUnregisteredForPushNotifications
+            {
+                DeviceToken = deviceToken,
+            });
         }
 
         private void OnAccountRegistered(AccountRegistered @event)
@@ -203,19 +271,9 @@ namespace apcurium.MK.Booking.Domain
             _confirmationToken = @event.ConfirmationToken;
         }
 
-        private void OnAccountConfirmed(AccountConfirmed @event)
-        {
-
-        }
-
-        private void OnAccountUpdated(AccountUpdated @event)
-        {
-
-        }
-
         private void OnAddressAdded(FavoriteAddressAdded @event)
         {
-            _favoriteAddresses.Add(@event.AddressId);
+            _favoriteAddresses.Add(@event.Address.Id);
         }
 
         private void OnAddressRemoved(FavoriteAddressRemoved @event)
@@ -225,35 +283,34 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAddressUpdated(FavoriteAddressUpdated @event)
         {
-            if (!_favoriteAddresses.Contains(@event.AddressId))
+            if (!_favoriteAddresses.Contains(@event.Address.Id))
             {
-                _favoriteAddresses.Add(@event.AddressId);
+                _favoriteAddresses.Add(@event.Address.Id);
             }
 
         }
 
-        private void OnAccountPasswordReset(AccountPasswordReset obj)
+        private void OnCreditCardAdded(CreditCardAdded obj)
         {
-
-        }
-        
-        private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
-        {
+            _creditCardCount++;
         }
 
-        private void OnAccountPasswordUpdated(AccountPasswordUpdated obj)
+        private void OnCreditCardRemoved(CreditCardRemoved obj)
+        {
+            _creditCardCount = Math.Max(0, _creditCardCount - 1);
+        }
+
+        private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
+        {
+            this._defaultTipAmount = @event.DefaultTipAmount;
+            this._defaultTipPercent = @event.DefaultTipPercent;
+        }
+
+
+        private void NoAction<T>(T @event) where T : VersionedEvent
         {
             
         }
-        private void OnAddressRemoved(AddressRemovedFromHistory obj)
-        {
-
-        }
-
-        private void OnAdminRightGranted(AdminRightGranted obj)
-        {
-        }
-
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -273,11 +330,9 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void RemoveAddressFromHistory(Guid addressId)
+        public void ConfirmAccountByAdmin()
         {
-            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
+            this.Update(new AccountConfirmed());  
         }
-
-        
     }
 }

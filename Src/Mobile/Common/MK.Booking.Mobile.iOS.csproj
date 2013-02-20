@@ -40,6 +40,16 @@
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>CLIENT;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -126,8 +136,6 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
-    <Compile Include="Extensions\OrderExtension.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
@@ -175,7 +183,6 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
-    <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
@@ -191,7 +198,6 @@
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Messages\OrderRated.cs" />
-    <Compile Include="Models\OrderWithStatusModel.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
@@ -206,7 +212,35 @@
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
+    <Compile Include="ViewModels\AboutUsViewModel.cs" />
+    <Compile Include="Messages\OrderDeleted.cs" />
+    <Compile Include="ViewModels\TutorialViewModel.cs" />
+    <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
+    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
+    <Compile Include="Data\TutorialContent.cs" />
+    <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
+    <Compile Include="Data\AddressSelectionMode.cs" />
+    <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
+    <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
+    <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
+    <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
+    <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
+    <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
+    <Compile Include="Data\CreditCardInfos.cs" />
+    <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
+    <Compile Include="ViewModels\CreditCardViewModel.cs" />
+    <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
+    <Compile Include="Messages\RemoveCreditCard.cs" />
+    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="AppServices\IUseServiceClient.cs" />
+    <Compile Include="Infrastructure\IPushNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -241,6 +275,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Style\" />
@@ -248,8 +283,20 @@
     <Folder Include="Navigation\" />
     <Folder Include="ListViewStructure\" />
     <Folder Include="Messages\" />
+    <Folder Include="TutorialContent\" />
+    <Folder Include="ViewModels\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <None Include="Localization\Taxiworld.resx" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

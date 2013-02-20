@@ -22,9 +22,12 @@ using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
+
     public class Application
     {
         static void Main(string[] args)
@@ -43,25 +46,32 @@ namespace apcurium.MK.Booking.Mobile.Client
     public partial class AppDelegate : MvxApplicationDelegate, IMvxServiceConsumer<IMvxStartNavigation>
     {
         private bool _callbackFromFB = false;
-
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        private bool _isStarting = false;
+        public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
-            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+            _isStarting = true;
+            ThreadHelper.ExecuteInThread (() => MonoTouch.ObjCRuntime.Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 
-            ///UIApplication.CheckForIllegalCrossThreadCalls = false;
+            Background.Load (window, "Assets/background_full_nologo.png", false, 0, 0);          
 
-            Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
-
-			AppContext.Initialize(window);
-            
-			var setup = new Setup(this, new PhonePresenter( this, window ) );
+            AppContext.Initialize (window);
+            var @params = new Dictionary<string, string> ();
+            if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
+                NSDictionary remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
+                if(remoteNotificationParams.ContainsKey(new NSString("orderId")))
+                {
+                    @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
+                }
+            }
+			var setup = new Setup(this, new PhonePresenter( this, window ), @params );
             setup.Initialize();
 
 
             window.MakeKeyAndVisible();
 
+
 			var start = this.GetService<IMvxStartNavigation>();
-			start.Start();     
+			start.Start();
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 
@@ -78,6 +88,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
+            UIApplication.CheckForIllegalCrossThreadCalls=true;
+
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            if ( locService != null )
+            {
+                locService.Initialize ();
+            }
 
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
@@ -94,7 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<InstantMessagingService>();
 			JsConfig.RegisterTypeForAot<EmailType>();
 			JsConfig.RegisterTypeForAot<PhoneType>();
-			JsConfig.RegisterTypeForAot<Contact>();
+            JsConfig.RegisterTypeForAot<Contact>();
+			JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
 
 
 
@@ -119,25 +137,46 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (!_callbackFromFB)
             {    
-				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+
+				if( !_isStarting &&  AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
 				{
 					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+                    model.Reset ();
+                    if ( model.AddressSelectionMode != Data.AddressSelectionMode.PickupSelection )
+                    {
+                        model.ActivatePickup.Execute ();
+                    }
+                    model.Pickup.RequestCurrentLocationCommand.Execute ();
 				}
             }
             else
             {
                 _callbackFromFB = false;
             }           
+
+            _isStarting = false;
         }
 
+        public override void DidEnterBackground (UIApplication application)
+        {
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            if ( locService != null )
+            {
+                locService.Stop();
+            }
+
+
+            base.DidEnterBackground (application);
+
+        }
         public override void ReceiveMemoryWarning(UIApplication application)
         {
-            AppContext.Current.ReceiveMemoryWarning = true;
             Logger.LogMessage("ReceiveMemoryWarning");
         }
         
         public override bool HandleOpenURL(UIApplication application, NSUrl url)
         {
+
             Console.WriteLine(url.ToString());
             if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId ))
             {
@@ -150,7 +189,25 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             return HandleOpenURL(application, url);
-        }       
+        }
+
+        public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
+        {
+            var strFormat = new NSString("%@");
+            var dt = new NSString(MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new MonoTouch.ObjCRuntime.Class("NSString").Handle, new MonoTouch.ObjCRuntime.Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            new PushNotificationService().SaveDeviceToken(dt);
+        }
+        
+        public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
+        {
+            Console.WriteLine("Failed to register for notifications");
+        }
+        
+        public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
+        {
+            Console.WriteLine("Received Remote Notification!");
+        }
+
 
 
     }

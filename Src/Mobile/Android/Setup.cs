@@ -25,6 +25,12 @@ using SocialNetworks.Services.MonoDroid;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using Cirrious.MvvmCross.Android.Platform;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Android.Util;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -46,11 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.InitializeAdditionalPlatformServices();
 
 
-            TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
+			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
-            TinyIoCContainer.Current.Register<IAppContext>(new AppContext(this.ApplicationContext));
             TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(this.ApplicationContext));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
@@ -65,21 +70,25 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 900 }, CoordinatePrecision.Medium.ToString());
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-
+			TinyIoCContainer.Current.Register<IPushNotificationService>(new PushNotificationService(this.ApplicationContext));
+			
             TinyIoCContainer.Current.Register<ILocationService>(LocationService.Instance );
 
             InitializeSocialNetwork();
         }
 
+		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
+		{
+			base.FillTargetFactories (registry);
+			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem", spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsBottom)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsTop)));
+		}
+
 
         public void InitializeSocialNetwork()
         {
-
-
-
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
-
 
             var oauthConfig = new OAuthConfig
             {
@@ -99,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         protected override MvxApplication CreateApp()
         {
-            var app = new TaxiHailApp();
+            var app = new TaxiHailApp(_params);
             return app;
         }
 
@@ -114,5 +123,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return new[] { typeof(AppConverters) }; }
         }
+
+		private IDictionary<string, string> _params;
+		public void SetParams (IDictionary<string, string> @params)
+		{
+			this._params = @params;
+		}
     }
 }

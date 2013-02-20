@@ -1,28 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
-using TinyMessenger;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Models;
 using System.Threading.Tasks;
-using System.Globalization;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		public event EventHandler Deleted;
         private Guid _orderId;
         public Guid OrderId
         {
@@ -46,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged("PickUpDateTxt"); }
 		}
 
-		private OrderStatusDetail _status;
+        private OrderStatusDetail _status = new OrderStatusDetail{ IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage") };
 		public OrderStatusDetail Status {
 			get{ return _status; }
             set { _status = value; FirePropertyChanged("Status");}
@@ -65,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		private bool _isCompleted;
+        private bool _isCompleted = true;
 		public bool IsCompleted {
 			get {
 				return _isCompleted;
@@ -167,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.PickupAddress.FullAddress;
+                    return Order.PickupAddress.BookAddress;
                 }
                 else
                 {
@@ -238,9 +232,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MessengerHub.Subscribe<OrderRated>(RefreshOrderStatus);
 		}
 
-        public override void OnViewLoaded ()
+		public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             LoadOrder();
             LoadStatus();
         }
@@ -276,11 +270,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-        public MvxRelayCommand NavigateToRatingPage
+        public IMvxCommand NavigateToRatingPage
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
 					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString()});
@@ -292,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                         {
 					var orderStatus = new OrderStatusDetail
 					{ 
@@ -316,17 +310,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
-                        {
-                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
-						    if(Deleted != null)
-							{
-								Deleted(this, EventArgs.Empty);
-							}
-						    RequestClose(this);
-                        }
+                    {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
+                        MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
+                        Close();
+                    }
                 });
             }
         }
@@ -335,7 +326,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
                     RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
@@ -347,7 +338,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                     {
@@ -361,8 +352,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
          public IMvxCommand CancelOrder
         {
             get
-            { 
-                return new MvxRelayCommand(()=>
+            {
+                return GetCommand(() =>
                 {
                     var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
                     var resources = TinyIoCContainer.Current.Resolve<IAppResource>();

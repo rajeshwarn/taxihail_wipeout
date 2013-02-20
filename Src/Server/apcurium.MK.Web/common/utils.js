@@ -103,6 +103,30 @@
                 // not needed yet
                 return '';
             },
+            
+            niceShortDate: function (date) {
+                if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+                    var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    if (dateParts.length === 3) {
+                        var year = parseInt(dateParts[0], 10),
+                            month = parseInt(dateParts[1], 10) - 1,
+                            day = parseInt(dateParts[2], 10);
+
+                        date = new Date(year, month, day, 0, 0, 0);
+
+                        var dayOfTheWeek = date.getDay();
+
+                        // Format: Monday, August 17
+                        return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day);
+                    }
+                }
+                // not needed yet
+                return '';
+            },
             niceTime: function(date) {
                 if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
                     // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
@@ -149,6 +173,11 @@
         }
     });
 
+    Handlebars.registerHelper('niceShortDateAndTime', function (date) {
+        // Format: Monday, August 17 at 2:35 PM
+        return new Handlebars.SafeString(TaxiHail.date.niceShortDate(date) + ',\u00a0' + TaxiHail.date.niceTime(date));
+    });
+    
     Handlebars.registerHelper('niceDateAndTime', function (date) {
         // Format: Monday, August 17 at 2:35 PM
         return new Handlebars.SafeString(TaxiHail.date.niceDate(date) + '\u00a0at\u00a0' + TaxiHail.date.niceTime(date));

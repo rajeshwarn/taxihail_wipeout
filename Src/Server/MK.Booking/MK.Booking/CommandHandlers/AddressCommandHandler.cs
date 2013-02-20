@@ -1,11 +1,10 @@
-﻿
-using Infrastructure.EventSourcing;
+﻿using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Common;
 
-namespace apcurium.MK.Booking.BackOffice.CommandHandlers
+namespace apcurium.MK.Booking.CommandHandlers
 {
     public class AddressCommandHandler : ICommandHandler<AddFavoriteAddress>, ICommandHandler<RemoveFavoriteAddress>, ICommandHandler<UpdateFavoriteAddress>, ICommandHandler<RemoveAddressFromHistory>, ICommandHandler<AddDefaultFavoriteAddress>, ICommandHandler<RemoveDefaultFavoriteAddress>, ICommandHandler<UpdateDefaultFavoriteAddress>
         , ICommandHandler<AddPopularAddress>, ICommandHandler<RemovePopularAddress>, ICommandHandler<UpdatePopularAddress>
@@ -23,14 +22,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.AddFavoriteAddress(id: command.AddressId, 
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            account.AddFavoriteAddress(command.Address);
             
             _repository.Save(account ,command.Id.ToString());
         }
@@ -48,14 +40,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.UpdateFavoriteAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            account.UpdateFavoriteAddress(command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }
@@ -70,14 +55,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         public void Handle(AddDefaultFavoriteAddress command)
         {
             var company = _companyRepository.Get(AppConstants.CompanyId);
-            company.AddDefaultFavoriteAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            company.AddDefaultFavoriteAddress(command.Address);
             _companyRepository.Save(company, command.Id.ToString());
 
         }
@@ -95,14 +73,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var company = _companyRepository.Get(AppConstants.CompanyId);
 
-            company.UpdateDefaultFavoriteAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            company.UpdateDefaultFavoriteAddress(command.Address);
 
             _companyRepository.Save(company, command.Id.ToString());
         }
@@ -110,14 +81,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         public void Handle(AddPopularAddress command)
         {
             var company = _companyRepository.Get(AppConstants.CompanyId);
-            company.AddPopularAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            company.AddPopularAddress(command.Address);
             _companyRepository.Save(company, command.Id.ToString());
         }
 
@@ -134,14 +98,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var company = _companyRepository.Get(AppConstants.CompanyId);
 
-            company.UpdatePopularAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            company.UpdatePopularAddress(command.Address);
 
             _companyRepository.Save(company, command.Id.ToString());
         }

@@ -1,6 +1,7 @@
 using System;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Touch.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -40,16 +41,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        public override void Close(Cirrious.MvvmCross.Interfaces.ViewModels.IMvxViewModel toClose)
-        {
-            base.Close(toClose);
-
-        }
-
-        public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
+       
+        public override void Show (Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
-            base.Show(view);                      
-            ((UIViewController)view).NavigationController.NavigationBar.Hidden = HideNavBar(view);
+            if (view is IMvxModalTouchView)
+            {
+                PresentModalViewController ( view as UIViewController, true );
+            }
+            else
+            {
+                base.Show (view); 
+                var navigationController = ((UIViewController)view).NavigationController;
+                if (navigationController != null) {
+                    navigationController.NavigationBar.Hidden = HideNavBar(view);
+                }
+            }
         }
 
         private bool HideNavBar(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
@@ -57,16 +63,34 @@ namespace apcurium.MK.Booking.Mobile.Client
             return ( view is INavigationView ) && (((INavigationView)view).HideNavigationBar );
         }
 
-        public override void Show(Cirrious.MvvmCross.Views.MvxShowViewModelRequest request)
+        private UIViewController _modal;
+      
+        public override bool PresentModalViewController (UIViewController viewController, bool animated)
         {
-            base.Show(request);
+
+            if ( CurrentTopViewController != null )
+            {
+
+                viewController.View.Frame = new System.Drawing.RectangleF( 0,0, CurrentTopViewController.View.Bounds.Width, CurrentTopViewController.View.Bounds.Height );
+                _modal = viewController;
+                CurrentTopViewController.View.AddSubview ( viewController.View );
+                return true;
+            }
+            return false;
+
+            //CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
+            //return base.PresentModalViewController (viewController, animated);
         }
 
-        protected override UIViewController CurrentTopViewController
+        public override void Close (Cirrious.MvvmCross.Interfaces.ViewModels.IMvxViewModel toClose)
         {
-            get
+            if ( _modal != null )
             {
-                return base.CurrentTopViewController;
+                _modal.View.RemoveFromSuperview ();
+                _modal = null;
+            }
+            else{
+            base.Close (toClose);
             }
         }
 

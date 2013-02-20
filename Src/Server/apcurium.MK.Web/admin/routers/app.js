@@ -15,6 +15,7 @@
 
             /* Admin right*/
             "security": "manageSecurity",
+            "confirmemail": "confirmEmail",
             
             /* settings */
             "settings" : "manageCompanySettings",
@@ -25,7 +26,14 @@
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
             /* IBS exclusions */
-            "exclusions": "manageIBSExclusions"
+            "exclusions": "manageIBSExclusions",
+
+            /* Manage Booking Rules */
+            "rules": "manageBookingRules",
+            
+            /*Export*/
+            "exportaccounts": "exportaccounts",
+            "exportorders": "exportorders"
         },
 
         initialize: function (options) {
@@ -64,6 +72,10 @@
         manageSecurity: function () {
             action(TaxiHail.SecurityController, 'index');
         },
+        
+        confirmEmail: function () {
+            action(TaxiHail.SecurityController, 'confirmemail');
+        },
 
         manageTariffs: function() {
             action(TaxiHail.TariffsController, 'index');
@@ -78,11 +90,24 @@
         },
 
         editTariff: function(id) {
+            
             action(TaxiHail.TariffsController, 'edit', id);
         },
 
-        manageIBSExclusions: function() {
+        manageIBSExclusions: function () {
+            
             action(TaxiHail.ExclusionsController, 'index');
+        },
+
+        manageBookingRules: function () {
+            
+            action(TaxiHail.RulesController, 'index');
+        },
+        exportaccounts: function () {
+           
+        },
+        exportorders: function () {
+            
         }
     });
 

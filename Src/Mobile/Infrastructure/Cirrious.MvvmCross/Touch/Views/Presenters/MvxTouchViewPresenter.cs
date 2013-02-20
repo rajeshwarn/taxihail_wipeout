@@ -7,6 +7,12 @@
 // </copyright>
 // 
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
+using MonoTouch.Foundation;
+using System;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+
+
 #endregion
 
 using Cirrious.MvvmCross.Exceptions;
@@ -29,6 +35,8 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
         private readonly UIWindow _window;
         
         private UINavigationController _masterNavigationController;
+
+       
         
         public MvxTouchViewPresenter (UIApplicationDelegate applicationDelegate, UIWindow window)
         {
@@ -68,31 +76,38 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
             _masterNavigationController.PopViewControllerAnimated(true);
         }
 
-        public override void Close(IMvxViewModel toClose)
+        public override void Close (IMvxViewModel toClose)
         {
             var topViewController = _masterNavigationController.TopViewController;
 
-            if (topViewController == null)
-            {
-                MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
+            if (topViewController == null) {
+                MvxTrace.Trace (MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
                 return;
             }
 
             var topView = topViewController as IMvxTouchView;
-            if (topView == null)
-            {
-                MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
+            if (topView == null) {
+                MvxTrace.Trace (MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
                 return;
             }
 
-            var viewModel = topView.ReflectionGetViewModel();
-            if (viewModel != toClose)
-            {
-                MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost view does not present this viewmodel");
+            var viewModel = topView.ReflectionGetViewModel ();
+            if (viewModel != toClose) {
+                MvxTrace.Trace (MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost view does not present this viewmodel");
                 return;
             }
 
-            _masterNavigationController.PopViewControllerAnimated(true);
+            if (_masterNavigationController.ViewControllers.Length >= 2) {
+
+                var typeController = _masterNavigationController.ViewControllers[1].GetType();
+                if(typeController.IsDefined(typeof(NoHistoryAttribute), false))
+                {
+                    var newStack = _masterNavigationController.ViewControllers.ToList();
+                    newStack.RemoveAt(1);
+                    _masterNavigationController.SetViewControllers(newStack.ToArray(), true);
+                }
+            }
+            _masterNavigationController.PopViewControllerAnimatedPause(true);
         }
 
         public override void ClearBackStack()
@@ -106,7 +121,9 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
 
         public override bool PresentModalViewController(UIViewController viewController, bool animated)
         {
+            Console.WriteLine("++++++++++CurrentTopViewController : " + CurrentTopViewController.GetType().FullName);
             CurrentTopViewController.PresentModalViewController(viewController, animated);
+            //CurrentTopViewController.PresentViewController(viewController, animated, delegate() {});
             return true;
         }
 
@@ -140,5 +157,39 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
         {
             get { return _masterNavigationController.TopViewController; }
         }
-    }	
+    }
+
+    public static class NavigationControllerExtension        
+    {        
+        public static UIViewController PopViewControllerAnimatedPause(this UINavigationController navigationController, bool animated)            
+        {            
+            if (animated)                
+            {                
+                var existing = navigationController.Delegate;                
+                var navigationControllerDelegate = new NavigationControllerDelegate();               
+                                
+                navigationController.Delegate = navigationControllerDelegate;                
+                UIViewController result = navigationController.PopViewControllerAnimated(true);              
+                                
+                while (navigationControllerDelegate.Transitioning)                    
+                    NSRunLoop.Current.RunUntil(DateTime.Now.AddMilliseconds(50));             
+                
+                navigationController.Delegate = existing;           
+                
+                return result;                
+            }      
+                        
+            return navigationController.PopViewControllerAnimated(false);            
+        }        
+    }
+
+    public class NavigationControllerDelegate : UINavigationControllerDelegate
+    {
+        public bool Transitioning = true;
+        
+        public override void DidShowViewController (UINavigationController navigationController, UIViewController viewController, bool animated)
+        {
+            this.Transitioning = false;
+        }
+    }
 }

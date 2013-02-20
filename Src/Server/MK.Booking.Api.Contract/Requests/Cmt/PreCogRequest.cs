@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
         public double GpsLon { get; set; }
         public double GpsSpeed { get; set; }
         public double GpsBearing { get; set; }
-        public double GpsAccurancy { get; set; }
+        public double GpsAccuracy { get; set; }
         public double GpsAltitude { get; set; }
         public double DestLat { get; set; }
         public double DestLon { get; set; }

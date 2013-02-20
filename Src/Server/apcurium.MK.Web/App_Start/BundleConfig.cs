@@ -12,7 +12,7 @@ namespace apcurium.MK.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
-                "~/assets/js/persist-min.js",
+                "~/assets/js/localstorage-polyfill.js",
                 "~/assets/js/handlebars-1.0.rc.1.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
@@ -94,7 +94,7 @@ namespace apcurium.MK.Web
 
             // Admin Bundles
             bundles.Add(new ScriptBundle("~/admin/bundles/assets").Include(
-                "~/assets/js/persist-min.js",
+                "~/assets/js/localstorage-polyfill.js",
                 "~/assets/js/handlebars-1.0.rc.1.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
@@ -122,15 +122,18 @@ namespace apcurium.MK.Web
                 "~/common/models/ReferenceData.js",
                 "~/common/models/Address.js",
                 "~/admin/models/Tariff.js",
+                "~/admin/models/Rule.js",
                 "~/admin/models/CompanySettings.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/admin/collections/CompanySettingsCollection.js",
                 "~/admin/collections/TariffCollection.js",
+                "~/admin/collections/RuleCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/SecurityController.js",
                 "~/admin/controllers/TariffsController.js",
+                "~/admin/controllers/RulesController.js",
                 "~/admin/controllers/ExclusionsController.js",
                 "~/admin/controllers/CompanySettingsController.js",
                 "~/admin/controllers/DefaultAddressesController.js",
@@ -145,9 +148,11 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddFavoriteView.js",
                 "~/common/views/BootstrapConfirmationView.js",
                 "~/admin/views/GrantAdminAccessView.js",
+                "~/admin/views/ConfirmEmailView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
                 "~/admin/views/ManageTariffsView.js",
+                "~/admin/views/ManageRulesView.js",
                 "~/admin/views/ManagePopularAddressesView.js",
                 "~/admin/views/ManageCompanySettingsView.js",
                 "~/admin/views/SettingsItemView.js",

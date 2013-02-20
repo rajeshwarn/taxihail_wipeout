@@ -23,10 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private static int _progressSize = DrawHelper.GetPixels(30);
         private static int _xPositionText = DrawHelper.GetPixels(4);
-        private static int _yPositionTextL1 = DrawHelper.GetPixels(15);
-        private static int _yPositionTextL2 = DrawHelper.GetPixels(32);
-        private static int _fontTextL1 = DrawHelper.GetPixels(12);
-        private static int _fontTextL2 = DrawHelper.GetPixels(14);
+        private static int _yPositionTextL1 = DrawHelper.GetPixels(19);
+        private static int _yPositionTextL2 = DrawHelper.GetPixels(36);
+        private static int _yPositionTextOnlyL1 = DrawHelper.GetPixels(26);
+        private static int _fontTextL1 = DrawHelper.GetPixels(20);
+        private static int _fontTextL2 = DrawHelper.GetPixels(15);
 
         private bool _isProgressing;
         private ProgressBar _bar;
@@ -61,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
+			this.Touch += HandleTouch;
             this.Click += new EventHandler(TextProgressButton_Click);
             this.SetGravity(GravityFlags.CenterVertical | GravityFlags.Right);
             this.Orientation = Android.Widget.Orientation.Vertical;
@@ -80,13 +82,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Right;
             AddView(_image, layout);
 
-            if (_rightArrowDrawableId == 0)
-            {
-                _rightArrowDrawableId = Context.Resources.GetIdentifier("right_arrow", "drawable", Context.PackageName);
-            }
-            _image.SetImageDrawable(Context.Resources.GetDrawable(_rightArrowDrawableId));
-            ///android:drawableRight="@drawable/right_arrow"
+			_image.SetImageDrawable(Context.Resources.GetDrawable(Resource.Drawable.right_arrow));
 
+        }
+
+        void HandleTouch (object sender, TouchEventArgs e)
+		{
+			if (e.Event.Action == MotionEventActions.Down) {
+				this.SetBackgroundColor(new Color(0,0,0,50));
+					
+			} else if (e.Event.Action == MotionEventActions.Up) {
+				this.SetBackgroundColor(new Color(0,0,0,0));
+			}
+			e.Handled=false;
         }
         
 
@@ -177,27 +185,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnDraw(canvas);
 
-            DrawText(canvas, TextLine1 ?? "", _xPositionText, _yPositionTextL1, _fontTextL1 , AppFonts.Regular);
-            DrawText(canvas, TextLine2 ?? "", _xPositionText, _yPositionTextL2, _fontTextL2, IsProgressing || IsPlaceHolder ? AppFonts.Italic : AppFonts.Bold);
+
+            DrawText(canvas, TextLine1 ?? "", _xPositionText, TextLine2.HasValue() ? _yPositionTextL1 : _yPositionTextOnlyL1, IsProgressing || IsPlaceHolder ? _fontTextL2 : _fontTextL1 , IsProgressing || IsPlaceHolder ? AppFonts.Italic : AppFonts.Regular, IsProgressing || IsPlaceHolder ? new Color( 86,86,86,255 ) : new Color( 50,50,50,255 ) );
+            DrawText(canvas, TextLine2 ?? "", _xPositionText, _yPositionTextL2, _fontTextL2, AppFonts.Regular, new Color( 86,86,86,255 ));
 
 
         }
 
    
 
-        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeFace)
+        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeFace, Color color)
         {
-            var wManager = (IWindowManager)Context.GetSystemService(Context.WindowService);
+            var systemService = Context.GetSystemService(Context.WindowService);
+			IWindowManager wManager = systemService.JavaCast<IWindowManager>();
 
             var metrics = new DisplayMetrics();
             wManager.DefaultDisplay.GetMetrics(metrics);
 
-            
-
-
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
             paintText.TextSize = textSize;
-            paintText.SetARGB(255, 49, 49, 49);
+            paintText.SetARGB(color.A, color.R  , color.G , color.B );
             paintText.SetTypeface(typeFace);
 
             var p = new TextPaint();

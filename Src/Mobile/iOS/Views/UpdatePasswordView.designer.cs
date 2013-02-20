@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class UpdatePasswordView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblCurrentPassword { get; set; }
 
 		[Outlet]
@@ -31,6 +34,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (scrollView != null) {
+				scrollView.Dispose ();
+				scrollView = null;
+			}
+
 			if (lblCurrentPassword != null) {
 				lblCurrentPassword.Dispose ();
 				lblCurrentPassword = null;

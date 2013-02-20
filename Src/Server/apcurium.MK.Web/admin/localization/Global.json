@@ -24,10 +24,21 @@
 	"Search" : "Search",
 	"Places" : "Places",
 	"error.friendlyNameRequired" : "Friendly Name is required",
+	"error.longitudeRequired" : "Longitude is required",
+	"error.latitudeRequired" : "Latitude is required",
+	"error.latitudeNumber" : "Latitude must be a number",
+	"error.longitudeNumber" : "Longitude must be a number",
+	"error.streetNumberRequired" : "Street number is required",
+	"error.streetRequired" : "Street name is required",
+	"error.cityRequired" : "City is required",
+	"error.zipCodeRequired" : "Zip code is required",
+	"error.stateRequired" : "State is required",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
 	"Saved" : "Saved",
     "Tariff_DuplicateName": "This tariff already exists",
-	"You cannot exclude all options from a list." : "You cannot exclude all options from a list."
+	"You cannot exclude all options from a list." : "You cannot exclude all options from a list.",
+	"confirmEmailSuccess" : "User has correctly been confirmed." ,
+	"confirmEmailError" : "Error: Check that the email address exists in the system"
 }

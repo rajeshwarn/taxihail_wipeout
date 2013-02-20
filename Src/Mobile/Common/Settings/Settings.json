@@ -1,13 +1,15 @@
 {
-   "ApplicationName" : "TaxiHail",
+   "ApplicationName" : "TaxiCMT",
    "CanChangeServiceUrl" : "true",
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
    "ErrorLog" : "",
-   "ErrorLogEnabled" : "true",
+   "TutorialEnabled" : "true",
+   "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
-   "ServiceUrl" : "http://staging.taxihail.biz:8181/taxihailstaging/api/",
+   "ServiceUrl" : "https://mobile-sandbox.cmtapi.com/v1/",
+   "SupportEmail" : "techsupport@apcurium.com",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",
@@ -21,6 +23,7 @@
    "AppName" : "TaxiHail",
    "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
    "Package" : "com.apcurium.MK.TaxiHailDemo",
-   "SupportEmail" : "techsupport@apcurium.com",
-   "RatingEnabled" : "true"
+   "StreetNumberScreenEnabled" : "true",
+   "RatingEnabled" : "true",
+   "IsCMT" : "true"
 }

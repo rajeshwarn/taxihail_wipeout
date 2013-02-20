@@ -14,8 +14,8 @@
             this.interval = window.setInterval(_.bind(function() {
                 this.fetch();
             }, status), 5000);
-            status.on('change:iBSStatusId', this.render, this);
-            status.on('change:iBSStatusId', this.onStatusChanged, this);
+            status.on('change:ibsStatusId', this.render, this);
+            status.on('change:ibsStatusId', this.onStatusChanged, this);
         },
 
         render: function() {
@@ -24,9 +24,9 @@
             // Otherwise it will stay there forever
             this.$('[data-action=call]').popover('hide');
             var data = this.model.getStatus().toJSON();
-            if(!data.iBSStatusDescription)
+            if(!data.ibsStatusDescription)
             {
-                data.iBSStatusDescription = this.localize('Processing');
+                data.ibsStatusDescription = this.localize('Processing');
             }
 
             this.$el.html(this.renderTemplate(data));

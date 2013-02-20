@@ -21,12 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
 	public class LocationListAdapter : MvxBindableListAdapter
     {
-        private readonly Activity _context;
-
         public LocationListAdapter(Activity context, IList itemsSource)
             : base(context)
         {
-            this._context = context;
 			ItemsSource = itemsSource;
         }
 
@@ -39,58 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 		{
 			var item = (AddressViewModel)ItemsSource [position];
             
-            
-			TitleSubTitleListItemController controller = null;
-			if (item.Address.IsHistoric) {
-				if ((convertView == null) || new TitleSubTitleListItemController (convertView).HasSubTitle) {
-					var source = ItemsSource [position];
-					var view = base.GetBindableView (convertView, source, Resource.Layout.TitleListItem);
-					controller = new TitleSubTitleListItemController (view);
-				} else {
-					controller = new TitleSubTitleListItemController (convertView);
-				}
-				controller.Title = item.Address.FullAddress;                
-			} else {
-				if ((convertView == null) || !(new TitleSubTitleListItemController (convertView).HasSubTitle)) {
-					var source = ItemsSource [position];
-					var view = base.GetBindableView (convertView, source, Resource.Layout.TitleSubTitleListItem);
-					controller = new TitleSubTitleListItemController (view);
-				} else {
-					controller = new TitleSubTitleListItemController (convertView);
-				}                
-				controller.Title = item.Address.FriendlyName;                                
-				controller.SubTitle = item.Address.FullAddress;
-                
-			}
-
-
-			controller.SetNavIcon (Resource.Drawable.right_arrow);
-			controller.SetBackImage (Resource.Drawable.cell_top_state);
-			
-			var avm = (AddressViewModel)ItemsSource [position];
-			if (avm.IsFirst) {
-				controller.SetBackImage (Resource.Drawable.cell_top_state);
-			} else if (avm.IsLast) {
-				controller.SetBackImage (Resource.Drawable.blank_bottom_state);
-			} else if (avm.IsFirst && avm.IsLast) {
-				controller.SetBackImage (Resource.Drawable.blank_single_state);
-			} else {
-				controller.SetBackImage (Resource.Drawable.cell_middle_state);
-			}
-
-			if (avm.IsAddNew) {
-				if (avm.IsFirst && avm.IsLast) {
-					controller.SetBackImage (Resource.Drawable.add_single_state);
-					
-				} else {
-					controller.SetBackImage (Resource.Drawable.cell_bottom_state);
-				}
-				controller.SetNavIcon (Resource.Drawable.add_button);
-			} else {
-				controller.SetNavIcon (Resource.Drawable.right_arrow);
-			}
-
-            return controller.View;
+			return base.GetBindableView (convertView, new {
+					DisplayLine1 = item.Address.FriendlyName,
+					DisplayLine2 = item.Address.FullAddress,
+					IsFirst = item.IsFirst,
+					IsLast = item.IsLast,
+				    ShowRightArrow = item.ShowRightArrow,
+					ShowPlusSign = item.ShowPlusSign,
+                    Icon = item.Icon
+				}, Resource.Layout.SimpleListItem);
         }
     }
 }

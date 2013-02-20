@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
             nsManager.AddNamespace("a", "http://schemas.microsoft.com/developer/msbuild/2003");
+            nsManager.AddNamespace("android", "http://schemas.android.com/apk/res/android");
 
             var node = doc.SelectSingleNode(NodeSelector, nsManager  ); 
 

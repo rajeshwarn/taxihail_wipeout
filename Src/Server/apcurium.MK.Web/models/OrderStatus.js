@@ -7,12 +7,12 @@
         },
 
         isActive: function() {
-            var status = this.get('iBSStatusId');
+            var status = this.get('ibsStatusId');
             return _.indexOf(['wosCANCELLED', 'wosCANCELLED_DONE', 'wosDONE', 'wosLOADED'], status) == -1;
         },
 
         isCompleted: function() {
-            return this.get('iBSStatusId') === 'wosDONE';
+            return this.get('ibsStatusId') === 'wosDONE';
         },
 
         canSendReceipt: function() {

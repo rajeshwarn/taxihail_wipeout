@@ -4,6 +4,7 @@
    "Direction.MaxDistance" : "50",
    "Direction.RatePerKm" : "1.70",
    "DistanceFormat" : "KM",
+   "Email.NoReply" : "",
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca", 
@@ -28,5 +29,6 @@
    "TaxiHail.ServerCompanyName" : "TaxiHail",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
+   "Client.HideReportProblem" : "true",
    "IBS.TimeDifference" : "0"
 }
