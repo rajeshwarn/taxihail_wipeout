@@ -67,18 +67,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\PreCogService.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
     <Compile Include="AppServices\IPreCogService.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="AppServices\ISocialNetworksService.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
+    <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
     <Compile Include="Data\ListItemValue.cs" />
+    <Compile Include="Data\TutorialContent.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
@@ -129,22 +136,21 @@
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
-    <Compile Include="Localization\TaxiHail.Designer.cs">
+    <Compile Include="Localization\Taxiworld.Designer.cs">
+      <DependentUpon>Taxiworld.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TaxiHail.resx</DependentUpon>
     </Compile>
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
+    <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
-    <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
-    <Compile Include="Models\OrderWithStatusModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
@@ -164,13 +170,13 @@
     <Compile Include="AppServices\Mapper\OrderMapping.cs" />
     <Compile Include="AppServices\Mapper\SettingMapper.cs" />
     <Compile Include="AppServices\ModuleService.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\AppSettingsData.cs" />
+    <Compile Include="StartCallboxNavigation.cs" />
     <Compile Include="StartNavigation.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -183,10 +189,18 @@
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\CmtHomeViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxCallTaxiViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxLoginViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
+    <Compile Include="ViewModels\CreditCardViewModel.cs" />
+    <Compile Include="ViewModels\enum\ColorEnum.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
+    <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByGeoCodingViewModel.cs" />
@@ -201,6 +215,7 @@
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
+    <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
@@ -213,6 +228,25 @@
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Models\TutorialItemModel.cs" />
+    <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
+    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
+    <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="Data\AddressSelectionMode.cs" />
+    <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
+    <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
+    <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
+    <Compile Include="Data\CreditCardInfos.cs" />
+    <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
+    <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
+    <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
+    <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
+    <Compile Include="Messages\RemoveCreditCard.cs" />
+    <Compile Include="AppServices\IUseServiceClient.cs" />
+    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="Infrastructure\IPushNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -245,12 +279,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localization\Master.resx" />
-    <EmbeddedResource Include="Localization\TaxiHail.resx">
+    <None Include="Localization\Master.resx">
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
+      <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
+    <None Include="ViewModels\Master.resx">
+      <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

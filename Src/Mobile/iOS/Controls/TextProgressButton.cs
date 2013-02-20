@@ -23,17 +23,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var image = UIImage.FromFile( "Assets/right_arrow.png" );
 
-			_line1Label = new UILabel( new RectangleF( 8, 4, Frame.Width - image.Size.Width - 10, 12 ) );
+			_line1Label = new UILabel( new RectangleF( 8, 4, Frame.Width - image.Size.Width - 10, 20 ) );
 			_line1Label.BackgroundColor = UIColor.Clear;
-			_line1Label.TextColor = AppStyle.GreyText;
-			_line1Label.Font = AppStyle.GetNormalFont( 12 );
+			_line1Label.TextColor = AppStyle.DarkText;
+			_line1Label.Font = AppStyle.GetNormalFont( 19 );
 			_line1Label.TextAlignment = UITextAlignment.Left;
 			AddSubview( _line1Label );
 
-			_line2Label = new UILabel( new RectangleF( 8, 20, Frame.Width - image.Size.Width - 10, 15 ) );
+			_line2Label = new UILabel( new RectangleF( 8, 24, Frame.Width - image.Size.Width - 10, 20 ) );
 			_line2Label.BackgroundColor = UIColor.Clear;
 			_line2Label.TextColor = AppStyle.GreyText;
-			_line2Label.Font = AppStyle.GetBoldFont( 15 );
+            _line2Label.Font = AppStyle.GetNormalFont( 13 );
 			_line2Label.TextAlignment = UITextAlignment.Left;
 			AddSubview( _line2Label );
 
@@ -49,7 +49,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_progress.Hidden = true;
 			_progress.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray;
 			AddSubview( _progress );
+
+            TouchDown += HandleTouchDown;
+            TouchUpInside += HandleTouchUp;
+            TouchUpOutside += HandleTouchUp;
+           
 		}
+
+        void HandleTouchUp (object sender, EventArgs e)
+        {
+            this.BackgroundColor = UIColor.Clear;
+        }
+        
+        void HandleTouchDown (object sender, EventArgs e)
+        {
+            this.BackgroundColor = UIColor.FromRGBA(0,0,0,50);
+        }
 
         public string TextLine1
         {
@@ -92,7 +107,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 				_progress.StopAnimating();
 			}
 
-			_line2Label.Font = IsSearching || _isPlaceholder ? AppStyle.GetItalicFont( 15 ) : AppStyle.GetBoldFont( 15 );
+            var image = _imageView.Image;
+            if ( image != null )
+            {
+            _line1Label.Frame = IsSearching || _isPlaceholder ?new RectangleF( 8, 12, Frame.Width - image.Size.Width - 10, 20 ) : new RectangleF( 8, 4, Frame.Width - image.Size.Width - 10, 20 );
+            _line1Label.Font = IsSearching || _isPlaceholder ? AppStyle.GetItalicFont( 15 ) : AppStyle.GetNormalFont( 19 );
+            }
 		}
 
 	}

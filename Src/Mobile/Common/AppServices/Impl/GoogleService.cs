@@ -23,14 +23,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             return result;
         }
-		public Address[] GetNearbyPlaces(double? latitude, double? longitude, int? radius = null)
+        public Address[] GetNearbyPlaces(double? latitude, double? longitude, string name = null, int? radius = null)
 		{
 			Address[] places = null;
 			//UseServiceClient<NearbyPlacesClient>(service =>
               
             UseServiceClient<IPlaces>(service =>
 			{
-				places = service.SearchPlaces( null, latitude, longitude, radius );                   
+				places = service.SearchPlaces( name, latitude, longitude, radius );                   
 			});
 
 			return places;

@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -17,20 +22,26 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		}
 
+        #region IMessageService implementation
+
+      
+        #endregion
+
 		public void ShowMessage(string title, string message)
 		{
 			MessageHelper.Show( title, message );
 		}
 
-		public void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction )
+		public void ShowMessage(string title, string message, Action additionalAction )
 		{
-			MessageHelper.Show( title, message, additionnalActionButtonTitle, additionalAction );
+            MessageHelper.Show( title, message, "OK", additionalAction );
 		}
 
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-            MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
+
+            MessageHelper.Show( title, message,  positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction  );
         }
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
@@ -46,26 +57,36 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         		
 		public void ShowProgress( bool show, Action cancel )
 		{
-			if( show )
-			{
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                  {				
-				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
-                });
-			}
-			else
-            {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                  {
-				LoadingOverlay.StopAnimatingLoading(  );
-                });
-			}
+            
+    			if( show )
+    			{
+                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                      {				
+    				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
+                    });
+    			}
+    			else
+                {
+                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                      {
+    				LoadingOverlay.StopAnimatingLoading(  );
+                    });
+    			}
+            
         }
 
 		public void ShowProgress( bool show )
 		{
 			ShowProgress( show, null );
 		}
+
+        public void ShowDialogActivity(Type type)
+        {
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {
+                var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+                presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
+            });
+        }
 
         public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onItemSelected)
         {
@@ -87,6 +108,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			MessageHelper.ShowToast(message, (int)duration );
 		}
+
+        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
+        {
+        }
 
 	}
 }

@@ -27,6 +27,16 @@
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
             this.referenceData.on('change', this.render, this);
+
+            this.model.validateOrder()
+                .done(_.bind(function (result) {
+
+                    this.hasWarning = result.hasWarning;
+                    this.message = result.message;
+                    this.render();
+
+                }, this));
+
             
             $.validator.addMethod(
                 "regex",
@@ -63,6 +73,12 @@
                 this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
+
+            if (this.hasWarning) {
+                var $alert = $('<div class="alert alert-info" />');
+                   $alert.append($('<div />').text(this.message));                
+                this.$('.errors').html($alert);
+            }
 
             this.validate({
                 rules: {
@@ -137,7 +153,10 @@
                 result = JSON.parse(result.responseText).responseStatus;
             }
             var $alert = $('<div class="alert alert-error" />');
-            if (result.errorCode) {
+            if (result.errorCode == "CreateOrder_RuleDisable") {
+                $alert.append($('<div />').text(result.message));
+            }
+            else if (result.errorCode) {
                 $alert.append($('<div />').text(this.localize(result.errorCode)));
             }
             _.each(result.errors, function (error) {

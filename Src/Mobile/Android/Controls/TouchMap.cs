@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -27,7 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private Address _pickup;
         private Address _dropoff;
-		private ImageView _mapCenterPin;
+		private ImageView _pickupCenterPin;
+		private ImageView _dropoffCenterPin;
 
         
 
@@ -59,9 +61,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-		public void SetMapCenterPin (ImageView view)
+		public void SetMapCenterPins (ImageView pickup, ImageView dropoff)
 		{
-			this._mapCenterPin = view;
+			this._pickupCenterPin = pickup;
+			this._dropoffCenterPin = dropoff;
+			// Since this method is called after the view is databound
+			// check if we need to display the pins
+			if(AddressSelectionMode == Data.AddressSelectionMode.PickupSelection) _pickupCenterPin.Visibility = ViewStates.Visible;
+			if(AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection) _dropoffCenterPin.Visibility = ViewStates.Visible;
 		}
 
         private CancellationTokenSource _moveMapCommand;
@@ -81,20 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (e.Action == MotionEventActions.Down)
             {
                IsMapTouchDown = true;
-
-				if (PickupIsActive) {
-					_mapCenterPin.Visibility = ViewStates.Visible;
-				    _mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_hail));
-				if(_pickupPin != null) this.Overlays.Remove(_pickupPin);
-					_pickupPin = null;
-
-				} else if (DropoffIsActive) {
-					_mapCenterPin.Visibility = ViewStates.Visible;
-					_mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_destination));
-				if(_dropoffPin != null) this.Overlays.Remove(_dropoffPin);
-					_dropoffPin = null;
-				}
-
                CancelMoveMap();
             }
             
@@ -124,8 +117,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private bool IsMapTouchDown { get; set; }
-
-
 
         private void ExecuteCommand()
         {
@@ -167,27 +158,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private PushPinOverlay _pickupPin;
         private PushPinOverlay _dropoffPin;
 
-        public Address Pickup
-        {
-            get { return _pickup; }
-            set 
-            { 
-                _pickup = value;
-				ShowPickupPin(value);
-                Invalidate();
-            }
-        }
-
-        public Address Dropoff
-        {
-            get { return _dropoff; }
-            set 
-            { 
-                _dropoff = value;
-				ShowDropOffPin(value);
-                Invalidate();
-            }
-        }
+		public Address Pickup
+		{
+			get { return _pickup; }
+			set
+			{ 
+				_pickup = value;
+				if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+				{
+					ShowPickupPin(value);
+				}
+			}
+		}
+		
+		public Address Dropoff
+		{
+			get { return _dropoff; }
+			set
+			{ 
+				_dropoff = value;
+				if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+				{
+					ShowDropoffPin(value);
+				}
+			}
+		}
 
 		protected override void OnAttachedToWindow()
 		{
@@ -207,17 +202,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _taxiLocation = value;
                 if (_taxiLocationPin != null)
                 {
-                    this.Overlays.Remove(_dropoffPin);
+                    this.Overlays.Remove(_taxiLocationPin);
                     _taxiLocationPin = null;
                 }
 
-                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                if ((value != null) && (value.VehicleLatitude.HasValue) && (value.VehicleLongitude.HasValue))
                 {
                     var point = new GeoPoint(CoordinatesHelper.ConvertToE6(value.VehicleLatitude.Value), CoordinatesHelper.ConvertToE6(value.VehicleLongitude.Value));
-                    _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.taxi_label), Context.GetString(Resource.String.TaxiMapTitle), "#" + value.VehicleNumber, point);
+                    _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.pin_cab), value.VehicleNumber, point);
                    this.Overlays.Add(_taxiLocationPin);
                 }
-                Invalidate();
+                PostInvalidateDelayed(100);
             }
         }
 
@@ -235,27 +230,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        
+		private AddressSelectionMode _addressSelectionMode;
+		public AddressSelectionMode AddressSelectionMode {
+			get {
+				return _addressSelectionMode;
+			}
+			set {
+				_addressSelectionMode = value;
+				if(_addressSelectionMode == Data.AddressSelectionMode.PickupSelection)
+				{
+					if(_pickupCenterPin != null) _pickupCenterPin.Visibility = ViewStates.Visible;
+					if(_pickupPin != null) this.Overlays.Remove(_pickupPin);
+					_pickupPin = null;
 
-        private bool _isDropoffActive;
-        public bool DropoffIsActive
-        {
-            get { return _isDropoffActive; }
-            set 
-            { 
-                _isDropoffActive = value;                
-            }
-        }
+					ShowDropoffPin(Dropoff);
+                    PostInvalidateDelayed(100);
+				}
+				else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
+				{
+					if(_dropoffCenterPin != null) _dropoffCenterPin.Visibility = ViewStates.Visible;
+					if(_dropoffPin != null) this.Overlays.Remove(_dropoffPin);
+					_dropoffPin = null;
 
-        private bool _isPickupActive;
-		public bool PickupIsActive
-        {
-            get { return _isPickupActive; }
-            set 
-            { 
-                _isPickupActive = value;
-            }
-        }
+					ShowPickupPin(Pickup);
+                    PostInvalidateDelayed(100);
+				}
+				else 
+				{
+					ShowDropoffPin(Dropoff);
+					ShowPickupPin(Pickup);
+                    PostInvalidateDelayed(100);
+				}
+			}
+		}
 
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
@@ -301,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
             }
-
+            PostInvalidateDelayed(100);
         }
 
         public override bool OnTouchEvent(Android.Views.MotionEvent e)
@@ -309,7 +316,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return base.OnTouchEvent(e);
         }
 
-		private void ShowDropOffPin (Address address)
+		private void ShowDropoffPin (Address address)
 		{
 			if (_dropoffPin != null)
 			{
@@ -323,9 +330,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
 				_dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_destination), address, address.FullAddress);
-				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
 			}
-
+			if(_dropoffCenterPin!= null) _dropoffCenterPin.Visibility = ViewStates.Gone;
+			
 		}
 		
 		private void ShowPickupPin (Address address)
@@ -342,8 +349,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
 				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
-				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
 			}
+			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
 		}
     }
 }

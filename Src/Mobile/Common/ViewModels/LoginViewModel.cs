@@ -15,18 +15,21 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
 using SocialNetworks.Services;
 using apcurium.Framework;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LoginViewModel : BaseViewModel
     {
-		private IAccountService _accountService;
-        private IFacebookService _facebookService;
-        private ITwitterService _twitterService;
+        readonly IAccountService _accountService;
+        readonly IFacebookService _facebookService;
+        readonly ITwitterService _twitterService;
+        readonly IPushNotificationService _pushService;
 
-        public LoginViewModel(IFacebookService facebookService,ITwitterService twitterService, IAccountService accountService)
+        public LoginViewModel(IFacebookService facebookService,ITwitterService twitterService, IAccountService accountService, IPushNotificationService pushService)
 		{
-			_accountService = accountService;		
+			_accountService = accountService;
+            _pushService = pushService;
 
             CheckVersion();
             _facebookService = facebookService;
@@ -38,12 +41,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 		}
 
-		public override void OnViewLoaded ()
+		public override void Load ()
 		{
-			base.OnViewLoaded ();
+			base.Load ();
 #if DEBUG
-            Email = "john@taxihail.com";
-            Password = "password";
+            //Email = "john@taxihail.com";
+            //Password = "password";
 #endif
 		}
 
@@ -75,49 +78,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public MvxRelayCommand SignInCommand
+		public IMvxCommand SignInCommand
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
-					try
-					{
-                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
-						ThreadPool.QueueUserWorkItem( SignIn );  
-					}
-					finally
-					{
-					}
+				return GetCommand(() => {
+                    _accountService.ClearCache();
+					SignIn();  
 				});
 			}
 		}
 
-		private void SignIn( object state )
+		private void SignIn()
 		{
 			try
 			{
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
-                MessageService.ShowProgress(true);				
-				var account = _accountService.GetAccount(Email, Password);
+                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);            
+                MessageService.ShowProgress(true);
+				var account = default(Account);
 
-                if ( account != null )
-                {
-                    this.Password = "";
-                    RequestNavigate<BookViewModel>(true );
-                }              
-				
+				try {
+					account = _accountService.GetAccount(Email, Password);
+				} 
+				catch(Exception e)
+				{
+					var title = Resources.GetString ("InvalidLoginMessageTitle");
+					var message = Resources.GetString ("InvalidLoginMessage");
+					
+					MessageService.ShowMessage (title, message);        
+				}
+
+				if(account != null){
+					this.Password = string.Empty;
+
+                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
+
+                    RequestNavigate<BookViewModel>(true);
+                    RequestClose( this );
+
+				}
 			}
 			finally
 			{				
-				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+				MessageService.ShowProgress(false);	
 			}
 		}
 
-        public MvxRelayCommand ResetPassword
+        public IMvxCommand ResetPassword
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                 { 
                     RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
                         if(email.HasValue())
@@ -129,20 +140,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand<RegisterAccount> Signup
+        public IMvxCommand SignUp
         {
             get
             {
-                return new MvxRelayCommand<RegisterAccount>(registerDataFromSocial => 
-                { 
-                    string serialized = null;
-                    if (registerDataFromSocial != null) {
-                        serialized = JsonSerializer.SerializeToString(registerDataFromSocial);
-                    }
-                    RequestSubNavigate<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string>{ {"data", serialized } }, OnAccountCreated);  
-                });
+                return GetCommand(() => DoSignUp() );
             }
         }
+
+		private void DoSignUp (RegisterAccount registerDataFromSocial = null)
+		{
+			string serialized = null;
+			if (registerDataFromSocial != null) {
+				serialized = registerDataFromSocial.ToJson();
+			}
+			RequestSubNavigate<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string>{ {"data", serialized } }, OnAccountCreated); 
+		}
 
         void OnAccountCreated (RegisterAccount data)
         {
@@ -173,10 +186,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginFacebook
+        public IMvxCommand LoginFacebook
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() => { 
                     if (_facebookService.IsConnected)
                     {
                         CheckFacebookAccount();
@@ -190,10 +203,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginTwitter
+        public IMvxCommand LoginTwitter
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() =>
+                { 
                     if (_twitterService.IsConnected)
                     {
                         CheckTwitterAccount();
@@ -229,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var account = _accountService.GetFacebookAccount(data.FacebookId);
                     if (account == null)
                     {
-                        Signup.Execute(data);
+                        DoSignUp(data);
                     }else{
                         RequestNavigate<BookViewModel>(true );
                     }
@@ -256,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var account = _accountService.GetTwitterAccount(data.TwitterId);
                     if (account == null)
                     {                               
-                        Signup.Execute(data);
+                        DoSignUp(data);
                     } else{
                         RequestNavigate<BookViewModel>(true );
                     }                   

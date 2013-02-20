@@ -23,18 +23,29 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using System.Reactive.Linq;
+using System.Reactive;
+using Java.Lang;
+using Android.OS;
+
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true  )]
     public class BookActivity : MvxBindingMapActivityView<BookViewModel>
     {
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-        
+
+
+
         protected override void OnViewModelSet()
         {
+            Console.WriteLine( "NativeHeapSize:" + Debug.NativeHeapSize );
+            Console.WriteLine( "NativeHeapFreeSize:" + Debug.NativeHeapFreeSize );
+
             SetContentView(Resource.Layout.View_Book);
-			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPin(FindViewById<ImageView>(Resource.Id.mapCenterPin));
+			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
@@ -49,15 +60,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
 
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-            //Settings
-
-
+			var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
+			signOutButton.Click -= HandleSignOutButtonClick;
+			signOutButton.Click += HandleSignOutButtonClick;
 
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
+
+			ViewModel.Load();
+
+            
+            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+
+
+        }
+
+        void HandleSignOutButtonClick (object sender, EventArgs e)
+        {
+			ViewModel.Panel.SignOut.Execute();
+			// Finish the activity, because clearTop does not seem to be enough in this case
+			// Finish is delayed 1sec in order to prevent the application from being terminated
+			Observable.Return(Unit.Default).Delay (TimeSpan.FromSeconds(1)).Subscribe(x=>{
+				Finish();
+			});
         }
 
         void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -77,11 +105,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
+        private Guid _id = Guid.NewGuid();
 
         protected override void OnResume()
         {
             base.OnResume();
+
+            Console.WriteLine( "OnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResume" + _id.ToString() );
+
+            ViewModel.ShowTutorial.Execute();
+
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+
+            var mainLayout = FindViewById(Resource.Id.MainLayout);
+            mainLayout.Invalidate();
+
+            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+
+
+        }
+
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
         }
         protected override void OnStop()
         {
@@ -89,6 +137,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnStop();
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Stop();
         }
+
+
 		       
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
@@ -123,6 +173,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
+			//Close Menu if open
+			ViewModel.Panel.MenuIsOpen = false;
+
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
             var token = default(TinyMessageSubscriptionToken);
             token = messengerHub.Subscribe<DateTimePicked>(msg =>
@@ -131,11 +184,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     messengerHub.Unsubscribe<DateTimePicked>(token);
                 }
-                if (msg.Content.HasValue)
-                {
-                    ViewModel.Order.PickupDate = msg.Content;
-                    ViewModel.PickupDateSelected();
-                }
+
+                ViewModel.PickupDateSelectedCommand.Execute(msg.Content);
             });
 
             var intent = new Intent(this, typeof(DateTimePickerActivity));
@@ -143,6 +193,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
             }
+            intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat );
+
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
         }
 
@@ -158,18 +210,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
-        {
-            RunOnUiThread(() =>
-            {
-                var param = new Dictionary<string, object>() {{"order", data}, {"orderInfo", orderInfo}};
-                ViewModel.NavigateToOrderStatus.Execute(param);
-            });
-        }
-
 		protected override void OnDestroy ()
 		{
 			base.OnDestroy ();
+            Console.WriteLine( "OnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroy:" + _id.ToString() );
+
 			if (ViewModel != null) {
 				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			}

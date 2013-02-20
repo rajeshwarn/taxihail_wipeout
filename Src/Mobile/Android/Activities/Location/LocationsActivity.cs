@@ -59,10 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void SetAdapter()
         {
-                var adapter = new GroupedLocationListAdapter(this);
-
-                //SetFavoriteAdapter(adapter);
-
+            var adapter = new MvxBindableListAdapter(this);
 
                 RunOnUiThread(() =>
                 {
@@ -107,32 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         protected override void OnResume()
         {
             base.OnResume();
-			ViewModel.OnViewLoaded();
             SetAdapter();
         }
-		/*
-        private void SetFavoriteAdapter(GroupedLocationListAdapter adapter)
-        {
-            var historyAddresses = GetLocations(LocationType.History);
-            var favoriteAddresses = GetLocations(LocationType.Favorite);
-
-
-            int bgId = favoriteAddresses.Count >= 1 ? Resource.Drawable.cell_bottom_state : Resource.Drawable.add_single_state;
-
-            favoriteAddresses.Add(new AddressItemListModel()
-            {
-                Address = new Address() { Id = Guid.Empty, FullAddress = Resources.GetString(Resource.String.LocationAddFavoriteSubtitle), FriendlyName = Resources.GetString(Resource.String.LocationAddFavoriteTitle) },
-                BackgroundImageResource = bgId,
-                NavigationIconResource = Resource.Drawable.add_button
-            });
-
-
-			adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
-            adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
-        }
-*/
-      
-
-
     }
 }

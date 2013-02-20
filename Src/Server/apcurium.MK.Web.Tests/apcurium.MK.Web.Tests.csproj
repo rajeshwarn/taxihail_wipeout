@@ -10,10 +10,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Web.Tests</RootNamespace>
     <AssemblyName>apcurium.MK.Web.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>True</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,10 +34,15 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -43,34 +50,37 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\packages\ServiceStack.Common.3.9.4\lib\net35\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\packages\ServiceStack.Common.3.9.4\lib\net35\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.4\lib\ServiceStack.OrmLite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.4\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Razor, Version=2.1.4601.5200, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.Razor.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis">
-      <HintPath>..\packages\ServiceStack.Redis.3.9.4\lib\net35\ServiceStack.Redis.dll</HintPath>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis, Version=3.9.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.29\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.ServiceInterface.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\ServiceStack.Text.3.9.4\lib\net35\ServiceStack.Text.dll</HintPath>
+    <Reference Include="ServiceStack.Text, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Text.3.9.29\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -92,7 +102,10 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
+    <Compile Include="CreditCardFixture.cs" />
+    <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
+    <Compile Include="RuleFixture.cs" />
     <Compile Include="TariffFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />

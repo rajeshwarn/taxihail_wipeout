@@ -8,6 +8,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     {
         void Initialize();
 
+        bool IsServiceEnabled{get;}
+
         Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken);
 
         Position LastKnownPosition {get;}

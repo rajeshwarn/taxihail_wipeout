@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.ReadModel
         public OrderDetail()
         {
             //required by EF
-            Settings = new BookingSettingsDetails();
+            Settings = new BookingSettings();
+            PaymentInformation = new PaymentInformationDetails();
             PickupAddress = new Address();
             DropOffAddress = new Address();
         }
@@ -30,7 +31,9 @@ namespace apcurium.MK.Booking.ReadModel
 
         public Address DropOffAddress { get; set; }
 
-        public BookingSettingsDetails Settings { get; set; }
+        public BookingSettings Settings { get; set; }
+
+        public PaymentInformationDetails PaymentInformation { get; set; }
 
         public int Status { get; set; }
 

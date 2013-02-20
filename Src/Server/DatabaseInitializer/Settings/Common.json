@@ -13,6 +13,7 @@
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",
    "OrderStatus.CabDriverNumberAssigned" : "Cab #{0} is assigned to you",
+   "OrderStatus.CabDriverETA" : "ETA: {0}",
    "OrderStatus.DemoMode" : "false",
    "OrderStatus.OrderDoneFareAvailable" : "Completed (Total cost : {0})",
    "OrderStatus.wosARRIVED" : "Taxi is at pickup location",
@@ -36,7 +37,14 @@
    "Receipt.Note": "Thank You!",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
+   "Client.HideReportProblem" : "false",
+   "Client.NumberOfCharInRefineAddress" : "10",
+   "Client.ShowRingCodeField" : "true",   
    "GeoLoc.PopularAddress.Range" : "500",
-   "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note"
+   "GeoLoc.PlacesTypes" : "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,musem,night_club,park,parking,pharmacy,police,physiotherapist,p",
+   "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem",
+   "GCM.SenderId": "385816297456",
+   "GCM.APIKey": "AIzaSyC7eWqKEHj58xo3Tsuji4EH6HA7dn0T9bY",
+   "APNS.CertificatePassword": "TaxiHail"
 }
 

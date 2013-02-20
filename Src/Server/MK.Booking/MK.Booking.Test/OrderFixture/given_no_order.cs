@@ -36,7 +36,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void when_creating_an_order_successfully()
         {
             var pickupDate = DateTime.Now;
-            var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
             {
                 AccountId = _accountId,
@@ -45,7 +44,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 DropOffAddress = new Address { Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel" },           
                 IBSOrderId = 99,
             };
-            order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             this.sut.When(order );
 
@@ -62,9 +61,40 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(45.50643, orderCreated.DropOffAddress.Latitude);
             Assert.AreEqual(99, orderCreated.IBSOrderId);
             Assert.AreEqual(-73.554052, orderCreated.DropOffAddress.Longitude);
-            
+            Assert.AreEqual(99, orderCreated.Settings.ChargeTypeId);
+            Assert.AreEqual(88, orderCreated.Settings.VehicleTypeId);
+            Assert.AreEqual(11, orderCreated.Settings.ProviderId);
+            Assert.AreEqual("514-555-1212", orderCreated.Settings.Phone);
+            Assert.AreEqual(6, orderCreated.Settings.Passengers);
+            Assert.AreEqual(1, orderCreated.Settings.NumberOfTaxi);
+            Assert.AreEqual("Joe Smith", orderCreated.Settings.Name);
         }
 
+        [Test]
+        public void when_creating_an_order_with_payment_information()
+        {
+            var pickupDate = DateTime.Now;
+            var creditCardId = Guid.NewGuid();
+            var order = new CreateOrder
+            {
+                AccountId = _accountId,
+                PickupDate = pickupDate,
+                PickupAddress = new Address { RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, FullAddress = "1234 rue Saint-Hubert", Apartment = "3939" },
+                DropOffAddress = new Address { Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel" },
+                IBSOrderId = 99,
+            };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Payment = new CreateOrder.PaymentInformation { PayWithCreditCard = true, CreditCardId = creditCardId, TipPercent = 15 };
+
+            this.sut.When(order);
+
+            Assert.AreEqual(2, sut.Events.Count);
+
+            var paymentInformationSet = (PaymentInformationSet)sut.Events[1];
+            Assert.AreEqual(creditCardId, paymentInformationSet.CreditCardId);
+            Assert.AreEqual(15, paymentInformationSet.TipPercent);
+            Assert.AreEqual(null, paymentInformationSet.TipAmount);
+        }
 
         [Test]
         public void when_creating_an_order_without_dropOff_successfully()
@@ -79,7 +109,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address { RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, FullAddress = "1234 rue Saint-Hubert", Apartment="3939" },
                 IBSOrderId = 99,
             };
-            order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             this.sut.When(order);
             

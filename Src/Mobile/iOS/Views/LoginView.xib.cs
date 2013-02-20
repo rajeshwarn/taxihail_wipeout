@@ -34,142 +34,135 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
-		public LoginView() 
-			: base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
-		{
-			
-		}
-		
-		public LoginView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-			
-		}
-		
-		public LoginView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-			
-		}
-
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
-			NavigationController.NavigationBar.Hidden = true;
-		}
-
-        public override void ViewDidAppear(bool animated)
+        public LoginView () 
+            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
-            base.ViewDidAppear(animated);          
+            
+        }
+        
+        public LoginView (MvxShowViewModelRequest request) 
+            : base(request)
+        {
+            
+        }
+        
+        public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
+            
         }
 
-        public override void ViewDidLoad()
+        public override void ViewWillAppear (bool animated)
         {
-            base.ViewDidLoad();
+            base.ViewWillAppear (animated);
+            NavigationController.NavigationBar.Hidden = true;
+        }
+
+        public override void ViewDidAppear (bool animated)
+        {
+            base.ViewDidAppear (animated);          
+        }
+
+        public override void ViewDidLoad ()
+        {
+            base.ViewDidLoad ();
              
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background_full.png"));
-            
-            var btnSignIn = AppButtons.CreateStandardButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, AppStyle.ButtonColor.Black);
-            View.AddSubview(btnSignIn);
+            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));                       
 
-            var btnSignUp = AppButtons.CreateStandardButton(new RectangleF(175, 179, 120, 37), Resources.SignUpButton, AppStyle.ButtonColor.Black);
-            View.AddSubview(btnSignUp);
-
-            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.ButtonColor.CorporateColor );
-            View.AddSubview(btnPassword);       
-
+            AppButtons.FormatStandardButton (btnSignIn, Resources.SignInButton, AppStyle.ButtonColor.Black, null);
+            AppButtons.FormatStandardButton (btnSignUp, Resources.SignUpButton, AppStyle.ButtonColor.Grey, null);          
 
             ((TextField)txtEmail).PaddingLeft = 5;
-            ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA(7, 34, 57, 255);
+            ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
 
             txtEmail.Placeholder = Resources.EmailLabel;
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
             txtEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
             txtEmail.AutocorrectionType = UITextAutocorrectionType.No;
             txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtEmail.ShouldReturn = delegate
-            {                          
-                txtEmail.ResignFirstResponder();
+            txtEmail.ShouldReturn = delegate {                          
+                txtEmail.ResignFirstResponder ();
                 return true;
             };
 
             ((TextField)txtPassword).PaddingLeft = 5;
-            ((TextField)txtPassword).StrokeColor = UIColor.FromRGBA(7, 34, 57, 255);
+            ((TextField)txtPassword).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
 
             txtPassword.Placeholder = Resources.PasswordLabel;
             txtPassword.SecureTextEntry = true;
             txtPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtPassword.ShouldReturn = delegate
-            {                          
-                txtPassword.ResignFirstResponder();
+            txtPassword.ShouldReturn = delegate {                          
+                txtPassword.ResignFirstResponder ();
                 return true;
             };            
 
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            if (settings.FacebookEnabled)
-            {
-				var btnFbLogin = AppButtons.CreateStandardButton(new RectangleF(55, 281, 211, 41), Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");
-                View.AddSubview(btnFbLogin);
-                this.AddBindings(btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
-            }
 
-            if (settings.TwitterEnabled)
-            {
-				var btnTwLogin = AppButtons.CreateStandardButton(new RectangleF(55, 342, 211, 41), Resources.TwitterButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png" );
-                View.AddSubview(btnTwLogin);
-                this.AddBindings(btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            if (settings.FacebookEnabled) {
+                AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");               
+                this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
+            btnFbLogin.Hidden = !settings.FacebookEnabled;
 
-            if (settings.CanChangeServiceUrl)
-            {
-                var btnServer = AppButtons.CreateStandardButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.ButtonColor.AlternateCorporateColor, "Assets/server.png");
+
+            if (settings.TwitterEnabled) {
+                AppButtons.FormatStandardButton (btnTwLogin, Resources.TwitterButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png");
+                this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
+            }
+            btnTwLogin.Hidden = !settings.TwitterEnabled;
+
+            if (settings.CanChangeServiceUrl) {
+                AppButtons.FormatStandardButton (btnServer, "Change Server", AppStyle.ButtonColor.AlternateCorporateColor, "Assets/server.png");
                 btnServer.TouchUpInside += ChangeServerTouchUpInside;
-                View.AddSubview(btnServer);            
             }
+            btnServer.Hidden = !settings.CanChangeServiceUrl;
 
-			this.AddBindings(new Dictionary<object, string>() {
-				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},	
-                { btnPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'Signup'}}"},               
-				{ txtEmail, "{'Text':{'Path':'Email'}}"},
-				{ txtPassword, "{'Text':{'Path':'Password'}}"},
-			});
+            linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
+            
+            
+            this.AddBindings (new Dictionary<object, string> () {
+                { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
+                { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
+                { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
+                { txtEmail, "{'Text':{'Path':'Email'}}"},
+                { txtPassword, "{'Text':{'Path':'Password'}}"},
+            });
+
+            ViewModel.Load ();
+            this.View.ApplyAppFont();           
+
         }
 
-        void ChangeServerTouchUpInside(object sender, EventArgs e)
+        void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
-            var popup = new UIAlertView(){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
+            var popup = new UIAlertView (){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
             popup.Title = "Server Url";
-            popup.GetTextField(0).Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
-            var saveBtnIndex = popup.AddButton("Save");
-            var cancelBtnIndex = popup.AddButton("Cancel");
+            popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
+
+            var cancelBtnIndex = popup.AddButton ("Cancel");
+            var saveBtnIndex = popup.AddButton ("Save");
 
             popup.CancelButtonIndex = cancelBtnIndex;
 
-            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2)
-            {
-                if (e2.ButtonIndex == saveBtnIndex)
-                {
-                    TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = popup.GetTextField(0).Text ;                 
-                }
-                else
-                {
-                    popup.Dispose();
+            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
+                if (e2.ButtonIndex == saveBtnIndex) {
+                    TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = popup.GetTextField (0).Text;                 
+                } else {
+                    popup.Dispose ();
                 }
             };
-            popup.Show();
+            popup.Show ();
         }
 
-        private void LoadBackgroundNavBar(UINavigationBar bar)
+        private void LoadBackgroundNavBar (UINavigationBar bar)
         {
-            bar.TintColor =  AppStyle.NavigationBarColor;  
+            bar.TintColor = AppStyle.NavigationBarColor;  
 
             //It might crash on iOS version smaller than 5.0
-            try
-            {
-                bar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
+            try {
+                bar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
+            } catch {
             }
-            catch{ }
         }       
         #endregion
     }

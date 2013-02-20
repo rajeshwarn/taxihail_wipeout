@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     if(_ratingList.All(c => c.Score != 0))
                     {

@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.Messaging.Handling;
+﻿using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-
-
-    public class AccountCommandHandler : ICommandHandler<RegisterAccount>,
-                                         ICommandHandler<ConfirmAccount>, 
-                                         ICommandHandler<ResetAccountPassword>,
-                                         ICommandHandler<UpdateAccount>,
-                                         ICommandHandler<UpdateBookingSettings>,
-                                         ICommandHandler<RegisterFacebookAccount>,
-                                         ICommandHandler<RegisterTwitterAccount>,
-                                         ICommandHandler<UpdateAccountPassword>,
-                                         ICommandHandler<GrantAdminRight>
+    public partial class AccountCommandHandler : ICommandHandler<RegisterAccount>,
+                                                 ICommandHandler<ConfirmAccount>,
+                                         ICommandHandler<ConfirmAccountByAdmin>,
+                                                 ICommandHandler<ResetAccountPassword>,
+                                                 ICommandHandler<UpdateAccount>,
+                                                 ICommandHandler<UpdateBookingSettings>,
+                                                 ICommandHandler<RegisterFacebookAccount>,
+                                                 ICommandHandler<RegisterTwitterAccount>,
+                                                 ICommandHandler<UpdateAccountPassword>,
+                                                 ICommandHandler<GrantAdminRight>,
+                                                 ICommandHandler<AddCreditCard>,
+                                                 ICommandHandler<RemoveCreditCard>,
+                                                 ICommandHandler<RegisterDeviceForPushNotifications>,
+                                                 ICommandHandler<UnregisterDeviceForPushNotifications>
     {
-
         private readonly IEventSourcedRepository<Account> _repository;
         private readonly IPasswordService _passwordService;
 
@@ -68,7 +67,10 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var settings = new BookingSettings();
             AutoMapper.Mapper.Map(command, settings);
+
             account.UpdateBookingSettings(settings);
+            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipAmount, command.DefaultTipPercent);
+
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -98,5 +100,47 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.GrantAdminRight();
             _repository.Save(account, command.Id.ToString());
         }
+
+        public void Handle(AddCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName, command.Last4Digits, command.Token);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RemoveCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.RemoveCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RegisterDeviceForPushNotifications command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            if (!string.IsNullOrEmpty(command.OldDeviceToken))
+            {
+                account.UnregisterDeviceForPushNotifications(command.OldDeviceToken);
+            }
+
+            account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnregisterDeviceForPushNotifications command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UnregisterDeviceForPushNotifications(command.DeviceToken);
+            _repository.Save(account, command.Id.ToString());
+        }
+        
+         public void Handle(ConfirmAccountByAdmin command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.ConfirmAccountByAdmin();
+            _repository.Save(account, command.Id.ToString());
+        }
+
     }
 }

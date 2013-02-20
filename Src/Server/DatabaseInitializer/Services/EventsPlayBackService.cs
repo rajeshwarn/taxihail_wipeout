@@ -22,6 +22,14 @@ namespace DatabaseInitializer.Services
             _serializer = serializer;
         }
 
+        public int CountEvent(string aggregateType)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<Event>().Count(ev => ev.AggregateType == aggregateType);
+            }
+        }
+
         public void ReplayAllEvents()
         {
             IEnumerable<Event> allEvents;

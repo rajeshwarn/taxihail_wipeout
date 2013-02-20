@@ -654,7 +654,7 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog
         /// (NavigationControllers) or not.   If pushing is true, then the back button 
         /// will be shown, allowing the user to go back to the previous controller
         /// </param>
-        public DialogViewController (RootElement root, bool pushing) : base (UITableViewStyle.Grouped)
+        public DialogViewController (Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements.RootElement root, bool pushing) : base (UITableViewStyle.Grouped)
         {
             this.pushing = pushing;
             this.root = root;

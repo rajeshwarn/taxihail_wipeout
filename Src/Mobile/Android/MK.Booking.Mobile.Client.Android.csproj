@@ -52,7 +52,6 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -98,23 +97,22 @@
     <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\ShowDialogActivity.cs" />
-    <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
+    <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
-    <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Adapters\OrderListAdapter.cs" />
-    <Compile Include="Adapters\RatingListAdapter.cs" />
-    <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
-    <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\BindableSelectionButton.cs" />
     <Compile Include="Controls\EditTextDelete.cs" />
+    <Compile Include="Controls\EditTextSpinner.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
+    <Compile Include="Controls\HorizontalPager.cs" />
+    <Compile Include="Controls\PictureListViewCell.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -156,13 +154,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -204,17 +196,94 @@
     <AndroidResource Include="Resources\Drawable\pin_cab.png" />
     <AndroidResource Include="Resources\Drawable\pin_destination.png" />
     <AndroidResource Include="Resources\Drawable\pin_hail.png" />
+    <AndroidResource Include="Resources\Drawable\flag.png" />
+    <AndroidResource Include="Resources\Drawable\flag_selected.png" />
+    <AndroidResource Include="Resources\Drawable\hail.png" />
+    <AndroidResource Include="Resources\Drawable\hail_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\flag.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\flag_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\hail.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\hail_selected.png" />
+    <AndroidResource Include="Resources\Drawable\hail_state.xml" />
+    <AndroidResource Include="Resources\Drawable\flag_state.xml" />
+    <AndroidResource Include="Resources\Layout\test.axml" />
+    <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
+    <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
+    <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
+    <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
+    <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Controls\EditTextNavigate.cs" />
+    <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
+    <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
+    <AndroidResource Include="Resources\Drawable\closeButton.png" />
+    <Compile Include="Controls\UnderlineTextView.cs">
+      <DependentUpon>UnderlineTextView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StyledButton.cs" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
+    <Compile Include="Controls\SearchButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
+    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
+    <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
+    <AndroidResource Include="Resources\Drawable\amex.png" />
+    <AndroidResource Include="Resources\Drawable\mastercard.png" />
+    <AndroidResource Include="Resources\Drawable\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\amex.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mastercard.png" />
+    <Compile Include="Controls\BindableRadioButton.cs" />
+    <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
+    <Compile Include="Controls\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
+    <AndroidResource Include="Resources\Layout\View_BookPaymentSettings.axml" />
+    <Compile Include="Activities\Book\BookPaymentSettingsActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
+    <AndroidResource Include="Resources\Drawable\add_btn.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <AndroidResource Include="Resources\Drawable\notification_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_icon.png" />
+    <Compile Include="Animations\SlideDownAnimation.cs" />
+    <Compile Include="Controls\SlidingPanel.cs" />
+    <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
+    <AndroidResource Include="Resources\Drawable\backStatusVehicleInfo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\backStatusVehicleInfo.png" />
+    <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
+    <AndroidResource Include="Resources\Drawable\history.png" />
+    <AndroidResource Include="Resources\Drawable\favorites.png" />
+    <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
+    <AndroidResource Include="Resources\Drawable\address.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\favorites.png" />
+    <Compile Include="Binding\CellItemBinding.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\address.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\history.png" />
+    <AndroidResource Include="Resources\Drawable\visa_electron.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeue-Medium.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Lt.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Md.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Ex.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman2.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Bd.otf" />
+    <AndroidAsset Include="Assets\AppFont_Medium.otf" />
+    <AndroidAsset Include="Assets\AppFont_Regular.otf" />
+    <AndroidAsset Include="Assets\AppFont_Bold.otf" />
     <AndroidResource Include="Resources\Layout\View_Login.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -252,10 +321,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer.xml" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
     <AndroidResource Include="Resources\Layout\ListItemAutoComplete.axml">
       <SubType>AndroidResource</SubType>
@@ -282,84 +347,40 @@
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\TitleListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_Book.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\MenuItem.axml" />
+    <AndroidResource Include="Resources\Layout\MenuItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
-    <AndroidResource Include="Resources\Drawable\ic_tab_book.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_book_w.png" />
-    <AndroidResource Include="Resources\Drawable\book.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\Icon.png" />
     <AndroidResource Include="Resources\Values\Styles.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\splash.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_settings_w.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_settings.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_locations_w.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_locations.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_history_w.png" />
-    <AndroidResource Include="Resources\Drawable\ic_tab_history.png" />
-    <AndroidResource Include="Resources\Drawable\settings.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\locations.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\history.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Values-fr\Strings.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\green_button.xml" />
     <AndroidResource Include="Resources\Drawable\black_button.xml" />
     <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnDest_off.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnPickup_off.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnDest_on.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnPickup_on.png" />
-    <AndroidResource Include="Resources\Drawable\btnDest_off.png" />
-    <AndroidResource Include="Resources\Drawable\btnDest_on.png" />
-    <AndroidResource Include="Resources\Drawable\btnPickup_off.png" />
-    <AndroidResource Include="Resources\Drawable\btnPickup_on.png" />
-    <AndroidResource Include="Resources\Drawable\btnPickup.xml" />
-    <AndroidResource Include="Resources\Drawable\btnDest.xml" />
     <AndroidResource Include="Resources\Drawable\background.png" />
     <AndroidResource Include="Resources\Drawable\header.png" />
-    <AndroidResource Include="Resources\Drawable\topFieldBackgroundLg.png" />
-    <AndroidResource Include="Resources\Drawable\topFieldBackgroundSm.png" />
-    <AndroidResource Include="Resources\Drawable\btnPickLocation.xml" />
-    <AndroidResource Include="Resources\Drawable\btnPickLocationNormal.png" />
     <AndroidResource Include="Resources\Drawable\pickTimeNormal.png" />
     <AndroidResource Include="Resources\Drawable\pickTime.xml" />
     <AndroidResource Include="Resources\Drawable\pickDate.xml" />
     <AndroidResource Include="Resources\Drawable\pickDateNormal.png" />
     <AndroidResource Include="Resources\Drawable\location.png" />
-    <AndroidResource Include="Resources\Drawable\pushPin.png" />
     <AndroidResource Include="Resources\Drawable\pin_grey.png" />
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
     <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
-    <AndroidResource Include="Resources\Drawable\blackbutton.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\Drawable\cell_middle.9.png" />
-    <AndroidResource Include="Resources\Drawable\cell_top.9.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
@@ -369,9 +390,6 @@
     <AndroidResource Include="Resources\Drawable\forgot_password_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_button.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_middle.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_top.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\email_cell.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\forgot_password_btn.9.png" />
@@ -380,41 +398,18 @@
     <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\add_button.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_middle.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_top.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\email_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\facebook_icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\forgot_password_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\password_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\right_arrow.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\newBlackButton.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
       <SubType>Designer</SubType>
+      <DependentUpon>cell_middle_state.xml</DependentUpon>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_top_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_label.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_dropdown_bkgd.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_dropdown_endline.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_dropdownmiddle_bkgd.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_dropdownreverse_bkgd.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_dropdownreverse_endline.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_list_btn_selected.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_list_btn_unselected.png" />
-    <AndroidResource Include="Resources\Drawable\ddc_location_icon.png" />
-    <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom_full.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom_full.9.png" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
@@ -424,19 +419,11 @@
     <AndroidResource Include="Resources\Drawable\facebook_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon_hit.png" />
-    <AndroidResource Include="Resources\Drawable\blank_single.9.png" />
-    <AndroidResource Include="Resources\Drawable\add_single.9.png" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\forgot_password_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_bottom.9.png" />
-    <AndroidResource Include="Resources\Drawable\add_single_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\blank_single_state.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
@@ -446,7 +433,6 @@
     <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\server_button.png" />
     <AndroidResource Include="Resources\Drawable\searchTabBtn_off.png" />
     <AndroidResource Include="Resources\Drawable\searchTabBtn_on.png" />
     <AndroidResource Include="Resources\drawable-hdpi\searchTabBtn_off.png" />
@@ -462,21 +448,18 @@
     <AndroidResource Include="Resources\Drawable\target.png" />
     <AndroidResource Include="Resources\Drawable\target_selected.png" />
     <AndroidResource Include="Resources\Drawable\mylocation.png" />
-    <AndroidResource Include="Resources\Drawable\main_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\main_btn_selected.9.png" />
-    <AndroidResource Include="Resources\Drawable\main_btn_unselected.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\main_btn_unselected.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\main_btn_selected.9.png" />
     <AndroidResource Include="Resources\Drawable\target_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\backPickupDestination.png" />
     <AndroidResource Include="Resources\drawable-hdpi\bookLaterIcon.png" />
-    <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
+    <AndroidResource Include="Resources\Drawable\backPickupDestination.png">
+      <DependentUpon>background.png</DependentUpon>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
     <AndroidResource Include="Resources\drawable-hdpi\navBar.png" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer_pressed.xml" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer_state.xml" />
     <AndroidResource Include="Resources\Drawable\mylocation_pressed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\my_location_pressed.png" />
     <AndroidResource Include="Resources\Drawable\mylocation_state.xml">
@@ -488,25 +471,23 @@
     <AndroidResource Include="Resources\Drawable\Logo2.png" />
     <AndroidResource Include="Resources\Drawable\Logo.png" />
     <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
-    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml" />
+    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom_button_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\location_info.png" />
     <AndroidResource Include="Resources\drawable-hdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\number_icon_selected.png" />
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
-    <AndroidResource Include="Resources\Drawable\pin_state.xml" />
     <AndroidResource Include="Resources\Drawable\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\pin.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
-    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
+    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
     <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
@@ -541,6 +522,27 @@
     <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_yellow_circle.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
+    <AndroidResource Include="Resources\Drawable\grip.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\grip.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\phone.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -551,7 +553,7 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="Mapper\" />
+    <Folder Include="Localization\Mapper\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -586,9 +588,13 @@
       <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
       <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
+      <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
+      <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
+    <AndroidAsset Include="Assets\AppFont_Italic.otf" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
@@ -616,6 +622,22 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_HomeCmt.axml">
       <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\TutorialListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
+      <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,139 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background">
-    <LinearLayout
-        android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal">
-        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-            android:id="@+id/searchbtn"
-            android:text="@string/TabSearch"
-            android:background="@drawable/searchTabBtnSelector"
+        android:layout_height="fill_parent">
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:layout_weight="1"
-            android:textSize="15dip"
-            android:textColor="@color/white"
-            android:tag="SearchBtn"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;SearchSelected&apos;}}" />
-        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-            android:id="@+id/favbtn"
-            android:text="@string/TabFavorites"
-            android:background="@drawable/searchTabBtnSelector"
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:layout_weight="1"
-            android:textSize="15dip"
-            android:textColor="@color/white"
-            android:tag="FavoritesBtn"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;FavoritesSelected&apos;}}" />
-        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-            android:id="@+id/contactbtn"
-            android:text="@string/TabContacts"
-            android:background="@drawable/searchTabBtnSelector"
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:layout_weight="1"
-            android:textSize="15dip"
-            android:tag="ContactsBtn"
-            android:textColor="@color/white"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;ContactsSelected&apos;}}" />
-        <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
-            android:id="@+id/placesbtn"
-            android:text="@string/TabPlaces"
-            android:background="@drawable/searchTabBtnSelector"
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:layout_weight="1"
-            android:textSize="15dip"
-            android:tag="PlacesBtn"
-            android:textColor="@color/white"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;PlacesSelected&apos;}}" />
-    </LinearLayout>
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="7dip"
-        android:layout_marginRight="8dip">
-        <LinearLayout
-            android:layout_width="fill_parent"
+            android:id="@+id/topSection"
+            android:padding="8dp"
             android:layout_height="wrap_content">
-            <FrameLayout
+            <EditText
+                android:id="@+id/searchAddressText"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-                <apcurium.mk.booking.mobile.client.controls.AutoCompleteBindableTextView
-                    android:id="@+id/SearchAddressText"
-                    android:layout_alignParentLeft="true"
-                    android:layout_width="fill_parent"
-                    android:hint="@string/searchHint"
-                    android:imeOptions="actionDone"
-                    android:textSize="15dip"
-                    android:inputType="text"
-                    android:layout_height="40dp"
-                    android:maxLines="1"
-                    android:layout_gravity="center_vertical"
-                    android:background="@drawable/password_cell"
-                    android:drawablePadding="1dp"
-                    android:paddingLeft="35dp"
-                    local:MvxBind="{&apos;TextChangedCommand&apos;:{&apos;Path&apos;:&apos;SearchCommand&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}}"
-                    android:paddingRight="30dip" />
-                <Button
-                    android:id="@+id/eraseTextButton"
-                    android:background="@drawable/erase_cross_btn"
-                    android:layout_height="20dp"
-                    android:layout_width="20dp"
-                    android:gravity="center"
-                    android:layout_marginRight="5dip"
-                    android:layout_gravity="center_vertical|right"
-                    android:layout_alignParentRight="true"
-                    android:visibility="gone" />
-            </FrameLayout>
-        </LinearLayout>
-        <apcurium.mk.booking.mobile.client.controls.SpinningSearch
-            android:id="@+id/spinning"
-            android:layout_alignParentLeft="true"
-            android:layout_width="40dp"
-            local:MvxBind="{&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;}}"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="0dp" />
-    </FrameLayout>
-    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SearchAddressListView"
-        android:layout_marginBottom="5dip"
-        local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-    <TextView
-        android:id="@+id/HistoricListViewTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="9dip"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        style="@style/HeaderGroupTitle"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
-        android:visibility="gone" />
-    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/HistoricListView"
-        android:layout_marginBottom="5dip"
-        local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;HistoricAddressViewModels&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}, &apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-</LinearLayout>
+                android:imeOptions="actionDone"
+                android:textSize="15dip"
+                android:inputType="text"
+                android:layout_height="40dp"
+                android:maxLines="1"
+                android:background="@drawable/cell_full_state"
+                android:hint="@string/searchHint"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}}"
+                android:drawablePadding="1dp"
+                android:paddingLeft="36dp"
+                android:paddingRight="35dip" />
+            <ImageButton
+                android:id="@+id/clearable_button_clear"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/erase_cross_btn"
+                android:layout_height="35dp"
+                android:layout_width="35dp"
+                android:layout_marginRight="5dip" />
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="28dip"
+                android:minWidth="28dip"
+                android:maxHeight="28dip"
+                android:minHeight="28dip"
+                android:layout_marginLeft="4dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="true" />
+            <ImageView
+                android:id="@+id/progress_bar"
+                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="6dip"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_height="wrap_content"
+                android:src="@drawable/loupe" />
+        </RelativeLayout>
+        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/topSection"
+            android:fadingEdge="none"
+            android:id="@+id/SearchAddressListView"
+            android:layout_marginBottom="5dip"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:clickable="false"
+            android:background="@drawable/transparentAllStates"
+            local:MvxItemTemplate="@layout/simplelistitem"
+            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+    </RelativeLayout>
+</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

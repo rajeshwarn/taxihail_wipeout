@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             : base(context, attrs)
         {
 
+            
             var att = Context.ObtainStyledAttributes(attrs, new int[] { Resource.Attribute.HideLogo }, 0, 0);
             HideLogo = att.GetBoolean(0, true);
 
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public bool HideLogo { get; set; }
         public string RightButtonSource { get; set; }
         public string BackgroundSource { get; set; }
-        
+
 
         protected override void OnFinishInflate()
         {
@@ -72,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var child in childViews)
             {
-                contentLayout.AddView(child);
+                contentLayout.AddView(child);                
             }
 
             var logo = this.FindViewById<ImageView>(Resource.Id.MainLogo);
@@ -85,12 +86,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var d = Context.Resources.GetDrawable(Resource.Drawable.Logo) as BitmapDrawable;
                 var w = d.Bitmap.Width;
                 var h = d.Bitmap.Height;
+
                 var layoutParams = new RelativeLayout.LayoutParams(DrawHelper.GetPixels((56 * w) / h), DrawHelper.GetPixels(56));
                 layoutParams.AlignWithParent = true;
                 logo.LayoutParameters = layoutParams;
-                //var h = logo.MeasuredHeight;
-                //h.ToString();
-                //this.FindViewById<ImageView>(Resource.Id.MainLogo).Visibility = ViewStates.Invisible;
             }
 
             if (string.IsNullOrEmpty(RightButtonSource))
@@ -103,20 +102,62 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 this.FindViewById<ImageView>(Resource.Id.ViewNavBarRightButton).SetImageResource(id);
             }
 
-            if ( BackgroundSource.HasValue() )
+            if (BackgroundSource.HasValue())
             {
                 var id = Resources.GetIdentifier(BackgroundSource, "drawable", Context.PackageName);
                 this.FindViewById<ImageView>(Resource.Id.BackgroundImage).SetImageResource(id);
             }
 
-            if ( StyleManager.Current.NavigationTitleColor!= null )
+            if (StyleManager.Current.NavigationTitleColor != null)
             {
                 var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-                txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue ));  
+                txt.Typeface = AppFonts.Medium;
+                txt.TextSize = DrawHelper.GetPixels(16); // AppFonts.GetTitleSize();
+                txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue));
             }
+
+            LoopAllChildren(this);
 
 
         }
+
+        private void LoopAllChildren(View view)
+        {
+            if (view is ViewGroup)
+            {
+
+                var vGroup = view as ViewGroup;
+                for (int i = 0; i < vGroup.ChildCount; i++)
+                {
+                    var child = vGroup.GetChildAt(i);
+                    LoopAllChildren(child);
+
+
+                }
+            }
+            else if ( view is TextView )
+            {
+
+                var tt = ((TextView)view).Typeface;
+
+                if ( (tt != null) && (tt.IsBold) )
+                {                    
+                        ((TextView)view).Typeface = AppFonts.Medium;                                       
+                }
+                else if ((tt != null) && (tt.IsItalic))
+                {
+                    ((TextView)view).Typeface = AppFonts.Italic;                                       
+                }
+                else
+                {
+                    ((TextView)view).Typeface = AppFonts.Regular;
+                }
+
+
+                
+            }
+        }
+
 
 
 

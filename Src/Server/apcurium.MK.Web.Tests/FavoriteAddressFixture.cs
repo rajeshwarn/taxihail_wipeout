@@ -8,6 +8,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 
 namespace apcurium.MK.Web.Tests
@@ -15,7 +16,7 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class FavoriteAddressFixture: BaseTest
     {
-        private Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId;
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
@@ -32,15 +33,19 @@ namespace apcurium.MK.Web.Tests
         [SetUp]
         public override void Setup()
         {
+            _knownAddressId  = Guid.NewGuid();
             base.Setup();
             var sut = new AccountServiceClient(BaseUrl, SessionId);
             sut.AddFavoriteAddress(new SaveAddress
             {
-                Id = (_knownAddressId = Guid.NewGuid()),
-                FriendlyName = "La Boite à Jojo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Id = _knownAddressId,
+                Address = new Address
+                {
+                    FriendlyName = "La Boite à Jojo",
+                    FullAddress = "1234 rue Saint-Denis",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
             });
         }
 
@@ -53,13 +58,16 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress
                                        {
                                            Id = addressId,
-                                           FriendlyName = "Chez François Cuvelier",
-                                           Apartment = "3939",
-                                           FullAddress = "1234 rue Saint-Hubert",
-                                           RingCode = "3131",
-                                           BuildingName = "Hôtel de Ville",
-                                           Latitude = 45.515065,
-                                           Longitude = -73.558064
+                                           Address = new Address
+                {
+                    FriendlyName = "Chez François Cuvelier",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
                                        });
 
             var addresses = sut.GetFavoriteAddresses();
@@ -90,13 +98,16 @@ namespace apcurium.MK.Web.Tests
             sut.UpdateFavoriteAddress(new SaveAddress
             {
                 Id = _knownAddressId,
-                FriendlyName = "Chez François Cuvelier",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Le Manoir",
-                Latitude = 12,
-                Longitude = 34
+                Address = new Address
+                {
+                    FriendlyName = "Chez François Cuvelier",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Le Manoir",
+                    Latitude = 12,
+                    Longitude = 34
+                }
             });
 
             var address = sut.GetFavoriteAddresses().Single(x => x.Id == _knownAddressId);
@@ -120,6 +131,8 @@ namespace apcurium.MK.Web.Tests
                 .UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
+                    Address = new Address
+                {
                     FriendlyName =
                         "Chez François Cuvelier",
                     Apartment = "3939",
@@ -128,6 +141,7 @@ namespace apcurium.MK.Web.Tests
                     RingCode = "3131",
                     Latitude = double.NaN,
                     Longitude = double.NaN
+                }
                 }));
 
         }

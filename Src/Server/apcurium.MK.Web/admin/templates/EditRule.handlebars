@@ -1,0 +1,33 @@
+<div class='well'>
+    <h4 class="table-title">
+        {{#if editMode}}
+        {{localize "Edit Rule"}}
+        {{else}}
+        {{localize "Add Rule"}}
+        {{/if}}
+    </h4>
+    <div class="errors" style="margin-top: 10px;"></div>
+    <form class="form-horizontal clearfix" >
+        <input type='hidden' name='type' value='{{type}}' />
+        <input type='hidden' name='type' value='{{category}}' />
+        <div class="control-group">
+            <label class="control-label">{{localize 'Name'}}</label>
+            <div class="controls">
+                {{#if isDefault}}
+                    <label>{{localize "Default"}}</label>
+                    <input type="hidden" name="name"  value="default">
+                {{else}}
+                    <input type="text" name="name"  value="{{name}}" class='input-block-level'>
+                {{/if}}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{localize 'Message'}}</label>
+            <div class="controls">
+                <input type="text" name="message"  value="{{Message}}" class='input-mini'>
+            </div>
+        </div>
+        
+        <button type='submit' class='btn btn-primary'>{{localize "Save Tariff"}}</button>
+    </form>
+</div>

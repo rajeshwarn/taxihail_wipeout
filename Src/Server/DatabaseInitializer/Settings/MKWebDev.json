@@ -20,7 +20,7 @@
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.SiteName" : "Dev",
-   "TaxiHail.Version" : "1.1.0",
+   "TaxiHail.Version" : "1.3.0",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
    "TwitterAccessTokenUrl" : "",
@@ -35,5 +35,8 @@
    "IBS.PickupZoneToExclude" : "",
    "IBS.ValidateDestinationZone" : "false",
    "IBS.ValidatePickupZone" : "false",
-   "Receipt.Note": "Thank You!<br>The Taxi Hail Team"
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
+   "APNS.ProductionCertificatePath": "../../Certificates/production.p12",
+   "APNS.DevelopmentCertificatePath": "../../Certificates/development.p12",
+   "GCM.PackageName": "com.apcurium.MK.TaxiHailDemo"
 }

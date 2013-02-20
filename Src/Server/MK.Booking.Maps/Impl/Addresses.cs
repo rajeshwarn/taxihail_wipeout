@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -23,10 +25,26 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address[] Search(string name, double latitude, double longitude)
+		/// <summary>
+		/// Search addresses for the specified name, latitude and longitude.
+		/// </summary>
+		/// <param name='name'>
+		/// Search criteria, address fragment. Cannot be null or empty
+		/// </param>
+		/// <param name='latitude'>
+		/// Latitude
+		/// </param>
+		/// <param name='longitude'>
+		/// Longitude
+		/// </param>
+        public Address[] Search(string name, double? latitude, double? longitude)
         {
-            var term = name.Substring(0, 1);
-
+            if ( name.IsNullOrEmpty() )
+            {
+                return new Address[0];
+            }			
+            
+			var term = name.Substring(0, 1);
             int n;
             var isNumeric = int.TryParse(term, out n);
 
@@ -37,11 +55,22 @@ namespace apcurium.MK.Booking.Maps.Impl
             var t1 = Task.Factory.StartNew(() =>
             {
                 var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
-                addressesGeocode = (Address[])geoCodingService.Search(name).Take(20).ToArray();
+
+
+                var allResults = geoCodingService.Search(name);
+                if ( latitude.HasValue && longitude.HasValue && ( latitude.Value != 0 || longitude.Value != 0 )  )
+                {
+                    addressesGeocode = allResults.OrderBy ( adrs => Position.CalculateDistance( adrs.Latitude, adrs.Longitude, latitude.Value , longitude.Value )).Take(20).ToArray();
+                }
+                else
+                {
+                    addressesGeocode = allResults.Take (20).ToArray ();
+                }
+
             });
 
             Task t2 = null;
-            if (!isNumeric)
+            if  (!isNumeric)
             {
                 t2 = Task.Factory.StartNew(() =>
                 {
@@ -61,7 +90,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 return addressesGeocode.ToArray();
             }
-
 
         }
 

@@ -18,18 +18,16 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
     {
         private OverlayItem _item;
         private string _title;
-        private string _subTitle;
         private MapView _owner;
 
         private int _markerHeight;
 
-        public TaxiOverlay(MapView owner, Drawable taxiImage, string title,string subTitle, GeoPoint point)
+        public TaxiOverlay(MapView owner, Drawable taxiImage, string title, GeoPoint point)
             : base(taxiImage)
         {
             _owner = owner;
             _item = new OverlayItem(point, title, null);
             _title = title;
-            _subTitle = subTitle;
             BoundCenterBottom(taxiImage);
             
             _markerHeight = taxiImage.Bounds.Height();
@@ -69,22 +67,20 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     Paint paintRect = new Paint();
 
                     Rect rect = new Rect();
-                    paintText.TextSize = 22;
+                    paintText.TextSize = 18;
                     paintText.GetTextBounds(_title, 0, item.Title.Length, rect);
 
                     rect.Inset(-3, -3);
-                    rect.OffsetTo(markerBottomCenterCoords.X - rect.Width() / 2, markerBottomCenterCoords.Y - _markerHeight + 8);
+                    rect.OffsetTo(markerBottomCenterCoords.X - rect.Width() / 2, markerBottomCenterCoords.Y - _markerHeight + 2);
 
                     paintText.TextAlign = Paint.Align.Center;
-                    paintText.TextSize = 22;
-                    paintText.SetARGB(255, 255, 255, 255);
+                    paintText.TextSize = 18;
+                    paintText.SetARGB(255, 0, 0, 0);
                     paintRect.SetARGB(0, 0, 0, 0);
                     
                     paintText.SetTypeface( AppFonts.Bold );
                     canvas.DrawRoundRect(new RectF(rect), 2, 2, paintRect);
                     canvas.DrawText(_title, rect.Left + rect.Width() / 2, rect.Bottom - 3, paintText);
-
-                    canvas.DrawText(_subTitle, rect.Left + rect.Width() / 2, rect.Bottom - 3  + rect.Height(), paintText);
 
                 }
             }
@@ -154,28 +150,3 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         }
     }
 }
-
-
-//public void addOverlay(int latitude, int longitude, String title,
-//        String snippet)
-//{
-//    OverlayItem item;
-
-//    GeoPoint geopoint = new GeoPoint(latitude, longitude);
-//    item = new OverlayItem(geopoint, title, snippet);
-//    mOverlays.add(item);
-//    populate();
-
-//}
-
-//public void addOverlay(OverlayItem overlayItem)
-//{
-//    mOverlays.add(overlayItem);
-//    populate();
-//}
-
-//private int markerHeight;
-//private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-
-//private static final int FONT_SIZE = 12;
-//private static final int TITLE_MARGIN = 3;

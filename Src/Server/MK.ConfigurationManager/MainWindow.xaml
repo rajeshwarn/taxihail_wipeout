@@ -1,17 +1,20 @@
 ﻿<Window x:Class="MK.ConfigurationManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="1000" Width="1000">
+        Title="MainWindow" Height="1000" Width="1000" >
+    
     <Grid Margin="0,0,0,0">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <TabControl  VerticalAlignment="Top" MinHeight="937">
+        
+        <TabControl  VerticalAlignment="Top"  Grid.Row="0">
+            
             <TabItem Header="Companies">
                 <ScrollViewer>
-                    <StackPanel Background="#FFE5E5E5" Height="909" VerticalAlignment="Top">
+                    <StackPanel Background="#FFE5E5E5"  >
                         <Button x:Name="addCompabyBt" Content="Add a new Company" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10" Click="addCompabyBt_Click"/>
                         <ComboBox DisplayMemberPath="Name" SelectedItem="{Binding CurrentCompany,Mode=TwoWay}" ItemsSource="{Binding Companies}" x:Name="companiesList" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
                         <TextBox x:Name="companyName" Text="{Binding CurrentCompany.Name, Mode=TwoWay}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10" />
@@ -32,12 +35,12 @@
                             <Button Content="Generate keystore and google map key" HorizontalAlignment="Left" Margin="10,10,10,10" Width="250" x:Name="GenerateKeyStoreAndMapKey" Click="GenerateKeyStoreAndMapKey_Click" />
                             <Button Content="Import mobile template Settings" HorizontalAlignment="Left" Margin="10,10,10,10" Width="250" x:Name="ImportMobileSettings" Click="ImportMobileSettings_Click" />
                         </StackPanel>
-                        
-                    </StackPanel>
+                </StackPanel>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="IBS Servers">
-                <Grid Background="#FFE5E5E5">
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
@@ -52,9 +55,11 @@
                     </DataGrid>
                     <Button Grid.Row="1" Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveIBSServer" />
                 </Grid>
+                    </ScrollViewer>
             </TabItem>
             <TabItem Header="Envrionnements">
-                <Grid Background="#FFE5E5E5">
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
@@ -70,16 +75,23 @@
                     </DataGrid>
                     <Button Grid.Row="1" Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveTaxiHailEnvironment" />
                 </Grid>
+                    </ScrollViewer>
             </TabItem>
             <TabItem Header="Deploy">
-                <Grid Background="#FFE5E5E5">
+                <ScrollViewer>
+
+                    <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <Button Content="Refresh" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="RefreshDeployments" />
-                    <DataGrid  Grid.Row="1" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding DeploymentJobs}">
+                   
+                    <StackPanel Orientation="Horizontal">
+                            <Button Content="Refresh" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="RefreshDeployments" />
+                            <Button Content="Clear deploy history" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="ClearDeployHistory" />
+                        </StackPanel>
+                    <DataGrid Name="DeployDataGrid"  Grid.Row="1" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding DeploymentJobs}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
                             <DataGridTextColumn Width="100" Header="Company" Binding="{Binding Company.Name}" />
@@ -95,7 +107,6 @@
                         </DataGrid.Columns>
                     </DataGrid>
                     <GroupBox Grid.Row="2" Margin="10,10,26,10" Header="New Deployment">
-                        <ScrollViewer>
                             <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -117,13 +128,13 @@
                                 </Grid.RowDefinitions>
                                 
                                 <TextBlock VerticalAlignment="Center">Company</TextBlock>
-                                <ComboBox Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployCompany,Mode=TwoWay}" ItemsSource="{Binding Companies}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Column="1" Name="DeployCompanyCombobox" DisplayMemberPath="Name" SelectedItem="{Binding DeployCompany,Mode=TwoWay}" ItemsSource="{Binding Companies}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="1" VerticalAlignment="Center">IBSServer</TextBlock>
-                                <ComboBox Grid.Row="1" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                    <ComboBox Grid.Row="1" Name="DeployIbsServerCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
-                                <ComboBox Grid.Row="2" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                    <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="4" VerticalAlignment="Center">Revision</TextBlock>
                                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DeployRevision}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
@@ -138,21 +149,25 @@
                                 <Button Grid.Row="10" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
                             </Grid>
                         </StackPanel>
-                        </ScrollViewer>
                     </GroupBox>
                 </Grid>
+                </ScrollViewer>
             </TabItem>
-            <TabItem Header="Options">
-                <StackPanel Background="#FFE5E5E5">
+            <TabItem Header="Options" >
+                <ScrollViewer>
+                    
+                <StackPanel Background="#FFE5E5E5" MinHeight="910">
                     <ComboBox Margin="10,10,10,10" x:Name="currentDbList">
                         <ComboBoxItem Content="Data Source=.;Initial Catalog=MKConfigurationManager;Integrated Security=True; MultipleActiveResultSets=True" />
                         <ComboBoxItem Content="Data Source=TaxiHail01;Initial Catalog=MKConfigurationManager;Integrated Security=True; MultipleActiveResultSets=True" />
                     </ComboBox>
                     <Button Content="Update" x:Name="updateCS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="99" Click="updateCS_Click" />
                 </StackPanel>
+                </ScrollViewer>
+
             </TabItem>
         </TabControl>
-        <StatusBar Grid.Row="1" x:Name="StatusBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="592" Height="30">
+        <StatusBar Grid.Row="1" x:Name="StatusBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1000" Height="30">
             <StatusBarItem>
                 <TextBlock x:Name="statusBarTb"></TextBlock>
             </StatusBarItem>

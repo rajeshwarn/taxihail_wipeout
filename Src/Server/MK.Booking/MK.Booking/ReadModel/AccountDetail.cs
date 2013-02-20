@@ -1,4 +1,5 @@
-﻿using System;
+﻿using apcurium.MK.Common.Entity;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace apcurium.MK.Booking.ReadModel
@@ -8,7 +9,7 @@ namespace apcurium.MK.Booking.ReadModel
         public AccountDetail()
         {
             //required by EF
-            Settings = new BookingSettingsDetails();
+            Settings = new BookingSettings();
         }
 
         [Key]
@@ -24,7 +25,11 @@ namespace apcurium.MK.Booking.ReadModel
         public string Language { get; set; }
         public bool IsAdmin { get; set; }
         
-        public BookingSettingsDetails Settings { get; set; }
+        public BookingSettings Settings { get; set; }
+
+        public Guid? DefaultCreditCard { get; set; }
+        public double? DefaultTipAmount { get; set; }
+        public double? DefaultTipPercent { get; set; } 
         
     }
 }

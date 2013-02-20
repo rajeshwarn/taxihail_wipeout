@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DatabaseInitializer</RootNamespace>
     <AssemblyName>DatabaseInitializer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,7 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
@@ -50,13 +51,18 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SlowCheetahTargets Condition=" '$(SlowCheetahTargets)'=='' ">..\MSBuild\SlowCheetah\v1\SlowCheetah.Transforms.targets</SlowCheetahTargets>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -73,7 +79,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -87,22 +93,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OldEvents\FavoriteAddressv1.cs" />
+    <Compile Include="Services\AddressEventsMigrator.cs" />
+    <Compile Include="Services\IEventsMigrator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EventsPlayBackService.cs" />
     <Compile Include="Services\IEventsPlayBackService.cs" />
+    <Compile Include="Services\OrderStatusEventsMigrator.cs" />
     <Compile Include="Sql\DatabaseCreator.cs" />
     <Compile Include="Sql\DatabaseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
+      <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
+      <Name>MK.Booking.Api %28MK.Booking.Api\MK.Booking.Api%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
+      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
+      <Name>MK.Booking.Google</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7b615ea9-4232-4ffb-b66c-ac7b833973c9}</Project>
       <Name>MK.Booking.IBS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Maps\MK.Booking.Maps.csproj">
+      <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
+      <Name>MK.Booking.Maps</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
       <Project>{20aea350-ad91-4053-a8b5-582e13ed43aa}</Project>
       <Name>MK.Booking.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking.Events\MK.Booking.Events.csproj">
+      <Project>{1d5cc591-d706-4f4e-b4bd-805a191999d7}</Project>
+      <Name>MK.Booking.Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>

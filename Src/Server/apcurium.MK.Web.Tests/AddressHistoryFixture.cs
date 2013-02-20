@@ -46,7 +46,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),                   
                 
             };
-            order.Settings = new Booking.Api.Contract.Resources.BookingSettings{ ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
+            order.Settings = new BookingSettings{ ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
             orderService.CreateOrder(order);
 
             //Assert
@@ -88,12 +88,15 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress()
             {
                 Id = addressId,
-                FriendlyName = "La Boite à Jojo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064,
-                Apartment = "3939",
-                RingCode = "3131"
+                Address = new Address
+                {
+                    FriendlyName = "La Boite à Jojo",
+                    FullAddress = "1234 rue Saint-Denis",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    Apartment = "3939",
+                    RingCode = "3131"
+                }
             });
 
             //Assert
@@ -120,7 +123,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
 
             };
-            order.Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
             orderService.CreateOrder(order);
 
             var sut = new AccountServiceClient(BaseUrl, SessionId);

@@ -39,10 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             _positiveButtonTitle = Intent.GetStringExtra("PositiveButtonTitle");
             _negativeButtonTitle = Intent.GetStringExtra("NegativeButtonTitle");
             _neutralButtonTitle = Intent.GetStringExtra("NeutralButtonTitle");
-
-
-
-
         }
 
         protected override void OnStart()
@@ -63,7 +59,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             else
             {
-                AlertDialogHelper.ShowAlert(this, _title, _message, () => Finish());
+               // AlertDialogHelper.ShowAlert(this, _title, _message, () => Finish());
+                if (_positiveButtonTitle.HasValue())
+                {
+                    AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle));
+                }
+                else
+                {
+                    AlertDialogHelper.ShowAlert(this, _title, _message, () => SendMessage(_positiveButtonTitle));
+                }
             }
         }
 

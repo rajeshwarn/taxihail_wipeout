@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Tests
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
             };
-
+            
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1 , ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             var details = sut.CreateOrder(order);
@@ -55,7 +55,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
         }
-
+        
         [Test]
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
         public void when_creating_order_without_passing_settings()
@@ -130,7 +130,7 @@ namespace apcurium.MK.Web.Tests
 
             var status = sut.GetOrderStatus(_orderId);
 
-            Assert.AreEqual("Cancelled", status.IBSStatusDescription);
+            Assert.AreEqual(OrderStatus.Canceled, status.Status);
         }
 
         [Test]

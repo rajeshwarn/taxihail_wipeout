@@ -12,7 +12,7 @@ using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class UpdatePasswordView : MvxBindingTouchViewController<UpdatePasswordViewModel>
+	public partial class UpdatePasswordView : BaseViewController<UpdatePasswordViewModel>
 	{
 		#region Constructors
 		public UpdatePasswordView(Guid accountId) 
@@ -41,25 +41,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtNewPassword.Frame.Bottom + 200);
+            NavigationItem.Title = Resources.GetValue("Password");
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			
 			lblCurrentPassword.Text = Resources.CurrentPasswordLabel;
 			lblNewPassword.Text = Resources.NewPasswordLabel;
 			lblNewPasswordConfirmation.Text = Resources.NewPasswordConfirmationLabel;
-			lblCurrentPassword.TextColor = AppStyle.TitleTextColor;
-			lblNewPassword.TextColor = AppStyle.TitleTextColor;
-			lblNewPasswordConfirmation.TextColor = AppStyle.TitleTextColor;
+			//lblCurrentPassword.TextColor = AppStyle.TitleTextColor;
+			//lblNewPassword.TextColor = AppStyle.TitleTextColor;
+			//lblNewPasswordConfirmation.TextColor = AppStyle.TitleTextColor;
 			
-			txtCurrentPassword.TextColor = AppStyle.GreyText;
-			txtNewPassword.TextColor = AppStyle.GreyText;
-			txtNewPasswordConfirmation.TextColor = AppStyle.GreyText;
+			//txtCurrentPassword.TextColor = AppStyle.GreyText;
+			//txtNewPassword.TextColor = AppStyle.GreyText;
+			//txtNewPasswordConfirmation.TextColor = AppStyle.GreyText;
 			
-			txtCurrentPassword.PaddingLeft = 5;
-			txtNewPassword.PaddingLeft = 5;
-			txtNewPasswordConfirmation.PaddingLeft = 5;
+			//txtCurrentPassword.PaddingLeft = 5;
+			//txtNewPassword.PaddingLeft = 5;
+			//txtNewPasswordConfirmation.PaddingLeft = 5;
 			
-			txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
+            txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPasswordConfirmation.ShouldReturn = ShouldReturnDelegate;
 			
@@ -77,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{txtNewPassword, "{'Text':{'Path':'NewPassword'}}"} ,
 				{txtNewPasswordConfirmation, "{'Text':{'Path':'NewPasswordConfirmation'}}"} ,
 			});
+            this.View.ApplyAppFont ();
 		}
 		
 		public override void ViewDidUnload ()

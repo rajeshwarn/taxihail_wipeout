@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
+using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.AddressesFixture
 {
@@ -35,28 +34,32 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.sut.When(new AddFavoriteAddress
                               {
-                                  AddressId = addressId,
-                                  AccountId =  _accountId,
-                                  FriendlyName = "Chez François",
-                                  Apartment = "3939",
-                                  FullAddress = "1234 rue Saint-Hubert",
-                                  RingCode = "3131",
-                                  BuildingName = "Hôtel de Ville",
-                                  Latitude   = 45.515065,
-                                  Longitude = -73.558064
+                                  
+                                  AccountId = _accountId,
+                                  Address = new Address
+                {
+                    Id = addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
                               });
 
             Assert.AreEqual(1, sut.Events.Count);
             var evt = (FavoriteAddressAdded)sut.Events.Single();
             Assert.AreEqual(_accountId, evt.SourceId);
-            Assert.AreEqual(addressId, evt.AddressId);
-            Assert.AreEqual("Chez François", evt.FriendlyName);
-            Assert.AreEqual("3939", evt.Apartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.FullAddress);
-            Assert.AreEqual("3131", evt.RingCode);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
-            Assert.AreEqual(45.515065, evt.Latitude);
-            Assert.AreEqual(-73.558064, evt.Longitude);
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François", evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
 
         }
 
@@ -66,26 +69,29 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.companySut.When(new AddDefaultFavoriteAddress
             {
-                AddressId = addressId,
-                FriendlyName = "Chez François",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+               {
+                   Id = addressId,
+                   FriendlyName = "Chez François",
+                   Apartment = "3939",
+                   FullAddress = "1234 rue Saint-Hubert",
+                   RingCode = "3131",
+                   BuildingName = "Hôtel de Ville",
+                   Latitude = 45.515065,
+                   Longitude = -73.558064
+               }
             });
 
             Assert.AreEqual(1, companySut.Events.Count);
             var evt = (DefaultFavoriteAddressAdded)companySut.Events[0];
-            Assert.AreEqual(addressId, evt.AddressId);
-            Assert.AreEqual("Chez François", evt.FriendlyName);
-            Assert.AreEqual("3939", evt.Apartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.FullAddress);
-            Assert.AreEqual("3131", evt.RingCode);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
-            Assert.AreEqual(45.515065, evt.Latitude);
-            Assert.AreEqual(-73.558064, evt.Longitude);
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François",  evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
 
         }
 
@@ -96,49 +102,57 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.companySut.When(new AddPopularAddress
             {
-                AddressId = addressId,
-                FriendlyName = "Chez François popular",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                              {
+
+                                  Id = addressId,
+                                  FriendlyName = "Chez François popular",
+                                  Apartment = "3939",
+                                  FullAddress = "1234 rue Saint-Hubert",
+                                  RingCode = "3131",
+                                  BuildingName = "Hôtel de Ville",
+                                  Latitude = 45.515065,
+                                  Longitude = -73.558064
+                              }
             });
 
             Assert.AreEqual(1, companySut.Events.Count);
             
             var evt = (PopularAddressAdded)companySut.Events[0];
-            Assert.AreEqual(addressId, evt.AddressId);
-            Assert.AreEqual("Chez François popular", evt.FriendlyName);
-            Assert.AreEqual("3939", evt.Apartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.FullAddress);
-            Assert.AreEqual("3131", evt.RingCode);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
-            Assert.AreEqual(45.515065, evt.Latitude);
-            Assert.AreEqual(-73.558064, evt.Longitude);
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François popular", evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
 
         }
 
         [Test]
         public void when_adding_an_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress { AccountId = _accountId, FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress
+            {
+                AccountId = _accountId,
+                Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }
+            }));
         }
 
         [Test]
         public void when_adding_an_company_default_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddDefaultFavoriteAddress { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddDefaultFavoriteAddress { Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 } }));
         }
 
         [Test]
         public void when_adding_an_company_popular_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddPopularAddress { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddPopularAddress { Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 } }));
         }
 
-        [Test]
+        [Test] 
         public void when_adding_an_address_with_and_invalid_latitude_or_longitude()
         {
 
@@ -146,24 +160,30 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                 .sut.When(new AddFavoriteAddress
                     {
                         AccountId = _accountId,
-                        FriendlyName = "Chez François",
-                        Apartment = "3939",
-                        FullAddress = "1234 rue Saint-Hubert",
-                        RingCode = "3131",
-                        Latitude = 180,
-                        Longitude = -73.558064
+                        Address = new Address
+                {
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = 180,
+                    Longitude = -73.558064
+                }
                     }));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => this
                 .sut.When(new AddFavoriteAddress
                 {
                     AccountId = _accountId,
+                    Address = new Address
+                {
                     FriendlyName = "Chez François",
                     Apartment = "3939",
                     FullAddress = "1234 rue Saint-Hubert",
                     RingCode = "3131",
                     Latitude = 0,
                     Longitude = -200.558064
+                }
                 }));
         }
 

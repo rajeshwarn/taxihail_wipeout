@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string DefaultPhoneNumberDisplay { get; set; }
 
 
+        public bool? TutorialEnabled{ get; set; }
+
         public bool TwitterEnabled{ get; set; }
         public string TwitterConsumerKey { get; set; }
         public string TwitterCallback { get; set; }
@@ -34,10 +36,13 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string FacebookAppId{ get; set; }
 
         public string SupportEmail { get; set; }
-
-        public bool RatingEnabled { get; set; }
-        
+        public bool RatingEnabled { get; set; }        
+        public bool StreetNumberScreenEnabled { get; set; }
         public bool IsCMT { get; set; }
+        public bool PayByCreditCardEnabled { get; set; }
 
     }
 }
+
+
+

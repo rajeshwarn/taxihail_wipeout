@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
 {
@@ -21,7 +22,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         public void Setup()
         {
 
-            sut = new MapsApiClient(new TestConfigurationManager());
+            sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
 
         }
 

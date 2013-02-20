@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
+using Infrastructure.Serialization;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -13,8 +14,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Common.Web;
-using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
-using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
+using System.Net;
 
 
 namespace apcurium.MK.Booking.Api.Services
@@ -25,13 +25,13 @@ namespace apcurium.MK.Booking.Api.Services
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IConfigurationManager _configManager;
         private IAccountDao _accountDao;
-
+        private IRuleDao _ruleDao;
         private ReferenceDataService _referenceDataService;
+
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
-                                    IStaticDataWebServiceClient staticDataWebServiceClient,
-                                    IAccountDao accountDao,
-                                    ICacheClient cacheClient, 
+                                    IAccountDao accountDao, 
+                                    IRuleDao ruleDao,
                                     IConfigurationManager configManager,
                                     ReferenceDataService referenceDataService)
         {
@@ -40,10 +40,21 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
+            _ruleDao = ruleDao;
         }
 
         public override object OnPost(CreateOrder request)
         {
+            Trace.WriteLine("Create order request : " + request);
+
+            var rule = _ruleDao.GetActiveDisableRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime());
+            if (rule != null)
+            {
+                var err = new HttpError(  HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);                
+                throw err;
+            }
+
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             //TODO: Fix this when IBS will accept more than 10 digits phone numbers
@@ -82,6 +93,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 _commandBus.Send(emailCommand);
             }
+
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
         }
 
@@ -101,16 +113,14 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? CreateIBSOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
         {
-
-            if (!request.Settings.ProviderId.HasValue)
-            {
-                throw new HttpError(ErrorCode.CreateOrder_NoProvider.ToString());
-            }
-            else if (referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            // Provider is optional
+            // But if a provider is specified, it must match with one of the ReferenceData values
+            if (request.Settings.ProviderId.HasValue &&
+                referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
-            
+
 
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;

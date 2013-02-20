@@ -56,6 +56,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             }));
         }
 
+
+    
+
         [Test]
         public void when_creating_a_new_rate()
         {
@@ -94,6 +97,126 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(TariffType.Recurring, evt.Type);
 
         }
+
+
+        [Test]
+        public void when_creating_a_new_rule()
+        {
+            var ruleId = Guid.NewGuid();
+
+            this.sut.When(new CreateRule
+            {
+                CompanyId = _companyId,
+                RuleId = ruleId,                
+                Category = RuleCategory.DisableRule,
+                Type = RuleType.Default,
+                Message = "Due to..."
+            });
+
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = (RuleCreated)sut.Events.Single();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(ruleId, evt.RuleId);
+            Assert.AreEqual(RuleCategory.DisableRule, evt.Category);
+            Assert.AreEqual(RuleType.Default, evt.Type);
+            Assert.AreEqual("Due to...", evt.Message);
+
+        }
+
+        [Test]
+        public void when_creating_default_warning_and_disable_rule()
+        {
+            var ruleId = Guid.NewGuid();
+
+            this.sut.When(new CreateRule
+            {
+                CompanyId = _companyId,
+                RuleId = ruleId,
+                Category = RuleCategory.DisableRule,
+                Type = RuleType.Default,
+                Message = "Due to..."
+            });
+
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = (RuleCreated)sut.Events.Single();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(ruleId, evt.RuleId);
+            Assert.AreEqual(RuleCategory.DisableRule, evt.Category);
+            Assert.AreEqual(RuleType.Default, evt.Type);
+            Assert.AreEqual("Due to...", evt.Message);
+
+            ruleId = Guid.NewGuid();
+
+            this.sut.When(new CreateRule
+            {
+                CompanyId = _companyId,
+                RuleId = ruleId,
+                Category = RuleCategory.WarningRule,
+                Type = RuleType.Default,
+                Message = "Due to..."
+            });
+
+            Assert.AreEqual(2, sut.Events.Count);
+            evt = (RuleCreated)sut.Events.Single(e => ((RuleCreated)e).Category == RuleCategory.WarningRule );
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(ruleId, evt.RuleId);
+            Assert.AreEqual(RuleCategory.WarningRule, evt.Category);
+            Assert.AreEqual(RuleType.Default, evt.Type);
+            Assert.AreEqual("Due to...", evt.Message);
+
+
+        }
+
+
+        [Test]
+        public void when_creating_two_default_warning_rules()
+        {
+            var ruleId = Guid.NewGuid();
+
+            this.sut.Given(new RuleCreated
+            {
+                SourceId = _companyId,
+                RuleId = ruleId,
+                Type = RuleType.Default,
+                Category = RuleCategory.WarningRule,
+                Message = "Due to..."
+            });
+
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRule
+            {
+                CompanyId = _companyId,
+                RuleId = Guid.NewGuid(),
+                Category = RuleCategory.WarningRule,
+                Type = RuleType.Default,
+                Message = "Due to..."
+            }));
+        }
+        [Test]
+        public void when_creating_two_default_disable_rules()
+        {
+            var ruleId = Guid.NewGuid();
+
+            this.sut.Given(new RuleCreated
+            {
+                SourceId = _companyId,
+                RuleId = ruleId,
+                Type = RuleType.Default,
+                Category = RuleCategory.DisableRule,
+                Message = "Due to..."
+            });
+
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRule
+            {
+                CompanyId = _companyId,
+                RuleId = Guid.NewGuid(),
+                Category = RuleCategory.DisableRule,
+                Type = RuleType.Default,
+                Message = "Due to..."
+            }));
+        }
+
+
+
 
        [Test]
         public void when_appsettings_added_successfully()

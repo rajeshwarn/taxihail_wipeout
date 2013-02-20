@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -45,22 +46,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			lblAptNumber.Text = Resources.AptNumber;
 			lblRingCode.Text = Resources.RingCode;
-			lblBuildingName.Text = Resources.BuildingName;
+			
 			lblAptNumber.TextColor = AppStyle.TitleTextColor;
 			lblRingCode.TextColor = AppStyle.TitleTextColor;
-			lblBuildingName.TextColor = AppStyle.TitleTextColor;
+			
 
 			txtAptNumber.TextColor = AppStyle.GreyText;
 			txtRingCode.TextColor = AppStyle.GreyText;
-			txtBuildingName.TextColor = AppStyle.GreyText;
+			
 
 			txtAptNumber.PaddingLeft = 5;
 			txtRingCode.PaddingLeft = 5;
-			txtBuildingName.PaddingLeft = 5;
-
+			
 			txtAptNumber.ShouldReturn = ShouldReturnDelegate;
 			txtRingCode.ShouldReturn = ShouldReturnDelegate;
-			txtBuildingName.ShouldReturn = ShouldReturnDelegate;
+			
 
 			var btnDone = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
 				if( ViewModel.SaveCommand.CanExecute() )
@@ -68,15 +68,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 					ViewModel.SaveCommand.Execute();
 				}
 			});
-			NavigationItem.HidesBackButton = true;
+			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
             NavigationItem.Title = Resources.GetValue( "View_RefineAddress");
 
 			this.AddBindings(new Dictionary<object, string>(){
 				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,
-				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,
-				{txtBuildingName, "{'Text':{'Path':'BuildingName'}}"} ,
+				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,			
 			});
+            this.View.ApplyAppFont ();
 		}
 		
 		public override void ViewDidUnload ()

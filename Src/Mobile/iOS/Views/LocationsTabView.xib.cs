@@ -22,7 +22,7 @@ using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class LocationsTabView : MvxBindingTouchViewController<MyLocationsViewModel>
+	public partial class LocationsTabView : BaseViewController<MyLocationsViewModel>
 	{
         const string CellBindingText = @"
                 {
@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                    'ShowPlusSign':{'Path':'ShowPlusSign'},
                    'IsFirst':{'Path':'IsFirst'},
                    'IsLast':{'Path':'IsLast'},
+                    'Icon':{'Path':'Icon'},
                    'IsAddNewCell': {'Path': 'IsAddNew'}
                 }";
 
@@ -91,15 +92,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             tableLocations.Source = source;
-	
+            this.View.ApplyAppFont ();
 		}
 
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
-
-            ViewModel.OnViewLoaded();
 		}
 
 	}

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Provider;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -55,24 +56,27 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                     where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.ToUpper().Contains(w.ToUpper()))
                     select a;
+                popularAddresses =popularAddresses.ForEach ( p=> p.AddressType = "popular" );
                // popularAddresses = _popularAddressProvider.GetPopularAddresses().Where(c => c.FullAddress.ToLower().Contains(words.ToLower()));
 
             }
 
-            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(5);
+            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(15);
 
             return popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
         }
 
         private Address ConvertToAddress(Place place)
         {
+            var txtInfo = new CultureInfo("en-US", false).TextInfo;
+            
             var address = new Address
             {
                 
                 Id = Guid.NewGuid(),
                 PlaceReference = place.Reference,
-                FriendlyName = place.Name + " (" + place.Types.FirstOrDefault().ToSafeString()+")",
-                FullAddress = place.Vicinity,
+                FriendlyName = place.Name + " (" + txtInfo.ToTitleCase(  place.Types.FirstOrDefault().ToSafeString().Replace("_", " ")) + ")",
+                FullAddress = place.Formatted_Address.IsNullOrEmpty ()? place.Vicinity : place.Formatted_Address,
                 Latitude = place.Geometry.Location.Lat,
                 Longitude = place.Geometry.Location.Lng,
                 AddressType = "place"

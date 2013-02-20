@@ -21,7 +21,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class HistoryTabView : MvxBindingTouchViewController<HistoryViewModel>
+	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
 	{
 
 		private const string CELLID = "HistoryCell";
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		const string CellBindingText = @"
                 {
                    'FirstLine':{'Path':'Title'},
-                   'SecondLine':{'Path':'PickupAddress.FullAddress'},
+                   'SecondLine':{'Path':'PickupAddress.BookAddress'},
                    'ShowRightArrow':{'Path':'ShowRightArrow'},
                    'ShowPlusSign':{'Path':'ShowPlusSign'},
                    'IsFirst':{'Path':'IsFirst'},
@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblInfo.Text = Resources.HistoryInfo;	
 			lblInfo.TextColor = AppStyle.TitleTextColor;
 			lblNoHistory.Text = Resources.NoHistoryLabel;
+            lblNoHistory.Hidden = true;
             tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableHistory.BackgroundColor = UIColor.Clear;
 
@@ -84,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
 			
 			tableHistory.Source = source;
+
+            this.View.ApplyAppFont ();
 		}
 
 		public override void ViewWillAppear (bool animated)

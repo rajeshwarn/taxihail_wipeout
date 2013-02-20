@@ -10,11 +10,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Booking.Api</RootNamespace>
     <AssemblyName>apcurium.MK.Booking.Api</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>True</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>True</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
@@ -61,33 +64,33 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.28\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.26.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.SqlServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.28\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Redis, Version=3.9.29.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.25\lib\net35\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.29\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.27.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.29\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -99,6 +102,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
@@ -107,7 +112,9 @@
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
+    <Compile Include="Services\AdminConfirmAccountService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
+    <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
@@ -115,7 +122,11 @@
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\ValidateOrderService.cs" />
+    <Compile Include="Services\RuleActivateService.cs" />
+    <Compile Include="Services\RuleDeactivateService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />
@@ -130,6 +141,8 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
+    <Compile Include="Services\PushNotificationRegistrationService.cs" />
+    <Compile Include="Services\RulesService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\RatingTypesService.cs" />

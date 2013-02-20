@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading;
+using apcurium.MK.Common.Entity;
 
 namespace PopularAddressLoader
 {
@@ -14,8 +15,8 @@ namespace PopularAddressLoader
     {
         static void Main(string[] args)
         {
-            string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
-            //string url = @"http://localhost/apcurium.MK.Web/Api/";
+            //string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
+            string url = @"http://localhost/apcurium.MK.Web/Api/";
 
             
             var auth = new AuthServiceClient(url, null);
@@ -44,8 +45,11 @@ namespace PopularAddressLoader
                     throw new InvalidDataException();
                 }
 
-                var a = new PopularAddress() {FriendlyName = string.Format("Train Station ({1})", values[0], values[1]), Latitude = lat, Longitude = lng, FullAddress = string.Format("{0} Station", values[0], values[1])};
-                Console.WriteLine(a.FriendlyName);
+                var a = new PopularAddress()
+                {
+                    Address = new Address { FriendlyName = string.Format("Train Station ({1})", values[0], values[1]), Latitude = lat, Longitude = lng, FullAddress = string.Format("{0} Station", values[0], values[1]) }
+                };
+                Console.WriteLine(a.Address.FriendlyName);
                 list.Add(a);
 
             }
@@ -54,7 +58,7 @@ namespace PopularAddressLoader
 
             foreach (var popularAddress in list)
             {
-                Console.WriteLine( popularAddress.FriendlyName );
+                Console.WriteLine( popularAddress.Address.FriendlyName );
                 
                 c.Add(popularAddress);
                 Thread.Sleep(1000);

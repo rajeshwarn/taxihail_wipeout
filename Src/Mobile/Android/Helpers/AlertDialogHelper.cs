@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             Show(owner, title, message, onClose);
         }
 
-
         public static void ShowAlert(this Activity owner, int titleResId, int messageResId, Action onClose = null)
         {
             Show(owner, titleResId, messageResId, onClose);
@@ -55,6 +54,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             dialog.Show();
         }
 
+        public static void Show(Activity owner, string title, string message, string positiveButtonTitle, EventHandler<DialogClickEventArgs> positiveClickHandler)
+        {
+            var dialog = new AlertDialog.Builder(owner);
+            dialog.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
+            dialog.SetTitle(title);
+            if (message.HasValue())
+            {
+                dialog.SetMessage(message);
+            }
+            dialog.Create();
+            dialog.Show();
+
+        }
+
 		public static void Show(Activity owner, string title, string message, string positiveButtonTitle, EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle, EventHandler<DialogClickEventArgs> negativeClickHandler )
         {
             var dialog = new AlertDialog.Builder(owner);
@@ -67,6 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             }
 			dialog.Create();
             dialog.Show();
+
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle, EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle, EventHandler<DialogClickEventArgs> negativeClickHandler, string neutralButtonTitle, EventHandler<DialogClickEventArgs> neutralClickHandler)
@@ -81,7 +95,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 dialog.SetMessage(message);
             }
             dialog.Create();
+
             dialog.Show();
+
         }
 
 		public static void Show(Activity owner, string title, string[] items, EventHandler<DialogClickEventArgs> onItemSelected)

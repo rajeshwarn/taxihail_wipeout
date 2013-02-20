@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using apcurium.MK.Common.Extensions;
+using System.Linq;
 
 namespace apcurium.MK.Common.Entity
 {
@@ -18,7 +20,9 @@ namespace apcurium.MK.Common.Entity
 
         public string ZipCode { get; set; }
 
-        public string FullAddress { get; set; }
+        public string State { get; set; }
+
+        public string FullAddress{ get; set; }
 
         public double Longitude { get; set; }
 
@@ -32,8 +36,64 @@ namespace apcurium.MK.Common.Entity
 
         public bool IsHistoric { get; set; }
 
-        public bool Favorites { get; set; }
+        public bool Favorite { get; set; }
 
-        public string AddressType { get; set; } 
+        public string AddressType { get; set; }
+
+        public string BookAddress
+        {
+            get
+            {
+                return ConcatAddressComponents();
+            }
+        }
+
+        string ConcatAddressComponents ()
+        {
+            var prefixAddress = StreetNumber;
+            if (BuildingName.HasValue ()) {
+                prefixAddress = BuildingName;
+            }
+            var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
+            if (components.Count > 1) {
+                return components.First () + " " + components.Skip (1).JoinBy(", " );
+            }
+             else {
+                return FullAddress;
+            }
+        }
+
+        public void UpdateStreetOrNumberBuildingName (string streetNumberBuildingName)
+        {
+            if(streetNumberBuildingName.HasValue ()) {
+                
+                if(streetNumberBuildingName.IsDigit())
+                {
+                    StreetNumber = streetNumberBuildingName;
+                    BuildingName = null;
+                }
+                else
+                {
+                    BuildingName = streetNumberBuildingName;
+                }
+            }
+        }
+
+        public void CopyTo (Address address)
+        {
+            if(address == null) return;
+            address.FullAddress = this.FullAddress;
+            address.Longitude = this.Longitude;
+            address.Latitude = this.Latitude;
+            address.Apartment = this.Apartment;
+            address.RingCode = this.RingCode;
+            address.BuildingName = this.BuildingName;
+            address.Street = this.Street;
+            address.StreetNumber = this.StreetNumber;
+            address.City = this.City;
+            address.ZipCode = this.ZipCode;
+            address.State = this.State;
+            address.PlaceReference = this.PlaceReference;
+        }
     }
 }

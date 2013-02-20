@@ -5,6 +5,7 @@ namespace apcurium.MK.Common.Entity
     [Flags]
     public enum DayOfTheWeek
     {
+        None  =    0,
         Sunday    = 0x1,
         Monday    = 0x2,
         Tuesday   = 0x4,

@@ -1,5 +1,6 @@
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -22,6 +23,7 @@ using ServiceStack.Text;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Api.Client.Cmt;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -30,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile
     {    
       
         public TaxiHailApp ()
+            : this(default(IDictionary<string, string>))
         {
             if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT) 
             {
@@ -38,16 +41,22 @@ namespace apcurium.MK.Booking.Mobile
             {
                 RegisterServiceClients();
             }
-            InitaliseServices();
-            InitialiseStartNavigation();
+        }
+
+        public TaxiHailApp(IDictionary<string, string> @params)
+        {
+            InitalizeServices();
+            InitializePushNotifications();
+            InitializeStartNavigation(@params);
         }
         
-        private void InitaliseServices()
+        private void InitalizeServices()
         {
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
 
             TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+			TinyIoCContainer.Current.Register<PushNotificationRegistrationServiceClient>((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
@@ -60,6 +69,10 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
 
+            TinyIoCContainer.Current.Register<ITutorialService, TutorialService>();
+
+
+
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -71,8 +84,8 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
-            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();           
-
+            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
+            TinyIoCContainer.Current.Register<ICreditCardAuthorizationService, CreditCardAuthorizationService>();
         }
 
 
@@ -122,23 +135,26 @@ namespace apcurium.MK.Booking.Mobile
             return credentials;
         }
 
-        private void InitialiseStartNavigation()
         {
-            var startApplicationObject = new StartNavigation();
+            var startApplicationObject = new StartNavigation(@params);
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        
+        private void InitializePushNotifications()
+        {
+            var accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
+            var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService>();
+            if (accountService.CurrentAccount != null)
+            {
+                pushService.RegisterDeviceForPushNotifications();
+            }
+        }
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
             return new TinyIocViewModelLocator(); //base.CreateDefaultViewModelLocator();
         }
-
-
-        
     }
-
 }
 
 

@@ -4,13 +4,26 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>TaxiHail</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MKDirectionsRequest</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.maps.directionsrequest</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string></string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>app.png</string>
 		<string>app@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.apcurium.MK.TaxiHailDemo</string>
+	<string>com.apcurium.mk.taxihail.dev</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -24,11 +37,22 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.2.0</string>
+	<string>1.4.5</string>
+	<key>MKDirectionsApplicationSupportedModes</key>
+	<array>
+		<string>MKDirectionsModeTaxi</string>
+	</array>
 	<key>MinimumOSVersion</key>
 	<string>4.3</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Assets/AppFont_Regular.otf</string>
+		<string>Assets/AppFont_Bold.otf</string>
+		<string>Assets/AppFont_Italic.otf</string>
+		<string>Assets/AppFont_Medium.otf</string>
+	</array>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

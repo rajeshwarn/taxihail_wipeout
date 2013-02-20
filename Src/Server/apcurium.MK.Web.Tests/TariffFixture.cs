@@ -11,7 +11,7 @@ using Tariff = apcurium.MK.Booking.Api.Contract.Requests.Tariff;
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    public class TariffFixture: BaseTest
+    public class TariffFixture : BaseTest
     {
         private Guid _knownTariffId;
 

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Optimization;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
@@ -10,6 +11,7 @@ using ServiceStack.Text.Common;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -26,52 +28,38 @@ namespace apcurium.MK.Web
 {
     public class Global : System.Web.HttpApplication
     {
+        private const string CacheKey = "OrderStatusJob";
+
         public class MKWebAppHost : AppHostBase
         {
+            
+
             public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly)
             {
 
                 ServiceStack.Text.JsConfig.Reset();
                 ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
-                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;                                
-                //ServiceStack.Text.JsConfig<CreateOrder>.RawDeserializeFn = DeSerializeOrder;
-                ServiceStack.Text.JsConfig<DateTime>.RawDeserializeFn = DateTimeRawDesirializtion;
-                ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = DateTimeRawDesirializtion2;
+                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;
+                ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
 
             }
 
-            private DateTime DateTimeRawDesirializtion(string s)
-            {
-                return DateTimeSerializer.ParseShortestXsdDateTime(s);
-                
-            }
-            private DateTime? DateTimeRawDesirializtion2(string s)
+            private DateTime? NullableDateTimeRawDesirializtion(string s)
             {
                 try
                 {
+                    if (s.IndexOf(".") > 0)
+                    {
+                        s = s.Substring(0, s.IndexOf("."));
+                    }
                     return DateTimeSerializer.ParseShortestXsdDateTime(s);
                 }
                 catch (Exception)
                 {
-                    return null;                    
+                    return null;
                 }
                 throw new NotImplementedException();
 
-            }
-
-            private CreateOrder DeSerializeOrder(string s)
-            {
-                try
-                {
-                    return new CreateOrder();
-                }
-                catch (Exception)
-                {
-                    return null;
-                    throw;
-                }
-                
-                
             }
 
             public override void Configure(Container containerFunq)
@@ -114,12 +102,30 @@ namespace apcurium.MK.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             XmlConfigurator.Configure();
             new MKWebAppHost().Init();
-            
+            if (HttpRuntime.Cache[CacheKey] == null)
+            {
+                Trace.WriteLine("Add OrderStatusJob in Cache");
+                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
+            }
         }
-        
+
+        private void CacheItemRemoved(string key, object value, CacheItemRemovedReason reason)
+        {
+            try
+            {
+                Trace.WriteLine("Check Order Status");
+                var statusJobService = UnityServiceLocator.Instance.Resolve<IUpdateOrderStatusJob>();
+                statusJobService.CheckStatus();
+            }
+            finally
+            {
+                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
+            }
+        }
+
         protected void Session_Start(object sender, EventArgs e)
         {
-
+             
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
