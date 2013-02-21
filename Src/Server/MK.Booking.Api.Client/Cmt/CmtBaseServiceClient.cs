@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
 
         private void SignRequest(HttpWebRequest request)
         {
+           request.UserAgent = "TaxiHail";
            if (Credentials != null)
            {
                request.Headers.Add("X-CMT-SessionToken", Credentials.SessionId);
