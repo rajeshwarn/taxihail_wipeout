@@ -1,8 +1,5 @@
-﻿using System;
-using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
+﻿using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.Cmt;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 
 
@@ -35,7 +32,7 @@ namespace apcurium.CMT.Web.Tests
         public void when_registering_a_new_account()
         {
             var sut = new CmtAccountServiceClient(BaseUrl, null);
-            var newAccount = new RegisterAccount { Phone = "5146543024", Email = GetTempEmail(),FirstName = "Matthieu",LastName = "Guyonnet-Duluc", Password = "ApAssword" };
+            var newAccount = new RegisterAccount { Phone = "+15146543024", Email = "matthieu.duluc+toto@apcurium.com",FirstName = "Matthieu",LastName = "Guyonnet-Duluc", Password = "password" };
             sut.RegisterAccount(newAccount);
 
             //Assert.Throws<WebServiceException>(() => new AuthServiceClient(BaseUrl, SessionId).Authenticate(newAccount.Email, newAccount.Password));

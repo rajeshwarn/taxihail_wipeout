@@ -1,6 +1,5 @@
 ﻿using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.Cmt;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
 
@@ -8,7 +7,8 @@ namespace apcurium.CMT.Web.Tests
 {
     public class CmtBaseTest
     {
-        protected const string BaseUrl = "https://mobile-sandbox.cmtapi.com/v1/";
+        //protected const string BaseUrl = "https://mobile.cmtapi.com/v1/";
+        protected const string BaseUrl = "https://mobile-sandbox.cmtapi.com/v1";
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
@@ -37,14 +37,5 @@ namespace apcurium.CMT.Web.Tests
             var email = string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
             return email;
         }
-
-        protected Account CreateAndAuthenticateTestAccount()
-        {
-            var newAccount = new AccountServiceClient(BaseUrl, null).CreateTestAccount();
-            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
-            SessionId = authResponse.SessionId;
-            return newAccount;
-        }
-        
     }
 }

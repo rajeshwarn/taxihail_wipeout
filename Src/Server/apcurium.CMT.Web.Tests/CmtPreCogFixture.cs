@@ -44,7 +44,7 @@ namespace apcurium.CMT.Web.Tests
                                      Init = true,
                                      Type = PreCogType.Status
                                  };
-            sut.Send(statusRequest);
+            sut.Send(statusRequest, true);
         }
 
     }
