@@ -70,7 +70,17 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         {
             request.Address.Favorite = true;
             var req = string.Format("/account/addresses");
-            var response = Client.Post<CmtResponse>(req, request);
+            var response = Client.Post<CmtResponse>(req, new
+                {
+                    request.Address.FriendlyName,
+                    request.Address.BuildingName,
+                    request.Address.AddressType,
+                    request.Address.FullAddress,
+                    request.Address.Favorite,
+                    request.Address.RingCode,
+                    request.Address.Latitude,
+                    request.Address.Longitude
+                });
         }
 
         public void UpdateFavoriteAddress(SaveAddress request)
