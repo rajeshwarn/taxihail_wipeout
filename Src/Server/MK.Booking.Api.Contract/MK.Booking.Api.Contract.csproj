@@ -89,6 +89,7 @@
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\Cmt\PreCogRequest.cs" />
+    <Compile Include="Requests\Cmt\AccountCmtRequest.cs" />
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />

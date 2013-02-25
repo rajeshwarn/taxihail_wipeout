@@ -13,7 +13,7 @@ namespace apcurium.CMT.Web.Tests
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
 
-        protected CmtAuthCredentials Credentials = new CmtAuthCredentials();
+        protected CmtAuthCredentials Credentials;
 
         public virtual void TestFixtureSetup()
         {
@@ -36,6 +36,15 @@ namespace apcurium.CMT.Web.Tests
         {
             var email = string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
             return email;
+        }
+
+        protected void Authenticate()
+        {
+            var sut = new CmtAuthServiceClient(BaseUrl, Credentials);
+            var data = sut.Authenticate("matthieu@live.com", "password");
+            Credentials.AccessToken = data.AccessToken;
+            Credentials.AccessTokenSecret = data.AccessTokenSecret;
+            Credentials.AccountId = data.AccountId;
         }
     }
 }

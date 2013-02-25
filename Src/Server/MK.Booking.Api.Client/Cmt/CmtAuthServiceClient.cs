@@ -24,10 +24,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             var response = Client.Get<CmtAuthResponse>(string.Format("/auth?emailAddress={0}&password={1}", email, password));
             return new AuthenticationData
                        {
-                           SessionId = response.SessionToken,
-                           AccessTokenSecret = response.AccessTokenSecret,
-                           AccessToken = response.AccessToken,
-                           AccountId = response.AccountId
+                           AccessTokenSecret = response.OauthTokenSecret,
+                           AccessToken = response.OauthToken
                        };
         }
 

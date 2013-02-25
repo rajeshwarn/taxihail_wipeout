@@ -53,8 +53,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
            request.UserAgent = "TaxiHail";
            if (Credentials != null)
            {
-               request.Headers.Add("X-CMT-SessionToken", Credentials.SessionId);
-              
                var oauthHeader = apcurium.MK.Booking.Api.Client.Cmt.OAuth.OAuthAuthorizer.AuthorizeRequest(Credentials.ConsumerKey,
                                                                   Credentials.ConsumerSecret,
                                                                   Credentials.AccessToken,
