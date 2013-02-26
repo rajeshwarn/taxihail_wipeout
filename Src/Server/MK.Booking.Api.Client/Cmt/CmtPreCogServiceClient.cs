@@ -44,6 +44,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
                 keyValues["locTime"] = request.LocTime.Value.ToString("MMddyyyyHHmmss");
             }
 
+            if (!request.Init)
+            {
+                keyValues.Remove("init");
+            }
+
             if (!activeGps)
             {
                 _propertiesToExcludeINoGps.ForEach(x => keyValues.Remove(x));
