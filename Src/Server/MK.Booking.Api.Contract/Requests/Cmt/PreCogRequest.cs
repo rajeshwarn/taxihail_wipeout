@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
     {
         public PreCogType Type { get; set; }
         public bool Init { get; set; }
-        public DateTime LocTime { get; set; }
+        public DateTime? LocTime { get; set; }
         public double? LocLat { get; set; }
         public double? LocLon { get; set; }
         public string LocDesc { get; set; }

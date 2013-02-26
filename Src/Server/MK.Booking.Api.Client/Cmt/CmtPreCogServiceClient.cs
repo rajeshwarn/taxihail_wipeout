@@ -38,6 +38,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             
             keyValues["type"] = GetEnumDescription(request.Type).ToLowerInvariant();
 
+            if (request.LocTime != null)
+            {
+                keyValues["locTime"] = request.LocTime.Value.ToString("MMddyyyyHHmmss");
+            }
+
             if (!activeGps)
             {
                 _propertiesToExcludeINoGps.ForEach(x => keyValues.Remove(x));

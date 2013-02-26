@@ -35,8 +35,8 @@ namespace apcurium.CMT.Web.Tests
         public void when_registering_a_new_account_no_error()
         {
             var sut = new CmtAccountServiceClient(BaseUrl, Credentials);
-            var email = "matthieu@live.com";
-            var newAccount = new RegisterAccount { Phone = "+15146543024", Email = email,FirstName = "Matthieu",LastName = "Guyonnet-Duluc", Password = "password" };
+            var email = "matthieu2@live.com";
+            var newAccount = new RegisterAccount { Phone = "+15146543024", Email = email,Name = "Matthieu Guyonnet-Duluc", Password = "password" };
             sut.RegisterAccount(newAccount);
 
             Assert.Pass();
@@ -46,7 +46,7 @@ namespace apcurium.CMT.Web.Tests
         public void when_registering_an_existing_account_got_axception()
         {
             var sut = new CmtAccountServiceClient(BaseUrl, Credentials);
-            var newAccount = new RegisterAccount { Phone = "+15146543024", Email = "matthieu@live.com", FirstName = "Matthieu", LastName = "Guyonnet-Duluc", Password = "password" };
+            var newAccount = new RegisterAccount { Phone = "+15146543024", Email = "matthieu@live.com", Name = "Matthieu Guyonnet-Duluc", Password = "password" };
 
             var exception = Assert.Throws<WebServiceException>(() => sut.RegisterAccount(newAccount));
         }
@@ -74,8 +74,7 @@ namespace apcurium.CMT.Web.Tests
 
             sut.UpdateBookingSettings(new BookingSettingsRequest
                 {
-                    FirstName = firstName,
-                    LastName = myAccount.LastName,
+                    Name = firstName + " " + myAccount.LastName,
                     Phone = myAccount.Phone
                 });
 
