@@ -24,6 +24,7 @@ using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Api.Client.Cmt;
 using System.Collections.Generic;
+using MK.Booking.Api.Client.iOS.Cmt;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -65,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile
             
             TinyIoCContainer.Current.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)), "Authenticate");            
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<IReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
         }
         
         private string GetSessionId (TinyIoCContainer container)
@@ -119,6 +121,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "Authenticate");            
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)));
             TinyIoCContainer.Current.Register<IReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));
+            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new CmtConfigurationClientService());
         }
         
         private CmtAuthCredentials GetCredentialsCmt (TinyIoCContainer container)

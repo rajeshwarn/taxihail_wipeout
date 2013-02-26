@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Cmt
 {
     public partial class CmtHomeView : MvxBindingTouchViewController<CmtHomeViewModel>
     {
+        private PanelMenuView _menu;
+
         public CmtHomeView () 
             : base(new MvxShowViewModelRequest<CmtHomeViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -27,6 +29,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Cmt
             : base(request, nibName, bundle)
         {
             
+        }
+
+        public override void ViewDidLoad ()
+        {
+            base.ViewDidLoad ();
+            navBar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
+            navBar.TopItem.TitleView = new TitleView (null, "", false);
+            
+            homeView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+
+            this.View.ApplyAppFont ();
+            ViewModel.Load();
+            
+            _menu = new PanelMenuView (homeView, this.NavigationController, ViewModel.Panel);
+            View.InsertSubviewBelow (_menu.View, homeView);
+        }
+
+        public override void ViewWillAppear (bool animated)
+        {
+            base.ViewWillAppear (animated);     
+            
+            NavigationController.NavigationBar.Hidden = true;            
+            
+        }
+        
+        public override void ViewDidAppear (bool animated)
+        {
+            base.ViewDidAppear (animated);
+            
+            var button = AppButtons.CreateStandardButton( new RectangleF( 16,0,40,33 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
+            button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+            var offsetView = new UIView( new RectangleF( 0,0,60,33) );
+            offsetView.AddSubview ( button );
+            
+            var btn = new UIBarButtonItem ( offsetView );
+            navBar.TopItem.RightBarButtonItem = btn;
+            navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-20, 0), UIBarMetrics.Default);
         }
     }
 }

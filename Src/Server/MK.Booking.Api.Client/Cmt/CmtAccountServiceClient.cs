@@ -21,12 +21,15 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         public Account GetMyAccount()
         {
             var account = Client.Get<Account>("/account/");
+            account.Name = account.FirstName + " " + account.LastName;
             return account;
         }
 
         public void RegisterAccount(RegisterAccount account)
         {
-            var registerCMT = new AccountCmtRequest()
+            account.FirstName = account.Name.Split (' ')[0];
+            account.LastName = account.Name.Split (' ')[1];
+            var registerCMT = new
                 {
                     Email = account.Email,
                     FirstName = account.FirstName,
@@ -36,12 +39,14 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
                     Password = account.Password,
                     Phone = account.Phone
                 };
-            Client.Post<CmtResponse>("/registration", registerCMT);         
+            var response = Client.Post<CmtResponse>("/registration", registerCMT);         
         }
 
         public void UpdateBookingSettings(BookingSettingsRequest settings)
         {
-            var registerCMT = new AccountCmtRequest
+            settings.FirstName = settings.Name.Split (' ')[0];
+            settings.LastName = settings.Name.Split (' ')[1];
+            var registerCMT = new
             {
                 Email = settings.Email,
                 FirstName = settings.FirstName,

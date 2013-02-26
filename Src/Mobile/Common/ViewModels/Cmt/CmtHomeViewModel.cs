@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected override void Initialize()
         {
+            Panel = new PanelViewModel(this);
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             };
         }
 
-
+        public PanelViewModel Panel { get; set; }
 
         public BookAddressViewModel Pickup { get; set; }
 
