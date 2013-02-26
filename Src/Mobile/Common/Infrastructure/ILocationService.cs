@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         public float Speed { get; set; }
 
-        public DateTime Time { get; set; }
+        public DateTime? Time { get; set; }
 
         public string Description { get; set; }
 

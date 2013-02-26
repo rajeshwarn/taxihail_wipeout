@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private void LaunchStatusDaemon(int interval)
         {
             if (_statusDaemon != null) _statusDaemon.Dispose();
-            _statusDaemon = Observable.Timer(TimeSpan.FromSeconds(interval)).Subscribe(SendStatus);
+            _statusDaemon = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(interval)).Subscribe(SendStatus);
         }
 
         private void SendStatus(long notUsed)
@@ -92,8 +92,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             var response = _preCogServiceClient.Send(request, _locationService.IsServiceEnabled);
 
-            //if response containe true, so can stop to send the init = true in subsequent calls
-            if (response.Init)
+            if (!response.Init)
             {
                 _isInitRequest = false;
             }

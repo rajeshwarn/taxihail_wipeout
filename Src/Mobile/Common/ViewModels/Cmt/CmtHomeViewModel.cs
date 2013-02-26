@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = this.GetService<IBookingService>();
             _preCogService = this.GetService<IPreCogService>();
 
-            //_preCogService.Start();
+            _preCogService.Start();
 
             PickupAddress = new Address();
             DestinationAddress = new Address();

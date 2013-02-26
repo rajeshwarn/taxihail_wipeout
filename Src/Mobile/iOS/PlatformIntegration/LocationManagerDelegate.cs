@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class LocationManagerDelegate : CLLocationManagerDelegate
     {
 
-
         public LocationManagerDelegate ()
         {
         }
@@ -59,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy) || (secondHowRecent > 10   ))
             {
                 LastKnownLocation = newLocation;
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Better GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
+
+                //TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Better GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
             }
             
         }
