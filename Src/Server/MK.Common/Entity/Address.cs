@@ -48,6 +48,9 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
+        //CMT
+        public Guid AddressId { get; set; }
+
         string ConcatAddressComponents ()
         {
             var prefixAddress = StreetNumber;

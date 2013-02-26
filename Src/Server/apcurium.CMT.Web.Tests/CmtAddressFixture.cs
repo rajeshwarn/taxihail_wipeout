@@ -73,6 +73,51 @@ namespace apcurium.CMT.Web.Tests
         }
 
         [Test]
+        public void UpdateAddress()
+        {
+            var sut = new CmtAccountServiceClient(BaseUrl, Credentials);
+
+            string friendlyName = ("ChezFrançois" + Guid.NewGuid()).Substring(0, 30);
+            sut.AddFavoriteAddress(new SaveAddress
+            {
+                Address = new Address
+                {
+                    FriendlyName = friendlyName,
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    AddressType = "Home"
+                }
+            });
+
+
+            var addresses = sut.GetFavoriteAddresses();
+            var address = addresses.Single(x => x.FriendlyName == friendlyName);
+
+            friendlyName = ("ChezFrançois" + Guid.NewGuid()).Substring(0, 30);
+            sut.UpdateFavoriteAddress(new SaveAddress
+            {
+                Address = new Address
+                {
+                    Id = address.Id,
+                    FriendlyName = friendlyName,
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    AddressType = "Home"
+                }
+            });
+
+            addresses = sut.GetFavoriteAddresses();
+
+            Assert.AreEqual(friendlyName, addresses.Single(x => x.FriendlyName == friendlyName).FriendlyName);
+        }
+
+        [Test]
         public void RemoveAddress()
         {
             var sut = new CmtAccountServiceClient(BaseUrl, Credentials);

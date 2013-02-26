@@ -55,8 +55,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         public IList<Address> GetFavoriteAddresses()
         {
             var req = string.Format("/account/addresses");
-            var addresses = Client.Get<IList<Address>>(req);
-            return addresses.Where(x => x.Favorite).ToList();
+            var addresses = Client.Get<IList<Address>>(req).ToList();
+            addresses = addresses.Where(x => x.Favorite).ToList();
+            addresses.ForEach(x => x.Id = x.AddressId);
+            return addresses;
         }
 
         public IList<Address> GetHistoryAddresses(Guid accountId)
@@ -86,8 +88,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         public void UpdateFavoriteAddress(SaveAddress request)
         {
             request.Address.Favorite = true;
-            var req = string.Format("/account/addresses/{0}", request.Id);
-            var response = Client.Put<CmtResponse>(req, request);
+            var req = string.Format("/account/addresses/{0}", request.Address.Id);
+            var response = Client.Put<CmtResponse>(req, new
+            {
+                AddressId = request.Address.Id,
+                request.Address.FriendlyName,
+                request.Address.BuildingName,
+                request.Address.AddressType,
+                request.Address.FullAddress,
+                request.Address.Favorite,
+                request.Address.RingCode,
+                request.Address.Latitude,
+                request.Address.Longitude
+            });
         }
 
         public void RemoveFavoriteAddress(Guid addressId)
