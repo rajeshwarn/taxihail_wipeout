@@ -14,6 +14,7 @@ namespace apcurium.CMT.Web.Tests
         public override void TestFixtureSetup()
         {
             base.TestFixtureSetup();
+            Authenticate();
         }
 
         [TestFixtureTearDown]
@@ -30,21 +31,58 @@ namespace apcurium.CMT.Web.Tests
 
         
         [Test]
-        public void when_sending_guide()
+        public void when_sending_status()
         {
             
 
-            var sut = new CmtPreCogServiceClient(BaseUrl, null);
+            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
             var statusRequest = new PreCogRequest
                                  {
-                                     LocLon = -73.97547,
-                                     LocLat = 40.77690,
+                                     LocLon = -74.004593,
+                                     LocLat = 40.740676,
                                      LocTime = DateTime.Now,
-                                     LocDesc = string.Empty,
+                                     LocDesc = "Apcurium",
                                      Init = true,
                                      Type = PreCogType.Status
                                  };
-            sut.Send(statusRequest, true);
+            sut.Send(statusRequest, false);
+        }
+
+        [Test]
+        public void when_sending_brodcast()
+        {
+
+            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
+            var statusRequest = new PreCogRequest
+            {
+                LocLon = -74.004593,
+                LocLat = 40.740676,
+                LocTime = DateTime.Now,
+                LocDesc = "Apcurium",
+                Init = false,
+                Type = PreCogType.Broadcast
+            };
+            sut.Send(statusRequest, false);
+        }
+
+        [Test]
+        public void when_sending_guide()
+        {
+
+            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
+            var statusRequest = new PreCogRequest
+            {
+                LocLon = -74.004593,
+                LocLat = 40.740676,
+                LocTime = DateTime.Now,
+                LocDesc = "Apcurium",
+                Init = false,
+                Type = PreCogType.Guide,
+                DestDesc = "restaurant",
+                DestLat = 40.738758,
+                DestLon = -73.982706
+            };
+            sut.Send(statusRequest, false);
         }
 
     }
