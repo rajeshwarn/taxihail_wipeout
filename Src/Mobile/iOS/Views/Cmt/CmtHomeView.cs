@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Cmt
 {
-    public partial class CmtHomeView : MvxBindingTouchViewController<CmtHomeViewModel>
+    public partial class CmtHomeView : MvxBindingTouchViewController<CmtHomeViewModel>, INavigationView
     {
         private PanelMenuView _menu;
 
@@ -30,6 +30,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Cmt
         {
             
         }
+
+        #region INavigationView implementation
+        
+        public bool HideNavigationBar {
+            get { return true;}
+        }
+        
+        #endregion
 
         public override void ViewDidLoad ()
         {
