@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
         {
-            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Raw GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
+            //TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Raw GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
 
             double secondHowRecent = double.MaxValue;
             if ( LastKnownLocation != null )

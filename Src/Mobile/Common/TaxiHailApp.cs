@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "NotAuthenticated");
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "Authenticate");            
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)));
-            TinyIoCContainer.Current.Register<IReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));
+            TinyIoCContainer.Current.Register<IReferenceDataServiceClient>((c, p) => new CmtReferenceDataServiceClient());
             TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new CmtConfigurationClientService());
         }
         
