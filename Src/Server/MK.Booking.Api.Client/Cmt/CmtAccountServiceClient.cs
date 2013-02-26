@@ -69,8 +69,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         public IList<Address> GetHistoryAddresses(Guid accountId)
         {
             var req = string.Format("/account/addresses");
-            var addresses = Client.Get<IList<Address>>(req);
-            return addresses.Where(x => !x.Favorite).ToList();
+            var addresses = Client.Get<IList<Address>>(req).ToList();
+            addresses = addresses.Where(x => !x.Favorite).ToList();
+            addresses.ForEach(x => x.Id = x.AddressId);
+            return addresses;
         }
 
         public void AddFavoriteAddress(SaveAddress request)
