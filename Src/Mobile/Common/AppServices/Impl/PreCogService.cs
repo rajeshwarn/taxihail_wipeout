@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public PreCogResponse SendRequest(PreCogRequest request)
         {
             FillGpsAndExtractStatusInformation(request);
-            var response = _preCogServiceClient.Send(request, _locationService.IsGpsActive);
+            var response = _preCogServiceClient.Send(request, _locationService.IsServiceEnabled);
             CheckIntervalFromServer(response);
             return response;
         }
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 request.LocDesc = _userLocation.Description;
             }
             
-            var response = _preCogServiceClient.Send(request, _locationService.IsGpsActive);
+            var response = _preCogServiceClient.Send(request, _locationService.IsServiceEnabled);
 
             //if response containe true, so can stop to send the init = true in subsequent calls
             if (response.Init)

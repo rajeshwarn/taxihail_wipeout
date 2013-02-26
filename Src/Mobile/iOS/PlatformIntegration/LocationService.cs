@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _last;
             }
 
- if (!IsServiceEnabled)
+            if (!IsServiceEnabled)
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Stop ()
         {
             _locationManager.StopUpdatingLocation ();
-        }
+        }       
 #endregion
     }
 }

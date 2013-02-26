@@ -34,6 +34,11 @@ namespace apcurium.MK.Booking.Mobile
         public TaxiHailApp ()
             : this(default(IDictionary<string, string>))
         {
+
+        }
+
+        public TaxiHailApp(IDictionary<string, string> @params)
+        {
             if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT) 
             {
                 RegisterServiceCmt();
@@ -41,10 +46,6 @@ namespace apcurium.MK.Booking.Mobile
             {
                 RegisterServiceClients();
             }
-        }
-
-        public TaxiHailApp(IDictionary<string, string> @params)
-        {
             InitalizeServices();
             InitializePushNotifications();
             InitializeStartNavigation(@params);
@@ -112,9 +113,9 @@ namespace apcurium.MK.Booking.Mobile
         {
             var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
             locationService.Initialize();
+            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new CmtAuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)));
             TinyIoCContainer.Current.Register<IPreCogService>((c, p) => new PreCogService(locationService, new CmtPreCogServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c))));            
-            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new CmtAuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));            
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null), "NotAuthenticated");
+            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "NotAuthenticated");
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "Authenticate");            
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)));
             TinyIoCContainer.Current.Register<IReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));
@@ -123,18 +124,18 @@ namespace apcurium.MK.Booking.Mobile
         private CmtAuthCredentials GetCredentialsCmt (TinyIoCContainer container)
         {
             var authData = container.Resolve<ICacheService> ().Get<AuthenticationData> ("AuthenticationData");
-            CmtAuthCredentials credentials = null;
+            var credentials = new CmtAuthCredentials{
+                ConsumerKey = "AH7j9KweF235hP",
+                ConsumerSecret= "K09JucBn23dDrehZa"
+            };
             if (authData != null) {
-                credentials = new CmtAuthCredentials();
                 credentials.AccessToken = authData.AccessToken;
                 credentials.AccessTokenSecret = authData.AccessTokenSecret;
-                credentials.ConsumerKey = "AH7j9KweF235hP";
-                credentials.ConsumerSecret= "K09JucBn23dDrehZa";
-                credentials.SessionId = authData.SessionId;
             }
             return credentials;
         }
 
+        private void InitializeStartNavigation(IDictionary<string, string> @params)
         {
             var startApplicationObject = new StartNavigation(@params);
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);

@@ -375,6 +375,10 @@
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
+    <Compile Include="Views\Cmt\CmtHomeView.cs" />
+    <Compile Include="Views\Cmt\CmtHomeView.designer.cs">
+      <DependentUpon>CmtHomeView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -409,6 +413,7 @@
     <Folder Include="Assets\Tutorial\" />
     <Folder Include="Assets\CreditCard\" />
     <Folder Include="Binding\" />
+    <Folder Include="Views\Cmt\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -435,6 +440,7 @@
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\BookPaymentSettingsView.xib" />
+    <InterfaceDefinition Include="Views\Cmt\CmtHomeView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

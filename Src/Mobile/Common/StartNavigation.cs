@@ -32,23 +32,17 @@ namespace apcurium.MK.Booking.Mobile
 
         public void Start ()
         {
-            //if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
-            //{
-            //    RequestNavigate<LoginViewModel>();
-            //}
-            //else
-            //{
-            //    if(TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
-                   RequestNavigate<CmtHomeViewModel>();
+           if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
 
-                //if(!TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
-                   // RequestNavigate<BookViewModel>();
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
                 RequestNavigate<LoginViewModel> ();
-            } 
-            else if (_params.ContainsKey ("orderId"))
+
+            }else if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT)
             {
-                var orderId = Guid.Parse(_params["orderId"]);
+                RequestNavigate<CmtHomeViewModel> ();
+
+            }else if(_params.ContainsKey ("orderId")) {
+
+                var orderId = Guid.Parse (_params ["orderId"]);
                 var accountService = this.GetService<IAccountService> ();
                 var bookingService = this.GetService<IBookingService> ();
                 var orderStatus = bookingService.GetOrderStatus (orderId);
@@ -56,11 +50,13 @@ namespace apcurium.MK.Booking.Mobile
                 
                 if (order != null && orderStatus != null) {
                     
-                    RequestNavigate<BookingStatusViewModel>(new Dictionary<string, string> {
+                    RequestNavigate<BookingStatusViewModel> (new Dictionary<string, string> {
                         {"order", order.ToJson()},
                         {"orderStatus", orderStatus.ToJson()},
-                    },clearTop: true);
+                    }, clearTop: true);
+                }
 
+            }
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
         }
 

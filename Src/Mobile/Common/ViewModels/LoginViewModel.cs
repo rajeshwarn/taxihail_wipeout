@@ -113,7 +113,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
 
-                    RequestNavigate<BookViewModel>(true);
+                    if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT)
+                    {
+                        RequestNavigate<CmtHomeViewModel> ();
+                    }else{
+                        RequestNavigate<BookViewModel>(true);
+                    }
                     RequestClose( this );
 
 				}
