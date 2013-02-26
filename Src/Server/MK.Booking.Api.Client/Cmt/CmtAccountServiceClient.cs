@@ -31,13 +31,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             account.LastName = account.Name.Split (' ')[1];
             var registerCMT = new
                 {
-                    Email = account.Email,
-                    FirstName = account.FirstName,
-                    LastName = account.LastName,
-                    FacebookId = account.FacebookId,
-                    Language = account.Language,
-                    Password = account.Password,
-                    Phone = account.Phone
+                    email = account.Email,
+                    firstName = account.FirstName,
+                    lastName = account.LastName,
+                    password = account.Password,
+                    phone = account.Phone
                 };
             var response = Client.Post<CmtResponse>("/registration", registerCMT);         
         }
@@ -48,11 +46,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             settings.LastName = settings.Name.Split (' ')[1];
             var registerCMT = new
             {
-                Email = settings.Email,
-                FirstName = settings.FirstName,
-                LastName = settings.LastName,
-                Phone = settings.Phone,
-                AccountStatus = 0
+                email = settings.Email,
+                firstName = settings.FirstName,
+                lastName = settings.LastName,
+                phone = settings.Phone,
+                accountStatus = 0
             };
             Client.Put<string>(string.Format("/account"), registerCMT);
         }
