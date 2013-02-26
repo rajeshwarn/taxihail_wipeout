@@ -1035,10 +1035,10 @@
     <value>Return to main screen</value>
   </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">
-    <value>Password was successfully resetted</value>
+    <value>Password was reset successfully</value>
   </data>
   <data name="ResetPasswordSucessTitle" xml:space="preserve">
-    <value>Password resetted</value>
+    <value>Password reset</value>
   </data>
   <data name="ChooseProviderDialogTitle" xml:space="preserve">
     <value>Pick a provider</value>
