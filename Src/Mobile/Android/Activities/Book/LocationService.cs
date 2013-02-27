@@ -315,7 +315,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					?  new Position
 						{
 							Latitude = _lastLocation.Latitude, 
-							Longitude = _lastLocation.Longitude, 
+							Longitude = _lastLocation.Longitude,
+							Accuracy = _lastLocation.Accuracy,
+							Speed = _lastLocation.Speed,
+							Bearing = _lastLocation.Bearing,
+							Altitude = _lastLocation.Altitude,
+							Time = FromUnixTime(LastLocation.Time).ToLocalTime()
 						} 
 					: null;
 			}  

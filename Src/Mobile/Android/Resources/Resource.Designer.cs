@@ -1186,100 +1186,103 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int RatingListItem = 2130903052;
 			
 			// aapt resource value: 0x7f03000d
-			public const int SimpleListItem = 2130903053;
+			public const int SimpleCmtMessageListItem = 2130903053;
 			
 			// aapt resource value: 0x7f03000e
-			public const int SimpleOrderListItem = 2130903054;
+			public const int SimpleListItem = 2130903054;
 			
 			// aapt resource value: 0x7f03000f
-			public const int SpinnerCell = 2130903055;
+			public const int SimpleOrderListItem = 2130903055;
 			
 			// aapt resource value: 0x7f030010
-			public const int SpinnerText = 2130903056;
+			public const int SpinnerCell = 2130903056;
 			
 			// aapt resource value: 0x7f030011
-			public const int SpinnerTextWithImage = 2130903057;
+			public const int SpinnerText = 2130903057;
 			
 			// aapt resource value: 0x7f030012
-			public const int SubView_BookButtons = 2130903058;
+			public const int SpinnerTextWithImage = 2130903058;
 			
 			// aapt resource value: 0x7f030013
-			public const int SubView_MainMenu = 2130903059;
+			public const int SubView_BookButtons = 2130903059;
 			
 			// aapt resource value: 0x7f030014
-			public const int test = 2130903060;
+			public const int SubView_MainMenu = 2130903060;
 			
 			// aapt resource value: 0x7f030015
-			public const int TutorialListItem = 2130903061;
+			public const int test = 2130903061;
 			
 			// aapt resource value: 0x7f030016
-			public const int View_About = 2130903062;
+			public const int TutorialListItem = 2130903062;
 			
 			// aapt resource value: 0x7f030017
-			public const int View_Book = 2130903063;
+			public const int View_About = 2130903063;
 			
 			// aapt resource value: 0x7f030018
-			public const int View_BookingDetail = 2130903064;
+			public const int View_Book = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int View_BookingRating = 2130903065;
+			public const int View_BookingDetail = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
-			public const int View_BookingStatus = 2130903066;
+			public const int View_BookingRating = 2130903066;
 			
 			// aapt resource value: 0x7f03001b
-			public const int View_BookPaymentSettings = 2130903067;
+			public const int View_BookingStatus = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int View_BookStreetNumber = 2130903068;
+			public const int View_BookPaymentSettings = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
-			public const int View_CreditCardAdd = 2130903069;
+			public const int View_BookStreetNumber = 2130903069;
 			
 			// aapt resource value: 0x7f03001e
-			public const int View_CreditCardsList = 2130903070;
+			public const int View_CreditCardAdd = 2130903070;
 			
 			// aapt resource value: 0x7f03001f
-			public const int View_DateTimePicker = 2130903071;
+			public const int View_CreditCardsList = 2130903071;
 			
 			// aapt resource value: 0x7f030020
-			public const int View_HistoryDetail = 2130903072;
+			public const int View_DateTimePicker = 2130903072;
 			
 			// aapt resource value: 0x7f030021
-			public const int View_HistoryList = 2130903073;
+			public const int View_HistoryDetail = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int View_HomeCmt = 2130903074;
+			public const int View_HistoryList = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int View_LocationDetail = 2130903075;
+			public const int View_HomeCmt = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int View_LocationList = 2130903076;
+			public const int View_LocationDetail = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int View_Login = 2130903077;
+			public const int View_LocationList = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int View_PasswordRecovery = 2130903078;
+			public const int View_Login = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int View_RefineAddress = 2130903079;
+			public const int View_PasswordRecovery = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int View_RideSettings = 2130903080;
+			public const int View_RefineAddress = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int View_SearchAddress = 2130903081;
+			public const int View_RideSettings = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int View_SignUp = 2130903082;
+			public const int View_SearchAddress = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int View_Tutorial = 2130903083;
+			public const int View_SignUp = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int View_UpdatePassword = 2130903084;
+			public const int View_Tutorial = 2130903084;
+			
+			// aapt resource value: 0x7f03002d
+			public const int View_UpdatePassword = 2130903085;
 			
 			private Layout()
 			{

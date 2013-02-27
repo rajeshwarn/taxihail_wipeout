@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
+using apcurium.MK.Booking.Api.Contract.Resources.Cmt;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -28,11 +31,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected override void Initialize()
         {
+			Messages = new ObservableCollection<CmtMessageViewModel>();
             Panel = new PanelViewModel(this);
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
             _preCogService = this.GetService<IPreCogService>();
+
+			_preCogService.OnStatusSent = DebugStatusRequestResponse;
 
             _preCogService.Start();
 
@@ -72,6 +78,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public MvxRelayCommand ClearMessages
+		{
+			get
+			{
+				return new MvxRelayCommand(() =>				                           {
+					Messages.Clear ();					
+				});
+			}
+		}
+
+		void DebugStatusRequestResponse (PreCogRequest request, PreCogResponse response)
+		{
+			InvokeOnMainThread(() => {
+				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status request: {0}", request.ToJson())});
+				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status response: {0}", response.ToJson())});
+			});
+		}
     }
 
     public class CmtMessageViewModel

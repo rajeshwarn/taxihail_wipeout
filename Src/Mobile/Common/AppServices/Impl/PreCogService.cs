@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Client.Cmt;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Cmt;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -19,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private bool _userLocationHasBeenSend = false;
         private Position _userLocation;
         private string _linkedVehiculeId;
+
+		public Action<PreCogRequest, PreCogResponse> OnStatusSent { get; set;}
 
         public PreCogService(ILocationService locationService, CmtPreCogServiceClient preCogServiceClient)
         {
@@ -60,37 +63,39 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _statusDaemon = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(interval)).Subscribe(SendStatus);
         }
 
-        private void SendStatus(long notUsed)
-        {
-            var gpsLocation = _locationService.LastKnownPosition;
+        private void SendStatus (long notUsed)
+		{
+			var gpsLocation = _locationService.LastKnownPosition;
 
-            //first time we send a location we should set the flag init to true
-            if (!_userLocationHasBeenSend
-                && (gpsLocation != null || _userLocation !=null))
-            {
-                _isInitRequest = true;
-                _userLocationHasBeenSend = true;
-            }
+			//first time we send a location we should set the flag init to true
+			if (!_userLocationHasBeenSend
+				&& (gpsLocation != null || _userLocation != null)) {
+				_isInitRequest = true;
+				_userLocationHasBeenSend = true;
+			}
 
-            var request = new PreCogRequest
+			var request = new PreCogRequest
             {
                 Init = _isInitRequest,
                 Type = PreCogType.Status,
                 LinkedVehiculeId = _linkedVehiculeId,
             };
 
-            //add GPS infos
-            FillGpsAndExtractStatusInformation(request);
+			//add GPS infos
+			FillGpsAndExtractStatusInformation (request);
 
-            if (_userLocation != null)
-            {
-                request.LocLon = _userLocation.Latitude;
-                request.LocLat = _userLocation.Longitude;
-                request.LocTime = _userLocation.Time;
-                request.LocDesc = _userLocation.Description;
-            }
+			if (_userLocation != null) {
+				request.LocLon = _userLocation.Latitude;
+				request.LocLat = _userLocation.Longitude;
+				request.LocTime = _userLocation.Time;
+				request.LocDesc = _userLocation.Description;
+			}
             
-            var response = _preCogServiceClient.Send(request, _locationService.IsServiceEnabled);
+			var response = _preCogServiceClient.Send (request, _locationService.IsServiceEnabled);
+
+			if (OnStatusSent != null) {
+				Task.Factory.StartNew(() => OnStatusSent(request, response));
+			}
 
             if (!response.Init)
             {

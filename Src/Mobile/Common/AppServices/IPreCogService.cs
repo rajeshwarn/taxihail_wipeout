@@ -1,6 +1,7 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Cmt;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -9,5 +10,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void Start();
         void SetUserLocation(Position position);
         PreCogResponse SendRequest(PreCogRequest request);
+		Action<PreCogRequest, PreCogResponse> OnStatusSent { get; set;}
     }
 }

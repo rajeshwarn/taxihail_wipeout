@@ -279,6 +279,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
+    <AndroidResource Include="Resources\Layout\SimpleCmtMessageListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
