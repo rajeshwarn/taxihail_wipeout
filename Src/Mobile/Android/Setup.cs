@@ -49,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         protected override void InitializeAdditionalPlatformServices()
         {
+
+			ServiceStack.Text.JsConfig.Reset();
+			ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
+			ServiceStack.Text.JsConfig.DateHandler = ServiceStack.Text.JsonDateHandler.ISO8601;
+
             base.InitializeAdditionalPlatformServices();
 
 

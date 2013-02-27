@@ -24,7 +24,7 @@ using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Api.Client.Cmt;
 using System.Collections.Generic;
-using MK.Booking.Api.Client.iOS.Cmt;
+
 
 namespace apcurium.MK.Booking.Mobile
 {

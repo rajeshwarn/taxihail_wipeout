@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
 
         private string FormatRequest(PreCogRequest request, bool activeGps)
         {
-            JsConfig.EmitCamelCaseNames = true;
+            
             var keyValues = request.ToStringDictionary().ToDictionary(x => x.Key, y => string.IsNullOrEmpty(y.Value) ? y.Value : y.Value.ToLowerInvariant());
             
             keyValues["type"] = GetEnumDescription(request.Type).ToLowerInvariant();

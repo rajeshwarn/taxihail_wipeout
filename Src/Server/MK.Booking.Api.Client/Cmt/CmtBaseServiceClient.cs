@@ -39,8 +39,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
 
         private ServiceClientBase CreateClient()
         {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
-            JsConfig.EmitCamelCaseNames = true;
             var client = new CmtJsonServiceClient(_url)
             {
                 Timeout = new TimeSpan(0, 0, 0, 20, 0),

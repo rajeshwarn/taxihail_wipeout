@@ -3,7 +3,7 @@ using apcurium.MK.Common.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MK.Booking.Api.Client.iOS.Cmt
+namespace apcurium.MK.Booking.Api.Client.Cmt
 {
     public class CmtConfigurationClientService :  IConfigurationManager
     {

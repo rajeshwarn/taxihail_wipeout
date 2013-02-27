@@ -1254,34 +1254,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_HistoryList = 2130903073;
 			
 			// aapt resource value: 0x7f030022
-			public const int View_LocationDetail = 2130903074;
+			public const int View_HomeCmt = 2130903074;
 			
 			// aapt resource value: 0x7f030023
-			public const int View_LocationList = 2130903075;
+			public const int View_LocationDetail = 2130903075;
 			
 			// aapt resource value: 0x7f030024
-			public const int View_Login = 2130903076;
+			public const int View_LocationList = 2130903076;
 			
 			// aapt resource value: 0x7f030025
-			public const int View_PasswordRecovery = 2130903077;
+			public const int View_Login = 2130903077;
 			
 			// aapt resource value: 0x7f030026
-			public const int View_RefineAddress = 2130903078;
+			public const int View_PasswordRecovery = 2130903078;
 			
 			// aapt resource value: 0x7f030027
-			public const int View_RideSettings = 2130903079;
+			public const int View_RefineAddress = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int View_SearchAddress = 2130903080;
+			public const int View_RideSettings = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int View_SignUp = 2130903081;
+			public const int View_SearchAddress = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int View_Tutorial = 2130903082;
+			public const int View_SignUp = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int View_UpdatePassword = 2130903083;
+			public const int View_Tutorial = 2130903083;
+			
+			// aapt resource value: 0x7f03002c
+			public const int View_UpdatePassword = 2130903084;
 			
 			private Layout()
 			{
