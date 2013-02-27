@@ -29,6 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             SetContentView(Resource.Layout.View_HomeCmt);
 
+			var listMessages = FindViewById<ListView>(Resource.Id.MessagesList);
+			listMessages.ScrollingCacheEnabled = false;
+
 			var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
 			mainSettingsButton.Click -= MainSettingsButtonOnClick;
 			mainSettingsButton.Click += MainSettingsButtonOnClick;

@@ -24,18 +24,89 @@
             android:id="@+id/MainLayout"
             local:RightButtonSource="main_settings"
             android:focusableInTouchMode="true">
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
                 <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+                    android:id="@+id/MessagesList"
                     android:layout_width="fill_parent"
                     android:layout_marginTop="5dip"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/CreditCardsListView"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginBottom="5dip"
                     local:MvxItemTemplate="@layout/simplecmtmessagelistitem"
                     local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;Messages&apos;}}" />
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dip"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:orientation="horizontal">
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Red"
+                            style="@style/ButtonText"
+                            android:background="@drawable/red_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ClearMessages&apos;}}"
+                            android:text="clear" />
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Green"
+                            style="@style/ButtonText"
+                            android:background="@drawable/green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Brodcast&apos;}}"
+                            android:text="broadcast" />
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Green"
+                            style="@style/ButtonText"
+                            android:background="@drawable/green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GuideMe&apos;}}"
+                            android:text="guide me" />
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Green"
+                            style="@style/ButtonText"
+                            android:background="@drawable/green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Ehail&apos;}}"
+                            android:text="ehail" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:orientation="horizontal">
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Green"
+                            style="@style/ButtonText"
+                            android:background="@drawable/green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CancelEhail&apos;}}"
+                            android:text="cancel ehail" />
+                        <apcurium.mk.booking.mobile.client.controls.StyledButton
+                            local:ButtonStyle="Green"
+                            style="@style/ButtonText"
+                            android:background="@drawable/green_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dip"
+                            android:layout_weight="1"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Connect&apos;}}"
+                            android:text="connect" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
         </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
     </RelativeLayout>
 </RelativeLayout>

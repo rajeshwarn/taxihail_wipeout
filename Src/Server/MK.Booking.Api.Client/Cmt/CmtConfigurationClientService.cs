@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             settings ["Client.HideReportProblem"] = "true";
             settings ["Client.ShowRingCodeField"] = "false"; 
             settings ["Client.NumberOfCharInRefineAddress"] = "5";   
+			settings ["GeoLoc.SearchFilter"] = "{0},NY, USA";   
         }
 
         #region IConfigurationManager implementation

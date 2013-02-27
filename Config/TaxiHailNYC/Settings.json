@@ -1,5 +1,5 @@
 {
-   "ApplicationName" : "TaxiHail NYC",
+   "ApplicationName" : "TaxiHailNYC",
    "CanChangeServiceUrl" : "true",
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
@@ -20,7 +20,7 @@
    "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
    "AndroidSigningKeyAlias" : "MKTaxiHail",
    "AndroidSigningKeyPassStorePass" : "mkt0001.",
-   "AppName" : "TaxiHail CMT",
+   "AppName" : "TaxiHailNyc",
    "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
    "Package" : "com.apcurium.MK.TaxiHailDemo",
    "StreetNumberScreenEnabled" : "true",

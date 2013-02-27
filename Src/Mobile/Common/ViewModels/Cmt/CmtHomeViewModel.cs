@@ -12,6 +12,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Cmt;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -47,13 +49,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Pickup = new BookAddressViewModel(() => PickupAddress, address => { PickupAddress = address; }, _geolocator)
             {
-
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
+			Pickup.RequestCurrentLocationCommand.Execute(null);
             Dropoff = new BookAddressViewModel(() => DestinationAddress, address => { DestinationAddress = address; }, _geolocator)
             {
                  EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
+			Dropoff.OnAddressSelected(new AddressSelected(this, new Address{ FullAddress = "87 E 42nd St" }, "notimportant")); //grand central
         }
 
         public PanelViewModel Panel { get; set; }
@@ -64,15 +67,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public ObservableCollection<CmtMessageViewModel> Messages { get; set; }
 
-        public MvxRelayCommand GuideMe
+		public AsyncCommand GuideMe
         {
             get
             {
-                return new MvxRelayCommand(() =>
+				return new AsyncCommand(() =>
                 {
-                    Messages.Add(new CmtMessageViewModel { Message = Resources.GetString("GuidancePlease"), IsUser = true });
-                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceLocationConfirmation"), Pickup.Model.BookAddress), IsUser = false });
-                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceDestinationRequest"), _accountService.CurrentAccount.Name), IsUser = false });
+					InvokeOnMainThread(() => {
+	                    Messages.Add(new CmtMessageViewModel { Message = Resources.GetString("GuidancePlease"), IsUser = true });
+	                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceLocationConfirmation"), Pickup.Model.BookAddress), IsUser = false });
+	                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceDestinationRequest"), _accountService.CurrentAccount.Name), IsUser = false });
+						Messages.Add(new CmtMessageViewModel { Message = string.Format("Destination : {0}", Dropoff.Model.FullAddress), IsUser = false });
+					});
+					var request = new PreCogRequest{
+						Type = PreCogType.Guide,
+						DestDesc = "Grand Central",
+						DestLat = Dropoff.Model.Latitude,
+						DestLon = Dropoff.Model.Longitude
+					};
+					var response = 	_preCogService.SendRequest(request);
+					InvokeOnMainThread(() => {
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Guide request: {0}", request.Dump())});
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Guide response: {0}", response.Dump())});
+					});
 
                 });
             }
@@ -82,17 +99,86 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return new MvxRelayCommand(() =>				                           {
+				return new MvxRelayCommand(() =>{
 					Messages.Clear ();					
 				});
 			}
 		}
 
+		public AsyncCommand Brodcast
+		{
+			get
+			{
+				return new AsyncCommand(() =>{
+					var request = new PreCogRequest{
+						Type = PreCogType.Broadcast
+					};
+					var response = 	_preCogService.SendRequest(request);
+					InvokeOnMainThread(() => {
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Broadcast request: {0}", request.Dump())});
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Broadcast response: {0}", response.Dump())});
+					});
+				});
+			}
+		}
+
+		public AsyncCommand Ehail
+		{
+			get
+			{
+				return new AsyncCommand(() =>{
+					var request = new PreCogRequest{
+						Type = PreCogType.Ehail
+					};
+					var response = 	_preCogService.SendRequest(request);
+					InvokeOnMainThread(() => {
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Ehail request: {0}", request.Dump())});
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Ehail response: {0}", response.Dump())});
+					});
+				});
+			}
+		}
+
+		public AsyncCommand CancelEhail
+		{
+			get
+			{
+				return new AsyncCommand(() =>{
+					var request = new PreCogRequest{
+						Type = PreCogType.CancelEhail
+					};
+					var response = 	_preCogService.SendRequest(request);
+					InvokeOnMainThread(() => {
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("CancelEhail request: {0}", request.Dump())});
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("CancelEhail response: {0}", response.Dump())});
+					});
+				});
+			}
+		}
+
+		public AsyncCommand Connect
+		{
+			get
+			{
+				return new AsyncCommand(() =>{
+					var request = new PreCogRequest{
+						Type = PreCogType.Connect
+					};
+					var response = 	_preCogService.SendRequest(request);
+					InvokeOnMainThread(() => {
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Connect request: {0}", request.Dump())});
+						Messages.Add(new CmtMessageViewModel{ Message = string.Format("Connect response: {0}", response.Dump())});
+					});
+				});
+			}
+		}
+
+
 		void DebugStatusRequestResponse (PreCogRequest request, PreCogResponse response)
 		{
 			InvokeOnMainThread(() => {
-				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status request: {0}", request.ToJson())});
-				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status response: {0}", response.ToJson())});
+				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status request: {0}", request.Dump())});
+				Messages.Add(new CmtMessageViewModel{ Message = string.Format("Status response: {0}", response.Dump())});
 			});
 		}
     }
