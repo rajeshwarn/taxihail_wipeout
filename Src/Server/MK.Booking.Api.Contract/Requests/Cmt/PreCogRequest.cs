@@ -27,8 +27,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
     {
         Status,
         Ehail,
-        [Description("Guide-Share")]
         Guide,
+        [Description("Guide-Share")]
+        GuideShare,
         Connect,
         [Description("Cancel-Ehail")]
         CancelEhail,
