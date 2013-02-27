@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             : base(applicationContext)
         {
 
-           
+			System.Net.ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
 
 
         }

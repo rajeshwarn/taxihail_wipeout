@@ -11,7 +11,6 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MK.Booking.Api.Client.Android</RootNamespace>
     <AssemblyName>MK.Booking.Api.Client.Android</AssemblyName>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -85,6 +84,8 @@
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="Cmt\CmtConfigurationClientService.cs" />
+    <Compile Include="Cmt\CmtApplicationInfoServiceClient.cs" />
+    <Compile Include="IApplicationInfoServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

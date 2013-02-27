@@ -63,11 +63,6 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
 
-            
-            TinyIoCContainer.Current.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-
-
-
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
 
@@ -93,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile
 
         private void RegisterServiceClients ()
         {
+			TinyIoCContainer.Current.Register<IApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null), "NotAuthenticated");
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)), "Authenticate");            
@@ -113,6 +109,7 @@ namespace apcurium.MK.Booking.Mobile
 
         private void RegisterServiceCmt ()
         {
+			TinyIoCContainer.Current.Register<IApplicationInfoServiceClient>(new CmtApplicationInfoServiceClient());
             var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
             locationService.Initialize();
             TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new CmtAuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)));
@@ -144,14 +141,15 @@ namespace apcurium.MK.Booking.Mobile
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        private void InitializePushNotifications()
-        {
-            var accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
-            var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService>();
-            if (accountService.CurrentAccount != null)
-            {
-                pushService.RegisterDeviceForPushNotifications();
-            }
+        private void InitializePushNotifications ()
+		{
+			if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT) {
+				var accountService = TinyIoCContainer.Current.Resolve<IAccountService> ();
+				var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService> ();
+				if (accountService.CurrentAccount != null) {
+					pushService.RegisterDeviceForPushNotifications ();
+				}
+			}
         }
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()

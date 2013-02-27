@@ -109,14 +109,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 				if(account != null){
-					this.Password = string.Empty;
-
-                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
+					this.Password = string.Empty;                    
 
                     if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT)
                     {
                         RequestNavigate<CmtHomeViewModel> ();
                     }else{
+						InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
                         RequestNavigate<BookViewModel>(true);
                     }
                     RequestClose( this );
