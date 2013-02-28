@@ -38,11 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string SupportEmail { get; set; }
         public bool RatingEnabled { get; set; }        
         public bool StreetNumberScreenEnabled { get; set; }
-        public bool IsCMT { get; set; }
         public bool PayByCreditCardEnabled { get; set; }
 
     }
 }
-
-
-

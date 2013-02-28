@@ -19,8 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TextProgressButton : LinearLayout
     {
-        private static int _rightArrowDrawableId;
-
         private static int _progressSize = DrawHelper.GetPixels(30);
         private static int _xPositionText = DrawHelper.GetPixels(4);
         private static int _yPositionTextL1 = DrawHelper.GetPixels(19);
@@ -196,11 +194,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeFace, Color color)
         {
-            var systemService = Context.GetSystemService(Context.WindowService);
-			IWindowManager wManager = systemService.JavaCast<IWindowManager>();
+            var wManager = (IWindowManager)Context.GetSystemService(Context.WindowService);
 
             var metrics = new DisplayMetrics();
             wManager.DefaultDisplay.GetMetrics(metrics);
+
+            
+
 
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
             paintText.TextSize = textSize;

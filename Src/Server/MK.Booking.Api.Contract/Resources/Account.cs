@@ -10,11 +10,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string Email { get; set; }
 
-        public string Name { get; set; }  
-      
-        public string FirstName { get; set; }      
-  
-        public string LastName { get; set; }        
+        public string Name { get; set; }        
 
         public string Phone { get; set; }
 
@@ -34,6 +30,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double? DefaultTipAmount { get; set; }
 
-        public double? DefaultTipPercent { get; set; }
+        public double? DefaultTipPercent { get; set; } 
     }
 }

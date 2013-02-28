@@ -387,6 +387,3 @@
 "WarningTitle"="Warning";
 "View_SearchAddress"="Address Search";
 "DeleteAddressBt"="Clear Address";
-"GuidanceDestinationRequest"="where 2 {0}?";
-"GuidancePlease"="guidance please";
-"GuidanceLocationConfirmation"="I see you're at {0}";

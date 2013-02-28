@@ -241,9 +241,6 @@
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
-    <Compile Include="AppServices\IPreCogService.cs" />
-    <Compile Include="AppServices\Impl\PreCogService.cs" />
-    <Compile Include="ViewModels\Cmt\CmtHomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -288,7 +285,6 @@
     <Folder Include="Messages\" />
     <Folder Include="TutorialContent\" />
     <Folder Include="ViewModels\Payment\" />
-    <Folder Include="ViewModels\Cmt\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />

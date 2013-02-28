@@ -387,9 +387,6 @@
   <string name="ContinueButton">Continue</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="WarningTitle">Warning</string>
-  <string name="DeleteAddressBt">Clear Address</string>
+  <string name="DeleteAddressBt">Delete Address</string>
   <string name="View_SearchAddress">Address Search</string>
-  <string name="GuidancePlease">guidance please</string>
-  <string name="GuidanceLocationConfirmation">I see you\'re at {0}</string>
-  <string name="GuidanceDestinationRequest">where 2 {0}?</string>
 </resources>

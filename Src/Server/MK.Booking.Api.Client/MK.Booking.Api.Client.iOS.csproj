@@ -104,10 +104,7 @@
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="Client\CmtJsonServiceClient.cs" />
-    <Compile Include="IReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
-    <Compile Include="Cmt\CmtReferenceDataServiceClient.cs" />
-    <Compile Include="Cmt\CmtConfigurationClientService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

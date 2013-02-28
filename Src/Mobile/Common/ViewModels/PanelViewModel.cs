@@ -24,8 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>,IMvxServiceConsumer<ICacheService>
     {
         readonly IAccountService _accountService;
-        private IMvxViewModel _parent;
-        public PanelViewModel ( IMvxViewModel parent )
+        private BookViewModel _parent;
+        public PanelViewModel ( BookViewModel parent )
         {
             _parent = parent;
             _accountService = this.GetService<IAccountService> ();

@@ -89,7 +89,6 @@
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
-    <Compile Include="Activities\CmtHomeActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -279,9 +278,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
-    <AndroidResource Include="Resources\Layout\SimpleCmtMessageListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -621,11 +617,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_HomeCmt.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">

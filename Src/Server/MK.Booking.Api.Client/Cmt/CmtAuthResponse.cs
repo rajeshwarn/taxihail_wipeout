@@ -2,8 +2,9 @@
 {
     public class CmtAuthResponse
     {
-        public int OauthExpiresInSeconds { get; set; }
-        public string OauthToken { get; set; }
-        public string OauthTokenSecret { get; set; }
+        public string AccountId { get; set; }
+        public string SessionToken { get; set; }
+        public string AccessToken { get; set; }
+        public string AccessTokenSecret { get; set; }
     }
 }
