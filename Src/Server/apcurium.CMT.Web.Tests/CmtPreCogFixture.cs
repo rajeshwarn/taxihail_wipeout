@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.Cmt;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 
@@ -13,6 +14,7 @@ namespace apcurium.CMT.Web.Tests
         public override void TestFixtureSetup()
         {
             base.TestFixtureSetup();
+            Authenticate();
         }
 
         [TestFixtureTearDown]
@@ -29,22 +31,58 @@ namespace apcurium.CMT.Web.Tests
 
         
         [Test]
-        public void when_sending_guide()
+        public void when_sending_status()
         {
-            Credentials.AccessToken = "toto";
-            Credentials.AccessTokenSecret = "titi";
-            Credentials.SessionId = "SessoionId";
-            Credentials.AccountId = "one";
+            
 
             var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
-            var newAccount = new PreCogRequest
+            var statusRequest = new PreCogRequest
                                  {
-                                     DestDesc = "moma",
-                                     Init = false,
-                                     LinkedVehiculeId = "514896",
-                                     Type = PreCogType.Guide
+                                     LocLon = -74.004593,
+                                     LocLat = 40.740676,
+                                     LocTime = DateTime.Now,
+                                     LocDesc = "Apcurium",
+                                     Init = true,
+                                     Type = PreCogType.Status
                                  };
-            sut.Send(newAccount);
+            sut.Send(statusRequest, false);
+        }
+
+        [Test]
+        public void when_sending_brodcast()
+        {
+
+            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
+            var statusRequest = new PreCogRequest
+            {
+                LocLon = -74.004593,
+                LocLat = 40.740676,
+                LocTime = DateTime.Now,
+                LocDesc = "Apcurium",
+                Init = false,
+                Type = PreCogType.Broadcast
+            };
+            sut.Send(statusRequest, false);
+        }
+
+        [Test]
+        public void when_sending_guide()
+        {
+
+            var sut = new CmtPreCogServiceClient(BaseUrl, Credentials);
+            var statusRequest = new PreCogRequest
+            {
+                LocLon = -74.004593,
+                LocLat = 40.740676,
+                LocTime = DateTime.Now,
+                LocDesc = "Apcurium",
+                Init = false,
+                Type = PreCogType.Guide,
+                DestDesc = "restaurant",
+                DestLat = 40.738758,
+                DestLon = -73.982706
+            };
+            sut.Send(statusRequest, false);
         }
 
     }

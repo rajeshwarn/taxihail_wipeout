@@ -214,7 +214,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void OnAddressSelected(AddressSelected selected)
+        public void OnAddressSelected(AddressSelected selected)
         {
             if ( selected.Content != null )
             {

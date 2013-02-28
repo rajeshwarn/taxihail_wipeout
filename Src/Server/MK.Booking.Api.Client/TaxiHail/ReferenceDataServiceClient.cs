@@ -2,7 +2,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-    public class ReferenceDataServiceClient : BaseServiceClient
+    public class ReferenceDataServiceClient : BaseServiceClient, IReferenceDataServiceClient
     {
         public ReferenceDataServiceClient(string url, string sessionId)
             : base(url, sessionId)

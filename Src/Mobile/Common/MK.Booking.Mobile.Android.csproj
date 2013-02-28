@@ -13,7 +13,6 @@
     <AssemblyName>apcurium.MK.Booking.Mobile</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -71,7 +70,9 @@
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
+    <Compile Include="AppServices\Impl\PreCogService.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
+    <Compile Include="AppServices\IPreCogService.cs" />
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="AppServices\ISocialNetworksService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
+    <Compile Include="ViewModels\Cmt\CmtHomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -288,6 +290,7 @@
     <None Include="ViewModels\Master.resx">
       <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
     </None>
+    <None Include="Localization\TaxiHailNyc.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -307,5 +310,7 @@
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Fakes\" />
+    <Folder Include="Cmt\" />
+    <Folder Include="ViewModels\Cmt\" />
   </ItemGroup>
 </Project>

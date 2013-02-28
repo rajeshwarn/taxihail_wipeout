@@ -161,6 +161,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.RatingEnabled; }
         }
 
+
+
+        public bool IsCMT {
+            get { return _data.IsCMT; }
+        }
         public bool StreetNumberScreenEnabled {
             get { return _data.StreetNumberScreenEnabled; }
         }

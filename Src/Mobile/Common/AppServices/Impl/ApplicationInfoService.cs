@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public ApplicationInfo GetAppInfo()
 		{
             ApplicationInfo info = new ApplicationInfo();
-			UseServiceClient<ApplicationInfoServiceClient>( service => {
+
+			UseServiceClient<IApplicationInfoServiceClient>( service => {
 				info = service.GetAppInfo();				
 			});
 			return info;
@@ -28,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public string GetServerVersion()
 		{
 			string version = "";
-			UseServiceClient<ApplicationInfoServiceClient>( service => {
+			UseServiceClient<IApplicationInfoServiceClient>( service => {
 				ApplicationInfo info = service.GetAppInfo();
 				version = info.Version;
 			});
@@ -45,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 try
                 {
                     var app = GetAppInfo();
-                    isUpToDate = app.Version.StartsWith("1.4.");
+                    isUpToDate = app.Version.StartsWith("1.0.");
                 }
                 catch (Exception e)
                 {

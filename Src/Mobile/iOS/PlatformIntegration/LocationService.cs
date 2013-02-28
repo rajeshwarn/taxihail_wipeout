@@ -26,7 +26,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             { 
                 if ((_locationDelegate != null) && (_locationDelegate.LastKnownLocation != null))
                 {
-                    return new Position{ Latitude =  _locationDelegate.LastKnownLocation.Coordinate.Latitude, Longitude = _locationDelegate.LastKnownLocation.Coordinate.Longitude };
+                    return new Position{ 
+                        Time = _locationDelegate.LastKnownLocation.Timestamp, 
+                        Latitude =  _locationDelegate.LastKnownLocation.Coordinate.Latitude, 
+                        Longitude = _locationDelegate.LastKnownLocation.Coordinate.Longitude,
+                        Accuracy = (float)_locationDelegate.LastKnownLocation.HorizontalAccuracy,
+                        Altitude = _locationDelegate.LastKnownLocation.Altitude,
+                        Speed = (float)_locationDelegate.LastKnownLocation.Speed,
+                    };
                 }
                 else
                 {
@@ -123,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _last;
             }
 
- if (!IsServiceEnabled)
+            if (!IsServiceEnabled)
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
@@ -170,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Stop ()
         {
             _locationManager.StopUpdatingLocation ();
-        }
+        }       
 #endregion
     }
 }

@@ -39,7 +39,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         bool RatingEnabled { get; }
 
-        bool StreetNumberScreenEnabled { get; }
+        bool IsCMT { get; }
+        
+         bool StreetNumberScreenEnabled { get; }
+
 
         bool PayByCreditCardEnabled { get; }
 	}

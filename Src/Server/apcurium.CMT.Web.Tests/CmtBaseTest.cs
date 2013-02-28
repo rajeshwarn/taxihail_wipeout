@@ -1,5 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.Cmt;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Client.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
 
@@ -7,22 +7,24 @@ namespace apcurium.CMT.Web.Tests
 {
     public class CmtBaseTest
     {
-        protected const string BaseUrl = "https://mobile-sandbox.cmtapi.com/v1/";
+        //protected const string BaseUrl = "https://mobile.cmtapi.com/v1/";
+        protected const string BaseUrl = "https://mobile-sandbox.cmtapi.com/v1";
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
 
-        protected CmtAuthCredentials Credentials = new CmtAuthCredentials();
+        protected CmtAuthCredentials Credentials;
 
         public virtual void TestFixtureSetup()
         {
+            JsConfig.EmitCamelCaseNames = true;
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;
             Credentials = new CmtAuthCredentials { ConsumerKey = "AH7j9KweF235hP", ConsumerSecret = "K09JucBn23dDrehZa"};
         }
 
         public virtual void Setup()
         {
-            
-           
+
         }
 
         public virtual void TestFixtureTearDown()
@@ -36,13 +38,13 @@ namespace apcurium.CMT.Web.Tests
             return email;
         }
 
-        protected Account CreateAndAuthenticateTestAccount()
+        protected void Authenticate()
         {
-            var newAccount = new AccountServiceClient(BaseUrl, null).CreateTestAccount();
-            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
-            SessionId = authResponse.SessionId;
-            return newAccount;
+            var sut = new CmtAuthServiceClient(BaseUrl, Credentials);
+            var data = sut.Authenticate("matthieu@live.com", "password");
+            Credentials.AccessToken = data.AccessToken;
+            Credentials.AccessTokenSecret = data.AccessTokenSecret;
+            Credentials.AccountId = data.AccountId;
         }
-        
     }
 }
