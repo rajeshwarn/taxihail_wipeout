@@ -300,6 +300,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
     <Content Include="themes\CasinoTaxi\img\logo.png" />
     <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
     <Content Include="themes\DispatchTaxi\img\location.png" />
@@ -455,6 +456,10 @@
     <Content Include="themes\DispatchTaxi\less\combined.less" />
     <Content Include="themes\DispatchTaxi\less\style.less" />
     <Content Include="themes\DispatchTaxi\less\variables.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\combined-responsive.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\combined.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\style.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
