@@ -37,11 +37,12 @@ namespace apcurium.MK.Booking.Api.Services
         private IOrderDao _orderDao;
         private IAccountDao _accountDao;
         private IConfigurationManager _configManager;
-
+        private IDriverWebServiceClient _driverWebServiceClient;
         private static readonly ILog Log = LogManager.GetLogger("TraceOutput");
 
-        public OrderStatusService(IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
+        public OrderStatusService(IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, IDriverWebServiceClient driverWebServiceClient, ICommandBus commandBus)
         {
+            _driverWebServiceClient = driverWebServiceClient;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Api.Services
                                 status.DriverInfos = new DriverInfos();
                                 try
                                 {
-                                    var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
+                                    var driverInfos = _driverWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
                                     status.DriverInfos = new DriverInfos();
                                     status.DriverInfos.FirstName = driverInfos.FirstName;
                                     status.DriverInfos.LastName = driverInfos.LastName;
