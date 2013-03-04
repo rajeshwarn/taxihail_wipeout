@@ -95,6 +95,7 @@
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
     <Compile Include="IBSOrderStauts.cs" />
+    <Compile Include="IDriverWebServiceClient.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
     <Compile Include="IAccountWebServiceClient.cs" />
