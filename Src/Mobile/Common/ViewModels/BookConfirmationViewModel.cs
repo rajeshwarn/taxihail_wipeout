@@ -264,16 +264,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private bool _showEstimate
+        {
+            get
+            {
+                var ret = true;
+                try
+                {
+                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate"));
+                }
+                catch (Exception)
+                {
+                    return true;
+                }
+                return ret;
+            }
+        }
 
 		private void ShowFareEstimateAlertDialogIfNecessary()
 		{
-			if(this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() 
-			   && Order.DropOffAddress.HasValidCoordinate())
-			{
-				MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
-	           		"Ok", delegate {},
-					Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
-			}
+            if (_showEstimate)
+            {
+                if (this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty()
+               && Order.DropOffAddress.HasValidCoordinate())
+                {
+                    MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
+                        "Ok", delegate { },
+                        Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
+                }
+            }
 		}
 
         private void ShowChooseProviderDialogIfNecessary()

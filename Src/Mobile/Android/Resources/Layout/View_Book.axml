@@ -130,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;FareEstimate&apos;}}"
+                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;FareEstimate&apos;}, 'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}"
                             android:gravity="center_horizontal|top"
                             style="@style/SmallTitle"
                             android:layout_gravity="center_horizontal|top" />

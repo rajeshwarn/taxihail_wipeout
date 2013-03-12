@@ -347,6 +347,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool ShowEstimate
+        {
+            get
+            {
+                var ret = true;
+                try
+                {
+                     ret =  Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate"));
+                }
+                catch (Exception)
+                {
+                    return true;
+                }
+                return ret;
+            }
+        }
+
         public PanelViewModel Panel { get; set; }
 
         public BookAddressViewModel Pickup { get; set; }
