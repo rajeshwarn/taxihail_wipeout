@@ -7,7 +7,7 @@
             if (resourceSet && !_.isUndefined(TaxiHail.resources[resourceSet])) {
                 resource = TaxiHail.resources[resourceSet][resourceName];
             }
-            return resource || TaxiHail.resources.Global[resourceName] || '[' + resourceName + ']';
+            return resource || TaxiHail.resources.Global[resourceName] ||  TaxiHail.resources.SettingsAlias[resourceName] || '[' + resourceName + ']';
         },
 
         addResourceSet: function (name, resourceSet) {
@@ -163,6 +163,32 @@
 
     Handlebars.registerHelper('localize', function (resourceName) {
         return new Handlebars.SafeString(TaxiHail.localize(resourceName, this.resourceSet));
+    });
+    
+    Handlebars.registerHelper('isBool', function (obj,options) {
+        if (obj == "true" || obj == "false") {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+    
+    Handlebars.registerHelper('isNumber', function (n, options) {
+        if (!isNaN(parseFloat(n)) && isFinite(n)) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+    
+    Handlebars.registerHelper('invertedBool', function (obj) {
+        if (obj == "true") {
+            return "false";
+        } else if(obj=="false") {
+            return "true";
+        } else {
+            return "param is not a bool";
+        }
     });
 
     Handlebars.registerHelper('ifCond', function (v1, v2, options) {
