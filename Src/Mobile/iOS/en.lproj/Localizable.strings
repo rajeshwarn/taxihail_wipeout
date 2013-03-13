@@ -8,7 +8,7 @@
 "LoginForgotPasswordButton"="Forgot Password?";
 "CreateAccountLanguage"="Language";
 "NbPassenger"=" ({0} passenger)";
-"ResetPasswordSucessTitle"="Password resetted";
+"ResetPasswordSucessTitle"="Password reset";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
@@ -234,8 +234,7 @@
 "HistoryViewStatusButton"="View Status";
 "PasswordLabel"="Password";
 "BuildingName"="Building Name / Remark";
-"ResetPasswordSucessMessage"="Password was successfully resetted";
-"View_Book_Menu_UpdateMyProfile"="Update My Profile";
+"ResetPasswordSucessMessage"="Password was reset successfully";"View_Book_Menu_UpdateMyProfile"="Update My Profile";
 "TabBook"="Book";
 "View_BookSettingMenu"="Settings";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
