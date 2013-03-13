@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Id = @event.RuleId,
                     Name = @event.Name,
                     Message = @event.Message,
+                    ZoneList  = @event.ZoneList,
                     DaysOfTheWeek = (int)@event.DaysOfTheWeek,
                     StartTime = @event.StartTime.HasValue ? @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.StartTime : null,
                     EndTime = @event.EndTime.HasValue ? @event.EndTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.EndTime : null,
@@ -51,6 +52,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     var rule = context.Find<RuleDetail>(@event.RuleId);
                     rule.Name = @event.Name;
                     rule.Message = @event.Message;
+                    rule.ZoneList = @event.ZoneList;
                     rule.DaysOfTheWeek = (int)@event.DaysOfTheWeek;
                     rule.StartTime =  @event.StartTime.HasValue ? @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.StartTime : null;
                     rule.EndTime = @event.EndTime.HasValue ?  @event.EndTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.EndTime : null;

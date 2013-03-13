@@ -1,8 +1,10 @@
 {
     "Manage Rules": "Manage Rules",
+	"Message": "Message",
     "Name": "Name",
     "Days": "Days",
     "Time": "Time",
-    "Add Rule (Recurring)": "Add Recurring Rule",
+    "Add Default": "Add Default",
+	"Add Rule (Recurring)": "Add Recurring Rule",
     "Add Rule (One day)": "Add Rule by Date"
 }

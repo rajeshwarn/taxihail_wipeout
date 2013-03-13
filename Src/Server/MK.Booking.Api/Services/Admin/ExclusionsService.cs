@@ -7,6 +7,7 @@ using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services.Admin
@@ -26,15 +27,15 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
         public override object OnGet(ExclusionsRequest request)
         {
-            var excludedVehicleTypeId = _configManager.GetSetting("IBS.ExcludedVehicleTypeId")
+            var excludedVehicleTypeId =   _configManager.GetSetting("IBS.ExcludedVehicleTypeId").SelectOrDefault( s=> s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse).ToArray();
-            var excludedPaymentTypeId = _configManager.GetSetting("IBS.ExcludedPaymentTypeId")
+                .Select(int.Parse).ToArray(), new int[0]);
+            var excludedPaymentTypeId = _configManager.GetSetting("IBS.ExcludedPaymentTypeId").SelectOrDefault( s=> s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse).ToArray();
-            var excludedProviderId = _configManager.GetSetting("IBS.ExcludedProviderId")
+                .Select(int.Parse).ToArray(), new int[0]);
+            var excludedProviderId = _configManager.GetSetting("IBS.ExcludedProviderId").SelectOrDefault( s=> s
                 .Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(int.Parse).ToArray();
+                .Select(int.Parse).ToArray(), new int[0]);
 
             return new ExclusionsRequestResponse()
             {
@@ -49,9 +50,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
         {
             var settings = new Dictionary<string,string>()
             {
-                {"IBS.ExcludedVehicleTypeId", string.Join(";",request.ExcludedVehicleTypeId.Select(x=>x.ToString()))  },
-                {"IBS.ExcludedPaymentTypeId", string.Join(";",request.ExcludedPaymentTypeId.Select(x=>x.ToString()))  },
-                {"IBS.ExcludedProviderId", string.Join(";",request.ExcludedProviderId.Select(x=>x.ToString()))  }
+                {"IBS.ExcludedVehicleTypeId", request.ExcludedVehicleTypeId == null ? null :  string.Join(";",request.ExcludedVehicleTypeId.Select(x=>x.ToString()))  },
+                {"IBS.ExcludedPaymentTypeId", request.ExcludedPaymentTypeId == null ? null : string.Join(";",request.ExcludedPaymentTypeId.Select(x=>x.ToString()))  },
+                {"IBS.ExcludedProviderId", request.ExcludedProviderId == null ? null :string.Join(";",request.ExcludedProviderId.Select(x=>x.ToString()))  }
             };
 
             var command = new Commands.AddOrUpdateAppSettings { AppSettings = settings, CompanyId = AppConstants.CompanyId };

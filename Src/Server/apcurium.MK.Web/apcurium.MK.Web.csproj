@@ -460,6 +460,7 @@
     <Content Include="themes\BlueWhiteTaxi\less\combined.less" />
     <Content Include="themes\BlueWhiteTaxi\less\style.less" />
     <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
+    <Content Include="admin\templates\RuleItem.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

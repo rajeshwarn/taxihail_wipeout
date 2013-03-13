@@ -13,6 +13,15 @@
             });
         },
 
+        addDefault: function () {
+            return new TaxiHail.EditTariffView({
+                collection: this.collection,
+                model: new TaxiHail.Tariff({
+                    type: TaxiHail.Tariff.type.recurring
+                })
+            });
+        },
+
         addRecurring: function () {
             return new TaxiHail.EditTariffView({
                 collection: this.collection,

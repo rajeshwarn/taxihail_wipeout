@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Events
         public Guid RuleId { get; set; }
         public string Name { get; set; }
         public string Message { get; set; }
+        public string ZoneList { get; set; }
         public bool AppliesToCurrentBooking { get; set; }
         public bool AppliesToFutureBooking { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }

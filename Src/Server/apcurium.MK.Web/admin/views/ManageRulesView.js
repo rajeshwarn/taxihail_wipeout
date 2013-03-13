@@ -17,10 +17,10 @@
             return this;
         },
 
-        renderItem: function(rate) {
+        renderItem: function(rule) {
 
-            new TaxiHail.TariffItemView({
-                model: rate
+            new TaxiHail.RuleItemView({
+                model: rule
             }).render().$el.appendTo(this.$('tbody'));
             
         }

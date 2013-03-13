@@ -244,8 +244,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         
-
-        public void CreateRule(Guid ruleId, string name, string message, RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
+        public void CreateRule(Guid ruleId, string name, string message, string zoneList,  RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
         {
             if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
             {
@@ -272,6 +271,7 @@ namespace apcurium.MK.Booking.Domain
                 Type = type,
                 Name = name,
                 Message = message,
+                ZoneList = zoneList,
                 Category = category,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        public void UpdateRule(Guid ruleId, string name, string message, bool appliedToCurrentBooking, bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool appliedToCurrentBooking, bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
         {
 
             this.Update(new RuleUpdated
@@ -294,6 +294,7 @@ namespace apcurium.MK.Booking.Domain
                 RuleId = ruleId,
                 Name = name,
                 Message = message,
+                ZoneList = zoneList,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
                 IsActive = isActive,

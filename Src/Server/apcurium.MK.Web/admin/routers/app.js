@@ -25,6 +25,14 @@
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
+
+            /* Rules */
+            "rules": "manageRules", //#rules
+            "rules/add/default": "addDefaultRule", //#rules/add/recurring
+            "rules/add/recurring": "addRecurringRule", //#rules/add/recurring
+            "rules/add/day": "addDayRule", //#rules/add/day
+            "rules/edit/:id": "editRule", //#rules/edit/{GUID}
+
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions",
 
@@ -92,6 +100,27 @@
         editTariff: function(id) {
             
             action(TaxiHail.TariffsController, 'edit', id);
+        },
+
+        manageRules: function () {
+            action(TaxiHail.RulesController, 'index');
+        },
+
+        addDefaultRule: function () {
+            action(TaxiHail.RulesController, 'addDefault');
+        },
+
+        addRecurringRule: function () {
+            action(TaxiHail.RulesController, 'addRecurring');
+        },
+
+        addDayRule: function () {
+            action(TaxiHail.RulesController, 'addDay');
+        },
+
+        editRule: function (id) {
+
+            action(TaxiHail.RulesController, 'edit', id);
         },
 
         manageIBSExclusions: function () {

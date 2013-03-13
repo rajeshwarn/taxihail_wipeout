@@ -169,6 +169,7 @@ namespace apcurium.MK.Web.Tests
 
             rule.AppliesToCurrentBooking = false;
             rule.AppliesToFutureBooking = true;
+            rule.ZoneList = "200,201";
             rule.ActiveFrom = activeFromDateRef;
             rule.ActiveTo = activeFromDateRef.AddMonths(4);
             rule.DaysOfTheWeek = DayOfTheWeek.Monday | DayOfTheWeek.Wednesday;
@@ -184,6 +185,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newName, rule.Name);
             Assert.AreEqual(true, rule.AppliesToFutureBooking);
             Assert.AreEqual(false, rule.AppliesToCurrentBooking);
+            Assert.AreEqual ("200,201", rule.ZoneList );
             Assert.AreEqual(false, rule.IsActive);
             Assert.AreEqual(activeFromDateRef, rule.ActiveFrom);
             Assert.AreEqual(activeFromDateRef.AddMonths(4), rule.ActiveTo);

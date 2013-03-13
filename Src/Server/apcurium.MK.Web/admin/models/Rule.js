@@ -22,6 +22,7 @@
             disableRule: 0,
             warningRule: 1            
         }
+
     }
      );
 
