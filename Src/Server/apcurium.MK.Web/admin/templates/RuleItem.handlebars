@@ -1,7 +1,11 @@
 
 {{#if isDefault}}
     <td>{{localize "Default"}}</td>
+	<td>-</td>
+	<td>-</td>
 	<td>{{message}}</td>
+	<td>Both</td>
+	<td>0</td>
 	<td>{{zoneList}}</td>
     
 {{else}}
@@ -14,7 +18,7 @@
     <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
 {{/if}}
     <td>
-        <a type='button' class='btn btn-mini' href='#tariffs/edit/{{id}}'>
+        <a type='button' class='btn btn-mini' href='#rules/edit/{{id}}'>
             <i class="icon-edit icon-white"></i>
         </a>
         {{#unless isDefault}}

@@ -40,5 +40,6 @@
     "Tariff_DuplicateName": "This tariff already exists",
 	"You cannot exclude all options from a list." : "You cannot exclude all options from a list.",
 	"confirmEmailSuccess" : "User has correctly been confirmed." ,
-	"confirmEmailError" : "Error: Check that the email address exists in the system"
+	"confirmEmailError" : "Error: Check that the email address exists in the system",
+	"Default": "Default"
 }

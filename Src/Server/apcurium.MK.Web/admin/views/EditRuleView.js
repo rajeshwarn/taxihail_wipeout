@@ -14,8 +14,8 @@
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
                 data = this.model.toJSON();
 
-            data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
-            data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
+            data.recurring = +this.model.get('type') === TaxiHail.Rule.type.recurring;
+            data.isDefault = +this.model.get('type') === TaxiHail.Rule.type['default'];
             data.editMode = !this.model.isNew();
 
             // Determine if the checkbox for each days should be checked
@@ -84,10 +84,10 @@
                 startTime,
                 endTime;
 
-            if(+serialized.type) {
+           /* if(+serialized.type) {
                 // Not a default rate
 
-                if(+serialized.type === TaxiHail.Tariff.type.recurring ) {
+                if(+serialized.type === TaxiHail.Rule.type.recurring ) {
 
                     startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
                     endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
@@ -95,7 +95,7 @@
                         .flatten()
                         .reduce(function(memo, num){ return memo + (1<<num); }, 0);
 
-                } else if(+serialized.type === TaxiHail.Tariff.type.day) {
+                } else if(+serialized.type === TaxiHail.Rule.type.day) {
                     
                     date = new Date(this.$('[data-role=datepicker]').data('datepicker').date.toString());
                     startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), date);
@@ -109,12 +109,12 @@
 
                 serialized.startTime = TaxiHail.date.toISO8601(startTime);
                 serialized.endTime   = TaxiHail.date.toISO8601(endTime);
-            }
+            }*/
 
             this.model.save(serialized, {
                 success: _.bind(function(model) {
                     this.collection.add(model);
-                    TaxiHail.app.navigate('tariffs', {trigger: true});
+                    TaxiHail.app.navigate('rules', {trigger: true});
                 }, this),
                 error: function(model, xhr, options) {
                     this.$(':submit').button('reset');

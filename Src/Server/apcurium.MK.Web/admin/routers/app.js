@@ -36,9 +36,6 @@
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions",
 
-            /* Manage Booking Rules */
-            "rules": "manageBookingRules",
-            
             /*Export*/
             "exportaccounts": "exportaccounts",
             "exportorders": "exportorders"
@@ -128,10 +125,6 @@
             action(TaxiHail.ExclusionsController, 'index');
         },
 
-        manageBookingRules: function () {
-            
-            action(TaxiHail.RulesController, 'index');
-        },
         exportaccounts: function () {
            
         },

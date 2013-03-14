@@ -14,19 +14,19 @@
         },
 
         addDefault: function () {
-            return new TaxiHail.EditTariffView({
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
-                model: new TaxiHail.Tariff({
-                    type: TaxiHail.Tariff.type.recurring
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.recurring
                 })
             });
         },
 
         addRecurring: function () {
-            return new TaxiHail.EditTariffView({
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
-                model: new TaxiHail.Tariff({
-                    type: TaxiHail.Tariff.type.recurring
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.recurring
                 })
             });
         },
@@ -34,15 +34,15 @@
         addDay: function () {
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
-                model: new TaxiHail.Tariff({
-                    type: TaxiHail.Tariff.type.day
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.day
                 })
             });
         },
 
         edit: function (id) {
             var model = this.collection.get(id);
-            return new TaxiHail.EditTariffView({
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: model
             });

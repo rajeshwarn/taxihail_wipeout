@@ -157,6 +157,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/ManageCompanySettingsView.js",
                 "~/admin/views/SettingsItemView.js",
                 "~/admin/views/RuleItemView.js",
+                "~/admin/views/EditRuleView.js",
                 "~/admin/views/TariffItemView.js",
                 "~/admin/views/EditTariffView.js",
                 "~/admin/views/ManageExclusionsView.js",

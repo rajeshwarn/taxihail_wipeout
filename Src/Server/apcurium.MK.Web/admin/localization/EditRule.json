@@ -1,15 +1,6 @@
 {
-    "Edit Tariff": "Edit Rate",
-    "Add Tariff": "Add Rate",
-    "Save Tariff": "Save Rate",
-    "Name": "Name",
-    "Flat Rate": "Flat Rate",
-    "Kilometric Rate": "Per KM Rate",
-    "Margin of Error": "Overhead",
-    "Passenger Rate": "Per Passenger Rate",
-    "Start Time": "Start Time",
-    "End Time": "End Time",
-    "Date": "Date",
-    "Default": "Default",
-    "The next day": "The next day"
+    "Edit Rule": "Edit Rule",
+	"Name": "Name",
+	"Message" : "Message",
+	"Save Rule" : "Save Rule"
 }

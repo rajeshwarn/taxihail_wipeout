@@ -8,8 +8,8 @@
     </h4>
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" >
-        <input type='hidden' name='type' value='{{type}}' />
-        <input type='hidden' name='type' value='{{category}}' />
+      <!--<input type='hidden' name='type' value='{{type}}' />
+        <input type='hidden' name='type' value='{{category}}' /-->
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
@@ -24,10 +24,10 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Message'}}</label>
             <div class="controls">
-                <input type="text" name="message"  value="{{Message}}" class='input-mini'>
+              <textarea rows="3" type="text" name="message"  value="{{message}}">{{message}}</textarea>
             </div>
         </div>
         
-        <button type='submit' class='btn btn-primary'>{{localize "Save Tariff"}}</button>
+        <button type='submit' class='btn btn-primary'>{{localize "Save Rule"}}</button>
     </form>
 </div>

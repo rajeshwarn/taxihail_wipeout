@@ -1,12 +1,15 @@
 {
-    "Manage Rules": "Manage Rules",
-	"Message": "Message",
-    "Name": "Name",
-    "Days": "Days",
-    "Time": "Time",
-    "Add Default": "Add Default",
+	"Default":"Default",
+	"Manage Rules": "Manage Rules",
+	"Add Default": "Add Default",
 	"Add Rule (Recurring)": "Add Recurring Rule",
-    "Add Rule (One day)": "Add Rule by Date",
+	"Add Rule (One day)": "Add Rule by Date",
+	"Name": "Name",
+	"Days / Start - End Date" : "Days / Start - End Date",
+	"Time": "Time",
+	"Message": "Message",
+	"Applies To": "Applies to",
+	"Priority": "Priority",
 	"Zone": "Zone"
 	
 }
