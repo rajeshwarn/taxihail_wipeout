@@ -2,5 +2,8 @@
     "Edit Rule": "Edit Rule",
 	"Name": "Name",
 	"Message" : "Message",
-	"Save Rule" : "Save Rule"
+	"Save Rule" : "Save Rule",
+	"Current booking": "Current booking",
+	"Future booking": "Future booking",
+	"Applies to": "Applies to"
 }

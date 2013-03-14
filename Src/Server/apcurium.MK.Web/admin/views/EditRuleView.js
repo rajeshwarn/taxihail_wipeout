@@ -13,7 +13,10 @@
                 now = new Date(),
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
                 data = this.model.toJSON();
-
+            
+            data.currentBookingChecked = data.appliesToCurrentBooking == true ? 'checked' : '';
+            data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' :  '';
+            
             data.recurring = +this.model.get('type') === TaxiHail.Rule.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Rule.type['default'];
             data.editMode = !this.model.isNew();
@@ -83,7 +86,8 @@
                 date = new Date(),
                 startTime,
                 endTime;
-
+            serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked')? true : false;
+            serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked')? true : false;
            /* if(+serialized.type) {
                 // Not a default rate
 

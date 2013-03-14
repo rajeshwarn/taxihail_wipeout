@@ -21,6 +21,15 @@
                 {{/if}}
             </div>
         </div>
+      <div class="control-group">
+        <label class="control-label">{{localize 'Applies to'}}</label>
+        <div class="controls">
+          <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
+            {{localize "Current booking"}}
+          </input>
+          <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}>{{localize "Future booking"}}</input>
+        </div>
+      </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Message'}}</label>
             <div class="controls">

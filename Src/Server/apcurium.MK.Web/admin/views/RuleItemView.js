@@ -24,6 +24,17 @@
             }, this);
 
             var data = this.model.toJSON();
+            if (data.appliesToCurrentBooking == true && data.appliesToFutureBooking == true) {
+                data.applies = "Both";
+            }
+            else if (data.appliesToCurrentBooking == true) {
+                data.applies = "Current";
+            }
+            else if (data.appliesToFutureBooking == true) {
+                data.applies = "Future";
+            } else {
+                data.applies = "None";
+            }
             data.daysOfTheWeek = selectedDays.join(' - ');
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
