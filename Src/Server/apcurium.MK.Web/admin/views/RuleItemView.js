@@ -5,7 +5,8 @@
         tagName: 'tr',
 
         events: {
-            'click [data-action=delete]': 'ondelete'
+            'click [data-action=delete]': 'ondelete',
+            'click [data-action=enable]': 'onEnableDisable'
         },
 
         initialize: function() {
@@ -35,12 +36,17 @@
             } else {
                 data.applies = "None";
             }
+            
+            
+
             data.daysOfTheWeek = selectedDays.join(' - ');
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
 
             this.$el.html(this.renderTemplate(data));
-
+            //data.isActive == true ? 
+            data.isActive == true ? this.$('[data-action=enable]').text(this.localize("Enable")) : this.$('[data-action=enable]').text(this.localize("Disable"));
+             
             return this;
         },
 
@@ -53,7 +59,36 @@
             }).on('ok', function(){
                 this.model.destroy();
             }, this);
-        }
+
+            TaxiHail.confirm({
+                title: this.localize('modal.deleteTariff.title'),
+                message: this.localize('modal.deleteTariff.message')
+            }).on('ok', function () {
+                this.model.destroy();
+            }, this);
+        },
+        
+        onEnableDisable: function(e) {
+            e.preventDefault();
+            var data = this.model.toJSON();
+            data.isActive = !data.isActive;
+            this.model.save(data, {
+                success: _.bind(function (model) {
+                    this.render();
+                }, this),
+                error: function (model, xhr, options) {
+                    this.$(':submit').button('reset');
+
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize(xhr.statusText),
+                        type: 'error'
+                    });
+                }
+            });
+
+
+
+    }
 
     });
 

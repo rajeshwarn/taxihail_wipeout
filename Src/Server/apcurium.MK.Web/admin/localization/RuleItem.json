@@ -1,5 +1,7 @@
 ﻿{
 	"Both" : "Both",
 	"Current": "Current",
-	"Future": "Future"
+	"Future": "Future",
+	"Enable" : "Enable",
+	"Disable" : "Disable"
 }

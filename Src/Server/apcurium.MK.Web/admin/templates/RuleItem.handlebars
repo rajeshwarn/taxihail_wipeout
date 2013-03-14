@@ -21,6 +21,9 @@
         <a type='button' class='btn btn-mini' href='#rules/edit/{{id}}'>
             <i class="icon-edit icon-white"></i>
         </a>
+		<a type='button' data-action='enable' class='btn btn-mini' href='#rules/edit/{{id}}'>
+            {{localize "Enable"}}
+        </a>
         {{#unless isDefault}}
         <button type='button' class='btn btn-mini btn-danger' data-action='delete'>
             <i class="icon-trash icon-white"></i>
