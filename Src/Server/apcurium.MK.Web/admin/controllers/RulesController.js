@@ -64,7 +64,7 @@
         },
 
         addDayWarning: function () {
-            return new TaxiHail.EditTariffView({
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.date,

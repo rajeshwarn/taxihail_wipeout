@@ -3,20 +3,21 @@
     <td>{{localize "Default"}}</td>
 	<td>-</td>
 	<td>-</td>
-	<td>{{message}}</td>
-	<td>{{localize applies}}</td>
-	<td>0</td>
-	<td>{{zoneList}}</td>
+	
     
 {{else}}
     <td>{{name}}</td>
     {{#if recurring}}
     <td>{{daysOfTheWeek}}</td>
     {{else}}
-    <td>{{niceDate startTime}}</td>
+    <td>{{numericDate startTime}}&nbsp;-&nbsp;{{numericDate endTime}}</td>
     {{/if}}
     <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
 {{/if}}
+<td>{{message}}</td>
+	<td>{{localize applies}}</td>
+	<td>{{priority}}</td>
+	<td>{{zoneList}}</td>
     <td>
         <a type='button' class='btn btn-mini' href='#rules/edit/{{id}}'>
             <i class="icon-edit icon-white"></i>

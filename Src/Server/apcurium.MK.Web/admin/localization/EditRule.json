@@ -5,5 +5,12 @@
 	"Save Rule" : "Save Rule",
 	"Current booking": "Current booking",
 	"Future booking": "Future booking",
-	"Applies to": "Applies to"
+	"Applies to": "Applies to",
+	"Add Rule" : "Add Rule",
+	"Start Time" : "Start Time",
+	"End Time" : "End Time",
+	"Priority" : "Priority",
+	"Save and enable" : "Save and enable",
+	"Save and disable" : "Save and disable"
+
 }

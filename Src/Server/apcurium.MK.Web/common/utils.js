@@ -104,6 +104,17 @@
                 return '';
             },
             
+            numericDate: function (date) {
+                if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    return  new Handlebars.SafeString(dateParts[0]+'/'+dateParts[1]+'/'+dateParts[2]);
+                }
+                // not needed yet
+                return '';
+            },
+            
             niceShortDate: function (date) {
                 if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
                     // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
@@ -189,6 +200,10 @@
 
     Handlebars.registerHelper('niceTime', function(date) {
         return new Handlebars.SafeString(TaxiHail.date.niceTime(date));
+    });
+    
+    Handlebars.registerHelper('numericDate', function (date) {
+        return new Handlebars.SafeString(TaxiHail.date.numericDate(date));
     });
 
     $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {
