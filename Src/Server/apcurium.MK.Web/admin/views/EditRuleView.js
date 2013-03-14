@@ -4,7 +4,9 @@
     var View = TaxiHail.EditRuleView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'change [data-role=timepicker]': 'ontimepickerchange'
+            'change [data-role=timepicker]': 'ontimepickerchange',
+            'click [data-action=saveEnable]': 'onSaveEnableClick',
+            'click [data-action=saveDisable]': 'onSaveDisableClick'
         },
 
         render: function() {
@@ -79,13 +81,24 @@
             return this;
 
         },
+        
+        onSaveEnableClick: function (e) {
+            e.preventDefault();
+            this.save(this.$('form[name="editRuleForm"]'),true);
+        },
+        
+        onSaveDisableClick: function (e) {
+            e.preventDefault();
+            this.save(this.$('form[name="editRuleForm"]'),false);
+        },
 
-        save: function(form) {
+        save: function(form, isActive) {
 
             var serialized = this.serializeForm(form),
                 date = new Date(),
                 startTime,
                 endTime;
+            serialized.isActive = isActive == true ? true : false;
             serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked')? true : false;
             serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked')? true : false;
            /* if(+serialized.type) {

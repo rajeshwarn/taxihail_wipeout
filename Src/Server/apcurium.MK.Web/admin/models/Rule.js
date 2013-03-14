@@ -26,7 +26,7 @@
     }
      );
 
-    Rule.prototype.defaults.type = Rule.type.recurring;
+  //  Rule.prototype.defaults.type = Rule.type.recurring;
     Rule.prototype.defaults.category = Rule.category.disableRule;
 
 }());

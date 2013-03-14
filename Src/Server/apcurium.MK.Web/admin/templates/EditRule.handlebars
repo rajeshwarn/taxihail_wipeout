@@ -7,7 +7,7 @@
         {{/if}}
     </h4>
     <div class="errors" style="margin-top: 10px;"></div>
-    <form class="form-horizontal clearfix" >
+    <form class="form-horizontal clearfix" name="editRuleForm" >
       <!--<input type='hidden' name='type' value='{{type}}' />
         <input type='hidden' name='type' value='{{category}}' /-->
         <div class="control-group">
@@ -37,6 +37,7 @@
             </div>
         </div>
         
-        <button type='submit' class='btn btn-primary'>{{localize "Save Rule"}}</button>
+        <button type='button' data-action='saveEnable' class='btn btn-primary'>{{localize "Save and enable"}}</button>
+      <button type='button' data-action='saveDisable' class='btn btn-primary'>{{localize "Save and disable"}}</button>
     </form>
 </div>

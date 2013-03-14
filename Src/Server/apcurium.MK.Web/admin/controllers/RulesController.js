@@ -17,7 +17,7 @@
             return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
-                    type: TaxiHail.Rule.type.recurring
+                    type: TaxiHail.Rule.type.default
                 })
             });
         },
@@ -35,7 +35,7 @@
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
-                    type: TaxiHail.Rule.type.day
+                    type: TaxiHail.Rule.type.date
                 })
             });
         },

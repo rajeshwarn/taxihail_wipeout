@@ -45,7 +45,7 @@
 
             this.$el.html(this.renderTemplate(data));
             //data.isActive == true ? 
-            data.isActive == true ? this.$('[data-action=enable]').text(this.localize("Enable")) : this.$('[data-action=enable]').text(this.localize("Disable"));
+            data.isActive == true ? this.$('[data-action=enable]').text(this.localize("Disable")) : this.$('[data-action=enable]').text(this.localize("Enable"));
              
             return this;
         },
