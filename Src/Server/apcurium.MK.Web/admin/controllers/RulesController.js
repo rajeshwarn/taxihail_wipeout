@@ -13,29 +13,62 @@
             });
         },
 
-        addDefault: function () {
+        addDefaultDisable: function () {
             return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
-                    type: TaxiHail.Rule.type.default
+                    type: TaxiHail.Rule.type.default,
+                    category: TaxiHail.Rule.category.disableRule
                 })
             });
         },
 
-        addRecurring: function () {
+        addRecurringDisable: function () {
             return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
-                    type: TaxiHail.Rule.type.recurring
+                    type: TaxiHail.Rule.type.recurring,
+                    category: TaxiHail.Rule.category.disableRule
                 })
             });
         },
 
-        addDay: function () {
+        addDayDisable: function () {
             return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Rule({
-                    type: TaxiHail.Rule.type.date
+                    type: TaxiHail.Rule.type.date,
+                    category : TaxiHail.Rule.category.disableRule
+                })
+            });
+        },
+
+        addDefaultWarning: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.default,
+                    category: TaxiHail.Rule.category.warningRule
+                })
+            });
+        },
+
+        addRecurringWarning: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.recurring,
+                    category: TaxiHail.Rule.category.warningRule
+                })
+            });
+        },
+
+        addDayWarning: function () {
+            return new TaxiHail.EditTariffView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.date,
+                    category: TaxiHail.Rule.category.warningRule
                 })
             });
         },

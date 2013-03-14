@@ -28,9 +28,12 @@
 
             /* Rules */
             "rules": "manageRules", //#rules
-            "rules/add/default": "addDefaultRule", //#rules/add/recurring
-            "rules/add/recurring": "addRecurringRule", //#rules/add/recurring
-            "rules/add/day": "addDayRule", //#rules/add/day
+            "rules/add/disable/default": "addDefaultDisableRule", //#rules/add/recurring
+            "rules/add/disable/recurring": "addRecurringDisableRule", //#rules/add/recurring
+            "rules/add/disable/day": "addDayDisableRule", //#rules/add/day
+            "rules/add/warning/default": "addDefaultWarningRule", //#rules/add/recurring
+            "rules/add/warning/recurring": "addRecurringWarningRule", //#rules/add/recurring
+            "rules/add/warning/day": "addDayWarningRule", //#rules/add/day
             "rules/edit/:id": "editRule", //#rules/edit/{GUID}
 
             /* IBS exclusions */
@@ -103,16 +106,28 @@
             action(TaxiHail.RulesController, 'index');
         },
 
-        addDefaultRule: function () {
-            action(TaxiHail.RulesController, 'addDefault');
+        addDefaultDisableRule: function () {
+            action(TaxiHail.RulesController, 'addDefaultDisable');
         },
 
-        addRecurringRule: function () {
-            action(TaxiHail.RulesController, 'addRecurring');
+        addRecurringDisableRule: function () {
+            action(TaxiHail.RulesController, 'addRecurringDisable');
         },
 
-        addDayRule: function () {
-            action(TaxiHail.RulesController, 'addDay');
+        addDayDisableRule: function () {
+            action(TaxiHail.RulesController, 'addDayDisable');
+        },
+        
+        addDefaultWarningRule: function () {
+            action(TaxiHail.RulesController, 'addDefaultWarning');
+        },
+
+        addRecurringWarningRule: function () {
+            action(TaxiHail.RulesController, 'addRecurringWarning');
+        },
+
+        addDayWarningRule: function () {
+            action(TaxiHail.RulesController, 'addDayWarning');
         },
 
         editRule: function (id) {
