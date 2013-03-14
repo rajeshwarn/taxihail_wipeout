@@ -103,6 +103,7 @@
                 endDate = new Date(),
                 startTime,
                 endTime;
+            serialized.category = +this.model.get('category');
             serialized.isActive = isActive == true ? true : false;
             serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked')? true : false;
             serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked')? true : false;

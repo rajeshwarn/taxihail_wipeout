@@ -11,17 +11,23 @@
         render: function() {
 
             this.$el.html(this.renderTemplate());
-
+            //this.collection = this.collection.where({ category: TaxiHail.Rule.category.warningRule });
             this.collection.each(this.renderItem, this);
 
             return this;
         },
 
         renderItem: function(rule) {
-
-            new TaxiHail.RuleItemView({
-                model: rule
-            }).render().$el.appendTo(this.$('tbody'));
+            if (rule.get('category') == TaxiHail.Rule.category.warningRule) {
+                new TaxiHail.RuleItemView({
+                    model: rule
+                }).render().$el.appendTo(this.$('tbody[name=warningItem]'));
+            } else {
+                new TaxiHail.RuleItemView({
+                    model: rule
+                }).render().$el.appendTo(this.$('tbody[name=disableItem]'));
+            }
+           
             
         }
     });

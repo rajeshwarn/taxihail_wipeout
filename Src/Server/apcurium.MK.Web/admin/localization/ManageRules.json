@@ -10,5 +10,7 @@
 	"Message": "Message",
 	"Applies To": "Applies to",
 	"Priority": "Priority",
-	"Zone": "Zone"
+	"Zone": "Zone",
+	"Disable Rules": "Disable Rules",
+	"Warning Rules": "Warning Rules"
 }
