@@ -2,11 +2,12 @@
     
 
     var View = TaxiHail.EditRuleView = TaxiHail.TemplatedView.extend({
-
         events: {
             'change [data-role=timepicker]': 'ontimepickerchange',
             'click [data-action=saveEnable]': 'onSaveEnableClick',
-            'click [data-action=saveDisable]': 'onSaveDisableClick'
+            'click [data-action=saveDisable]': 'onSaveDisableClick',
+            'click [data-action=eraseStartTime]': 'onEraseStartTimeClick',
+            'click [data-action=eraseEndTime]': 'onEraseEndTimeClick'
         },
 
         render: function() {
@@ -109,9 +110,18 @@
                 // Not a default rate
 
                 if(+serialized.type === TaxiHail.Rule.type.recurring ) {
-
-                    startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
-                    endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
+                    startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
+                    endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
+                    if (startDate != undefined) {
+                        startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'),startDate);
+                    } else {
+                        startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
+                    }
+                    if (endDate!= undefined) {
+                        endTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), endDate);
+                    } else {
+                        endTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
+                    }
                     serialized.daysOfTheWeek =  _([serialized.daysOfTheWeek])
                         .flatten()
                         .reduce(function(memo, num){ return memo + (1<<num); }, 0);
@@ -157,6 +167,15 @@
             } else {
                 this.$('.next-day-warning').addClass('hidden');
             }
+        },
+        
+        onEraseStartTimeClick:function(e) {
+            e.preventDefault();
+            this.$('#book-later-date-start').val('');
+        },
+        onEraseEndTimeClick: function (e) {
+            e.preventDefault();
+            this.$('#book-later-date-end').val('');
         },
 
         _getTime: function($timepicker, date) {

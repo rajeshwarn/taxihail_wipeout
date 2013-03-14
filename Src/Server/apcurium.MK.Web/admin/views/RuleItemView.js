@@ -54,18 +54,12 @@
             e.preventDefault();
 
             TaxiHail.confirm({
-                title: this.localize('modal.deleteTariff.title'),
-                message: this.localize('modal.deleteTariff.message')
+                title: this.localize('modal.deleteRule.title'),
+                message: this.localize('modal.deleteRule.message')
             }).on('ok', function(){
                 this.model.destroy();
             }, this);
 
-            TaxiHail.confirm({
-                title: this.localize('modal.deleteTariff.title'),
-                message: this.localize('modal.deleteTariff.message')
-            }).on('ok', function () {
-                this.model.destroy();
-            }, this);
         },
         
         onEnableDisable: function(e) {

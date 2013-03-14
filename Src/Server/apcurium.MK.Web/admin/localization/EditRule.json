@@ -11,6 +11,7 @@
 	"End Time" : "End Time",
 	"Priority" : "Priority",
 	"Save and enable" : "Save and enable",
-	"Save and disable" : "Save and disable"
-
+	"Save and disable" : "Save and disable",
+	"Start Date" : "Start Date (optional)",
+	"End Date" : "End Date (optional)"
 }

@@ -23,9 +23,81 @@
                 {{/if}}
             </div>
         </div>
-
+      {{#if recurring}}
+      <div class='control-group'>
+        <label class='control-label' for='book-later-date-start'>{{localize "Start Date"}}</label>
+        <div class='controls'>
+          <div class="input-append date" data-role='datepicker' name='startDate' data-date="">
+            <input id='book-later-date-start' name='date' class="input-small" type="text"/>
+              <span class="add-on">
+                <i class="icon-calendar"></i>
+              </span>
+            </div>
+          <button type="button" class="btn" data-action="eraseStartTime">x</button>
+        </div>
+      </div>
+      <div class='control-group'>
+        <label class='control-label' for='book-later-date-end'>{{localize "End Date"}}</label>
+        <div class='controls'>
+          <div class="input-append date" data-role='datepicker' name='endDate' data-date="">
+            <input id='book-later-date-end' name='date' class="input-small" type="text"/>
+              <span class="add-on">
+                <i class="icon-calendar"></i>
+              </span>
+            </div>
+          <button type="button" class="btn" data-action="eraseEndTime">x</button>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="0" {{checked0}}> Sunday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="1" {{checked1}}> Monday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="2" {{checked2}}> Tuesday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="3" {{checked3}}> Wednesday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="4" {{checked4}}> Thursday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="5" {{checked5}}> Friday
+                </label>
+        <label class="checkbox inline">
+          <input type="checkbox" name='daysOfTheWeek' value="6" {{checked6}}> Saturday
+                </label>
+      </div>
       
-
+      <div class='clearfix'>
+        <div class="control-group">
+          <label class="control-label">{{localize 'Start Time'}}</label>
+          <div class="controls">
+            <div class="input-append bootstrap-timepicker-component">
+              <input name='startTime' value='{{niceTime startTime}}' type="text" data-role='timepicker' class="input-small">
+                <span class="add-on">
+                  <i class="icon-time"></i>
+                </span>
+              </div>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">{{localize 'End Time'}}</label>
+          <div class="controls">
+            <div class="input-append bootstrap-timepicker-component">
+              <input name='endTime' value='{{niceTime endTime}}' type="text" data-role='timepicker' class="input-small">
+                <span class="add-on">
+                  <i class="icon-time"></i>
+                </span>
+              </div>
+            <span class="help-inline next-day-warning">{{localize "The next day"}}</span>
+          </div>
+        </div>
+      </div>
+  {{/if}}
       {{#if isDay}}
       <div class='clearfix'>
         <div class="control-group">
