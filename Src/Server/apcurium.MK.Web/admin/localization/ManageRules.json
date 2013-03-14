@@ -6,5 +6,7 @@
     "Time": "Time",
     "Add Default": "Add Default",
 	"Add Rule (Recurring)": "Add Recurring Rule",
-    "Add Rule (One day)": "Add Rule by Date"
+    "Add Rule (One day)": "Add Rule by Date",
+	"Zone": "Zone"
+	
 }
