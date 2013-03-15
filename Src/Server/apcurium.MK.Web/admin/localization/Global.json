@@ -36,6 +36,7 @@
 	"error.zipCodeRequired" : "Zip code is required",
 	"error.stateRequired" : "State is required",
 	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
+	"Rule_DuplicateName" : "Name already used",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
