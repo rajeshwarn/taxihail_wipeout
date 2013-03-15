@@ -246,10 +246,10 @@ namespace apcurium.MK.Booking.Domain
         
         public void CreateRule(Guid ruleId, string name, string message, string zoneList,  RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
         {
-            if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
+            /*if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
             {
                 throw new InvalidOperationException(string.Format("Only one default rule of type {0} can be created", category.ToString()));
-            }
+            }*/
 
             if ((type == RuleType.Default) && message.IsNullOrEmpty() )
             {

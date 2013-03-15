@@ -146,11 +146,13 @@
                         endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
                         startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), startDate);
                         endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'), endDate);
-
+                        serialized.activeFrom = TaxiHail.date.toISO8601(startTime);
+                        serialized.activeTo = TaxiHail.date.toISO8601(endTime);
                     }
 
                     serialized.startTime = TaxiHail.date.toISO8601(startTime);
                     serialized.endTime = TaxiHail.date.toISO8601(endTime);
+                    
                 }
 
                 this.model.save(serialized, {
