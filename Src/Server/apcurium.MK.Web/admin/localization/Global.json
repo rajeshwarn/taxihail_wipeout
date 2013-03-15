@@ -35,6 +35,7 @@
 	"error.cityRequired" : "City is required",
 	"error.zipCodeRequired" : "Zip code is required",
 	"error.stateRequired" : "State is required",
+	"Rule_InvalidPriority" : "Invalid priority ( maybe already used ? )",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
