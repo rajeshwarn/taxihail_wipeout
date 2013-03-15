@@ -25,6 +25,8 @@ namespace MK.ConfigurationManager
             modelBuilder.Entity<IBSServer>().ToTable("IBSServer", SchemaName);
             modelBuilder.Entity<TaxiHailEnvironment>().ToTable("TaxiHailEnvironment", SchemaName);
             modelBuilder.Entity<DeploymentJob>().ToTable("DeploymentJob", SchemaName);
+            modelBuilder.Entity<AppVersion>().ToTable("AppVersion", SchemaName);
+
         }
     }
 }
