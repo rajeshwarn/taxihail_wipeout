@@ -17,7 +17,7 @@
                     <label>{{localize "Default"}}</label>
                     <input type="hidden" name="name"  value="default"/>
                 {{else}}
-                    <input type="text" name="name"  value="{{name}}" class='input-block-level'/>
+                    <input type="text" name="name"  value="{{name}}" />
                       <input type='hidden' name='type' value='{{type}}' />
                       <input type='hidden' name='category' value='{{category}}' />
                 {{/if}}
@@ -142,20 +142,25 @@
       <div class="control-group">
         <label class="control-label">{{localize 'Applies to'}}</label>
         <div class="controls">
+
+         
+
+              <label class="checkbox inline">
           <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
             {{localize "Current booking"}}
           </input>
-          <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
+              </label>
+          <label class="checkbox inline">
+              <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
+          </label>
         </div>
       </div>
-      {{#unless isDefault}}
       <div class="control-group">
         <label class="control-label">{{localize 'Priority'}}</label>
         <div class="controls">
           <input type="text" name="priority"  value="{{priority}}"></input>
         </div>
     </div>
-      {{/unless}}
       <div class="control-group">
             <label class="control-label">{{localize 'Message'}}</label>
             <div class="controls">

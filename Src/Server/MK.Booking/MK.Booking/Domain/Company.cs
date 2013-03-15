@@ -281,7 +281,7 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = type == RuleType.Default ? 0 : priority,
+                Priority = /*type == RuleType.Default ? 0 :*/ priority,
             });
 
         }
@@ -310,10 +310,10 @@ namespace apcurium.MK.Booking.Domain
 
         public void DeleteRule(Guid ruleId)
         {
-            if (_defaultRules.ContainsValue( ruleId ) )
+           /* if (_defaultRules.ContainsValue( ruleId ) )
             {
                 throw new InvalidOperationException("Cannot delete default tariff");
-            }
+            }*/
             this.Update(new RuleDeleted
             {
                 RuleId = ruleId

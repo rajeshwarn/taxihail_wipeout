@@ -144,6 +144,7 @@
     <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\jquery.min.js" />
     <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />

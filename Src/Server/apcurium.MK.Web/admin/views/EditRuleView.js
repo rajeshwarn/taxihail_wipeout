@@ -59,13 +59,9 @@
                 rules: {
                     name: 'required',
                     message: 'required',
-                    zoneList: 'required',
                     startTime: 'required',
                     endTime: 'required',
-                    flatRate: {
-                        required: true,
-                        min: 0
-                    },
+                  
                     priority: {
                         required: true,
                         number: true,
@@ -102,12 +98,14 @@
         onSaveEnableClick: function (e) {
             e.preventDefault();
             $('input[name="isActive"]').val(true);
+            this.model.set('isActive',true);
             $('form[name="editRuleForm"]').submit();
         },
         
         onSaveDisableClick: function (e) {
             e.preventDefault();
             $('input[name="isActive"]').val(false);
+            this.model.set('isActive',false);
             $('form[name="editRuleForm"]').submit();
         },
 
@@ -126,13 +124,19 @@
                     if (+serialized.type === TaxiHail.Rule.type.recurring) {
                         startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
                         endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
-                        if (startDate != undefined) {
+
+                        var startDateTxt = this.$('#book-later-date-start').val();
+                        var endDateTxt = this.$('#book-later-date-end').val();
+                        if (startDateTxt != "") {
                             startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), startDate);
+                            serialized.activeFrom = TaxiHail.date.toISO8601(startTime);
                         } else {
                             startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
+                            
                         }
-                        if (endDate != undefined) {
+                        if (endDateTxt != "") {
                             endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'), endDate);
+                            serialized.activeTo = TaxiHail.date.toISO8601(endTime);
                         } else {
                             endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
                         }
