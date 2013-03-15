@@ -18,7 +18,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.default,
-                    category: TaxiHail.Rule.category.disableRule
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
@@ -28,7 +30,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.recurring,
-                    category: TaxiHail.Rule.category.disableRule
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
@@ -38,7 +42,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.date,
-                    category : TaxiHail.Rule.category.disableRule
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
@@ -48,7 +54,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.default,
-                    category: TaxiHail.Rule.category.warningRule
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
@@ -58,7 +66,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.recurring,
-                    category: TaxiHail.Rule.category.warningRule
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
@@ -68,7 +78,9 @@
                 collection: this.collection,
                 model: new TaxiHail.Rule({
                     type: TaxiHail.Rule.type.date,
-                    category: TaxiHail.Rule.category.warningRule
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },

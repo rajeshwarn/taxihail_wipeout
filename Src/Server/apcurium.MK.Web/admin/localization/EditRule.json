@@ -13,5 +13,6 @@
 	"Save and enable" : "Save and enable",
 	"Save and disable" : "Save and disable",
 	"Start Date" : "Start Date (optional)",
-	"End Date" : "End Date (optional)"
+	"End Date" : "End Date (optional)",
+	"Zone List": "Zone List"
 }

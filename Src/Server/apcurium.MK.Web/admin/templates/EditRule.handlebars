@@ -152,7 +152,7 @@
       <div class="control-group">
         <label class="control-label">{{localize 'Priority'}}</label>
         <div class="controls">
-          <input type="text" class="input-block-level" name="priority"  value="{{priority}}">{{priority}}</input>
+          <input type="text" name="priority"  value="{{priority}}"></input>
         </div>
     </div>
       {{/unless}}
@@ -162,7 +162,13 @@
               <textarea rows="3" type="text" name="message"  value="{{message}}">{{message}}</textarea>
             </div>
         </div>
-        
+      <div class="control-group">
+        <label class="control-label">{{localize 'Zone List'}}</label>
+        <div class="controls">
+          <input type="text" name="zoneList"  value="{{zoneList}}"></input>
+        </div>
+      </div>
+      <input type='hidden' id='isActive' name='isActive' value='{{isActive}}' />
         <button type='button' data-action='saveEnable' class='btn btn-primary'>{{localize "Save and enable"}}</button>
       <button type='button' data-action='saveDisable' class='btn btn-primary'>{{localize "Save and disable"}}</button>
     </form>

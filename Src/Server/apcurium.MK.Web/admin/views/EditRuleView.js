@@ -45,16 +45,30 @@
                 defaultTime: 'value'
             });
             this.$('[data-role=datepicker]').datepicker().datepicker('setValue', today);
+            
+            if (data.startTime != null) {
+                var niceStartTime = TaxiHail.date.ISO8601toJs(data.startTime);
+                this.$('[data-role=datepicker][name=startDate]').datepicker().datepicker('setValue', niceStartTime);
+            }
+            if (data.endTime != null) {
+                var niceEndTime = TaxiHail.date.ISO8601toJs(data.endTime);
+                this.$('[data-role=datepicker][name=endDate]').datepicker().datepicker('setValue', niceEndTime);
+            }
 
             this.validate({
                 rules: {
                     name: 'required',
+                    message: 'required',
+                    zoneList: 'required',
+                    startTime: 'required',
+                    endTime: 'required',
                     flatRate: {
                         required: true,
                         min: 0
                     },
-                    kilometricRate: {
+                    priority: {
                         required: true,
+                        number: true,
                         min:0
                     },
                     marginOfError: {
@@ -68,8 +82,7 @@
                     'daysOfTheWeek': {
                         required: true,
                         minlength: 1
-                    },
-                    date: 'required'
+                    }
                 },
                 errorPlacement: function($label, $element) {
                     if($element.attr('name') === 'daysOfTheWeek')
@@ -88,74 +101,75 @@
         
         onSaveEnableClick: function (e) {
             e.preventDefault();
-            this.save(this.$('form[name="editRuleForm"]'),true);
+            $('input[name="isActive"]').val(true);
+            $('form[name="editRuleForm"]').submit();
         },
         
         onSaveDisableClick: function (e) {
             e.preventDefault();
-            this.save(this.$('form[name="editRuleForm"]'),false);
+            $('input[name="isActive"]').val(false);
+            $('form[name="editRuleForm"]').submit();
         },
 
-        save: function(form, isActive) {
-
-            var serialized = this.serializeForm(form),
+        save: function(form) {
+                var serialized = this.serializeForm(form),
                 startDate = new Date(),
                 endDate = new Date(),
                 startTime,
                 endTime;
-            serialized.category = +this.model.get('category');
-            serialized.isActive = isActive == true ? true : false;
-            serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked')? true : false;
-            serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked')? true : false;
-            if(+serialized.type) {
-                // Not a default rate
+                serialized.category = +this.model.get('category');
+                serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked') ? true : false;
+                serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked') ? true : false;
+                if (+serialized.type) {
+                    // Not a default rate
 
-                if(+serialized.type === TaxiHail.Rule.type.recurring ) {
-                    startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
-                    endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
-                    if (startDate != undefined) {
-                        startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'),startDate);
-                    } else {
-                        startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
-                    }
-                    if (endDate!= undefined) {
-                        endTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), endDate);
-                    } else {
-                        endTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
-                    }
-                    serialized.daysOfTheWeek =  _([serialized.daysOfTheWeek])
-                        .flatten()
-                        .reduce(function(memo, num){ return memo + (1<<num); }, 0);
+                    if (+serialized.type === TaxiHail.Rule.type.recurring) {
+                        startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
+                        endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
+                        if (startDate != undefined) {
+                            startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), startDate);
+                        } else {
+                            startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
+                        }
+                        if (endDate != undefined) {
+                            endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'), endDate);
+                        } else {
+                            endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
+                        }
+                        serialized.daysOfTheWeek = _([serialized.daysOfTheWeek])
+                            .flatten()
+                            .reduce(function (memo, num) { return memo + (1 << num); }, 0);
 
-                } else if(+serialized.type === TaxiHail.Rule.type.date) {
-                    
-                    startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
-                    endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
-                    startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), startDate);
-                    endTime   = this._getTime(this.$('[data-role=timepicker][name=endTime]'  ), endDate);
-                
+                    } else if (+serialized.type === TaxiHail.Rule.type.date) {
+
+                        startDate = new Date(this.$('[data-role=datepicker][name=startDate]').data('datepicker').date.toString());
+                        endDate = new Date(this.$('[data-role=datepicker][name=endDate]').data('datepicker').date.toString());
+                        startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), startDate);
+                        endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'), endDate);
+
+                    }
+
+                    serialized.startTime = TaxiHail.date.toISO8601(startTime);
+                    serialized.endTime = TaxiHail.date.toISO8601(endTime);
                 }
 
-                serialized.startTime = TaxiHail.date.toISO8601(startTime);
-                serialized.endTime   = TaxiHail.date.toISO8601(endTime);
-            }
+                this.model.save(serialized, {
+                    success: _.bind(function (model) {
+                        this.collection.add(model);
+                        TaxiHail.app.navigate('rules', { trigger: true });
+                    }, this),
+                    error: function (model, xhr, options) {
+                        this.$(':submit').button('reset');
 
-            this.model.save(serialized, {
-                success: _.bind(function(model) {
-                    this.collection.add(model);
-                    TaxiHail.app.navigate('rules', {trigger: true});
-                }, this),
-                error: function(model, xhr, options) {
-                    this.$(':submit').button('reset');
-
-                    var alert = new TaxiHail.AlertView({
-                        message: TaxiHail.localize(xhr.statusText),
-                        type: 'error'
-                    });
-                    alert.on('ok', alert.remove, alert);
-                    this.$('.errors').html(alert.render().el);
-                }
-            });
+                        var alert = new TaxiHail.AlertView({
+                            message: TaxiHail.localize(xhr.statusText),
+                            type: 'error'
+                        });
+                        alert.on('ok', alert.remove, alert);
+                        this.$('.errors').html(alert.render().el);
+                    }
+                });
+            
             
         },
 

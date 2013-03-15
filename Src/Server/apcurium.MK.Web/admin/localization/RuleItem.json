@@ -3,5 +3,6 @@
 	"Current": "Current",
 	"Future": "Future",
 	"Enable" : "Enable",
-	"Disable" : "Disable"
+	"Disable" : "Disable",
+	"None" : "None"
 }

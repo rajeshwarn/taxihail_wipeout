@@ -80,6 +80,29 @@
 
                 return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
             },
+            
+            ISO8601toJs: function (date) {
+                if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    if (dateParts.length === 3) {
+                        var year = parseInt(dateParts[0], 10),
+                            month = parseInt(dateParts[1], 10) - 1,
+                            day = parseInt(dateParts[2], 10);
+                        var timeParts = parts[1].split(':');
+                        if (timeParts.length === 3) {
+                            var hour = parseInt(timeParts[0], 10),
+                                minute = parseInt(timeParts[1], 10) ,
+                                sec = parseInt(timeParts[2], 10);
+
+                            date = new Date(year, month, day, hour, minute, sec);
+                            return date;
+                        }
+                    }
+                }
+                return '';
+            },
             niceDate: function(date) {
                 if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
                     // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
