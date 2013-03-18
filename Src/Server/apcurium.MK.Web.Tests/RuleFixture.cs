@@ -226,6 +226,98 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void TestRecurrencyRuleIsApplied()
+        {
+            var ruleId = Guid.NewGuid();
+            var activeFromDateRef = DateTime.Now;
+            var name = "ReccurencyRuleTest" + Guid.NewGuid().ToString();
+            var mess = "ReccurencyRuleTestMessage";
+            var dayOfTheWeek = 1 << (int)DateTime.Now.DayOfWeek;
+            var rules = new RulesServiceClient(BaseUrl, SessionId);
+            rules.CreateRule(new Common.Entity.Rule
+            {
+                Id = ruleId,
+                Name = name,
+                Type = RuleType.Recurring,
+                Category = RuleCategory.WarningRule,
+                AppliesToCurrentBooking = true,
+                AppliesToFutureBooking = true,
+                ActiveFrom = activeFromDateRef.AddHours(-1),
+                ActiveTo = activeFromDateRef.AddHours(1),
+                DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek,
+                StartTime = activeFromDateRef.AddHours(-1),
+                EndTime = activeFromDateRef.AddHours(1),
+                Priority = 23,
+                IsActive = true,
+                Message = "ReccurencyRuleTestMessage",
+                ZoneList = " "
+
+            });
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+
+            var validation = sut.ValidateOrder(order);
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(mess, validation.Message);
+        }
+
+        [Test]
+        public void TestDateRuleIsApplied()
+        {
+            var ruleId = Guid.NewGuid();
+            var activeFromDateRef = DateTime.Now;
+            var name = "DateRuleTest" + Guid.NewGuid().ToString();
+            var mess = "DateRuleTestMessage";
+            var dayOfTheWeek = 1 << (int)DateTime.Now.DayOfWeek;
+            var rules = new RulesServiceClient(BaseUrl, SessionId);
+            rules.CreateRule(new Common.Entity.Rule
+            {
+                Id = ruleId,
+                Name = name,
+                Type = RuleType.Date,
+                Category = RuleCategory.WarningRule,
+                AppliesToCurrentBooking = true,
+                AppliesToFutureBooking = true,
+                ActiveFrom = activeFromDateRef.AddHours(-1),
+                ActiveTo = activeFromDateRef.AddHours(1),
+                DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek,
+                StartTime = activeFromDateRef.AddHours(-1),
+                EndTime = activeFromDateRef.AddHours(1),
+                Priority = 26,
+                IsActive = true,
+                Message = "DateRuleTestMessage",
+                ZoneList = " "
+
+            });
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+
+            var validation = sut.ValidateOrder(order);
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(mess, validation.Message);
+        }
+
+        [Test]
         public void TestWarningRuleIsApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId);

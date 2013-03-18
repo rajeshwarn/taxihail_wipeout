@@ -18,9 +18,9 @@
               {{#unless editMode}}
                 <input type="text" name="name"  value="{{localize "Default"}}"/>
               {{/unless}}
-              {{#else}}
-                <input type="text" name="name"  value="{{name}}"/>
-              {{/else}}
+              {{#if editMode}}
+              <input type="text" name="name"  value="{{name}}"/>
+              {{/if}}
               {{/if}}
 
               {{#unless isDefault}}

@@ -320,9 +320,9 @@ namespace DatabaseInitializer
                     AppliesToFutureBooking = true,
                     RuleId = Guid.NewGuid(),
                     IsActive = false,
+                    Name = "Default",
                     Message = "Due to the current volume of calls, please note that pickup may be delayed.",
-                    ActiveFrom = DateTime.Now.AddHours(-1),
-                    ActiveTo = DateTime.Now.AddHours(1)
+                    ZoneList = " "
                 });
             }
 
@@ -337,6 +337,7 @@ namespace DatabaseInitializer
                     AppliesToCurrentBooking = true,
                     AppliesToFutureBooking = true,
                     RuleId = Guid.NewGuid(),
+                    Name = "Default",
                     Message = "Service is temporarily unavailable. Please call dispatch center for service.",
                 });
             }
