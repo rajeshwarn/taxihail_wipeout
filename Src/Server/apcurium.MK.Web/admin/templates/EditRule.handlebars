@@ -13,14 +13,21 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
-                {{#if isDefault}}
-                    <label>{{localize "Default"}}</label>
-                    <input type="hidden" name="name"  value="default"/>
-                {{else}}
-                    <input type="text" name="name"  value="{{name}}" />
-                      <input type='hidden' name='type' value='{{type}}' />
-                      <input type='hidden' name='category' value='{{category}}' />
-                {{/if}}
+
+              {{#if isDefault}}
+              {{#unless editMode}}
+                <input type="text" name="name"  value="{{localize "Default"}}"/>
+              {{/unless}}
+              {{#else}}
+                <input type="text" name="name"  value="{{name}}"/>
+              {{/else}}
+              {{/if}}
+
+              {{#unless isDefault}}
+              <input type="text" name="name"  value="{{name}}"/>
+                  <input type='hidden' name='type' value='{{type}}' />
+                  <input type='hidden' name='category' value='{{category}}' />
+                {{/unless}}
             </div>
         </div>
       {{#if recurring}}
@@ -145,12 +152,12 @@
 
          
 
-              <label class="checkbox inline">
+              <label class="checkbox">
           <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
             {{localize "Current booking"}}
           </input>
               </label>
-          <label class="checkbox inline">
+          <label class="checkbox">
               <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
           </label>
         </div>
@@ -170,7 +177,7 @@
       <div class="control-group">
         <label class="control-label">{{localize 'Zone List'}}</label>
         <div class="controls">
-          <input type="text" name="zoneList"  value="{{zoneList}}"></input>
+          <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "zoneListPlaceholder"}}"></input>
         </div>
       </div>
       <input type='hidden' id='isActive' name='isActive' value='{{isActive}}' />
