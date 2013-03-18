@@ -16,6 +16,7 @@
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
                 data = this.model.toJSON();
             
+            data.highestPriority = _.max(_.pluck(this.collection.toJSON(), 'priority')) +1;
             data.currentBookingChecked = data.appliesToCurrentBooking == true ? 'checked' : '';
             data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' :  '';
             
