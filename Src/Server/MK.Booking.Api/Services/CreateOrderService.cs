@@ -29,13 +29,15 @@ namespace apcurium.MK.Booking.Api.Services
         private IAccountDao _accountDao;
         private IRuleDao _ruleDao;
         private ReferenceDataService _referenceDataService;
+        private IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IAccountDao accountDao, 
                                     IRuleDao ruleDao,
                                     IConfigurationManager configManager,
-                                    ReferenceDataService referenceDataService)
+                                    ReferenceDataService referenceDataService,
+             IStaticDataWebServiceClient staticDataWebServiceClient)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -43,14 +45,15 @@ namespace apcurium.MK.Booking.Api.Services
             _referenceDataService = referenceDataService;
             _configManager = configManager;
             _ruleDao = ruleDao;
+            _staticDataWebServiceClient = staticDataWebServiceClient;
         }
 
         public override object OnPost(CreateOrder request)
         {
             Trace.WriteLine("Create order request : " + request);
-
-            var rule = _ruleDao.GetActiveDisableRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime());
-            if (rule != null)
+            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var rule = _ruleDao.GetActiveDisableRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),zone);
+            if (rule!= null)
             {
                 var err = new HttpError(  HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);                
                 throw err;

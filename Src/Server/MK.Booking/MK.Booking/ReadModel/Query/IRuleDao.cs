@@ -9,8 +9,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
     {
         IList<RuleDetail> GetAll();
 
-        RuleDetail GetActiveDisableRule( bool isFutureBooking, DateTime pickupDate);
+        RuleDetail GetActiveDisableRule( bool isFutureBooking, DateTime pickupDate, string zone);
 
-        RuleDetail GetActiveWarningRule(bool isFutureBooking, DateTime pickupDate);
+        RuleDetail GetActiveWarningRule(bool isFutureBooking, DateTime pickupDate, string zone);
     }
 }

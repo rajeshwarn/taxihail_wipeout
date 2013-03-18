@@ -52,7 +52,8 @@ namespace apcurium.MK.Web.Tests
                 ActiveTo = DateTime.Now.AddDays(2),
                 IsActive = true,
                 Name = "Rate " + Guid.NewGuid().ToString(),
-                Message = "Due to..."
+                Message = "Due to...",
+                Priority = new Random().Next()
             });
         }
 
@@ -71,6 +72,8 @@ namespace apcurium.MK.Web.Tests
                     Id = Guid.NewGuid(),
                     IsActive = false,
                     Message = "Due to the current volume of calls, please note that pickup may be delayed.",
+                    ActiveFrom = DateTime.Now.AddHours(-1),
+                    ActiveTo = DateTime.Now.AddHours(1)
                 });
             }
 

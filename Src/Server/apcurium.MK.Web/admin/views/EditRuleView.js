@@ -11,7 +11,6 @@
         },
 
         render: function() {
-
             var daysOfTheWeek = this.model.get('daysOfTheWeek'),
                 now = new Date(),
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
@@ -94,7 +93,7 @@
             return this;
 
         },
-        
+       
         onSaveEnableClick: function (e) {
             e.preventDefault();
             $('input[name="isActive"]').val(true);

@@ -12,7 +12,7 @@
         initialize: function() {
             this.model.on('destroy', this.remove, this);
         },
-
+        
         render: function() {
 
             var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],

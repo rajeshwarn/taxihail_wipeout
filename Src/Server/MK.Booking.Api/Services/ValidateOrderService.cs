@@ -26,20 +26,23 @@ namespace apcurium.MK.Booking.Api.Services
         private IConfigurationManager _configManager;
         private IRuleDao _ruleDao;
         private ReferenceDataService _referenceDataService;
+        private IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         public ValidateOrderService(IRuleDao ruleDao,
                                     IConfigurationManager configManager,
-                                    ReferenceDataService referenceDataService)
+                                    ReferenceDataService referenceDataService,
+             IStaticDataWebServiceClient staticDataWebServiceClient)
         {
             _configManager = configManager;
             _ruleDao = ruleDao;
+            _staticDataWebServiceClient = staticDataWebServiceClient;
         }
 
         public override object OnPost(ValidateOrderRequest request)
         {
             Trace.WriteLine("Validating order request : " );
-
-            var rule = _ruleDao.GetActiveWarningRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime());
+            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var rule = _ruleDao.GetActiveWarningRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
             
             return new OrderValidationResult{ HasWarning = rule != null , Message = rule != null ? rule.Message : null } ;
            
