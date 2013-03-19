@@ -382,7 +382,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude);
+                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude,true);
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Count() > 0)
                 {
