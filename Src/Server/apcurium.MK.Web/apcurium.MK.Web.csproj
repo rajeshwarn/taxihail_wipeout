@@ -483,7 +483,9 @@
     <Content Include="themes\DiamondCab\less\variables.less" />
     <Content Include="admin\templates\ConfirmEmail.handlebars" />
     <Content Include="admin\localization\ConfirmEmail.json" />
-    <Content Include="admin\templates\ManageRules.handlebars" />
+    <Content Include="admin\templates\ManageRules.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\localization\ManageRules.json" />
     <Content Include="admin\templates\EditRule.handlebars" />
     <Content Include="admin\localization\EditRule.json" />

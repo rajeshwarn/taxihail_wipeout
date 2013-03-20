@@ -31,6 +31,8 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get; set; }
 
+        public ObservableCollection<AppVersion> Versions { get; set; }
+
         public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; }
 
         public ObservableCollection<MyCustomKeyValuePair> MobileConfigurationProperties { get; set; }
@@ -68,6 +70,7 @@ namespace MK.ConfigurationManager
             IBSServers = new ObservableCollection<IBSServer>();
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
+            Versions = new ObservableCollection<AppVersion>();
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -109,15 +112,49 @@ namespace MK.ConfigurationManager
             DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
+            Versions.Clear();
+            DbContext.Set<AppVersion>().ToList().ForEach(Versions.Add);
+            Versions.CollectionChanged += VersionsOnCollectionChanged;
+
+
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
+
+
+            
 
 
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
             DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;
             DeployTaxiHailEnvCombobox.SelectedIndex = selectedTaxiHailEnvIndex;
 
+        }
+
+
+
+        private void VersionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                e.NewItems.OfType<AppVersion>().ToList().ForEach(x =>
+                {
+                    if(x.Id == Guid.Empty)
+                    {
+                        x.Id = Guid.NewGuid();
+                        DbContext.Set<AppVersion>().Add(x);
+                    }
+                });
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                e.OldItems.OfType<AppVersion>().ToList().ForEach(x =>
+                {
+                    
+                        DbContext.Set<AppVersion>().Remove(x);
+                    
+                });
+            }
         }
 
         private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -201,6 +238,11 @@ namespace MK.ConfigurationManager
             DbContext.SaveChanges();
         }
 
+        private void SaveVersion(object sender, RoutedEventArgs e)
+        {
+            DbContext.SaveChanges();
+        }
+
         static public string AssemblyDirectory
         {
             get
@@ -215,13 +257,15 @@ namespace MK.ConfigurationManager
         public Company DeployCompany { get; set; }
         public IBSServer DeployIBSServer { get; set; }
         public TaxiHailEnvironment DeployTaxiHailEnv { get; set; }
+        public AppVersion DeployVersion { get; set; }
+
         public bool DeployInitDatabse { get; set; }
         public bool DeployServer { get; set; }
         public bool DeployIos { get; set; }
         public bool DeployAndroid { get; set; }
         public bool DeployDB { get; set; }
         public string DeployRevision { get; set; }
-        public string DeployVersion { get; set; }
+        
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
