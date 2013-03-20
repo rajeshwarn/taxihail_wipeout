@@ -36,7 +36,7 @@
                     android:text="@string/PassengerNameLabel"
                     style="@style/FormLabelText" />
                 <EditText
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Order.Settings.Name&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowPassengerName&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Order.Settings.Name'},'Visibility':{'Path':'ShowPassengerName','Converter':'Visibility'}}"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -63,7 +63,7 @@
                             android:text="@string/PassengerPhoneLabel"
                             style="@style/FormLabelText" />
                         <EditText
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Order.Settings.Phone&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowPassengerPhone&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                            local:MvxBind="{'Text':{'Path':'Order.Settings.Phone'},'Visibility':{'Path':'ShowPassengerPhone','Converter':'Visibility'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -84,7 +84,7 @@
                             android:text="@string/PassengerNumberLabel"
                             style="@style/FormLabelText" />
                         <EditText
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Order.Settings.Passengers&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowPassengerNumber&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                            local:MvxBind="{'Text':{'Path':'Order.Settings.Passengers'},'Visibility':{'Path':'ShowPassengerNumber','Converter':'Visibility'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -110,7 +110,7 @@
                             style="@style/FormLabelText" />
                         <EditText
                             android:id="@+id/SignUpPassword"
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Order.PickupAddress.Apartment&apos;}}"
+                            local:MvxBind="{'Text':{'Path':'Order.PickupAddress.Apartment'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -131,7 +131,7 @@
                             style="@style/FormLabelText" />
                         <EditText
                             android:id="@+id/SignUpConfirmPassword"
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Order.PickupAddress.RingCode&apos;}}"
+                            local:MvxBind="{'Text':{'Path':'Order.PickupAddress.RingCode'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -155,7 +155,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Vehicles&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;VehicleTypeId&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'VehicleName'}, 'Data': {'Path': 'Vehicles'}, 'SelectedItem': {'Path': 'VehicleTypeId'}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                 android:paddingRight="5dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeType&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Payments&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;ChargeTypeId&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'ChargeType'}, 'Data': {'Path': 'Payments'}, 'SelectedItem': {'Path': 'ChargeTypeId'}}" />
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -182,10 +182,10 @@
                     android:background="@drawable/green_button"
                     android:layout_width="180dip"
                     android:layout_height="40dip"
-                    android:text="@string/ConfirmButton"
+                    android:text="@string/SaveButton"
                     android:layout_centerInParent="true"
                     android:layout_marginRight="5dp"
-                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
+                    local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

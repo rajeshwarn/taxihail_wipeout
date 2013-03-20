@@ -86,6 +86,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             pref.Edit().PutString( key, serialized ).Commit();
         }
 
+
+
+
         public void Set<T>(string key, T obj) where T : class
         {
             Set(key, obj, DateTime.MaxValue);

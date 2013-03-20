@@ -2,6 +2,8 @@
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -20,7 +22,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewModel.ShowPassengerName  ? ViewStates.Visible : ViewStates.Gone;
             FindViewById<LinearLayout>(Resource.Id.passengerPhoneLayout).Visibility = ViewModel.ShowPassengerPhone ? ViewStates.Visible : ViewStates.Gone;
             FindViewById<LinearLayout>(Resource.Id.passengerNumberLayout).Visibility = ViewModel.ShowPassengerNumber ? ViewStates.Visible : ViewStates.Gone;
+
+			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
 			ViewModel.Load();
+        }
+
+        void HandleFocusChange (object sender, View.FocusChangeEventArgs e)
+        {
+			if (e.HasFocus) {
+		
+				Task.Factory.StartNew ( () =>
+				                       {
+					Thread.Sleep( 300 );
+				 	RunOnUiThread( () => FindViewById<ScrollView> (Resource.Id.mainScroll).FullScroll (FocusSearchDirection.Down) );
+				});
+			}
+		
         }
     }
 }

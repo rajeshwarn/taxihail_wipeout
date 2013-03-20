@@ -55,9 +55,6 @@
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Mobile.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Interfaces">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
