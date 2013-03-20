@@ -14,5 +14,6 @@
 	"Save and disable" : "Save and disable",
 	"Start Date" : "Start Date (optional)",
 	"End Date" : "End Date (optional)",
-	"Zone List": "Zone List"
+	"Zone List": "Zone List",
+	"zoneListPlaceholder" : "Must be comma separated"
 }

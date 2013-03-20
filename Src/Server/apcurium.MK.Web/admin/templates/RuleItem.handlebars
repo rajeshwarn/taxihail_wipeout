@@ -1,11 +1,5 @@
 
-{{#if isDefault}}
-    <td>{{localize "Default"}}</td>
-	<!--<td>-</td>
-	<td>-</td>-->
-	
-    
-{{else}}
+
     <td>{{name}}</td>
    <!-- {{#if recurring}}
     <td>{{daysOfTheWeek}}</td>
@@ -13,11 +7,10 @@
     <td>{{numericDate startTime}}&nbsp;-&nbsp;{{numericDate endTime}}</td>
     {{/if}}
     <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>-->
-{{/if}}
 <td>{{message}}</td>
-	<td>{{localize applies}}</td>
+	<!--<td>{{localize applies}}</td>
 	<td>{{priority}}</td>
-	<td>{{zoneList}}</td>
+	<td>{{zoneList}}</td> -->
     <td>
 		<a type='button' data-action='enable' class='btn btn-mini' href='#rules/edit/{{id}}'>
             {{isActiveText}}

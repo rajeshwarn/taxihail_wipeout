@@ -11,12 +11,12 @@
         },
 
         render: function() {
-
             var daysOfTheWeek = this.model.get('daysOfTheWeek'),
                 now = new Date(),
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
                 data = this.model.toJSON();
             
+            data.highestPriority = _.max(_.pluck(this.collection.toJSON(), 'priority')) +1;
             data.currentBookingChecked = data.appliesToCurrentBooking == true ? 'checked' : '';
             data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' :  '';
             
@@ -94,7 +94,7 @@
             return this;
 
         },
-        
+       
         onSaveEnableClick: function (e) {
             e.preventDefault();
             $('input[name="isActive"]').val(true);

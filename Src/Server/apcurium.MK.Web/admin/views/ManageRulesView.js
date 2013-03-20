@@ -6,6 +6,7 @@
 
         initialize: function() {
             this.collection.on('reset', this.render, this);
+            this.collection.reset(this.collection.toJSON());
         },
 
         render: function() {

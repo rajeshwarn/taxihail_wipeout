@@ -182,6 +182,7 @@
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\CreditCardViewModel.cs" />
