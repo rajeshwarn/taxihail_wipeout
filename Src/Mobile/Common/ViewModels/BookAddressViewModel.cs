@@ -173,8 +173,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread(() => {
                             if (t.Result != null && t.Result.Any())
                             {
-                                var address = t.Result[0];
-                                Console.WriteLine(address.FullAddress);
+                                var address = t.Result[0];                                
                                 // Replace result coordinates  by search coordinates (= user position)
                                 address.Latitude = coordinate.Latitude;
                                 address.Longitude = coordinate.Longitude;
@@ -329,7 +328,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand RequestCurrentLocationCommand {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
 
                     CancelCurrentLocationCommand.Execute ();

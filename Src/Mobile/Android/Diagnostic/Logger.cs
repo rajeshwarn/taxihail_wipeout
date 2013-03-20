@@ -62,10 +62,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             }
         }
 
+
         public void LogStack()
         {
+            StackTrace stackTrace = new StackTrace();           // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+            // write call stack method names
+            foreach (StackFrame stackFrame in stackFrames)
+            {
+                if (stackFrame.GetMethod().Name != "LogStack")
+                {
+                    Write("Stack : " + stackFrame.GetMethod().Name);   // write method name
+                }
+            }
 
         }
+
+        public string GetStack(int position)
+        {
+            StackTrace stackTrace = new StackTrace();           // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+            return stackFrames[position].GetMethod().Name;        
+        }
+        
         public void LogMessage(string message , params object[] args)
         {
             if ((args != null) && (args.Length > 0))
@@ -121,8 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             var msgToLog = message + " by :" + user + " with version " + version;
             
             Console.WriteLine(msgToLog);
-            
-            
             
             if (File.Exists(LogFilename) && _flushNextWrite)
             {

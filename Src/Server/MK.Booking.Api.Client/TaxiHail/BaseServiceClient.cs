@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         protected ServiceClientBase Client
         {
             get
-            {
+            {				
                 if (_client == null)
                 {
                     _client = CreateClient();

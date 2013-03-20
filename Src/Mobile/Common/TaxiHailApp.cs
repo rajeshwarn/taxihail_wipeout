@@ -22,6 +22,8 @@ using System;
 using ServiceStack.Text;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
+using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -35,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile
             InitialiseStartNavigation();
         }
         
+        
+
         private void InitaliseServices()
         {
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
@@ -80,7 +84,40 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
             TinyIoCContainer.Current.Register<ICreditCardAuthorizationService, CreditCardAuthorizationService>();
+
+
+            TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
+            TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
+
+            RefreshAppData();
         }
+
+
+        void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
+        {
+            if ( e.LifetimeEvent == MvxLifetimeEvent.Deactivated )
+            {
+                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
+                TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+            }
+            else if ( ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk ) || ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory )  )
+            {
+                Task.Factory.StartNew(() =>
+                    {
+                        TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
+                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+                        TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
+                        TinyIoCContainer.Current.Resolve<IAccountService>().GetReferenceData();
+                    });
+
+            }
+        }
+
+        private void RefreshAppData()
+        {
+
+        }
+
         
         private string GetSessionId (TinyIoCContainer container)
         {

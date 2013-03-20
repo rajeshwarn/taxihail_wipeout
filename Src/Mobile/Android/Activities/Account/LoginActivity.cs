@@ -49,8 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         /// </param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-            facebook.SetCurrentContext(this);
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();            
             (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
@@ -144,6 +143,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 {
                     var serverUrl = input.Text;                    
                     TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+                    TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
+                    TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+
+
                 });
 
             alert.SetNegativeButton("Cancel", (s, e) =>

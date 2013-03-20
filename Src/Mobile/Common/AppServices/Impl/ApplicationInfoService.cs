@@ -14,33 +14,36 @@ using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-	public class ApplicationInfoService : BaseService, IApplicationInfoService
-	{
-        public ApplicationInfo GetAppInfo()
-		{
-            ApplicationInfo info = new ApplicationInfo();
-			UseServiceClient<ApplicationInfoServiceClient>( service => {
-				info = service.GetAppInfo();				
-			});
-			return info;
-		}
+    public class ApplicationInfoService : BaseService, IApplicationInfoService
+    {
+        private const string _appInfoCacheKey = "ApplicationInfo";
 
-		public string GetServerVersion()
-		{
-			string version = "";
-			UseServiceClient<ApplicationInfoServiceClient>( service => {
-				ApplicationInfo info = service.GetAppInfo();
-				version = info.Version;
-			});
-			return version;
+        public ApplicationInfo GetAppInfo( )
+        {
+            var info = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
 
-		}
-
+            if (info == null)
+            {
+                info = new ApplicationInfo();
+                UseServiceClient<ApplicationInfoServiceClient>(service =>
+                {
+                    info = service.GetAppInfo();
+                    TinyIoCContainer.Current.Resolve<IAppCacheService>().Set<ApplicationInfo>(_appInfoCacheKey, info, DateTime.Now.AddHours(1));
+                });
+            }
+            return info;
+        }
+        public void ClearAppInfo()
+        {
+            TinyIoCContainer.Current.Resolve<IAppCacheService>().Clear (_appInfoCacheKey);
+        }
+        
+        
         public void CheckVersion()
         {
 
             var t = Task.Factory.StartNew(() =>
-            {                
+            {
                 bool isUpToDate;
                 try
                 {
@@ -58,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
                     var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
                     var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
-                    mService.ShowMessage(title, msg);                    
+                    mService.ShowMessage(title, msg);
                 }
             });
 
@@ -67,6 +70,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
-	}
+    }
 }
 

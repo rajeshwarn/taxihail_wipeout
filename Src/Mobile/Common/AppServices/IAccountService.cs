@@ -23,7 +23,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearCache();
 
-		void EnsureListLoaded();
+        ReferenceData GetReferenceData();
+        void ClearReferenceData();
 
         Account RefreshAccount();
 
@@ -76,6 +77,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void SignOut();
 
         void AddCreditCard(CreditCardInfos creditCard);
+
+        
     }
 }
 

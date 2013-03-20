@@ -54,11 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             { 
                 _isBottom = value; 
                 Invalidate();
-                if ( TextLine1.StartsWith( "ass") )
-                {
-                    Console.WriteLine ( "ISBOTTOM : " + value.ToString() );
-                }
-
             } 
         }
 

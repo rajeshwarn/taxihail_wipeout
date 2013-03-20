@@ -54,8 +54,6 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
-    <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="mscorlib" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
@@ -76,12 +74,11 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Mobile.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Facebook">
       <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Android.GoogleMaps" />
+    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
