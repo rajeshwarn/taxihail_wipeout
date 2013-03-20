@@ -22,6 +22,7 @@ using apcurium.MK.Common.Configuration;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -46,7 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Load ()
         {
 			base.Load ();
-                  
+
+            Console.WriteLine("Opening confirmation view....");
+
 			MessageService.ShowProgress(true);
 
 
@@ -57,13 +60,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread(() =>
                         {
                             this.RideSettings = t.Result;
-                            FirePropertyChanged(() => Vehicles);
-                            FirePropertyChanged(() => Payments);
+                            
                             FirePropertyChanged(() => VehicleName);
                             FirePropertyChanged(() => ChargeType);
                             MessageService.ShowProgress(false);
-                            ShowChooseProviderDialogIfNecessary();
-                            
+                            ShowChooseProviderDialogIfNecessary();                            
                             ShowWarningIfNecessary();
 
                         });
@@ -87,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-
+            Console.WriteLine("Done opening confirmation view....");
 
         }
         private string _fareEstimate;

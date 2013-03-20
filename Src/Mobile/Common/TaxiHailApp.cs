@@ -97,20 +97,31 @@ namespace apcurium.MK.Booking.Mobile
         {
             if ( e.LifetimeEvent == MvxLifetimeEvent.Deactivated )
             {
-                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
-                TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+                ClearAppCache();
             }
             else if ( ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk ) || ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory )  )
             {
                 Task.Factory.StartNew(() =>
                     {
-                        TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
-                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
-                        TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
-                        TinyIoCContainer.Current.Resolve<IAccountService>().GetReferenceData();
+                        ClearAppCache();
+                        LoadAppCache();
                     });
 
             }
+        }
+
+        private void LoadAppCache()
+        {
+            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
+            TinyIoCContainer.Current.Resolve<IAccountService>().GetReferenceData();
+            TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSettings();
+        }
+
+        private static void ClearAppCache()
+        {
+            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
+            TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
         }
 
         private void RefreshAppData()

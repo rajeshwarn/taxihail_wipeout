@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Common.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -141,10 +142,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             alert.SetPositiveButton("Ok", (s, e) =>
                 {
-                    var serverUrl = input.Text;                    
-                    TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
-                    TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
-                    TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+                    var serverUrl = input.Text;
+
+                    ViewModel.SetServerUrl(serverUrl);
+                    
 
 
                 });

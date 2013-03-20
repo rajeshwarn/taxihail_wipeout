@@ -19,6 +19,7 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -342,6 +343,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 CheckTwitterAccount();
             }
+        }
+
+        public void SetServerUrl(string serverUrl)
+        {
+            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
+            TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
+            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
         }
     }
 }
