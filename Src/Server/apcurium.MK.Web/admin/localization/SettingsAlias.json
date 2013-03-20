@@ -1,0 +1,24 @@
+﻿{ 
+		"Client.ShowEstimate" : "Show estimate",
+		"Booking.ConfirmationEmail" : "Confirmation Email",
+		"Client.HideCallDispatchButton" : "Hide call dispatch button ?",
+		"Client.HideReportProblem": "Hide report problem button ?",
+		"Client.NumberOfCharInRefineAddress": "Number of char in refine address",
+		"Client.ShowRingCodeField": "Show ring code field ?",
+		"DefaultBookingSettings.ChargeTypeId": "Charge type id",
+		"DefaultBookingSettings.NbPassenger": "Passengers number",
+		"DefaultBookingSettings.ProviderId": "Provider Id",
+		"DefaultBookingSettings.VehicleTypeId": "Vehicule type Id",
+		"GeoLoc.DefaultLatitude" : "Default latitude",
+		"GeoLoc.DefaultLongitude": "Default Longitude",
+		"GeoLoc.PlacesTypes" : "Places types",
+		"GeoLoc.PopularAddress.Range": "Popular address range",
+		"GeoLoc.SearchFilter" : "Geoloc search filter",
+		"IBS.DestinationZoneToExclude" : "IBS destination zone to exclude",
+		"IBS.PickupZoneToExclude": "IBS pickup zone to exclude",
+		"IBS.TimeDifference" : "IBS time difference",
+		"IBS.ValidateDestinationZone" : "IBS validate destination zone",
+		"IBS.ValidatePickupZone" : "IBS validate pickup zone",
+		"Receipt.Note" : "Receipt note"
+
+}

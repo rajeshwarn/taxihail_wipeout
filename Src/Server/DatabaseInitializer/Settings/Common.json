@@ -38,6 +38,7 @@
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "false",
    "Client.NumberOfCharInRefineAddress" : "10",
+   "Client.ShowEstimate" : "true",   
    "Client.ShowRingCodeField" : "true",   
    "Client.ShowPassengerName" : "true",   
    "Client.ShowPassengerPhone" : "true",   
