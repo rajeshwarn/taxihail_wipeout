@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class BookEditInformation
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.StackView contentStack { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
@@ -58,6 +61,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (contentStack != null) {
+				contentStack.Dispose ();
+				contentStack = null;
+			}
+
 			if (scrollView != null) {
 				scrollView.Dispose ();
 				scrollView = null;

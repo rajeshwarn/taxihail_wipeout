@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.StackView topStack { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
 
 		[Outlet]
@@ -70,6 +73,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (topStack != null) {
+				topStack.Dispose ();
+				topStack = null;
+			}
+
 			if (lblVehicleTypeValue != null) {
 				lblVehicleTypeValue.Dispose ();
 				lblVehicleTypeValue = null;

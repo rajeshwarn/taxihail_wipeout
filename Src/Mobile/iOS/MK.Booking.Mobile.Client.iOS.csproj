@@ -367,6 +367,7 @@
     <Compile Include="Views\BookEditInformation.designer.cs">
       <DependentUpon>BookEditInformation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StackView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -63,6 +63,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.GetValue ( "EditDetails" ), AppStyle.ButtonColor.Grey );          
 
 
+
+            lblName.Hidden = !ViewModel.ShowPassengerName;
+            lblNameValue.Hidden = !ViewModel.ShowPassengerName;
+
+            lblPassengers.Hidden = !ViewModel.ShowPassengerNumber;
+            lblPassengersValue.Hidden = !ViewModel.ShowPassengerNumber;
+
+            lblPhone.Hidden = !ViewModel.ShowPassengerPhone;
+            lblPhoneValue.Hidden = !ViewModel.ShowPassengerPhone;
+
+
+            var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
+
+            topStack.Offset = topStack.Offset + countHidden ;
+
+
+
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel + ": "; 
             lblChargeType.Text = Resources.ChargeTypeLabel + ": ";						
             lblEntryCode.Text = Resources.GetValue ( "EntryCodeLabel" )+ ": ";
