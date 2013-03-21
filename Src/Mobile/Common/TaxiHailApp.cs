@@ -126,7 +126,11 @@ namespace apcurium.MK.Booking.Mobile
 
         private void RefreshAppData()
         {
-
+			Task.Factory.StartNew(() =>
+			                      {
+				ClearAppCache();
+				LoadAppCache();
+			});
         }
 
         

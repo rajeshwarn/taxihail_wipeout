@@ -8,7 +8,7 @@
 "LoginForgotPasswordButton"="Forgot Password?";
 "CreateAccountLanguage"="Language";
 "NbPassenger"=" ({0} passenger)";
-"ResetPasswordSucessTitle"="Password resetted";
+"ResetPasswordSucessTitle"="Password reset";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
@@ -234,7 +234,7 @@
 "HistoryViewStatusButton"="View Status";
 "PasswordLabel"="Password";
 "BuildingName"="Building Name / Remark";
-"ResetPasswordSucessMessage"="Password was successfully resetted";
+"ResetPasswordSucessMessage"="Password was reset successfully";
 "View_Book_Menu_UpdateMyProfile"="Update My Profile";
 "TabBook"="Book";
 "View_BookSettingMenu"="Settings";
@@ -387,3 +387,7 @@
 "WarningTitle"="Warning";
 "View_SearchAddress"="Address Search";
 "StreetNumberPlacesBt"="Search for places";
+"PassengerNameLabel"="Name";
+"PassengerNumberLabel"="Passengers";
+"EditDetails"="Edit Details";
+"PassengerPhoneLabel"="Phone";

@@ -83,7 +83,6 @@
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
-    <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
@@ -267,6 +266,9 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
+    <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
+      <DependentUpon>View_CreditCardsList.axml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

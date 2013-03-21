@@ -280,33 +280,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void CheckFacebookAccount()
         {
             MessageService.ShowProgress(true);
-            _facebookService.GetUserInfos(info =>
-            {
-                var data = new RegisterAccount();
-                data.FacebookId = info.Id;
-                data.Email = info.Email;
-                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
 
-                try
-                {
-                    var account = _accountService.GetFacebookAccount(data.FacebookId);
-                    if (account == null)
-                    {
-                        DoSignUp(data);
-                    }
-                    else
-                    {
-                        RequestNavigate<BookViewModel>(true);
-                    }
-                }
-                finally
-                {
-                    MessageService.ShowProgress(false);
-                }
 
-            });
+//            _facebookService.GetUserInfos(info =>
+//            {
+//                var data = new RegisterAccount();
+//                data.FacebookId = info.Id;
+//                data.Email = info.Email;
+//                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+//
+//                try
+//                {
+//                    var account = _accountService.GetFacebookAccount(data.FacebookId);
+//                    if (account == null)
+//                    {
+//                        DoSignUp(data);
+//                    }
+//                    else
+//                    {
+//                        RequestNavigate<BookViewModel>(true);
+//                    }
+//                }
+//                finally
+//                {
+//                    MessageService.ShowProgress(false);
+//                }
+//
+//            }, Nothing);
         }
 
+        private void Nothing()
+        {
+             }
         private void CheckTwitterAccount()
         {
             MessageService.ShowProgress(true);

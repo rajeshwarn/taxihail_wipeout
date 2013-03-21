@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -12,7 +12,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblNameValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhoneValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnEdit { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartmentValue { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblNoteDriver { get; set; }
@@ -21,16 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtEntryCode { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtApartment { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
-
-		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCodeValue { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }
@@ -49,9 +70,59 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblVehicleTypeValue != null) {
+				lblVehicleTypeValue.Dispose ();
+				lblVehicleTypeValue = null;
+			}
+
+			if (lblChargeTypeValue != null) {
+				lblChargeTypeValue.Dispose ();
+				lblChargeTypeValue = null;
+			}
+
+			if (lblPassengers != null) {
+				lblPassengers.Dispose ();
+				lblPassengers = null;
+			}
+
+			if (lblPassengersValue != null) {
+				lblPassengersValue.Dispose ();
+				lblPassengersValue = null;
+			}
+
+			if (lblName != null) {
+				lblName.Dispose ();
+				lblName = null;
+			}
+
+			if (lblNameValue != null) {
+				lblNameValue.Dispose ();
+				lblNameValue = null;
+			}
+
+			if (lblPhone != null) {
+				lblPhone.Dispose ();
+				lblPhone = null;
+			}
+
+			if (lblPhoneValue != null) {
+				lblPhoneValue.Dispose ();
+				lblPhoneValue = null;
+			}
+
+			if (btnEdit != null) {
+				btnEdit.Dispose ();
+				btnEdit = null;
+			}
+
 			if (lblApartment != null) {
 				lblApartment.Dispose ();
 				lblApartment = null;
+			}
+
+			if (lblApartmentValue != null) {
+				lblApartmentValue.Dispose ();
+				lblApartmentValue = null;
 			}
 
 			if (lblNoteDriver != null) {
@@ -64,24 +135,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblEntryCode = null;
 			}
 
-			if (txtEntryCode != null) {
-				txtEntryCode.Dispose ();
-				txtEntryCode = null;
-			}
-
-			if (txtApartment != null) {
-				txtApartment.Dispose ();
-				txtApartment = null;
-			}
-
-			if (pickerChargeType != null) {
-				pickerChargeType.Dispose ();
-				pickerChargeType = null;
-			}
-
-			if (pickerVehicleType != null) {
-				pickerVehicleType.Dispose ();
-				pickerVehicleType = null;
+			if (lblEntryCodeValue != null) {
+				lblEntryCodeValue.Dispose ();
+				lblEntryCodeValue = null;
 			}
 
 			if (lblVehiculeType != null) {
