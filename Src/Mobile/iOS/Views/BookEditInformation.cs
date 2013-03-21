@@ -60,6 +60,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;           
                         
+
+            lblName.Hidden = !ViewModel.ShowPassengerName;
+            txtName.Hidden = !ViewModel.ShowPassengerName;
+            
+            lblPassengers.Hidden = !ViewModel.ShowPassengerNumber;
+            txtNbPassengers.Hidden = !ViewModel.ShowPassengerNumber;
+            
+            lblPhone.Hidden = !ViewModel.ShowPassengerPhone;
+            txtPhone.Hidden = !ViewModel.ShowPassengerPhone;
+
+            contentStack.VerticalAlignement = StackPanelAlignement.Top;
+            contentStack.TopOffset = 10;
+
+
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
             lblChargeType.Text = Resources.ChargeTypeLabel;                     
             lblEntryCode.Text = Resources.GetValue ( "EntryCodeLabel" );

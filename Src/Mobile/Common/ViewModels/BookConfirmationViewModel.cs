@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MessageService.ShowProgress(true);
 
 
-            var t1 = Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList()))
+            Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList()))
                 .HandleErrors( )
                 .ContinueWith(t =>
                     {
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     });
 
 
-            var t2 = Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
+            Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
                 .HandleErrors()
                 .ContinueWith(t => InvokeOnMainThread(() =>
                         {
@@ -79,12 +79,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             ShowFareEstimateAlertDialogIfNecessary();
                         }));
 
-            var paymentInformation = new PaymentInformation
-            {
-                CreditCardId = _accountService.CurrentAccount.DefaultCreditCard,
-                TipAmount = _accountService.CurrentAccount.DefaultTipAmount,
-                TipPercent = _accountService.CurrentAccount.DefaultTipPercent,
-            };
 
 
 
