@@ -7,7 +7,7 @@
             if (resourceSet && !_.isUndefined(TaxiHail.resources[resourceSet])) {
                 resource = TaxiHail.resources[resourceSet][resourceName];
             }
-            return resource || TaxiHail.resources.Global[resourceName] ||  TaxiHail.resources.SettingsAlias[resourceName] || '[' + resourceName + ']';
+            return resource || TaxiHail.resources.Global[resourceName] || '[' + resourceName + ']';
         },
 
         addResourceSet: function (name, resourceSet) {
