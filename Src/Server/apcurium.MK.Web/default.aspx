@@ -18,7 +18,6 @@
     </head>
     <body>
         <div id="fb-root"></div>
-        
         <header>
             <div class="login-status-zone"></div>
         </header>

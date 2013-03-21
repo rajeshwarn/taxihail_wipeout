@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string Message{ get; set; }       
         public int Type { get; set; }
         public int Category{ get; set; }
-
+        public string ZoneList { get; set; }
         public bool AppliesToCurrentBooking { get; set; }
         public bool AppliesToFutureBooking { get; set; }
         public int DaysOfTheWeek { get; set; }

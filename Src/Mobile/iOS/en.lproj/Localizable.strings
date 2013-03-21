@@ -387,3 +387,7 @@
 "WarningTitle"="Warning";
 "View_SearchAddress"="Address Search";
 "StreetNumberPlacesBt"="Search for places";
+"PassengerNameLabel"="Name";
+"PassengerNumberLabel"="Passengers";
+"EditDetails"="Edit Details";
+"PassengerPhoneLabel"="Phone";

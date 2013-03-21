@@ -34,17 +34,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _creditCardsCacheKey = "Account.CreditCards";
-        private static ReferenceData _refData;
+        private const string _refDataCacheKey = "Account.ReferenceData";
 
-        public void EnsureListLoaded ()
+        public ReferenceData GetReferenceData()
         {
-            if ((_refData == null) || (_refData.CompaniesList.Count () == 0)) {
-                UseServiceClient<ReferenceDataServiceClient> (service =>
+
+            var refData = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
+            
+            if (refData == null)
+            {
+                UseServiceClient<ReferenceDataServiceClient>(service =>
                 {
-                    _refData = service.GetReferenceData ();
-                }
-                );
+                    refData = service.GetReferenceData();
+                    TinyIoCContainer.Current.Resolve<IAppCacheService>().Set(_refDataCacheKey, refData, DateTime.Now.AddHours(1));
+                });
             }
+            return refData;
+            
+
+        }
+
+        public void ClearReferenceData()
+        {
+            TinyIoCContainer.Current.Resolve<IAppCacheService>().Clear(_refDataCacheKey);
         }
 
         protected ILogger Logger {
@@ -59,7 +71,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void ClearCache ()
         {
             var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
-            _refData = null;
+
+
+            
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
@@ -72,8 +86,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try {
                 var facebook = TinyIoCContainer.Current.Resolve<IFacebookService> ();
-                if (facebook.IsConnected) {
-                    facebook.SetCurrentContext (this);
+                if (facebook.IsConnected) {                    
                     facebook.Disconnect ();
                 }
             } catch {
@@ -351,7 +364,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     CurrentAccount = account;
                     data = account;
                 }
-                EnsureListLoaded ();
+                
             } catch (WebException ex) {
                 TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 return null;
@@ -477,32 +490,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<ListItem> GetCompaniesList ()
         {
-            EnsureListLoaded ();
-            return _refData.CompaniesList;
+            return GetReferenceData().CompaniesList;            
         }
 
         public IEnumerable<ListItem> GetVehiclesList ()
         {
-            EnsureListLoaded ();
-            return _refData.VehiclesList;
+            return GetReferenceData().VehiclesList;
         }
 
         public IEnumerable<ListItem> GetPaymentsList ()
         {
-            EnsureListLoaded ();
+            var refData = GetReferenceData();
             //add credit card on file if not already included and feature enabled
             if (TinyIoCContainer.Current.Resolve<IAppSettings> ().PayByCreditCardEnabled
-                && _refData.PaymentsList != null
-                && _refData.PaymentsList.None (x => x.Id == ReferenceData.CreditCardOnFileType)) {
+                && refData.PaymentsList != null
+                && refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType))
+            {
 
-                _refData.PaymentsList.Add (new ListItem
+                refData.PaymentsList.Add(new ListItem
                           { 
                             Id = ReferenceData.CreditCardOnFileType, 
                             Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
                           });
             }
 
-            return _refData.PaymentsList;
+            return refData.PaymentsList;
         }
 
         public IEnumerable<CreditCardDetails> GetCreditCards ()

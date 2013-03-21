@@ -27,6 +27,8 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -34,12 +36,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<ILocationService>,
         IMvxServiceConsumer<IBookingService>,
+        IMvxServiceConsumer<IApplicationInfoService>,
         IMvxServiceConsumer<ICacheService>
     {
         private bool _initialized;
         private IAccountService _accountService;
         private ILocationService _geolocator;
         private IBookingService _bookingService;
+        private IApplicationInfoService _applicationInfoService;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
@@ -47,18 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
-
-//            var t = new Timer( o=>
-//                              {
-//
-//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapAllocatedSize : " + Android.OS.Debug.NativeHeapAllocatedSize.ToString() );
-//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapFreeSize : " + Android.OS.Debug.NativeHeapFreeSize.ToString() );
-//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapSize : " + Android.OS.Debug.NativeHeapSize.ToString() );
-//            },                null, 0, 1000 ); 
-//
-
-
-            
+         
         }
 
         public BookViewModel(string order)
@@ -80,9 +73,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _initialized = true;
 
             _accountService = this.GetService<IAccountService>();
+            _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
-
+            _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);
         }
 
@@ -140,12 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
 
-                CalculateEstimate ();
-//            }
-//            else
-//            {
-//                _fareEstimate = Resources.GetString("NoFareText");
-//            }
+            CalculateEstimate ();
 
             _useExistingOrder = false;
 
@@ -185,11 +174,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CheckVersion()
         {
-            ThreadPool.QueueUserWorkItem(o =>
+            Task.Factory.SafeStartNew(() =>
             {
                 //The 2 second delay is required because the view might not be created.
                 Thread.Sleep(2000);
-                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
+                
+                if (_accountService.CurrentAccount != null)
+                {
+                    TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
+                }
             });
 
         }
@@ -218,20 +211,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (_accountService.CurrentAccount != null)
             {
                 Order.Settings = _accountService.CurrentAccount.Settings;
-                Task.Factory.SafeStartNew( () => 
-                                          {
-                    var account = TinyIoCContainer.Current.Resolve<IAccountService>().RefreshAccount (); 
-                    if ( account == null )
-                    {
-                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut ();         
-                        RequestNavigate<LoginViewModel> (true);
-                        RequestClose( this );
-                    }
-                    else
-                    {
-                        Order.Settings = account.Settings;
-                    }
-                });
             }
             else
             {
@@ -595,6 +574,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     InvokeOnMainThread(() =>
                     {
+                        Order.Settings = _accountService.CurrentAccount.Settings;                        
+                        if ( Order.Settings.Passengers <= 0 )
+                        {
+                            Order.Settings.Passengers = 1;
+                        }
+
                         var serialized = Order.ToJson();
                         RequestNavigate<BookConfirmationViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
                     });

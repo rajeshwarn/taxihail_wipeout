@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
     {
         IList<RuleDetail> GetAll();
 
-        RuleDetail GetActiveDisableRule( bool isFutureBooking, DateTime pickupDate);
+        IList<RuleDetail> GetActiveDisableRule( bool isFutureBooking, string zone);
 
-        RuleDetail GetActiveWarningRule(bool isFutureBooking, DateTime pickupDate);
+        IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking, string zone);
     }
 }

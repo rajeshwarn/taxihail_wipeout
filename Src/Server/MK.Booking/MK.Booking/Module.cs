@@ -4,6 +4,7 @@ using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
+using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
 
             RegisterMaps();

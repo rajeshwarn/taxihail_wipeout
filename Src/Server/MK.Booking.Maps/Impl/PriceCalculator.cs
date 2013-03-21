@@ -50,8 +50,6 @@ namespace apcurium.MK.Booking.Maps.Impl
 
                         price = Math.Round(price.Value, 2);
 
-                        Console.WriteLine(price);
-
                         price = price.Value * 100;
 
                         int q = (int)(price.Value / 5.0);
@@ -59,7 +57,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                         int r;
 
                         Math.DivRem((int)price.Value, 5, out r);
-                        Console.WriteLine(" r : " + r.ToString());
+                        
                         if (r > 0)
                         {
                             q++;
@@ -67,13 +65,10 @@ namespace apcurium.MK.Booking.Maps.Impl
 
                         price = q * 5;
 
-                        Console.WriteLine(price);
-
                         price = price.Value / 100;
 
-                        Console.WriteLine(price);
 
-                    }
+                        }
                 }
             }
             catch

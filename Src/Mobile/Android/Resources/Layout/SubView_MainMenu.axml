@@ -35,7 +35,7 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;Panel.NavigateToMyLocations&apos;}}" />
+                    local:MvxBind="{'Click': {'Path': 'Panel.NavigateToMyLocations'}}" />
                 <Button
                     android:id="@+id/settingsHistory"
                     style="@style/BigTitleTextBlack"
@@ -46,10 +46,10 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToOrderHistory&apos;}}" />
+                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToOrderHistory'}}" />
                 <Button
                     android:id="@+id/settingsProfile"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToUpdateProfile&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToUpdateProfile'}}"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/cell_middle_state"
                     android:layout_width="fill_parent"
@@ -61,7 +61,7 @@
                 <Button
                     android:id="@+id/settingsCallCompany"
                     style="@style/BigTitleTextBlack"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.Call&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.CanCall&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'Panel.Call'},'Visibility':{'Path':'Panel.CanCall','Converter':'Visibility'}}"
                     android:background="@drawable/cell_middle_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
@@ -72,7 +72,7 @@
                 <Button
                     android:id="@+id/settingsTutorial"
                     style="@style/BigTitleTextBlack"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToTutorial&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.Settings.TutorialEnabled&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToTutorial'},'Visibility':{'Path':'Panel.Settings.TutorialEnabled','Converter':'Visibility'}}"
                     android:background="@drawable/cell_middle_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
@@ -83,7 +83,7 @@
                 <Button
                     android:id="@+id/settingsAbout"
                     style="@style/BigTitleTextBlack"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToAboutUs&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToAboutUs'}}"
                     android:background="@drawable/cell_middle_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
@@ -93,7 +93,7 @@
                     android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsSupport"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.ReportProblem&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.CanReportProblem&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'Panel.ReportProblem'},'Visibility':{'Path':'Panel.CanReportProblem','Converter':'Visibility'}}"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/cell_middle_state"
                     android:layout_width="fill_parent"
@@ -123,7 +123,7 @@
                 <ImageView
                     android:id="@+id/apcuriumLogo"
                     android:src="@drawable/apcuriumLogo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dip"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                     android:layout_centerHorizontal="true" />
                 <TextView
                     android:text="v0.0.0"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Panel.Version&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Panel.Version'}}"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/apcuriumLogo"

@@ -22,7 +22,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("UseServiceClient : " + typeof(T));
+
+                var method =  TinyIoCContainer.Current.Resolve<ILogger>().GetStack(2);
+                TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("*************************************   UseServiceClient : " + method);                
 				T service;
 				if( name == null )
 				{
@@ -33,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					service = TinyIoCContainer.Current.Resolve<T>(name);
 				}
                 action(service);
-                TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("UseServiceClient : " + typeof(T));
+                TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("*************************************   UseServiceClient : " + method);
                 return "";
             }
             catch (Exception ex)

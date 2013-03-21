@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile
         {
 
             
-            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+            
 
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
 

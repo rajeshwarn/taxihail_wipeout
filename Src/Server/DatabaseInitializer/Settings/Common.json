@@ -38,8 +38,11 @@
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "false",
    "Client.NumberOfCharInRefineAddress" : "10",
-   "Client.ShowRingCodeField" : "true",
    "Client.ShowEstimate" : "true",   
+   "Client.ShowRingCodeField" : "true",   
+   "Client.ShowPassengerName" : "true",   
+   "Client.ShowPassengerPhone" : "true",   
+   "Client.ShowPassengerNumber" : "true",   
    "GeoLoc.PopularAddress.Range" : "500",
    "GeoLoc.PlacesTypes" : "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,musem,night_club,park,parking,pharmacy,police,physiotherapist,p",
    "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem"

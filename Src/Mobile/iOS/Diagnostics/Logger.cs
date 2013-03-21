@@ -49,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             Logger.LogStack ();
         }
 
+        public string GetStack(int position)
+        {
+         return   Logger.GetStack (position);
+        }
+
     }
     
     public class Logger
@@ -62,6 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static void LogError (Exception ex)
         {
             LogError (ex, 0);
+        }
+
+        public  static string GetStack(int position)
+        {
+            StackTrace stackTrace = new StackTrace();           // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+            
+            return stackFrames[position].GetMethod().Name;        
         }
 
         public static void LogError (Exception ex, int indent)
@@ -90,6 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             Write ("Message on " + DateTime.Now.ToString () + " : " + message);
             
         }
+
+
 
         public static void StartStopwatch (string message)
         {

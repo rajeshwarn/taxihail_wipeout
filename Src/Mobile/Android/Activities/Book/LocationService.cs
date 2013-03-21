@@ -50,8 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 if (LastLocation != null)
                 {
                     var lastDateTime = FromUnixTime(LastLocation.Time).ToLocalTime();
-                    Console.WriteLine(lastDateTime.ToShortTimeString());
-                    Console.WriteLine(lastDateTime.ToLongDateString());
                     var timeDelta = DateTime.Now.Subtract(lastDateTime).TotalSeconds;
 
                     if (timeDelta > 120)

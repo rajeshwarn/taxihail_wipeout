@@ -1,15 +1,50 @@
 <div class='well clearfix'>
-    <h4 class="table-title">{{localize "Manage Rules"}}</h4>
+    <h4 class="table-title">{{localize "Disable Rules"}}</h4>
 
+  <a href='#rules/add/disable/default' class='btn'>{{localize "Add Default"}}</a>
+  <a href='#rules/add/disable/recurring' class='btn'>{{localize "Add Rule (Recurring)"}}</a>
+  <a href='#rules/add/disable/day' class='btn'>{{localize "Add Rule (One day)"}}</a>
+  
 
-    <table class="table table-striped">
+  <table class="table table-striped">
         <thead>
             <tr>
-                <th>{{localize "Name"}}</th>
-                <th>{{localize "Message"}}</th>                
-                <th width=60>&nbsp;</th>
+                <th width="100">{{localize "Name"}}</th>
+             <!--   <th>{{localize "Days / Start - End Date"}}</th>
+                <th>{{localize "Time"}}</th> -->
+                <th width="300">{{localize "Message"}}</th>
+              <!-- <th width="100">{{localize "Applies To"}}</th>
+              <th width="50">{{localize "Priority"}}</th>
+              <th width="200">{{localize "Zone"}}</th> -->
+              <th width="130">&nbsp;</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody name="disableItem"></tbody>
     </table>
+</div>
+
+
+<div class='well clearfix'>
+  <h4 class="table-title">{{localize "Warning Rules"}}</h4>
+
+  <a href='#rules/add/warning/default' class='btn'>{{localize "Add Default"}}</a>
+  <a href='#rules/add/warning/recurring' class='btn'>{{localize "Add Rule (Recurring)"}}</a>
+  <a href='#rules/add/warning/day' class='btn'>{{localize "Add Rule (One day)"}}</a>
+
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th width="100">{{localize "Name"}}</th>
+        <!--  <th>{{localize "Days / Start - End Date"}}</th>
+        <th>{{localize "Time"}}</th> -->
+        <th width="300">{{localize "Message"}}</th>
+        <!-- <th width="100">{{localize "Applies To"}}</th>
+        <th width="50">{{localize "Priority"}}</th>
+        <th width="200">{{localize "Zone"}}</th> -->
+        <th width="130">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody name="warningItem"></tbody>
+  </table>
 </div>

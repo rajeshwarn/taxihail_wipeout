@@ -38,7 +38,7 @@ namespace Cirrious.MvvmCross.Binding.Binders.Json
             catch (Exception exception)
             {
                 requestedBindings = null;
-                MvxBindingTrace.Trace(MvxTraceLevel.Error,"Problem parsing Json tag for databinding " + exception.ToLongString());
+				MvxBindingTrace.Trace(MvxTraceLevel.Error,"Problem parsing Json tag for databinding (" + text ?? "" +")" + exception.ToLongString());
                 return false;
             }
             return true;

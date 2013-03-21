@@ -30,8 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 				}
 			}
 			catch (Exception e)
-			{
-				System.Console.WriteLine (e);
+			{				
 				return null;
 			}
 		}
