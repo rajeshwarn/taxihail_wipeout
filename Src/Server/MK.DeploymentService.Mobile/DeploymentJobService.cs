@@ -344,7 +344,7 @@ namespace MK.DeploymentService.Mobile
 			logger.Debug("Build Project : " + buildArgs);
 			var buildiOSproject = new ProcessStartInfo
 			{
-				FileName = "/Applications/MonoDevelop.app/Contents/MacOS/mdtool",
+				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
 				UseShellExecute = false,
 				Arguments = buildArgs
 			};
