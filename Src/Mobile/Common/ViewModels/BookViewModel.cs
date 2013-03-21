@@ -211,20 +211,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (_accountService.CurrentAccount != null)
             {
                 Order.Settings = _accountService.CurrentAccount.Settings;
-                Task.Factory.SafeStartNew( () => 
-                                          {
-                    var account = TinyIoCContainer.Current.Resolve<IAccountService>().RefreshAccount (); 
-                    if ( account == null )
-                    {
-                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut ();         
-                        RequestNavigate<LoginViewModel> (true);
-                        RequestClose( this );
-                    }
-                    else
-                    {
-                        Order.Settings = account.Settings;
-                    }
-                });
             }
             else
             {
@@ -588,6 +574,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     InvokeOnMainThread(() =>
                     {
+                        Order.Settings = _accountService.CurrentAccount.Settings;                        
+                        if ( Order.Settings.Passengers <= 0 )
+                        {
+                            Order.Settings.Passengers = 1;
+                        }
+
                         var serialized = Order.ToJson();
                         RequestNavigate<BookConfirmationViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
                     });
