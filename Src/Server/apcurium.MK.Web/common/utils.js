@@ -198,6 +198,12 @@
     Handlebars.registerHelper('localize', function (resourceName) {
         return new Handlebars.SafeString(TaxiHail.localize(resourceName, this.resourceSet));
     });
+
+    Handlebars.registerHelper('localizeBool', function (value, options) {
+        if (value == "true") return options.hash["true"];
+        if (value == "false") return options.hash["false"];
+        return '';
+    });
     
     Handlebars.registerHelper('isBool', function (obj,options) {
         if (obj == "true" || obj == "false") {

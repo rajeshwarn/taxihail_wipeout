@@ -7,8 +7,8 @@
 	<div class="controls">
     {{#isBool value}}
       <select id="{{key}}" name="{{key}}" style="width:250px; margin-right:15px">
-        <option value="{{value}}" selected>{{value}}</option>
-        <option value="{{invertedBool value}}">{{invertedBool value}}</option>
+        <option value="{{value}}" selected>{{localizeBool value true="Yes" false="No"}}</option>
+        <option value="{{invertedBool value}}">{{localizeBool value true="No" false="Yes"}}</option>
       </select>
     {{else}}          
     {{#isNumber value}}
