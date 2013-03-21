@@ -59,13 +59,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         InvokeOnMainThread(() =>
                         {
-                            this.RideSettings = t.Result;
+							if ( t.Result != null )
+							{
+                            	this.RideSettings = t.Result;
                             
-                            FirePropertyChanged(() => VehicleName);
-                            FirePropertyChanged(() => ChargeType);
-                            MessageService.ShowProgress(false);
-                            ShowChooseProviderDialogIfNecessary();                            
-                            ShowWarningIfNecessary();
+                            	FirePropertyChanged(() => VehicleName);
+                            	FirePropertyChanged(() => ChargeType);
+                            	MessageService.ShowProgress(false);
+                            	ShowChooseProviderDialogIfNecessary();                            
+                            	ShowWarningIfNecessary();
+							}
 
                         });
                     });
