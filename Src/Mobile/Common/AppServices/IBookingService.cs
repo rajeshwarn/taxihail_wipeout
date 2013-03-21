@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Xamarin.Contacts;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -38,15 +37,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         OrderValidationResult ValidateOrder (CreateOrder order);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);
-        Task<OrderStatusDetail> GetLastOrderStatus();
-        void ClearLastOrder();
+        
+		Task<OrderStatusDetail> GetLastOrderStatus();
+        
+		void ClearLastOrder();
 
-	    void RemoveFromHistory(Guid orderId);
-
-        List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria);
-
-	    Task LoadContacts();
-
+	    void RemoveFromHistory(Guid orderId);	       
+			    
 	    List<RatingType> GetRatingType();
 
 	    apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId);

@@ -183,11 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     page.RootView.Layout(page.ContentView.Left, 0, page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);                                               
                     page.ContentView.Dispose();
                     page.ContentView = null;
-
-
-                   
-
-                    Console.WriteLine("Unloaded...  : " + page.ItemModel.ImageUri);
+                                     
                 }
 
             }
@@ -218,8 +214,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = page.ItemModel.BottomText;
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = page.ItemModel.TopTitle;
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = page.ItemModel.BottomTitle;
-
-                Console.WriteLine("Loading...  : " + page.ItemModel.ImageUri);
 
                 var resource = Resources.GetIdentifier(page.ItemModel.ImageUri, "drawable", Context.PackageName);
 
@@ -281,45 +275,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var page = new PageInfo{ ItemModel =  TutorialItemModel[i], RootView = new View(Context) };
                 _pages.Add(page);
                 this.AddView(page.RootView);
-
-
-                //View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
-                  
-//                var uri = page.ItemModel.ImageUri;  
-//                var options = new BitmapFactory.Options();
-//                options.InPurgeable = true; //bitmap can be purged to disk
-//                var resource = Resources.GetIdentifier(uri, "drawable", Context.PackageName);
-//                var bm = BitmapFactory.DecodeResource(Context.Resources, resource, options);
-//
-//                Console.WriteLine("LoadItems 5 : " + i.ToString());
-
-//                
-//                Post(() =>
-//                {
-//                    Console.WriteLine("LoadItems 6 : " + i.ToString());
-//                    AddView(vw);
-//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = tutorialItem.TopText;
-//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = tutorialItem.BottomText;
-//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = tutorialItem.TopTitle;
-//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = tutorialItem.BottomTitle;
-//                    vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bm);
-//                    Console.WriteLine("LoadItems 7 : " + i.ToString());
-//                });
-                
-
-                                                  
-
             }
             LoadItem(0);
             PostDelayed(() => LoadItem(1), 200);
             mScroller = new Scroller(Context);
-            Console.WriteLine("Done LoadItems");
-
-            // Calculate the density-dependent snap velocity in pixels
-            // DisplayMetrics displayMetrics = new DisplayMetrics();
-            //  ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
-            //  mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
-
 
             ViewConfiguration configuration = ViewConfiguration.Get(Context);
             mTouchSlop = configuration.ScaledTouchSlop;

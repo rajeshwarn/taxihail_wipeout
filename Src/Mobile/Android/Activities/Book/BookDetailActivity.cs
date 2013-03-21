@@ -1,25 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using Android.App;
-using Android.Content;
+﻿using Android.App;
+using Android.Views;
 using Android.Widget;
-using ServiceStack.Text;
-using apcurium.Framework.Extensions;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Messages;
-using TinyMessenger;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -35,12 +19,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {            
             SetContentView(Resource.Layout.View_BookingDetail);
+            FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewModel.ShowPassengerName  ? ViewStates.Visible : ViewStates.Gone;
+            FindViewById<LinearLayout>(Resource.Id.passengerPhoneLayout).Visibility = ViewModel.ShowPassengerPhone ? ViewStates.Visible : ViewStates.Gone;
+            FindViewById<LinearLayout>(Resource.Id.passengerNumberLayout).Visibility = ViewModel.ShowPassengerNumber ? ViewStates.Visible : ViewStates.Gone;
+
+			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
 
             if ( !ViewModel.ShowRingCodeField )
             {
                 FindViewById<TableLayout>( Resource.Id.tableAptRingCode ).Visibility = Android.Views.ViewStates.Gone;
             }
 			ViewModel.Load();
+        }
+
+        void HandleFocusChange (object sender, View.FocusChangeEventArgs e)
+        {
+			if (e.HasFocus) {
+		
+				Task.Factory.StartNew ( () =>
+				                       {
+					Thread.Sleep( 300 );
+				 	RunOnUiThread( () => FindViewById<ScrollView> (Resource.Id.mainScroll).FullScroll (FocusSearchDirection.Down) );
+				});
+			}
+		
         }
     }
 }

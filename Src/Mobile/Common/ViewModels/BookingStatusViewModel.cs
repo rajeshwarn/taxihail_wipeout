@@ -215,10 +215,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set;
         }
 
+
+        
+
         private bool _showRatingButton;
 
         public bool ShowRatingButton {
-            get {
+            get { 
                 if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().RatingEnabled) {
                     return false;
                 } else {

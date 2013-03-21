@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            Console.WriteLine("App created");
 
         }
 

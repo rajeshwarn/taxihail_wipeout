@@ -116,7 +116,7 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>  
+  </resheader>
   <data name="Language" xml:space="preserve">
     <value>English</value>
   </data>
@@ -794,7 +794,7 @@
   </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
-  </data> 
+  </data>
   <data name="searchHint" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -876,11 +876,9 @@
   <data name="NetworkErrorMessage" xml:space="preserve">
     <value>Cannot connect to Internet. Please check your connection settings and try again.</value>
   </data>
-  
   <data name="View_SearchAddress" xml:space="preserve">
     <value>Address Search</value>
   </data>
-  
   <data name="View_About" xml:space="preserve">
     <value>About Us</value>
   </data>
@@ -1234,4 +1232,16 @@
     <value>Clear Address</value>
   </data>
 
+  <data name="PassengerNameLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PassengerNumberLabel" xml:space="preserve">
+    <value>Passengers</value>
+  </data>
+  <data name="PassengerPhoneLabel" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="EditDetails" xml:space="preserve">
+    <value>Edit Details</value>
+  </data>
 </root>

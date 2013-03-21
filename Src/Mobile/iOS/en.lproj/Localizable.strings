@@ -234,7 +234,8 @@
 "HistoryViewStatusButton"="View Status";
 "PasswordLabel"="Password";
 "BuildingName"="Building Name / Remark";
-"ResetPasswordSucessMessage"="Password was reset successfully";"View_Book_Menu_UpdateMyProfile"="Update My Profile";
+"ResetPasswordSucessMessage"="Password was reset successfully";
+"View_Book_Menu_UpdateMyProfile"="Update My Profile";
 "TabBook"="Book";
 "View_BookSettingMenu"="Settings";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
@@ -386,3 +387,8 @@
 "WarningTitle"="Warning";
 "View_SearchAddress"="Address Search";
 "DeleteAddressBt"="Clear Address";
+"StreetNumberPlacesBt"="Search for places";
+"PassengerNameLabel"="Name";
+"PassengerNumberLabel"="Passengers";
+"EditDetails"="Edit Details";
+"PassengerPhoneLabel"="Phone";

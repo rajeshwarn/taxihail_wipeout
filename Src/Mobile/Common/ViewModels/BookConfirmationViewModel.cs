@@ -22,6 +22,7 @@ using apcurium.MK.Common.Configuration;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -46,132 +47,167 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Load ()
         {
 			base.Load ();
-            try {
 
-                MessageService.ShowProgress (true);
-				this.Vehicles = _accountService.GetVehiclesList().ToArray();
-				this.Payments = _accountService.GetPaymentsList().ToArray();
-                FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
+            Console.WriteLine("Opening confirmation view....");
 
-                var paymentInformation = new PaymentInformation {
-                    CreditCardId = _accountService.CurrentAccount.DefaultCreditCard,
-                    TipAmount = _accountService.CurrentAccount.DefaultTipAmount,
-                    TipPercent = _accountService.CurrentAccount.DefaultTipPercent,
-                };
+			MessageService.ShowProgress(true);
 
 
-                ShowFareEstimateAlertDialogIfNecessary();
-                ShowChooseProviderDialogIfNecessary();
-                ShowWarningIfNecessary();
-				FirePropertyChanged ( () => Vehicles );
-				FirePropertyChanged ( () => Payments );
-				FirePropertyChanged ( () => VehicleName );
-				FirePropertyChanged ( () => ChargeType );
+            Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList()))
+                .HandleErrors( )
+                .ContinueWith(t =>
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+							if ( t.Result != null )
+							{
+                            	this.RideSettings = t.Result;
+                            
+                            	FirePropertyChanged(() => VehicleName);
+                            	FirePropertyChanged(() => ChargeType);
+                            	MessageService.ShowProgress(false);
+                            	ShowChooseProviderDialogIfNecessary();                            
+                            	ShowWarningIfNecessary();
+							}
 
-            } finally {
-                MessageService.ShowProgress (false);
-            }
+                        });
+                    });
+
+
+            Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
+                .HandleErrors()
+                .ContinueWith(t => InvokeOnMainThread(() =>
+                        {
+                            FareEstimate = t.Result;
+                            ShowFareEstimateAlertDialogIfNecessary();
+                        }));
+
+
+
+
+            Console.WriteLine("Done opening confirmation view....");
+
         }
-
-        public bool ShowRingCodeField {
+        private string _fareEstimate;
+        public string FareEstimate
+        {
             get
             {
-                return TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.ShowRingCodeField" ) != "false" ;
+                return _fareEstimate;
             }
-
-        }
-
-        public void SetVehicleTypeId( int? id )
-        {
-            if (id == ListItem.NullId) {
-                Order.Settings.VehicleTypeId = null;
-            } else {
-                Order.Settings.VehicleTypeId = id;
+            set
+            {
+                if (value != _fareEstimate)
+                {
+                    _fareEstimate = value;
+                    FirePropertyChanged("FareEstimate");
+                }
             }
-            FirePropertyChanged ( () => VehicleName );
+        }
+      
+
+        public string VehicleName {
+            get {
+				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
+            }
         }
 
-        public void SetChargeTypeId (int? id)
-        {
-            Order.Settings.ChargeTypeId = id;
-            FirePropertyChanged (() => ChargeType);
+        public string ChargeType{
+            get {
+				return RideSettings != null  ? RideSettings.ChargeTypeName : null;
+            }
         }
-
-
-
-        public int? VehicleTypeId {
-            get { return Order.Settings.VehicleTypeId ; }
-            set {  SetVehicleTypeId( value ); }
-        }
-        public int? ChargeTypeId {
-            get { return Order.Settings.ChargeTypeId ; }
-            set {  SetChargeTypeId( value ); }
-        }
-            
-        public ListItem[] Vehicles {
-			get;
-			private set;
-        }
-
-        public ListItem[] Payments {
-			get;
-			private set;
-        }
-		      
-
-		public string VehicleName
-		{
-			get 
-			{
-				if(VehicleTypeId == ListItem.NullId)
-				{
-					return base.Resources.GetString("NoPreference");
-				}
-				return Vehicles == null ? null : Vehicles.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
-		}
-
-		public string ChargeType
-		{
-			get
-			{ 
-				return Payments == null ? null : this.Payments.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
-		}
 
 		public CreateOrder Order { get; private set; }
-		public string AptRingCode {
-			get {
-				return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
-			}
-		}
-		public string BuildingName {
-			get {
-				return FormatBuildingName(Order.PickupAddress.BuildingName);
-			}
-		}
-		public string FormattedPickupDate {
-			get {
-				return FormatDateTime(Order.PickupDate);
-			}
-		}
 
-        public bool IsFutureBooking{
-            get {
-                return Order.PickupDate.HasValue;
+        public string OrderPassengerNumber
+        {
+            get { return Order.Settings.Passengers.ToString(); }
+        }
+
+        public string OrderName
+        {
+            get { return Order.Settings.Name; }
+        }
+
+        public string OrderPhone
+        {
+            get { return Order.Settings.Phone; }
+        }
+        public string OrderApt
+        {
+            get { return !string.IsNullOrEmpty(Order.PickupAddress.Apartment) ? Order.PickupAddress.Apartment : "N/A"; }
+        }
+        public string OrderRingCode
+        {
+            get { return !string.IsNullOrEmpty(Order.PickupAddress.RingCode) ?  Order.PickupAddress.RingCode :  "N/A"; }
+        }
+
+        public bool ShowPassengerName
+        {
+            get
+            {
+                var ret = true;
+                try
+                {
+                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return ret;
+            }
+         }
+
+        public bool ShowPassengerPhone
+        {
+            get
+            {
+                var ret = true;
+                try
+                {
+                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return ret;
             }
         }
-		private string _fareEstimate;
-		public string FareEstimate {
+
+        public bool ShowPassengerNumber
+        {
+            get
+            {
+                var ret = true;
+                try
+                {
+                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                return ret;
+            }
+        }
+
+		private RideSettingsModel _rideSettings;
+		public RideSettingsModel RideSettings {
 			get {
-				return _fareEstimate;
+				return _rideSettings;
 			}
-			set {
-				if(value != _fareEstimate) {
-					_fareEstimate = value;
-					FirePropertyChanged("FareEstimate");
+			private set {
+				if(value != _rideSettings)
+				{
+					_rideSettings = value;
+					FirePropertyChanged("RideSettings");
 				}
 			}
 		}
-
+		
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
@@ -197,6 +233,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				});
 			}
+        }
+        public IMvxCommand NavigateToEditInformations
+        {
+            get
+            {
+                return GetCommand(() => RequestSubNavigate<BookEditInformationViewModel, Order>( 
+                    new {
+                            order = Order.ToJson()
+                        }.ToSimplePropertyDictionary(), result =>
+                                                            {
+                                                                if (result != null)
+                                                                {
+                                                                    Order.PickupAddress.Apartment = result.PickupAddress.Apartment;
+                                                                    Order.PickupAddress.RingCode = result.PickupAddress.RingCode;
+                                                                    Order.PickupAddress.BuildingName = result.PickupAddress.BuildingName;
+                                                                    Order.Settings.Name = result.Settings.Name;
+                                                                    Order.Settings.VehicleTypeId = result.Settings.VehicleTypeId;
+                                                                    Order.Settings.ChargeTypeId = result.Settings.ChargeTypeId;
+                                                                    Order.Settings.Phone = result.Settings.Phone;
+                                                                    Order.Settings.Passengers = result.Settings.Passengers;
+                                                                    InvokeOnMainThread(() =>
+                                                                                           {
+                                                                                               FirePropertyChanged("AptRingCode");
+                                                                                               FirePropertyChanged("BuildingName");
+                                                                                               FirePropertyChanged(() => OrderPassengerNumber);
+                                                                                               FirePropertyChanged(() => OrderPhone);
+                                                                                               FirePropertyChanged(() => OrderName);
+                                                                                               FirePropertyChanged(() => OrderApt);
+                                                                                               FirePropertyChanged(() => OrderRingCode);
+                                                                                               FirePropertyChanged(() => VehicleName);
+                                                                                               FirePropertyChanged(() => ChargeType);
+                                                                                           });
+                                                                }
+                                                            }));
+            }
         }
 
 
@@ -318,52 +389,71 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
-            
-		}
-		
-		
-		private string FormatAptRingCode(string apt, string rCode)
-		{
-			string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
-			result += @" / ";
-			result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
-			return result;
+               else if(Order.Settings.ProviderId == null)
+            {
+                Order.Settings.ProviderId = RideSettings.ProviderId;
+            }
 		}
 
-		private string FormatBuildingName(string buildingName)
-		{
-			if ( buildingName.HasValue() )
-			{
-				return buildingName;
-			}
-			else
-			{
-				return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
-			}
-		}
 
-		private string FormatDateTime(DateTime? pickupDate )
-		{
-            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+        public string AptRingCode
+        {
+            get
+            {
+                return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
+            }
+        }
+        public string BuildingName
+        {
+            get
+            {
+                return FormatBuildingName(Order.PickupAddress.BuildingName);
+            }
+        }
+        private string FormatAptRingCode(string apt, string rCode)
+        {
+            string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            result += @" / ";
+            result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            return result;
+        }
+
+        private string FormatBuildingName(string buildingName)
+        {
+            if (buildingName.HasValue())
+            {
+                return buildingName;
+            }
+            else
+            {
+                return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
+            }
+        }
+
+        private string FormatDateTime(DateTime? pickupDate)
+        {
+            var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
 			string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
-			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
-			return result;
-		}
-
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
+            return result;
+        }
         public string CultureInfoString
         {
-            get{
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
-                if ( culture.IsNullOrEmpty() )
+            get
+            {
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
+                if (culture.IsNullOrEmpty())
                 {
                     return "en-US";
                 }
                 else
                 {
-                    return culture;                
+                    return culture;
                 }
             }
         }
+
+        
 
     }
 }

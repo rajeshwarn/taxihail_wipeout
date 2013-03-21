@@ -10,7 +10,7 @@
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
   <string name="CreateAccountLanguage">Language</string>
   <string name="NbPassenger"> ({0} passenger)</string>
-  <string name="ResetPasswordSucessTitle">Password resetted</string>
+  <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ConfirmNoRingCode">No code</string>
@@ -238,7 +238,7 @@
   <string name="HistoryViewStatusButton">View Status</string>
   <string name="PasswordLabel">Password</string>
   <string name="BuildingName">Building Name / Remark</string>
-  <string name="ResetPasswordSucessMessage">Password was successfully resetted</string>
+  <string name="ResetPasswordSucessMessage">Password was reset successfully</string>
   <string name="View_Book_Menu_UpdateMyProfile">Update My Profile</string>
   <string name="TabBook">Book</string>
   <string name="View_BookSettingMenu">Settings</string>
@@ -389,4 +389,12 @@
   <string name="WarningTitle">Warning</string>
   <string name="DeleteAddressBt">Delete Address</string>
   <string name="View_SearchAddress">Address Search</string>
+  <string name="ContinueButton">Continue</string>
+  <string name="WarningTitle">Warning</string>
+  <string name="View_SearchAddress">Address Search</string>
+  <string name="StreetNumberPlacesBt">Search for places</string>
+  <string name="PassengerNameLabel">Name</string>
+  <string name="PassengerNumberLabel">Passengers</string>
+  <string name="PassengerPhoneLabel">Phone</string>
+  <string name="EditDetails">Edit Details</string>
 </resources>

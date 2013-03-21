@@ -54,8 +54,6 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
-    <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="mscorlib" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
@@ -76,12 +74,11 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Mobile.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Facebook">
       <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Android.GoogleMaps" />
+    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -218,7 +215,9 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
@@ -278,6 +277,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
+    <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
+      <DependentUpon>View_CreditCardsList.axml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -630,6 +632,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_BookEditInformation.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

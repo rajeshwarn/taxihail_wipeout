@@ -80,6 +80,29 @@
 
                 return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
             },
+            
+            ISO8601toJs: function (date) {
+                if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    if (dateParts.length === 3) {
+                        var year = parseInt(dateParts[0], 10),
+                            month = parseInt(dateParts[1], 10) - 1,
+                            day = parseInt(dateParts[2], 10);
+                        var timeParts = parts[1].split(':');
+                        if (timeParts.length === 3) {
+                            var hour = parseInt(timeParts[0], 10),
+                                minute = parseInt(timeParts[1], 10) ,
+                                sec = parseInt(timeParts[2], 10);
+
+                            date = new Date(year, month, day, hour, minute, sec);
+                            return date;
+                        }
+                    }
+                }
+                return '';
+            },
             niceDate: function(date) {
                 if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
                     // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
@@ -99,6 +122,17 @@
                         // Format: Monday, August 17
                         return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day);
                     }
+                }
+                // not needed yet
+                return '';
+            },
+            
+            numericDate: function (date) {
+                if (_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    return  new Handlebars.SafeString(dateParts[0]+'/'+dateParts[1]+'/'+dateParts[2]);
                 }
                 // not needed yet
                 return '';
@@ -165,6 +199,38 @@
         return new Handlebars.SafeString(TaxiHail.localize(resourceName, this.resourceSet));
     });
 
+    Handlebars.registerHelper('localizeBool', function (value, options) {
+        if (value == "true") return options.hash["true"];
+        if (value == "false") return options.hash["false"];
+        return '';
+    });
+    
+    Handlebars.registerHelper('isBool', function (obj,options) {
+        if (obj == "true" || obj == "false") {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+    
+    Handlebars.registerHelper('isNumber', function (n, options) {
+        if (!isNaN(parseFloat(n)) && isFinite(n)) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
+    
+    Handlebars.registerHelper('invertedBool', function (obj) {
+        if (obj == "true") {
+            return "false";
+        } else if(obj=="false") {
+            return "true";
+        } else {
+            return "param is not a bool";
+        }
+    });
+
     Handlebars.registerHelper('ifCond', function (v1, v2, options) {
         if (v1 == v2) {
             return options.fn(this);
@@ -189,6 +255,10 @@
 
     Handlebars.registerHelper('niceTime', function(date) {
         return new Handlebars.SafeString(TaxiHail.date.niceTime(date));
+    });
+    
+    Handlebars.registerHelper('numericDate', function (date) {
+        return new Handlebars.SafeString(TaxiHail.date.numericDate(date));
     });
 
     $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {

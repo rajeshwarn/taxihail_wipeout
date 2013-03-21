@@ -24,6 +24,8 @@ namespace apcurium.MK.Common.Diagnostic
             Trace.WriteLine(message);            
         }
 
+
+
         public void StartStopwatch(string message)
         {
         }
@@ -35,7 +37,26 @@ namespace apcurium.MK.Common.Diagnostic
 
         public void LogStack()
         {
-            
+            StackTrace stackTrace = new StackTrace();           // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+            // write call stack method names
+            foreach (StackFrame stackFrame in stackFrames)
+            {
+                if (stackFrame.GetMethod().Name != "LogStack")
+                {
+                    LogMessage ("Stack : " + stackFrame.GetMethod().Name);   // write method name
+                }
+            }
+
+        }
+
+        public string GetStack(int position)
+        {
+            StackTrace stackTrace = new StackTrace();           // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+            return stackFrames[position].GetMethod().Name;
         }
     }
 }

@@ -22,10 +22,11 @@
             disableRule: 0,
             warningRule: 1            
         }
+
     }
      );
 
-    Rule.prototype.defaults.type = Rule.type.recurring;
+  //  Rule.prototype.defaults.type = Rule.type.recurring;
     Rule.prototype.defaults.category = Rule.category.disableRule;
 
 }());

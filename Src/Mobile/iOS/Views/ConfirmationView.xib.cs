@@ -21,6 +21,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -71,16 +72,62 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtNotes.Ended += HandleTouchDown;
             txtApartment.Ended += HandleTouchDown;
             txtEntryCode.Ended += HandleTouchDown;
+		}
+
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            ViewModel.Load();
+            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            NavigationItem.HidesBackButton = false;
+                        					
+            AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );			
+            AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.GetValue ( "EditDetails" ), AppStyle.ButtonColor.Grey );          
+
+
+
+            lblName.Hidden = !ViewModel.ShowPassengerName;
+            lblNameValue.Hidden = !ViewModel.ShowPassengerName;
+
+            lblPassengers.Hidden = !ViewModel.ShowPassengerNumber;
+            lblPassengersValue.Hidden = !ViewModel.ShowPassengerNumber;
+
+            lblPhone.Hidden = !ViewModel.ShowPassengerPhone;
+            lblPhoneValue.Hidden = !ViewModel.ShowPassengerPhone;
+
+
+            var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
+
+            topStack.Offset = topStack.Offset + countHidden ;
+
+
+
+            lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel + ": "; 
+            lblChargeType.Text = Resources.ChargeTypeLabel + ": ";						
+            lblEntryCode.Text = Resources.GetValue ( "EntryCodeLabel" )+ ": ";
+            lblApartment.Text = Resources.GetValue ( "ApartmentLabel" )+ ": ";
+            lblNoteDriver.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ": ";
+
+            lblName.Text = Resources.GetValue ( "PassengerNameLabel" )+ ": ";
+            lblPassengers.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ": ";
+            lblPhone.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ": ";
+
+            scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
+
+            txtNotes.Ended += HandleTouchDown;
             txtNotes.Started += NoteStartedEdit;
 
-            scrollView.ContentSize = new System.Drawing.SizeF (320, 700);
+            lblNameValue.TextColor = AppStyle.DarkText;
+            lblNameValue.Font = AppStyle.GetBoldFont (lblNameValue.Font.PointSize);
 
+            lblPhoneValue.TextColor = AppStyle.DarkText;
+            lblPhoneValue.Font = AppStyle.GetBoldFont (lblPhoneValue.Font.PointSize);
 
-            ((ModalTextField)pickerVehicleType).Configure (Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId.Value, x => {
-                ViewModel.SetVehicleTypeId (x.Id);});
+            lblPassengersValue.TextColor = AppStyle.DarkText;
+            lblPassengersValue.Font = AppStyle.GetBoldFont (lblPassengersValue.Font.PointSize);
 
-            ((ModalTextField)pickerChargeType).Configure (Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId.Value, x => {
-                ViewModel.SetChargeTypeId (x.Id); });
+            lblApartmentValue.TextColor = AppStyle.DarkText;
+            lblApartmentValue.Font = AppStyle.GetBoldFont (lblApartmentValue.Font.PointSize);
 
             if (!ViewModel.ShowRingCodeField) {
                 txtEntryCode.Hidden = true;
@@ -94,20 +141,27 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             txtPickupDateTime.Font = AppStyle.BoldTextFont;
             txtPickupDateTime.TextColor = AppStyle.DarkText;
-          
-            if (ViewModel.Order.PickupDate.HasValue) {
-                OffsetControls (48, lblApartment, lblEntryCode, txtEntryCode, txtApartment,lblVehiculeType,lblChargeType, pickerChargeType,pickerVehicleType,lblNoteDriver, txtNotes, btnConfirm);
+             
             }
+            lblVehicleTypeValue.TextColor = AppStyle.DarkText;
+            lblVehicleTypeValue.Font = AppStyle.GetBoldFont (lblVehicleTypeValue.Font.PointSize);
+
+            lblChargeTypeValue.TextColor = AppStyle.DarkText;
+            lblChargeTypeValue.Font = AppStyle.GetBoldFont (lblChargeTypeValue.Font.PointSize);
+
 
             this.AddBindings (new Dictionary<object, string> () {
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
-                { txtApartment, "{'Text': {'Path': 'Order.PickupAddress.Apartment'}}" },
-                { txtEntryCode, "{'Text': {'Path': 'Order.PickupAddress.RingCode'}}" },
-                { txtNotes, "{'Text': {'Path': 'Order.Note'}}" },
-                { txtPickupDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
-                { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
-                { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
+                { btnEdit, "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"},
+                { lblNameValue, "{'Text': {'Path': 'OrderName'}}" },
+                { lblPhoneValue, "{'Text': {'Path': 'OrderPhone'}}" },
+                { lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}" },
+
+                { lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}" },
+                { lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}" },
+                { lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}" },
             });
+
 
 
             this.View.ApplyAppFont ();
@@ -128,8 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleTouchDown (object sender, EventArgs e)
         {
-            txtApartment.ResignFirstResponder ();
-            txtEntryCode.ResignFirstResponder ();
+
             txtNotes.ResignFirstResponder ();
         }
 
