@@ -18,3 +18,4 @@ namespace MK.ConfigurationManager.Entities
 
     }
 }
+ 

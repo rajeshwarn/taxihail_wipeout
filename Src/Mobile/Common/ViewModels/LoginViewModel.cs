@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly ITwitterService _twitterService;
         readonly IPushNotificationService _pushService;
 
-        public LoginViewModel(IFacebookService facebookService,ITwitterService twitterService, IAccountService accountService)
+        public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
         {
             _applicationInfoService = applicationInfoService;
 			_accountService = accountService;		

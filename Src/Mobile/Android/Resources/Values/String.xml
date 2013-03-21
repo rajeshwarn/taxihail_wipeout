@@ -387,12 +387,8 @@
   <string name="ContinueButton">Continue</string>
   <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="WarningTitle">Warning</string>
-  <string name="DeleteAddressBt">Delete Address</string>
+  <string name="DeleteAddressBt">Clear Address</string>
   <string name="View_SearchAddress">Address Search</string>
-  <string name="ContinueButton">Continue</string>
-  <string name="WarningTitle">Warning</string>
-  <string name="View_SearchAddress">Address Search</string>
-  <string name="StreetNumberPlacesBt">Search for places</string>
   <string name="PassengerNameLabel">Name</string>
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="PassengerPhoneLabel">Phone</string>
