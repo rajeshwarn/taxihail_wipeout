@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.ConfigTool
             SetterEle(node.NextSibling  as XmlElement);
 
             var w = new NullSubsetXmlTextWriter(destPath, Encoding.UTF8);
+			w.Formatting = Formatting.Indented;
+
             doc.Save( w );
             w.Close();
             w = null;            
