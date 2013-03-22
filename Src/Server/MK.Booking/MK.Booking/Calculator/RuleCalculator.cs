@@ -4,6 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Calculator
 {
@@ -19,7 +20,9 @@ namespace apcurium.MK.Booking.Calculator
 
         public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, string zone)
         {
-            var rules = _ruleDao.GetActiveWarningRule(isFutureBooking, zone).ToArray();
+            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveWarningRule(isFutureBooking, zone).ToArray();
+
+            rules = FilterRulesByZone(rules, zone );
 
             return GetMatching(rules,  pickupDate);
 
@@ -27,38 +30,48 @@ namespace apcurium.MK.Booking.Calculator
 
         public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, string zone)
         {
-            var rules = _ruleDao.GetActiveDisableRule(isFutureBooking, zone).ToArray();
+            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveDisableRule(isFutureBooking, zone).ToArray();
+
+            rules = FilterRulesByZone(rules, zone);
 
             return GetMatching(rules, pickupDate);
 
         }
 
-        private RuleDetail GetMatching(IList<RuleDetail> rulesList, DateTime pickupDate)
+        private IEnumerable<RuleDetail> FilterRulesByZone(IEnumerable<RuleDetail> rules, string zone)
+        {
+            return rules.Where( r=> IsTrimmedNullOrEmpty(r.ZoneList) ||  //Get the rules without zones
+                    ( !IsTrimmedNullOrEmpty( zone ) && r.ZoneList.ToLower().Split( ',' ).Contains( zone.ToLower().Trim() ) ) );         // Zone is set and found in list         
+        }
+        
+        private bool IsTrimmedNullOrEmpty( string value )
+        {
+            return value.ToSafeString().Trim().IsNullOrEmpty();
+        }
+
+        private RuleDetail GetMatching(IEnumerable<RuleDetail> rulesList, DateTime pickupDate)
         {
             // Case 1: A rule exists for the specific date
-            var rule = (from r in rulesList
+            var rulesDate = (from r in rulesList
                         where r.Type == (int)RuleType.Date
                         where IsDayMatch(r, pickupDate)
-                        select r).FirstOrDefault();
+                        select r);
 
-            // Case 2: A rule exists for the day of the week
-            if (rule == null)
-            {
-                rule = (from r in rulesList
+            // Case 2: A rule exists for the day of the week            
+            var rulesRecuring = (from r in rulesList
                         where r.Type == (int)RuleType.Recurring
                         where IsRecurringMatch(r, pickupDate)
-                        select r).FirstOrDefault();
-            }
-
+                        select r);
+            
             // Case 3: return default
-            if (rule == null)
-            {
-                rule = (from r in rulesList
+            
+            var rulesDefault = (from r in rulesList
                         where r.Type == (int) RuleType.Default
-                        select r).FirstOrDefault();
-            }
+                        select r);
 
-            return rule;
+
+            return rulesDate.Concat(rulesRecuring).Concat(rulesDefault).OrderBy(r => r.Priority).FirstOrDefault();
+            
         }
 
 

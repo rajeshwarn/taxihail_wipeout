@@ -108,6 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             };                      
 
             this.AddBindings (new Dictionary<object, string> ()                            {
+
                 { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection'}}"},                
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}}"},       

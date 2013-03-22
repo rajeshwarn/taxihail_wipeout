@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             Trace.WriteLine("Create order request : " + request);
             var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
-          // var rule = _ruleDao.GetActiveDisableRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),zone);
+          
             if (rule!= null)
             {
                 var err = new HttpError(  HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);                
