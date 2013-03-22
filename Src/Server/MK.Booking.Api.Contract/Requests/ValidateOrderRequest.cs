@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [RestService("/account/orders/validate", "POST")]
+    [RestService("/account/orders/validate/{TestZone}", "POST")]
     public class ValidateOrderRequest : BaseDTO
     {
 
@@ -20,6 +21,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             DropOffAddress = new Address();
             Payment = new PaymentSettings();
         }
+
+        //For testing purpose, when the TestZone is set, it will be used instead of calling IBS
+        public string TestZone { get; set; }
 
         public Guid Id { get; set; }
 

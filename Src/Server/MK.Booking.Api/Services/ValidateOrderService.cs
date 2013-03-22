@@ -41,9 +41,13 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(ValidateOrderRequest request)
         {
             Trace.WriteLine("Validating order request : " );
-            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
-            //  var rule = _ruleDao.GetActiveWarningRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
+
+            var zone = request.TestZone;
+            if (!request.TestZone.HasValue())
+            {
+                zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);            
             
             return new OrderValidationResult{ HasWarning = rule != null , Message = rule != null ? rule.Message : null } ;
            

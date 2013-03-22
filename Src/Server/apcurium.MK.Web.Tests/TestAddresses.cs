@@ -21,5 +21,10 @@ namespace apcurium.MK.Web.Tests
             return new Address { Apartment = "204", FullAddress = "5200 De la savane", RingCode = "", Latitude = 45.499242, Longitude = -73.658648 };
         }
 
+
+        internal static Address GetAddress1InZone()
+        {
+            return new Address { Apartment = "204", FullAddress = "11 hines road, Kanata, ON K2K 2X1", RingCode = "", Latitude = 45.4169, Longitude = -75.6951 };
+        }
     }
 }

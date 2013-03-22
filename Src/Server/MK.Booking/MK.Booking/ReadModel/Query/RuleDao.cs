@@ -27,37 +27,32 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<RuleDetail> GetActiveDisableRule(bool isFutureBooking, string zone)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                /*var rule = context.Query<RuleDetail>().Where(r => (r.Category == (int)RuleCategory.DisableRule) &&
-                                                                   ((!isFutureBooking && r.AppliesToCurrentBooking) || (isFutureBooking && r.AppliesToFutureBooking)) &&
-                                                                   r.IsActive && pickupDate > r.ActiveFrom && pickupDate < r.ActiveTo)
-                                    .OrderBy(r => r.Priority).ToList();
-                return (from ruleDetail in rule let zoneList = ruleDetail.ZoneList.Split(',') where zoneList.SingleOrDefault(c => c.Equals(zone)).HasValue() select ruleDetail).FirstOrDefault();*/
-                var rule = context.Query<RuleDetail>().Where(r => (r.Category == (int)RuleCategory.DisableRule) &&
-                                                                   ((!isFutureBooking && r.AppliesToCurrentBooking) || (isFutureBooking && r.AppliesToFutureBooking)) &&
-                                                                   r.IsActive )
-                                    .OrderBy(r => r.Priority).ToList();
-                return (from ruleDetail in rule where !string.IsNullOrEmpty(ruleDetail.ZoneList) let zoneList = ruleDetail.ZoneList.Split(',') where zoneList.SingleOrDefault(c => c.Equals(zone)).HasValue() select ruleDetail).ToList();
-            }
+            return GetActiveRule(isFutureBooking, zone, RuleCategory.DisableRule);
         }
 
 
 
         public IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking, string zone)
         {
+            return GetActiveRule(isFutureBooking, zone, RuleCategory.WarningRule);
+        }
+
+        private IList<RuleDetail> GetActiveRule(bool isFutureBooking, string zone, RuleCategory category)
+        {
             using (var context = _contextFactory.Invoke())
             {
-               var rule = context.Query<RuleDetail>().Where(r => (r.Category == (int) RuleCategory.WarningRule) &&
-                                                       ((!isFutureBooking && r.AppliesToCurrentBooking) ||
-                                                        (isFutureBooking && r.AppliesToFutureBooking)) &&
-                                                       r.IsActive )
-                       .OrderBy(r => r.Priority).ToList();
+                var rules = context.Query<RuleDetail>().Where(r => (r.Category == (int)category) &&
+                                                        ((!isFutureBooking && r.AppliesToCurrentBooking) ||
+                                                         (isFutureBooking && r.AppliesToFutureBooking)) &&
+                                                        r.IsActive)
+                        .OrderBy(r => r.Priority).ToList();
 
-
-                return (from r in rule where !string.IsNullOrEmpty(r.ZoneList) let zoneList = r.ZoneList.Split(',') where zoneList.SingleOrDefault(c=>c.Equals(zone)).HasValue() select r).ToList();
+                return rules;
+                
             }
         }
+        
+
 
     }
 }

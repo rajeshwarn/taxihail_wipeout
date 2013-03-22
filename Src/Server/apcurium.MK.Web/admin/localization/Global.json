@@ -50,11 +50,14 @@
 	"/******* Begin settings Aliases *******/":"",
 
 	"Client.ShowEstimate" : "Show estimate",
-	"Booking.ConfirmationEmail" : "Confirmation Email",
-	"Client.HideCallDispatchButton" : "Hide call dispatch button ?",
-	"Client.HideReportProblem": "Hide report problem button ?",
+	"Booking.ConfirmationEmail" : "Send confirmation email",
+	"Client.HideCallDispatchButton" : "Hide call dispatch button",
+	"Client.HideReportProblem": "Hide report problem button",
 	"Client.NumberOfCharInRefineAddress": "Number of char in refine address",
-	"Client.ShowRingCodeField": "Show ring code field ?",
+	"Client.ShowRingCodeField": "Show ring code field",
+	"Client.ShowPassengerName": "Show passenger name",
+	"Client.ShowPassengerNumber": "Show passenger number",
+	"Client.ShowPassengerPhone": "Show passenger phone",	
 	"DefaultBookingSettings.ChargeTypeId": "Charge type id",
 	"DefaultBookingSettings.NbPassenger": "Passengers number",
 	"DefaultBookingSettings.ProviderId": "Provider Id",
@@ -70,6 +73,7 @@
 	"IBS.ValidateDestinationZone" : "IBS validate destination zone",
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",
+	
 
 	"/******* End settings Aliases *******/": ""
 }

@@ -23,6 +23,10 @@
                 $item.addClass('active').siblings().removeClass('active');
                 TaxiHail.app.navigate(route, { trigger: true });
             }
+            else {
+                $item.addClass('active').siblings().removeClass('active');
+
+            }
         }
     });
 }());
