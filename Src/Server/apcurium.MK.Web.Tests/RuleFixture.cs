@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -96,7 +97,7 @@ namespace apcurium.MK.Web.Tests
 
         private void DeleteAllRules(RulesServiceClient sut)
         {
-            var rules = sut.GetRules().Where(r => r.Type != RuleType.Default);
+            var rules = sut.GetRules();
 
             foreach (var rule in rules)
             {
@@ -224,6 +225,243 @@ namespace apcurium.MK.Web.Tests
 
 
         }
+
+        [Test]
+        public void TestDefaultRule_Warning_NoZone()
+        {
+            var rule = CreateRule(r =>
+                {                    
+                    r.Category = RuleCategory.WarningRule;
+                    r.Type = RuleType.Default;
+                });
+
+
+
+            var validation = ValidateOrder(null);
+            
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule.Message, validation.Message);
+
+            var createResult = CreateOrder(null);
+            Assert.IsNullOrEmpty(createResult);
+        }
+
+        [Test]
+        public void TestDefaultRule_Warning_Current_NoApplied()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.AppliesToCurrentBooking = false;
+
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+            });
+
+
+
+            var validation = ValidateOrder(o=> o.PickupDate = null);
+
+            Assert.IsFalse(validation.HasWarning );
+            
+
+        }
+
+        [Test]
+        public void TestDefaultRule_Warning_Futuret_NoApplied()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.AppliesToCurrentBooking = true;
+                r.AppliesToFutureBooking = false;
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+            });
+
+
+
+            var validation = ValidateOrder(o => o.PickupDate = DateTime.Now);
+
+            Assert.IsFalse(validation.HasWarning);
+
+
+        }
+
+
+        [Test]
+        public void TestDefaultRule_Disable_NoZone()
+        {
+            var rule = CreateRule(r =>
+            {
+                r.Category = RuleCategory.DisableRule;
+                r.Type = RuleType.Default;
+            });
+
+
+
+            var validation = ValidateOrder(null);
+            Assert.IsFalse(validation.HasWarning);
+
+            var createResult = CreateOrder(null);
+            Assert.AreEqual(createResult, rule.Message);
+        }
+
+
+        [Test]
+        public void TestDefaultRule_Priority_NoZone()
+        {
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.Priority = 2;
+            });
+
+            var rule2 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.Priority = 1;
+            });
+
+            var rule3 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.Priority = 6;
+            });
+
+            
+
+            var validation = ValidateOrder(null);
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule2.Message, validation.Message);
+
+        }
+
+        [Test]
+        public void TestDefaultRule_SimpleNoZone_With_Rule_Zone()
+        {
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneList = "100,101,200";
+                r.Priority = 2;
+            });
+
+            var validation = ValidateOrder(null);
+
+            Assert.IsFalse(validation.HasWarning);            
+
+        }
+
+
+        [Test]
+        public void TestDefaultRule_Simple_Zone()
+        {
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.ZoneList = "100,101,200";
+                r.Priority = 2;
+            });
+
+            var validation = ValidateOrder(null, "101");
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule1.Message, validation.Message);
+            
+
+        }
+
+
+        [Test]
+        public void TestRecurrencyRule()
+        {
+
+            var activeFromDateRef = DateTime.Now;
+            var dayOfTheWeek = 1 << (int)activeFromDateRef.DayOfWeek;
+            
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Recurring;
+                r.ZoneList = "100,101,200";
+                r.Priority = 2;
+
+                r.ActiveFrom = activeFromDateRef.AddHours(-1);
+                r.ActiveTo = activeFromDateRef.AddHours(1);
+                r.DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek;
+                r.StartTime = activeFromDateRef.AddHours(-1);
+                r.EndTime = activeFromDateRef.AddHours(1);
+
+            });
+
+            var validation = ValidateOrder(null, "101");
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule1.Message, validation.Message);
+        }
+
+
+        [Test]
+        public void TestAllRulesPriorities()
+        {
+
+            var activeFromDateRef = DateTime.Now;
+            var dayOfTheWeek = 1 << (int)activeFromDateRef.DayOfWeek;
+
+            var rule1 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Recurring;
+                r.ZoneList = "100,101,200";
+                r.Priority = 2;
+
+                r.ActiveFrom = activeFromDateRef.AddHours(-1);
+                r.ActiveTo = activeFromDateRef.AddHours(1);
+                r.DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek;
+                r.StartTime = activeFromDateRef.AddHours(-1);
+                r.EndTime = activeFromDateRef.AddHours(1);
+
+            });
+
+
+            var rule2 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+                r.Priority = 3;
+            });
+
+
+            
+
+            var rule3 = CreateRule(r =>
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Date;
+                r.ZoneList = "100,101,200";
+                r.Priority = 4;
+                r.StartTime = activeFromDateRef.AddHours(-1);
+                r.EndTime = activeFromDateRef.AddHours(1);
+                r.ActiveFrom = activeFromDateRef.AddHours(-1);
+                r.ActiveTo = activeFromDateRef.AddHours(1);
+                r.DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek;
+                r.StartTime = activeFromDateRef.AddHours(-1);
+                r.EndTime = activeFromDateRef.AddHours(1);
+
+            });
+
+
+            var validation = ValidateOrder(null, "101");
+
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(rule1.Message, validation.Message);
+        }
+
+
 
         [Test]
         public void TestRecurrencyRuleIsApplied()
@@ -375,6 +613,95 @@ namespace apcurium.MK.Web.Tests
 
 
         }
+
+
+
+        private OrderValidationResult ValidateOrder(Action<CreateOrder> update, string testZone = null)
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+
+            if (update != null)
+            {
+                update(order);
+            }
+
+            return sut.ValidateOrder(order, testZone);
+        }
+
+        private string CreateOrder(Action<CreateOrder> update)
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+
+            if (update != null)
+            {
+                update(order);
+            }
+
+            try
+            {
+                var r = sut.CreateOrder(order);
+            }
+            catch (WebServiceException wEx)
+            {
+                return wEx.ErrorMessage;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return null;
+        }
+
+        private Common.Entity.Rule CreateRule(Action<Common.Entity.Rule> update)
+        {
+            var ruleId = Guid.NewGuid();
+            var name = "TestRule" + Guid.NewGuid().ToString();
+            var mess = "TestRule Message" + Guid.NewGuid().ToString(); ;
+            var rules = new RulesServiceClient(BaseUrl, SessionId);
+            var newRule = new Common.Entity.Rule
+            {
+                Id = ruleId,
+                Name = name,
+                Type = RuleType.Recurring,
+                Category = RuleCategory.WarningRule,
+                AppliesToCurrentBooking = true,
+                AppliesToFutureBooking = true,
+                Priority = 23,
+                IsActive = true,
+                Message = mess,
+            };
+
+
+            if (update != null)
+            {
+                update(newRule);
+            }
+
+            rules.CreateRule(newRule);
+
+            return newRule;
+        }
+
+
 
     }
 }
