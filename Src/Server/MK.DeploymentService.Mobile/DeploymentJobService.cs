@@ -200,6 +200,14 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.ConfigurationProperties["TaxiHail.ServerCompanyName"]);
+			if (company.MobileConfigurationProperties.ContainsKey ("IsCMT")) 
+			{
+				var isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
+				if(isCMT)
+				{
+					serviceUrl = taxiHailEnv.Url;
+				}
+			}
 
 			if (company.MobileConfigurationProperties.ContainsKey ("ServiceUrl")) 
 			{
