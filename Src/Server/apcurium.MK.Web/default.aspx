@@ -7,6 +7,8 @@
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
     <head>
         <meta charset='utf-8' />
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title><%: ApplicationName %></title>
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
