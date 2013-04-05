@@ -76,7 +76,6 @@ namespace apcurium.CMT.Web.Tests
         {
             var client = new CmtPaymentTokenizeClient();
 
-            //get token
             var token = client.Tokenize(SampleVisa.Number, SampleVisa.ExpirationDate).CardOnFileToken;
 
             var response = client.ForgetTokenizedCard(token);
