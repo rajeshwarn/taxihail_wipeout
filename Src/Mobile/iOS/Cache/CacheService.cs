@@ -40,15 +40,19 @@ namespace apcurium.MK.Booking.Mobile.Client
         #region ICacheService implementation
         public T Get<T>(string key) where T : class
         {
-              
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;         
             var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(CacheKey + key);
            
+            Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
+
+            var result = default( T );
+
             if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
             {
                 var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
-                if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
+                if ((cacheItem != null) && (cacheItem.ExpiresAt > DateTime.Now))
                 {
-                    return cacheItem.Value;
+                    result = cacheItem.Value;
                 }
             }
             else if (serialized.HasValue()) //Support for older cached item
@@ -56,18 +60,18 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var item = JsonSerializer.DeserializeFromString<T>(serialized);
                 if (item != null)
                 {
+                    result = item;
                     Set(key, item);
-                    return item;
                 }
             }
 
-                return default(T);
+            return result;
 
         }
 
         public void Set<T>(string key, T obj) where T : class
         {
-            Set(key, obj, DateTime.MaxValue);
+            Set(key, obj, DateTime.Now.AddYears(5));
         }
 
         public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
@@ -86,17 +90,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void Clear(string key)
         {
+            Console.WriteLine ( "-----------------------------------  Clear :" + CacheKey + key + " : " + this.GetType().ToString() );                        
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, CacheKey + key);               
         }
 
         private void ClearFullKey(string fullKey)
         {
+            Console.WriteLine ( "-----------------------------------  ClearFullKey :" + fullKey + " : " + this.GetType ().ToString() );            
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, fullKey);               
         }
 
         public void ClearAll()
         {
-
+            Console.WriteLine ( "-----------------------------------  ClearAll :" + this.GetType ().ToString ());            
             var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
             keys.Where (k => k.ToString ().StartsWith(CacheKey)).ForEach (k => ClearFullKey( k.ToString() ) );
         }

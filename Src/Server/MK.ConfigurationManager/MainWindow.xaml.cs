@@ -346,8 +346,8 @@ namespace MK.ConfigurationManager
                 else
                 {
                     statusBarTb.Text = "Key store generated on the desktop ... Google Map Key Generate, link in clipboard";
-                    var index = result.IndexOf("(MD5):");
-                    var md5 = result.Substring(index + 6, result.Length - index - 6).Trim();
+                    var index = result.IndexOf("MD5:");
+                    var md5 = result.Substring(index + 6, 47 ).Trim();
                     Console.WriteLine("");
                     Console.WriteLine("You must generate the Google key.  Navigate to this link and copy the result in the appinfo.json file. The link is copied to your clipboard. ");
                     Clipboard.SetText("http://www.google.com/glm/mmap/a/api?fp=" + md5);
