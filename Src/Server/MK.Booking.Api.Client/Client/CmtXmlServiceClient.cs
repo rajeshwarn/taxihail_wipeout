@@ -11,7 +11,7 @@ using System.Xml.Serialization;
 namespace apcurium.MK.Booking.Api.Client.Client
 {
 
-    public class CustomXmlServiceClient : IServiceClient, IServiceClientAsync, IRestClientAsync, IDisposable, IOneWayClient, IReplyClient, IRestClient
+    public class CustomXmlServiceClient : IServiceClient, IRestClient
     {
         public CustomXmlServiceClient(string url)
         {
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Client.Client
         
         public TResponse Post<TResponse>(IReturn<TResponse> request)
         {
-            MemoryStream requestStream = new MemoryStream();
+            var requestStream = new MemoryStream();
 
             GetOrCreate(request.GetType()).Serialize(requestStream, request);
             requestStream.Position = 0;

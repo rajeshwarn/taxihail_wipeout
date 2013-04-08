@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MK.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MK.Common\bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
@@ -85,13 +93,17 @@
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
     <Compile Include="Cmt\CmtLinkServiceClient.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentAuthorizeClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentCaptureClient.cs" />
     <Compile Include="Cmt\Payments\PaymentResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\CmtPaymentTokenizeClient.cs" />
+    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
