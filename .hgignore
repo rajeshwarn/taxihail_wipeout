@@ -98,5 +98,6 @@ Src/Mobile/Infrastructure/Cirrious.MvvmCross/Platform/Json/._MvxGeneralJsonEnumC
 Src/Mobile/Infrastructure/Cirrious.MvvmCross/Touch/Platform/Tasks/._MvxImagePickerTask.cs
 Config/._default device taxihail no 3gs apcurium.txt
 Config/._default device taxihail.txt
+*_log.csv
 syntax: regexp
 Deployment/Database/*

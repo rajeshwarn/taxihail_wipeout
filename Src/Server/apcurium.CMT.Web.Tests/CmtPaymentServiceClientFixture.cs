@@ -12,11 +12,6 @@ namespace apcurium.CMT.Web.Tests
     [TestFixture]
     public class CmtPaymentServiceClientFixture 
     {
-
-        protected const string BaseUrl = "https://payment-api.sandbox.creativemobiletechnologies.com/v2/merchants/:merchantToken/capture";
-
-
-
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
