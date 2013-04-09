@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
+using ServiceStack.Common;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
 
@@ -537,19 +538,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            UseServiceClient<IAccountServiceClient> (client =>
-            {
-                client.RemoveCreditCard (creditCardId);
-            }, ex => {
-                throw ex; });
+            UseServiceClient<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId), ex => { throw ex; });
+
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
         }
 
         public void AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService> ();
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardTokenizationService> ();
 
-            creditCard.Token = creditAuthorizationService.Authorize (creditCard);
+			int responseCode;
+			do{
+
+            	var response = creditAuthorizationService.Tokenize(creditCard.CardNumber,
+                                                               new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1));
+            	creditCard.Token = response.CardOnFileToken;
+				responseCode = response.ResponseCode;
+			}while(responseCode != 1);
 
             var request = new CreditCardRequest
             {

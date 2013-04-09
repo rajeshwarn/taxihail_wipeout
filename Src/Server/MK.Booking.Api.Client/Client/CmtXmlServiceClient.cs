@@ -1,40 +1,59 @@
-﻿using ServiceStack.Service;
+﻿using System.Text;
+using System.Xml;
+using ServiceStack.Service;
 using ServiceStack.ServiceHost;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Xml.Serialization;
 
-namespace apcurium.MK.Booking.Api.Client.Client
+namespace MK.Booking.Api.Client.Android.Client
 {
 
     public class CustomXmlServiceClient : IServiceClient, IRestClient
     {
-        public CustomXmlServiceClient(string url)
+        public CustomXmlServiceClient(string url, bool acceptAnyCert, IWebProxy proxy = null)
         {
             BaseUrl = url;
+            if (acceptAnyCert)
+            {
+                //todo - Bug accept all certificates
+                ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
+            }
+			if(proxy !=null)
+			{
+				Proxy = proxy;
+			}
         }
 
         public string BaseUrl { get; set; }
-        static Dictionary<Type, XmlSerializer> XmlSerializers = new Dictionary<Type, XmlSerializer>();
+		public IWebProxy Proxy { get; set; }
+
+        static readonly Dictionary<Type, XmlSerializer> XmlSerializers = new Dictionary<Type, XmlSerializer>();
         public TimeSpan Timeout;
         public Action<WebRequest> LocalHttpWebRequestFilter;
 
-        private XmlSerializer GetOrCreate(Type t)
+        readonly XmlWriterSettings XmlWriterSettings = new XmlWriterSettings
+        {
+            Encoding = Encoding.ASCII,
+            Indent = true,
+            NewLineOnAttributes = true,
+        };
+
+        private static XmlSerializer GetOrCreate(Type t)
         {
             if (!XmlSerializers.ContainsKey(t))
             {
-                XmlSerializers.Add(t, new XmlSerializer(t));
+                XmlSerializers.Add(t, new XmlSerializer(t,""));
             }
             return XmlSerializers[t];
         }
 
         public string GetEndpoint(object obj)
         {
-            var routeAttribute  = (RouteAttribute)System.Attribute.GetCustomAttributes(obj.GetType()).FirstOrDefault(att=>att is RouteAttribute);
+            var routeAttribute  = (RouteAttribute)Attribute.GetCustomAttributes(obj.GetType()).FirstOrDefault(att=>att is RouteAttribute);
             var path = "";
             if (routeAttribute != null)
             {
@@ -59,51 +78,47 @@ namespace apcurium.MK.Booking.Api.Client.Client
 
             return path;
         }
+
+		private TResponse DoWebRequest<TResponse>(IReturn<TResponse> request, string method="GET")
+		{			
+			var requestStream = new MemoryStream();
+		    var xmlWriter = XmlWriter.Create(requestStream, XmlWriterSettings);
+			var serializer = GetOrCreate(request.GetType());
+
+            serializer.Serialize(xmlWriter, request);
+
+			requestStream.Position = 0;
+			
+			var webRequest = WebRequest.Create(BaseUrl + GetEndpoint(request));
+			webRequest.Method  = method;
+			webRequest.ContentType = "application/xml";
+			webRequest.ContentLength = requestStream.Length;
+			if(Proxy!=null)
+			{
+				webRequest.Proxy=Proxy;
+			}
+
+			webRequest.Proxy = new WebProxy("192.168.12.143",8888);
+
+			LocalHttpWebRequestFilter(webRequest);
+			
+			var os = webRequest.GetRequestStream();
+			requestStream.WriteTo(os);
+			
+			var webResponse = webRequest.GetResponse();
+			var responseObject = (TResponse)GetOrCreate( typeof(TResponse)).Deserialize(webResponse.GetResponseStream());
+			
+			return responseObject;        
+		}
         
         public TResponse Post<TResponse>(IReturn<TResponse> request)
         {
-            var requestStream = new MemoryStream();
-
-            GetOrCreate(request.GetType()).Serialize(requestStream, request);
-            requestStream.Position = 0;
-
-            var webRequest = WebRequest.Create(BaseUrl + GetEndpoint(request));
-            webRequest.Method = "POST";
-            webRequest.ContentType = "application/xml";
-            webRequest.ContentLength = requestStream.Length;
-
-            LocalHttpWebRequestFilter(webRequest);
-
-            Stream os = webRequest.GetRequestStream();
-            requestStream.WriteTo(os);
-
-            var webResponse = webRequest.GetResponse();
-            var responseObject = (TResponse)GetOrCreate( typeof(TResponse)).Deserialize(webResponse.GetResponseStream());
-
-            return responseObject;        
+			return DoWebRequest(request,"POST");
         }
 
         public TResponse Delete<TResponse>(IReturn<TResponse> request)
-        {
-            MemoryStream requestStream = new MemoryStream();
-
-            GetOrCreate(request.GetType()).Serialize(requestStream, request);
-            requestStream.Position = 0;
-
-            var webRequest = WebRequest.Create(BaseUrl + GetEndpoint(request));
-            webRequest.Method = "DELETE";
-            webRequest.ContentType = "application/xml";
-            webRequest.ContentLength = requestStream.Length;
-
-            LocalHttpWebRequestFilter(webRequest);
-
-            Stream os = webRequest.GetRequestStream();
-            requestStream.WriteTo(os);
-
-            var webResponse = webRequest.GetResponse();
-            var responseObject = (TResponse)GetOrCreate(typeof(TResponse)).Deserialize(webResponse.GetResponseStream());
-
-            return responseObject;
+		{
+			return DoWebRequest(request,"DELETE");
         }
 
 

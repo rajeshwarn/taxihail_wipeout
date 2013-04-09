@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Client;
@@ -83,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
-            TinyIoCContainer.Current.Register<ICreditCardAuthorizationService, CreditCardAuthorizationService>();
+			TinyIoCContainer.Current.Register<ICreditCardTokenizationService>((c, p) => new CmtPaymentClient(c.Resolve<IConfigurationManager>(), true));
 
 
             TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;

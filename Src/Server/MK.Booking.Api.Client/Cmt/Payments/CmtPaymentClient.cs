@@ -1,10 +1,9 @@
-﻿using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
+﻿using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration;
-using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
@@ -15,11 +14,12 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// cardholder data to create the token so there is no way to get the cardholder information 
     /// with just the token alone
     /// </summary>
-    public class CmtPaymentClient : CmtPaymentServiceClient
+    public class CmtPaymentClient : CmtPaymentServiceClient, ICreditCardTokenizationService
     {
         private readonly IConfigurationManager _appSettings;
 
-        public CmtPaymentClient(IConfigurationManager appSettings)
+        public CmtPaymentClient(IConfigurationManager appSettings, bool acceptAllHttps=false)
+            : base(acceptAllHttps)
         {
             _appSettings = appSettings;
         }
@@ -55,10 +55,12 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public CaptureResponse CapturePreAuthorized(long transactionId)
         {
-            return Client.Post(new CaptureRequest()
-            {
+            return Client.Post(new CaptureRequest
+                {
                 TransactionId = transactionId
             });
         }
+
+
     }
 }

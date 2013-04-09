@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using MK.Booking.Api.Client.Android.Client;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.Client;
@@ -26,28 +26,16 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         public static string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production
 #endif
 
-        private CustomXmlServiceClient _client;
-        protected CustomXmlServiceClient Client
+        public CmtPaymentServiceClient(bool acceptAllHttps)
         {
-            get
-            {
-                if (_client == null)
-                {
-                    _client = CreateClient();
-                }
-                return _client;
-            }
-        }
-
-        private CustomXmlServiceClient CreateClient()
-        {
-            var client = new CustomXmlServiceClient(BASE_URL)
+            Client = new CustomXmlServiceClient(BASE_URL, acceptAllHttps)
             {
                 Timeout = new TimeSpan(0, 0, 0, 20, 0),
                 LocalHttpWebRequestFilter = r=>SignRequest(r)
-            };
-            return client;
+            };        
         }
+
+        protected CustomXmlServiceClient Client { get; set; }
 
         private void SignRequest(WebRequest request)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Java.Lang;
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -19,6 +20,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         IAccountService _accountService;
 
+        public class DummyVisa
+        {
+            public static string Number = "4012 0000 3333 0026".Replace(" ", "");
+            public static string ZipCode = "00000";
+            public static int AvcCvvCvv2 = 135;
+            public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
+        }
+
+
 		public CreditCardAddViewModel (string messageId) : base(messageId)
         {
             Data = new CreditCardInfos();
@@ -35,7 +45,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
             CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardType = 0;
-		}
+
+		    
+#if RELEASE
+            DONT BUILD
+#endif
+            Data.CCV = DummyVisa.AvcCvvCvv2+"";
+		    Data.CardNumber = DummyVisa.Number;
+		    Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
+		    Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
+		    Data.ZipCode = DummyVisa.ZipCode;
+		    Data.NameOnCard = "Chris";
+        }
 
         public CreditCardInfos Data { get; set; }
 
@@ -75,16 +96,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string CreditCardTypeName { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                if(type == null) return null;
-                return type.Display; 
+                return type == null ? null : type.Display;
             }
         }
 
         public string CreditCardImagePath { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                if(type == null) return null;
-                return type.Image; 
+                return type == null ? null : type.Image;
             }
         }
 
@@ -102,12 +121,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			Data.FriendlyName = CreditCardCategoryName;
             Data.CreditCardCompany = CreditCardTypeName;
-            if (Params.Get<string> (Data.NameOnCard, Data.CardNumber, 
+            if (Params.Get (Data.NameOnCard, Data.CardNumber, 
                                    Data.CreditCardCompany, Data.FriendlyName, 
                                    Data.ExpirationMonth, 
                                    Data.ExpirationYear, 
                                    Data.CCV, 
-                                   Data.ZipCode).Any (x => x.IsNullOrEmpty ())) {
+                                   Data.ZipCode).Any (x => x.IsNullOrEmpty ())) 
+            {
 				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardRequiredFields"));
 				return;
             }
@@ -117,17 +137,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return;
             }
 
-            try {
+            try
+            {
                 MessageService.ShowProgress(true);
-                Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).Reverse().ToArray());
+                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
                 Data.CreditCardId = Guid.NewGuid();
-                _accountService.AddCreditCard (Data);
+                _accountService.AddCreditCard(Data);
 
-				Data.CardNumber = null;
-				Data.CCV = null;
+                Data.CardNumber = null;
+                Data.CCV = null;
 
-				ReturnResult(Data);
-            } finally {
+                ReturnResult(Data);
+            }
+            finally {
                 TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.CreditCards");
                 MessageService.ShowProgress(false);
             }

@@ -225,8 +225,6 @@
     <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
-    <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
-    <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />

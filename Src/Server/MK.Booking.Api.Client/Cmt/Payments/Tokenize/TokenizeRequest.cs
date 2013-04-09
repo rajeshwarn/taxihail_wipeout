@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
 {
     [Route("tokenize")]
-    [XmlRoot]
+    [XmlRoot(Namespace = "")]
     public class TokenizeRequest : IReturn<TokenizeResponse>
     {
         [XmlElement("accountNumber")]
