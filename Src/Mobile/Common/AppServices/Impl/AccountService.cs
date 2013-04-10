@@ -535,7 +535,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return result;
             }
         }
-
         public void RemoveCreditCard (Guid creditCardId)
         {
             UseServiceClient<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId), ex => { throw ex; });
