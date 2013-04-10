@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: Android.Runtime.ResourceDesignerAttribute("apcurium.MK.Booking.Mobile.Client.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("apcurium.MK.Booking.Mobile.Client.Resource", IsApplication=true)]
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public partial class Resource
 	{
 		
-		Resource()
+		static Resource()
 		{
-			global::Android.Runtime.ResourceIdManager.UpdateIdValues ();
+			global::Android.Runtime.ResourceIdManager.UpdateIdValues();
 		}
 		
 		public static void UpdateIdValues()
@@ -54,6 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f010001
 			public const int RightButtonSource = 2130771969;
+			
+			static Attribute()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
 			
 			private Attribute()
 			{
@@ -105,6 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f040001
 			public const int white = 2130968577;
 			
+			static Color()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
 			private Color()
 			{
 			}
@@ -118,6 +128,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050001
 			public const int ButtonSecondLine = 2131034113;
+			
+			static Dimension()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
 			
 			private Dimension()
 			{
@@ -543,6 +558,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f02008a
 			public const int WindowDisplay = 2130837642;
+			
+			static Drawable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
 			
 			private Drawable()
 			{
@@ -1104,6 +1124,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06001f
 			public const int value = 2131099679;
 			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
 			private Id()
 			{
 			}
@@ -1246,6 +1271,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f03002c
 			public const int View_UpdatePassword = 2130903084;
+			
+			static Layout()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
 			
 			private Layout()
 			{
@@ -2404,6 +2434,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07012f
 			public const int searchHint = 2131165487;
 			
+			static String()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
 			private String()
 			{
 			}
@@ -2493,6 +2528,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08000c
 			public const int ViewTitleStyle = 2131230732;
 			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
 			private Style()
 			{
 			}
@@ -2542,6 +2582,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0
 			public const int apcurium_mk_booking_mobile_client_controls_StyledButton_ButtonStyle = 0;
+			
+			static Styleable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
 			
 			private Styleable()
 			{
