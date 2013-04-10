@@ -64,6 +64,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IEnumerable<Order> GetHistoryOrders();
         
         Order GetHistoryOrder(Guid id);
+
+	    OrderStatusDetail[] GetActiveOrdersStatus();
         #endregion
 
         #region Payment

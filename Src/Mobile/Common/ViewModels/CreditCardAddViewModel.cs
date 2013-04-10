@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0 });
             CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
             CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
+            CreditCardCompanies.Add ( new ListItem { Display = "Visa Electron", Id = 3 });
             CreditCardType = 0;
 
 		    

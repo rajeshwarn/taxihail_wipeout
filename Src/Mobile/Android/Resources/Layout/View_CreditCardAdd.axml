@@ -21,6 +21,15 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/CreditCardCategory"
+                style="@style/FormLabelText" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;CreditCardCategoryName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;CardCategories&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;CreditCardCategory&apos;}}" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/CreditCardName"
                 style="@style/FormLabelText" />
             <EditText
@@ -39,15 +48,6 @@
                 android:singleLine="true"
                 android:inputType="number"
                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.CardNumber&apos;}}" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/CreditCardCategory"
-                style="@style/FormLabelText" />
-            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;CreditCardCategoryName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;CardCategories&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;CreditCardCategory&apos;}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

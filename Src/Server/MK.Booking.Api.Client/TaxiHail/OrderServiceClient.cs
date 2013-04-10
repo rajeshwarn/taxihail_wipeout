@@ -61,6 +61,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
+        public OrderStatusDetail[] GetActiveOrdersStatus()
+        {
+            var req = string.Format("/account/orders/status/active");
+            var result = Client.Get<OrderStatusDetail[]>(req);
+            return result;
+        }
+
         public List<RatingType> GetRatingTypes()
         {
             return Client.Get<List<RatingType>>("/ratingtypes");

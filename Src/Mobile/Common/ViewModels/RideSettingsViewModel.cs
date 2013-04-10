@@ -66,11 +66,12 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? VehicleTypeId {
 			get {
-				return _bookingSettings.VehicleTypeId;
+				return _bookingSettings.VehicleTypeId ?? ListItem.NullId;
 			}
 			set {
-				if(value != _bookingSettings.VehicleTypeId){
-					_bookingSettings.VehicleTypeId = value;
+				var id = value == ListItem.NullId ? default(int?) : value;
+				if(id != _bookingSettings.VehicleTypeId){
+					_bookingSettings.VehicleTypeId = id;
                     FirePropertyChanged("VehicleTypeId");
                     FirePropertyChanged("VehicleTypeName");
 				}
@@ -79,6 +80,12 @@ namespace apcurium.MK.Booking.Mobile
 
         public string VehicleTypeName {
             get {
+
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
+
                 var vehicle = this.Vehicles.FirstOrDefault(x=>x.Id == VehicleTypeId);
                 if(vehicle == null) return null;
                 return vehicle.Display;

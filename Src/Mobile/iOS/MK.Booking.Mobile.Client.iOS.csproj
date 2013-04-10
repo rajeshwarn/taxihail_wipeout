@@ -23,6 +23,7 @@
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>6.0</MtouchSdkVersion>
+    <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
@@ -44,6 +45,11 @@
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchArch>ARMv7</MtouchArch>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>True</DebugSymbols>
@@ -54,7 +60,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -64,6 +70,7 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
+    <CodesignProvision>8062329E-30CA-4B23-93B4-6800BDD1DCD1</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -84,6 +91,11 @@
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -361,6 +373,8 @@
     <Compile Include="Controls\TipButtons.cs" />
     <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
@@ -595,6 +609,12 @@
     <Content Include="Assets\CreditCard\delete_card_btn%402x.png" />
     <Content Include="Assets\Cells\add_btn.png" />
     <Content Include="Assets\Cells\add_btn%402x.png" />
+    <Content Include="Assets\driverInfosBackGrey.png" />
+    <Content Include="Assets\driverInfosBackLightGrey.png" />
+    <Content Include="Assets\grip%402x.png" />
+    <Content Include="Assets\grip.png" />
+    <Content Include="Assets\phone.png" />
+    <Content Include="Assets\phone%402x.png" />
     <Content Include="Assets\favorites.png" />
     <Content Include="Assets\favorites%402x.png" />
     <Content Include="Assets\history.png" />
@@ -603,6 +623,10 @@
     <Content Include="Assets\address%402x.png" />
     <Content Include="Assets\Search\SearchPlace.png" />
     <Content Include="Assets\Search\SearchPlace%402x.png" />
+    <Content Include="Assets\Search\cancel.png" />
+    <Content Include="Assets\Search\cancel%402x.png" />
+    <Content Include="Assets\CreditCard\visa_electron.png" />
+    <Content Include="Assets\CreditCard\visa_electron%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

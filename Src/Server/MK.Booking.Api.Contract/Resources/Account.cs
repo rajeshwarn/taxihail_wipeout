@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {

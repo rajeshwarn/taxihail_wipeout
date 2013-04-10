@@ -76,6 +76,11 @@
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
+    <Compile Include="Entity\DriverInfos.cs" />
+    <Compile Include="Entity\OrderStatus.cs" />
+    <Compile Include="Entity\OrderStatusDetail.cs" />
+    <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
+    <Compile Include="Entity\BookingSettings.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

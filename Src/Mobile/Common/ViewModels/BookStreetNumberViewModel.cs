@@ -116,6 +116,19 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+        public IMvxCommand DeleteAddressCommand {
+            get {
+                return GetCommand(() =>
+                                  {
+
+                    MessengerHub.Publish(new AddressSelected(this, null,_ownerId));                                                        
+                    RequestClose( this );
+                });
+            }
+        }
+
+
+
         void OnAddressSelected (AddressSelected obj)
         {
             RequestClose(this);

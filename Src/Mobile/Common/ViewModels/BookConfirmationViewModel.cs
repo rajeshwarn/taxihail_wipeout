@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             RequestNavigate<BookPaymentSettingsViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
 
                         }else{
-            					Order.Id = Guid.NewGuid ();
+                        Order.Id = Guid.NewGuid ();
             					try {
             					MessageService.ShowProgress (true);
             					var orderInfo = _bookingService.CreateOrder (Order);
@@ -383,14 +383,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
 					if(result != null) {
 						Order.Settings.ProviderId =  result.Id;
-                        RideSettings.Data = Order.Settings;
                         FirePropertyChanged("RideSettings");
 					}
 
                     this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
-            else if(Order.Settings.ProviderId == null)
+               else if(Order.Settings.ProviderId == null)
             {
                 Order.Settings.ProviderId = RideSettings.ProviderId;
             }
@@ -434,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private string FormatDateTime(DateTime? pickupDate)
         {
             var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
-            string format = "{0:ddd, MMM d}, {0:" + formatTime + "}";
+			string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
             string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
             return result;
         }

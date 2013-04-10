@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
+
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -11,7 +14,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCompleted>,
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
-        IEventHandler<PaymentInformationSet>
+        IEventHandler<PaymentInformationSet>,
+        IEventHandler<OrderStatusChanged>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -34,10 +38,24 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupDate = @event.PickupDate,
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
+                    Settings = @event.Settings,
                     Status = (int)OrderStatus.Created,
                     IsRated = false
                 });
+
+                // Create an empty OrderStatusDetail row
+                context.Save(new OrderStatusDetail
+                {
+                     OrderId = @event.SourceId,
+                     AccountId = @event.AccountId,
+                     IBSOrderId = @event.IBSOrderId,
+                     Status = OrderStatus.Created,
+                     IBSStatusDescription = "Processing your order",
+                     PickupDate = @event.PickupDate,
+                     Name = @event.Settings != null ? @event.Settings.Name : null
+                });
             }
+
         }
 
         public void Handle(OrderCancelled @event)
@@ -45,8 +63,15 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int)OrderStatus.Cancelled;
+                order.Status = (int)OrderStatus.Canceled;
                 context.Save(order);
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Canceled;
+                    context.Save(details);
+                }
             }
         }
 
@@ -69,6 +94,14 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Removed;
+                    context.Save(details);
+                }
+
                 context.SaveChanges();
             }
         }
@@ -116,5 +149,32 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(order);
             }
         }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
+                                               ? (DateTime) SqlDateTime.MinValue
+                                               : @event.Status.PickupDate;
+                var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
+                if (details == null)
+                {
+                    context.Set<OrderStatusDetail>().Add(@event.Status);
+                }
+                else
+                {
+                    AutoMapper.Mapper.Map(@event.Status, details);
+                    context.Save(details);
+                }
+
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int)@event.Status.Status;
+                context.Save(order);
+
+                context.SaveChanges();
+            }
+        }
+       
     }
 }
