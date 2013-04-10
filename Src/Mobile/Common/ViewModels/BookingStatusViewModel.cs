@@ -144,32 +144,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set{}
         }
 
-        public bool IsCallTaxiVisible
-        {
-            get { return IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
-        }
-
-
-        public IMvxCommand CallTaxi
-        {
-            get { return GetCommand(() =>
-                                        {
-                                            if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
-                                            {
-                                                PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
-                                            }
-                                            else
-                                            {
-                                                MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
-                                            }
-                                        }); }
-        }
-
-        public bool IsDriverInfoAvailable
-        {
-            get { return ( (OrderStatusDetail.IBSStatusId == "wosASSIGNED" ) || (OrderStatusDetail.IBSStatusId == "wosARRIVED") ) && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
-        }
-
         private string _statusInfoText { get; set; }
 
         public string StatusInfoText {
@@ -204,9 +178,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 _orderStatusDetail = value;
                 FirePropertyChanged (() => OrderStatusDetail);
-                FirePropertyChanged (() => IsDriverInfoAvailable);
-                FirePropertyChanged (() => IsCallTaxiVisible);
-
             }
         }
 
@@ -256,10 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder (OrderStatusDetail status)
         {
-
-            if ( ( status != null )
-                && ( status.IBSStatusId != null )
-                && status.IBSStatusId.Equals("wosSCHED") 
+            if (status.IBSStatusId.Equals("wosSCHED") 
 			    && !_hasSeenReminder
 				&& this.PhoneService.CanUseCalendarAPI())
             {
@@ -273,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                         string.Format(Resources.GetString("ReminderDetails"),Order.PickupAddress.FullAddress, FormatTime (Order.PickupDate),FormatDate(Order.PickupDate)), 
                                                                         Order.PickupAddress.FullAddress, 
                                                                         Order.PickupDate, 
-                                                                        Order.PickupDate.AddMinutes(-15));
+                                                                        Order.PickupDate.AddHours(-2));
                     }, Resources.GetString("NoButton"), () => 
                     {
                     });
@@ -324,7 +292,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;
 
-
                     CenterMap (true);
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
                         ConfirmationNoTxt = string.Format (Resources.GetString ("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
@@ -369,6 +336,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 this.Close ();
             },
+                Resources.GetString ("HistoryDetailSendReceiptButton"), () =>
+            {
+                if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
+                    TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
+                }
+            },
                 stringNeutral, actionNeutral
             );
         }
@@ -390,6 +363,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
+                    MessengerHub.Subscribe<OrderRated> (HideRatingButton);
                     RequestNavigate<BookRatingViewModel> (new { orderId = Order.Id.ToString (), canRate = true.ToString (CultureInfo.InvariantCulture), isFromStatus = true.ToString (CultureInfo.InvariantCulture) });
                 });
             }
@@ -433,7 +407,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 MessengerHub.Publish (new OrderCanceled (this, Order, null));
-                                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("LastOrderId");
                                 RequestNavigate<BookViewModel> (clearTop: true);
                             } 
                             else 

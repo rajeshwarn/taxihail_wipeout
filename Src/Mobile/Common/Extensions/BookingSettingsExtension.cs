@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {

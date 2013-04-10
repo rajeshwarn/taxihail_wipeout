@@ -15,6 +15,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Common.Web;
+using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
+using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 using System.Net;
 
 
@@ -118,13 +120,16 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? CreateIBSOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
         {
-            // Provider is optional
-            // But if a provider is specified, it must match with one of the ReferenceData values
-            if (request.Settings.ProviderId.HasValue &&
-                referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+
+            if (!request.Settings.ProviderId.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_NoProvider.ToString());
+            }
+            else if (referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
+            
 
 
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);

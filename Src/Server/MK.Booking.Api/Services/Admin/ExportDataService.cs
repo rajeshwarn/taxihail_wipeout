@@ -6,7 +6,6 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Services.Admin
 {

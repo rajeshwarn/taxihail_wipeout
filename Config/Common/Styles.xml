@@ -9,7 +9,7 @@
   <style name="LinkText" parent="@android:style/TextAppearance.Small">
     <item name="android:textColor">#003399</item>
   </style>
-   <style name="FormLabelText">
+  <style name="FormLabelText">
     <item name="android:textSize">18dip</item>
     <item name="android:textStyle">bold</item>
     <item name="android:lines">1</item>
@@ -20,18 +20,8 @@
     <item name="android:shadowDx">0</item>
     <item name="android:shadowDy">1</item>
     <item name="android:shadowRadius">1</item>
-    <item name="android:paddingTop">3dp</item>>
-    <item name="android:paddingBottom">3dp</item>>
-  </style>
-  <style name="DataLabelText">
-    <item name="android:textSize">18dip</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:lines">1</item>
-    <item name="android:singleLine">true</item>
-    <item name="android:ellipsize">end</item>
-    <item name="android:textColor">#808080</item>    
-    <item name="android:paddingTop">0dp</item>>
-    <item name="android:paddingBottom">3dp</item>>
+    <item name="android:paddingTop">5dp</item>>
+    <item name="android:paddingBottom">5dp</item>>
   </style>
 
    <style name="FormLabelDataText">
@@ -141,11 +131,7 @@
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">#ffffff</item>
   </style>
-    <style name="BigTextBlack">
-         <item name="android:textSize">16dp</item>
-         <item name="android:textColor">@color/black</item>
-     
-  </style>
+  
   <style name="BigTitleText">
     <item name="android:textSize">14dp</item>
     <item name="android:textStyle">bold</item>

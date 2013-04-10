@@ -6,6 +6,7 @@ using log4net;
 using MK.ConfigurationManager.Entities;
 using System.IO;
 using System.Diagnostics;
+using apcurium.MK.Booking.ConfigTool;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
@@ -62,21 +63,15 @@ namespace MK.DeploymentService.Mobile
 						if (Directory.Exists (releaseAndroidDir))
 							Directory.Delete (releaseAndroidDir, true);
 
-						var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
-						if (Directory.Exists (releaseCallboxAndroidDir))
-							Directory.Delete (releaseCallboxAndroidDir, true);
-
 						FetchSource (job, sourceDirectory, company);
 
 						Customize (sourceDirectory, company, taxiHailEnv);
 
 						Build (job, sourceDirectory, company);
 
-						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir, releaseCallboxAndroidDir);
+						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir);
 
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
-
-						logger.Debug("Deployment finished without error");
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
@@ -92,7 +87,7 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
+		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath)
 		{
 			if (job.Android) {
                 logger.DebugFormat("Copy Apk");
@@ -106,20 +101,6 @@ namespace MK.DeploymentService.Mobile
 			    }else
 				{
 				    throw new Exception("Can't find th APK file in the release dir");
-				}
-
-				try{
-					apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-					if(apkFile != null)
-					{
-						var fileInfo = new FileInfo(apkFile); 
-						var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
-						if(File.Exists(targetDir)) File.Delete(targetDir);
-						File.Copy(apkFile, targetDir);
-					}
-				}catch
-				{
-					logger.Debug("Warning Can't find the Callbox APK file in the release dir");
 				}
                 
 			}
@@ -137,6 +118,8 @@ namespace MK.DeploymentService.Mobile
 				}
 			}
 		}
+
+
 
 		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
 		{
@@ -200,14 +183,6 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.ConfigurationProperties["TaxiHail.ServerCompanyName"]);
-			if (company.MobileConfigurationProperties.ContainsKey ("IsCMT")) 
-			{
-				var isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
-				if(isCMT)
-				{
-					serviceUrl = taxiHailEnv.Url;
-				}
-			}
 
 			if (company.MobileConfigurationProperties.ContainsKey ("ServiceUrl")) 
 			{
@@ -222,60 +197,20 @@ namespace MK.DeploymentService.Mobile
 			jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
 			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
 
-			logger.DebugFormat ("Build Config Tool Customization");
+			logger.DebugFormat ("Run Customization");
 
-			var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/ConfigTool.iOS.sln\"",
-			                              "apcurium.MK.Booking.ConfigTool",
-			                              "Debug|x86",
-			                              Path.Combine (sourceDirectory,"Src","ConfigTool"));
-			
-			BuildProject(buildArgs);
-
-			logger.DebugFormat ("Run Config Tool Customization");
-
-			var configToolRun = new ProcessStartInfo
-			{
-				FileName = "mono",
-				UseShellExecute = false,
-				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"),
-				Arguments = string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name)
-			};
-			
-			using (var exeProcess = Process.Start(configToolRun))
-			{
-				exeProcess.WaitForExit();
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during customization");
-				}
-			}
-
+			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);
+			var sourceFolder = Path.Combine (sourceDirectory, "Src");
+			var commonConfigFolder = Path.Combine (sourceDirectory, "Config", "Common");
+			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder, commonConfigFolder);
+			appConfigTool.Apply ();
 			logger.DebugFormat ("Customization Finished");
-
-			logger.DebugFormat ("Run Localization tool for Android");
-
-			var localizationToolRun = new ProcessStartInfo
-			{
-				FileName = "mono",
-				UseShellExecute = false,
-				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "LocalizationTool"),
-				Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
-			};
-			
-			using (var exeProcess = Process.Start(localizationToolRun))
-			{
-				exeProcess.WaitForExit();
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during localization tool");
-				}
-			}
-
-			logger.DebugFormat ("Run Localization tool for Android Finished");
 		}
 
 		private void Build (DeploymentJob job, string sourceDirectory, Company company)
-		{			
+		{
+
+			
 			//Build
 			logger.DebugFormat ("Launch Customization");
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
@@ -328,20 +263,6 @@ namespace MK.DeploymentService.Mobile
 				                              configAndroid,
 				                              sourceMobileFolder);
 				BuildProject(buildClient);
-
-				//CallBox
-				if(Directory.Exists(Path.Combine(sourceMobileFolder, "MK.Callbox.Mobile.Client.Android")))
-				{
-					buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                            "MK.Callbox.Mobile.Client.Android",
-					                            configAndroid,
-					                            sourceMobileFolder);
-					BuildProject(buildClient);
-
-				}else{
-					logger.Debug("Warning no CallBox project found");
-				}
-
 				
 				logger.Debug("Build Android done");
 			}
@@ -349,10 +270,9 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			logger.Debug("Build Project : " + buildArgs);
 			var buildiOSproject = new ProcessStartInfo
 			{
-				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
+				FileName = "/Applications/MonoDevelop.app/Contents/MacOS/mdtool",
 				UseShellExecute = false,
 				Arguments = buildArgs
 			};

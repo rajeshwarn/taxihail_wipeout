@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(new RemoveAddressFromHistory() { AddressId = request.AddressId, AccountId = account.Id});
 
-            return new HttpResult(HttpStatusCode.OK);
+            return HttpStatusCode.Accepted;
         }
     }
 }

@@ -25,14 +25,7 @@ namespace apcurium.MK.Booking.Database
 
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.ComplexType<Address>(); //doing here because address is shared among several projects, layers
-            modelBuilder.ComplexType<DriverInfos>(); // same for drivers infos
-            modelBuilder.ComplexType<BookingSettings>();
-            modelBuilder.Entity<OrderStatusDetail>()
-                .HasKey(x => x.OrderId)
-                .ToTable("OrderStatusDetail",SchemaName);
-
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
-            modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
             modelBuilder.Entity<AddressDetails>().ToTable("AddressDetails", SchemaName);
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail", SchemaName);
             modelBuilder.Entity<TariffDetail>().ToTable("TariffDetail", SchemaName);
@@ -59,7 +52,7 @@ namespace apcurium.MK.Booking.Database
         {
             var entry = this.Entry(entity);
 
-            if (entry.State == System.Data.Entity.EntityState.Detached)
+            if (entry.State == System.Data.EntityState.Detached)
                 this.Set<T>().Add(entity);
 
             this.SaveChanges();

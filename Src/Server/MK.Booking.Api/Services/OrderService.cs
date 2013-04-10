@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(new RemoveOrderFromHistory() { OrderId = request.OrderId });
 
-            return new HttpResult(HttpStatusCode.OK);
+            return HttpStatusCode.Accepted;
         }
     }
 }

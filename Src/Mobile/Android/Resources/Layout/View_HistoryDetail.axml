@@ -177,6 +177,16 @@
                 android:paddingLeft="20dip"
                 android:paddingRight="20dip">
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Green"
+                    android:id="@+id/RebookTripBtn"
+                    android:background="@drawable/green_button"
+                    style="@style/ButtonText"
+                    android:text="@string/HistoryDetailRebookButton"
+                    android:layout_height="40dip"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RebookOrder&apos;}}" />
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Grey"
                     android:id="@+id/StatusBtn"
                     style="@style/ButtonText"

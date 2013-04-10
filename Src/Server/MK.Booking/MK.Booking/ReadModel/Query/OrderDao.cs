@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -59,37 +58,5 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
             return list;
         }
-
-        public IList<OrderStatusDetail> GetOrdersInProgress()
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
-                                     select order).ToList();
-                return currentOrders;
-            }
-        }
-
-        public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where order.AccountId == accountId
-                                     where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
-                                     select order).ToList();
-                return currentOrders;
-            }
-        }
-
-        public OrderStatusDetail FindOrderStatusById(Guid orderId)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                return context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == orderId);
-            }
-        }
-
     }
 }

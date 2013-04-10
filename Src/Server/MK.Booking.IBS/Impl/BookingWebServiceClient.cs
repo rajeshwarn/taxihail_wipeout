@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -70,49 +69,12 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         
-   public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
-        {
-            var result = new List<IBSOrderInformation>();
-            UseService(service =>
-                {
-                    var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
-                    foreach (var orderInfoFromIBS in status)
-                    {
-                        Logger.LogMessage("Status from IBS");
-                        Logger.LogMessage(orderInfoFromIBS.Dump());
-                        var statusInfos = new IBSOrderInformation();
-                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
-                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
-                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? null : orderInfoFromIBS.VehicleNumber.Trim(); ;
-                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
-                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
-                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
-                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
-                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
-                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
-                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
-                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
-                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
-                        statusInfos.Fare = orderInfoFromIBS.Fare;
-                        statusInfos.Tip = orderInfoFromIBS.Tips;
-                        statusInfos.Toll = orderInfoFromIBS.Tolls;
-                        statusInfos.Eta = orderInfoFromIBS.ETATime == null || orderInfoFromIBS.ETATime.Year < DateTime.Now.Year ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
-                                                                                                            orderInfoFromIBS.ETATime.Month, orderInfoFromIBS.ETATime.Day,
-                                                                                                            orderInfoFromIBS.ETATime.Hour, orderInfoFromIBS.ETATime.Minute,
-                                                                                                            orderInfoFromIBS.ETATime.Second);
-                        result.Add(statusInfos);
-                    }
-                });
-
-            return result;
-        }
-		
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
 
-            order.ServiceProviderID = providerId ?? 0;
+            order.ServiceProviderID = providerId;
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
@@ -179,13 +141,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
             if (isValidationEnabled)
             {
-
-                Logger.LogMessage("Validating Zone " + JsonSerializer.SerializeToString(tWEBAddress, typeof(TWEBAddress)));
-                
                 var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
-
-                Logger.LogMessage("Zone returned : " + zone.ToSafeString() );
-
                 if ( zone.ToSafeString().Trim().IsNullOrEmpty())
                 {
                     return false;

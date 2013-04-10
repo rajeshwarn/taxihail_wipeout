@@ -215,15 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            if ( selected.Content != null )
-            {
-                SetAddress(selected.Content, true);
-            }
-            else
-            {
-                ClearAddress ();
-            }
-
+            SetAddress(selected.Content, true);
         }
 
         public bool IsExecuting
@@ -346,7 +338,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
                     }
-
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource ();
                     _geolocator.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>

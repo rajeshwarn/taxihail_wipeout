@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.IBS
 {
@@ -13,9 +12,7 @@ namespace apcurium.MK.Booking.IBS
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 
-      
-
-        IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);
+        
 
     }
 }

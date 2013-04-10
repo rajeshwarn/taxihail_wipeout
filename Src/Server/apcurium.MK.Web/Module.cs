@@ -1,7 +1,5 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity;
-using System.IO;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -11,12 +9,6 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
-using PushSharp.Android;
-using PushSharp.Apple;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.PushNotifications.Impl;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web
@@ -69,7 +61,6 @@ namespace apcurium.MK.Web
             var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
-
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

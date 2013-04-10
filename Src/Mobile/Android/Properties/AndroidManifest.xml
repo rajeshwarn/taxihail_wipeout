@@ -1,43 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="7" android:versionName="1.4.6">
-  <application android:label="TaxiHail" android:icon="@drawable/Icon" android:screenOrientation="portrait" android:largeHeap="true">
-    <uses-library android:name="com.google.android.maps" />
- 	<receiver android:permission="com.google.android.c2dm.permission.SEND" android:name="apcurium.mk.booking.mobile.client.SampleBroadcastReceiver">
-      <intent-filter>
-        <action android:name="com.google.android.gcm.intent.RETRY" />
-        <category android:name="com.apcurium.MK.TaxiHailDemo" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-        <category android:name="com.apcurium.MK.TaxiHailDemo" />
-      </intent-filter>
-      <intent-filter>
-        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-        <category android:name="com.apcurium.MK.TaxiHailDemo" />
-      </intent-filter>
-    </receiver>
-  </application>
-  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11" />
-  <permission android:name="com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-  <uses-permission android:name="com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE" />
-  <!-- App receives GCM messages. -->
-  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-  <!-- GCM connects to Google Services. -->
-  <uses-permission android:name="android.permission.INTERNET" /> 
-  <!-- GCM requires a Google account. -->
-  <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-  <!-- Keeps the processor from sleeping when a message is received. -->
-  <uses-permission android:name="android.permission.WAKE_LOCK" />
- 
-<uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.CALL_PHONE" />
-  <uses-feature android:name="android.hardware.camera" android:required="false" />
-  <uses-feature android:name="android.hardware.telephony" android:required="false" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_CONTACTS" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.READ_CALENDAR" />
-  <uses-permission android:name="android.permission.WRITE_CALENDAR" />  
-  
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="8" android:versionName="1.3.11">
+	<application android:label="TaxiHail" android:icon="@drawable/Icon" android:screenOrientation="portrait" android:largeHeap="true">
+		<uses-library android:name="com.google.android.maps" />
+
+		</application>
+	  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11" />
+
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-feature android:name="android.hardware.camera" android:required="false" />
+	<uses-feature android:name="android.hardware.telephony" android:required="false" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_CONTACTS" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.READ_CALENDAR" />
+	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
 </manifest>

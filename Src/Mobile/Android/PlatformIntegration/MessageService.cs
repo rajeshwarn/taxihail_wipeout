@@ -74,11 +74,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             TinyMessageSubscriptionToken token = null;
             token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>( a=>
                         {
-                                if ( a.Content == positiveButtonTitle && positiveAction!=null)
+                                if ( a.Content == positiveButtonTitle )
                                 {
                                     positiveAction();
                                 }
-                                else if ( a.Content == negativeButtonTitle && negativeAction!= null)
+                                else if ( a.Content == negativeButtonTitle )
                                 {
                                     negativeAction();
                                 }
@@ -222,10 +222,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			msg => msg.MessageId == ownerId);
 			Context.StartActivity(i); 
 		}
-
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

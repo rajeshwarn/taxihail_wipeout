@@ -22,8 +22,6 @@ using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -47,31 +45,23 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         private bool _callbackFromFB = false;
         private bool _isStarting = false;
-        public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             _isStarting = true;
-            ThreadHelper.ExecuteInThread (() => MonoTouch.ObjCRuntime.Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
+            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
-            Background.Load (window, "Assets/background_full_nologo.png", false, 0, 0);          
+            Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
-            AppContext.Initialize (window);
-            var @params = new Dictionary<string, string> ();
-            if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
-                NSDictionary remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
-                if(remoteNotificationParams.ContainsKey(new NSString("orderId")))
-                {
-                    @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
-                }
-            }
-			var setup = new Setup(this, new PhonePresenter( this, window ), @params );
+			AppContext.Initialize(window);
+            
+			var setup = new Setup(this, new PhonePresenter( this, window ) );
             setup.Initialize();
 
 
             window.MakeKeyAndVisible();
 
-
 			var start = this.GetService<IMvxStartNavigation>();
-			start.Start();     
+			start.Start();                        
 
 			window.RootViewController = AppContext.Current.Controller;
             return true;
@@ -109,8 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<InstantMessagingService>();
 			JsConfig.RegisterTypeForAot<EmailType>();
 			JsConfig.RegisterTypeForAot<PhoneType>();
-            JsConfig.RegisterTypeForAot<Contact>();
-			JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
+			JsConfig.RegisterTypeForAot<Contact>();
 
 
 
@@ -187,25 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             return HandleOpenURL(application, url);
-        }
-
-        public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
-        {
-            var strFormat = new NSString("%@");
-            var dt = new NSString(MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new MonoTouch.ObjCRuntime.Class("NSString").Handle, new MonoTouch.ObjCRuntime.Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
-            new PushNotificationService().SaveDeviceToken(dt);
-        }
-        
-        public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
-        {
-            Console.WriteLine("Failed to register for notifications");
-        }
-        
-        public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
-        {
-            Console.WriteLine("Received Remote Notification!");
-        }
-
+        }       
 
 
     }

@@ -2,7 +2,7 @@
 {
     public class ListItem : ListItem<int>
     {
-		public const int NullId = int.MinValue;
+
     }
 
     public class ListItem<TId> where TId: struct

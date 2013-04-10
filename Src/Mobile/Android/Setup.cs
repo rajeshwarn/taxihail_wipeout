@@ -28,7 +28,6 @@ using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Android.Platform;
 using Cirrious.MvvmCross.Interfaces.Views;
-using Android.Util;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -64,8 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-			TinyIoCContainer.Current.Register<IPushNotificationService>(new PushNotificationService(this.ApplicationContext));
-			
+
             TinyIoCContainer.Current.Register<ILocationService>(LocationService.Instance );
 
             InitializeSocialNetwork();
@@ -82,7 +80,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void InitializeSocialNetwork()
         {
+
+
+
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
+
 
             var oauthConfig = new OAuthConfig
             {
@@ -102,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         protected override MvxApplication CreateApp()
         {
-            var app = new TaxiHailApp(_params);
+            var app = new TaxiHailApp();
             return app;
         }
 
@@ -117,11 +120,5 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return new[] { typeof(AppConverters) }; }
         }
-
-		private IDictionary<string, string> _params;
-		public void SetParams (IDictionary<string, string> @params)
-		{
-			this._params = @params;
-		}
     }
 }

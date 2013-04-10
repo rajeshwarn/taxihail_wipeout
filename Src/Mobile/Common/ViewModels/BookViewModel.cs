@@ -27,7 +27,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
@@ -597,7 +596,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
             }
         }
-		       
+
+        public IMvxCommand NavigateToOrderStatus
+        {
+            get
+            {
+                return GetCommand<Dictionary<string, object>>(order =>
+                {                   
+                    var orderGet = (Order)order["order"];                  
+                    var orderInfoGet = (OrderStatusDetail)order["orderInfo"];
+                    RequestNavigate<BookingStatusViewModel>(new {
+                        order =  orderGet.ToJson(),
+                        orderStatus = orderInfoGet.ToJson()
+                    });
+                });
+            }
+        }
 
         private void CompleteOrder(CreateOrder order)
         {   
