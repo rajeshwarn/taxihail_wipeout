@@ -62,7 +62,7 @@ namespace apcurium.MK.Web.Tests
 
 
         [Test]
-        public void RemoveCreditCardCallsDeleteToken()
+        public void RemoveCreditCard()
         {            
             var client = new CmtPaymentClient(DummyConfigManager);
             var sut = new AccountServiceClient(BaseUrl, SessionId, client);
@@ -89,8 +89,8 @@ namespace apcurium.MK.Web.Tests
 
             sut.RemoveCreditCard(creditCardId, tokenResponse.CardOnFileToken);
 
-
-            var yy = client.ForgetTokenizedCard(tokenResponse.CardOnFileToken);
+            var creditCards = sut.GetCreditCards();
+            Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
         }
         
     }
