@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 
-namespace apcurium.CMT.Web.Tests
+namespace apcurium.MK.Common
 {
     public class DummyConfigManager : IConfigurationManager
     {
-        public DummyConfigManager(Dictionary<string, string> dictionary)
+        public DummyConfigManager(Dictionary<string, string> dictionary=null)
         {
+            if (dictionary == null)
+            {
+                dictionary = new Dictionary<string, string>();
+            }
+
             SetSettings(dictionary);
         }
 

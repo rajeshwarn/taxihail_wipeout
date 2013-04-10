@@ -50,8 +50,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+            var addresses = AccountService.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
 
@@ -70,7 +69,7 @@ namespace apcurium.MK.Web.Tests
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl,  SessionId);
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -85,7 +84,7 @@ namespace apcurium.MK.Web.Tests
 
             //Act
             Guid addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveAddress()
+            AccountService.AddFavoriteAddress(new SaveAddress()
             {
                 Id = addressId,
                 Address = new Address
@@ -100,7 +99,7 @@ namespace apcurium.MK.Web.Tests
             });
 
             //Assert
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+            var addresses = AccountService.GetHistoryAddresses(newAccount.Id);
 
             Assert.IsFalse(addresses.Any(x => x.Id.Equals(addressId)));
             
@@ -126,7 +125,7 @@ namespace apcurium.MK.Web.Tests
             order.Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
             orderService.CreateOrder(order);
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var sut = AccountService;
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
 
             //Act
