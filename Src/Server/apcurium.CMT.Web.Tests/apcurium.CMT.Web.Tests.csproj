@@ -69,7 +69,6 @@
     <Compile Include="CmtBaseTest.cs" />
     <Compile Include="CmtPreCogFixture.cs" />
     <Compile Include="CmtPaymentServiceClientFixture.cs" />
-    <Compile Include="DummyConfigManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

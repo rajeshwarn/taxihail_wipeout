@@ -2,7 +2,6 @@
 using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration;
 
 
