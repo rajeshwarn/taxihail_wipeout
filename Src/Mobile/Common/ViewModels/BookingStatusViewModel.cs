@@ -32,8 +32,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-		private IBookingService _bookingService;
-        private ILocationService _geolocator;
 #if RELEASE
 		Dont build
 #endif
@@ -41,18 +39,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
 
-		IAppSettings _appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-			_geolocator = this.GetService<ILocationService> ();
+
 			_hasSeenReminder = false;
 		}
 
 		public BookingStatusViewModel ()
 		{
+
+			//TODO NEVER CALLED?
 			ShowRatingButton = true;
 			this.StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
 
@@ -66,16 +65,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Load ();
 			ShowRatingButton = true;
 
-            _bookingService = this.GetService<IBookingService> ();
 
 			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
 
-            Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+            Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
             {
 				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
             };
 
-            Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+            Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address)
             {
 				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
             };
@@ -98,8 +96,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Stop ();
             Subscriptions.DisposeAll ();
 		}
-
-
 
 		#region Bindings
 		private IEnumerable<CoordinateViewModel> _mapCenter;
@@ -257,8 +253,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 
             try {
-                var status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (Order.Id);
-                var isDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (status.IBSStatusId);
+                var status = BookingService.GetOrderStatus (Order.Id);
+				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
 
                 AddReminder(status);
 
@@ -276,11 +272,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					IsCancelButtonVisible = !IsPayButtonVisible;
 
-
-
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
 						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
                     }
+
                     if (isDone) {
                         if (!_isThankYouDialogDisplayed) {
                             _isThankYouDialogDisplayed = true;
@@ -293,44 +288,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+
+		private void Rate(){
+
+		}
         private void ShowThankYouDialog ()
         {
-            string stringNeutral = null;
-            Action actionNeutral = null;
+			var hub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ();
             TinyMessageSubscriptionToken orderRatedToken = null;
 
-            if (ShowRatingButton) {
-                stringNeutral = Str.RateButtonText;
-                actionNeutral = () =>
-                {
-                    if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
-                        Order.Id = Order.Id;
-                        orderRatedToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
-                                                            .Subscribe<OrderRated> (HideRatingButton);
-                        NavigateToRatingPage.Execute ();
-                    }
-                };
-            }
+			Action showRating = () =>
+			{
+				if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
+					Order.Id = Order.Id;
+					orderRatedToken = hub.Subscribe<OrderRated> (HideRatingButton);
+					NavigateToRatingPage.Execute ();
+				}
+			};
 
+			Action closeAction = () =>
+			{
+				if (orderRatedToken != null) {
+					hub.Unsubscribe<OrderRated> (orderRatedToken);
+				}
+				this.Close ();
+			};
+
+			Action sendRecieptAction = () =>
+			{
+				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
+					TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
+				}
+			};
+
+			string stringNeutral = ShowRatingButton ? Str.RateButtonText : null;
+			Action actionNeutral = ShowRatingButton ?  showRating : null;    
 
 
             MessageService.ShowMessage (
 				Str.ThankYouTitle,
 				Str.ThankYouMessage,
-				Str.ReturnBookingScreenMessage, () =>
-            {
-                if (orderRatedToken != null) {
-                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
-                                                            .Unsubscribe<OrderRated> (orderRatedToken);
-                }
-                this.Close ();
-            },
-                Str.HistoryDetailSendReceiptButtonText, () =>
-            {
-                if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-                    TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
-                }
-            },
+				Str.ReturnBookingScreenMessage, 
+				closeAction,
+                Str.HistoryDetailSendReceiptButtonText, 
+				sendRecieptAction,
                 stringNeutral, actionNeutral
             );
         }
@@ -366,13 +367,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
-
                     MessageService.ShowMessage (Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                     {
-                        _bookingService.ClearLastOrder ();
+                        BookingService.ClearLastOrder ();
                         RequestNavigate<BookViewModel> (clearTop: true);
                     },
-                    Str.NoButtonText, () => { });   
+                    Str.NoButtonText, NoAction);   
                                         
                 });
             }
@@ -390,27 +390,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     MessageService.ShowMessage ("", Str.StatusConfirmCancelRide, Str.YesButtonText, ()=>
                     {
                         Task.Factory.SafeStartNew ( () =>
-                                                   {
-                        try 
                         {
+	                        try 
+	                        {
 
-                            MessageService.ShowProgress (true);
+	                            MessageService.ShowProgress (true);
 
-                            var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().CancelOrder (Order.Id);      
-                            if (isSuccess) 
-                            {
-                                MessengerHub.Publish (new OrderCanceled (this, Order, null));
-                                RequestNavigate<BookViewModel> (clearTop: true);
-                            } 
-                            else 
-                            {
-                                MessageService.ShowMessage (Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
-                            }
-                        } 
-                        finally 
-                        {
-                            MessageService.ShowProgress (false);
-                        }     
+	                            var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().CancelOrder (Order.Id);      
+	                            if (isSuccess) 
+	                            {
+	                                MessengerHub.Publish (new OrderCanceled (this, Order, null));
+	                                RequestNavigate<BookViewModel> (clearTop: true);
+	                            } 
+	                            else 
+	                            {
+	                                MessageService.ShowMessage (Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
+	                            }
+	                        } 
+	                        finally 
+	                        {
+	                            MessageService.ShowProgress (false);
+	                        }     
                         });
                     },Str.NoButtonText, () => { });
                 });

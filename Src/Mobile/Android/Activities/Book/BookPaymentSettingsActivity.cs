@@ -23,10 +23,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return Resource.String.View_PaymentCreditCardsOnFile; }
 		}
 
+		protected override void OnStart ()
+		{
+			base.OnStart ();
+			var x= FindViewById<SeekBar>(Resource.Id.seek);
+			//SeekBar.IOnSeekBarChangeListener
+			x.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) => {
+				x.Progress = (int)(Math.Round(e.Progress/5.0)*5);
+			};
+			var u =0;
+		}
+
 		protected override void OnViewModelSet()
 		{            
 			SetContentView(Resource.Layout.View_BookPaymentSettings);
 			ViewModel.Load();
+
+		
 		}
 	}
 }

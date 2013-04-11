@@ -30,9 +30,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public partial class Str
 	{
-		static IAppResource _r =  TinyIoCContainer.Current.Resolve<IAppResource>();
-		static IAppSettings _appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-
 		public static string ThankYouMessage {
 			get{
 				return String.Format (_r.GetString ("View_BookingStatus_ThankYouMessage"), _appSettings.ApplicationName);		
@@ -48,12 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public static string ReturnBookingScreenMessage {
 			get{				
 				return _r.GetString ("ReturnBookingScreen");
-			}
-		}
-
-		public static string LoadingMessage {
-			get{				
-				return _r.GetString ("LoadingMessage");
 			}
 		}
 
@@ -86,11 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("AddReminderMessage");
 			}
 		}
-		public static string YesButtonText {
-			get{				
-				return _r.GetString ("YesButton");
-			}
-		}
+
 		public static string ReminderTitle {
 			get{				
 				return string.Format(_r.GetString("ReminderTitle"), _appSettings.ApplicationName);
@@ -101,16 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format(_r.GetString("ReminderDetails"),address,CultureProvider.FormatTime (date), CultureProvider.FormatDate(date));
 		}
 
-		public static string NoButtonText {
-			get{				
-				return _r.GetString("NoButton");
-			}
-		}
-		public static string RateButtonText {
-			get{				
-				return _r.GetString ("RateBtn");
-			}
-		}
+
 		public static string StatusNewRideButtonText {
 			get{				
 				return _r.GetString ("StatusNewRideButton");
@@ -150,16 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("StatusConfirmCancelRideError");
 			}
 		}
-		public static string CallButtonText {
-			get{				
-				return _r.GetString ("CallButton");
-			}
-		}
-		public static string CancelButtonText {
-			get{				
-				return _r.GetString ("CancelBoutton");
-			}
-		}
+
 
 	}
     

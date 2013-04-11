@@ -25,7 +25,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public TutorialViewModel()
         {
             var service  = this.GetService<ITutorialService>();
-            TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
+						
+            TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel 
+			{ 
+				TopText = item.TopText, 
+				TopTitle = item.TopTitle , 
+				BottomText = item.BottomText , 
+				BottomTitle = item.BottomTitle, 
+				ImageUri = item.ImageUri 
+			}).ToArray (); 
+			
         }
 
     }
