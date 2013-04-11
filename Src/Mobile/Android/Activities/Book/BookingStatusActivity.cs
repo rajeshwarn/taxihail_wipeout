@@ -32,8 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class BookingStatusActivity : BaseMapActivity<BookingStatusViewModel>
     {
-        private const string _doneStatus = "wosDONE";
-        private const string _loadedStatus = "wosLOADED";
         private const int _refreshPeriod = 20 * 1000; //20 sec
 
         private Timer _timer;

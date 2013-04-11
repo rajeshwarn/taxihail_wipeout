@@ -302,6 +302,7 @@
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
   <string name="StatusCancelButton">Cancel this order</string>
+  <string name="StatusPayButton">Pay</string>
   <string name="CreateAccountEmail">Email</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>

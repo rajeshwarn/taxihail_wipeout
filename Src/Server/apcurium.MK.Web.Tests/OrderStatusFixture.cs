@@ -4,6 +4,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -51,7 +52,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var data = sut.GetOrderStatus( _orderId);
-            Assert.AreEqual("wosWAITING", data.IBSStatusId);
+            Assert.AreEqual(VehicleStatuses.Common.Waiting, data.IBSStatusId);
         }
 
 

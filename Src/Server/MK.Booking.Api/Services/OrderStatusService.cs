@@ -23,14 +23,10 @@ using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderStatusService : RestServiceBase<Contract.Requests.OrderStatusRequest>
+    public class OrderStatusService : RestServiceBase<OrderStatusRequest>
     {
         private static Dictionary<Guid, List<Location>> _fakeTaxiPositions = new Dictionary<Guid, List<Location>>();
         private static Dictionary<Guid, int> _fakeTaxiPositionsIndex = new Dictionary<Guid, int>();
-
-        private const string _assignedStatus = "wosASSIGNED";
-        private const string _doneStatus = "wosDONE";
-
 
         private IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
@@ -91,8 +87,8 @@ namespace apcurium.MK.Booking.Api.Services
                 string desc = "";
                 if (status.IBSStatusId.HasValue())
                 {
-                    
-                    if (status.IBSStatusId.SoftEqual(_assignedStatus))
+
+                    if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Arrived))
                     {                        
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
                         if ((orderDetails != null) && (orderDetails.VehicleNumber.HasValue()))
@@ -146,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services
                             Log.Debug("CANNOT GET VEHICULE POSITION");
                         }
                     }
-                    else if (status.IBSStatusId.SoftEqual(_doneStatus))
+                    else if (status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done))
                     {
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 

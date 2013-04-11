@@ -116,6 +116,7 @@
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
     <Compile Include="TestCreditCards.cs" />
+    <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
