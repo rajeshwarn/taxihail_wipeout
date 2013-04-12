@@ -106,9 +106,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
  
 
-#if DEBUG 
-		static int counter = 0;
-#endif
+//#if DEBUG 
+//		static int counter = 0;
+//#endif
 
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 r = service.GetOrderStatus (orderId);
             }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
 
+			/*
 			counter++;
 			if(counter >1)
 			{
@@ -134,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					}
 				}
 
-			}
+			}*/
 
             return r;
         }

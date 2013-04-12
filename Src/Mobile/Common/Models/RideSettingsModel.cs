@@ -24,9 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             _chargeTypeList = chargeTypeList;
 
 			Data = data;
-#if RELEASE
-			DONT BUILD
-#endif
+//#if RELEASE
+			//DONT BUILD
+//#endif
 				Data.ChargeTypeId = ReferenceData.CreditCardOnFileType;
         }
 

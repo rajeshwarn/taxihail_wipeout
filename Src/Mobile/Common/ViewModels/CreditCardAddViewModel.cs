@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardType = 0;
 
-		    
+		/*    
 #if RELEASE
             DONT BUILD
 #endif
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 		    Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
 		    Data.ZipCode = DummyVisa.ZipCode;
-		    Data.NameOnCard = "Chris";
+		    Data.NameOnCard = "Chris";*/
         }
 
         public CreditCardInfos Data { get; set; }

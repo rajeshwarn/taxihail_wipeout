@@ -30,22 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public partial class Str
 	{
-		
-		public static string ErrorCreatingOrderTitle {
-			get{				
-				return _r.GetString ("ErrorCreatingOrderTitle");
-			}
-		}
-		public static string NoCreditCardSelectedMessage {
-			get{				
-				return _r.GetString ("NoCreditCardSelected");
-			}
-		}
-		public static string GetServerErrorCreatingOrder(int phoneNumberId)
-		{
-			return  string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _appSettings.PhoneNumberDisplay (phoneNumberId));
-			
-		}
+
 	
 
 	}
