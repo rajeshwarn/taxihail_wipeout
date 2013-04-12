@@ -46,16 +46,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardType = 0;
 
-		/*    
-#if RELEASE
-            DONT BUILD
-#endif
-            Data.CCV = DummyVisa.AvcCvvCvv2+"";
-		    Data.CardNumber = DummyVisa.Number;
-		    Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
-		    Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
-		    Data.ZipCode = DummyVisa.ZipCode;
-		    Data.NameOnCard = "Chris";*/
+		  
+#if DEBUG
+			Data.CCV = DummyVisa.AvcCvvCvv2+"";
+			Data.CardNumber = DummyVisa.Number;
+			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
+			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
+			Data.ZipCode = DummyVisa.ZipCode;
+			Data.NameOnCard = "Chris";
+#endif            
         }
 
         public CreditCardInfos Data { get; set; }
