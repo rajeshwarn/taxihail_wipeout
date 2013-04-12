@@ -21,7 +21,7 @@ namespace apcurium.MK.Web
         {
             var baseUrl = new Uri(context.Request.Url, VirtualPathUtility.ToAbsolute("~/api")).ToString();
             var name = Guid.NewGuid().ToString();
-            var client = new AccountServiceClient(baseUrl, null);
+            var client = new AccountServiceClient(baseUrl, null,null);
 
             var account = client.GetTestAccount(PingdomTestAccount);
             if(account == null)
@@ -31,7 +31,7 @@ namespace apcurium.MK.Web
                 account = client.GetTestAccount(PingdomTestAccount);
             }
             var auth = new AuthServiceClient(baseUrl, null).Authenticate(account.Email, "password1");
-            client = new AccountServiceClient(baseUrl, auth.SessionId);
+            client = new AccountServiceClient(baseUrl, auth.SessionId,null);
 
             client.UpdateBookingSettings(new BookingSettingsRequest
             {

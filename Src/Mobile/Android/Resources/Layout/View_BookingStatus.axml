@@ -30,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
-                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;ConfirmationNoTxt&apos;}}" />
+                    local:MvxBind="{'Text': {'Path': 'ConfirmationNoTxt'}}" />
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/statusMapSection"
@@ -45,7 +45,7 @@
                     android:layout_height="fill_parent"
                     android:apiKey="@string/GoogleMapKey"
                     android:enabled="true"
-                    local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;TaxiLocation&apos;:{&apos;Path&apos;:&apos;OrderStatusDetail&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;} }"
+                    local:MvxBind="{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'Center':{'Path':'MapCenter'} }"
                     android:clickable="true" />
                 <LinearLayout
                     android:layout_weight="0.11"
@@ -63,7 +63,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         style="@style/BigTitleText"
                         android:layout_gravity="center_horizontal|top"
-                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;StatusInfoText&apos;}}" />
+                        local:MvxBind="{'Text': {'Path': 'StatusInfoText'}}" />
                 </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
@@ -88,7 +88,17 @@
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
                         android:text="@string/StatusCancelButton"
-                        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CancelOrder&apos;}}" />
+                        local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility':{'Path':'IsCancelButtonVisible', 'Converter':'Visibility'}}" />
+                    <apcurium.mk.booking.mobile.client.controls.StyledButton
+                        local:ButtonStyle="Green"
+                        android:background="@drawable/green_button"
+                        android:id="@+id/PayBtn"
+                        style="@style/ButtonText"
+                        android:layout_width="180dip"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusPayButton"
+                        local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility':{'Path':'IsPayButtonVisible', 'Converter':'Visibility'}}" />
                     <apcurium.mk.booking.mobile.client.controls.StyledButton
                         local:ButtonStyle="Black"
                         android:id="@+id/CallBtn"
@@ -98,7 +108,7 @@
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
                         android:text="@string/StatusCallButton"
-                        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CallCompany&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCallButtonVisible&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}" />
+                        local:MvxBind="{'Click': {'Path': 'CallCompany'}, 'Visibility':{'Path':'IsCallButtonVisible', 'Converter':'Visibility'}}" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

@@ -76,6 +76,7 @@
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
+    <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

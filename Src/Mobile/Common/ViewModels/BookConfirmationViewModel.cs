@@ -31,18 +31,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		IMvxServiceConsumer<IBookingService>,
 		IMvxServiceConsumer<ICacheService>
     {
-		IBookingService _bookingService;
-        IAccountService _accountService;
-
-        public BookConfirmationViewModel (string order)
+		public BookConfirmationViewModel (string order)
         {
-            _accountService = this.GetService<IAccountService>();
-			_bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
-			Order.Settings = _accountService.CurrentAccount.Settings;
+			Order.Settings = AccountService.CurrentAccount.Settings;
         }
-
-
 
         public override void Load ()
         {
@@ -53,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MessageService.ShowProgress(true);
 
 
-            Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList()))
+			Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, AccountService.GetCompaniesList(), AccountService.GetVehiclesList(), AccountService.GetPaymentsList()))
                 .HandleErrors( )
                 .ContinueWith(t =>
                     {
@@ -74,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     });
 
 
-            Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
+            Task.Factory.StartNew<string>(() => BookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
                 .HandleErrors()
                 .ContinueWith(t => InvokeOnMainThread(() =>
                         {
@@ -147,16 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				return Config.Client.ShowPassengerName.GetValueOrDefault();                
             }
          }
 
@@ -164,16 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				return Config.Client.ShowPassengerPhone.GetValueOrDefault();
             }
         }
 
@@ -181,16 +156,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				
+				return Config.Client.ShowPassengerNumber.GetValueOrDefault();
             }
         }
 
@@ -225,8 +192,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Order.PickupAddress.RingCode = result.RingCode;
 							Order.PickupAddress.BuildingName = result.BuildingName;
 							InvokeOnMainThread(() => {
-								FirePropertyChanged("AptRingCode");
-								FirePropertyChanged("BuildingName");
+								FirePropertyChanged(()=>AptRingCode);
+								FirePropertyChanged(()=>BuildingName);
 							});
 						}
 					});
@@ -255,8 +222,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                     Order.Settings.Passengers = result.Settings.Passengers;
                                                                     InvokeOnMainThread(() =>
                                                                                            {
-                                                                                               FirePropertyChanged("AptRingCode");
-                                                                                               FirePropertyChanged("BuildingName");
+                                                                                               FirePropertyChanged(()=>AptRingCode);
+                                                                                               FirePropertyChanged(()=>BuildingName);
                                                                                                FirePropertyChanged(() => OrderPassengerNumber);
                                                                                                FirePropertyChanged(() => OrderPhone);
                                                                                                FirePropertyChanged(() => OrderName);
@@ -289,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             					Order.Id = Guid.NewGuid ();
             					try {
             					MessageService.ShowProgress (true);
-            					var orderInfo = _bookingService.CreateOrder (Order);
+								var orderInfo = BookingService.CreateOrder (Order);
             					
             					if (orderInfo.IBSOrderId.HasValue
             					    && orderInfo.IBSOrderId > 0) {
@@ -306,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             					
             				} catch (Exception ex) {
             					InvokeOnMainThread (() =>
-            					                    {
+            					{
             						var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             						string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
             						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
@@ -335,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowWarningIfNecessary()
         {
-            var validationInfo = _bookingService.ValidateOrder( Order );
+			var validationInfo = BookingService.ValidateOrder( Order );
             if ( validationInfo.HasWarning )
             {
 
@@ -387,7 +354,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         FirePropertyChanged("RideSettings");
 					}
 
-                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
+                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, AccountService.CurrentAccount.DefaultCreditCard, AccountService.CurrentAccount.DefaultTipAmount, AccountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
             else if(Order.Settings.ProviderId == null)

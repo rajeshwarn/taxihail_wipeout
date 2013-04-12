@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                                                                ImageView currentPip = (ImageView)pipsLayout.GetChildAt(newScreen);
                                                                 currentPip.SetImageDrawable(_yellowCircle);
                                                            };
+
             for (int i = 0; i < ViewModel.TutorialItemsList.Count(); i++)
             {
 

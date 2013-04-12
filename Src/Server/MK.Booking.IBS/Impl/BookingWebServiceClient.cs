@@ -28,9 +28,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
         
-        public IBSOrderStauts GetOrderStatus(int orderId, int accountId, string contactPhone)
+        public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
-            var status = new IBSOrderStauts { Status = TWEBOrderStatusValue.wosNone.ToString() };
+            var status = new IBSOrderStatus { Status = TWEBOrderStatusValue.wosNone.ToString() };
             UseService(service =>
             {
                 var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty, accountId);
