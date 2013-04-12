@@ -49,10 +49,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void Start (bool firstStart)
 		{
 			base.Start (firstStart);
-			#if RELEASE
-			DONTBUILD
-				#endif
-				SignIn();
+			//#if RELEASE
+			//DONTBUILD
+//#endif
+			//	SignIn();
 		}
    
         public override void Load()
