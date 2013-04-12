@@ -140,16 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				return Config.Client.ShowPassengerName.GetValueOrDefault();                
             }
          }
 
@@ -157,16 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				return Config.Client.ShowPassengerPhone.GetValueOrDefault();
             }
         }
 
@@ -174,16 +156,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
-                try
-                {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return ret;
+				
+				return Config.Client.ShowPassengerNumber.GetValueOrDefault();
             }
         }
 
@@ -218,8 +192,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Order.PickupAddress.RingCode = result.RingCode;
 							Order.PickupAddress.BuildingName = result.BuildingName;
 							InvokeOnMainThread(() => {
-								FirePropertyChanged("AptRingCode");
-								FirePropertyChanged("BuildingName");
+								FirePropertyChanged(()=>AptRingCode);
+								FirePropertyChanged(()=>BuildingName);
 							});
 						}
 					});
@@ -248,8 +222,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                     Order.Settings.Passengers = result.Settings.Passengers;
                                                                     InvokeOnMainThread(() =>
                                                                                            {
-                                                                                               FirePropertyChanged("AptRingCode");
-                                                                                               FirePropertyChanged("BuildingName");
+                                                                                               FirePropertyChanged(()=>AptRingCode);
+                                                                                               FirePropertyChanged(()=>BuildingName);
                                                                                                FirePropertyChanged(() => OrderPassengerNumber);
                                                                                                FirePropertyChanged(() => OrderPhone);
                                                                                                FirePropertyChanged(() => OrderName);

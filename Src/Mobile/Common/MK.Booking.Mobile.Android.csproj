@@ -233,6 +233,8 @@
     <Compile Include="ViewModels\Strings.BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="ViewModels\Strings.Base.cs" />
+    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="ViewModels\Strings.BookConfirmationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
