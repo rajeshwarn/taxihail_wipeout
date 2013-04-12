@@ -13,10 +13,10 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookPaymentSettingsViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
+    public class BookPaymentViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
     {
 
-        public BookPaymentSettingsViewModel (string order)
+        public BookPaymentViewModel (string order)
         {
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
 

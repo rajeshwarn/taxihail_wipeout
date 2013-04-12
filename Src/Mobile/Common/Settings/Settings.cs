@@ -45,6 +45,18 @@ namespace apcurium.MK.Booking.Mobile
 					return null;
 				}
 			}
+			
+			public static bool? ShowEstimate {
+				get{
+					bool result;
+					if(bool.TryParse(_configManager.GetSetting("Client.ShowEstimate"), out result))
+					{
+						return result;
+					}
+					return null;
+				}
+			}
+
 
 		}
 

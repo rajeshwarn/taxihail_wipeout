@@ -16,8 +16,8 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity(Label = "BookPaymentSettingsActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class BookPaymentSettingsActivity : BaseBindingActivity<BookPaymentSettingsViewModel>
+	[Activity(Label = "BookPaymentActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	public class BookPaymentActivity : BaseBindingActivity<BookPaymentViewModel>
 	{
 		protected override int ViewTitleResourceId
 		{
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void OnViewModelSet()
 		{            
-			SetContentView(Resource.Layout.View_BookPaymentSettings);
+			SetContentView(Resource.Layout.View_BookPayment);
 			ViewModel.Load();		
 		}
 	}

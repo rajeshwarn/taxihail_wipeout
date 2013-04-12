@@ -1237,7 +1237,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_BookingStatus = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int View_BookPaymentSettings = 2130903068;
+			public const int View_BookPayment = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
 			public const int View_BookStreetNumber = 2130903069;
