@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _bus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return HttpStatusCode.Accepted;
         }
 
         public override object OnDelete(CreditCardRequest request)
@@ -44,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
            
             _bus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return HttpStatusCode.Accepted;
         }
     }
 }

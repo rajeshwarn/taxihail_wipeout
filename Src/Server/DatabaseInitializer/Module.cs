@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
-using System.Linq;
 using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -11,7 +10,6 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 
@@ -32,8 +30,7 @@ namespace DatabaseInitializer
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            container.RegisterType(typeof(IEventsMigrator), typeof(AddressEventsMigrator), "AdresseEventsMigrator", null);
-            container.RegisterType(typeof(IEventsMigrator), typeof(OrderStatusEventsMigrator), "OrderStatusEventsMigrator", null); 
+            container.RegisterInstance<IEventsMigrator>(new EventsMigrator(container.Resolve<IAddresses>(), () => container.Resolve<EventStoreDbContext>()));
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
@@ -84,13 +81,8 @@ namespace DatabaseInitializer
         private static void RegisterEventHandlers(IUnityContainer unityContainer)
         {
             var eventHandlerRegistry = unityContainer.Resolve<IEventHandlerRegistry>();
-            // Filter out Integration Event Handlers
-            // They should never replay events
-            var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
-                                              .Where(x=> !(x is IIntegrationEventHandler))
-                                              .ToArray();
 
-            foreach (var eventHandler in eventHandlers)
+            foreach (var eventHandler in unityContainer.ResolveAll<IEventHandler>())
             {
                 eventHandlerRegistry.Register(eventHandler);
             }

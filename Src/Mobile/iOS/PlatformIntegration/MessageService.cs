@@ -109,9 +109,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			MessageHelper.ShowToast(message, (int)duration );
 		}
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
-        {
-        }
-
 	}
 }

@@ -11,15 +11,12 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking
@@ -51,9 +48,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
 
-            
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
@@ -61,7 +56,8 @@ namespace apcurium.MK.Booking
 
         public void RegisterMaps()
         {
-            AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();            
+            AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
             AutoMapper.Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
             AutoMapper.Mapper.CreateMap<Address, AddressDetails>();
 
@@ -82,7 +78,6 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
 
             AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
             AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
@@ -93,7 +88,6 @@ namespace apcurium.MK.Booking
         private static void RegisterEventHandlers(IUnityContainer container)
         {
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
-            container.RegisterType<IEventHandler, DeviceDetailsGenerator>("DeviceDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
@@ -101,10 +95,6 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
-            
-            // Integration event handlers
-            container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
-            container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

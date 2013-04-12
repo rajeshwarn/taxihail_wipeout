@@ -27,7 +27,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
@@ -94,13 +93,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             LoadLastActiveOrder();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
             {
                 IsExecuting = true,
                 //Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address)
             {
                 //Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
@@ -115,6 +114,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (! _useExistingOrder ) 
             {
                 var tutorialWasDisplayed = this.GetService<ICacheService>().Get<string>("TutorialWasDisplayed");
+
+
                 if (tutorialWasDisplayed.IsNullOrEmpty())
                 {
                     Task.Factory.SafeStartNew( () =>
@@ -597,7 +598,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
             }
         }
-		       
+
+        public IMvxCommand NavigateToOrderStatus
+        {
+            get
+            {
+                return GetCommand<Dictionary<string, object>>(order =>
+                {                   
+                    var orderGet = (Order)order["order"];                  
+                    var orderInfoGet = (OrderStatusDetail)order["orderInfo"];
+                    RequestNavigate<BookingStatusViewModel>(new {
+                        order =  orderGet.ToJson(),
+                        orderStatus = orderInfoGet.ToJson()
+                    });
+                });
+            }
+        }
 
         private void CompleteOrder(CreateOrder order)
         {   

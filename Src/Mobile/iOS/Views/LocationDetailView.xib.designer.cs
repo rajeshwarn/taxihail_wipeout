@@ -24,6 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblSaveAsAFavorite { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField txtAddress { get; set; }
 
 		[Outlet]
@@ -55,6 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
+			}
+
+			if (lblSaveAsAFavorite != null) {
+				lblSaveAsAFavorite.Dispose ();
+				lblSaveAsAFavorite = null;
 			}
 
 			if (txtAddress != null) {

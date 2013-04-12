@@ -243,6 +243,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Start();
         }
 
+		private Task<Position> _last;
+
  public bool IsServiceEnabled
         {
             get { 
@@ -250,17 +252,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return _locMgr.IsProviderEnabled( LocationManager.GpsProvider ) ||_locMgr.IsProviderEnabled( LocationManager.NetworkProvider ) ;
             }
         }
-
-		private Task<Position> _last;
-
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
 			if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
 			{
 				return _last;
 			}
-
-        Start();
+            Start();
 			_last = new Task<Position>(() =>
             {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetPositionAsync");

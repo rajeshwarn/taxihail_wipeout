@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -53,9 +52,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var data = sut.GetOrderStatus( _orderId);
-            Assert.AreEqual(null, data.IBSStatusId);
-            Assert.AreEqual(OrderStatus.Created, data.Status);
-            Assert.AreEqual("Joe Smith", data.Name);
+            Assert.AreEqual(VehicleStatuses.Common.Waiting, data.IBSStatusId);
         }
 
 
@@ -68,20 +65,6 @@ namespace apcurium.MK.Web.Tests
             var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
-        }
-
-        [Test]
-        public void get_active_orders_status()
-        {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
-            var data = sut.GetActiveOrdersStatus();
-
-
-            Assert.AreEqual(true, data.Any());
-            Assert.AreEqual(true, data.Any(x => x.OrderId == _orderId));
-            Assert.AreEqual(null, data.First(x => x.OrderId == _orderId).IBSStatusId);
-            Assert.AreEqual(OrderStatus.Created, data.First(x => x.OrderId == _orderId).Status);
-            
         }
     }
 }

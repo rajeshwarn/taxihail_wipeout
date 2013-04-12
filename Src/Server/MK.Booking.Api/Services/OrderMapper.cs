@@ -1,7 +1,7 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
-using OrderStatus = apcurium.MK.Common.Entity.OrderStatus;
+using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
 
 namespace apcurium.MK.Booking.Api.Services
 {

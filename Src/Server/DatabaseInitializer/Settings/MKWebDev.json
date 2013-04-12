@@ -35,8 +35,5 @@
    "IBS.PickupZoneToExclude" : "",
    "IBS.ValidateDestinationZone" : "false",
    "IBS.ValidatePickupZone" : "false",
-   "Receipt.Note": "Thank You!<br>The Taxi Hail Team",
-   "APNS.ProductionCertificatePath": "../../Certificates/production.p12",
-   "APNS.DevelopmentCertificatePath": "../../Certificates/development.p12",
-   "GCM.PackageName": "com.apcurium.MK.TaxiHailDemo"
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team"
 }

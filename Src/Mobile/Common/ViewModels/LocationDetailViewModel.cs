@@ -13,7 +13,6 @@ using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -43,13 +42,6 @@ namespace apcurium.MK.Booking.Mobile
             _accountService = this.GetService<IAccountService>();
         }
 
-        public bool ShowRingCodeField {
-            get
-            {
-                return TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.ShowRingCodeField" ) != "false" ;
-            }
-            
-        }
 		private Address _address;
 		
         public string BookAddress {

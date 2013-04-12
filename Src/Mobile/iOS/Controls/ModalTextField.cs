@@ -6,9 +6,6 @@ using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 using Cirrious.MvvmCross.Dialog.Touch.Dialog;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
-using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -52,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
                 controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
-                newDvc.Title = new CultureInfo("en-US",false).TextInfo.ToTitleCase ( _rootElement[0].Caption ); 
             }
         }
 
@@ -60,17 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
-            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
             foreach (var v in values)
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
-                var display = value.Display;
-                if(Convert.ToInt32(value.Id) == ListItem.NullId)
-                {
-                    display = resources.GetString("NoPreference");
-                }
-                var item = new RadioElementWithId<T>(value.Id, display, value.Image);
+                var item = new RadioElementWithId<T>(value.Id, value.Display, value.Image);
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();

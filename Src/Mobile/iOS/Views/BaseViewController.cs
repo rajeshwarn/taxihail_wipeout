@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewWillDisappear (bool animated)
         {
             base.ViewWillDisappear (animated);
-            if(ViewModel!= null) ViewModel.Stop();
+            ViewModel.Stop();
         }
 				
         public override void ViewDidLoad ()

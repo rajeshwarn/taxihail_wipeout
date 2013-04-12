@@ -29,49 +29,27 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
        
 
-        public ConfirmationView () 
+        public ConfirmationView() 
             : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
         
-        public ConfirmationView (MvxShowViewModelRequest request) 
+        public ConfirmationView(MvxShowViewModelRequest request) 
             : base(request)
         {
         }
         
-        public ConfirmationView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+        public ConfirmationView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
         }
 
         public override void ViewWillAppear (bool animated)
-        {
-            base.ViewWillAppear (animated);
-            NavigationController.NavigationBar.Hidden = false;
+		{
+			base.ViewWillAppear (animated);
+			NavigationController.NavigationBar.Hidden = false;
 
 
-        }
-
-        public override void ViewDidLoad ()
-        {
-            base.ViewDidLoad ();
-            ViewModel.Load ();
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            NavigationItem.HidesBackButton = false;
-                                            
-            AppButtons.FormatStandardButton ((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green);          
-
-            lblPickupDateTime.Text = Resources.GetValue ("DateTimePickerPickTitle");
-
-            lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
-            lblChargeType.Text = Resources.ChargeTypeLabel;                        
-            lblEntryCode.Text = Resources.GetValue ("EntryCodeLabel");
-            lblApartment.Text = Resources.GetValue ("ApartmentLabel");
-            lblNoteDriver.Text = Resources.GetValue ("NotesToDriveLabel");
-
-            txtNotes.Ended += HandleTouchDown;
-            txtApartment.Ended += HandleTouchDown;
-            txtEntryCode.Ended += HandleTouchDown;
 		}
 
         public override void ViewDidLoad()
@@ -129,20 +107,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblApartmentValue.TextColor = AppStyle.DarkText;
             lblApartmentValue.Font = AppStyle.GetBoldFont (lblApartmentValue.Font.PointSize);
 
-            if (!ViewModel.ShowRingCodeField) {
-                txtEntryCode.Hidden = true;
-                lblEntryCode.Hidden = true;
-                txtApartment.Frame = new RectangleF (txtApartment.Frame.X, txtApartment.Frame.Y, pickerChargeType.Frame.Width, txtApartment.Frame.Height);
-            }
+            lblEntryCodeValue.TextColor = AppStyle.DarkText;
+            lblEntryCodeValue.Font = AppStyle.GetBoldFont (lblEntryCodeValue.Font.PointSize);
 
-
-            lblPickupDateTime.Hidden = !ViewModel.Order.PickupDate.HasValue;
-            txtPickupDateTime.Hidden = !ViewModel.Order.PickupDate.HasValue;
-
-            txtPickupDateTime.Font = AppStyle.BoldTextFont;
-            txtPickupDateTime.TextColor = AppStyle.DarkText;
-             
-            }
             lblVehicleTypeValue.TextColor = AppStyle.DarkText;
             lblVehicleTypeValue.Font = AppStyle.GetBoldFont (lblVehicleTypeValue.Font.PointSize);
 
@@ -150,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblChargeTypeValue.Font = AppStyle.GetBoldFont (lblChargeTypeValue.Font.PointSize);
 
 
-            this.AddBindings (new Dictionary<object, string> () {
+            this.AddBindings(new Dictionary<object, string>() {
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
                 { btnEdit, "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"},
                 { lblNameValue, "{'Text': {'Path': 'OrderName'}}" },
@@ -158,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}" },
 
                 { lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}" },
+                { lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}" },
                 { lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}" },
                 { lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}" },
             });
@@ -167,29 +135,22 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.View.ApplyAppFont ();
         }
 
-        private void OffsetControls (float offset, params UIView[] controls)
-        {
-            foreach (var item in controls) {
-                item.Frame = new RectangleF (item.Frame.X, item.Frame.Y + offset, item.Frame.Width, item.Frame.Height);
-            }
-        }
 
         void NoteStartedEdit (object sender, EventArgs e)
         {
-            scrollView.SetContentOffset (new System.Drawing.PointF (0, 208.5f), true);
+            scrollView.SetContentOffset( new System.Drawing.PointF( 0, 208.5f ), true );
 
         }
-
         void HandleTouchDown (object sender, EventArgs e)
         {
 
             txtNotes.ResignFirstResponder ();
         }
 
-        public override void ViewDidAppear (bool animated)
+        public override void ViewDidAppear(bool animated)
         {
-            base.ViewDidAppear (animated);
-            this.NavigationItem.TitleView = new TitleView (null, Resources.View_BookingDetail, true);
+            base.ViewDidAppear(animated);
+            this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
           
         }
     }

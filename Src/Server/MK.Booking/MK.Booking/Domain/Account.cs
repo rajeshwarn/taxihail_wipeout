@@ -6,7 +6,6 @@ using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
@@ -33,8 +32,6 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
             base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
-            base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
-            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
 
@@ -239,33 +236,6 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new AdminRightGranted());
         }
 
-        public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            this.Update(new DeviceRegisteredForPushNotifications
-            {
-                 DeviceToken = deviceToken,
-                 Platform = platform,
-            });
-        }
-
-        public void UnregisterDeviceForPushNotifications(string deviceToken)
-        {
-            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing device token");
-            }
-
-            this.Update(new DeviceUnregisteredForPushNotifications
-            {
-                DeviceToken = deviceToken,
-            });
-        }
-
         private void OnAccountRegistered(AccountRegistered @event)
         {
             _confirmationToken = @event.ConfirmationToken;
@@ -329,6 +299,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
         }
+
 
         public void ConfirmAccountByAdmin()
         {

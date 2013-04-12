@@ -24,6 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
                     
                     string serializedData = reader.ReadToEnd ();
                     _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
+#if DEBUG
+                    _data.ServiceUrl = "http://192.168.12.147/TaxiHail/api/";
+#endif
+                    
                 }
             }
         }
@@ -58,6 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool TutorialEnabled
         {
             get{
+				#if RELEASE
+				DONTBUILD
+					#endif
+					return false;
+				
                 if ( _data.TutorialEnabled.HasValue )
                 {
                     return _data.TutorialEnabled.Value;

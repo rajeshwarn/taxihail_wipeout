@@ -6,11 +6,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class OrderCreated : VersionedEvent
     {
-        public OrderCreated()
-        {
-            Settings = new BookingSettings();    
-        }
-
         public Guid AccountId { get; set; }
 
         public int IBSOrderId { get; set; }
@@ -22,8 +17,6 @@ namespace apcurium.MK.Booking.Events
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
-
-        public BookingSettings Settings { get; set; }
         
     }
 }

@@ -10,6 +10,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,6 +34,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Initialize();
         }
+
+		public static Action NoAction = () => { };
+
+		protected IBookingService BookingService{
+			get{
+				return TinyIoCContainer.Current.Resolve<IBookingService> ();
+			}
+		}
+		
+		protected ILocationService LocationService{
+			get{
+				return TinyIoCContainer.Current.Resolve<ILocationService> ();
+			}
+		}
+
+		protected IAccountService AccountService{
+			get{
+				return TinyIoCContainer.Current.Resolve<IAccountService> ();
+			}
+		}
 
         protected ILogger Logger { get; private set; }
 

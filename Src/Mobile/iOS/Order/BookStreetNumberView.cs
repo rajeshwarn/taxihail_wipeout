@@ -49,12 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStreetName.TextColor = AppStyle.DarkText;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
             AppButtons.FormatStandardButton((GradientButton)btnPlaces, Resources.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
-
-            AppButtons.FormatStandardButton((GradientButton)btnClear, Resources.GetValue("DeleteAddressBt"), AppStyle.ButtonColor.Red, "Assets/Search/cancel.png", null);
-
             ((GradientButton)btnSearch).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
             ((GradientButton)btnPlaces).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-            ((GradientButton)btnClear).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
 
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();
@@ -80,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
                 { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},               
                 { btnPlaces, "{'TouchUpInside': {'Path': 'NavigateToPlaces'}}" },
-                { btnClear, "{'TouchUpInside': {'Path': 'DeleteAddressCommand'}}" },
                 { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
             });
             

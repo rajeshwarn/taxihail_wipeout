@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		protected override void OnFinishInflate ()
 		{
-
 			base.OnFinishInflate();
 			var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
 			var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
@@ -141,9 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			set {
 				if(value != null)
 				{
-					var data = value.Select(i => i.Id == ListItem.NullId 
-					                        ? ListItemData.NullListItemData 
-					                        : new ListItemData { Key = i.Id, Value = i.Display, Image = i.Image }).ToList();
+					var data = value.Select(i => new ListItemData { Key = i.Id, Value = i.Display, Image = i.Image }).ToList();
 					_adapter.Clear();
 					foreach (var item in data) {
 						_adapter.Add(item);

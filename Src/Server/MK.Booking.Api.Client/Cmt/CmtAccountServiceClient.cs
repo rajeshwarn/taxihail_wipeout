@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             throw new NotImplementedException ();
         }
 
-        public void RemoveCreditCard (Guid creditCardId)
+        public void RemoveCreditCard (Guid creditCardId, string todo)
         {
             throw new NotImplementedException ();
         }

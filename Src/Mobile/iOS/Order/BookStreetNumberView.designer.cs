@@ -12,9 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookStreetNumberView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnClear { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnPlaces { get; set; }
 
 		[Outlet]
@@ -34,11 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnClear != null) {
-				btnClear.Dispose ();
-				btnClear = null;
-			}
-
 			if (btnPlaces != null) {
 				btnPlaces.Dispose ();
 				btnPlaces = null;

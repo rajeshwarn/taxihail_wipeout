@@ -205,6 +205,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
+        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
+        {
+
+            RunOnUiThread(() =>
+            {
+                var param = new Dictionary<string, object>() {{"order", data}, {"orderInfo", orderInfo}};
+                ViewModel.NavigateToOrderStatus.Execute(param);
+            });
+        }
+
 		protected override void OnDestroy ()
 		{
 			base.OnDestroy ();

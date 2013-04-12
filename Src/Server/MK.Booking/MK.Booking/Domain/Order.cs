@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
             base.Handles<OrderRated>(OnOrderRated);
             base.Handles<PaymentInformationSet>(OnPaymentInformationSet);
-            base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -49,7 +48,6 @@ namespace apcurium.MK.Booking.Domain
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
                 DropOffAddress = dropOffAddress,
-                Settings =  settings,
                 CreatedDate = DateTime.Now,                
             });
         }
@@ -85,13 +83,14 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new OrderCancelled());
         }
 
-        public void Complete(double? fare, double? tip, double? toll)
+        public void Complete(DateTime date, double? fare, double? tip, double? toll)
         {
             if(_status != OrderStatus.Completed)
             {
                 
                 this.Update(new OrderCompleted
                                 {
+                                    Date = date,
                                     Fare = fare,
                                     Toll = toll,
                                     Tip = tip
@@ -116,19 +115,6 @@ namespace apcurium.MK.Booking.Domain
                                RatingScores = ratingScores
                            });
             }
-        }
-
-        public void ChangeStatus(OrderStatusDetail status)
-        {
-            Update(new OrderStatusChanged
-            {
-                Status = status
-            });
-        }
-
-        private void OnOrderStatusChanged(OrderStatusChanged status)
-        {
-           
         }
 
         private void OnOrderCreated(OrderCreated obj)
@@ -160,7 +146,5 @@ namespace apcurium.MK.Booking.Domain
         {
 
         }
-
-        
     }
 }

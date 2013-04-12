@@ -15,6 +15,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Common.Web;
+using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
+using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 using System.Net;
 
 

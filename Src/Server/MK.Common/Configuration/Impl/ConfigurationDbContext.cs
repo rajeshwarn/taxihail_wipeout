@@ -35,7 +35,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             var entry = this.Entry(entity);
 
-            if (entry.State == System.Data.Entity.EntityState.Detached)
+            if (entry.State == System.Data.EntityState.Detached)
                 this.Set<T>().Add(entity);
 
             this.SaveChanges();

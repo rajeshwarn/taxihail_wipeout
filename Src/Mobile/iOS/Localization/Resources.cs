@@ -978,30 +978,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue("ViewRatingBtn"); }
 		}
-        public static string DriverInfoDriver 
-        {
-            get { return GetValue("DriverInfoDriver"); }
-        }
-        public static string DriverInfoLicence 
-        {
-            get { return GetValue("DriverInfoLicence"); }
-        }
-        public static string DriverInfoTaxiType 
-        {
-            get { return GetValue("DriverInfoTaxiType"); }
-        }
-        public static string DriverInfoMake 
-        {
-            get { return GetValue("DriverInfoMake"); }
-        }
-        public static string DriverInfoModel 
-        {
-            get { return GetValue("DriverInfoModel"); }
-        }
-        public static string DriverInfoColor 
-        {
-            get { return GetValue("DriverInfoColor"); }
-        }
 
         public List<TutorialItemModel> GetTutorialItemsList()
         {
