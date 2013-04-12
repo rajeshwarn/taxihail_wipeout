@@ -49,19 +49,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void Start (bool firstStart)
 		{
 			base.Start (firstStart);
-			//#if RELEASE
-			//DONTBUILD
-//#endif
-			//	SignIn();
+#if DEBUG
+			SignIn();
+#endif
+		
 		}
    
         public override void Load()
         {
             base.Load();
-#if DEBUG
-            //Email = "john@taxihail.com";
-            //Password = "password";
-#endif
+
         }
 
         private void CheckVersion()

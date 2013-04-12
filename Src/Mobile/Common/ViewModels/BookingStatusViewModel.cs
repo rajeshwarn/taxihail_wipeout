@@ -32,10 +32,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-//#if RELEASE
-//		Dont build
-//#endif
+#if DEBUG
+			
+		private const int _refreshPeriod = 5 ; //20 sec
+#else
 		private const int _refreshPeriod = 20 ; //20 sec
+#endif
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
 
