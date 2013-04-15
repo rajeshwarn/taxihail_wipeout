@@ -25,6 +25,7 @@ using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-#if DEBUG
-			
+#if DEBUG			
 		private const int _refreshPeriod = 5 ; //20 sec
 #else
 		private const int _refreshPeriod = 20 ; //20 sec
@@ -266,13 +266,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap ();
 
+#if DEBUG
+					status.IBSStatusId = VehicleStatuses.Common.Arrived;
+					status.IBSStatusDescription = "Arrived!!!???";
+#endif
 		
-					IsPayButtonVisible = 
-							  status.IBSStatusId == VehicleStatuses.Common.Arrived
-							||status.IBSStatusId == VehicleStatuses.Common.Done
-							||status.IBSStatusId == VehicleStatuses.Common.Loaded;
-
-					IsCancelButtonVisible = !IsPayButtonVisible;
+					UpdatePayCancelButtons(status.IBSStatusId);
 
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
 						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
@@ -290,10 +289,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
-		private void Rate(){
-
+		void UpdatePayCancelButtons (string statusId)
+		{
+			IsPayButtonVisible = statusId == VehicleStatuses.Common.Arrived
+					||statusId == VehicleStatuses.Common.Done
+					||statusId == VehicleStatuses.Common.Loaded;
+			
+			IsCancelButtonVisible = !IsPayButtonVisible;
 		}
+
         private void ShowThankYouDialog ()
         {
 			var hub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ();
@@ -319,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Action sendRecieptAction = () =>
 			{
 				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-					TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
+					BookingService.SendReceipt (Order.Id);
 				}
 			};
 
@@ -395,10 +399,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
 	                        try 
 	                        {
-
 	                            MessageService.ShowProgress (true);
 
-	                            var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().CancelOrder (Order.Id);      
+	                            var isSuccess = BookingService.CancelOrder (Order.Id);      
 	                            if (isSuccess) 
 	                            {
 	                                MessengerHub.Publish (new OrderCanceled (this, Order, null));
@@ -418,6 +421,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public IMvxCommand PayForOrderCommand 
+		{
+			get {
+				return GetCommand (() =>
+					{ 
+					RequestNavigate<ConfirmCarNumberViewModel>(new { order = Order.ToJson() }, false, MvxRequestedBy.UserAction);
+					});
+				}
+		}
 
         public IMvxCommand CallCompany {
             get {

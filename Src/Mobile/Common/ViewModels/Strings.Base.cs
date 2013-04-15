@@ -67,7 +67,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("CancelBoutton");
 			}
 		}
-
+		
+		public static string ContinueButtonText {
+			get{				
+				return _r.GetString ("ContinueButton");
+			}
+		}
 	}
     
 }

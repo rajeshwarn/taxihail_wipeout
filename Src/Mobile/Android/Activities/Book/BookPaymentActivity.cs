@@ -16,8 +16,8 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity(Label = "BookPaymentSettingsActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class BookPaymentSettingsActivity : BaseBindingActivity<BookPaymentSettingsViewModel>
+	[Activity(Label = "BookPaymentActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	public class BookPaymentActivity : BaseBindingActivity<BookPaymentViewModel>
 	{
 		protected override int ViewTitleResourceId
 		{
@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 		TextView _tipAmountTextView;
-		TextView _meterAmountTextView;
+		EditText _meterAmountTextView;
 		TextView _totalAmountTextView;
 		SeekBar _seekBar;
 
@@ -56,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 		}
 
+
+		static bool IsTextChangedCausedByThisHandler = false;
 		protected override void OnStart ()
 		{
 			base.OnStart ();
@@ -66,14 +68,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			UpdateAmounts();
 
-			_meterAmountTextView.TextChanged += (sender, e) => {
+
+
+			_meterAmountTextView.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>  {
 				UpdateAmounts();
+			};
+
+
+			_meterAmountTextView.EditorAction+= (sender, e) => {
+				e.Handled = false;
+				MeterAmount = MeterAmount;//format				
 			};
 
 			_seekBar.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) => {
 
 				_seekBar.Progress = (int)(Math.Round(e.Progress/5.0)*5);
-
 				UpdateAmounts();
 			};
 
@@ -87,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void OnViewModelSet()
 		{            
-			SetContentView(Resource.Layout.View_BookPaymentSettings);
+			SetContentView(Resource.Layout.View_BookPayment);
 			ViewModel.Load();		
 		}
 	}

@@ -59,7 +59,7 @@
                         android:id="@+id/statusInfoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Order #"
+                        android:text="@string/OrderNumber"
                         android:gravity="center_horizontal|center_vertical"
                         style="@style/BigTitleText"
                         android:layout_gravity="center_horizontal|top"
@@ -98,7 +98,7 @@
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
                         android:text="@string/StatusPayButton"
-                        local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility':{'Path':'IsPayButtonVisible', 'Converter':'Visibility'}}" />
+                        local:MvxBind="{'Click': {'Path': 'PayForOrderCommand'}, 'Visibility':{'Path':'IsPayButtonVisible', 'Converter':'Visibility'}}" />
                     <apcurium.mk.booking.mobile.client.controls.StyledButton
                         local:ButtonStyle="Black"
                         android:id="@+id/CallBtn"

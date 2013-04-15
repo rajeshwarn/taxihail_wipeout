@@ -384,4 +384,7 @@
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="PassengerPhoneLabel">Phone</string>
   <string name="EditDetails">Edit Details</string>
+  
+  
+  <string name="OrderNumber">Order #</string>  
 </resources>
