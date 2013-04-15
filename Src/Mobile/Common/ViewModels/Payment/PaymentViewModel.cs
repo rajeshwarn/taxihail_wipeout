@@ -46,9 +46,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set;
         }
 
-		public void ConfirmPaymentForDriver(){
+		public bool ConfirmPaymentForDriver(){
 			
-			VehicleClient.SendMessageToDriver(Str.GetPaymentConfirmationMessageToDriver(Amount))
+			return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
 		}
 
 		public void ShowConfirmation()
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble);
 
-					if(!VehicleClient.ServerCanSendMessage())
+					if(!ConfirmPaymentForDriver())
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
 						MessageService.ShowProgress(false);

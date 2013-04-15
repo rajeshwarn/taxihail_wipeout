@@ -4,9 +4,7 @@ namespace apcurium.MK.Booking.Mobile
 {
 	public interface IVehicleClient
 	{		
-		void SendMessageToDriver(string message);
-
-		bool ServerCanSendMessage ();
+		bool SendMessageToDriver(string carNumber, string message);
 	}
 }
 

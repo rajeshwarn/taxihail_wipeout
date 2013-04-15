@@ -97,8 +97,6 @@
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
     <Compile Include="IPaymentClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
-    <Compile Include="RequestResponse\SendMessageToDriverRequest.cs" />
-    <Compile Include="RequestResponse\SendMessageToDriverResponse.cs" />
     <Compile Include="IVehicleClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -118,8 +116,5 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RequestResponse\" />
   </ItemGroup>
 </Project>
