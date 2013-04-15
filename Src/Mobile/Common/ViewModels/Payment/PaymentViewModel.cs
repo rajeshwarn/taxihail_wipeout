@@ -46,6 +46,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set;
         }
 
+		public void ConfirmPaymentForDriver(){
+			
+			VehicleClient.SendMessageToDriver(Str.GetPaymentConfirmationMessageToDriver(Amount))
+		}
+
 		public void ShowConfirmation()
 		{
 			MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, Str.CmtTransactionSuccessMessage,
@@ -71,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowProgress(false);
 						return;
 					}
-
 					if(AmountDouble <= 0)
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
@@ -83,9 +87,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble);
 
-
-					//TODO Ping taxi server
-
+					if(!VehicleClient.ServerCanSendMessage())
+					{
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+						MessageService.ShowProgress(false);
+						return;
+					}
+					
 					if(transactionId <= 0 || !PaymentClient.CommitPreAuthorized(transactionId))
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
@@ -93,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-					//TODO notify payment
+					ConfirmPaymentForDriver();
 
 					MessageService.ShowProgress(false);
 					ShowConfirmation();

@@ -272,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.IBSStatusId = VehicleStatuses.Common.Arrived;
 					status.IBSStatusDescription = "Arrived!!!???";
 #endif
-		
+
 					UpdatePayCancelButtons(status.IBSStatusId);
 
                     if (OrderStatusDetail.IBSOrderId.HasValue) {

@@ -62,6 +62,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		protected IVehicleClient VehicleClient{
+			get{
+				return TinyIoCContainer.Current.Resolve<IVehicleClient> ();
+			}
+		}
         protected ILogger Logger { get; private set; }
 
         protected IMessageService MessageService { get; private set; }
