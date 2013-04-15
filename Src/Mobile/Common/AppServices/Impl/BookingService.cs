@@ -19,6 +19,7 @@ using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common;
+using MK.Common.Android;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -38,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected ICacheService Cache {
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
+
         public OrderValidationResult ValidateOrder (CreateOrder order)
         {
             var validationResut = new OrderValidationResult ();
@@ -48,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
             return validationResut;
         }
+
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail ();
@@ -106,9 +109,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
  
 
-//#if DEBUG 
-//		static int counter = 0;
-//#endif
 
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
@@ -118,24 +118,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 r = service.GetOrderStatus (orderId);
             }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
-
-			/*
-			counter++;
-			if(counter >1)
-			{
-				r.IBSStatusId = VehicleStatuses.Common.Arrived;
-				r.IBSStatusDescription = "taxi Arrived";
-				if(counter> 2){
-					r.IBSStatusId = VehicleStatuses.Common.Loaded;
-					r.IBSStatusDescription = "passenger loaded in car";
-					counter = 0;
-					if(counter> 3){
-						r.IBSStatusId =VehicleStatuses.Common.Done;
-						r.IBSStatusDescription = "fin.";
-					}
-				}
-
-			}*/
 
             return r;
         }
@@ -286,6 +268,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
+
+		
+
 
     }
 }

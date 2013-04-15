@@ -373,6 +373,7 @@
   <string name="PaymentDetails.CreditCardLabel">Credit Card</string>
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
   <string name="ReminderTitle">{0} Booked</string>
+  <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>  
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="RemoveCreditCardTitle">Remove credit card</string>
   <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>

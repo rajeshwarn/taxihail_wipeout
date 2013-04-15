@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
 			TinyIoCContainer.Current.Register<IPaymentClient>((c, p) => new CmtPaymentClient(c.Resolve<IConfigurationManager>(), true));
+			TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
 
             TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;

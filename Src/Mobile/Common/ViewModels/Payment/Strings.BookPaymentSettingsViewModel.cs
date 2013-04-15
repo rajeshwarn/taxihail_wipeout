@@ -68,6 +68,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("CmtTransactionResendConfirmationButtonText");
 			}
 		}
+		
+		public static string TaxiServerDownMessage {
+			get{				
+				return _r.GetString ("ServerDownMessage");
+			}
+		}
+
+
+		public static string GetPaymentConfirmationMessageToDriver(string formattedAmount)
+		{
+			return  string.Format (_r.GetString ("PaymentConfirmationMessageToDriver"), formattedAmount);		
+		}
+
+
 
 		public static string GetServerErrorCreatingOrder(int phoneNumberId)
 		{
