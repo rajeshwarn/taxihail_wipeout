@@ -4,9 +4,8 @@ namespace MK.Common.Android
 {
 	public class SendMessageToDriverResponse
 	{
-		public SendMessageToDriverResponse ()
-		{
-		}
+
+        public bool Success { get; set; }
 	}
 }
 

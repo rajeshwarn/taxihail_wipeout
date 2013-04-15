@@ -21,10 +21,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			throw new System.NotImplementedException ();
 		}
          
-		public SendMessageToDriverResponse SendMessage(string message)
+		public SendMessageToDriverResponse SendMessage(string carNumber, string message)
         {
-			var result = Client.Get<SendMessageToDriverResponse>(new SendMessageToDriverRequest(){
-				Message = message
+			var result = Client.Get(new SendMessageToDriverRequest(){
+				Message = message,
+
 			});
             return result;
         }

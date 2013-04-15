@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.IBS
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 
-        
-
+        bool SendMessageToDriver(string carId, string message);
     }
 }

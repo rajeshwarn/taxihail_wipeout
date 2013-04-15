@@ -14,8 +14,6 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    
-
     public class RuleDeactivateService : RestServiceBase<RuleDeactivateRequest>
     {
         private readonly ICommandBus _commandBus;
