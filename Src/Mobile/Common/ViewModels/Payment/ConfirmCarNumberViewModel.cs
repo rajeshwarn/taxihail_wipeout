@@ -13,6 +13,14 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
+
+#if DEBUG
+			if(string.IsNullOrWhiteSpace(OrderStatus.VehicleNumber))
+			{
+				OrderStatus.VehicleNumber = "Test1234";
+			}
+#endif
+
 		}
 
 		Order Order {get; set;}
@@ -33,7 +41,13 @@ namespace apcurium.MK.Booking.Mobile
 			get {
 				return GetCommand (() =>
 				{ 
-					RequestNavigate<BookPaymentViewModel>(new { order = Order.ToJson() }, false, MvxRequestedBy.UserAction);
+					RequestNavigate<BookPaymentViewModel>(
+							new 
+							{ 
+								order = Order.ToJson(),
+								orderStatus = OrderStatus.ToJson(),
+							}, 
+							false, MvxRequestedBy.UserAction);
 				});
 			}
 		}

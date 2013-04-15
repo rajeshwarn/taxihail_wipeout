@@ -40,7 +40,7 @@
             android:gravity="center"
             android:selectAllOnFocus="true"
             android:inputType="textPhonetic"
-            android:numeric="integer" />
+            local:MvxBind="{'Text':{'Path':'CarNumber'}}" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="50dp"

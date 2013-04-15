@@ -50,8 +50,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if(value != _selectedCreditCardId)
                 {
                     _selectedCreditCardId = value;
-                    FirePropertyChanged("SelectedCreditCardId");
-                    FirePropertyChanged("SelectedCreditCard");
+                    FirePropertyChanged(()=>SelectedCreditCardId);
+					FirePropertyChanged(()=>SelectedCreditCard);
                 }
 
             }
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if(value != _isTipInPercent)
                 {
                     _isTipInPercent = value;
-                    FirePropertyChanged("IsTipInPercent");
+					FirePropertyChanged(()=>IsTipInPercent);
                 }
             }
         }
@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         CreditCards.Add(card);
                     }
                     // refresh selected credit card
-                    FirePropertyChanged("SelectedCreditCard");
+					FirePropertyChanged(()=>SelectedCreditCard);
                 });
             }).HandleErrors();
 
