@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         private readonly IConfigurationManager _appSettings;
 
         public CmtPaymentClient(IConfigurationManager appSettings, bool acceptAllHttps=false)
-			: base(acceptAllHttps, appSettings.GetSetting("Proxy"))
+			: base(acceptAllHttps)
         {
             _appSettings = appSettings;
         }

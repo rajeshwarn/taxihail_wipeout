@@ -48,7 +48,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool ConfirmPaymentForDriver(){
 			
-			return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
+			try
+			{
+				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
+			}
+			catch{
+				return false;
+			}
 		}
 
 		public void ShowConfirmation()
@@ -72,14 +78,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {                    
 					if(PaymentPreferences.SelectedCreditCard == null)
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
 						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
 						return;
 					}
 					if(AmountDouble <= 0)
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
 						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
 						return;
 					}
 
@@ -89,15 +95,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					if(!ConfirmPaymentForDriver())
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
 						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
 						return;
 					}
 					
 					if(transactionId <= 0 || !PaymentClient.CommitPreAuthorized(transactionId))
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
 						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
 						return;
 					}
 
