@@ -355,6 +355,7 @@
   <string name="PaymentDetails.Optional">(Optional)</string>
   <string name="CreditCardExpYear">Exp. Year</string>
   <string name="NoCreditCardSelected">Please select a credit card</string>
+  <string name="NoAmountSelectedMessage">Please enter the amount</string>
   <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
@@ -384,7 +385,7 @@
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="PassengerPhoneLabel">Phone</string>
   <string name="EditDetails">Edit Details</string>
-  
+  <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   
   <string name="OrderNumber">Order #</string>  
 </resources>

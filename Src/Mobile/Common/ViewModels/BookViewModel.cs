@@ -614,20 +614,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+		private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
+		{
+			RequestNavigate<BookingStatusViewModel>(new
+			                                        {
+				order = data.ToJson(),
+				orderStatus = orderInfo.ToJson()
+			});
+		}
+
 
         private void CompleteOrder(CreateOrder order)
         {   
             NewOrder();
         }
 
-        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
-        {
-            RequestNavigate<BookingStatusViewModel>(new
-            {
-                order = data.ToJson(),
-                orderStatus = orderInfo.ToJson()
-            });
-        }
+
 
     }
 }

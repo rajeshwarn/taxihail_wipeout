@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.Views;
 using ServiceStack.Common;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
+using MK.Booking.Api.Client.Android;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -544,7 +545,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardTokenizationService> ();
+			var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentClient> ();
 
 			int responseCode;
 			do{
