@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using Microsoft.Practices.Unity;
@@ -11,12 +12,13 @@ using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Web.Tests;
 
 
 namespace apcurium.CMT.Web.Tests
 {
     [TestFixture]
-    public class CmtPaymentServiceClientFixture 
+    public class CmtPaymentServiceClientFixture
     {
         [TestFixtureSetUp]
         public void TestFixtureSetup()
@@ -179,5 +181,8 @@ namespace apcurium.CMT.Web.Tests
                 Assert.Inconclusive("Currency Codes dont match");
             }
         }
+
+
+
     }
 }

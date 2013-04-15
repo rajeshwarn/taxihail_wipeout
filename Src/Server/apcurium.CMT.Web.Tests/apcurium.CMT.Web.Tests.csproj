@@ -75,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\apcurium.MK.Web.Tests\apcurium.MK.Web.Tests.csproj">
+      <Project>{9C75BF3A-6A8B-44CA-B010-727ACD40F677}</Project>
+      <Name>apcurium.MK.Web.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Client\MK.Booking.Api.Client.csproj">
       <Project>{304f8e9e-0e9c-40f4-81fb-e7558286c5c1}</Project>
       <Name>MK.Booking.Api.Client</Name>

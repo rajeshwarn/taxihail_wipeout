@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		 
 		public SendMessageToDriverResponse SendMessage(string carNumber, string message)
         {
-			var result = Client.Get(new SendMessageToDriverRequest(){
+			var result = Client.Post(new SendMessageToDriverRequest(){
 				Message = message,
-
+				CarNumber = carNumber
 			});
             return result;
         }
