@@ -9,11 +9,24 @@ namespace apcurium.MK.Booking.Mobile
 {
 	public class ConfirmCarNumberViewModel : BaseViewModel
 	{
-		public ConfirmCarNumberViewModel (string order)
+		public ConfirmCarNumberViewModel (string order, string orderStatus)
 		{
+			Order = order.FromJson<Order>();
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 		}
 
 		Order Order {get; set;}
+		OrderStatusDetail OrderStatus {get; set;}
+
+		public string CarNumber{
+			get{
+				return OrderStatus.VehicleNumber;
+			}
+			set{
+				OrderStatus.VehicleNumber = value;
+			}
+		}
+
 
 		public IMvxCommand ConfirmTaxiNumber 
 		{
