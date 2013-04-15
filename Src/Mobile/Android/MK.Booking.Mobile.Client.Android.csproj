@@ -237,7 +237,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
     <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
@@ -263,14 +262,12 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
-    <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
-      <DependentUpon>View_CreditCardsList.axml</DependentUpon>
-    </Compile>
     <AndroidResource Include="Resources\Layout\View_BookPayment.axml" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
