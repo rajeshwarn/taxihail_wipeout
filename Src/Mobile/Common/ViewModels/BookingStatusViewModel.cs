@@ -427,7 +427,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
-					RequestNavigate<ConfirmCarNumberViewModel>(new { order = Order.ToJson() }, false, MvxRequestedBy.UserAction);
+						
+						RequestNavigate<ConfirmCarNumberViewModel>(
+						new 
+						{ 
+							order = Order.ToJson(),
+							orderStatus = OrderStatusDetail.ToJson()
+						}, false, MvxRequestedBy.UserAction);
 					});
 				}
 		}

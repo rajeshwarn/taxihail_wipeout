@@ -16,9 +16,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookPaymentViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
     {
 
-        public BookPaymentViewModel (string order)
+        public BookPaymentViewModel (string order, string orderStatus)
         {
-            Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
+			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order); 
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 
             var account = AccountService.CurrentAccount;
             var paymentInformation = new PaymentInformation 
@@ -28,9 +29,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+
+			Amount = 0;
         }
 
-        CreateOrder Order { get; set; }
+		CreateOrder Order { get; set; }
+		OrderStatusDetail OrderStatus {get; set;}
+
+		public double Amount { get; set;}
 
         public PaymentDetailsViewModel PaymentPreferences {
             get;
@@ -45,6 +51,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                 {                    
 					if(PaymentPreferences.SelectedCreditCard == null)
+					{
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
+						return;
+					}
+
+					if(Amount == null)
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
 						return;
@@ -88,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
                         }       
                         
-                    } catch (Exception ex) {
+                    } catch (Exception) {
                         InvokeOnMainThread (() =>
 						{
                             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();

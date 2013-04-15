@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<RideSettingsViewModel> (new { bookingSettings=  _accountService.CurrentAccount.Settings.ToJson()  });
+                    RequestNavigate<RideSettingsViewModel> (new { bookingSettings = _accountService.CurrentAccount.Settings.ToJson()  });
                 });
             }
         }
