@@ -46,6 +46,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public static string OkButtonText {
+			get{				
+				return _r.GetString("OkButtonText");
+			}
+		}
+
 		public static string NoButtonText {
 			get{				
 				return _r.GetString("NoButton");

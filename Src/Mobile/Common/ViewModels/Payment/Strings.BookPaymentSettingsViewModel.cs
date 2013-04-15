@@ -53,6 +53,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public static string CmtTransactionSuccessMessage {
+			get{				
+				return _r.GetString ("CmtTransactionSuccessMessage");
+			}
+		}
+		public static string CmtTransactionSuccessTitle {
+			get{				
+				return _r.GetString ("CmtTransactionSuccessTitle");
+			}
+		}
+		public static string CmtTransactionResendConfirmationButtonText {
+			get{				
+				return _r.GetString ("CmtTransactionResendConfirmationButtonText");
+			}
+		}
+
 		public static string GetServerErrorCreatingOrder(int phoneNumberId)
 		{
 			return  string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _appSettings.PhoneNumberDisplay (phoneNumberId));

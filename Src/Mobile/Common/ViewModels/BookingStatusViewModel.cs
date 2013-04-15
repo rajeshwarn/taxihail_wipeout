@@ -220,8 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder (OrderStatusDetail status)
         {
-			if (status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) 
-			    && !_hasSeenReminder
+			if (!_hasSeenReminder
 				&& this.PhoneService.CanUseCalendarAPI())
             {
                 this._hasSeenReminder = true;
@@ -248,7 +247,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var status = BookingService.GetOrderStatus (Order.Id);
 				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
 
-                AddReminder(status);
+				if(status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				{
+					AddReminder(status);
+				}
 
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        

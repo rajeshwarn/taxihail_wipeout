@@ -97,8 +97,9 @@ namespace MK.Booking.Api.Client.Android.Client
 			{
 				webRequest.Proxy=Proxy;
 			}
-
-			//webRequest.Proxy = new WebProxy("192.168.12.143",8888);
+#if DEBUG
+		//	webRequest.Proxy = new WebProxy("192.168.12.147",8888);
+#endif
 
 			LocalHttpWebRequestFilter(webRequest);
 			

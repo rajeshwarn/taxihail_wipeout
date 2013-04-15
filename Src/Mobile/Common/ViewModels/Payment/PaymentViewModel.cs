@@ -11,19 +11,21 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookPaymentViewModel : BaseViewModel
+    public class PaymentViewModel : BaseViewModel
     {
 
-        public BookPaymentViewModel (string order, string orderStatus)
+		public PaymentViewModel (string order, string orderStatus)
         {
+
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
 
             var account = AccountService.CurrentAccount;
-            var paymentInformation = new PaymentInformation 
+			var paymentInformation = new PaymentInformation 
 			{
                 CreditCardId = account.DefaultCreditCard,
                 TipAmount = account.DefaultTipAmount,
@@ -43,6 +45,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get;
             private set;
         }
+
+		public void ShowConfirmation()
+		{
+			MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, Str.CmtTransactionSuccessMessage,
+			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
+			{						
+				ShowConfirmation();
+			},
+			Str.OkButtonText, ()=>{
+				RequestClose(this);         
+			});
+		}
 
         public IMvxCommand ConfirmOrderCommand
         {
@@ -72,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					//TODO Ping taxi server
 
-					if(transactionId <= 0 || PaymentClient.CommitPreAuthorized(transactionId))
+					if(transactionId <= 0 || !PaymentClient.CommitPreAuthorized(transactionId))
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
 						MessageService.ShowProgress(false);
@@ -81,7 +95,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					//TODO notify payment
 
-                    
+					MessageService.ShowProgress(false);
+					ShowConfirmation();
+					          
 
                 }); 
                 

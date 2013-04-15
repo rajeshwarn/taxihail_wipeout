@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         private readonly IConfigurationManager _appSettings;
 
         public CmtPaymentClient(IConfigurationManager appSettings, bool acceptAllHttps=false)
-            : base(acceptAllHttps)
+			: base(acceptAllHttps, appSettings.GetSetting("Proxy"))
         {
             _appSettings = appSettings;
         }
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 		public long PreAuthorize (string cardToken, double amount)
 		{
 			var response = PreAuthorizeTransaction(cardToken,amount);
-			if(response.ResponseCode == 0)
+			if(response.ResponseCode > 0)
 			{
 				return response.TransactionId;
 			}
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 		}
 		public bool CommitPreAuthorized (long transactionId)
 		{
-			return CapturePreAuthorized(transactionId).ResponseCode == 0;
+			return CapturePreAuthorized(transactionId).ResponseCode > 0;
 		}
     }
 }
