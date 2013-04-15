@@ -25,6 +25,7 @@ using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using System.Threading.Tasks;
+using MK.Booking.Api.Client.Android;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -45,34 +46,27 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
 
 			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => 
-			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<ICreditCardTokenizationService>()),
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentClient>()),
 			                                                         "NotAuthenticated");
 
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
-			                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<ICreditCardTokenizationService>()),
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentClient>()),
 			                         "Authenticate");
 
-			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<ICreditCardTokenizationService>()));
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentClient>()));
 
 			TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-
-            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-            
+            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));            
             TinyIoCContainer.Current.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-
             TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
-
             TinyIoCContainer.Current.Register<ITutorialService, TutorialService>();
-
-
-
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -85,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
-			TinyIoCContainer.Current.Register<ICreditCardTokenizationService>((c, p) => new CmtPaymentClient(c.Resolve<IConfigurationManager>(), true));
+			TinyIoCContainer.Current.Register<IPaymentClient>((c, p) => new CmtPaymentClient(c.Resolve<IConfigurationManager>(), true));
 
 
             TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public bool CanChangeServiceUrl{ get; set; }
         public bool CanChooseProvider { get; set; }
-        public string ServiceUrl { get; set; }
+		public string ServiceUrl { get; set; }
 
         public string DefaultPhoneNumber { get; set; }
         public string DefaultPhoneNumberDisplay { get; set; }

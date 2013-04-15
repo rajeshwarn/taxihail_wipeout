@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         public static string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production
 #endif
 
-        public CmtPaymentServiceClient(bool acceptAllHttps)
+        public CmtPaymentServiceClient(bool acceptAllHttps, string proxyUrl)
         {
-            Client = new CustomXmlServiceClient(BASE_URL, acceptAllHttps)
+            Client = new CustomXmlServiceClient(BASE_URL, acceptAllHttps, new WebProxy(proxyUrl))
             {
                 Timeout = new TimeSpan(0, 0, 0, 20, 0),
                 LocalHttpWebRequestFilter = r=>SignRequest(r)

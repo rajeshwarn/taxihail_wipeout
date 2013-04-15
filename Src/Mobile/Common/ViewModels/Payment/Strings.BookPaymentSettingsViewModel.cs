@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public partial class Str
 	{
-		
 		public static string ErrorCreatingOrderTitle {
 			get{				
 				return _r.GetString ("ErrorCreatingOrderTitle");
@@ -41,11 +40,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("NoCreditCardSelected");
 			}
 		}
+
+		public static string NoAmountSelectedMessage {
+			get{				
+				return _r.GetString ("NoAmountSelectedMessage");
+			}
+		}
+		
+		public static string CmtTransactionErrorMessage {
+			get{				
+				return _r.GetString ("CmtTransactionErrorMessage");
+			}
+		}
+
+		public static string CmtTransactionSuccessMessage {
+			get{				
+				return _r.GetString ("CmtTransactionSuccessMessage");
+			}
+		}
+		public static string CmtTransactionSuccessTitle {
+			get{				
+				return _r.GetString ("CmtTransactionSuccessTitle");
+			}
+		}
+		public static string CmtTransactionResendConfirmationButtonText {
+			get{				
+				return _r.GetString ("CmtTransactionResendConfirmationButtonText");
+			}
+		}
+
 		public static string GetServerErrorCreatingOrder(int phoneNumberId)
 		{
 			return  string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _appSettings.PhoneNumberDisplay (phoneNumberId));
 			
 		}
+
 	
 
 	}

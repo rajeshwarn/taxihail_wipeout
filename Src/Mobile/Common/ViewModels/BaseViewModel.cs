@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using MK.Booking.Api.Client.Android;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -52,6 +53,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		protected IAccountService AccountService{
 			get{
 				return TinyIoCContainer.Current.Resolve<IAccountService> ();
+			}
+		}
+
+		protected IPaymentClient PaymentClient{
+			get{
+				return TinyIoCContainer.Current.Resolve<IPaymentClient> ();
 			}
 		}
 

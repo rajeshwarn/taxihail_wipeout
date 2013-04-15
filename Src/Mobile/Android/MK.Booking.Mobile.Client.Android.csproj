@@ -262,12 +262,12 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
-    <AndroidResource Include="Resources\Layout\View_BookPayment.axml" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -533,7 +533,6 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
-    <Folder Include="Resources\Layout\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
