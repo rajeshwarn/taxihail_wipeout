@@ -33,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-#if DEBUG
-			
+#if DEBUG			
 		private const int _refreshPeriod = 5 ; //20 sec
 #else
 		private const int _refreshPeriod = 20 ; //20 sec
@@ -314,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Action sendRecieptAction = () =>
 			{
 				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-					TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
+					BookingService.SendReceipt (Order.Id);
 				}
 			};
 
@@ -413,12 +412,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public IMvxCommand PayCommand 
+		public IMvxCommand PayForOrderCommand 
 		{
 			get {
 				return GetCommand (() =>
 					{ 
-						RequestNavigate<BookPaymentViewModel>(new { order = Order.ToJson() }, false, MvxRequestedBy.UserAction);
+					RequestNavigate<ConfirmCarNumberViewModel>(new { order = Order.ToJson() }, false, MvxRequestedBy.UserAction);
 					});
 				}
 		}

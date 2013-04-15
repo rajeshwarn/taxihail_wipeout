@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:gravity="fill">
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please confirm your car"
+            style="@style/FormLabelText"
+            android:gravity="center" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="number with the driver"
+            style="@style/FormLabelText"
+            android:gravity="center" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="4585"
+            android:gravity="center"
+            android:selectAllOnFocus="true"
+            android:inputType="textPhonetic"
+            android:numeric="integer" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_weight="100" />
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
+            android:id="@+id/ConfirmBtn"
+            style="@style/ButtonText"
+            android:background="@drawable/green_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ConfirmButton"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            local:MvxBind="{'Click': {'Path': 'ConfirmTaxiNumber'}}"
+            android:layout_gravity="bottom"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="true" />
+    </LinearLayout>
+</LinearLayout>
