@@ -265,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void UpdateSettings (BookingSettings settings, Guid? creditCardId, double? tipAmount, double? tipPercent)
+        public void UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -275,7 +275,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
                 DefaultCreditCard = creditCardId,
-                DefaultTipAmount = tipAmount,
                 DefaultTipPercent = tipPercent
             };
 
@@ -287,7 +286,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var account = CurrentAccount;
             account.Settings = settings;
             account.DefaultCreditCard = creditCardId;
-            account.DefaultTipAmount = tipAmount;
             account.DefaultTipPercent = tipPercent;
             //Set to update the cache
             CurrentAccount = account;

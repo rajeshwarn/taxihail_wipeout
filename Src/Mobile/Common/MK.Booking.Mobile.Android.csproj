@@ -235,8 +235,6 @@
     <Compile Include="ViewModels\Payment\Strings.Base.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
-    <Compile Include="Binding\TextViewBinding.cs" />
-    <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

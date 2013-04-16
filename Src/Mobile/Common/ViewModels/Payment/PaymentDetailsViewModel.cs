@@ -28,12 +28,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             LoadCreditCards();
 
             SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
-            IsTipInPercent = paymentDetails.TipPercent.HasValue;
+
             Tip = paymentDetails.TipPercent.HasValue 
-                ? paymentDetails.TipPercent.Value.ToString(CultureInfo.InvariantCulture) 
-                : paymentDetails.TipAmount.HasValue 
-                    ? paymentDetails.TipAmount.Value.ToString(CultureInfo.InvariantCulture) 
-                    : string.Empty;
+                ? paymentDetails.TipPercent.Value 
+				: 0;
         }
 
         private readonly ObservableCollection<CreditCardDetails> _creditCards = new ObservableCollection<CreditCardDetails>();
@@ -76,57 +74,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private bool _isTipInPercent = true;
-        public bool IsTipInPercent {
-            get {
-                return _isTipInPercent;
-            }
-            set {
-                if(value != _isTipInPercent)
-                {
-                    _isTipInPercent = value;
-					FirePropertyChanged(()=>IsTipInPercent);
-                }
-            }
-        }
+		public int Tip 
+		{ 
+			get
+			{
+				return _tip;
+			}
+			set{
+				_tip = value;
+				FirePropertyChanged(()=>Tip);
+			}
+		}
 
-        private string _tip;
-        public string Tip {
-            get {
-                return _tip;
-            }
-            set {
-                if(value != _tip)
-                {
-                    _tip = value;
-                    FirePropertyChanged("Tip");
-                }
-            }
-        }
-
-        public double? TipDouble {
-            get {
-                double doubleValue;
-                return double.TryParse (Tip, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out doubleValue)
-                    ? doubleValue
-                    : default(double?);
-            }
-        }
-
-
+		public int _tip { get; set; }
 
         public apcurium.MK.Common.Entity.ListItem<Guid>[] GetCreditCardListItems ()
         {
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
-
-		public IMvxCommand TogglePercent {
-			get {
-				return GetCommand (()=>{
-					IsTipInPercent = !IsTipInPercent;
-				});
-			}
-		}
 
         public IMvxCommand NavigateToCreditCardsList {
             get {
@@ -165,18 +130,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                 });
             }
-        }
-
-        public bool ValidatePaymentSettings ()
-        {
-
-            if(!string.IsNullOrWhiteSpace(Tip) && !TipDouble.HasValue)
-            {
-                base.MessageService.ShowMessage (Resources.GetString ("PaymentDetails.InvalidDataTitle"), Resources.GetString ("PaymentDetails.InvalidTipAmount"));
-                return false;
-            }
-                        
-            return true;
         }
 
         public Task LoadCreditCards ()

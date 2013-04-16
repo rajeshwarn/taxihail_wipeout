@@ -13,6 +13,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		TextView _tipAmountTextView;
 		EditText _meterAmountTextView;
 		TextView _totalAmountTextView;
-		SeekBar _seekBar;
+		TipSlider _tipSlider;
 
 		public double TipAmount {
 			get{
@@ -56,12 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 		}
 
-
-		static bool IsTextChangedCausedByThisHandler = false;
 		protected override void OnStart ()
 		{
 			base.OnStart ();
-			_seekBar= FindViewById<SeekBar>(Resource.Id.seekBar);
+			_tipSlider = FindViewById<TipSlider>(Resource.Id.tipSlider);
 			_tipAmountTextView = FindViewById<TextView>(Resource.Id.tipAmountTextView);
 			_meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
 			_totalAmountTextView =  FindViewById<TextView>(Resource.Id.totalAmountTextView);
@@ -80,9 +79,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				MeterAmount = MeterAmount;//format				
 			};
 
-			_seekBar.ProgressChanged += (object sender, SeekBar.ProgressChangedEventArgs e) => {
-
-				_seekBar.Progress = (int)(Math.Round(e.Progress/5.0)*5);
+			_tipSlider.PercentChanged += (object sender, EventArgs e) => 
+			{
 				UpdateAmounts();
 			};
 
@@ -90,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void UpdateAmounts()
 		{
-			TipAmount = MeterAmount * ((((double)_seekBar.Progress)/100.00));			
+			TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));			
 			TotalAmount = MeterAmount + TipAmount;
 		}
 

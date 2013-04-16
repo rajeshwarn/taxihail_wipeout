@@ -2,6 +2,8 @@ using System;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.Interfaces;
+using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -20,7 +22,11 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			FireValueChanged(_control.Text);
 		}
-		
+
+		public static void Register (IMvxTargetBindingFactoryRegistry registry)
+		{
+			registry.RegisterFactory(new MvxCustomBindingFactory<TextView>("Text", cell => new TextViewBinding(cell)));
+		}		
 		
 		public override void SetValue (object value)
 		{
