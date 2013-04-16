@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.Mobile
 		public static void Load(IMvxTargetBindingFactoryRegistry registry)
 		{
 			//registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(TextViewBinding), typeof(TextView), "Text"));
-			registry.RegisterFactory(new MvxCustomBindingFactory<TextView>("Text", cell => new TextViewBinding(cell)));
+			TipSliderBinding.Register(registry);
+			TextViewBinding.Register(registry);
 		}
 	}
 }

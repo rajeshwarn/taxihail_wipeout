@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public PaymentPreferenceViewModel()
         {
             var accountService = this.GetService<IAccountService>();
-            DefaultTipAmount = accountService.CurrentAccount.DefaultTipAmount;
             DefaultTipPercent = accountService.CurrentAccount.DefaultTipPercent;
             PaymentList = accountService.GetPaymentsList().ToArray();
         }

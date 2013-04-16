@@ -355,7 +355,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         FirePropertyChanged(()=>RideSettings);
 					}
 
-                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, AccountService.CurrentAccount.DefaultCreditCard, AccountService.CurrentAccount.DefaultTipAmount, AccountService.CurrentAccount.DefaultTipPercent );
+                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, AccountService.CurrentAccount.DefaultCreditCard, AccountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
             else if(Order.Settings.ProviderId == null)

@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
             
             
-           public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
+        public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
         public ListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }
         public ListItem[] ChargeTypeList { get { return _chargeTypeList.ToArray(); } }
 

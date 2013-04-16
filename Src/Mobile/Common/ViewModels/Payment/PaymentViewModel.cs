@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var paymentInformation = new PaymentInformation 
 			{
                 CreditCardId = account.DefaultCreditCard,
-                TipAmount = account.DefaultTipAmount,
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
@@ -62,7 +61,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, Str.CmtTransactionSuccessMessage,
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
-			{						
+			{				
+				ConfirmPaymentForDriver();
 				ShowConfirmation();
 			},
 			Str.OkButtonText, ()=>{
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
 						return;
 					}
-					
+
 					if(transactionId <= 0 || !PaymentClient.CommitPreAuthorized(transactionId))
 					{
 						MessageService.ShowProgress(false);
