@@ -49,19 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_hasSeenReminder = false;
 		}
-
-		public BookingStatusViewModel ()
-		{
-
-			//TODO NEVER CALLED?
-			ShowRatingButton = true;
-			this.StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
-
-			if (OrderStatusDetail.IBSOrderId.HasValue) {
-				ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value +"");
-			}
-		}
-
+	
 		public override void Load ()
         {
 			base.Load ();
@@ -267,11 +255,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.OrderStatusDetail = status;
 
                     CenterMap ();
-
-#if DEBUG
-					status.IBSStatusId = VehicleStatuses.Common.Arrived;
-					status.IBSStatusDescription = "Arrived!!!???";
-#endif
 
 					UpdatePayCancelButtons(status.IBSStatusId);
 

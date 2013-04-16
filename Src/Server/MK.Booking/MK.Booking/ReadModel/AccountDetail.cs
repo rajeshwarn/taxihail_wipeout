@@ -27,8 +27,7 @@ namespace apcurium.MK.Booking.ReadModel
         public BookingSettingsDetails Settings { get; set; }
 
         public Guid? DefaultCreditCard { get; set; }
-        public double? DefaultTipAmount { get; set; }
-        public double? DefaultTipPercent { get; set; } 
+        public int? DefaultTipPercent { get; set; } 
         
     }
 }

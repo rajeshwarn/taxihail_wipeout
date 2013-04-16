@@ -94,25 +94,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble);
 
-					if(!ConfirmPaymentForDriver())
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
-						return;
-					}
-
-					if(transactionId <= 0 || !PaymentClient.CommitPreAuthorized(transactionId))
+					if(transactionId <= 0)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
-						return;
 					}
-
-					ConfirmPaymentForDriver();
-
-					MessageService.ShowProgress(false);
-					ShowConfirmation();
-					          
+					else if(!ConfirmPaymentForDriver())
+					{
+						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+					}
+					else if(!PaymentClient.CommitPreAuthorized(transactionId))
+					{
+						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+					}
+					else
+					{
+						MessageService.ShowProgress(false);
+						ShowConfirmation();					          
+					}
 
                 }); 
                 
