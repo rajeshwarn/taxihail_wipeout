@@ -13,16 +13,20 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookPaymentSettingsViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
+    public class BookPaymentSettingsViewModel : BaseViewModel,
+    IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
     {
+        IAccountService _accountService;
+        IBookingService _bookingService;
 
         public BookPaymentSettingsViewModel (string order)
         {
+            _accountService = this.GetService<IAccountService>();
+            _bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
 
-            var account = AccountService.CurrentAccount;
-            var paymentInformation = new PaymentInformation 
-			{
+            var account = _accountService.CurrentAccount;
+            var paymentInformation = new PaymentInformation {
                 CreditCardId = account.DefaultCreditCard,
                 TipAmount = account.DefaultTipAmount,
                 TipPercent = account.DefaultTipPercent,
@@ -43,20 +47,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 
                 return GetCommand(() => 
-                {                    
+                                  {                    
 					if(PaymentPreferences.SelectedCreditCard == null)
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
+						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), Resources.GetString ("NoCreditCardSelected"));
 						return;
 					}
-
                     Order.Id = Guid.NewGuid ();
                     try {                        
 
                         MessageService.ShowProgress (true);
 
-                        var paymentSettings = new PaymentSettings
-						{
+                        var paymentSettings = new PaymentSettings{
                             PayWithCreditCard = true,
                             CreditCardId = PaymentPreferences.SelectedCreditCardId,
                             TipAmount = PaymentPreferences.IsTipInPercent ? null : PaymentPreferences.TipDouble,
@@ -64,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         };
                         Order.Payment = paymentSettings;
 
-                        var orderInfo = BookingService.CreateOrder (Order);
+                        var orderInfo = _bookingService.CreateOrder (Order);
                         
                         if (orderInfo.IBSOrderId.HasValue
                             && orderInfo.IBSOrderId > 0) {
@@ -90,10 +92,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         
                     } catch (Exception ex) {
                         InvokeOnMainThread (() =>
-						{
+                                            {
                             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-							string err = Str.GetServerErrorCreatingOrder(Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1);
-                            MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, err);
+                            string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+                            MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
                         });
                     } finally {
                         MessageService.ShowProgress(false);

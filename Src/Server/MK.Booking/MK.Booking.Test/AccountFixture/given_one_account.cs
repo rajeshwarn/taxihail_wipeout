@@ -9,6 +9,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -103,6 +104,66 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = sut.ThenHasSingle<AdminRightGranted>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
+
+        }
+
+        [Test]
+        public void when_registering_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new RegisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+                Platform = PushNotificationServicePlatform.Android
+            });
+
+            var @event = sut.ThenHasSingle<DeviceRegisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(deviceToken, @event.DeviceToken);
+            Assert.AreEqual(PushNotificationServicePlatform.Android, @event.Platform);
+
+        }
+
+        [Test]
+        public void when_replacing_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            var oldDeviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new RegisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+                OldDeviceToken = oldDeviceToken,
+                Platform = PushNotificationServicePlatform.Android
+            });
+
+            var event1 = sut.ThenHasOne<DeviceUnregisteredForPushNotifications>();
+            var event2 = sut.ThenHasOne<DeviceRegisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, event1.SourceId);
+            Assert.AreEqual(oldDeviceToken, event1.DeviceToken);
+            Assert.AreEqual(_accountId, event2.SourceId);
+            Assert.AreEqual(deviceToken, event2.DeviceToken);
+            Assert.AreEqual(PushNotificationServicePlatform.Android, event2.Platform);
+
+        }
+
+        [Test]
+        public void when_unregistering_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new UnregisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+            });
+
+            var @event = sut.ThenHasSingle<DeviceUnregisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(deviceToken, @event.DeviceToken);
 
         }
     }

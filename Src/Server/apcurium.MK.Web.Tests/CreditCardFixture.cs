@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -33,6 +30,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddCreditCard()
         {
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
 
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";
@@ -40,7 +38,7 @@ namespace apcurium.MK.Web.Tests
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
-            AccountService.AddCreditCard(new CreditCardRequest
+            sut.AddCreditCard(new CreditCardRequest
                                   {
                                       CreditCardCompany = creditCardComapny,
                                       FriendlyName = friendlyName,
@@ -49,7 +47,7 @@ namespace apcurium.MK.Web.Tests
                                       Token = token
                                   });
 
-            var creditCards = AccountService.GetCreditCards();
+            var creditCards = sut.GetCreditCards();
             var creditcard = creditCards.First(x => x.CreditCardId == creditCardId);
             Assert.NotNull(creditcard);
             Assert.AreEqual(TestAccount.Id, creditcard.AccountId);
@@ -60,23 +58,16 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(token, creditcard.Token);
         }
 
-
         [Test]
         public void RemoveCreditCard()
-        {            
-            var client = new CmtPaymentClient(DummyConfigManager);
-            var sut = new AccountServiceClient(BaseUrl, SessionId, client);
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
 
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
-            //const string token = "jjwcnSLWm85";
-
-            DummyConfigManager.AddOrSet(AuthorizationRequest.CurrencyCodes.CurrencyCodeString, AuthorizationRequest.CurrencyCodes.Main.CanadaDollar);
-
-
-            var tokenResponse = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate);
+            const string token = "jjwcnSLWm85";
 
             sut.AddCreditCard(new CreditCardRequest
             {
@@ -84,14 +75,15 @@ namespace apcurium.MK.Web.Tests
                 FriendlyName = friendlyName,
                 CreditCardId = creditCardId,
                 Last4Digits = last4Digits,
-                Token = tokenResponse.CardOnFileToken
+                Token = token
             });
 
-            sut.RemoveCreditCard(creditCardId, tokenResponse.CardOnFileToken);
+            sut.RemoveCreditCard(creditCardId);
 
             var creditCards = sut.GetCreditCards();
             Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
         }
+
         
     }
 }

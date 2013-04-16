@@ -38,7 +38,7 @@ namespace apcurium.CMT.Web.Tests
 
         protected Account CreateAndAuthenticateTestAccount()
         {
-            var newAccount = new AccountServiceClient(BaseUrl, null,null).CreateTestAccount();
+            var newAccount = new AccountServiceClient(BaseUrl, null).CreateTestAccount();
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;

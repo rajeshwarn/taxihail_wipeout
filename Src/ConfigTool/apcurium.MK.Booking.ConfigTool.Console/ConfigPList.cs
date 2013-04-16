@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(Destination));
 
             var doc = new XmlDocument();
+
             doc.Load(destPath);
 
             var node = doc.SelectSingleNode("//key[. = '" + Key + "']");           

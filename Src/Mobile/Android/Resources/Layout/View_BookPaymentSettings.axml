@@ -6,6 +6,7 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
+    android:padding="10dip"
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -14,6 +15,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
+            android:padding="10dip"
             android:orientation="vertical">
             <TextView
                 android:layout_width="fill_parent"
@@ -23,162 +25,52 @@
             <apcurium.mk.booking.mobile.client.controls.CreditCardButton
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                local:MvxBind="{'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}, 'Text':{'Path':'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}}" />
+                local:MvxBind="{&apos;NavigateCommand&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.NavigateToCreditCardsList&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.SelectedCreditCard.FriendlyName&apos;}, &apos;CreditCardCompany&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.CreditCardCompany&apos;}, &apos;Last4Digits&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.Last4Digits&apos;}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Meter Amount"
-                    style="@style/FormLabelText"
-                    android:layout_weight="1" />
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <EditText
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/meterAmountTextView"
-                        android:inputType="numberDecimal"
-                        style="@style/FormLabelText"
-                        android:layout_gravity="right"
-                        android:hint="Amount" />
-                </FrameLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:layout_marginRight="-4dp">
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0% "
-                        style="@style/FormLabelText"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5% "
-                        style="@style/FormLabelText"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10%"
-                        style="@style/FormLabelText"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15%"
-                        style="@style/FormLabelText"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20%"
-                        style="@style/FormLabelText"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-                </FrameLayout>
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="25%"
-                        style="@style/FormLabelText"
-                        android:layout_gravity="center_horizontal" />
-                </FrameLayout>
-            </LinearLayout>
-            <SeekBar
-                android:id="@+id/seekBar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:max="25"
-                android:progress="0"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                    android:text="@string/PaymentDetails.TipAmountLabel"
+                    style="@style/FormLabelText" />
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tip Amount"
-                    style="@style/FormLabelText"
-                    android:layout_gravity="right" />
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$200.12"
-                        android:id="@+id/tipAmountTextView"
-                        style="@style/FormLabelText"
-                        android:layout_gravity="right" />
-                </FrameLayout>
+                    android:paddingLeft="10dp"
+                    android:text="@string/PaymentDetails.Optional"
+                    style="@style/FormLabelText" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    style="@style/BigTitleTextBlack"
+                    android:background="@drawable/segmented_button_left"
+                    android:textColor="@drawable/segmented_button_text_color"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:text="%"
+                    android:gravity="center"
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
+                <Button
+                    style="@style/BigTitleTextBlack"
+                    android:background="@drawable/segmented_button_right"
+                    android:textColor="@drawable/segmented_button_text_color"
+                    android:layout_width="40dip"
+                    android:layout_height="40dip"
+                    android:gravity="center"
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Text&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.CurrencySymbol&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Converter&apos;: &apos;BoolInverter&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
+                <EditText
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Total"
-                    style="@style/FormLabelText"
-                    android:layout_weight="1" />
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$900.45"
-                        android:id="@+id/totalAmountTextView"
-                        style="@style/FormLabelText"
-                        android:layout_gravity="right" />
-                </FrameLayout>
+                    android:inputType="number|numberDecimal"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.Tip&apos;, &apos;Mode&apos;: &apos;TwoWay&apos;}}"
+                    android:layout_marginLeft="10dip"
+                    android:maxLines="1"
+                    android:singleLine="true" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
@@ -202,7 +94,7 @@
                 android:text="@string/CancelBoutton"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="5dp"
-                local:MvxBind="{'Click': {'Path': 'CancelOrderCommand'}}" />
+                local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CancelOrderCommand&apos;}}" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
                 local:ButtonStyle="Green"
                 android:id="@+id/ConfirmBtn"
@@ -213,7 +105,7 @@
                 android:text="@string/ConfirmButton"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="5dp"
-                local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />
+                local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;ConfirmOrderCommand&apos;}}" />
         </RelativeLayout>
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

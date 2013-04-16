@@ -10,7 +10,6 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -46,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var orderStatus = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
-            if (orderStatus.Status != VehicleStatuses.Common.Done)
+            if (orderStatus.Status != "wosDONE")
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
             }

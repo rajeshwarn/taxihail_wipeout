@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[0].Image = "Assets/CreditCard/visa.png";
             ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
+            ViewModel.CreditCardCompanies[3].Image = "Assets/CreditCard/visa_electron.png";
 
 
             ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {

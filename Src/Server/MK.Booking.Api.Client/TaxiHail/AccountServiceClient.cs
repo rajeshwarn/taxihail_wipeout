@@ -8,12 +8,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
-        private ICreditCardTokenizationService _tokenizationService;
-
-        public AccountServiceClient(string url, string sessionId, ICreditCardTokenizationService tokenizationService)
+        public AccountServiceClient(string url, string sessionId)
             : base(url, sessionId)
         {
-            _tokenizationService = tokenizationService;
+
         }
 
 
@@ -114,12 +112,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.Get<IList<CreditCardDetails>>(req);
         }
 
-        public void RemoveCreditCard(Guid creditCardId, string cardOnFileToken)
+        public void RemoveCreditCard(Guid creditCardId)
         {
             var req = string.Format("/account/creditcards/" + creditCardId);
-            Client.Delete<string>(req);
-
-            _tokenizationService.ForgetTokenizedCard(cardOnFileToken);
+            var response = Client.Delete<string>(req);
         }
     }
 }

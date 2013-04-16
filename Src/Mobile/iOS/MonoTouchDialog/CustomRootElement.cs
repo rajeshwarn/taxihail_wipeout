@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
+
+
        
         protected override UITableViewCell GetCellImpl (UITableView tv)
         {

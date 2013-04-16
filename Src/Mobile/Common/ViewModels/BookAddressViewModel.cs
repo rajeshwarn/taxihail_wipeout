@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<IGeolocService>
     {
+        private ILocationService _geolocator;
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
@@ -39,11 +40,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public event EventHandler AddressCleared;
 
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
+        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
             _id = Guid.NewGuid().ToString();
+            _geolocator = geolocator;
             _searchingTitle = Resources.GetString("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
@@ -213,7 +215,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content, true);
+            if ( selected.Content != null )
+            {
+                SetAddress(selected.Content, true);
+            }
+            else
+            {
+                ClearAddress ();
+            }
+
         }
 
         public bool IsExecuting
@@ -331,14 +341,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CancelCurrentLocationCommand.Execute ();
 
-					if ( !LocationService.IsServiceEnabled )
+                    if ( !_geolocator.IsServiceEnabled )
                     {
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
                     }
+
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource ();
-                    LocationService.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
+                    _geolocator.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
                     {
                         try
                         {

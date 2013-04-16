@@ -45,6 +45,7 @@ namespace Cirrious.MvvmCross.Android.Views
 
             _setup = MvxAndroidSetupSingleton.GetOrCreateSetup(ApplicationContext);
 
+
             if (!_primaryInitialized)
             {
                 _primaryInitialized = true;

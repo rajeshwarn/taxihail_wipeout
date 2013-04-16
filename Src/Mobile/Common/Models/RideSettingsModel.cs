@@ -22,12 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _companyList = companyList;
             _vehicleTypeList = vehicleTypeList;
             _chargeTypeList = chargeTypeList;
-
-			Data = data;
-#if RELEASE
-			DONT BUILD
-#endif
-				Data.ChargeTypeId = ReferenceData.CreditCardOnFileType;
+            Data = data;
         }
 
         public BookingSettings Data

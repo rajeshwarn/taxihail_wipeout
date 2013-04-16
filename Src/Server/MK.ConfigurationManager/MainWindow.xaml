@@ -77,14 +77,32 @@
                 </Grid>
                     </ScrollViewer>
             </TabItem>
+            <TabItem Header="Versions" >
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5" MinHeight="937">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <DataGrid  CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding Versions}" VerticalAlignment="Stretch">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="100" Header="Version" Binding="{Binding Display}" />
+                                <DataGridTextColumn Width="100" Header="Revision" Binding="{Binding Revision}" />                                
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Grid.Row="1" Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveVersion" />
+                    </Grid>
+                </ScrollViewer>
+
+            </TabItem>
+            
             <TabItem Header="Deploy">
                 <ScrollViewer>
-
                     <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                    
                     <StackPanel Orientation="Horizontal">
@@ -104,7 +122,8 @@
                             <DataGridTextColumn Width="50" Header="iOS" Binding="{Binding iOS}" />
                             <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
                             <DataGridTextColumn Width="250" Header="Details" Binding="{Binding Details}" />
-                        </DataGrid.Columns>
+                                <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />                            
+                         </DataGrid.Columns>
                     </DataGrid>
                     <GroupBox Grid.Row="2" Margin="10,10,26,10" Header="New Deployment">
                             <StackPanel>
@@ -131,13 +150,18 @@
                                 <ComboBox Grid.Column="1" Name="DeployCompanyCombobox" DisplayMemberPath="Name" SelectedItem="{Binding DeployCompany,Mode=TwoWay}" ItemsSource="{Binding Companies}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="1" VerticalAlignment="Center">IBSServer</TextBlock>
-                                    <ComboBox Grid.Row="1" Name="DeployIbsServerCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Row="1" Name="DeployIbsServerCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
-                                    <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox"   Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="4" VerticalAlignment="Center">Revision</TextBlock>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DeployRevision}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
+                                <!--<TextBox  Text="{Binding DeployRevision}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>-->                                
+                                <ComboBox Grid.Row="4" Grid.Column="1" Name="DeployVersionCombobox"  IsEditable="True"  DisplayMemberPath="Display" SelectedItem="{Binding DeployVersion,Mode=TwoWay}" ItemsSource="{Binding Versions}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                
+
+                                                                                                   
+                                
                                 
                                 <CheckBox Grid.Row="5" Grid.Column="1" Content="Deploy Database" IsChecked="{Binding DeployDB}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
                                 <CheckBox Grid.Row="6" Grid.Column="1" Content="Drop/Create a new databse" IsChecked="{Binding DeployInitDatabse}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
@@ -166,6 +190,7 @@
                 </ScrollViewer>
 
             </TabItem>
+        
         </TabControl>
         <StatusBar Grid.Row="1" x:Name="StatusBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1000" Height="30">
             <StatusBarItem>

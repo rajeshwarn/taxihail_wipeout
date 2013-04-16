@@ -18,7 +18,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
+
+		[Outlet]
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
@@ -78,9 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				topStack = null;
 			}
 
-			if (lblVehicleTypeValue != null) {
-				lblVehicleTypeValue.Dispose ();
-				lblVehicleTypeValue = null;
 			}
 
 			if (lblChargeTypeValue != null) {
@@ -103,9 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblName = null;
 			}
 
-			if (lblNameValue != null) {
-				lblNameValue.Dispose ();
-				lblNameValue = null;
 			}
 
 			if (lblPhone != null) {

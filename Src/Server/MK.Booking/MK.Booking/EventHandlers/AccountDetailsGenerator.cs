@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
 
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                account.Settings = new BookingSettingsDetails { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
+                account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
 
                 context.Save(account);
                 var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
@@ -99,12 +100,12 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var settings = account.Settings ?? new BookingSettingsDetails();
+                var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
                 settings.ChargeTypeId = @event.ChargeTypeId;
-                settings.VehicleTypeId = @event.VehicleTypeId;
                 settings.ProviderId = @event.ProviderId;
+                settings.VehicleTypeId = @event.VehicleTypeId;
 
                 if (settings.ChargeTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
                 {

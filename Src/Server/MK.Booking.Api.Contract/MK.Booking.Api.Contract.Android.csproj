@@ -86,7 +86,6 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\AppSetting.cs" />
-    <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Cmt\LinkData.cs" />
     <Compile Include="Resources\Cmt\PreCogActionType.cs" />
@@ -100,13 +99,11 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
-    <Compile Include="Resources\OrderStatus.cs" />
-    <Compile Include="Resources\OrderStatusDetail.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
-    <Compile Include="Resources\DriverInfos.cs" />
+    <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

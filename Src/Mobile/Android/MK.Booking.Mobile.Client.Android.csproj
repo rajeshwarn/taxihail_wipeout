@@ -98,11 +98,8 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
-    <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
-    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs">
-      <DependentUpon>EditTextSpinnerSelectedItemBinding.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
@@ -224,9 +221,13 @@
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <Compile Include="Controls\UnderlineTextView.cs" />
+    <Compile Include="Controls\UnderlineTextView.cs">
+      <DependentUpon>UnderlineTextView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StyledButton.cs" />
-    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
     <Compile Include="Controls\SearchButton.cs" />
@@ -256,6 +257,14 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <AndroidResource Include="Resources\Drawable\notification_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_icon.png" />
+    <Compile Include="Animations\SlideDownAnimation.cs" />
+    <Compile Include="Controls\SlidingPanel.cs" />
+    <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
+    <AndroidResource Include="Resources\Drawable\backStatusVehicleInfo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\backStatusVehicleInfo.png" />
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
     <AndroidResource Include="Resources\Drawable\history.png" />
@@ -266,6 +275,8 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
+    <AndroidResource Include="Resources\Drawable\visa_electron.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
     <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
       <DependentUpon>View_CreditCardsList.axml</DependentUpon>
     </Compile>
@@ -475,7 +486,9 @@
     <AndroidResource Include="Resources\Drawable\pin.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
-    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
+    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
     <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
@@ -523,6 +536,14 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
     <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
+    <AndroidResource Include="Resources\Drawable\grip.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\grip.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\phone.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -567,6 +588,10 @@
     <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
       <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
       <Name>Newtonsoft.Json.MonoDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
+      <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
+      <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

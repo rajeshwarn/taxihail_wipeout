@@ -110,11 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         private Task<Position> _last;
 
+
         public bool IsServiceEnabled
         {
             get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
         }
-
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
            
@@ -123,11 +123,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _last;
             }
 
-            if (!IsServiceEnabled)
+ if (!IsServiceEnabled)
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
-             
+
+
             Initialize();
 
             Console.WriteLine ( "**********GetPositionAsync**********" );

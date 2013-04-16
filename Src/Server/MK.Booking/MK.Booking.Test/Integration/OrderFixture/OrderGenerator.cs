@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 
+
 namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 {
     public class given_a_view_model_generator : given_a_read_model_database
@@ -59,6 +60,16 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                        Latitude = 45.50643,
                                        Longitude = -73.554052,
                                     },
+                Settings = new BookingSettings
+                               {
+                                   ChargeTypeId = 99,
+                                   VehicleTypeId = 98,
+                                   ProviderId = 97,
+                                   NumberOfTaxi = 96,
+                                   Passengers = 95,
+                                   Phone = "94",
+                                   Name = "93"
+                               },
                 CreatedDate = createdDate
             });
 
@@ -77,6 +88,15 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(45.50643, dto.DropOffAddress.Latitude);
                 Assert.AreEqual(-73.554052, dto.DropOffAddress.Longitude);
                 Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());
+
+                //Settings
+                Assert.AreEqual(99, dto.Settings.ChargeTypeId);
+                Assert.AreEqual(98, dto.Settings.VehicleTypeId);
+                Assert.AreEqual(97, dto.Settings.ProviderId);
+                Assert.AreEqual(96, dto.Settings.NumberOfTaxi);
+                Assert.AreEqual(95, dto.Settings.Passengers);
+                Assert.AreEqual("94", dto.Settings.Phone);
+                Assert.AreEqual("93", dto.Settings.Name);
             }
         }
     }
@@ -169,7 +189,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderCompleted = new OrderCompleted
                                      {
-                                         SourceId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5
+                                         SourceId = _orderId, Fare = 23, Toll = 2, Tip = 5
                                      };
             this.sut.Handle(orderCompleted);
 

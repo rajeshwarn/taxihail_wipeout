@@ -133,13 +133,18 @@
     <value>No flat</value>
   </data>
    <data name="ApartmentLabel" xml:space="preserve">
-    <value>Flat</value>
+    <value>Flat / Building Name</value>
   </data>
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>Building name</value>
   </data>   
   <data name="DateTimePickerSetButton" xml:space="preserve">
-    <value>Pick Me Up Later</value>
+    <value>Ok</value>
   </data>
-  
+    <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
+    <value>Flat / Entry code:</value>
+  </data>
 </root>

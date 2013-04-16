@@ -25,6 +25,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
 
+            //if ( !ViewModel.ShowRingCodeField )
+            //{
+            //    FindViewById<TableLayout>( Resource.Id.tableAptRingCode ).Visibility = Android.Views.ViewStates.Gone;
+            //}
 			ViewModel.Load();
         }
 

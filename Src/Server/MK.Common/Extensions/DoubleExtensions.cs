@@ -11,10 +11,5 @@ namespace apcurium.MK.Common.Extensions
         {
             return number * Math.PI / 180;
         }
-
-		public static string ToDollars(this double number)
-		{
-			return number.ToString("C");
-		}
     }
 }
