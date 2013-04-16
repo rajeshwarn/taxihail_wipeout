@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             {
                case DataType.Accounts:
                     var accounts =  _accountDao.GetAll();
-                    return accounts.Select(x => new{ x.Id, x.IBSAccountId, x.Settings.Name, x.Settings.Phone, x.Email, x.DefaultCreditCard, x.DefaultTipAmount, x.DefaultTipPercent, x.Language, x.TwitterId, x.FacebookId, x.IsAdmin, x.IsConfirmed } );
+                    return accounts.Select(x => new{ x.Id, x.IBSAccountId, x.Settings.Name, x.Settings.Phone, x.Email, x.DefaultCreditCard, x.DefaultTipPercent, x.Language, x.TwitterId, x.FacebookId, x.IsAdmin, x.IsConfirmed } );
                break;
                case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();

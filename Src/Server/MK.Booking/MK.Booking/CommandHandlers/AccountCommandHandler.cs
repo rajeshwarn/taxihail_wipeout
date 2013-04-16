@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             AutoMapper.Mapper.Map(command, settings);
 
             account.UpdateBookingSettings(settings);
-            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipAmount, command.DefaultTipPercent);
+            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipPercent);
 
             _repository.Save(account, command.Id.ToString());
         }
