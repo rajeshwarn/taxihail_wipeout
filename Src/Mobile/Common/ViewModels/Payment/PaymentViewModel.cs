@@ -52,9 +52,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
 			}
-			catch{
-				return false;
+			finally{
 			}
+			
+			return false;
 		}
 
 		public void ShowConfirmation()

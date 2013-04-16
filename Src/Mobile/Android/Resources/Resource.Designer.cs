@@ -1966,8 +1966,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07010b
 			public const int OrderNoteGPSApproximate = 2131165451;
 			
-			// aapt resource value: 0x7f070187
-			public const int OrderNumber = 2131165575;
+			// aapt resource value: 0x7f070188
+			public const int OrderNumber = 2131165576;
 			
 			// aapt resource value: 0x7f07006f
 			public const int ParameterButton = 2131165295;
@@ -2286,6 +2286,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0700af
 			public const int TaxiMapTitle = 2131165359;
+			
+			// aapt resource value: 0x7f070187
+			public const int TaxiServerDownMessage = 2131165575;
 			
 			// aapt resource value: 0x7f070013
 			public const int TechSupportEmailTitle = 2131165203;

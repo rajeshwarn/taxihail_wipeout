@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		
 		public static string TaxiServerDownMessage {
 			get{				
-				return _r.GetString ("ServerDownMessage");
+				return _r.GetString ("TaxiServerDownMessage");
 			}
 		}
 

@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.Customer = passengerName;
             order.Phone = phone;
 
-            var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
+            var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( bool.Parse , true );
             order.DispByAuto = autoDispatch;
                        
 
@@ -175,11 +175,18 @@ namespace apcurium.MK.Booking.IBS.Impl
         public bool SendMessageToDriver(string carId, string message)
         {
             bool result = false;
-            UseService(service =>
-                {
-                    result = service.SendDriverMsg(UserNameApp, PasswordApp, carId, message) == 1;
-                });
-            return result;
+            try
+            {
+                UseService(service =>
+                    {
+                        result = service.SendDriverMsg(UserNameApp, PasswordApp, carId, message) == 1;
+                    });
+            }
+            catch
+            {}
+
+            return result;      
+
         }
     }
 }

@@ -68,8 +68,6 @@
     <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentAuthorizeClient.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentCaptureClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\Payments\PaymentResponse.cs" />

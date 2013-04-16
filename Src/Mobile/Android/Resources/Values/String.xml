@@ -391,6 +391,7 @@
   <string name="EditDetails">Edit Details</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   <string name="OkButtonText">Ok</string>
+  <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   
   <string name="OrderNumber">Order #</string>  
 </resources>

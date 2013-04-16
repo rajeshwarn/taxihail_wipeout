@@ -9,6 +9,18 @@ namespace apcurium.MK.Web.Tests
 {
     public class VehicleFixture : BaseTest
     {
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
         [Test]
         public void sending_message_to_driver()
         {
