@@ -736,10 +736,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return GetValue ("StatusCallButton"); }
         }
+
+        public static string StatusPayButton
+        {
+            get { return GetValue ("StatusPayButton"); }
+        }
+
         public static string StatusCancelButton
         {
             get { return GetValue ("StatusCancelButton"); }
         }
+
         public static string StatusNewRideButton
         {
             get { return GetValue ("StatusNewRideButton"); }

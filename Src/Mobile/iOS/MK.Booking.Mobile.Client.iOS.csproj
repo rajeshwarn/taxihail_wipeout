@@ -367,6 +367,8 @@
       <DependentUpon>BookEditInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\StackView.cs" />
+    <Compile Include="Binding\Binding.cs" />
+    <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

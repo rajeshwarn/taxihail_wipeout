@@ -273,10 +273,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin = null;
                 }
                 
-                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                if ((value != null))
                 {
                     CLLocationCoordinate2D coord = new CLLocationCoordinate2D(0,0);            
-                    if ( value.VehicleLongitude.Value!=0 && value.VehicleLatitude.Value !=0)
+                    if (value.VehicleLatitude.HasValue
+                        && value.VehicleLongitude.HasValue
+                        && value.VehicleLongitude.Value!=0 
+                        && value.VehicleLatitude.Value !=0)
                     {
                         coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
                     }   

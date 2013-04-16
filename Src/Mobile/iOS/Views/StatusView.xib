@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">12C60</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.SystemVersion">12C2034</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1930</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -201,13 +201,35 @@
 								<string key="NSFrame">{{55, 5}, {210, 37}}</string>
 								<reference key="NSSuperview" ref="111396558"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="422849951"/>
+								<reference key="NSNextKeyView" ref="818340465"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<int key="IBUIButtonType">1</int>
 								<string key="IBUINormalTitle">Cancel</string>
+								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="152085505"/>
+								<reference key="IBUIFontDescription" ref="645707862"/>
+								<reference key="IBUIFont" ref="793978418"/>
+							</object>
+							<object class="IBUIButton" id="818340465">
+								<reference key="NSNextResponder" ref="111396558"/>
+								<int key="NSvFlags">256</int>
+								<string key="NSFrame">{{55, 6}, {210, 37}}</string>
+								<reference key="NSSuperview" ref="111396558"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="422849951"/>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<int key="IBUIButtonType">1</int>
+								<string key="IBUINormalTitle">Pay</string>
 								<reference key="IBUIHighlightedTitleColor" ref="516209594"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -347,6 +369,14 @@
 					</object>
 					<int key="connectionID">25</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btnPay</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="818340465"/>
+					</object>
+					<int key="connectionID">196</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -432,6 +462,7 @@
 							<reference ref="264765333"/>
 							<reference ref="422849951"/>
 							<reference ref="413240115"/>
+							<reference ref="818340465"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -456,6 +487,11 @@
 						<reference key="object" ref="422849951"/>
 						<reference key="parent" ref="111396558"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">195</int>
+						<reference key="object" ref="818340465"/>
+						<reference key="parent" ref="111396558"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -474,6 +510,9 @@
 					<string>11.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
 					<string>17.IBPluginDependency</string>
+					<string>195.CustomClassName</string>
+					<string>195.IBPluginDependency</string>
+					<string>195.IBUIButtonInspectorSelectedEdgeInsetMetadataKey</string>
 					<string>20.CustomClassName</string>
 					<string>20.IBPluginDependency</string>
 					<string>20.IBUIButtonInspectorSelectedEdgeInsetMetadataKey</string>
@@ -508,6 +547,9 @@
 					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<real value="0.0"/>
+					<string>GradientButton</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="0.0"/>
 					<real value="0.0"/>
 					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -531,7 +573,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">194</int>
+			<int key="maxID">196</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -572,6 +614,7 @@
 							<string>btnCancel</string>
 							<string>btnChangeBooking</string>
 							<string>btnNewRide</string>
+							<string>btnPay</string>
 							<string>btnRefresh</string>
 							<string>lblStatus</string>
 							<string>lblTitle</string>
@@ -583,6 +626,7 @@
 							<string>UIButton</string>
 							<string>GradientButton</string>
 							<string>UIButton</string>
+							<string>GradientButton</string>
 							<string>GradientButton</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
@@ -599,6 +643,7 @@
 							<string>btnCancel</string>
 							<string>btnChangeBooking</string>
 							<string>btnNewRide</string>
+							<string>btnPay</string>
 							<string>btnRefresh</string>
 							<string>lblStatus</string>
 							<string>lblTitle</string>
@@ -624,6 +669,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">btnNewRide</string>
+								<string key="candidateClassName">GradientButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">btnPay</string>
 								<string key="candidateClassName">GradientButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -667,7 +716,7 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
+			<real value="1552" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -675,6 +724,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1930</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

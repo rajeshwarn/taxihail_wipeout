@@ -19,6 +19,7 @@ using Cirrious.MvvmCross.Views;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -74,6 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
                 AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton ((GradientButton)btnPay, Resources.StatusPayButton, AppStyle.ButtonColor.Green);
+
                 this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, false);
                 
                 View.BringSubviewToFront (bottomBar);
@@ -82,16 +85,20 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
+                    btnPay.Frame = btnCall.Frame;
                 }
 
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
-                    { mapStatus, "{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'MapCenter':{'Path':'MapCenter'} }" },
-                    { lblTitle, "{'Text':{'Path':'StatusInfoText'}}" },
-                    { lblStatus, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
-                    { btnCancel, "{'TouchUpInside': {'Path': 'CancelOrder'}}" },
-                    { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
-                    { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
+                    { mapStatus, new B("Pickup","Pickup.Model").Add("TaxiLocation","OrderStatusDetail").Add("MapCenter","MapCenter") },
+                    { lblTitle, new B("Text","StatusInfoText") },
+                    { lblStatus, new B("Text","ConfirmationNoTxt") },
+                    { btnCancel, new B("TouchUpInside","CancelOrder").Add("Hidden","IsCancelButtonVisible","BoolInverter")},
+                    { btnPay, new B("TouchUpInside","CancelOrder").Add("Hidden","IsPayButtonVisible","BoolInverter")},
+                    { btnCall, new B("Hidden","IsCallButtonVisible","BoolInverter")
+                                .Add("Enabled","IsCallButtonVisible")
+                                .Add("TouchUpInside","CallCompany") },
+                    { btnNewRide, new B("TouchUpInside","NewRide") }
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;

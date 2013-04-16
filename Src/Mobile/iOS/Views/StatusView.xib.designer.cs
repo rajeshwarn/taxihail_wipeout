@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -21,6 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnCancel { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnPay { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnCall { get; set; }
 
 		[Outlet]
@@ -30,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
@@ -53,6 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
+			}
+
+			if (btnPay != null) {
+				btnPay.Dispose ();
+				btnPay = null;
 			}
 
 			if (btnCall != null) {

@@ -142,6 +142,7 @@
 "CreateAccoutCreate"="Create";
 "StatusActionBookButton"="Book another taxi";
 "StatusCallButton"="Call";
+"StatusPayButton"="Pay";
 "PickupDateDisplay"="Reservation for {0:ddd, MMM d} at {0:h:mm tt}";
 "TabSettings"="Settings";
 "ResetPasswordConfirmationMessage"="A new password was send by email.";

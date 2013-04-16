@@ -250,6 +250,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					AddReminder(status);
 				}
 
+#if DEBUG
+                status.IBSStatusId = VehicleStatuses.Common.Arrived;
+#endif
+
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;

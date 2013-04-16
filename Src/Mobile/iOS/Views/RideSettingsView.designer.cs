@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -42,19 +42,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField txtPassword { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField txtPassword { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtTipAmount { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.TipButtons sgmtPercentOrValue { get; set; }
+		MonoTouch.UIKit.UISlider tipSlider { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btnCreditCard { get; set; }
@@ -114,14 +111,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassword = null;
 			}
 
-			if (txtPassword != null) {
-				txtPassword.Dispose ();
-				txtPassword = null;
-			}
-
 			if (lblTipAmount != null) {
 				lblTipAmount.Dispose ();
 				lblTipAmount = null;
+			}
+
+			if (txtPassword != null) {
+				txtPassword.Dispose ();
+				txtPassword = null;
 			}
 
 			if (lblCreditCard != null) {
@@ -129,14 +126,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblCreditCard = null;
 			}
 
-			if (txtTipAmount != null) {
-				txtTipAmount.Dispose ();
-				txtTipAmount = null;
-			}
-
-			if (sgmtPercentOrValue != null) {
-				sgmtPercentOrValue.Dispose ();
-				sgmtPercentOrValue = null;
+			if (tipSlider != null) {
+				tipSlider.Dispose ();
+				tipSlider = null;
 			}
 
 			if (btnCreditCard != null) {
