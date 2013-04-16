@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<LinearLayout>(Resource.Id.passengerNumberLayout).Visibility = ViewModel.ShowPassengerNumber ? ViewStates.Visible : ViewStates.Gone;
 
 			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
+
 			ViewModel.Load();
         }
 

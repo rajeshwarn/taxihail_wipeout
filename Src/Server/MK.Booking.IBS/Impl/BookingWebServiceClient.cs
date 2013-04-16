@@ -175,11 +175,19 @@ namespace apcurium.MK.Booking.IBS.Impl
         public bool SendMessageToDriver(string carId, string message)
         {
             bool result = false;
-            UseService(service =>
-                {
-                    result = service.SendDriverMsg(UserNameApp, PasswordApp, carId, message) == 1;
-                });
-            return result;
+            try
+            {
+                UseService(service =>
+                    {
+                        result = service.SendDriverMsg(UserNameApp, PasswordApp, carId, message) == 1;
+                    });
+            }
+            finally
+            {
+                          
+            }
+            return result;      
+
         }
     }
 }

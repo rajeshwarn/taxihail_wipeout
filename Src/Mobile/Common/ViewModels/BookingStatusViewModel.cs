@@ -50,7 +50,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_hasSeenReminder = false;
 		}
 
+		public BookingStatusViewModel ()
+		{
 
+			//TODO NEVER CALLED?
+			ShowRatingButton = true;
+			this.StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
+
+			if (OrderStatusDetail.IBSOrderId.HasValue) {
+				ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value +"");
+			}
+		}
 
 		public override void Load ()
         {
