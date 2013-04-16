@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
         {
-            ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
+           // ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
         }
 
         public override void ViewWillAppear(bool animated)

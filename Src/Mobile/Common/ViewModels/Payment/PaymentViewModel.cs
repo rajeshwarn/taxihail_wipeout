@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Java.Lang;
+
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Api.Contract.Requests;

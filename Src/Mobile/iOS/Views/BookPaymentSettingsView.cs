@@ -12,12 +12,12 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookPaymentSettingsView : BaseViewController<BookPaymentSettingsViewModel>
+    public partial class BookPaymentSettingsView : BaseViewController<PaymentViewModel>
     {
         #region Constructors
         
         public BookPaymentSettingsView () 
-            : base(new MvxShowViewModelRequest<BookPaymentSettingsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<PaymentViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
         
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
         {
-            ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
+            //ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
         }
 		
     }
