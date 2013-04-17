@@ -9,67 +9,115 @@ using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class BookPaymentSettingsView : BaseViewController<PaymentViewModel>
     {
-        #region Constructors
-        
-        public BookPaymentSettingsView () 
-            : base(new MvxShowViewModelRequest<PaymentViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
-        {
-        }
-        
         public BookPaymentSettingsView(MvxShowViewModelRequest request) 
             : base(request)
         {
         }
-        
-        public BookPaymentSettingsView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
+
+        double MeterAmount{
+            get{
+                return MeterAmountLabel.Text.FromDollars();
+            }
+            set{
+                MeterAmountLabel.Text = value.ToDollars();
+            }
         }
-        
-        #endregion
-		
-        	
+
+        double TipAmount{
+            get{
+                return TipAmountLabel.Text.FromDollars();
+            }
+            set{
+                TipAmountLabel.Text = value.ToDollars();
+            }
+        }
+
+        double TotalAmount{
+            get{
+                return TotalAmountLabel.Text.FromDollars();
+            }
+            set{
+                TotalAmountLabel.Text = value.ToDollars();
+                ViewModel.Amount = TotalAmountLabel.Text;//Todo ugly binding done in code behind
+            }
+        }
+
+        public void UpdateAmounts(bool hideKeyboard=true)
+        {
+            if(hideKeyboard)
+            {
+                View.ResignFirstResponderOnSubviews();
+            }
+            TotalAmount = TipAmount+ MeterAmount;
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
+            ScrollViewer.AutoSize();
+
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
 
-            AppButtons.FormatStandardButton((GradientButton)btCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
             AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
 
             lblCreditCardOnFile.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
-            lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
-            lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
 
-            base.DismissKeyboardOnReturn(txtTipAmount);
+            ClearKeyboardButton.TouchDown+= (sender, e) => {
+                UpdateAmounts();
+                MeterAmount = MeterAmount; //Format
+                TipAmount = TipAmount;               //Format
+            };
 
-            sgmtPercentOrValue.ValueChanged += HandleValueChanged;
+            TipSlider.ValueChanged+= (sender, e) => {   
+                TipAmount = (MeterAmount * (TipSlider.Value/100));
+                UpdateAmounts();
+            };
 
-            this.AddBindings(new Dictionary<object, string>() {
-                { btCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
-                { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},          
-                { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
-                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'},'TipCurrency': {'Path': 'PaymentPreferences.CurrencySymbol'}}" },
-                { btCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
+            MeterAmountLabel.EditingDidBegin += (sender, e) => {
+                TipAmount = (MeterAmount * (TipSlider.Value/100));                             
+                UpdateAmounts(false);
+                
+                TipSlider.Enabled = true;
+            };
+
+            MeterAmountLabel.EditingChanged+= (sender, e) => {
+                TipAmount = (MeterAmount * (TipSlider.Value/100));                             
+                UpdateAmounts(false);
+                
+                TipSlider.Enabled = true;
+            };
+
+
+            TipAmountLabel.EditingChanged+= (sender, e) => {
+                UpdateAmounts(false);
+                TipSlider.Enabled = false;
+            };
+
+            this.AddBindings(new Dictionary<object, string>() {         
+                { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
+                { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
+                //{ TotalAmountLabel, new B("Text","Amount")},//See above
+                { btCreditCard, 
+                    new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
+                        .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
+                        .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
+                        .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") }
             });
-			
-
-            View.BringSubviewToFront( bottomBar );    
+			   
             this.View.ApplyAppFont ();
         }
 
-        void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
-        {
-            //ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
-        }
-		
     }
 }
 

@@ -377,6 +377,7 @@
     <Compile Include="Extensions\RectangleFExtensions.cs" />
     <Compile Include="Extensions\Helpers\Padding.cs" />
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
+    <Compile Include="Views\Payments\TipSliderControl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -39,7 +39,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var settings = Client.Get<Dictionary<string,string>>("/settings");
             _settings = new Dictionary<string, string>();
-            settings.ForEach( s=> _settings.Add( s.Key, s.Value ));
+            settings.ForEach( s=> 
+            {
+                if(_settings.ContainsKey(s.Key))
+                {
+                    var x=0;
+                }
+                else{
+                    _settings.Add( s.Key, s.Value );
+                }
+            });
             _settings.ToString();
         }
 

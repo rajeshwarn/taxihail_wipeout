@@ -20,15 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public RideSettingsView(MvxShowViewModelRequest request) 
             : base(request)
         {
-        }        
-
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();
-			
-            // Release any cached data, images, etc that aren't in use.
-        }
+        }    
 		
         public override void ViewDidLoad ()
         {
@@ -67,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
-            tipSlider.ValueChanged+= (sender, e) => {
-                tipSlider.Value = (int)(Math.Round(tipSlider.Value/5.0)*5);
-            };
-
-
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, new B("Text","Name") },
                 { txtPhone, new B("Text","Phone") },
@@ -87,11 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                     new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
             });         
 
-        }
-
-        void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
-        {
-           // ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -111,25 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 lblOptional.Hidden = true;
                 btnCreditCard.Hidden = true;
             }
-        }
-
-		
-        public override void ViewDidUnload ()
-        {
-            base.ViewDidUnload ();
-            			
-            // Clear any references to subviews of the main view in order to
-            // allow the Garbage Collector to collect them sooner.
-            //
-            // e.g. myOutlet.Dispose (); myOutlet = null;
-			
-            ReleaseDesignerOutlets ();
-        }
-		
-        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-        {
-            // Return true for supported orientations
-            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
         }
 
     }

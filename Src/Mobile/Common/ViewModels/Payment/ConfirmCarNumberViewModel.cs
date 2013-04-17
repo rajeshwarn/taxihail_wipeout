@@ -7,7 +7,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class ConfirmCarNumberViewModel : BaseViewModel
+    public class ConfirmCarNumberViewModel : BaseViewModel
 	{
 		public ConfirmCarNumberViewModel (string order, string orderStatus)
 		{
@@ -47,8 +47,12 @@ namespace apcurium.MK.Booking.Mobile
 								order = Order.ToJson(),
 								orderStatus = OrderStatus.ToJson(),
 							}, 
-							true, MvxRequestedBy.UserAction);
+							false, MvxRequestedBy.UserAction);
+#if IOS
+
+#else
 					RequestClose(this);
+#endif
 				});
 			}
 		}

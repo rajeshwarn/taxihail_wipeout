@@ -20,6 +20,10 @@ namespace apcurium.MK.Common.Extensions
     {
 		public static double FromDollars(this string instance)
 		{
+            if(instance == null)
+            {
+                return 0;
+            }
 			return instance.Replace("$","").ToDouble();
 		}
 

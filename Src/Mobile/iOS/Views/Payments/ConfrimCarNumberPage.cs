@@ -28,6 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             CarNumberTextBox.ReturnKeyType = UIReturnKeyType.Done;
 
+            
+            AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Resources.ConfirmButton, AppStyle.ButtonColor.Green ); 
 
             CarNumberTextBox.EditingDidEndOnExit += (sender, e) => {
                 View.ResignFirstResponderOnSubviews();
