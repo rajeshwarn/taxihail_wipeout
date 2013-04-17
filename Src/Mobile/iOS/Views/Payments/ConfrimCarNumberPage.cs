@@ -26,6 +26,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 View.ResignFirstResponderOnSubviews();
             };
 
+            CarNumberTextBox.ReturnKeyType = UIReturnKeyType.Done;
+
+
+            CarNumberTextBox.EditingDidEndOnExit += (sender, e) => {
+                View.ResignFirstResponderOnSubviews();
+            };
+
+
+
             this.AddBindings(new Dictionary<object, string>{
                 { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 
                 { CarNumberTextBox, new B("Text","CarNumber", B.Mode.TwoWay) }, 
