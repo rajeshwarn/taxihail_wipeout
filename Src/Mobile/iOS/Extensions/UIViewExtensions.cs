@@ -1,5 +1,8 @@
 using System;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -60,6 +63,58 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             return null;
         }
+
+        public static void StackSubViews (this UIView thisView)
+        {
+            UIViewHelper.StackSubViews (thisView.Subviews);
+        }
+        public static void ResignFirstResponderOnSubviews (this UIView thisView)
+        {
+            thisView.ResignFirstResponder();                
+            foreach (var view in thisView.Subviews) {               
+                view.ResignFirstResponderOnSubviews();              
+            }
+        }
+        
+        
+        public static void AddToBottom (this UIView thisView, UIView toAdd)
+        {
+            if (thisView.Subviews.Any()) {
+                var bottom = thisView.Subviews.Max (v => v.Frame.Bottom);
+                toAdd.Frame = toAdd.Frame.IncrementY (bottom);
+            }
+            thisView.AddSubview (toAdd);
+        }
+        
+        public static void AddToViewBottom (this UIView thisView, UIView toAddTo)
+        {
+            toAddTo.AddToBottom (thisView);
+        }
+        
+        public static void AddToView (this UIView thisView, UIView toAddTo)
+        {
+            toAddTo.Add (thisView);
+        }
+        
+        public static void AddPadding(this UIView thisView, Padding margin)
+        {
+            thisView.Frame = margin.ShrinkRectangle (thisView.Frame);
+        }
+        public static void RoundCorners(this UIView thisButton,float radius=2, float borderThickness = 0, UIColor borderColor = null)
+        {
+            if (borderColor != null) {
+                thisButton.Layer.BorderColor = borderColor.CGColor;
+            }
+            if (borderThickness > 0) {
+                if (borderThickness == 1f && UIHelper.IsRetinaDisplay) {
+                    borderThickness = .5f;
+                } 
+                thisButton.Layer.BorderWidth = borderThickness;
+            }
+            
+            thisButton.Layer.CornerRadius = radius;
+        }
+
 	}
 }
 

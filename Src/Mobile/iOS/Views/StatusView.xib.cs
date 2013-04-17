@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { lblTitle, new B("Text","StatusInfoText") },
                     { lblStatus, new B("Text","ConfirmationNoTxt") },
                     { btnCancel, new B("TouchUpInside","CancelOrder").Add("Hidden","IsCancelButtonVisible","BoolInverter")},
-                    { btnPay, new B("TouchUpInside","CancelOrder").Add("Hidden","IsPayButtonVisible","BoolInverter")},
+                    { btnPay, new B("TouchUpInside","PayForOrderCommand").Add("Hidden","IsPayButtonVisible","BoolInverter")},
                     { btnCall, new B("Hidden","IsCallButtonVisible","BoolInverter")
                                 .Add("Enabled","IsCallButtonVisible")
                                 .Add("TouchUpInside","CallCompany") },
