@@ -94,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             txtNotes.Ended += HandleTouchDown;
             txtNotes.Started += NoteStartedEdit;
+            txtNotes.Changed += (sender, e) => ViewModel.Order.Note = txtNotes.Text;
 
             lblNameValue.TextColor = AppStyle.DarkText;
             lblNameValue.Font = AppStyle.GetBoldFont (lblNameValue.Font.PointSize);
