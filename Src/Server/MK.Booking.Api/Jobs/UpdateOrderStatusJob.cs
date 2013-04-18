@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICommandBus _commandBus;
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
         private const string AssignedStatus = "wosASSIGNED";
-        private const string DoneStatus = "wosDONE";
+        private string[] _doneStatuses = new string[] { "wosDONE", "wosCANCELLED", "wosCANCELLED_DONE", "wosNone", "wosNOSHOW" };
 
         public UpdateOrderStatusJob(IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             }
                         }
 
-                        if (ibsStatus.Status.SoftEqual(DoneStatus))
+                        if ( _doneStatuses.Any( s => ibsStatus.Status.SoftEqual(s) ))
                         {
                             orderStatusDetail.Status = OrderStatus.Completed;
 
@@ -114,7 +114,37 @@ namespace apcurium.MK.Booking.Api.Jobs
                         
                         _commandBus.Send(command);
                     }
+                    else if (_doneStatuses.Any(s => ibsStatus.Status.SoftEqual(s)))
+                    {
+                        var command = new ChangeOrderStatus
+                        {
+                            Status = orderStatusDetail,
+                            Fare = ibsStatus.Fare,
+                            Toll = ibsStatus.Toll,
+                            Tip = ibsStatus.Tip
+                        };
+
+                        orderStatusDetail.IBSStatusId = ibsStatus.Status;
+                        orderStatusDetail.DriverInfos.FirstName = ibsStatus.FirstName;
+                        orderStatusDetail.DriverInfos.LastName = ibsStatus.LastName;
+                        orderStatusDetail.DriverInfos.MobilePhone = ibsStatus.MobilePhone;
+                        orderStatusDetail.DriverInfos.VehicleColor = ibsStatus.VehicleColor;
+                        orderStatusDetail.DriverInfos.VehicleMake = ibsStatus.VehicleMake;
+                        orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
+                        orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
+                        orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
+                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
+                        orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
+                        orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
+                        orderStatusDetail.Eta = ibsStatus.Eta;
+                        orderStatusDetail.Status = OrderStatus.Completed;
+                        _commandBus.Send(command);
+
+
+                    }
+
                 }
+               
             }
             catch (Exception e)
             {
@@ -163,7 +193,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 foreach (var s in directions.Routes[0].Legs[0].Steps)
                 {
                     steps.Add(s.Start_location);
-                    steps.Add(s.End_location);       
+                    steps.Add(s.End_location);
                 }
                 _fakeTaxiPositions.Add(guid, steps);
                 _fakeTaxiPositionsIndex.Add(guid, 0);

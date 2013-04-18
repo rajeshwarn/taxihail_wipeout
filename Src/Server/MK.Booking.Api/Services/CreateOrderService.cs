@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
-            var note = string.Format("Web or mobile booking.{0}{1}", Environment.NewLine, request.Note) ;
+            var note = string.Format("{0}{1}", Environment.NewLine, request.Note) ;
             if(!string.IsNullOrWhiteSpace(request.PickupAddress.BuildingName))
             {
                 var buildingName = "Building Name: " + request.PickupAddress.BuildingName;
