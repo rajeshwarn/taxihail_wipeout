@@ -120,9 +120,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         protected override void Close()
         {
             base.Close();
-            token.Dispose();
-            refreshStatusToken.Dispose();
+			UnsubscribeToken();
         }
+
+		public void UnsubscribeToken()
+		{
+			token.Dispose();
+			refreshStatusToken.Dispose();
+		}
  
         public CallboxOrderListViewModel(string passengerName)
             : this()

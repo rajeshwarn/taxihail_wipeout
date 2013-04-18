@@ -96,6 +96,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         {
             base.OnDestroy();
             ViewModel.OrderCompleted -= ViewModelOnOrderCompleted; 
+			ViewModel.UnsubscribeToken();
         }
     }
 }
