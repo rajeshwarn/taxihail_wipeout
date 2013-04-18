@@ -66,7 +66,7 @@
                     var address = _.extend(this.model.toJSON(), address);
                     this.model.save(address);
                 } else {
-                    this.collection.create(_.pick(this.model.toJSON(), 'friendlyName', 'fullAddress', 'apartment', 'ringCode', 'buildingName'), { wait: true });
+                    this.collection.create(_.pick(this.model.toJSON(), 'friendlyName', 'fullAddress', 'apartment', 'ringCode', 'buildingName', 'latitude', 'longitude'), { wait: true });
                 }
             }
         },
