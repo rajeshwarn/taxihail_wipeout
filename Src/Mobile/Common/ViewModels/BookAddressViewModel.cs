@@ -173,8 +173,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread(() => {
                             if (t.Result != null && t.Result.Any())
                             {
-                                var address = t.Result[0];
-                                Console.WriteLine(address.FullAddress);
+                                var address = t.Result[0];                                
                                 // Replace result coordinates  by search coordinates (= user position)
                                 address.Latitude = coordinate.Latitude;
                                 address.Longitude = coordinate.Longitude;
@@ -272,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         CancelCurrentLocation();
                     }
 
-                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place") ) // This should only be true when using an address from a version smaller than 1.3
+                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
                     {
                         var a = this.GetService<IGeolocService>().SearchAddress(address.FullAddress, null , null );
                         if ( a.Count() > 0 )
@@ -337,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand RequestCurrentLocationCommand {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
 
                     CancelCurrentLocationCommand.Execute ();
@@ -391,7 +390,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude);
+                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude,true);
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Count() > 0)
                 {

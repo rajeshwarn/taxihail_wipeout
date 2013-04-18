@@ -41,6 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
             }
+            if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
+            {
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
+            }
 
             var command = Mapper.Map<CreateRule>(request);
 
@@ -55,11 +59,15 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPut(RuleRequest request)
         {
-            
             //Check if rate with same name already exists
             if ( ( request.Type != Common.Entity.RuleType.Default ) && (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name)) )
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
+            }
+            //if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
+            if (_dao.GetAll().Where(x => x.Id != request.Id).Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
+            {
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
             }
 
             var command = Mapper.Map<UpdateRule>(request);

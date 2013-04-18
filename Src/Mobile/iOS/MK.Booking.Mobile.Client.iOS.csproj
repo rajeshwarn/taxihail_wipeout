@@ -375,6 +375,12 @@
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
+    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
+    <Compile Include="Views\BookEditInformation.cs" />
+    <Compile Include="Views\BookEditInformation.designer.cs">
+      <DependentUpon>BookEditInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StackView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -435,6 +441,7 @@
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
     <InterfaceDefinition Include="Views\BookPaymentSettingsView.xib" />
+    <InterfaceDefinition Include="Views\BookEditInformation.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

@@ -13,27 +13,81 @@
             });
         },
 
-        addRecurring: function () {
-            return new TaxiHail.EditTariffView({
+        addDefaultDisable: function () {
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
-                model: new TaxiHail.Tariff({
-                    type: TaxiHail.Tariff.type.recurring
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.default,
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
 
-        addDay: function () {
-            return new TaxiHail.EditTariffView({
+        addRecurringDisable: function () {
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
-                model: new TaxiHail.Tariff({
-                    type: TaxiHail.Tariff.type.day
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.recurring,
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
+                })
+            });
+        },
+
+        addDayDisable: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.date,
+                    category: TaxiHail.Rule.category.disableRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
+                })
+            });
+        },
+
+        addDefaultWarning: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.default,
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
+                })
+            });
+        },
+
+        addRecurringWarning: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.recurring,
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
+                })
+            });
+        },
+
+        addDayWarning: function () {
+            return new TaxiHail.EditRuleView({
+                collection: this.collection,
+                model: new TaxiHail.Rule({
+                    type: TaxiHail.Rule.type.date,
+                    category: TaxiHail.Rule.category.warningRule,
+                    startTime: TaxiHail.date.toISO8601(new Date()),
+                    endTime: TaxiHail.date.toISO8601(new Date())
                 })
             });
         },
 
         edit: function (id) {
             var model = this.collection.get(id);
-            return new TaxiHail.EditTariffView({
+            return new TaxiHail.EditRuleView({
                 collection: this.collection,
                 model: model
             });

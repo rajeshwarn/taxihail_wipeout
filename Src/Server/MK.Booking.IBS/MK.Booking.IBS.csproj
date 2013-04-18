@@ -95,10 +95,12 @@
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
     <Compile Include="IBSOrderStauts.cs" />
+    <Compile Include="IDriverWebServiceClient.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
     <Compile Include="IAccountWebServiceClient.cs" />
     <Compile Include="Impl\BookingWebServiceClient.cs" />
+    <Compile Include="Impl\DriverWebServiceClient.cs" />
     <Compile Include="IStaticDataWebServiceClient.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

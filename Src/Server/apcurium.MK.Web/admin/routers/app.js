@@ -25,12 +25,20 @@
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
+
+            /* Rules */
+            "rules": "manageRules", //#rules
+            "rules/add/disable/default": "addDefaultDisableRule", //#rules/add/recurring
+            "rules/add/disable/recurring": "addRecurringDisableRule", //#rules/add/recurring
+            "rules/add/disable/day": "addDayDisableRule", //#rules/add/day
+            "rules/add/warning/default": "addDefaultWarningRule", //#rules/add/recurring
+            "rules/add/warning/recurring": "addRecurringWarningRule", //#rules/add/recurring
+            "rules/add/warning/day": "addDayWarningRule", //#rules/add/day
+            "rules/edit/:id": "editRule", //#rules/edit/{GUID}
+
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions",
 
-            /* Manage Booking Rules */
-            "rules": "manageBookingRules",
-            
             /*Export*/
             "exportaccounts": "exportaccounts",
             "exportorders": "exportorders"
@@ -94,15 +102,44 @@
             action(TaxiHail.TariffsController, 'edit', id);
         },
 
+        manageRules: function () {
+            action(TaxiHail.RulesController, 'index');
+        },
+
+        addDefaultDisableRule: function () {
+            action(TaxiHail.RulesController, 'addDefaultDisable');
+        },
+
+        addRecurringDisableRule: function () {
+            action(TaxiHail.RulesController, 'addRecurringDisable');
+        },
+
+        addDayDisableRule: function () {
+            action(TaxiHail.RulesController, 'addDayDisable');
+        },
+        
+        addDefaultWarningRule: function () {
+            action(TaxiHail.RulesController, 'addDefaultWarning');
+        },
+
+        addRecurringWarningRule: function () {
+            action(TaxiHail.RulesController, 'addRecurringWarning');
+        },
+
+        addDayWarningRule: function () {
+            action(TaxiHail.RulesController, 'addDayWarning');
+        },
+
+        editRule: function (id) {
+
+            action(TaxiHail.RulesController, 'edit', id);
+        },
+
         manageIBSExclusions: function () {
             
             action(TaxiHail.ExclusionsController, 'index');
         },
 
-        manageBookingRules: function () {
-            
-            action(TaxiHail.RulesController, 'index');
-        },
         exportaccounts: function () {
            
         },

@@ -7,52 +7,122 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
+    public class AppCacheService : CacheService ,  IAppCacheService
+    {
+        
+        
+        protected override string CacheKey
+        {
+            get
+            {
+                return "MK.Booking.Application.Cache";
+            }
+        }
+    }
+
     public class CacheService : ICacheService
     {
-        private const string _baseKey = "MK.Booking.Cache";
+
+        private const string _cacheKey = "MK.Booking.Cache";
 
         public CacheService()
         {
         }
-        #region ICacheService implementation
-        public T Get<T>(string key)
+
+        protected virtual string CacheKey
         {
-              
-            var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(_baseKey + key);
-            if (serialized.HasValue())
+            get
             {
-                return JsonSerializer.DeserializeFromString<T>(serialized);
-            }
-            else
-            {
-                return default(T);
+                return _cacheKey;
             }
         }
 
-        public void Set<T>(string key, T obj)
+        #region ICacheService implementation
+        public T Get<T>(string key) where T : class
         {
-            var serialized = JsonSerializer.SerializeToString(obj);            
-            NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, _baseKey + key);               
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;         
+            var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(CacheKey + key);
+           
+            Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
+
+            var result = default( T );
+
+            if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            {
+                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+                if ((cacheItem != null) && (cacheItem.ExpiresAt > DateTime.Now))
+                {
+                    result = cacheItem.Value;
+                }
+            }
+            else if (serialized.HasValue()) //Support for older cached item
+            {
+                var item = JsonSerializer.DeserializeFromString<T>(serialized);
+                if (item != null)
+                {
+                    result = item;
+                    Set(key, item);
+                }
+            }
+
+            return result;
+
         }
+
+        public void Set<T>(string key, T obj) where T : class
+        {
+            Set(key, obj, DateTime.Now.AddYears(5));
+        }
+
+        public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
+        {
+            var item = new CacheItem<T>(obj, expiresAt);
+            var serialized = JsonSerializer.SerializeToString(item);
+            NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, CacheKey + key);               
+        }
+
+
+//        public void Set<T>(string key, T obj)where T : class
+//        {
+//            var serialized = JsonSerializer.SerializeToString(obj);            
+//            NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, _baseKey + key);               
+//        }
 
         public void Clear(string key)
         {
-            NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, _baseKey + key);               
+            Console.WriteLine ( "-----------------------------------  Clear :" + CacheKey + key + " : " + this.GetType().ToString() );                        
+            NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, CacheKey + key);               
         }
 
         private void ClearFullKey(string fullKey)
         {
+            Console.WriteLine ( "-----------------------------------  ClearFullKey :" + fullKey + " : " + this.GetType ().ToString() );            
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, fullKey);               
         }
 
         public void ClearAll()
         {
-
+            Console.WriteLine ( "-----------------------------------  ClearAll :" + this.GetType ().ToString ());            
             var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
-            keys.Where (k => k.ToString ().StartsWith(_baseKey)).ForEach (k => ClearFullKey( k.ToString() ) );
+            keys.Where (k => k.ToString ().StartsWith(CacheKey)).ForEach (k => ClearFullKey( k.ToString() ) );
         }
         #endregion
 
+    }
+    public class CacheItem<T> where T : class
+    {
+        public CacheItem(T value)
+        {
+            this.Value = value;
+        }
+        public CacheItem(T value, DateTime expireAt)
+        {
+            this.Value = value;
+            this.ExpiresAt = expireAt;
+        }
+        
+        public DateTime ExpiresAt { get; set; }
+        public T Value { get; set; }
     }
 }
 

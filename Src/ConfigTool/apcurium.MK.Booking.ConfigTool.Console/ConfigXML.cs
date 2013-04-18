@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 XmlAttribute att = node.Attributes[Attribute];
 				SetterAtt(Parent.Config, att);
             }
+
+
             doc.Save(destPath);
             
             

@@ -39,6 +39,15 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
     </Reference>
@@ -52,18 +61,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monodroid\Xamarin.Mobile.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -150,6 +147,7 @@
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\RatingModel.cs" />
+    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
@@ -184,6 +182,7 @@
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\Callbox\BaseCallboxViewModel.cs" />

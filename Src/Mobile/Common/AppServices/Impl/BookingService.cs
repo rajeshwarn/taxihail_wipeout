@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Xamarin.Contacts;
+
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
-        private List<Contact> _addresBook;
 
         public bool IsValid (CreateOrder info)
         {
@@ -119,6 +118,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool HasLastOrder {
             get{ return Cache.Get<string> ("LastOrderId").HasValue ();}
+		
         }
 
         public Task<OrderStatusDetail> GetLastOrderStatus ()
@@ -278,47 +278,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
 
-        public List<Address> GetAddressFromAddressBook (Predicate<Contact> criteria)
-        {
-            var contacts = new List<Address> ();
-            var queryable = _addresBook.Where (c => criteria (c) && c.Addresses.Any ()).ToList ();
-
-            foreach (var contact in queryable) {
-                contact.Addresses.Where (a => a.StreetAddress != null).ForEach (c => {
-                    var list = new List<string> ();
-                    c.StreetAddress.Maybe (() => list.Add (c.StreetAddress));
-                    c.City.Maybe (() => list.Add (c.City));
-                    c.Country.Maybe (() => list.Add (c.Country));
-                    contacts.Add (new Address
-                                {
-                                    FriendlyName = contact.DisplayName,
-                                    FullAddress = string.Join(", ", list ),
-                                    City = c.City,
-                                    IsHistoric = false,
-                                    ZipCode = c.PostalCode,
-                                    AddressType = "localContact"
-                    });
-                });
-
-            }
-            return contacts;
-        }
-
-        private Task _task;
-
-        public Task LoadContacts ()
-        {
-            if (_task == null) {
-                _task = new Task (() =>
-                {
-                    var book = TinyIoCContainer.Current.Resolve<IAddressBookService> ();
-                    _addresBook = book.LoadContacts ();
-                    _addresBook.ToString ();
-                });
-                _task.Start ();
-            }
-            return _task;
-        }
     }
 }
 

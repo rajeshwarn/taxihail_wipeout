@@ -92,6 +92,9 @@
     <Compile Include="..\MK.ConfigurationManager\ConfigurationManagerDbContext.cs">
       <Link>ConfigurationManagerDbContext.cs</Link>
     </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\AppVersion.cs">
+      <Link>Entities\AppVersion.cs</Link>
+    </Compile>
     <Compile Include="..\MK.ConfigurationManager\Entities\Company.cs">
       <Link>Entities\Company.cs</Link>
     </Compile>

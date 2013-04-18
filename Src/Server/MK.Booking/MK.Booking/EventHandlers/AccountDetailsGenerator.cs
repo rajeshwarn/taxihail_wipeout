@@ -103,6 +103,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
+                settings.ChargeTypeId = @event.ChargeTypeId;
+                settings.ProviderId = @event.ProviderId;
+                settings.VehicleTypeId = @event.VehicleTypeId;
+
                 if (settings.ChargeTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
                 {
                     settings.ChargeTypeId = null;

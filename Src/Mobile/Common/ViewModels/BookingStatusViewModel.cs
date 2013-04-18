@@ -215,10 +215,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set;
         }
 
+
+        
+
         private bool _showRatingButton;
 
         public bool ShowRatingButton {
-            get {
+            get { 
                 if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().RatingEnabled) {
                     return false;
                 } else {
@@ -267,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         var applicationName = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName;
                         this.PhoneService.AddEventToCalendarAndReminder(string.Format(Resources.GetString("ReminderTitle"),applicationName), 
-                                                                        string.Format(Resources.GetString("ReminderDetails"),Order.PickupAddress.FullAddress, Order.PickupDate.Date.ToLongDateString(), Order.PickupDate.Date.ToLongTimeString()), 
+                                                                        string.Format(Resources.GetString("ReminderDetails"),Order.PickupAddress.FullAddress, FormatTime (Order.PickupDate),FormatDate(Order.PickupDate)), 
                                                                         Order.PickupAddress.FullAddress, 
                                                                         Order.PickupDate, 
                                                                         Order.PickupDate.AddMinutes(-15));
@@ -275,6 +278,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                     });
                 });
+            }
+        }
+
+        private string FormatTime(DateTime pickupDate )
+        {
+            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+            string format = "{0:"+formatTime+"}";
+            return string.Format(format, pickupDate);
+        }
+
+        private string FormatDate(DateTime pickupDate )
+        {
+            return pickupDate.Date.ToLongDateString();
+        }
+
+        
+        public string CultureInfoString
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
             }
         }
 

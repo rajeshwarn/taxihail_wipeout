@@ -6,22 +6,29 @@
 
         initialize: function() {
             this.collection.on('reset', this.render, this);
+            this.collection.reset(this.collection.toJSON());
         },
 
         render: function() {
 
             this.$el.html(this.renderTemplate());
-
+            //this.collection = this.collection.where({ category: TaxiHail.Rule.category.warningRule });
             this.collection.each(this.renderItem, this);
 
             return this;
         },
 
-        renderItem: function(rate) {
-
-            new TaxiHail.TariffItemView({
-                model: rate
-            }).render().$el.appendTo(this.$('tbody'));
+        renderItem: function(rule) {
+            if (rule.get('category') == TaxiHail.Rule.category.warningRule) {
+                new TaxiHail.RuleItemView({
+                    model: rule
+                }).render().$el.appendTo(this.$('tbody[name=warningItem]'));
+            } else {
+                new TaxiHail.RuleItemView({
+                    model: rule
+                }).render().$el.appendTo(this.$('tbody[name=disableItem]'));
+            }
+           
             
         }
     });

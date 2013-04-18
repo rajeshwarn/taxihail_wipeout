@@ -19,6 +19,9 @@ using Java.Lang;
 using Cirrious.MvvmCross.Interfaces.Platform.Location;
 using Cirrious.MvvmCross.Android.Platform;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -45,15 +48,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void OnResume()
         {
-            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
-            //service.Start();
+          
             base.OnResume();
-        }
-
-
-        protected override void OnPause()
-        {
-            base.OnPause();
+            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
         }
 
         protected override void OnDestroy()

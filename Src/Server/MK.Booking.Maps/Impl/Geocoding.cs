@@ -79,12 +79,13 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 return addressesInRange;
             }
-         
         }
+
+      
 
         private Address[] GetPopularAddressesInRange(Position position)
         {
-            float range = 50;
+            const int range = 150;
             const double R = 6378137;
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
@@ -92,7 +93,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                                    where distance <= range
                                    orderby distance ascending
                                    select a;
-
+            addressesInRange.ForEach(a => a.AddressType = "popular");
             return addressesInRange.ToArray();
         }
 

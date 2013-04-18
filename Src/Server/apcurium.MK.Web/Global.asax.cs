@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Common.IoC;
 using log4net.Config;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
+using System.Threading;
 
 namespace apcurium.MK.Web
 {
@@ -129,7 +130,8 @@ namespace apcurium.MK.Web
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
-        {           
+        {
+            
             Trace.WriteLine("Request Begin");
         }
 

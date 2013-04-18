@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Common.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -49,8 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         /// </param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-            facebook.SetCurrentContext(this);
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();            
             (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
@@ -142,8 +142,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             alert.SetPositiveButton("Ok", (s, e) =>
                 {
-                    var serverUrl = input.Text;                    
-                    TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+                    var serverUrl = input.Text;
+
+                    ViewModel.SetServerUrl(serverUrl);
+                    
+
+
                 });
 
             alert.SetNegativeButton("Cancel", (s, e) =>

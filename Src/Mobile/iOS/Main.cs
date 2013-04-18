@@ -71,9 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 			var start = this.GetService<IMvxStartNavigation>();
-			start.Start();
-            
-            ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
+			start.Start();     
 
 			window.RootViewController = AppContext.Current.Controller;
             return true;

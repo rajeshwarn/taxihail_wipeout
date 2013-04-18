@@ -14,13 +14,13 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private const int _invalidZoneErrorCode = -1002;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private WebDriverService _webDriverService;
+        private IDriverWebServiceClient _driverService;
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, WebDriverService webDriverService)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, IDriverWebServiceClient driverService)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
-            _webDriverService = webDriverService;
+            _driverService = driverService;
 
         }
 
@@ -69,22 +69,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IBSDriverInfos GetDriverInfos(string driverId)
-        {
-            var infos = new IBSDriverInfos();
-            var webDriver = _webDriverService.GetWEBDriver(UserNameApp, PasswordApp, driverId);
-            infos.FirstName = webDriver.FirstName;
-            infos.LastName = webDriver.LastName;
-            infos.MobilePhone = webDriver.MobilePhone;
-            infos.VehicleColor = webDriver.VehicleColor;
-            infos.VehicleMake = webDriver.VehicleMake;
-            infos.VehicleModel = webDriver.VehicleModel;
-            infos.VehicleRegistration = webDriver.VehicleRegistration;
-            infos.VehicleType = webDriver.VehicleType;
-            return infos;
-        }
-
-        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        
+   public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
             var result = new List<IBSOrderInformation>();
             UseService(service =>
@@ -120,7 +106,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             return result;
         }
-
+		
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);

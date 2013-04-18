@@ -1,4 +1,5 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public ApplicationInfo GetAppInfo()
         {
+            
             var resource = string.Format("/app/info");
             var result = Client.Get<ApplicationInfo>(resource);
             return result;

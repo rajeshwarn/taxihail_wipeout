@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -119,9 +120,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         protected override void Close()
         {
             base.Close();
-            token.Dispose();
-            refreshStatusToken.Dispose();
+			UnsubscribeToken();
         }
+
+		public void UnsubscribeToken()
+		{
+			token.Dispose();
+			refreshStatusToken.Dispose();
+		}
  
         public CallboxOrderListViewModel(string passengerName)
             : this()
@@ -146,8 +152,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     this.Resources.GetString("Yes"), ()
                     =>
                         {
-                            BookingService.CancelOrder(orderId);
                             var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
+					
+					Task.Factory.StartNew(()=>{
+
+                            BookingService.CancelOrder(orderId);
+					}).ContinueWith(t=>{
+						MessageService.ShowMessage(this.Resources.GetString("ServiceError_ErrorCreatingOrderMessage"),this.Resources.GetString("ErrorCancellingOrderTitle"));
+						Orders.Add(orderToRemove);
+						
+					},TaskContinuationOptions.OnlyOnFaulted);
+
+						MessageService.ShowProgress(true);
                             Orders.Remove(orderToRemove);
                             CacheService.Set("callbox.orderList", Orders);
                             if (Orders.Count == 0)
@@ -155,6 +171,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                 RequestNavigate<CallboxCallTaxiViewModel>();
                                 this.Close();
                             }
+					MessageService.ShowProgress(false);
+			
                         }, this.Resources.GetString("No"), () => { }));
             }
         }

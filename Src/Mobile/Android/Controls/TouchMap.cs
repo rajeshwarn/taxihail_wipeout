@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 if (r.IsCompleted && !r.IsCanceled && !r.IsFaulted)
                 {
-                    Console.WriteLine("Execute command Is Map Touch Down " + IsMapTouchDown);
+
                     if (!IsMapTouchDown && (MapMoved != null) && (MapMoved.CanExecute()))
                     {
                         MapMoved.Execute(new Address
@@ -184,11 +184,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-		protected override void OnAttachedToWindow()
-		{
-			base.OnAttachedToWindow();
-			Console.WriteLine(this.ChildCount.ToString());
-		}
 
         private OrderStatusDetail _taxiLocation { get; set; }
 

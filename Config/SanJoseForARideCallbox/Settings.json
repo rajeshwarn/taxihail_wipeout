@@ -1,0 +1,20 @@
+{
+   "ApplicationName" : "ForARide",
+   "CanChangeServiceUrl" : "false",
+   "DefaultPhoneNumber" : "14087777777",
+   "DefaultPhoneNumberDisplay" : "408-777-7777",
+   "ErrorLog" : "",
+   "ErrorLogEnabled" : "false",
+   "FacebookAppId" : "",
+   "FacebookEnabled" : "false",
+   "ServiceUrl" : "http://services.taxihail.com/SanJoseForARide/api/",
+   "SiteUrl" : "http://www.foraride.com",
+   "SupportEmail" : "it@yccab.com",
+   "TwitterAccessTokenUrl" : "",
+   "TwitterAuthorizeUrl" : "",
+   "TwitterCallback" : "",
+   "TwitterConsumerKey" : "",
+   "TwitterConsumerSecret" : "",
+   "TwitterEnabled" : "false",
+   "TwitterRequestTokenUrl" : ""
+}

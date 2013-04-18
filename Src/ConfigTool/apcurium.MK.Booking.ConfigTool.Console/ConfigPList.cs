@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(Destination));
 
             var doc = new XmlDocument();
+
             doc.Load(destPath);
 
             var node = doc.SelectSingleNode("//key[. = '" + Key + "']");           
@@ -36,7 +37,8 @@ namespace apcurium.MK.Booking.ConfigTool
             SetterEle(node.NextSibling  as XmlElement);
 
             var w = new NullSubsetXmlTextWriter(destPath, Encoding.UTF8);
-            doc.Save( w );
+			w.Formatting = Formatting.Indented;
+			doc.Save( w );
             w.Close();
             w = null;            
             

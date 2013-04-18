@@ -6,6 +6,7 @@ using Infrastructure.Serialization;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -22,22 +23,29 @@ namespace apcurium.MK.Booking.Api.Services
     public class ValidateOrderService : RestServiceBase<ValidateOrderRequest>
     {
         private IConfigurationManager _configManager;
-        private IRuleDao _ruleDao;
-        private ReferenceDataService _referenceDataService;
+        private IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private IRuleCalculator _ruleCalculator;
 
-        public ValidateOrderService(IRuleDao ruleDao,
+        public ValidateOrderService(
                                     IConfigurationManager configManager,
-                                    ReferenceDataService referenceDataService)
+             IStaticDataWebServiceClient staticDataWebServiceClient,
+            IRuleCalculator ruleCalculator)
         {
             _configManager = configManager;
-            _ruleDao = ruleDao;
+            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ruleCalculator = ruleCalculator;
         }
 
         public override object OnPost(ValidateOrderRequest request)
         {
             Trace.WriteLine("Validating order request : " );
 
-            var rule = _ruleDao.GetActiveWarningRule(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime());
+            var zone = request.TestZone;
+            if (!request.TestZone.HasValue())
+            {
+                zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);            
             
             return new OrderValidationResult{ HasWarning = rule != null , Message = rule != null ? rule.Message : null } ;
            

@@ -83,11 +83,12 @@
         },
 
         _save: function (data) {
-
+            
+            
             return this.options.exclusions.save({
-                excludedVehicleTypeId: _([data.vehiclesList || '']).flatten().map(function(value){ return +value; }),
-                excludedPaymentTypeId: _([data.paymentsList || '']).flatten().map(function(value){ return +value; }),
-                excludedProviderId: _([data.companiesList || '']).flatten().map(function(value){ return +value; })
+                excludedVehicleTypeId: _([data.vehiclesList || '']).flatten().map(function(value){ return value; }),
+                excludedPaymentTypeId: _([data.paymentsList || '']).flatten().map(function(value){ return value; }),
+                excludedProviderId: _([data.companiesList || '']).flatten().map(function(value){ return value; })
             });
         }
     });

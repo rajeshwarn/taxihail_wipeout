@@ -183,6 +183,7 @@
     <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\jquery.min.js" />
     <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
@@ -339,6 +340,11 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
+    <Content Include="themes\CasinoTaxi\img\logo.png" />
+    <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
+    <Content Include="themes\DispatchTaxi\img\location.png" />
+    <Content Include="themes\DispatchTaxi\img\logo.png" />
     <Content Include="themes\DiamondCab\img\logo.png" />
     <Content Include="themes\FreedomTaxi\img\logo.png" />
     <Content Include="themes\MississaugaTaxi\img\logo.png" />
@@ -356,10 +362,6 @@
     <Content Include="themes\BurlingtonTaxiOntario\img\cancel-icon.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
-    <Content Include="themes\BostonCab\img\cancel-icon.png" />
-    <Content Include="themes\BostonCab\img\header-bg.png" />
-    <Content Include="themes\BostonCab\img\location.png" />
-    <Content Include="themes\BostonCab\img\logo.png" />
     <Content Include="themes\BarrieTaxi\img\cancel-icon.png" />
     <Content Include="themes\BarrieTaxi\img\location.png" />
     <Content Include="themes\BarrieTaxi\img\logo.png" />
@@ -388,10 +390,6 @@
     <Content Include="themes\GoTaxiDesMoines\img\location.png" />
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
-    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
-    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
-    <Content Include="themes\VictoriaTaxi\img\location.png" />
-    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
     <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
     <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
     <Content Include="themes\WorcesterYellowCab\img\location.png" />
@@ -399,10 +397,6 @@
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
-    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
-    <Content Include="themes\YellowCabTampa\img\location.png" />
-    <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -437,8 +431,9 @@
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
-    <Content Include="admin\templates\ManageExclusions.handlebars" />
-    <Content Include="admin\templates\ManageTariffs.handlebars" />
+    <Content Include="admin\templates\ManageTariffs.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\TariffItem.handlebars" />
     <Content Include="themes\Taxiworld\less\combined-responsive.less" />
     <Content Include="themes\Taxiworld\less\combined.less" />
@@ -476,10 +471,26 @@
     <Content Include="themes\DiamondCab\less\variables.less" />
     <Content Include="admin\templates\ConfirmEmail.handlebars" />
     <Content Include="admin\localization\ConfirmEmail.json" />
-    <Content Include="admin\templates\ManageRules.handlebars" />
+    <Content Include="admin\templates\ManageRules.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\localization\ManageRules.json" />
     <Content Include="admin\templates\EditRule.handlebars" />
     <Content Include="admin\localization\EditRule.json" />
+    <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
+    <Content Include="themes\CasinoTaxi\less\combined.less" />
+    <Content Include="themes\CasinoTaxi\less\style.less" />
+    <Content Include="themes\CasinoTaxi\less\variables.less" />
+    <Content Include="themes\DispatchTaxi\less\combined-responsive.less" />
+    <Content Include="themes\DispatchTaxi\less\combined.less" />
+    <Content Include="themes\DispatchTaxi\less\style.less" />
+    <Content Include="themes\DispatchTaxi\less\variables.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\combined-responsive.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\combined.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\style.less" />
+    <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
+    <Content Include="admin\templates\RuleItem.handlebars" />
+    <Content Include="admin\localization\RuleItem.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -859,55 +870,13 @@
     <Content Include="admin\localization\AddFavorite.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
-    <Content Include="themes\WorcesterYellowCab\less\style.less" />
-    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="admin\localization\AdminMenu.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\AddPopularAddress.handlebars" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="admin\localization\AddPopularAddress.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\YellowCabTampa\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\YellowCabTampa\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\YellowCabTampa\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BostonCab\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BostonCab\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BostonCab\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BostonCab\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\VictoriaTaxi\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\VictoriaTaxi\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\VictoriaTaxi\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="mixins\" />

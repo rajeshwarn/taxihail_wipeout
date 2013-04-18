@@ -41,9 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnViewModelSet()
         {
-            Console.WriteLine( "NativeHeapSize:" + Debug.NativeHeapSize );
-            Console.WriteLine( "NativeHeapFreeSize:" + Debug.NativeHeapFreeSize );
-
             SetContentView(Resource.Layout.View_Book);
 			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
@@ -105,13 +102,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
-        private Guid _id = Guid.NewGuid();
 
         protected override void OnResume()
         {
             base.OnResume();
-
-            Console.WriteLine( "OnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResume" + _id.ToString() );
+            
 
             ViewModel.ShowTutorial.Execute();
 
@@ -213,8 +208,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		protected override void OnDestroy ()
 		{
 			base.OnDestroy ();
-            Console.WriteLine( "OnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroy:" + _id.ToString() );
-
+            
 			if (ViewModel != null) {
 				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			}

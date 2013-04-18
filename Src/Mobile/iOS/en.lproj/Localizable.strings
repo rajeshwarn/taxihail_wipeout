@@ -8,7 +8,7 @@
 "LoginForgotPasswordButton"="Forgot Password?";
 "CreateAccountLanguage"="Language";
 "NbPassenger"=" ({0} passenger)";
-"ResetPasswordSucessTitle"="Password resetted";
+"ResetPasswordSucessTitle"="Password reset";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
@@ -205,7 +205,7 @@
 "CreateAccountLanguageEn"="English";
 "DestinationTextPlaceholder"="Destination street address";
 "PickupDateTextPlaceholder"="Date: Today";
-"ServiceErrorUnauthorized"="An unauthorized call has been made to server, you will be redirected to login page.";
+"ServiceErrorUnauthorized"="Your session has expired, please login to continue.";
 "LocationViewTitle"="My Locations";
 "CreateAccountInvalidPhone"="The mobile number is invalid. It must contain 10 numbers.";
 "HistoryDetailSendReceiptButton"="Send receipt";
@@ -222,7 +222,7 @@
 "View_RefineAddress"="Pickup Details";
 "InvalidPickupAddress"="Please enter a valid pickup address.";
 "EstimatePrice"="Estimated Fare : {0}";
-"ServiceErrorCallTitle"="Server Error";
+"ServiceErrorCallTitle"="Message";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
 "SettingsViewTitle"="Settings";
 "BookDestinationLabel"="Enter your destination";
@@ -234,7 +234,7 @@
 "HistoryViewStatusButton"="View Status";
 "PasswordLabel"="Password";
 "BuildingName"="Building Name / Remark";
-"ResetPasswordSucessMessage"="Password was successfully resetted";
+"ResetPasswordSucessMessage"="Password was reset successfully";
 "View_Book_Menu_UpdateMyProfile"="Update My Profile";
 "TabBook"="Book";
 "View_BookSettingMenu"="Settings";
@@ -386,4 +386,9 @@
 "StreetNumberPlacesBt"="Search for places";
 "WarningTitle"="Warning";
 "View_SearchAddress"="Address Search";
-"DeleteAddressBt"="Delete Address";
+"DeleteAddressBt"="Clear Address";
+"StreetNumberPlacesBt"="Search for places";
+"PassengerNameLabel"="Name";
+"PassengerNumberLabel"="Passengers";
+"EditDetails"="Edit Details";
+"PassengerPhoneLabel"="Phone";

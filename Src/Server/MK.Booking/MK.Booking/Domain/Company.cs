@@ -244,13 +244,12 @@ namespace apcurium.MK.Booking.Domain
         }
 
         
-
-        public void CreateRule(Guid ruleId, string name, string message, RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
+        public void CreateRule(Guid ruleId, string name, string message, string zoneList,  RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
         {
-            if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
+            /*if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
             {
                 throw new InvalidOperationException(string.Format("Only one default rule of type {0} can be created", category.ToString()));
-            }
+            }*/
 
             if ((type == RuleType.Default) && message.IsNullOrEmpty() )
             {
@@ -272,6 +271,7 @@ namespace apcurium.MK.Booking.Domain
                 Type = type,
                 Name = name,
                 Message = message,
+                ZoneList = zoneList,
                 Category = category,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
@@ -281,12 +281,12 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = type == RuleType.Default ? 0 : priority,
+                Priority = /*type == RuleType.Default ? 0 :*/ priority,
             });
 
         }
 
-        public void UpdateRule(Guid ruleId, string name, string message, bool appliedToCurrentBooking, bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool appliedToCurrentBooking, bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
         {
 
             this.Update(new RuleUpdated
@@ -294,6 +294,7 @@ namespace apcurium.MK.Booking.Domain
                 RuleId = ruleId,
                 Name = name,
                 Message = message,
+                ZoneList = zoneList,
                 AppliesToCurrentBooking = appliedToCurrentBooking,
                 AppliesToFutureBooking = appliesToFutureBooking,
                 IsActive = isActive,
@@ -309,10 +310,10 @@ namespace apcurium.MK.Booking.Domain
 
         public void DeleteRule(Guid ruleId)
         {
-            if (_defaultRules.ContainsValue( ruleId ) )
+           /* if (_defaultRules.ContainsValue( ruleId ) )
             {
                 throw new InvalidOperationException("Cannot delete default tariff");
-            }
+            }*/
             this.Update(new RuleDeleted
             {
                 RuleId = ruleId

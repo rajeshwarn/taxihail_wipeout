@@ -17,8 +17,6 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Cache;
-using Xamarin.Contacts;
-using Xamarin.Geolocation;
 using apcurium.MK.Booking.Mobile.Data;
 using SocialNetworks.Services.OAuth;
 using SocialNetworks.Services.MonoDroid;
@@ -52,8 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.InitializeAdditionalPlatformServices();
 
 
-			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
-			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
+			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));			
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(this.ApplicationContext));
@@ -62,12 +59,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
-            TinyIoCContainer.Current.Register<AddressBook>(new AddressBook(this.ApplicationContext));
+            TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
 
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 1000 });
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 900 }, CoordinatePrecision.Medium.ToString());
+            
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
 			TinyIoCContainer.Current.Register<IPushNotificationService>(new PushNotificationService(this.ApplicationContext));

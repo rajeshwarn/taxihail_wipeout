@@ -4,6 +4,7 @@ using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -85,11 +86,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public OrderValidationResult ValidateOrder(CreateOrder order)
+        public OrderValidationResult ValidateOrder(CreateOrder order, string testZone = null)
         {
-
-            var req = string.Format("/account/orders/validate");
-            return Client.Post<OrderValidationResult>( req, order );
+            if (testZone.HasValue())
+            {
+                var req = string.Format("/account/orders/validate/" + testZone);
+                return Client.Post<OrderValidationResult>(req, order);
+            }
+            else
+            {
+                var req = string.Format("/account/orders/validate");
+                return Client.Post<OrderValidationResult>(req, order);
+            }
         }
     }
 }
