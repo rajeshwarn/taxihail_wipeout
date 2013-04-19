@@ -167,25 +167,12 @@
 
                 this._searchResults.on('selected', function (model, collection) {
 
-                    if(!model.get('fullAddress') && model.has('placeReference'))
-                    {
-                        TaxiHail.places.getPlaceDetails(model.get('placeReference'))
-                            .done(function(result){
-                                if(result)
-                                {
-                                    model.set({
-                                        fullAddress: result.fullAddress
-                                    });
-                                }
+                    // Fetch place details in case this is a Google Places result
+                    this.fetchPlaceDetails(model)
+                        .always(_.bind(function(){
+                            this.trigger('selected', model, collection);
+                        }, this));
 
-                            })
-                            .always(_.bind(function(){
-                                this.trigger('selected', model, collection);
-                            }, this));
-                    } else {
-                        this.trigger('selected', model, collection);
-                    }
-                    
                 }, this);
 
                 this.$('.tab-content').html(view.render().el);
@@ -217,12 +204,28 @@
                     this._searchResults.reset(result);
                     
                     this._searchResults.on('selected', function (model, collection) {
-                        this.trigger('selected', model, collection);
+                        this.fetchPlaceDetails(model)
+                            .always(_.bind(function(){
+                                this.trigger('selected', model, collection);
+                            }, this));
+
                     }, this);
                     
                     this.$('.tab-content').html(view.render().el);
                 
                 }, this));
+        },
+
+        fetchPlaceDetails: function(model) {
+            var placeReference = model && model.get('placeReference');
+            if(placeReference) {
+                return TaxiHail.places.getPlaceDetails(placeReference)
+                        .done(function(result){
+                            model.set(result);
+                        });
+            }
+            // Return resolved promise in case the call is not valid
+            return $.when();
         }
 
     });
