@@ -23,7 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         private IDisposable refreshStatusToken;
         private ObservableCollection<CallboxOrderViewModel> _orders { get; set; }
         private List<int?> OrderNotified { get; set; } 
-
+		private bool _isOnErrorState{get;set;}
+		private Guid _orderIdOnError{get;set;}
         public ObservableCollection<CallboxOrderViewModel> Orders
         {
             get { return _orders; }
@@ -43,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
            // Orders = CacheService.Get<ObservableCollection<CallboxOrderViewModel>>("callbox.orderList") ?? new ObservableCollection<CallboxOrderViewModel>();
             //var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
             Orders = new ObservableCollection<CallboxOrderViewModel>();
+			_orderIdOnError = Guid.Empty;
              refreshStatusToken = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20))
                       .Subscribe(a =>
                                      {
@@ -69,11 +71,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                         IbsOrderId = status.IBSOrderId,
                         Id = status.OrderId
                     }));
-                    if (!Orders.Any())
+                    if (!Orders.Any() && !_isOnErrorState)
                     {
                         RequestNavigate<CallboxCallTaxiViewModel>();
                         this.Close();
                     }
+					if(Orders.Any(o=>o.Id == _orderIdOnError))
+					{
+						_isOnErrorState= false;
+					}
                     foreach (var order in Orders)
                     {
                         if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
@@ -222,6 +228,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                                                              OrderStatus = orderInfo
                                                                                          });
                                                                                          CacheService.Set("callbox.orderList", Orders);
+									_isOnErrorState = false;
                                                                                      });
                                                           }
                                                       }
@@ -229,6 +236,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                       {
                                                           InvokeOnMainThread(() =>
                                                                                  {
+								_isOnErrorState = true;
                                                                                      var settings =
                                                                                          TinyIoCContainer.Current
                                                                                                          .Resolve
