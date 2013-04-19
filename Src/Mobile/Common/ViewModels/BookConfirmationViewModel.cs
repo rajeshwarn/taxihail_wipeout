@@ -111,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public CreateOrder Order { get; private set; }
 
+
         public string OrderPassengerNumber
         {
             get { return Order.Settings.Passengers.ToString(); }
