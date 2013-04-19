@@ -217,7 +217,15 @@
                     this._searchResults.reset(result);
                     
                     this._searchResults.on('selected', function (model, collection) {
-                        this.trigger('selected', model, collection);
+                        // Fetch place details
+                        TaxiHail.places.getPlaceDetails(model.get('placeReference'))
+                            .done(function(result){
+                                model.set(result);
+                            })
+                            .always(_.bind(function(){
+                                this.trigger('selected', model, collection);
+                            }, this));
+
                     }, this);
                     
                     this.$('.tab-content').html(view.render().el);
