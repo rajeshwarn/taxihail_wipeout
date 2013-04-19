@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISlider tipSlider { get; set; }
+		MonoTouch.UIKit.UIView TipSlider { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btnCreditCard { get; set; }
@@ -126,9 +126,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblCreditCard = null;
 			}
 
-			if (tipSlider != null) {
-				tipSlider.Dispose ();
-				tipSlider = null;
+			if (TipSlider != null) {
+				TipSlider.Dispose ();
+				TipSlider = null;
 			}
 
 			if (btnCreditCard != null) {

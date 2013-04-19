@@ -14,12 +14,7 @@ namespace apcurium.MK.Booking.Mobile
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-#if DEBUG
-			if(string.IsNullOrWhiteSpace(OrderStatus.VehicleNumber))
-			{
-				OrderStatus.VehicleNumber = "Test1234";
-			}
-#endif
+
 
 		}
 

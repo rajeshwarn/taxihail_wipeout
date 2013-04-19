@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
                     .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
                     .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") },
-                { tipSlider, 
+                { TipSlider, 
                     new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
             });         
 
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (!ViewModel.Settings.PayByCreditCardEnabled) {
                 
                 lblCreditCard.Hidden = true;
-                tipSlider.Hidden = true;
+                TipSlider.Hidden = true;
                 lblOptional.Hidden = true;
                 btnCreditCard.Hidden = true;
             }
