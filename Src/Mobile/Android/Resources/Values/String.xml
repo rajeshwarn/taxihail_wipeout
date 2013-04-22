@@ -390,6 +390,8 @@
   <string name="PassengerPhoneLabel">Phone</string>
   <string name="EditDetails">Edit Details</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
+  <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
+  
   <string name="OkButtonText">Ok</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   

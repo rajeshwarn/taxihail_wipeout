@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					else if(!PaymentClient.CommitPreAuthorized(transactionId))
 					{
 						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.SendMessageErrorMessage);
 					}
 					else
 					{

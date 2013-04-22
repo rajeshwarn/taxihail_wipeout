@@ -1963,8 +1963,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07012a
 			public const int Now = 2131165482;
 			
-			// aapt resource value: 0x7f070186
-			public const int OkButtonText = 2131165574;
+			// aapt resource value: 0x7f070187
+			public const int OkButtonText = 2131165575;
 			
 			// aapt resource value: 0x7f0700a8
 			public const int OrderHistoryListTitle = 2131165352;
@@ -1978,8 +1978,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07010b
 			public const int OrderNoteGPSApproximate = 2131165451;
 			
-			// aapt resource value: 0x7f070188
-			public const int OrderNumber = 2131165576;
+			// aapt resource value: 0x7f070189
+			public const int OrderNumber = 2131165577;
 			
 			// aapt resource value: 0x7f07006f
 			public const int ParameterButton = 2131165295;
@@ -2149,6 +2149,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070080
 			public const int SendErrorLogButton = 2131165312;
 			
+			// aapt resource value: 0x7f070186
+			public const int SendMessageErrorMessage = 2131165574;
+			
 			// aapt resource value: 0x7f0700ad
 			public const int ServerInfo = 2131165357;
 			
@@ -2299,8 +2302,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700af
 			public const int TaxiMapTitle = 2131165359;
 			
-			// aapt resource value: 0x7f070187
-			public const int TaxiServerDownMessage = 2131165575;
+			// aapt resource value: 0x7f070188
+			public const int TaxiServerDownMessage = 2131165576;
 			
 			// aapt resource value: 0x7f070013
 			public const int TechSupportEmailTitle = 2131165203;
