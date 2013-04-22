@@ -52,6 +52,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("CmtTransactionErrorMessage");
 			}
 		}
+		public static string SendMessageErrorMessage {
+			get{				
+				return _r.GetString ("SendMessageErrorMessage");
+			}
+		}
 
 		public static string CmtTransactionSuccessMessage {
 			get{				
