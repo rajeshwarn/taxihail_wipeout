@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 		public long PreAuthorize (string cardToken, double amount)
 		{
 			var response = PreAuthorizeTransaction(cardToken,amount);
-			if(response.ResponseCode > 0)
+            if(response.ResponseCode > 0 && response.ResponseCode <99)
 			{
 				return response.TransactionId;
 			}

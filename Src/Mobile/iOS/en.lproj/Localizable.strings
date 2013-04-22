@@ -392,3 +392,11 @@
 "PassengerNumberLabel"="Passengers";
 "EditDetails"="Edit Details";
 "PassengerPhoneLabel"="Phone";
+"NoAmountSelectedMessage"="Please enter the amount";
+"CmtTransactionErrorMessage"="Transaction Denied";
+"OkButtonText"="Ok";
+"TaxiServerDownMessage"="Can't send message to Taxi";
+"CmtTransactionSuccessMessage"="Confirmation sent to the driver";
+"CmtTransactionSuccessTitle"="Payment Recieved";
+"CmtTransactionResendConfirmationButtonText"="Resend confirmation";
+"PaymentConfirmationMessageToDriver"="The Client has payed {0}";
