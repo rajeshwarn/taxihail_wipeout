@@ -249,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                //status.IBSStatusId = VehicleStatuses.Common.Done;
+                status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
 
                 if (status != null) {

@@ -15,7 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		[Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
 		public TipSlider(Context context, IAttributeSet attrs)
 			: base(context, attrs)
-		{ }
+		{ 
+			var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
+			inflater.Inflate (Resource.Layout.Control_TipSlider, this, true);
+		}
 		
 		SeekBar _seekBar;
 		SeekBar SeekBar 
@@ -24,10 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			{
 				if(_seekBar== null)
 				{			
-					var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
-					var layout = inflater.Inflate (Resource.Layout.Control_TipSlider, this, true);
+
 					
-					_seekBar= layout.FindViewById<SeekBar>(Resource.Id.seekBar);
+					_seekBar= FindViewById<SeekBar>(Resource.Id.seekBar);
 				}
 
 				return _seekBar;
@@ -65,8 +67,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
 
+		/*
+		public void Update (Context context, int width)
+		{
+			
+			var layout= FindViewById<LinearLayout>(Resource.Id.tipSliderLayout);
+
+			var xx= layout.Width;
 
 
+
+			var x= new HeaderMarks(context,layout, width);
+
+			var y = new SliderControl(context,layout, width);
+		}
+		*/
 	}
 }
 

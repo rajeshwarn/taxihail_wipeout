@@ -43,10 +43,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				this.FindViewById<TextView> (Resource.Id.tipSlider).Visibility = ViewStates.Gone;
 			}
 		}
+
+		int MarginWidth = 30;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
+			var TipSlider= FindViewById<TipSlider>(Resource.Id.tipSlider);
+
+			//TipSlider.Update(this, WindowManager.DefaultDisplay.Width - (2*MarginWidth));
         }
     }
 }
