@@ -14,10 +14,10 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PaymentViewModel : BaseViewModel
+    public class PaymentViewModel : BaseSubViewModel<object>
     {
 
-		public PaymentViewModel (string order, string orderStatus)
+        public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
         {
 
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				ShowConfirmation();
 			},
 			Str.OkButtonText, ()=>{
-				RequestClose(this);         
+                ReturnResult("");
 			});
 		}
 

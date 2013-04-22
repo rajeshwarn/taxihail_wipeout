@@ -85,8 +85,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-                    btnPay.Frame = btnCall.Frame;
+                    btnPay.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X,btnCancel.Frame.Y,btnCancel.Frame.Width,btnCancel.Frame.Height);
                 }
+
+
 
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {

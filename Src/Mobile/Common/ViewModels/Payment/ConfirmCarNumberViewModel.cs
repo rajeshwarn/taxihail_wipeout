@@ -36,18 +36,13 @@ namespace apcurium.MK.Booking.Mobile
 			get {
 				return GetCommand (() =>
 				{ 
-					RequestNavigate<PaymentViewModel>(
-							new 
-							{ 
-								order = Order.ToJson(),
-								orderStatus = OrderStatus.ToJson(),
-							}, 
-							false, MvxRequestedBy.UserAction);
-#if IOS
+                    RequestSubNavigate<PaymentViewModel,object>(
+                    new { 
+                        order = Order.ToJson(),
+                        orderStatus = OrderStatus.ToJson(),
+                    }.ToStringDictionary(), 
+                    _=>{RequestClose(this);});
 
-#else
-					RequestClose(this);
-#endif
 				});
 			}
 		}
