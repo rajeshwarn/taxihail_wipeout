@@ -235,13 +235,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         
-
+		string vehicleNumber = null;
         private void RefreshStatus ()
         {
 
             try {
                 var status = BookingService.GetOrderStatus (Order.Id);
+				if(status.VehicleNumber != null)
+				{
+					vehicleNumber = status.VehicleNumber;
+				}
+				else{
+					status.VehicleNumber = vehicleNumber;
+				}
+
 				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
+
 
 				if(status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
