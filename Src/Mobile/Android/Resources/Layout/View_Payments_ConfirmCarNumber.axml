@@ -15,7 +15,7 @@
         android:gravity="fill">
         <View
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:layout_weight="1" />
         <TextView
             android:layout_width="match_parent"
@@ -31,16 +31,18 @@
             android:gravity="center" />
         <View
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="25dp"
             android:layout_weight="1" />
         <EditText
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4585"
             android:gravity="center"
             android:selectAllOnFocus="true"
             android:inputType="textPhonetic"
-            local:MvxBind="{'Text':{'Path':'CarNumber'}}" />
+            local:MvxBind="{'Text':{'Path':'CarNumber'}}"
+            android:width="150dp"
+            android:layout_gravity="center_horizontal" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="50dp"
@@ -52,7 +54,7 @@
             android:background="@drawable/green_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/StatusPayButton"
+            android:text="@string/CreateAccountPasswordConfrimation"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             local:MvxBind="{'Click': {'Path': 'ConfirmTaxiNumber'}}"

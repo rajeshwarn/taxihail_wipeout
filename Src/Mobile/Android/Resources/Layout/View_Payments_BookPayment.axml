@@ -35,22 +35,23 @@
                     android:layout_height="wrap_content"
                     android:text="Meter Amount"
                     style="@style/FormLabelText"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="8.7dp" />
+                    android:layout_marginBottom="8.7dp"
+                    android:layout_marginTop="6dp" />
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
                     <EditText
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/meterAmountTextView"
                         android:inputType="numberDecimal"
                         style="@style/FormLabelText"
                         android:layout_gravity="right"
-                        android:gravity="right"
+                        android:gravity="right|center_vertical"
                         android:hint="$0.00"
-                        android:width="100dp" />
+                        android:width="150dp"
+                        android:layout_marginTop="6dp" />
                 </FrameLayout>
             </LinearLayout>
             <apcurium.mk.booking.mobile.client.controls.TipSlider
@@ -59,9 +60,10 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:id="@+id/tipSlider"
-                android:layout_marginRight="-4dp"
                 local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}"
-                android:layout_marginBottom="4.0dp" />
+                android:layout_marginBottom="4.0dp"
+                android:layout_marginRight="-10dp"
+                android:layout_marginLeft="-10dp" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -71,22 +73,21 @@
                     android:text="Tip Amount"
                     style="@style/FormLabelText"
                     android:layout_gravity="right"
-                    android:layout_weight="1"
                     android:layout_marginTop="0.0dp" />
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
                     <EditText
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/tipAmountTextView"
                         android:inputType="numberDecimal"
                         style="@style/FormLabelText"
-                        android:gravity="right"
+                        android:gravity="right|center_vertical"
                         android:hint="$0.00"
-                        android:layout_gravity="right"
-                        android:width="100dp" />
+                        android:width="150dp"
+                        android:layout_gravity="right" />
                 </FrameLayout>
             </LinearLayout>
             <LinearLayout
@@ -124,7 +125,7 @@
             android:background="@drawable/green_button"
             android:layout_width="fill_parent"
             android:layout_height="35dip"
-            android:text="@string/StatusPayButton"
+            android:text="@string/CreateAccountPasswordConfrimation"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="5dp"
             local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />
