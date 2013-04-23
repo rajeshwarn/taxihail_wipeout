@@ -44,7 +44,7 @@ namespace MK.DeploymentService.Mobile
 		{
 			try {
 				var db = new PetaPoco.Database ("MKConfig");
-				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1)");
+				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1 OR CallBox=1)");
 				try {
 
 					if (job != null) {
@@ -100,7 +100,7 @@ namespace MK.DeploymentService.Mobile
                 if(apkFile != null)
 			    {
 					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
 					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 			    }else
@@ -115,7 +115,7 @@ namespace MK.DeploymentService.Mobile
 				if(apkFile != null)
 				{
 					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
 					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 				}
@@ -304,8 +304,8 @@ namespace MK.DeploymentService.Mobile
 				logger.Debug("Build iOS done");
 			}
 
-			if (job.Android) {
-				
+			if (job.Android || job.CallBox) {
+
 				var configAndroid = "Release";
 				var projectLists = new List<string>{
 					"Newtonsoft.Json.MonoDroid", "Cirrious.MvvmCross.Android", "Cirrious.MvvmCross.Binding.Android", "Cirrious.MvvmCross.Android.Maps",
@@ -323,27 +323,28 @@ namespace MK.DeploymentService.Mobile
 					BuildProject(buildArgs);
 				}
 
-				//the client needs a target
-				var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-				                              "MK.Booking.Mobile.Client.Android",
-				                              configAndroid,
-				                              sourceMobileFolder);
-				BuildProject(buildClient);
-
+				if (job.Android) {
+					
+					//the client needs a target
+					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                                "MK.Booking.Mobile.Client.Android",
+					                                configAndroid,
+					                                sourceMobileFolder);
+					BuildProject(buildClient);
+					
+					logger.Debug("Build Android done");
+				}
+				
 				if(job.CallBox)
 				{
-					buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                            "MK.Callbox.Mobile.Client.Android",
-					                            configAndroid,
-					                            sourceMobileFolder);
+					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                                "MK.Callbox.Mobile.Client.Android",
+					                                configAndroid,
+					                                sourceMobileFolder);
 					BuildProject(buildClient);
-
-				}else{
-					logger.Debug("Warning no CallBox project found");
+					
+					logger.Debug("Build Android CallBox done");
 				}
-
-				
-				logger.Debug("Build Android done");
 			}
 		}
 
