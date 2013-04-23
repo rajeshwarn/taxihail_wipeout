@@ -28,6 +28,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             scrollView.AutoSize ();
 
+            NavigationController.NavigationBar.Hidden = false;
+            Container.BackgroundColor = UIColor.Clear;
+            scrollView.BackgroundColor = UIColor.Clear;
+
+            
+            ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            
+            View.BackgroundColor = UIColor.Clear; 
+            
+            if (!ViewModel.Settings.PayByCreditCardEnabled) {
+                
+                lblCreditCard.Hidden = true;
+                TipSlider.Hidden = true;
+                lblOptional.Hidden = true;
+                btnCreditCard.Hidden = true;
+            }
+
+
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
@@ -36,9 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             base.DismissKeyboardOnReturn(txtName, txtPhone);
             
-            Container.BackgroundColor = UIColor.Clear;
-            scrollView.BackgroundColor = UIColor.Clear;
-            
+
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
@@ -83,19 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewWillAppear(animated);
 
-            NavigationController.NavigationBar.Hidden = false;
-            
-            ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            
-            View.BackgroundColor = UIColor.Clear; 
 
-            if (!ViewModel.Settings.PayByCreditCardEnabled) {
-                
-                lblCreditCard.Hidden = true;
-                TipSlider.Hidden = true;
-                lblOptional.Hidden = true;
-                btnCreditCard.Hidden = true;
-            }
         }
 
     }
