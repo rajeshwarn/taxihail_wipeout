@@ -32,19 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             scrollView.BackgroundColor = UIColor.Clear;
 
-            
-            //((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            
             View.BackgroundColor = UIColor.Clear; 
-            
-            if (!ViewModel.Settings.PayByCreditCardEnabled) {
-                
-                lblCreditCard.Hidden = true;
-                TipSlider.Hidden = true;
-                //lblOptional.Hidden = true;
-                btnCreditCard.Hidden = true;
-            }
-
 
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
