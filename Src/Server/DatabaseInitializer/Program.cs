@@ -94,7 +94,7 @@ namespace DatabaseInitializer
                 //Copy Domain Events
                 if (isUpdate)
                 {
-                    creatorDb.CopyDomainEventFromOldToNewDatabase(connStringMaster, oldDatabase, companyName);
+                    creatorDb.CopyEventsAndCacheTables(connStringMaster, oldDatabase, companyName);
                 }
                 //Init container
                 var container = new UnityContainer();

@@ -90,7 +90,7 @@ namespace DatabaseInitializer.Sql
             }
         }
 
-        public void CopyDomainEventFromOldToNewDatabase(string connString, string oldDatabase, string newDatabase)
+        public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
 
             var queryForEvents = string.Format("INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
@@ -98,6 +98,12 @@ namespace DatabaseInitializer.Sql
                                                "FROM [{1}].[Events].[Events] ", newDatabase, oldDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
+
+            var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
+                                              "SELECT [Key],[Value],[ExpiresAt] " +
+                                              "FROM [{1}].[Cache].[Items] ", newDatabase, oldDatabase);
+
+            DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
         }
 
         private string GetLogPath(string instanceName)
