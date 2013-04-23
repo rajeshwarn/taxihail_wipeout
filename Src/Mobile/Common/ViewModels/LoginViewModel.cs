@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start (firstStart);
 #if DEBUG
-			SignIn();
+			//SignIn();
 #endif
 		
 		}
