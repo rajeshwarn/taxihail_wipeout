@@ -104,7 +104,20 @@ namespace MK.Booking.Api.Client.Android.Client
 			requestStream.WriteTo(os);
 			
 			var webResponse = webRequest.GetResponse();
-			var responseObject = (TResponse)GetOrCreate( typeof(TResponse)).Deserialize(webResponse.GetResponseStream());
+#if DEBUG
+            
+		    var stream = new MemoryStream();
+            webResponse.GetResponseStream().CopyTo(stream);
+            stream.Position = 0;
+		    var data = new StreamReader(stream).ReadToEnd();
+		    stream.Position = 0;
+
+            var responseObject = (TResponse)GetOrCreate(typeof(TResponse)).Deserialize(stream);
+#else
+            var responseObject = (TResponse)GetOrCreate(typeof(TResponse)).Deserialize(webResponse.GetResponseStream());
+
+#endif
+
 			
 			return responseObject;        
 		}

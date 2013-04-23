@@ -126,7 +126,7 @@ namespace apcurium.CMT.Web.Tests
             var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate).CardOnFileToken;
 
             const double amount = 21.56;
-            var response = client.PreAuthorizeTransaction(token, amount);
+            var response = client.PreAuthorizeTransaction(token, amount, "orderNumber");
 
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
 
@@ -157,8 +157,7 @@ namespace apcurium.CMT.Web.Tests
         [Test]
         public void when_capturing_a_preauthorized_a_credit_card_payment_cad()
         {
-            DummyConfigManager.AddOrSet(AuthorizationRequest.CurrencyCodes.CurrencyCodeString,
-           AuthorizationRequest.CurrencyCodes.Main.CanadaDollar);
+            DummyConfigManager.AddOrSet(AuthorizationRequest.CurrencyCodes.CurrencyCodeString, AuthorizationRequest.CurrencyCodes.Main.CanadaDollar);
 
             when_capturing_a_preauthorized_a_credit_card_payment();
         }
@@ -170,9 +169,10 @@ namespace apcurium.CMT.Web.Tests
             var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate).CardOnFileToken;
 
             const double amount = 99.50;
-            var authorization = client.PreAuthorizeTransaction(token, amount);
+            const string orderNumber = "12345";
+            var authorization = client.PreAuthorizeTransaction(token, amount, orderNumber);
 
-            var response = client.CapturePreAuthorized(authorization.TransactionId);
+            var response = client.CapturePreAuthorized(authorization.TransactionId, orderNumber);
 
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
             Assert.AreEqual(amount, response.Amount, .001);

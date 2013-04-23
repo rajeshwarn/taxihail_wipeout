@@ -30,6 +30,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
         [XmlElement("currencyCode")]
         public string CurrencyCode { get; set; }
 
+        [XmlElement("L3Data")]
+        public LevelThreeData L3Data { get; set; }
 
         public class TransactionTypes
         {

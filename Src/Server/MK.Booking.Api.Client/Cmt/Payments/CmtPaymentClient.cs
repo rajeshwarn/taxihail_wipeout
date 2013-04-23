@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
         }
 
-		public AuthorizationResponse PreAuthorizeTransaction(string cardToken, double amount)
+		public AuthorizationResponse PreAuthorizeTransaction(string cardToken, double amount, string orderNumber)
 		{
 			return Client.Post(new AuthorizationRequest()
 			{
@@ -49,31 +49,39 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 				CardOnFileToken = cardToken,
 				CurrencyCode = _appSettings.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString),
 				TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-				CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual
+				CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
+                L3Data = new LevelThreeData()
+                    {
+                        PurchaseOrderNumber = orderNumber
+                    }
 			});
 		}
-		
-		public CaptureResponse CapturePreAuthorized(long transactionId)
+
+        public CaptureResponse CapturePreAuthorized(long transactionId, string orderNumber)
         {
             return Client.Post(new CaptureRequest
+            {
+                TransactionId = transactionId,
+                L3Data = new LevelThreeData()
                 {
-                TransactionId = transactionId
+                    PurchaseOrderNumber = orderNumber
+                }
             });
         }
 
 
-		public long PreAuthorize (string cardToken, double amount)
+        public long PreAuthorize(string cardToken, double amount, string orderNumber)
 		{
-			var response = PreAuthorizeTransaction(cardToken,amount);
+			var response = PreAuthorizeTransaction(cardToken,amount,orderNumber);
             if(response.ResponseCode > 0 && response.ResponseCode <99)
 			{
 				return response.TransactionId;
 			}
 			return -1;
 		}
-		public bool CommitPreAuthorized (long transactionId)
+        public bool CommitPreAuthorized(long transactionId, string orderNumber)
 		{
-			return CapturePreAuthorized(transactionId).ResponseCode > 0;
+            return CapturePreAuthorized(transactionId, orderNumber).ResponseCode == 1;
 		}
     }
 }
