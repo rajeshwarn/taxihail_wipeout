@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class RideSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView Container { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -61,6 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (Container != null) {
+				Container.Dispose ();
+				Container = null;
+			}
+
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;

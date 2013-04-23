@@ -340,9 +340,8 @@
 								<reference key="NSNextKeyView" ref="290435726"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-									<reference key="NSCustomColorSpace" ref="568745843"/>
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MCAxIDAAA</bytes>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
@@ -502,6 +501,14 @@
 						<reference key="destination" ref="911944145"/>
 					</object>
 					<int key="connectionID">87</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">Container</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="136969137"/>
+					</object>
+					<int key="connectionID">88</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -674,7 +681,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">87</int>
+			<int key="maxID">88</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -714,6 +721,7 @@
 					<string key="className">RideSettingsView</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="Container">UIView</string>
 						<string key="TipSlider">UIView</string>
 						<string key="btnCreditCard">CreditCardButton</string>
 						<string key="lblChargeType">UILabel</string>
@@ -732,6 +740,10 @@
 						<string key="txtPhone">UITextField</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="Container">
+							<string key="name">Container</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="TipSlider">
 							<string key="name">TipSlider</string>
 							<string key="candidateClassName">UIView</string>

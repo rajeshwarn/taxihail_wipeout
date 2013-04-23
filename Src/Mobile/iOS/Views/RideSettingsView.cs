@@ -85,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
+            Container.BackgroundColor = UIColor.Clear;
+            scrollView.BackgroundColor = UIColor.Clear;
 
             if (!ViewModel.Settings.PayByCreditCardEnabled) {
                 

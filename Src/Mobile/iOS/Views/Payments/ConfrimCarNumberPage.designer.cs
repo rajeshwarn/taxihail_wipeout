@@ -19,6 +19,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton HideKeyboardButton { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIView Container { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel TextLine1 { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel TextLine2 { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -35,6 +44,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			if (HideKeyboardButton != null) {
 				HideKeyboardButton.Dispose ();
 				HideKeyboardButton = null;
+			}
+
+			if (Container != null) {
+				Container.Dispose ();
+				Container = null;
+			}
+
+			if (TextLine1 != null) {
+				TextLine1.Dispose ();
+				TextLine1 = null;
+			}
+
+			if (TextLine2 != null) {
+				TextLine2.Dispose ();
+				TextLine2 = null;
 			}
 		}
 	}

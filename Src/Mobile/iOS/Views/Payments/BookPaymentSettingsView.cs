@@ -65,11 +65,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ScrollViewer.AutoSize();
 
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
 
             AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
+
+            TotalAmountLabel.TextColor = AppStyle.DarkText;
+            TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
 
             lblCreditCardOnFile.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
 

@@ -142,7 +142,7 @@
 "CreateAccoutCreate"="Create";
 "StatusActionBookButton"="Book another taxi";
 "StatusCallButton"="Call";
-"StatusPayButton"="Pay";
+"StatusPayButton"="Pay for this order";
 "PickupDateDisplay"="Reservation for {0:ddd, MMM d} at {0:h:mm tt}";
 "TabSettings"="Settings";
 "ResetPasswordConfirmationMessage"="A new password was send by email.";
@@ -400,3 +400,6 @@
 "CmtTransactionSuccessTitle"="Payment Recieved";
 "CmtTransactionResendConfirmationButtonText"="Resend confirmation";
 "PaymentConfirmationMessageToDriver"="The Client has payed {0}";
+"OrderNumber"="Order #";
+"SendMessageErrorMessage"="Error confirming with driver payment cancelled";
+"NoOrderId"="Order Not ready";

@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 var width = Frame.Width-25;
                 var x = ((width)/(strings.Length-1))*count;
                 var label = new UILabel(new RectangleF(x,0,120,20));
+                label.BackgroundColor = UIColor.Clear;
                 label.TextColor = UIColor.Gray;
                 label.Text = str;
                 Add(label);

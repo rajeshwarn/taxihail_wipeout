@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class BookPaymentSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView Container { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
@@ -52,6 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (Container != null) {
+				Container.Dispose ();
+				Container = null;
+			}
+
 			if (lblTipAmount != null) {
 				lblTipAmount.Dispose ();
 				lblTipAmount = null;
