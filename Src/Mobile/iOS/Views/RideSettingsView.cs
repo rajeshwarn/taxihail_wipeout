@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 lblCreditCard.Hidden = true;
                 TipSlider.Hidden = true;
-                lblOptional.Hidden = true;
+                //lblOptional.Hidden = true;
                 btnCreditCard.Hidden = true;
             }
 
