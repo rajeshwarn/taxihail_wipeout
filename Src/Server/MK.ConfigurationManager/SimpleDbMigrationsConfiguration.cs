@@ -8,6 +8,7 @@ namespace MK.ConfigurationManager
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+            
         }
     }
 }

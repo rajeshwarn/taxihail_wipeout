@@ -90,7 +90,7 @@ namespace MK.ConfigurationManager
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
 
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
 
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
             if (this.currentDbList.SelectedItem != null)
@@ -120,10 +120,6 @@ namespace MK.ConfigurationManager
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
-
-
-            
-
 
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
             DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;
@@ -263,6 +259,7 @@ namespace MK.ConfigurationManager
         public bool DeployServer { get; set; }
         public bool DeployIos { get; set; }
         public bool DeployAndroid { get; set; }
+        public bool DeployCallBox { get; set; }
         public bool DeployDB { get; set; }
         public string DeployRevision { get; set; }
         
@@ -275,10 +272,12 @@ namespace MK.ConfigurationManager
             job.Company = DeployCompany;
             job.IBSServer = DeployIBSServer;
             job.Revision = DeployRevision;
+            job.Version = DeployVersion;
             job.TaxHailEnv = DeployTaxiHailEnv;
             job.DeployDB = DeployDB;
             job.InitDatabase = DeployInitDatabse;
             job.Android = DeployAndroid;
+            job.CallBox = DeployCallBox;
             job.DeployServer = DeployServer;
             job.iOS = DeployIos;
             job.Status = JobStatus.REQUESTED;
