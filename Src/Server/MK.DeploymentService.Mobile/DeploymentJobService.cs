@@ -102,13 +102,33 @@ namespace MK.DeploymentService.Mobile
 
 		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
 		{
+			var targetDirWithoutFileName = string.Empty;
+			if (job.Android || job.CallBox || job.iOS) {
+				targetDirWithoutFileName = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], 
+				                                        company.Name, 
+				                                        job.Version != null 
+				                                        	? string.Format("{0}.{1}", job.Version.Display, job.Version.Revision)
+				                                        	: string.Format("Not versioned/{0}", job.Revision)
+				                                        );
+				if (!Directory.Exists (targetDirWithoutFileName)) {
+					Directory.CreateDirectory(targetDirWithoutFileName);
+				}else
+				{
+					var contentOfTargetDirectory = new DirectoryInfo(targetDirWithoutFileName).GetFiles();
+					foreach (FileInfo file in contentOfTargetDirectory)
+					{
+						file.Delete(); 
+					}
+				}
+			}
+
 			if (job.Android) {
                 logger.DebugFormat("Copying Apk");
                 var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 if(apkFile != null)
 			    {
 					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
+					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
 					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 			    }else
@@ -124,7 +144,7 @@ namespace MK.DeploymentService.Mobile
 				if(apkFile != null)
 				{
 					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
+					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
 					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 				}
@@ -143,7 +163,7 @@ namespace MK.DeploymentService.Mobile
 					fileUplaoder.Upload(ipaFile);
 
 					var fileInfo = new FileInfo(ipaFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
+					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
 					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(ipaFile, targetDir);
 				}else
