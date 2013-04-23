@@ -103,7 +103,7 @@ namespace MK.DeploymentService.Mobile
 		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
 		{
 			if (job.Android) {
-                logger.DebugFormat("Copy Apk");
+                logger.DebugFormat("Copying Apk");
                 var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 if(apkFile != null)
 			    {
@@ -119,6 +119,7 @@ namespace MK.DeploymentService.Mobile
 
 			if(job.CallBox)
 			{
+				logger.DebugFormat("Copying CallBox Apk");
 				var apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 				if(apkFile != null)
 				{
@@ -134,15 +135,20 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			if (job.iOS) {
-				logger.DebugFormat ("Uploading IPA");
+				logger.DebugFormat ("Uploading and copying IPA");
 				var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 				if(ipaFile != null)
 				{
 					var fileUplaoder = new FileUploader();
 					fileUplaoder.Upload(ipaFile);
+
+					var fileInfo = new FileInfo(ipaFile); 
+					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], company.Name, fileInfo.Name);
+					if(File.Exists(targetDir)) File.Delete(targetDir);
+					File.Copy(ipaFile, targetDir);
 				}else
 				{
-				    throw new Exception("Can't find th IPA file in the release dir");
+				    throw new Exception("Can't find the IPA file in the release dir");
 				}
 			}
 		}
@@ -158,8 +164,7 @@ namespace MK.DeploymentService.Mobile
 			}else{
 				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
 			}
-			 
-			
+			 			
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
 				Directory.CreateDirectory (sourceDirectory);
