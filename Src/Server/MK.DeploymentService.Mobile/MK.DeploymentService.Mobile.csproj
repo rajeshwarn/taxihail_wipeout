@@ -82,6 +82,9 @@
       <Link>FakeAttributes\NotMappedAttribute.cs</Link>
     </Compile>
     <Compile Include="FileUploader.cs" />
+    <Compile Include="..\MK.ConfigurationManager\Entities\AppVersion.cs">
+      <Link>Entities\AppVersion.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

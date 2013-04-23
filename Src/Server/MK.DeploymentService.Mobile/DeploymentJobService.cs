@@ -49,7 +49,15 @@ namespace MK.DeploymentService.Mobile
 
 					if (job != null) {
 						var company = db.First<Company> ("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
+						job.Company = company;
 						var taxiHailEnv = db.First<TaxiHailEnvironment> ("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", job.TaxHailEnv_Id);
+						job.TaxHailEnv = taxiHailEnv;
+
+						if(job.Version_Id != Guid.Empty)
+						{
+							job.Version = db.First<AppVersion> ("Select * from [MkConfig].[AppVersion] where Id=@0", job.Version_Id);
+						}
+
 						logger.Debug ("Begin work on " + company.Name);
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
 
@@ -142,7 +150,15 @@ namespace MK.DeploymentService.Mobile
 		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
-			var revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
+			string revision = string.Empty;
+			if(job.Version != null)
+			{
+				revision = job.Version.Revision;
+
+			}else{
+				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
+			}
+			 
 			
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
