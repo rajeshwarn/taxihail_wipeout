@@ -110,6 +110,7 @@
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\Payments\PaymentResponse.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
+    <Compile Include="Cmt\Payments\LevelThreeData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

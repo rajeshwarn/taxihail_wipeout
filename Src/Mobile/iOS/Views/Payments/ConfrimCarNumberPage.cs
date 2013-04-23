@@ -22,6 +22,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
+            Container.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+
+
             HideKeyboardButton.TouchDown += (sender, e) => {
                 View.ResignFirstResponderOnSubviews();
             };
@@ -41,6 +45,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 
                 { CarNumberTextBox, new B("Text","CarNumber", B.Mode.TwoWay) }, 
             });
+
+            
+            View.ApplyAppFont ();
         }
     }
 }
