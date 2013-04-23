@@ -31,10 +31,11 @@
     <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
+    <DefineConstants>CLIENT</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingApiContractiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
