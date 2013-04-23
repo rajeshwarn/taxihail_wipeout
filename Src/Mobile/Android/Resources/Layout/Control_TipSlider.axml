@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:text="0% "
                 style="@style/FormLabelText"
-                android:layout_gravity="center" />
+                android:layout_gravity="center_horizontal" />
         </FrameLayout>
         <FrameLayout
             android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
                 android:text="5% "
                 style="@style/FormLabelText"
                 android:layout_weight="1"
-                android:layout_gravity="center" />
+                android:layout_gravity="center_horizontal" />
         </FrameLayout>
         <FrameLayout
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:text="20%"
                 style="@style/FormLabelText"
                 android:layout_weight="1"
-                android:layout_gravity="center" />
+                android:layout_gravity="center_horizontal" />
         </FrameLayout>
         <FrameLayout
             android:layout_width="wrap_content"
