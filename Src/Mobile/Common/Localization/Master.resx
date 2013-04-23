@@ -1245,4 +1245,8 @@
   <data name="OrderNumber" xml:space="preserve">
     <value>Order #</value>
   </data>
+  
+  <data name="NoOrderId" xml:space="preserve">
+    <value>Order Not ready</value>
+  </data>
 </root>

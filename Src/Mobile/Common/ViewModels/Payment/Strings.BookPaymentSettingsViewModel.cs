@@ -46,7 +46,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _r.GetString ("NoAmountSelectedMessage");
 			}
 		}
-		
+
+		public  static string NoOrderId {
+			get{				
+				return _r.GetString ("NoOrderId");
+			}
+		}
+
 		public static string CmtTransactionErrorMessage {
 			get{				
 				return _r.GetString ("CmtTransactionErrorMessage");

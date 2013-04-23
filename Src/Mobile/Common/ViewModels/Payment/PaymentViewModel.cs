@@ -91,7 +91,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     MessageService.ShowProgress (true);
 
-					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble);
+					if(!Order.IBSOrderId.HasValue)
+					{
+						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
+					}
+
+					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble, Order.IBSOrderId.Value +"");
 
 					if(transactionId <= 0)
 					{
@@ -103,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
 					}
-					else if(!PaymentClient.CommitPreAuthorized(transactionId))
+					else if(!PaymentClient.CommitPreAuthorized(transactionId, Order.IBSOrderId.Value+""))
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.SendMessageErrorMessage);

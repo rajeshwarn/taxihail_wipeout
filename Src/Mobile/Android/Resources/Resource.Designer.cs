@@ -1951,6 +1951,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070079
 			public const int NoMailClient = 2131165305;
 			
+			// aapt resource value: 0x7f07018a
+			public const int NoOrderId = 2131165578;
+			
 			// aapt resource value: 0x7f07003a
 			public const int NotAvailable = 2131165242;
 			
