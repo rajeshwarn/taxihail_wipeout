@@ -29,11 +29,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             scrollView.AutoSize ();
 
             NavigationController.NavigationBar.Hidden = false;
-            Container.BackgroundColor = UIColor.Clear;
+            Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             scrollView.BackgroundColor = UIColor.Clear;
 
             
-            ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            //((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
             
