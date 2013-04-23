@@ -36,6 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             base.DismissKeyboardOnReturn(txtName, txtPhone);
             
+            Container.BackgroundColor = UIColor.Clear;
+            scrollView.BackgroundColor = UIColor.Clear;
+            
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
@@ -85,8 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
-            Container.BackgroundColor = UIColor.Clear;
-            scrollView.BackgroundColor = UIColor.Clear;
 
             if (!ViewModel.Settings.PayByCreditCardEnabled) {
                 
