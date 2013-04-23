@@ -209,7 +209,7 @@
   <string name="CreateAccountLanguageEn">English</string>
   <string name="DestinationTextPlaceholder">Destination street address</string>
   <string name="PickupDateTextPlaceholder">Date: Today</string>
-  <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
+  <string name="ServiceErrorUnauthorized">Your session has expired, please login to continue.</string>
   <string name="LocationViewTitle">My Locations</string>
   <string name="CreateAccountInvalidPhone">The mobile number is invalid. It must contain 10 numbers.</string>
   <string name="HistoryDetailSendReceiptButton">Send receipt</string>
@@ -226,7 +226,7 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="InvalidPickupAddress">Please enter a valid pickup address.</string>
   <string name="EstimatePrice">Estimated Fare : {0}</string>
-  <string name="ServiceErrorCallTitle">Server Error</string>
+  <string name="ServiceErrorCallTitle">Message</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="SettingsViewTitle">Settings</string>
   <string name="BookDestinationLabel">Enter your destination</string>
@@ -305,7 +305,7 @@
   <string name="StatusPayButton">Pay for this order</string>
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver</string>
   <string name="CmtTransactionSuccessTitle">Payment Recieved</string>
-  <string name="CmtTransactionResendConfirmationButtonText">Resend confirmation</string>  
+  <string name="CmtTransactionResendConfirmationButtonText">Resend confirmation</string>
   <string name="CreateAccountEmail">Email</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
@@ -373,7 +373,7 @@
   <string name="PaymentDetails.CreditCardLabel">Credit Card</string>
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
   <string name="ReminderTitle">{0} Booked</string>
-  <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>  
+  <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="RemoveCreditCardTitle">Remove credit card</string>
   <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>
@@ -391,9 +391,7 @@
   <string name="EditDetails">Edit Details</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
-  
   <string name="OkButtonText">Ok</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
-  
-  <string name="OrderNumber">Order #</string>  
+  <string name="OrderNumber">Order #</string>
 </resources>

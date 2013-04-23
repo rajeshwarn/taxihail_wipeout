@@ -19,6 +19,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
 			inflater.Inflate (Resource.Layout.Control_TipSlider, this, true);
 		}
+		public override bool Enabled {
+			get {
+				return base.Enabled;
+			}
+			set {
+				SeekBar.Enabled = value;
+				base.Enabled = value;
+			}
+		}
 		
 		SeekBar _seekBar;
 		SeekBar SeekBar 

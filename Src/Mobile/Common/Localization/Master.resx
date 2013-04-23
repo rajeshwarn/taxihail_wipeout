@@ -1209,7 +1209,40 @@
   <data name="PassengerPhoneLabel" xml:space="preserve">
     <value>Phone</value>
   </data>
-  <data name="EditDetails" xml:space="preserve">
-    <value>Edit Details</value>
+  <data name="StatusPayButton" xml:space="preserve">
+    <value>Pay for this order</value>
+  </data>
+  <data name="CmtTransactionSuccessMessage" xml:space="preserve">
+    <value>Confirmation sent to the driver</value>
+  </data>
+  <data name="CmtTransactionSuccessTitle" xml:space="preserve">
+    <value>Payment Recieved</value>
+  </data>
+  <data name="NoAmountSelectedMessage" xml:space="preserve">
+    <value>Please enter the amount</value>
+  </data>
+  <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
+    <value>Resend confirmation</value>
+  </data>
+  <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
+    <value>The Client has payed {0}</value>
+  </data>
+  <data name="CmtTransactionErrorMessage" xml:space="preserve">
+    <value>Resend confirmation</value>
+  </data>
+  <data name="CmtTransactionErrorMessage" xml:space="preserve">
+    <value>Transaction Denied</value>
+  </data>
+  <data name="SendMessageErrorMessage" xml:space="preserve">
+    <value>Error confirming with driver payment cancelled</value>
+  </data>
+  <data name="OkButtonText" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="TaxiServerDownMessage" xml:space="preserve">
+    <value>Can't send message to Taxi</value>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Order #</value>
   </data>
 </root>

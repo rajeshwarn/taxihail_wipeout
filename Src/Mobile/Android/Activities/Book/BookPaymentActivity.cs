@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return Resource.String.View_PaymentCreditCardsOnFile; }
 		}
 
-		TextView _tipAmountTextView;
+		EditText _tipAmountTextView;
 		EditText _meterAmountTextView;
 		TextView _totalAmountTextView;
 		TipSlider _tipSlider;
@@ -61,18 +61,40 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.OnStart ();
 			_tipSlider = FindViewById<TipSlider>(Resource.Id.tipSlider);
-			_tipAmountTextView = FindViewById<TextView>(Resource.Id.tipAmountTextView);
+			_tipAmountTextView = FindViewById<EditText>(Resource.Id.tipAmountTextView);
 			_meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
 			_totalAmountTextView =  FindViewById<TextView>(Resource.Id.totalAmountTextView);
 
 			UpdateAmounts();
 
-
-
-			_meterAmountTextView.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>  {
+			_tipAmountTextView.TextChanged += (sender, e) => {
+				
 				UpdateAmounts();
 			};
 
+			_meterAmountTextView.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>  {
+				TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));
+				UpdateAmounts();
+			};
+
+			_meterAmountTextView.FocusChange += (sender, e) => {
+				if(!e.HasFocus)
+				{
+					TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));
+					UpdateAmounts();
+				}
+			};
+
+			_tipAmountTextView.EditorAction+= (sender, e) => {
+				e.Handled = false;
+				TipAmount = TipAmount;//format	
+			};
+			_tipAmountTextView.FocusChange+= (sender, e) => {
+				if(!e.HasFocus)
+				{
+					TipAmount = TipAmount;//format	
+				}
+			};
 
 			_meterAmountTextView.EditorAction+= (sender, e) => {
 				e.Handled = false;
@@ -81,14 +103,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			_tipSlider.PercentChanged += (object sender, EventArgs e) => 
 			{
+				TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));		
 				UpdateAmounts();
 			};
 
 		}
 
 		public void UpdateAmounts()
-		{
-			TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));			
+		{	
 			TotalAmount = MeterAmount + TipAmount;
 		}
 
