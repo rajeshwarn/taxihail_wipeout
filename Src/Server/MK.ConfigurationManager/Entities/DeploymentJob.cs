@@ -24,7 +24,8 @@ namespace MK.ConfigurationManager.Entities
         public bool InitDatabase { get; set; }
         public bool Android { get; set; }
 		public bool CallBox { get;set; }
-        public bool iOS { get; set; }
+        public bool iOS_AdHoc { get; set; }
+		public bool iOS_AppStore { get;set; }
 
         public TaxiHailEnvironment TaxHailEnv { get; set; }
 

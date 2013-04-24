@@ -62,9 +62,13 @@ namespace MK.DeploymentService.Mobile
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
 
 						var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSource");
-						var releaseiOSDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
-						if (Directory.Exists (releaseiOSDir))
-							Directory.Delete (releaseiOSDir, true);
+						var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
+						if (Directory.Exists (releaseiOSAdHocDir))
+							Directory.Delete (releaseiOSAdHocDir, true);
+
+						var releaseiOSAppStoreDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AppStore");
+						if (Directory.Exists (releaseiOSAppStoreDir))
+							Directory.Delete (releaseiOSAppStoreDir, true);
 
 						var releaseAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
 						if (Directory.Exists (releaseAndroidDir))
@@ -80,7 +84,7 @@ namespace MK.DeploymentService.Mobile
 
 						Build (job, sourceDirectory, company);
 
-						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir, releaseCallboxAndroidDir);
+						Deploy (job, sourceDirectory, company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
 
@@ -100,9 +104,9 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
+		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
-			if (job.Android || job.CallBox || job.iOS) {
+			if (job.Android || job.CallBox || job.iOS_AdHoc || job.iOS_AppStore) {
 				var targetDirWithoutFileName = string.Empty;
 				targetDirWithoutFileName = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], 
 				                                        company.Name, 
@@ -159,9 +163,9 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 				
-				if (job.iOS) {
-					logger.DebugFormat ("Uploading and copying IPA");
-					var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+				if (job.iOS_AdHoc) {
+					logger.DebugFormat ("Uploading and copying IPA AdHoc");
+					var ipaFile = Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(ipaFile != null)
 					{
 						var fileUplaoder = new FileUploader();
@@ -174,7 +178,26 @@ namespace MK.DeploymentService.Mobile
 					}
 					else
 					{
-						throw new Exception("Can't find the IPA file in the release dir");
+						throw new Exception("Can't find the IPA file in the AdHoc dir");
+					}
+				}
+
+				if (job.iOS_AppStore) {
+					logger.DebugFormat ("Uploading and copying IPA AppStore");
+					var ipaFile = Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(ipaFile != null)
+					{
+						var fileUplaoder = new FileUploader();
+						fileUplaoder.Upload(ipaFile);
+						
+						var fileInfo = new FileInfo(ipaFile); 
+						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(ipaFile, targetDir);
+					}
+					else
+					{
+						throw new Exception("Can't find the IPA file in the AppStore dir");
 					}
 				}
 			}
@@ -235,8 +258,6 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 			}
-
-
 		}
 
 		void Customize (string sourceDirectory, Company company, TaxiHailEnvironment taxiHailEnv)
@@ -330,9 +351,10 @@ namespace MK.DeploymentService.Mobile
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 			
 			logger.DebugFormat ("Build Solution");
-			if (job.iOS) {
+
+			if (job.iOS_AdHoc) {
 				
-				var configIOS = "Release|iPhone";
+				var configIOS = "AdHoc|iPhone";
 				var projectLists = new List<string>{
 					"Newtonsoft_Json_MonoTouch", "Cirrious.MvvmCross.Touch", "Cirrious.MvvmCross.Binding.Touch", "Cirrious.MvvmCross.Dialog.Touch",
 					"SocialNetworks.Services.MonoTouch", "MK.Common.iOS", "MK.Booking.Google.iOS", "MK.Booking.Maps.iOS", "MK.Booking.Api.Contract.iOS", "MK.Booking.Api.Client.iOS",
@@ -349,7 +371,29 @@ namespace MK.DeploymentService.Mobile
 					BuildProject(buildArgs);
 				}
 
-				logger.Debug("Build iOS done");
+				logger.Debug("Build iOS AdHoc done");
+			}
+
+			if (job.iOS_AppStore) {
+				
+				var configIOS = "AppStore|iPhone";
+				var projectLists = new List<string>{
+					"Newtonsoft_Json_MonoTouch", "Cirrious.MvvmCross.Touch", "Cirrious.MvvmCross.Binding.Touch", "Cirrious.MvvmCross.Dialog.Touch",
+					"SocialNetworks.Services.MonoTouch", "MK.Common.iOS", "MK.Booking.Google.iOS", "MK.Booking.Maps.iOS", "MK.Booking.Api.Contract.iOS", "MK.Booking.Api.Client.iOS",
+					"MK.Booking.Mobile.iOS", "MK.Booking.Mobile.Client.iOS"
+				};
+				
+				foreach (var projectName in projectLists) {
+					
+					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
+					                              projectName,
+					                              configIOS,
+					                              sourceMobileFolder);
+					
+					BuildProject(buildArgs);
+				}
+				
+				logger.Debug("Build iOS AppStore done");
 			}
 
 			if (job.Android || job.CallBox) {
