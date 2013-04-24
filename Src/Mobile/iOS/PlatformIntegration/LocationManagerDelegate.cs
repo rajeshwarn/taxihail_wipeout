@@ -3,45 +3,54 @@ using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Linq;
+using System.Reactive;
+using System.Collections.Generic;
+using System.Reactive.Disposables;
+using MK.Common.iOS.Patterns;
+
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class LocationManagerDelegate : CLLocationManagerDelegate
+    public class LocationManagerDelegate : CLLocationManagerDelegate, IObservable<Position>
     {
-
-
         public LocationManagerDelegate ()
         {
+            Observers = new List<IObserver<Position>>();
         }
 
-        public CLLocation LastKnownLocation {
-            get;
-            set;
-        }
+        List<IObserver<Position>> Observers {get; set;}
+        public Position LastKnownPosition {get;set;}
 
-        public static DateTime NSDateToDateTime (MonoTouch.Foundation.NSDate date)
+        public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
-            return (new DateTime (2001, 1, 1, 0, 0, 0)).AddSeconds (date.SecondsSinceReferenceDate);
+            var newLocation = locations.Last();
+
+            var position = new Position()
+            {
+                Accuracy = (float)((newLocation.HorizontalAccuracy + newLocation.VerticalAccuracy)/2),
+                Time = DateTime.Now,
+                Latitude = newLocation.Coordinate.Latitude,
+                Longitude = newLocation.Coordinate.Longitude
+            };
+
+            foreach(var observer in Observers.ToArray())
+            {
+                observer.OnNext(position);
+            }
+
+            LastKnownPosition = position;
         }
 
-        public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
+
+        public IDisposable Subscribe (IObserver<Position> observer)
         {
-        //    TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Raw GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
-
-            double secondHowRecent = double.MaxValue;
-            if ( LastKnownLocation != null )
-            {
-                secondHowRecent = NSDate.Now.SecondsSinceReferenceDate  - LastKnownLocation.Timestamp.SecondsSinceReferenceDate ;
-            }
-            if ( (LastKnownLocation == null) ||
-                (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy) || (secondHowRecent > 10   ))
-            {
-                LastKnownLocation = newLocation;
-          //      TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Better GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
-            }
-            
+            Observers.Add(observer);
+            return new ActionDisposable(()=>{
+                Observers.Remove(observer);
+            });
         }
-
     }
 }
 

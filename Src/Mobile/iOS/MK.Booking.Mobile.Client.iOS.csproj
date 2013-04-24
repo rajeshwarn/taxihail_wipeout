@@ -664,6 +664,10 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
+      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
+      <Name>System.Reactive</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Assets\AppFont_Regular.otf" />

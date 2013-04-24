@@ -9,11 +9,14 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
     public interface ILocationService
     {
-        void Initialize();
+        void Start();
+        void Stop ();
 
-        bool IsServiceEnabled{get;}
+        bool IsLocationServicesEnabled{get;}
 
-        Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken);
+        IObservable<Position> Positions { get; }
+                
+        IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy);
 
         Position LastKnownPosition {get;}
 
@@ -21,6 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
     public class Position
     {
+        public float Accuracy  { get; set; }
+
+        public DateTime Time  { get; set; }
+
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }

@@ -67,9 +67,6 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
     </Reference>
-    <Reference Include="SystemReactiveMonoTouch">
-      <HintPath>..\Libraries\Monotouch\SystemReactiveMonoTouch.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -271,6 +268,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
+      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
+      <Name>System.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

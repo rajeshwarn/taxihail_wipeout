@@ -122,21 +122,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
      
         protected IEnumerable<AddressViewModel> SearchPlaces ()
-        {
-         //   Func<Address, bool> predicate = c => true;
-//            if (Criteria.HasValue ()) {
-//                predicate = x => (x.FriendlyName != null && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) || (x.FullAddress != null && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
-//            }            
-            var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
+        {           
+            var position = LocationService.LastKnownPosition;
             if (position == null) {
                 var cancellationToken = new CancellationTokenSource ();
-                var locService = TinyIoCContainer.Current.Resolve<ILocationService> ().GetPositionAsync (1000, 1000, 1000, 5000, cancellationToken.Token);
-                locService.ContinueWith (p => position = p.Result);
+                position = LocationService.GetNextPosition(new TimeSpan(0,0,1),1000).FirstOrDefault();
 
-                locService.Wait( 2000 );
-                                
-                if (TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition == null) {
+                if(position == null && LocationService.LastKnownPosition != null)
+                {
+                    position =  LocationService.LastKnownPosition;
+                }
 
+                if (position == null) {
                     return Enumerable.Empty<AddressViewModel> ();
                 }
             }

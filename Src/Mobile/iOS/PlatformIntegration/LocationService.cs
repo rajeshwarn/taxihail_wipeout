@@ -7,40 +7,72 @@ using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
 using MonoTouch.Foundation;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class LocationService : ILocationService
     {
-        private CLLocation _lastValidLocation;
         private CLLocationManager _locationManager;
         private LocationManagerDelegate _locationDelegate;
-        
+        private static ILogger LoggerService {get{ return TinyIoCContainer.Current.Resolve<ILogger>();}}
+                
+        public bool IsLocationServicesEnabled
+        {
+            get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
+        }
+
         public LocationService()
         {
+            if (_locationManager != null)
+            {
+                _locationManager.StartUpdatingLocation();
+                return;
+            }
+            
+            _locationManager = new CLLocationManager();
+            _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
+            _locationManager.DistanceFilter = -1;
+            _locationDelegate = new LocationManagerDelegate();
+            _locationManager.Delegate = _locationDelegate;
+            Positions = _locationDelegate;
+        }
+                
+        public void Start()
+        {   
+            _locationManager.StartUpdatingLocation();
+        }
+        
+        public void Stop ()
+        {
+            _locationManager.StopUpdatingLocation ();
         }
         
         public Position LastKnownPosition
         {
-            get
-            { 
-                if ((_locationDelegate != null) && (_locationDelegate.LastKnownLocation != null))
-                {
-                    return new Position{ Latitude =  _locationDelegate.LastKnownLocation.Coordinate.Latitude, Longitude = _locationDelegate.LastKnownLocation.Coordinate.Longitude };
-                }
-                else
-                {
-                    return new Position{ Longitude = 98, Latitude = 40 };
-                }
-            }
+            get { return _locationDelegate.LastKnownPosition ?? new Position{ Longitude = 98, Latitude = 40 }; }
         }
+                
+        public IObservable<Position> Positions { get; private set; }
+
         
-        public CLLocation WaitForAccurateLocation(int timeout, float accuracy, out bool timeoutExpired)
+        public IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy){
+
+            return Positions.Where(t=>
+            {
+                return t.Accuracy <= maxAccuracy;
+            })
+                .Timeout(timeout)
+                .Take(1);
+        }
+        /*
+                
+        public Position WaitForAccurateLocation(int timeout, float accuracy, out bool timeoutExpired)
         {
             
-            var result = _locationDelegate.LastKnownLocation;
+            var result = _locationDelegate.LastKnownPosition;
             
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
+            LoggerService.LogMessage("Start WaitForAccurateLocation");
             
             timeoutExpired = true;
             
@@ -53,13 +85,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             watch.Start();            
             while (!exit)
             {
-                if (_locationDelegate.LastKnownLocation != null)
+                if (_locationDelegate.LastKnownPosition != null)
                 {                   
-                    result = _locationDelegate.LastKnownLocation;
-                    if (result.HorizontalAccuracy <= accuracy) 
+                    result = _locationDelegate.LastKnownPosition;
+                    if (result.Accuracy <= accuracy) 
                     {
-                        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
-                                                                               result.HorizontalAccuracy.ToString());
+                        LoggerService.LogMessage("Good location found! : " + result.Accuracy.ToString());
                         timeoutExpiredResult = false;
                         exit = true;
                     }
@@ -79,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (timeoutExpiredResult)
             {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
-                result = _locationDelegate.LastKnownLocation;
+                result = _locationDelegate.LastKnownPosition;
             }
             
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Done WaitForAccurateLocation");
@@ -87,34 +118,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             timeoutExpired = timeoutExpiredResult;
             return result;
         }
-        
-        #region ILocationService implementation
-        
-        public void Initialize()
-        {
-            if (_locationManager != null)
-            {
-                _locationManager.StartUpdatingLocation();
-                return;
-            }
-            
-            _locationManager = new CLLocationManager();
-            _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _locationManager.DistanceFilter = -1;
-            _locationDelegate = new LocationManagerDelegate();
-            _locationManager.Delegate = _locationDelegate;
-            _locationManager.StartUpdatingLocation();
 
-
-        }
         
         private Task<Position> _last;
 
 
-        public bool IsServiceEnabled
-        {
-            get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
-        }
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
            
@@ -123,13 +131,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _last;
             }
 
- if (!IsServiceEnabled)
+ if (!IsLocationServicesEnabled)
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
 
-
-            Initialize();
 
             Console.WriteLine ( "**********GetPositionAsync**********" );
 
@@ -145,17 +151,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                     if ( timedout )
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
-                        if ( _locationDelegate.LastKnownLocation != null )
+                        if ( _locationDelegate.LastKnownPosition != null )
                         {
-                            result = _locationDelegate.LastKnownLocation;
-                        }
-                        else if ( _lastValidLocation != null )
-                        {
-                            result = _lastValidLocation;
-                        }                         
+                            result = _locationDelegate.LastKnownPosition;
+                        }                        
                     }
                 }
-                return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
+                return new Position { Latitude = result.Latitude, Longitude = result.Longitude };
             }, cancelToken);           
 
             _last.ContinueWith(t => {
@@ -165,12 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             return _last;
             
         }
-        
+        */
 
-        public void Stop ()
-        {
-            _locationManager.StopUpdatingLocation ();
-        }
-#endregion
     }
 }

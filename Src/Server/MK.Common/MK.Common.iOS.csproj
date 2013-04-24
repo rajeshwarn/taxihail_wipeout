@@ -87,9 +87,12 @@
     <Compile Include="Entity\OrderStatusDetail.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
+    <Compile Include="Patterns\Singleton.cs" />
+    <Compile Include="Patterns\ActionDisposable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
+    <Folder Include="Patterns\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

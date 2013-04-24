@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -44,6 +45,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IAppSettings Settings { get; private set; }
 
         protected IPhoneService PhoneService { get; private set; }
+
+        protected ILocationService _locationService;
+        protected ILocationService LocationService{
+            get{
+                if(_locationService == null)
+                {
+                    _locationService = TinyIoCContainer.Current.Resolve<ILocationService> ();
+                }
+                return _locationService;
+            }
+        }
 
         protected virtual void Initialize()
         {

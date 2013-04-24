@@ -341,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CancelCurrentLocationCommand.Execute ();
 
-                    if ( !_geolocator.IsServiceEnabled )
+                    if ( !_geolocator.IsLocationServicesEnabled )
                     {
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
@@ -349,29 +349,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource ();
-                    _geolocator.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
-                    {
-                        try
-                        {
-                            Logger.LogMessage("Request Location Command");
-                            if (t.IsFaulted)
-                            {
-                                Logger.LogMessage("Request Location Command : FAULTED");
-                                IsExecuting = false;
-                            }
-                            else if (t.IsCompleted && !t.IsCanceled)
-                            {
-                                Logger.LogMessage("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
-                                ThreadPool.QueueUserWorkItem(pos => SearchAddressForCoordinate((Position)pos), t.Result);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(ex);
-                            IsExecuting = false;
-                        }
 
-                    }, _scheduler);
+                    _geolocator.GetNextPosition(new TimeSpan(0,0,6), 50).Subscribe(
+                        pos=>
+                        {
+                            InvokeOnMainThread(()=>SearchAddressForCoordinate(pos));
+                        },
+                        e=>{
+                            InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.LastKnownPosition));
+                        });
                 });
             }
 
