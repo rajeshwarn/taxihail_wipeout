@@ -291,9 +291,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			IsCancelButtonVisible = !IsPayButtonVisible;
 
-            //if (!Settings.PayByCreditCardEnabled) {
+            if (!Settings.PayByCreditCardEnabled) {
                 IsPayButtonVisible = false;
-            //}
+            }
 		}
 
         private void ShowThankYouDialog ()
