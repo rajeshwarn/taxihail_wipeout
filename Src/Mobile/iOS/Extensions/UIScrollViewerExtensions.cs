@@ -1,6 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 using System.Drawing;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -10,9 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             
             var maxWidth = 0f;
             var maxHeight = 0f;
-            foreach (var view in thisScrollViewer.Subviews) {
-                
-                
+            foreach (var view in thisScrollViewer.Subviews.Where(v=>!v.Hidden)) 
+            {   
                 if(view.Frame.Bottom > maxHeight)
                 {
                     maxHeight = view.Frame.Bottom;

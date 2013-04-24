@@ -86,13 +86,16 @@ namespace apcurium.MK.Booking.Mobile.Client
                     btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
                     btnPay.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X,btnCancel.Frame.Y,btnCancel.Frame.Width,btnCancel.Frame.Height);
+                    if(ViewModel.Settings.PayByCreditCardEnabled)
+                    {
+                    }
                 }
-
-
 
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
-                    { mapStatus, new B("Pickup","Pickup.Model").Add("TaxiLocation","OrderStatusDetail").Add("MapCenter","MapCenter") },
+                    { mapStatus, new B("Pickup","Pickup.Model")
+                        .Add("TaxiLocation","OrderStatusDetail")
+                        .Add("MapCenter","MapCenter") },
                     { lblTitle, new B("Text","StatusInfoText") },
                     { lblStatus, new B("Text","ConfirmationNoTxt") },
                     { btnCancel, new B("TouchUpInside","CancelOrder").Add("Hidden","IsCancelButtonVisible","BoolInverter")},

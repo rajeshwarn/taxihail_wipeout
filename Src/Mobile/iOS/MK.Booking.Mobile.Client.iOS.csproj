@@ -382,6 +382,7 @@
     <Compile Include="Views\Payments\BookPaymentSettingsView.designer.cs">
       <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

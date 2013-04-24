@@ -202,16 +202,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
                 try
                 {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
                 }
                 catch (Exception)
                 {
                     return false;
                 }
-                return ret;
             }
         }
 
@@ -219,16 +217,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
                 try
                 {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
                 }
                 catch (Exception)
                 {
                     return false;
                 }
-                return ret;
             }
         }
 
@@ -236,16 +232,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var ret = true;
                 try
                 {
-                    ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
                 }
                 catch (Exception)
                 {
                     return false;
                 }
-                return ret;
             }
         }
     }

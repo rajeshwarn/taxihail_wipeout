@@ -29,9 +29,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel,
-        IMvxServiceConsumer<IBookingService>,
-        IMvxServiceConsumer<ILocationService>
+    public class BookingStatusViewModel : BaseViewModel
     {
 
 		private const int _refreshPeriod = 20 ; //20 sec
@@ -258,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
+                status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
 
                 if (status != null) {
@@ -292,6 +290,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					||statusId == VehicleStatuses.Common.Loaded;
 			
 			IsCancelButtonVisible = !IsPayButtonVisible;
+
+            //if (!Settings.PayByCreditCardEnabled) {
+                IsPayButtonVisible = false;
+            //}
 		}
 
         private void ShowThankYouDialog ()
