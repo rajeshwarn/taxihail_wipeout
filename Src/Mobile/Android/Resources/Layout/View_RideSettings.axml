@@ -87,13 +87,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/tipAmountLabel"
                     android:text="@string/PaymentDetails.TipAmountLabel"
-                    style="@style/FormLabelText" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:text="@string/PaymentDetails.Optional"
                     style="@style/FormLabelText" />
             </LinearLayout>
             <apcurium.mk.booking.mobile.client.controls.TipSlider
