@@ -49,19 +49,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
+			
+			var leftTextX = 70.ToPixels();
+			var leftTextY = 30.ToPixels();
+			var textSize = 17.ToPixels();
+			var leftTextWidth = 75.ToPixels();
+
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-				DrawText(canvas, TextLeft ?? "", DrawHelper.GetPixels(100),DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Bold);
-				DrawText(canvas, TextRight ?? "", DrawHelper.GetPixels(220), DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Regular);
+
+				DrawText(canvas, TextLeft ?? "", leftTextX, leftTextY, textSize, AppFonts.Bold);
+				DrawText(canvas, TextRight ?? "", leftTextX + leftTextWidth, leftTextY, textSize, AppFonts.Regular);
 			}
 			else
 			{
-				DrawText(canvas, TextRight ?? "",DrawHelper.GetPixels(100), DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Regular);
+				DrawText(canvas, TextRight ?? "",leftTextX, leftTextY, textSize, AppFonts.Regular);
 			}
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 8, 10, null);
+				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 4.ToPixels(), 7.ToPixels(), null);
             }
 
             if (!string.IsNullOrEmpty(Picture))
@@ -69,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
                 if (resource != 0)
                 {
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 0, 6, null);
+					canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 0.ToPixels(), 3.ToPixels(), null);
                 }
             }
 
@@ -97,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             p.SetTypeface(typeface);
 
             p.TextSize = textSize;
-            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - 45, TextUtils.TruncateAt.End);
+			var ellipsizedText = TextUtils.Ellipsize(text, p, (this.Width - 45).ToPixels(), TextUtils.TruncateAt.End);
             if (string.IsNullOrEmpty(ellipsizedText))
             {
                 ellipsizedText = text;

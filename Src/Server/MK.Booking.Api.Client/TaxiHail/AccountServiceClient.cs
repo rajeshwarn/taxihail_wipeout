@@ -118,8 +118,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var req = string.Format("/account/creditcards/" + creditCardId);
             Client.Delete<string>(req);
-
-            _tokenizationService.ForgetTokenizedCard(cardOnFileToken);
+			if(!string.IsNullOrWhiteSpace(cardOnFileToken))
+			{
+            	_tokenizationService.ForgetTokenizedCard(cardOnFileToken);
+			}
         }
     }
 }
