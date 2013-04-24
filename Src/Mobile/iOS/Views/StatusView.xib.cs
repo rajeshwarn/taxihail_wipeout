@@ -20,6 +20,7 @@ using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -83,12 +84,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if ( ViewModel.IsCallButtonVisible )
                 {
-                    btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
+                    ViewModel.PropertyChanged+= (sender, e) => {
+                        InvokeOnMainThread(()=>
+                                           {
+                            if(!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible)
+                            {
+                                btnCall.SetX((View.Frame.Width - btnCancel.Frame.Width)/2)
+                                    .SetWidth(btnCancel.Frame.Width);
+                                
+                                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
+                            }
+                        });
+                    };
+
+                    btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-                    btnPay.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X,btnCancel.Frame.Y,btnCancel.Frame.Width,btnCancel.Frame.Height);
-                    if(ViewModel.Settings.PayByCreditCardEnabled)
-                    {
-                    }
+                    btnPay.SetFrame(btnCancel.Frame);
                 }
 
                 this.AddBindings (new Dictionary<object, string> ()                            
@@ -96,13 +107,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { mapStatus, new B("Pickup","Pickup.Model")
                         .Add("TaxiLocation","OrderStatusDetail")
                         .Add("MapCenter","MapCenter") },
+
                     { lblTitle, new B("Text","StatusInfoText") },
                     { lblStatus, new B("Text","ConfirmationNoTxt") },
-                    { btnCancel, new B("TouchUpInside","CancelOrder").Add("Hidden","IsCancelButtonVisible","BoolInverter")},
-                    { btnPay, new B("TouchUpInside","PayForOrderCommand").Add("Hidden","IsPayButtonVisible","BoolInverter")},
+                    { btnCancel, new B("TouchUpInside","CancelOrder")
+                        .Add("Hidden","IsCancelButtonVisible","BoolInverter")},
+
+                    { btnPay, new B("TouchUpInside","PayForOrderCommand")
+                        .Add("Hidden","IsPayButtonVisible","BoolInverter")},
+
                     { btnCall, new B("Hidden","IsCallButtonVisible","BoolInverter")
-                                .Add("Enabled","IsCallButtonVisible")
-                                .Add("TouchUpInside","CallCompany") },
+                        .Add("Enabled","IsCallButtonVisible")
+                        .Add("TouchUpInside","CallCompany") },
+
                     { btnNewRide, new B("TouchUpInside","NewRide") }
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();

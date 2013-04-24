@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
             thisRectangleF.Width = value;
             return thisRectangleF;
         }       
+
         public static RectangleF SetHeight(this RectangleF thisRectangleF, float value)
         {
             thisRectangleF.Height = value;

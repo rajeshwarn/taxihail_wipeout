@@ -45,13 +45,14 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string SiteUrl {
             get { return _data.SiteUrl; }
         }
-
-        public string PhoneNumber (int providerId)
+        
+        //todo WTF?
+        public string PhoneNumber (int? providerId)
         {
             return _data.DefaultPhoneNumber;
         }
-
-        public string PhoneNumberDisplay (int companyId)
+        //todo WTF?
+        public string PhoneNumberDisplay (int? companyId)
         {
             return _data.DefaultPhoneNumberDisplay;
         }

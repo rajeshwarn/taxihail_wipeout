@@ -441,9 +441,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand (() =>
                 {                    
                     MessageService.ShowMessage (string.Empty, 
-                                               Settings.PhoneNumberDisplay (Order.Settings.ProviderId.Value), 
+                                               Settings.PhoneNumberDisplay (Order.Settings.ProviderId), 
                                                Str.CallButtonText, 
-					                           () => PhoneService.Call (Settings.PhoneNumber (Order.Settings.ProviderId.Value)),
+					                           () => PhoneService.Call (Settings.PhoneNumber (Order.Settings.ProviderId)),
 						                       Str.CancelButtonText, 
                                                () => {});                    
                 });

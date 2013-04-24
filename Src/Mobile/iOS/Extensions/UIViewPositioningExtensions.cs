@@ -57,12 +57,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
         
         public static UIView SetFrame(this UIView thisView, RectangleF frame)
         {
-            thisView.Frame = frame;
-            return thisView;
+            return thisView.SetFrame(frame.X,frame.Y,frame.Width,frame.Height);
         }
+
         public static UIView SetFrame(this UIView thisView, float x, float y, float width, float height)
         {
-            thisView.SetFrame(new RectangleF(x,y,width,height));
+            thisView.Frame = new RectangleF(x,y,width,height);
             return thisView;
         }
     }
