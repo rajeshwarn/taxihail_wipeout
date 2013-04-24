@@ -102,17 +102,20 @@ namespace MK.DeploymentService.Mobile
 
 		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
 		{
-			var targetDirWithoutFileName = string.Empty;
 			if (job.Android || job.CallBox || job.iOS) {
+				var targetDirWithoutFileName = string.Empty;
 				targetDirWithoutFileName = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], 
 				                                        company.Name, 
 				                                        job.Version != null 
 				                                        	? string.Format("{0}.{1}", job.Version.Display, job.Version.Revision)
-				                                        	: string.Format("Not versioned/{0}", job.Revision)
-				                                        );
+				                                        	: string.Format("Not versioned/{0}", string.IsNullOrEmpty(job.Revision) 
+				                																				? GetLatestRevision(sourceDirectory)
+				                																				: job.Revision
+				                                        ));
 				if (!Directory.Exists (targetDirWithoutFileName)) {
 					Directory.CreateDirectory(targetDirWithoutFileName);
-				}else
+				}
+				else
 				{
 					var contentOfTargetDirectory = new DirectoryInfo(targetDirWithoutFileName).GetFiles();
 					foreach (FileInfo file in contentOfTargetDirectory)
@@ -120,55 +123,59 @@ namespace MK.DeploymentService.Mobile
 						file.Delete(); 
 					}
 				}
-			}
 
-			if (job.Android) {
-                logger.DebugFormat("Copying Apk");
-                var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-                if(apkFile != null)
-			    {
-					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
-					if(File.Exists(targetDir)) File.Delete(targetDir);
-					File.Copy(apkFile, targetDir);
-			    }else
-				{
-				    throw new Exception("Can't find the APK file in the release dir");
+				CopySettingsFileToOutputDir(GetSettingsFilePath(sourceDirectory, company.Name), Path.Combine(targetDirWithoutFileName, "Settings.txt"));
+
+				if (job.Android) {
+					logger.DebugFormat("Copying Apk");
+					var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(apkFile != null)
+					{
+						var fileInfo = new FileInfo(apkFile); 
+						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(apkFile, targetDir);
+					}
+					else
+					{
+						throw new Exception("Can't find the APK file in the release dir");
+					}
 				}
-			}
-
-			if(job.CallBox)
-			{
-				logger.DebugFormat("Copying CallBox Apk");
-				var apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-				if(apkFile != null)
+				
+				if(job.CallBox)
 				{
-					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
-					if(File.Exists(targetDir)) File.Delete(targetDir);
-					File.Copy(apkFile, targetDir);
+					logger.DebugFormat("Copying CallBox Apk");
+					var apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(apkFile != null)
+					{
+						var fileInfo = new FileInfo(apkFile); 
+						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(apkFile, targetDir);
+					}
+					else
+					{
+						throw new Exception("Can't find the CallBox APK file in the release dir");
+					}
 				}
-				else
-				{
-					throw new Exception("Can't find the CallBox APK file in the release dir");
-				}
-			}
-
-			if (job.iOS) {
-				logger.DebugFormat ("Uploading and copying IPA");
-				var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
-				if(ipaFile != null)
-				{
-					var fileUplaoder = new FileUploader();
-					fileUplaoder.Upload(ipaFile);
-
-					var fileInfo = new FileInfo(ipaFile); 
-					var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
-					if(File.Exists(targetDir)) File.Delete(targetDir);
-					File.Copy(ipaFile, targetDir);
-				}else
-				{
-				    throw new Exception("Can't find the IPA file in the release dir");
+				
+				if (job.iOS) {
+					logger.DebugFormat ("Uploading and copying IPA");
+					var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(ipaFile != null)
+					{
+						var fileUplaoder = new FileUploader();
+						fileUplaoder.Upload(ipaFile);
+						
+						var fileInfo = new FileInfo(ipaFile); 
+						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(ipaFile, targetDir);
+					}
+					else
+					{
+						throw new Exception("Can't find the IPA file in the release dir");
+					}
 				}
 			}
 		}
@@ -258,8 +265,8 @@ namespace MK.DeploymentService.Mobile
 			{
 				jsonSettings.Add("ServiceUrl", JToken.FromObject(serviceUrl));
 			}
-			
-			var jsonSettingsFile = Path.Combine(sourceDirectory, "Config" , company.Name, "Settings.json");
+
+			var jsonSettingsFile = GetSettingsFilePath(sourceDirectory, company.Name);
 			var stringBuilder = new StringBuilder();
 			jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
 			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
@@ -468,7 +475,57 @@ namespace MK.DeploymentService.Mobile
 				}
 			}
 		}
+
+		private string GetSettingsFilePath(string sourceDirectory, string companyName)
+		{
+			return Path.Combine(sourceDirectory, "Config" , companyName, "Settings.json");
+		}
+
+		private void CopySettingsFileToOutputDir(string jsonSettingsFile, string targetFile)
+		{
+			StringBuilder sb = new StringBuilder();
+			var reader = new JsonTextReader(new StreamReader(jsonSettingsFile));
+			while (reader.Read())
+			{
+				if (reader.Value != null) {
+					if (reader.TokenType == JsonToken.PropertyName){
+						sb.Append(string.Format("{0}: ", reader.Value));
+					}
+					else
+					{
+						sb.AppendLine(reader.Value.ToString());
+					}
+				}
+			}
+			using (StreamWriter outfile = new StreamWriter(targetFile))
+			{
+				outfile.Write(sb.ToString());
+			}
+		}
+
+		private string GetLatestRevision(string repository)
+		{
+			var revision = string.Empty;
+			var hgRevert = new ProcessStartInfo
+			{
+				FileName = HgPath,
+				UseShellExecute = false,
+				Arguments = string.Format("identify --repository \"{0}\"", repository),
+				RedirectStandardOutput = true,
+
+			};
+			
+			using (var exeProcess = Process.Start(hgRevert))
+			{
+				exeProcess.WaitForExit();
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during get of latest revision name");
+				}
+				revision = exeProcess.StandardOutput.ReadToEnd();
+			}
+
+			return revision;
+		}
 	}
 }
-
-
