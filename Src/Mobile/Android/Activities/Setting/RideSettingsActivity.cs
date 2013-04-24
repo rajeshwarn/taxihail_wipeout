@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			txtPassword.Text = "my secure password"; /* fake password for display only */
 
 			if (!ViewModel.Settings.PayByCreditCardEnabled) {
-				this.FindViewById<TextView> (Resource.Id.tipSlider).Visibility = ViewStates.Gone;
+				this.FindViewById<TipSlider> (Resource.Id.tipSlider).Visibility = ViewStates.Gone;
 			}
 		}
 

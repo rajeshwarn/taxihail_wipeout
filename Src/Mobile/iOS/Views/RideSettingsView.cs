@@ -26,6 +26,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
 
+
+            NavigationController.NavigationBar.Hidden = false;
+            Container.BackgroundColor =  UIColor.Clear;
+            scrollView.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+
+            View.BackgroundColor = UIColor.Clear; 
+            
+            if (!ViewModel.Settings.PayByCreditCardEnabled) {
+                lblTipAmount.Hidden = true;
+                lblCreditCard.Hidden = true;
+                TipSlider.Hidden = true;              
+                btnCreditCard.Hidden = true;
+                Container.SetBottom(lblChargeType.Frame.Bottom);
+            }
+                        
             scrollView.AutoSize ();
 
             lblName.Text= Resources.GetValue("RideSettingsName");
@@ -36,9 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             base.DismissKeyboardOnReturn(txtName, txtPhone);
             
-            Container.BackgroundColor = UIColor.Clear;
-            scrollView.BackgroundColor = UIColor.Clear;
-            
+
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
@@ -83,19 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewWillAppear(animated);
 
-            NavigationController.NavigationBar.Hidden = false;
-            
-            ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            
-            View.BackgroundColor = UIColor.Clear; 
 
-            if (!ViewModel.Settings.PayByCreditCardEnabled) {
-                
-                lblCreditCard.Hidden = true;
-                TipSlider.Hidden = true;
-                lblOptional.Hidden = true;
-                btnCreditCard.Hidden = true;
-            }
         }
 
     }
