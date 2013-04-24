@@ -16,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseViewModel,
+	
+    public class RideSettingsViewModel: BaseViewModel,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
@@ -170,6 +171,10 @@ namespace apcurium.MK.Booking.Mobile
 
                 });
             }
+        }
+
+        public int? ProviderId {
+            get{ return _bookingSettings.ProviderId;}
         }
 
         public IMvxCommand SetCompany
