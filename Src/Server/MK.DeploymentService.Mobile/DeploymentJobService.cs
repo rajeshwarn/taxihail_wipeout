@@ -119,14 +119,6 @@ namespace MK.DeploymentService.Mobile
 				if (!Directory.Exists (targetDirWithoutFileName)) {
 					Directory.CreateDirectory(targetDirWithoutFileName);
 				}
-				else
-				{
-					var contentOfTargetDirectory = new DirectoryInfo(targetDirWithoutFileName).GetFiles();
-					foreach (FileInfo file in contentOfTargetDirectory)
-					{
-						file.Delete(); 
-					}
-				}
 
 				CopySettingsFileToOutputDir(GetSettingsFilePath(sourceDirectory, company.Name), Path.Combine(targetDirWithoutFileName, "Settings.txt"));
 
@@ -541,7 +533,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 			}
-			using (StreamWriter outfile = new StreamWriter(targetFile))
+			using (StreamWriter outfile = new StreamWriter(targetFile, false))
 			{
 				outfile.Write(sb.ToString());
 			}
