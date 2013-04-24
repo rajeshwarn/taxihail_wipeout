@@ -14,6 +14,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -50,12 +51,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnDraw(canvas);
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-                DrawText(canvas, TextLeft ?? "", 100, 40, 20, AppFonts.Bold);
-                DrawText(canvas, TextRight ?? "", 220, 40, 20, AppFonts.Regular);
+				DrawText(canvas, TextLeft ?? "", DrawHelper.GetPixels(100),DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Bold);
+				DrawText(canvas, TextRight ?? "", DrawHelper.GetPixels(220), DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Regular);
 			}
 			else
 			{
-                DrawText(canvas, TextRight ?? "",100, 40, 20, AppFonts.Regular);
+				DrawText(canvas, TextRight ?? "",DrawHelper.GetPixels(100), DrawHelper.GetPixels(40), DrawHelper.GetPixels(20), AppFonts.Regular);
 			}
 
             if (ShowAddSign)
