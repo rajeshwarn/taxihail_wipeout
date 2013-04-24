@@ -279,7 +279,7 @@ namespace MK.ConfigurationManager
             job.Android = DeployAndroid;
             job.CallBox = DeployCallBox;
             job.DeployServer = DeployServer;
-            job.iOS = DeployIos;
+            job.iOS_AdHoc = DeployIos;
             job.Status = JobStatus.REQUESTED;
             DbContext.Set<DeploymentJob>().Add(job);
             DbContext.SaveChanges();
