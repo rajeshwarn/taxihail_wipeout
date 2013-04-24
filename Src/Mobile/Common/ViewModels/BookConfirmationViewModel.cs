@@ -53,7 +53,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MessageService.ShowProgress(true);
 
 
-            Task.Factory.StartNew<RideSettingsModel>(() => new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList()))
+
+
+            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.ToJson () ) )
                 .HandleErrors( )
                 .ContinueWith(t =>
                     {
@@ -104,10 +106,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
+
+        public RideSettingsViewModel RideSettings {get;set;}
       
 
         public string VehicleName {
             get {
+
 				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
             }
         }
@@ -195,19 +200,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private RideSettingsModel _rideSettings;
-		public RideSettingsModel RideSettings {
-			get {
-				return _rideSettings;
-			}
-			private set {
-				if(value != _rideSettings)
-				{
-					_rideSettings = value;
-					FirePropertyChanged("RideSettings");
-				}
-			}
-		}
 		
 		public IMvxCommand NavigateToRefineAddress
 		{
