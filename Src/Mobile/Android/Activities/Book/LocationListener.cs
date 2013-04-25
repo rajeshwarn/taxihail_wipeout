@@ -43,7 +43,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			{
 				observer.OnNext(position);
 			}
-			
+
+			if(!BestPosition.IsBetterThan(position))
+			{
+				BestPosition = position;
+			}
+
 			LastKnownPosition = position;
 			
 		}

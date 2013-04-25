@@ -53,13 +53,22 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Reactive.Android">
-      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -242,6 +251,7 @@
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
+    <Compile Include="Extensions\IObservableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -271,10 +281,6 @@
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
       <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
       <Name>Cirrious.MvvmCross.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\mono-reactive-master\System.Reactive\System.Reactive.Android.csproj">
-      <Project>{C3403D3D-408A-4FD8-8C34-A8CD818D489A}</Project>
-      <Name>System.Reactive.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

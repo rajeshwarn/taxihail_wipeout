@@ -106,7 +106,7 @@ Global
 		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj
+		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

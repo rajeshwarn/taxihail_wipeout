@@ -22,22 +22,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			LocationListener = new LocationListener();
 		}
 
-		public void Stop()
+		public override void Stop()
 		{            
 			_locationManager.RemoveUpdates(LocationListener);
 		}
 		
-		public void Start()
+		public override void Start()
 		{    		
 			if(!IsLocationServiceEnabled)
 			{
 				throw new Exception("Please enable location services!!");
 			}
-			if(_locationManager.IsProviderEnabled( LocationManager.NetworkProvider ) )
+			if(IsNetworkProviderEnabled)
 			{
 				_locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, LocationListener);
 			}
-			else if(_locationManager.IsProviderEnabled( LocationManager.GpsProvider ))
+			else if(IsGpsProviderEnabled)
 			{				
 				_locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, LocationListener);
 			}
@@ -45,37 +45,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			Positions = LocationListener;
 		}
 
-		public IObservable<Position> GetNextBest (TimeSpan timeout)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public IObservable<Position> GetNextPosition (TimeSpan timeout, float maxAccuracy)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public bool IsLocationServicesEnabled {
+		public bool IsNetworkProviderEnabled {
 			get {
-				throw new NotImplementedException ();
+				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider );
+			}
+		}
+		public bool IsGpsProviderEnabled {
+			get {
+				return _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
 			}
 		}
 
-		public Position BestPosition {
+		public override bool IsLocationServicesEnabled {
 			get {
-				throw new NotImplementedException ();
+				return IsNetworkProviderEnabled && IsGpsProviderEnabled;
 			}
+		}
+
+		public override Position BestPosition {
+			get {
+				return LocationListener.BestPosition;
+			}
+		}
+		
+		public override  Position LastKnownPosition
+		{
+			get { return LocationListener.LastKnownPosition;	}  
 		}
 
 		private LocationManager _locationManager;
 		private LocationListener LocationListener;   
-		
-		public IObservable<Position> Positions { get; private set; }
-		
-		public Position LastKnownPosition
-		{
-			get { return LocationListener.LastKnownPosition;	}  
-		}
+
+
 		
 		public bool IsLocationServiceEnabled
 		{

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive;
-using System.Reactive.Subjects;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
@@ -17,13 +15,14 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Configuration;
 using System.Globalization;
-using System.Reactive.Linq;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -75,14 +74,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start (firstStart);
 
 			Observable.Timer ( TimeSpan.FromSeconds ( 2 ), TimeSpan.FromSeconds (_refreshPeriod)).Select (c => new Unit ())
-				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
-					.DisposeWith (Subscriptions);
+				.Subscribe (unit => InvokeOnMainThread (RefreshStatus));
+					//.DisposeWith (Subscriptions);
 		}
 
 		public override void Stop ()
 		{
 			base.Stop ();
-            Subscriptions.DisposeAll ();
+            //Subscriptions.DisposeAll ();
 		}
 
         private IEnumerable<CoordinateViewModel> _mapCenter { get; set; }

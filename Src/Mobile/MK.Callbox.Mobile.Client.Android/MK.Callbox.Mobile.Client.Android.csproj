@@ -71,8 +71,17 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Android">
-      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
