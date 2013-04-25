@@ -29,12 +29,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookingStatusViewModel : BaseViewModel,
         IMvxServiceConsumer<IBookingService>,
-        IMvxServiceConsumer<ILocationService>
+        IMvxServiceConsumer<AbstractLocationService>
     {
         private IBookingService _bookingService;
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
-        private ILocationService _geolocator;
+        private AbstractLocationService _geolocator;
         private const int _refreshPeriod = 20 ; //20 sec
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Order = JsonSerializer.DeserializeFromString<Order> (order);
             OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-            _geolocator = this.GetService<ILocationService> ();
+            _geolocator = this.GetService<AbstractLocationService> ();
             _hasSeenReminder = false;
         }
 

@@ -46,12 +46,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected IPhoneService PhoneService { get; private set; }
 
-        protected ILocationService _locationService;
-        protected ILocationService LocationService{
+        protected AbstractLocationService _locationService;
+        protected AbstractLocationService LocationService{
             get{
                 if(_locationService == null)
                 {
-                    _locationService = TinyIoCContainer.Current.Resolve<ILocationService> ();
+                    _locationService = TinyIoCContainer.Current.Resolve<AbstractLocationService> ();
                 }
                 return _locationService;
             }

@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         protected IEnumerable<AddressViewModel> SearchGeocodeAddresses ()
         {
             TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
-            var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
+            var position = TinyIoCContainer.Current.Resolve<AbstractLocationService> ().LastKnownPosition;
 
             var addresses = new apcurium.MK.Common.Entity.Address[0];
             

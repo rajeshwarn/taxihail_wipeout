@@ -35,14 +35,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
-        IMvxServiceConsumer<ILocationService>,
+        IMvxServiceConsumer<AbstractLocationService>,
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<IApplicationInfoService>,
         IMvxServiceConsumer<ICacheService>
     {
         private bool _initialized;
         private IAccountService _accountService;
-        private ILocationService _geolocator;
+        private AbstractLocationService _geolocator;
         private IBookingService _bookingService;
         private IApplicationInfoService _applicationInfoService;
         private IEnumerable<CoordinateViewModel> _mapCenter;
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _accountService = this.GetService<IAccountService>();
             _accountService = this.GetService<IAccountService>();
-            _geolocator = this.GetService<ILocationService>();
+            _geolocator = this.GetService<AbstractLocationService>();
             _bookingService = this.GetService<IBookingService>();
             _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);

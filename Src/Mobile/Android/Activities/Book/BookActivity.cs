@@ -17,7 +17,7 @@ using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.ShowTutorial.Execute();
 
-            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+			TinyIoC.TinyIoCContainer.Current.Resolve<LocationService>().Start();
 
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.Invalidate();
@@ -130,7 +130,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             
             base.OnStop();
-            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Stop();
+			
+			TinyIoC.TinyIoCContainer.Current.Resolve<LocationService>().Stop();
         }
 
 

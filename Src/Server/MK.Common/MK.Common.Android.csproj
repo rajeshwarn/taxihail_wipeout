@@ -81,6 +81,8 @@
     <Compile Include="Entity\OrderStatusDetail.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
+    <Compile Include="Patterns\ActionDisposable.cs" />
+    <Compile Include="Patterns\Singleton.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

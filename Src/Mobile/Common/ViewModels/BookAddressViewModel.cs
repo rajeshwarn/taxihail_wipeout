@@ -23,11 +23,11 @@ using apcurium.MK.Common;
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookAddressViewModel : BaseViewModel,
-        IMvxServiceConsumer<ILocationService>,
+        IMvxServiceConsumer<AbstractLocationService>,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<IGeolocService>
     {
-        private ILocationService _geolocator;
+        private AbstractLocationService _geolocator;
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public event EventHandler AddressCleared;
 
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
+        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, AbstractLocationService geolocator)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
