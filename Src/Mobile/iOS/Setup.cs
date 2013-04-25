@@ -72,8 +72,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCServiceProviderSetup.Initialize();
 
             var locationService = new LocationService( );
-            locationService.Initialize();
-            TinyIoCContainer.Current.Register<ILocationService>(locationService );
+            locationService.Start();
+            TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
            
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());

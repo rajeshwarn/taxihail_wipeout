@@ -88,10 +88,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             UIApplication.CheckForIllegalCrossThreadCalls=true;
 
-            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
             if ( locService != null )
             {
-                locService.Initialize ();
+                locService.Start ();
             }
 
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
@@ -157,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void DidEnterBackground (UIApplication application)
         {
-            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>() as LocationService ;
             if ( locService != null )
             {
                 locService.Stop();

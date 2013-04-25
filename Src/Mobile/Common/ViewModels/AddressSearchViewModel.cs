@@ -122,21 +122,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
      
         protected IEnumerable<AddressViewModel> SearchPlaces ()
-        {
-         //   Func<Address, bool> predicate = c => true;
-//            if (Criteria.HasValue ()) {
-//                predicate = x => (x.FriendlyName != null && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) || (x.FullAddress != null && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
-//            }            
-            var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
+        {           
+            Position position = LocationService.BestPosition;
+
             if (position == null) {
-                var cancellationToken = new CancellationTokenSource ();
-                var locService = TinyIoCContainer.Current.Resolve<ILocationService> ().GetPositionAsync (1000, 1000, 1000, 5000, cancellationToken.Token);
-                locService.ContinueWith (p => position = p.Result);
 
-                locService.Wait( 2000 );
-                                
-                if (TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition == null) {
+                position = LocationService.GetNextPosition(new TimeSpan(0,0,1),1000).FirstOrDefault();
 
+                if(position == null && LocationService.BestPosition != null)
+                {
+                    position =  LocationService.BestPosition;
+                }
+
+                if (position == null) {
                     return Enumerable.Empty<AddressViewModel> ();
                 }
             }
@@ -164,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         protected IEnumerable<AddressViewModel> SearchGeocodeAddresses ()
         {
             TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
-            var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
+            var position = TinyIoCContainer.Current.Resolve<AbstractLocationService> ().LastKnownPosition;
 
             var addresses = new apcurium.MK.Common.Entity.Address[0];
             

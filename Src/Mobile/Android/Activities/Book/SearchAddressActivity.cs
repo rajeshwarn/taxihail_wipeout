@@ -17,7 +17,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.History;
-using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Models;

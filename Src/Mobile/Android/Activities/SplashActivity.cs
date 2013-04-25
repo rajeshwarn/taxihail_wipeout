@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
           
             base.OnResume();
-            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
         }
 
         protected override void OnDestroy()

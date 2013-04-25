@@ -69,9 +69,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive.Android">
-      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Facebook">
@@ -79,6 +76,18 @@
     </Reference>
     <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="Mono.Android" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -128,8 +137,6 @@
     <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
-    <Compile Include="Activities\Location\LocationDetailActivity.cs" />
-    <Compile Include="Activities\Location\LocationsActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
     <Compile Include="MapUtitilties\TaxiOverlay.cs" />
@@ -280,6 +287,8 @@
     <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
       <DependentUpon>View_CreditCardsList.axml</DependentUpon>
     </Compile>
+    <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
+    <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

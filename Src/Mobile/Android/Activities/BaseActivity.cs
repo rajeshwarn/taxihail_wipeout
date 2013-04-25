@@ -11,9 +11,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
-using Cirrious.MvvmCross.Binding.Android.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Binding.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
