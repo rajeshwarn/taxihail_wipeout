@@ -44,7 +44,7 @@ namespace MK.DeploymentService.Mobile
 		{
 			try {
 				var db = new PetaPoco.Database ("MKConfig");
-				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1 OR CallBox=1)");
+				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS_AdHoc=1 OR iOS_AppStore=1 OR CallBox=1)");
 				try {
 
 					if (job != null) {
@@ -119,14 +119,6 @@ namespace MK.DeploymentService.Mobile
 				if (!Directory.Exists (targetDirWithoutFileName)) {
 					Directory.CreateDirectory(targetDirWithoutFileName);
 				}
-				else
-				{
-					var contentOfTargetDirectory = new DirectoryInfo(targetDirWithoutFileName).GetFiles();
-					foreach (FileInfo file in contentOfTargetDirectory)
-					{
-						file.Delete(); 
-					}
-				}
 
 				CopySettingsFileToOutputDir(GetSettingsFilePath(sourceDirectory, company.Name), Path.Combine(targetDirWithoutFileName, "Settings.txt"));
 
@@ -187,11 +179,10 @@ namespace MK.DeploymentService.Mobile
 					var ipaFile = Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(ipaFile != null)
 					{
-						var fileUplaoder = new FileUploader();
-						fileUplaoder.Upload(ipaFile);
-						
+										
 						var fileInfo = new FileInfo(ipaFile); 
-						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						var newName = fileInfo.Name.Replace(".ipa", ".appstore.ipa");
+						var targetDir = Path.Combine(targetDirWithoutFileName, newName);
 						if(File.Exists(targetDir)) File.Delete(targetDir);
 						File.Copy(ipaFile, targetDir);
 					}
@@ -241,14 +232,14 @@ namespace MK.DeploymentService.Mobile
 			}
 			
 			//fetch revision if needed
-			if (!string.IsNullOrEmpty (job.Revision)) {
-				logger.DebugFormat ("Update to revision {0}", job.Revision);
+			if (!string.IsNullOrEmpty (revision)) {
+				logger.DebugFormat ("Update to revision {0}", revision);
 				var hgUpdate = new ProcessStartInfo
 				{
 					FileName = HgPath,
 					UseShellExecute = false,
 					Arguments =
-					string.Format("update --repository {0} -r {1}", sourceDirectory, job.Revision)
+					string.Format("update --repository {0} -r {1}", sourceDirectory, revision)
 				};
 				
 				using (var exeProcess = Process.Start(hgUpdate)) {
@@ -352,35 +343,13 @@ namespace MK.DeploymentService.Mobile
 			
 			logger.DebugFormat ("Build Solution");
 
-			if (job.iOS_AdHoc) {
-				
-				var configIOS = "AdHoc|iPhone";
+			if (job.iOS_AdHoc || job.iOS_AppStore) {
+
+				var configIOS = "Release|iPhone";
 				var projectLists = new List<string>{
 					"Newtonsoft_Json_MonoTouch", "Cirrious.MvvmCross.Touch", "Cirrious.MvvmCross.Binding.Touch", "Cirrious.MvvmCross.Dialog.Touch",
 					"SocialNetworks.Services.MonoTouch", "MK.Common.iOS", "MK.Booking.Google.iOS", "MK.Booking.Maps.iOS", "MK.Booking.Api.Contract.iOS", "MK.Booking.Api.Client.iOS",
-					"MK.Booking.Mobile.iOS", "MK.Booking.Mobile.Client.iOS"
-				};
-
-				foreach (var projectName in projectLists) {
-
-					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
-					                              projectName,
-					                              configIOS,
-					                              sourceMobileFolder);
-					
-					BuildProject(buildArgs);
-				}
-
-				logger.Debug("Build iOS AdHoc done");
-			}
-
-			if (job.iOS_AppStore) {
-				
-				var configIOS = "AppStore|iPhone";
-				var projectLists = new List<string>{
-					"Newtonsoft_Json_MonoTouch", "Cirrious.MvvmCross.Touch", "Cirrious.MvvmCross.Binding.Touch", "Cirrious.MvvmCross.Dialog.Touch",
-					"SocialNetworks.Services.MonoTouch", "MK.Common.iOS", "MK.Booking.Google.iOS", "MK.Booking.Maps.iOS", "MK.Booking.Api.Contract.iOS", "MK.Booking.Api.Client.iOS",
-					"MK.Booking.Mobile.iOS", "MK.Booking.Mobile.Client.iOS"
+					"MK.Booking.Mobile.iOS"
 				};
 				
 				foreach (var projectName in projectLists) {
@@ -392,9 +361,36 @@ namespace MK.DeploymentService.Mobile
 					
 					BuildProject(buildArgs);
 				}
+
+				if (job.iOS_AdHoc) {			
+					
+					
+					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
+					                              "MK.Booking.Mobile.Client.iOS",
+					                              "AdHoc|iPhone",
+					                              sourceMobileFolder);
+					
+					BuildProject(buildArgs);
+					
+					
+					logger.Debug("Build iOS AdHoc done");
+				}
 				
-				logger.Debug("Build iOS AppStore done");
+				if (job.iOS_AppStore) {	
+					
+					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
+					                              "MK.Booking.Mobile.Client.iOS",
+					                              "AppStore|iPhone",
+					                              sourceMobileFolder);
+					
+					BuildProject(buildArgs);
+					
+					
+					logger.Debug("Build iOS AppStore done");
+				}
 			}
+
+
 
 			if (job.Android || job.CallBox) {
 
@@ -541,7 +537,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 			}
-			using (StreamWriter outfile = new StreamWriter(targetFile))
+			using (StreamWriter outfile = new StreamWriter(targetFile, false))
 			{
 				outfile.Write(sb.ToString());
 			}

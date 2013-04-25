@@ -90,8 +90,6 @@ namespace MK.ConfigurationManager
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
 
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
-
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
             if (this.currentDbList.SelectedItem != null)
             {
