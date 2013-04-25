@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.ShowTutorial.Execute();
 
-			TinyIoC.TinyIoCContainer.Current.Resolve<LocationService>().Start();
+			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
 
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.Invalidate();

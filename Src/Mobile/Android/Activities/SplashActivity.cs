@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
           
             base.OnResume();
-			TinyIoC.TinyIoCContainer.Current.Resolve<LocationService>().Start();
         }
 
         protected override void OnDestroy()

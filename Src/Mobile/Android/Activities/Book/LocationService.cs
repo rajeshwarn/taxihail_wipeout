@@ -22,26 +22,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			LocationListener = new LocationListener();
 		}
 
+		bool _isStarted;
+
 		public override void Stop()
 		{            
-			_locationManager.RemoveUpdates(LocationListener);
+			if(_isStarted)
+			{
+				_locationManager.RemoveUpdates(LocationListener);
+			}
 		}
 		
 		public override void Start()
-		{    		
+		{   
+			if(_isStarted)
+			{
+				return;
+			}
+
 			if(!IsLocationServiceEnabled)
 			{
 				throw new Exception("Please enable location services!!");
 			}
 			if(IsNetworkProviderEnabled)
 			{
-				_locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, LocationListener);
+				_locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, LocationListener, Looper.MainLooper);
 			}
-			else if(IsGpsProviderEnabled)
+			if(IsGpsProviderEnabled)
 			{				
-				_locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, LocationListener);
+				_locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, LocationListener, Looper.MainLooper);
 			}
-
+			_isStarted = true;
 			Positions = LocationListener;
 		}
 
