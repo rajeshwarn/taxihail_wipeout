@@ -357,6 +357,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         },
                         e=>{
                             InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.LastKnownPosition));
+                        },
+                        ()=>
+                        {  
+                            InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
                         });
                 });
             }

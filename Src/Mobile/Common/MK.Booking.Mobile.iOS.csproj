@@ -239,6 +239,7 @@
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Extensions\IObservableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

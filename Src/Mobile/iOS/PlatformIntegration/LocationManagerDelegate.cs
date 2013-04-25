@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         List<IObserver<Position>> Observers {get; set;}
         public Position LastKnownPosition {get;set;}
+        public Position BestPosition {get;set;}
 
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
@@ -38,6 +39,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             foreach(var observer in Observers.ToArray())
             {
                 observer.OnNext(position);
+            }
+
+            if(!BestPosition.IsBetterThan(position))
+            {
+                BestPosition = position;
             }
 
             LastKnownPosition = position;

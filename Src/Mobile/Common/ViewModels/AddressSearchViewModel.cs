@@ -123,14 +123,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
      
         protected IEnumerable<AddressViewModel> SearchPlaces ()
         {           
-            var position = LocationService.LastKnownPosition;
+            Position position = LocationService.BestPosition;
             if (position == null) {
-                var cancellationToken = new CancellationTokenSource ();
+
                 position = LocationService.GetNextPosition(new TimeSpan(0,0,1),1000).FirstOrDefault();
 
-                if(position == null && LocationService.LastKnownPosition != null)
+                if(position == null && LocationService.BestPosition != null)
                 {
-                    position =  LocationService.LastKnownPosition;
+                    position =  LocationService.BestPosition;
                 }
 
                 if (position == null) {

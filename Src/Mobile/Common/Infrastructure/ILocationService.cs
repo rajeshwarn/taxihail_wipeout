@@ -16,9 +16,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         IObservable<Position> Positions { get; }
                 
+        IObservable<Position> GetNextBest(TimeSpan timeout);
+
         IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy);
 
         Position LastKnownPosition {get;}
+        Position BestPosition {get;}
 
     }
 
@@ -32,5 +35,25 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         public double Longitude { get; set; }
 
+    }
+
+
+    public static class PositionExtensions{
+        
+        public static bool IsBetterThan (this Position thisPosition,Position thatPosition)
+        {
+            if(thatPosition == null)
+            {
+                return true;
+            }
+
+            if(     thisPosition ==null 
+               ||   thatPosition.Time - thisPosition.Time > new TimeSpan(0,0,30))
+            {
+                return false;
+            }
+
+            return thisPosition.Accuracy > thatPosition.Accuracy;
+        }
     }
 }
