@@ -375,7 +375,6 @@
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
-    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
       <DependentUpon>BookEditInformation.cs</DependentUpon>

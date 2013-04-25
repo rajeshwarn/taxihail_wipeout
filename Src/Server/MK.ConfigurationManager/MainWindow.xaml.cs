@@ -255,7 +255,8 @@ namespace MK.ConfigurationManager
 
         public bool DeployInitDatabse { get; set; }
         public bool DeployServer { get; set; }
-        public bool DeployIos { get; set; }
+        public bool DeployIosAdHoc { get; set; }
+        public bool DeployIosAppStore { get; set; }
         public bool DeployAndroid { get; set; }
         public bool DeployCallBox { get; set; }
         public bool DeployDB { get; set; }
@@ -277,7 +278,8 @@ namespace MK.ConfigurationManager
             job.Android = DeployAndroid;
             job.CallBox = DeployCallBox;
             job.DeployServer = DeployServer;
-            job.iOS = DeployIos;
+            job.iOS_AdHoc = DeployIosAdHoc;
+            job.iOS_AppStore = DeployIosAppStore;
             job.Status = JobStatus.REQUESTED;
             DbContext.Set<DeploymentJob>().Add(job);
             DbContext.SaveChanges();

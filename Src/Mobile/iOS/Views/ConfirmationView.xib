@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -679,7 +679,7 @@
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="393216092"/>
 					</object>
-					<int key="connectionID">252</int>
+					<int key="connectionID">253</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1039,7 +1039,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">252</int>
+			<int key="maxID">253</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1056,7 +1056,6 @@
 							<string>lblApartment</string>
 							<string>lblApartmentValue</string>
 							<string>lblChargeType</string>
-							<string>lblChargeTypeValue</string>
 							<string>lblEntryCode</string>
 							<string>lblEntryCodeValue</string>
 							<string>lblName</string>
@@ -1089,7 +1088,6 @@
 							<string>FormLabel</string>
 							<string>FormLabel</string>
 							<string>FormLabel</string>
-							<string>FormLabel</string>
 							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>StackView</string>
@@ -1105,7 +1103,6 @@
 							<string>lblApartment</string>
 							<string>lblApartmentValue</string>
 							<string>lblChargeType</string>
-							<string>lblChargeTypeValue</string>
 							<string>lblEntryCode</string>
 							<string>lblEntryCodeValue</string>
 							<string>lblName</string>
@@ -1142,10 +1139,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">lblChargeType</string>
 								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">lblChargeTypeValue</string>
-								<string key="candidateClassName">FormLabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">lblEntryCode</string>

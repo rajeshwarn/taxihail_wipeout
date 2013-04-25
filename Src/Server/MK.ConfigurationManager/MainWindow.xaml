@@ -119,10 +119,11 @@
                             <DataGridTextColumn Width="100" Header="IBSServer" Binding="{Binding IBSServer.Name}" />
                             <DataGridTextColumn Width="50" Header="Server" Binding="{Binding DeployServer}" />
                             <DataGridTextColumn Width="50" Header="Db" Binding="{Binding DeployDB}" />
-                            <DataGridTextColumn Width="75" Header="CreateDb" Binding="{Binding InitDatabase}" />
-                            <DataGridTextColumn Width="60" Header="Android" Binding="{Binding Android}" />
-                            <DataGridTextColumn Width="60" Header="CallBox" Binding="{Binding CallBox}" />
-                            <DataGridTextColumn Width="50" Header="iOS" Binding="{Binding iOS}" />
+                            <DataGridTextColumn Width="65" Header="CreateDb" Binding="{Binding InitDatabase}" />
+                            <DataGridTextColumn Width="55" Header="Android" Binding="{Binding Android}" />
+                            <DataGridTextColumn Width="50" Header="CallBox" Binding="{Binding CallBox}" />
+                            <DataGridTextColumn Width="45" Header="AdHoc" Binding="{Binding iOS_AdHoc}" />
+                            <DataGridTextColumn Width="60" Header="AppStore" Binding="{Binding iOS_AppStore}" />
                             <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
                             <DataGridTextColumn Width="250" Header="Details" Binding="{Binding Details}" />
                              <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />                            
@@ -173,7 +174,8 @@
                                 <CheckBox Grid.Row="2" Grid.Column="2" Content="Server" IsChecked="{Binding DeployServer}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
                                 <CheckBox Grid.Row="3" Grid.Column="2" Content="Android" IsChecked="{Binding DeployAndroid}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
                                 <CheckBox Grid.Row="4" Grid.Column="2" Content="CallBox" IsChecked="{Binding DeployCallBox}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="5" Grid.Column="2" Content="iOS" IsChecked="{Binding DeployIos}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="5" Grid.Column="2" Content="iOS (AdHoc)" IsChecked="{Binding DeployIosAdHoc}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="6" Grid.Column="2" Content="iOS (AppStore)" IsChecked="{Binding DeployIosAppStore}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <Button Grid.Row="11" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
                             </Grid>
