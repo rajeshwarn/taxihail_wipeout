@@ -11,13 +11,13 @@ using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class LocationService : ILocationService
+    public class LocationService : AbstractLocationService
     {
         private CLLocationManager _locationManager;
         private LocationManagerDelegate _locationDelegate;
         private static ILogger LoggerService {get{ return TinyIoCContainer.Current.Resolve<ILogger>();}}
                 
-        public bool IsLocationServicesEnabled
+        public override bool IsLocationServicesEnabled
         {
             get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
         }
@@ -38,42 +38,27 @@ namespace apcurium.MK.Booking.Mobile.Client
             Positions = _locationDelegate;
         }
                 
-        public void Start()
+        public override void Start()
         {   
             _locationManager.StartUpdatingLocation();
         }
         
-        public void Stop ()
+        public override void Stop ()
         {
             _locationManager.StopUpdatingLocation ();
         }
         
-        public Position LastKnownPosition
+        public override Position LastKnownPosition
         {
             get { return _locationDelegate.LastKnownPosition; }
         }
                 
-        public Position BestPosition
+        public override Position BestPosition
         {
             get { return _locationDelegate.BestPosition; }
         }
 
-        public IObservable<Position> Positions { get; private set; }
-
-        public IObservable<Position> GetNextBest(TimeSpan timeout){
-            
-            return Positions.TakeLast(timeout).Select(_=>BestPosition);
-        }
-
-        public IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy){
-
-            return Positions.Where(t=>
-            {
-                return t.Accuracy <= maxAccuracy;
-            })
-                .Take(timeout)
-                .Take(1);
-        }
+       
 
     }
 }
