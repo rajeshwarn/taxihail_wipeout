@@ -124,6 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         protected IEnumerable<AddressViewModel> SearchPlaces ()
         {           
             Position position = LocationService.BestPosition;
+
             if (position == null) {
 
                 position = LocationService.GetNextPosition(new TimeSpan(0,0,1),1000).FirstOrDefault();

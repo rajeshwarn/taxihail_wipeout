@@ -39,7 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 
     public static class PositionExtensions{
-        
+
+        public static TimeSpan ValidCoordinateTime = new TimeSpan(0,0,30);
+
         public static bool IsBetterThan (this Position thisPosition,Position thatPosition)
         {
             if(thatPosition == null)
@@ -48,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             }
 
             if(     thisPosition ==null 
-               ||   thatPosition.Time - thisPosition.Time > new TimeSpan(0,0,30))
+               ||   thatPosition.Time - thisPosition.Time > ValidCoordinateTime)
             {
                 return false;
             }

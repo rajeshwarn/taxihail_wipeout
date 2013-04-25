@@ -71,7 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return t.Accuracy <= maxAccuracy;
             })
-                .Take(timeout);
+                .Take(timeout)
+                .Take(1);
         }
 
     }

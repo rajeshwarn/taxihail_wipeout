@@ -348,20 +348,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
                     IsExecuting = true;
-                    _cancellationToken = new CancellationTokenSource ();
-
+                    bool positionSet = false;
                     _geolocator.GetNextPosition(new TimeSpan(0,0,6), 50).Subscribe(
-                        pos=>
+                    pos=>
+                    {
+                        positionSet =true;
+                        InvokeOnMainThread(()=>SearchAddressForCoordinate(pos));
+                    },
+                    ()=>
+                    {  
+                        if(!positionSet)
                         {
-                            InvokeOnMainThread(()=>SearchAddressForCoordinate(pos));
-                        },
-                        e=>{
-                            InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.LastKnownPosition));
-                        },
-                        ()=>
-                        {  
                             InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
-                        });
+                        }
+                    });
                 });
             }
 
