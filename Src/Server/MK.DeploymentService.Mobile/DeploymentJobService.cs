@@ -179,11 +179,10 @@ namespace MK.DeploymentService.Mobile
 					var ipaFile = Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(ipaFile != null)
 					{
-						var fileUplaoder = new FileUploader();
-						fileUplaoder.Upload(ipaFile);
-						
+										
 						var fileInfo = new FileInfo(ipaFile); 
-						var targetDir = Path.Combine(targetDirWithoutFileName, fileInfo.Name);
+						var newName = fileInfo.Name.Replace(".ipa", ".appstore.ipa");
+						var targetDir = Path.Combine(targetDirWithoutFileName, newName);
 						if(File.Exists(targetDir)) File.Delete(targetDir);
 						File.Copy(ipaFile, targetDir);
 					}
