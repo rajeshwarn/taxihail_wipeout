@@ -200,7 +200,7 @@ namespace MK.DeploymentService.Mobile
 			string revision = string.Empty;
 			if(job.Version != null)
 			{
-				revision = job.Version.Revision;
+				revision = "-r " + job.Version.Revision;
 
 			}else{
 				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
@@ -208,7 +208,7 @@ namespace MK.DeploymentService.Mobile
 			 			
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
-				Directory.CreateDirectory (sourceDirectory);
+
 				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
 				                         sourceDirectory, revision);
 				
@@ -239,7 +239,7 @@ namespace MK.DeploymentService.Mobile
 					FileName = HgPath,
 					UseShellExecute = false,
 					Arguments =
-					string.Format("update --repository {0} -r {1}", sourceDirectory, revision)
+					string.Format("update --repository {0} {1}", sourceDirectory, revision)
 				};
 				
 				using (var exeProcess = Process.Start(hgUpdate)) {
@@ -343,52 +343,33 @@ namespace MK.DeploymentService.Mobile
 			
 			logger.DebugFormat ("Build Solution");
 
-			if (job.iOS_AdHoc || job.iOS_AppStore) {
 
-				var configIOS = "Release|iPhone";
-				var projectLists = new List<string>{
-					"Newtonsoft_Json_MonoTouch", "Cirrious.MvvmCross.Touch", "Cirrious.MvvmCross.Binding.Touch", "Cirrious.MvvmCross.Dialog.Touch",
-					"SocialNetworks.Services.MonoTouch", "MK.Common.iOS", "MK.Booking.Google.iOS", "MK.Booking.Maps.iOS", "MK.Booking.Api.Contract.iOS", "MK.Booking.Api.Client.iOS",
-					"MK.Booking.Mobile.iOS"
-				};
+			if (job.iOS_AdHoc) {			
 				
-				foreach (var projectName in projectLists) {
-					
-					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
-					                              projectName,
-					                              configIOS,
-					                              sourceMobileFolder);
-					
-					BuildProject(buildArgs);
-				}
-
-				if (job.iOS_AdHoc) {			
-					
-					
-					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
-					                              "MK.Booking.Mobile.Client.iOS",
-					                              "AdHoc|iPhone",
-					                              sourceMobileFolder);
-					
-					BuildProject(buildArgs);
-					
-					
-					logger.Debug("Build iOS AdHoc done");
-				}
+				logger.DebugFormat ("Build iOS AdHoc");
+				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",
+				                              "AdHoc|iPhone",
+				                              sourceMobileFolder);
 				
-				if (job.iOS_AppStore) {	
-					
-					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
-					                              "MK.Booking.Mobile.Client.iOS",
-					                              "AppStore|iPhone",
-					                              sourceMobileFolder);
-					
-					BuildProject(buildArgs);
-					
-					
-					logger.Debug("Build iOS AppStore done");
-				}
+				BuildProject(buildArgs);
+				
+				
+				logger.Debug("Build iOS AdHoc done");
 			}
+			
+			if (job.iOS_AppStore) {	
+
+				logger.DebugFormat ("Build iOS AppStore");
+				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",				                             
+				                              "AppStore|iPhone",
+				                              sourceMobileFolder);
+				
+				BuildProject(buildArgs);
+				
+				
+				logger.Debug("Build iOS AppStore done");
+			}
+
 
 
 
