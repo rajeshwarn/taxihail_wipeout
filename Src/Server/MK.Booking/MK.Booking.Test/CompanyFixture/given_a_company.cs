@@ -139,33 +139,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
 
 
        
-        [Test]
-        public void when_creating_two_default_disable_rules()
-        {
-            var ruleId = Guid.NewGuid();
-
-            this.sut.Given(new RuleCreated
-            {
-                SourceId = _companyId,
-                RuleId = ruleId,
-                Type = RuleType.Default,
-                Category = RuleCategory.DisableRule,
-                Message = "Due to..."
-            });
-
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRule
-            {
-                CompanyId = _companyId,
-                RuleId = Guid.NewGuid(),
-                Category = RuleCategory.DisableRule,
-                Type = RuleType.Default,
-                Message = "Due to..."
-            }));
-        }
-
-
-
-
+        
        [Test]
         public void when_appsettings_added_successfully()
         {

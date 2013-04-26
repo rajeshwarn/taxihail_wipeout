@@ -559,6 +559,7 @@ namespace apcurium.MK.Web.Tests
         public void TestWarningRuleIsApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId);
+            CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
             rule.AppliesToFutureBooking = true;
@@ -591,6 +592,7 @@ namespace apcurium.MK.Web.Tests
         public void TestWarningRuleIsNotApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId);
+            CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rules.DeactivateRule(rule.Id);
 
