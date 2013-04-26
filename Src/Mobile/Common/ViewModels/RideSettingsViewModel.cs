@@ -218,7 +218,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private bool ValidateRideSettings()
+		public bool ValidateRideSettings()
 		{
 			if (string.IsNullOrEmpty(Name) 
 			    || string.IsNullOrEmpty(Phone))
