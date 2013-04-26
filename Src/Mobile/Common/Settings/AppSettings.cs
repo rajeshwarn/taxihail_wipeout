@@ -169,5 +169,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.PayByCreditCardEnabled; }
         }
 
+        public bool HideNoPreference {
+            get { return _data.HideNoPreference; }
+        }
+
     }
 }

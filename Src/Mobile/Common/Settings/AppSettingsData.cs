@@ -40,5 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool StreetNumberScreenEnabled { get; set; }
         public bool PayByCreditCardEnabled { get; set; }
 
+        public bool HideNoPreference { get;set; }
     }
 }

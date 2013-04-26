@@ -22,7 +22,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Drawing;
-
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -87,8 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtAprtment.Ended += HandleTouchDown;
             txtEntryCode.Ended += HandleTouchDown;
 
-            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId.Value, x=> { ViewModel.SetVehicleTypeId ( x.Id );});
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId.Value , x=> { ViewModel.SetChargeTypeId( x.Id ); });
+            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId.HasValue ? ViewModel.Order.Settings.VehicleTypeId.Value : ListItem.NullId, x=> { ViewModel.SetVehicleTypeId ( x.Id );});
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId.HasValue ? ViewModel.Order.Settings.ChargeTypeId.Value : ListItem.NullId, x=> { ViewModel.SetChargeTypeId( x.Id ); });
 
 
             this.AddBindings(new Dictionary<object, string>() {
