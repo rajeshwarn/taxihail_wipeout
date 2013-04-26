@@ -56,7 +56,7 @@
     <OutputPath>bin\iPhone\Debug\</OutputPath>
     <DebugType>none</DebugType>
     <WarningLevel>4</WarningLevel>
-    <Optimize>False</Optimize>
+    <Optimize>True</Optimize>
     <NoStdLib>True</NoStdLib>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
@@ -65,10 +65,10 @@
     <WarningLevel>4</WarningLevel>
     <Optimize>False</Optimize>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>bin\AdHoc</OutputPath>
+    <OutputPath>bin\iPhone\Release\</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
