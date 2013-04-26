@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-
+            IsCancelButtonVisible = true;
 			_hasSeenReminder = false;
 		}
 	

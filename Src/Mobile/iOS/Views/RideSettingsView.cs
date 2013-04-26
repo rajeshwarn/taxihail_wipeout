@@ -85,8 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
                     .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
                     .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") },
-                { TipSlider, 
-                    new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
+                { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
             });         
 
         }

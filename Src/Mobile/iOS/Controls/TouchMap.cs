@@ -293,6 +293,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
+            if(!adressesToDisplay.Any())
+            {
+                return;
+            }
 
             var region = new MKCoordinateRegion();
             double? deltaLat = null;

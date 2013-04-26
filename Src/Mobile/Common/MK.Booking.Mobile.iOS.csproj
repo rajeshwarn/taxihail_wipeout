@@ -223,8 +223,6 @@
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
-    <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
-    <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />

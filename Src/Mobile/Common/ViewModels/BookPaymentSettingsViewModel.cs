@@ -16,19 +16,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookPaymentSettingsViewModel : BaseViewModel,
     IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IBookingService>
     {
-        IAccountService _accountService;
-        IBookingService _bookingService;
 
         public BookPaymentSettingsViewModel (string order)
         {
-            _accountService = this.GetService<IAccountService>();
-            _bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
 
-            var account = _accountService.CurrentAccount;
+            var account = AccountService.CurrentAccount;
             var paymentInformation = new PaymentInformation {
                 CreditCardId = account.DefaultCreditCard,
-                TipAmount = account.DefaultTipAmount,
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
@@ -61,12 +56,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var paymentSettings = new PaymentSettings{
                             PayWithCreditCard = true,
                             CreditCardId = PaymentPreferences.SelectedCreditCardId,
-                            TipAmount = PaymentPreferences.IsTipInPercent ? null : PaymentPreferences.TipDouble,
-                            TipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : null,
+                            TipPercent = PaymentPreferences.Tip,
                         };
                         Order.Payment = paymentSettings;
 
-                        var orderInfo = _bookingService.CreateOrder (Order);
+                        var orderInfo = BookingService.CreateOrder (Order);
                         
                         if (orderInfo.IBSOrderId.HasValue
                             && orderInfo.IBSOrderId > 0) {
