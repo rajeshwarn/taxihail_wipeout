@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 			_bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
-			Order.Settings = _accountService.CurrentAccount.Settings;
         }
 
 

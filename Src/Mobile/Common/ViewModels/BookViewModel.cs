@@ -539,7 +539,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                   
+                    MessageService.ShowProgress(true);
                     bool isValid = _bookingService.IsValid(Order);
                     if (!isValid)
                     {
