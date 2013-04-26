@@ -28,37 +28,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             this.sut.Given(new AppSettingsAddedOrUpdated { AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Default" } } });
         }
 
-        [Test]
-        public void when_creating_two_default_rates()
-        {
-            var rateId = Guid.NewGuid();
-
-            this.sut.Given(new TariffCreated
-            {
-                SourceId = _companyId,
-                TariffId = rateId,
-                FlatRate = 3.50m,
-                KilometricRate = 1.1,
-                MarginOfError = 1.2,
-                PassengerRate = 1.3m,
-                Type = TariffType.Default
-            });
-
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateTariff
-            {
-                CompanyId = _companyId,
-                TariffId = rateId,
-                FlatRate = 3.50m,
-                KilometricRate = 1.1,
-                MarginOfError = 1.2,
-                PassengerRate = 1.3m,
-                Type = TariffType.Default
-            }));
-        }
-
-
-    
-
+        
         [Test]
         public void when_creating_a_new_rate()
         {
@@ -168,29 +138,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         }
 
 
-        [Test]
-        public void when_creating_two_default_warning_rules()
-        {
-            var ruleId = Guid.NewGuid();
-
-            this.sut.Given(new RuleCreated
-            {
-                SourceId = _companyId,
-                RuleId = ruleId,
-                Type = RuleType.Default,
-                Category = RuleCategory.WarningRule,
-                Message = "Due to..."
-            });
-
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRule
-            {
-                CompanyId = _companyId,
-                RuleId = Guid.NewGuid(),
-                Category = RuleCategory.WarningRule,
-                Type = RuleType.Default,
-                Message = "Due to..."
-            }));
-        }
+       
         [Test]
         public void when_creating_two_default_disable_rules()
         {
