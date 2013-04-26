@@ -395,6 +395,8 @@
       <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
+    <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
+    <Compile Include="Controls\Binding\TipSliderBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

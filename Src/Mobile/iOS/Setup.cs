@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -65,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.FillTargetFactories (registry);
             registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
+            CustomBindingsLoader.Load(registry);
         }
 
         protected override void InitializeIoC()
