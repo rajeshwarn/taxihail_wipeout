@@ -30,10 +30,18 @@
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Common.iOS</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>MKCommoniOS</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKCommoniOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>

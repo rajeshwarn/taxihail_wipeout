@@ -28,13 +28,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
+    <DefineConstants>;CLIENT;IOS</DefineConstants>
     <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>MKBookingApiContractiOS</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>;CLIENT;IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <DefineConstants>;CLIENT;IOS</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingApiContractiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
