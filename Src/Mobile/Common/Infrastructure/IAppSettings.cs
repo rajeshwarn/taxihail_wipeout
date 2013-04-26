@@ -16,8 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         
         string ErrorLog{ get; }
         string SiteUrl{ get; }
-        string PhoneNumber(int providerId);
-        string PhoneNumberDisplay(int providerId);
+        string PhoneNumber(int? providerId);
+        string PhoneNumberDisplay(int? providerId);
         string DefaultServiceUrl{ get; }
 
         bool TutorialEnabled{ get; }        

@@ -46,14 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         }
 
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();
-			
-            // Release any cached data, images, etc that aren't in use.
-        }
-
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -83,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblPassengers.Text = Resources.GetValue ( "PassengerNumberLabel" );
             lblPhone.Text = Resources.GetValue ( "PassengerPhoneLabel" );
 
+
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
 
             txtAprtment.Ended += HandleTouchDown;
@@ -107,9 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             this.View.ApplyAppFont ();
         }
 
-        
-        
-       
         void HandleTouchDown (object sender, EventArgs e)
         {
             txtAprtment.ResignFirstResponder ();

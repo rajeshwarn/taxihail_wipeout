@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
+using MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -40,16 +41,18 @@ namespace apcurium.MK.Booking.Mobile
         {
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
 
+			
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => 
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, null),
+			                                                         "NotAuthenticated");
+			
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), null),
+			                                                         "Authenticate");
+			
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),null));
 
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null), "NotAuthenticated");
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
-            {
-
-                return new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c));
-            }, "Authenticate");
-
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+			TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 

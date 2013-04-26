@@ -12,21 +12,30 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity(Label = "BookPaymentSettingsActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class BookPaymentSettingsActivity : BaseBindingActivity<BookPaymentSettingsViewModel>
+	[Activity(Label = "ConfirmCarNumberActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	public class ConfirmCarNumberActivity : BaseBindingActivity<ConfirmCarNumberViewModel>
 	{
 		protected override int ViewTitleResourceId
 		{
 			get { return Resource.String.View_PaymentCreditCardsOnFile; }
 		}
-
+		
+		
+		
+		protected override void OnStart ()
+		{
+			base.OnStart ();
+			
+		}
+		
 		protected override void OnViewModelSet()
 		{            
-			SetContentView(Resource.Layout.View_BookPaymentSettings);
-			ViewModel.Load();
+			SetContentView(Resource.Layout.View_Payments_ConfirmCarNumber);
+			ViewModel.Load();		
 		}
 	}
 }

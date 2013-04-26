@@ -389,10 +389,6 @@
     </Compile>
     <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
     <Compile Include="Controls\CreditCardButton.cs" />
-    <Compile Include="Views\BookPaymentSettingsView.cs" />
-    <Compile Include="Views\BookPaymentSettingsView.designer.cs">
-      <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Controls\NavigateTextField.cs" />
     <Compile Include="Controls\TipButtons.cs" />
@@ -400,11 +396,33 @@
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
+    <Compile Include="Controls\StackView.cs" />
+    <Compile Include="Binding\Binding.cs" />
+    <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
+    <Compile Include="Views\Payments\ConfrimCarNumberPage.cs" />
+    <Compile Include="Views\Payments\ConfrimCarNumberPage.designer.cs">
+      <DependentUpon>ConfrimCarNumberPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\Helpers\UIViewHelper.cs" />
+    <Compile Include="Extensions\RectangleFExtensions.cs" />
+    <Compile Include="Extensions\Helpers\Padding.cs" />
+    <Compile Include="Extensions\Helpers\UIHelper.cs" />
+    <Compile Include="Views\Payments\TipSliderControl.cs" />
+    <Compile Include="Views\Payments\DraggableButton.cs" />
+    <Compile Include="Views\Payments\DraggedHandler.cs" />
+    <Compile Include="Extensions\UIButtonExtensions.cs" />
+    <Compile Include="Views\Payments\ProgressBar.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
       <DependentUpon>BookEditInformation.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\StackView.cs" />
+    <Compile Include="Views\Payments\BookPaymentSettingsView.cs" />
+    <Compile Include="Views\Payments\BookPaymentSettingsView.designer.cs">
+      <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
+    <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
+    <Compile Include="Controls\Binding\TipSliderBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -439,6 +457,8 @@
     <Folder Include="Assets\Tutorial\" />
     <Folder Include="Assets\CreditCard\" />
     <Folder Include="Binding\" />
+    <Folder Include="Views\Payments\" />
+    <Folder Include="Extensions\Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -464,8 +484,9 @@
     <InterfaceDefinition Include="Views\StatusView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
-    <InterfaceDefinition Include="Views\BookPaymentSettingsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\ConfrimCarNumberPage.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation.xib" />
+    <InterfaceDefinition Include="Views\Payments\BookPaymentSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -699,5 +720,15 @@
     <BundleResource Include="Assets\AppFont_Bold.otf" />
     <BundleResource Include="Assets\AppFont_Italic.otf" />
     <BundleResource Include="Assets\AppFont_Medium.otf" />
+    <BundleResource Include="Assets\sliderGrayBar.png" />
+    <BundleResource Include="Assets\sliderHandle.png" />
+    <BundleResource Include="Assets\sliderYellowBar.png" />
+    <BundleResource Include="Assets\sliderGrayBar%402x.png" />
+    <BundleResource Include="Assets\sliderHandle%402x.png" />
+    <BundleResource Include="Assets\sliderYellowBar%402x.png" />
+    <BundleResource Include="Assets\sliderGrayBarBody.png" />
+    <BundleResource Include="Assets\sliderGrayBarBody%402x.png" />
+    <BundleResource Include="Assets\sliderYellowBarBody.png" />
+    <BundleResource Include="Assets\sliderYellowBarBody%402x.png" />
   </ItemGroup>
 </Project>

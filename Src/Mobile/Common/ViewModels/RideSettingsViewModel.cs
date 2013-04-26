@@ -38,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile
             var account = _accountService.CurrentAccount;
             var paymentInformation = new PaymentInformation {
                 CreditCardId = account.DefaultCreditCard,
-                TipAmount = account.DefaultTipAmount,
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
@@ -103,7 +102,6 @@ namespace apcurium.MK.Booking.Mobile
                 return _bookingSettings.ChargeTypeId ?? ListItem.NullId;
             }
 			set {
-                var id = value == ListItem.NullId ? default(int?) : value;
 				if(value != _bookingSettings.ChargeTypeId){
 					_bookingSettings.ChargeTypeId = value;
                     FirePropertyChanged("ChargeTypeId");
@@ -206,12 +204,10 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() => 
                                            {
-					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
-					{
-                        var tipAmount = PaymentPreferences.IsTipInPercent ? default(double?) : PaymentPreferences.TipDouble;
-                        var tipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : default(double?);
+					if(ValidateRideSettings())
+                    {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-                        _accountService.UpdateSettings (_bookingSettings, creditCard, tipAmount, tipPercent);
+                        _accountService.UpdateSettings (_bookingSettings, creditCard,  PaymentPreferences.Tip);
                         Close();
 					}
                 });

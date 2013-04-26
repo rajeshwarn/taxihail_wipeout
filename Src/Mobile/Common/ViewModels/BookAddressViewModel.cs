@@ -26,8 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<AbstractLocationService>,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<IGeolocService>
-    {
-        private AbstractLocationService _geolocator;
+       {
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
@@ -40,12 +39,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public event EventHandler AddressCleared;
 
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, AbstractLocationService geolocator)
+        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
             _id = Guid.NewGuid().ToString();
-            _geolocator = geolocator;
             _searchingTitle = Resources.GetString("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
@@ -341,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CancelCurrentLocationCommand.Execute ();
 
-                    if ( !_geolocator.IsLocationServicesEnabled )
+                    if ( !LocationService.IsLocationServicesEnabled )
                     {
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
@@ -349,7 +347,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     bool positionSet = false;
-                    _geolocator.GetNextPosition(new TimeSpan(0,0,6), 50).Subscribe(
+                    LocationService.GetNextPosition(new TimeSpan(0,0,6), 50).Subscribe(
                     pos=>
                     {
                         positionSet =true;
@@ -359,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {  
                         if(!positionSet)
                         {
-                            InvokeOnMainThread(()=>SearchAddressForCoordinate(_geolocator.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
+                            InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
                         }
                     });
                 });

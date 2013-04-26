@@ -17,6 +17,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class DrawHelper
     {
+		public static int ToPixels(this float dip)
+		{
+			return GetPixels(dip);
+		}
+		public static int ToPixels(this int dip)
+		{
+			return GetPixels(dip);
+		}
         public static  int GetPixels(float dipValue)
         {
             int px = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue , Application.Context.Resources.DisplayMetrics); // getDisplayMetrics());

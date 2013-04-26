@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MK.Booking.Api.Client.Android</RootNamespace>
     <AssemblyName>MK.Booking.Api.Client.Android</AssemblyName>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -80,7 +80,24 @@
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
+    <Compile Include="IPaymentClient.cs" />
+    <Compile Include="TaxiHail\VehicleServiceClient.cs" />
+    <Compile Include="IVehicleClient.cs" />
+    <Compile Include="Cmt\Payments\LevelThreeData.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
+    <Compile Include="ICreditCardTokenizationService.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
+    <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
+    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
+    <Compile Include="Client\CmtXmlServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

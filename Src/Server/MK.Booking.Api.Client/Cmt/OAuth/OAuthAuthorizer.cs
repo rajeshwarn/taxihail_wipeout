@@ -15,10 +15,14 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.OAuth
                 { "oauth_consumer_key", consumerKey },
                 { "oauth_nonce", MakeNonce () },
                 { "oauth_signature_method", "HMAC-SHA1" },
-                { "oauth_timestamp", MakeTimestamp () },
-                { "oauth_token", oauthToken },
+                { "oauth_timestamp", MakeTimestamp () },                
                 { "oauth_version", "1.0" }};
             var signatureHeaders = new Dictionary<string, string>(headers);
+
+            if (!string.IsNullOrEmpty(oauthToken))
+            {
+                signatureHeaders.Add("oauth_token", oauthToken);
+            }
 
             // Add the data and URL query string to the copy of the headers for computing the signature
             if (!string.IsNullOrEmpty(data))

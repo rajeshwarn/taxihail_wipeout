@@ -11,6 +11,9 @@ using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+using MK.Booking.Api.Client;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                  IMvxServiceConsumer<IAppResource>,
                                  IMvxServiceConsumer<IAppSettings>,
                                  IMvxServiceConsumer<IMessageService>,
-                                 IMvxServiceConsumer<ILogger>,
+                                    IMvxServiceConsumer<ILogger>,
                                  IMvxServiceConsumer<IPhoneService>
     {
         protected BaseViewModel()
@@ -33,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Initialize();
         }
+        
+        public static Action NoAction = () => { };
 
         protected ILogger Logger { get; private set; }
 
@@ -46,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected IPhoneService PhoneService { get; private set; }
 
-        protected AbstractLocationService _locationService;
+        private AbstractLocationService _locationService;
         protected AbstractLocationService LocationService{
             get{
                 if(_locationService == null)
@@ -56,7 +61,53 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _locationService;
             }
         }
+        private IBookingService _bookingService;
+        protected IBookingService BookingService{
+            get{
+                if(_bookingService == null)
+                {
+                    _bookingService = TinyIoCContainer.Current.Resolve<IBookingService> ();
+                }
+                return _bookingService;
+            }
+        }
+        
+        protected ICacheService CacheService{
+            get{
+                return TinyIoCContainer.Current.Resolve<ICacheService> ();
+            }
+        }
 
+
+        protected IApplicationInfoService ApplicationInfoService{
+            get{
+                return TinyIoCContainer.Current.Resolve<IApplicationInfoService> ();
+            }
+        }
+
+        protected IAccountService AccountService{
+            get{
+                return TinyIoCContainer.Current.Resolve<IAccountService> ();
+            }
+        }
+        
+        protected IPaymentClient PaymentClient{
+            get{
+                return TinyIoCContainer.Current.Resolve<IPaymentClient> ();
+            }
+        }
+        
+        protected IVehicleClient VehicleClient{
+            get{
+                return TinyIoCContainer.Current.Resolve<IVehicleClient> ();
+            }
+        }
+        
+        protected IConfigurationManager ConfigurationManager{
+            get{
+                return TinyIoCContainer.Current.Resolve<IConfigurationManager> ();
+            }
+        }
         protected virtual void Initialize()
         {
         }

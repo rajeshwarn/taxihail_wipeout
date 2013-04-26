@@ -275,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if(Order.Settings.ChargeTypeId == ReferenceData.CreditCardOnFileType)
                         {
                             var serialized = Order.ToJson();
-                            RequestNavigate<BookPaymentSettingsViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
+                            RequestNavigate<PaymentViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
 
                         }else{
                         Order.Id = Guid.NewGuid ();
@@ -378,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         FirePropertyChanged("RideSettings");
 					}
 
-                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
+                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard,  _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
                else if(Order.Settings.ProviderId == null)

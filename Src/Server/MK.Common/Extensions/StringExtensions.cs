@@ -18,6 +18,29 @@ namespace apcurium.MK.Common.Extensions
 {
     public static class StringExtensions
     {
+		public static double FromDollars(this string instance)
+		{
+            if(instance == null)
+            {
+                return 0;
+            }
+			return instance.Replace("$","").ToDouble();
+		}
+
+		public static double ToDouble(this string instance)
+		{
+			double amount;
+			if(double.TryParse(instance,out amount))
+			{
+				return amount;
+			}
+			return 0;
+		}
+        public static string NullIfEmpty(this string instance)
+        {
+            return string.IsNullOrWhiteSpace(instance) ? null : instance;
+        }
+
         public static bool IsNullOrEmpty(this string instance)
         {
             return string.IsNullOrEmpty(instance);

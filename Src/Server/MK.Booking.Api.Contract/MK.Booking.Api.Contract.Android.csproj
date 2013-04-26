@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MK.Booking.Api.Contract.Android</RootNamespace>
     <AssemblyName>MK.Booking.Api.Contract.Android</AssemblyName>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -105,6 +105,8 @@
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
+    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
+    <Compile Include="Requests\SendMessageToDriverResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

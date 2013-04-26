@@ -25,14 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { this._paymentList = value; }
         }
 
-        private double? _defaultTipAmount;
-
-        public double? DefaultTipAmount
-        {
-            get { return this._defaultTipAmount; }
-            set { this._defaultTipAmount = value; }
-        }
-
         private double? _defaultTipPercent;
 
         public double? DefaultTipPercent
@@ -44,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public PaymentPreferenceViewModel()
         {
             var accountService = this.GetService<IAccountService>();
-            DefaultTipAmount = accountService.CurrentAccount.DefaultTipAmount;
             DefaultTipPercent = accountService.CurrentAccount.DefaultTipPercent;
             PaymentList = accountService.GetPaymentsList().ToArray();
         }

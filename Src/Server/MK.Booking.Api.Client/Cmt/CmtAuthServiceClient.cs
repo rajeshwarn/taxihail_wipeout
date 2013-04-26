@@ -30,9 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
                            AccountId = response.AccountId
                        };
         }
-
-
-
+        
         public AuthenticationData AuthenticateTwitter (string twitterId)
         {
             throw new System.NotImplementedException ();

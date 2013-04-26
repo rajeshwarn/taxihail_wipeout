@@ -104,15 +104,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     FriendlyName = Resources.GetString("AddCreditCardTitle"),
                 });
-                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel()
-                {
-                    CreditCardDetails = x,
-                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
-                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
-                    IsFirst = x.Equals(creditCards.First()),
-                    IsLast = x.Equals(creditCards.Last()),
-                    Picture = x.CreditCardCompany
-                }));
+                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => 
+				                                                                               {
+					return new CreditCardViewModel()
+                	{
+	                    CreditCardDetails = x,
+	                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
+	                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
+	                    IsFirst = x.Equals(creditCards.First()),
+	                    IsLast = x.Equals(creditCards.Last()),
+	                    Picture = x.CreditCardCompany,
+					};
+				}));
                 HasCards = CreditCards.Any();
             });
         }

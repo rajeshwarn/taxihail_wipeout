@@ -40,16 +40,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			txtPassword.Text = "my secure password"; /* fake password for display only */
 
 			if (!ViewModel.Settings.PayByCreditCardEnabled) {
-				this.FindViewById<TextView> (Resource.Id.lblCC).Visibility = ViewStates.Gone;
+				this.FindViewById<TextView> (Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
 				this.FindViewById<CreditCardButton> (Resource.Id.btCC).Visibility = ViewStates.Gone;
-				this.FindViewById<LinearLayout> (Resource.Id.TipLabels).Visibility = ViewStates.Gone;
-				this.FindViewById<LinearLayout> (Resource.Id.TipPreferences).Visibility = ViewStates.Gone;
+				this.FindViewById<TextView> (Resource.Id.lblCC).Visibility = ViewStates.Gone;
+
+				this.FindViewById<TipSlider> (Resource.Id.tipSlider).Visibility = ViewStates.Gone;
 			}
 		}
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
+			var TipSlider= FindViewById<TipSlider>(Resource.Id.tipSlider);
+
+			//TipSlider.Update(this, WindowManager.DefaultDisplay.Width - (2*MarginWidth));
         }
     }
 }
