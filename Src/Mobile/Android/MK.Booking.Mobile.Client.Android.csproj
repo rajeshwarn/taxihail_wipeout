@@ -314,6 +314,7 @@
     <AndroidResource Include="Resources\Drawable\sliderYellowBarBody.png" />
     <Compile Include="Controls\Slider\GrayBarControl.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
+    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

@@ -236,6 +236,7 @@
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="TabPlaces">Places</string>
   <string name="HistoryViewStatusButton">View Status</string>
+  <string name="StatusPayButton">Pay for this order</string>
   <string name="PasswordLabel">Password</string>
   <string name="BuildingName">Building Name / Remark</string>
   <string name="ResetPasswordSucessMessage">Password was reset successfully</string>
