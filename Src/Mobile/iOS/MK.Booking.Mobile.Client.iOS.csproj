@@ -85,26 +85,9 @@
     <MtouchArch>ARMv7</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\iPhone\AdHoc</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <MtouchI18n />
-    <MtouchArch>ARMv7</MtouchArch>
-    <MtouchUseArmv7>false</MtouchUseArmv7>
-    <CrashReportingApiKey />
-    <AssemblyName>TaxiMobileApp</AssemblyName>
-    <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Distribution</CodesignKey>
-    <IpaPackageName />
-    <BuildIpa>true</BuildIpa>
-    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\AppStore</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -114,9 +97,9 @@
     <MtouchArch>ARMv7</MtouchArch>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
     <IpaPackageName />
-    <BuildIpa>true</BuildIpa>
+    <BuildIpa>True</BuildIpa>
     <CodesignKey>iPhone Distribution</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
