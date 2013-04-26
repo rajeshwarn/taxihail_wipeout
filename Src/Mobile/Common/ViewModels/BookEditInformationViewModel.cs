@@ -153,9 +153,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return GetCommand(() => ReturnResult(Order));
+                return GetCommand(() => 
+                                  { 
+                                    if(RideSettings.ValidateRideSettings()) {
+                                        ReturnResult(Order);
+                                    }
+                                  });
             }
         }
+
         private string FormatAptRingCode(string apt, string rCode)
         {
             string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
