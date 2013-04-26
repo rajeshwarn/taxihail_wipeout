@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool RatingEnabled { get; set; }        
         public bool StreetNumberScreenEnabled { get; set; }
         public bool PayByCreditCardEnabled { get; set; }
+        
+        public bool PushNotificationsEnabled { get; set; }
 
         public bool HideNoPreference { get;set; }
     }

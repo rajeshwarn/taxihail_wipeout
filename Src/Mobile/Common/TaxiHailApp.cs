@@ -40,7 +40,10 @@ namespace apcurium.MK.Booking.Mobile
         public TaxiHailApp(IDictionary<string, string> @params)
         {
             InitalizeServices();
-            InitializePushNotifications();
+            if(TinyIoCContainer.Current.Resolve<IAppSettings> ().PushNotificationsEnabled)
+            {
+                InitializePushNotifications();
+            }
             InitializeStartNavigation(@params);
         }
         

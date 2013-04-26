@@ -25,5 +25,6 @@
    "Package" : "com.apcurium.MK.TaxiHailDemo",
    "StreetNumberScreenEnabled" : "true",
    "PayByCreditCardEnabled" : "true",
+   "PushNotificationsEnabled" : "true",
    "HideNoPreference" : "false"
 }
