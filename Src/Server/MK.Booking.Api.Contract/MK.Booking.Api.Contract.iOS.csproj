@@ -112,6 +112,8 @@
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
+    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
+    <Compile Include="Requests\SendMessageToDriverResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

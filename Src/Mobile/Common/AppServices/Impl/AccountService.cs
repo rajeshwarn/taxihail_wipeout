@@ -584,11 +584,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            UseServiceClient<IAccountServiceClient> (client =>
-            {
-                client.RemoveCreditCard (creditCardId);
-            }, ex => {
-                throw ex; });
+            UseServiceClient<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""), ex => { throw ex; });
+            
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
         }
 

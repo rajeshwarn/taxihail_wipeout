@@ -28,7 +28,6 @@ using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -42,8 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private bool _initialized;
         private IAccountService _accountService;
-        private AbstractLocationService _geolocator;
-        private IBookingService _bookingService;
         private IApplicationInfoService _applicationInfoService;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
@@ -75,7 +72,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _accountService = this.GetService<IAccountService>();
             _accountService = this.GetService<IAccountService>();
-            _geolocator = this.GetService<AbstractLocationService>();
             _bookingService = this.GetService<IBookingService>();
             _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);
@@ -97,13 +93,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             LoadLastActiveOrder();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
             {
                 IsExecuting = true,
                 //Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address)
             {
                 //Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")

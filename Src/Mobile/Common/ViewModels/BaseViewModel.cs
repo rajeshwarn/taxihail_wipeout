@@ -11,6 +11,8 @@ using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+using MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                  IMvxServiceConsumer<IAppResource>,
                                  IMvxServiceConsumer<IAppSettings>,
                                  IMvxServiceConsumer<IMessageService>,
-                                 IMvxServiceConsumer<ILogger>,
+                                    IMvxServiceConsumer<ILogger>,
                                  IMvxServiceConsumer<IPhoneService>
     {
         protected BaseViewModel()
@@ -33,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Initialize();
         }
+        
+        public static Action NoAction = () => { };
 
         protected ILogger Logger { get; private set; }
 
@@ -54,6 +58,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _locationService = TinyIoCContainer.Current.Resolve<AbstractLocationService> ();
                 }
                 return _locationService;
+            }
+        }
+        protected IBookingService _bookingService;
+        protected IBookingService BookingService{
+            get{
+                if(_bookingService == null)
+                {
+                    _bookingService = TinyIoCContainer.Current.Resolve<IBookingService> ();
+                }
+                return _bookingService;
+            }
+        }
+
+        
+        protected IAccountService AccountService{
+            get{
+                return TinyIoCContainer.Current.Resolve<IAccountService> ();
+            }
+        }
+        
+        protected IPaymentClient PaymentClient{
+            get{
+                return TinyIoCContainer.Current.Resolve<IPaymentClient> ();
+            }
+        }
+        
+        protected IVehicleClient VehicleClient{
+            get{
+                return TinyIoCContainer.Current.Resolve<IVehicleClient> ();
             }
         }
 

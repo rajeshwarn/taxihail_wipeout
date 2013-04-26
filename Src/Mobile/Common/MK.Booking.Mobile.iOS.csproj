@@ -190,7 +190,6 @@
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
-    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
@@ -223,14 +222,11 @@
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
-    <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
-    <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
     <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
     <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
-    <Compile Include="ViewModels\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
@@ -240,6 +236,17 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Extensions\IObservableExtensions.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
+    <Compile Include="ViewModels\Payment\Strings.Base.cs" />
+    <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
+    <Compile Include="CultureProvider.cs" />
+    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

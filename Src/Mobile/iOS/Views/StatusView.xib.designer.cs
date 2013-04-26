@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		[Outlet]
 		MonoTouch.UIKit.UIView viewLine { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnPay { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnCallDriver { get; set; }
@@ -97,6 +100,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (viewLine != null) {
 				viewLine.Dispose ();
 				viewLine = null;
+			}
+
+			if (btnPay != null) {
+				btnPay.Dispose ();
+				btnPay = null;
 			}
 
 			if (btnCallDriver != null) {

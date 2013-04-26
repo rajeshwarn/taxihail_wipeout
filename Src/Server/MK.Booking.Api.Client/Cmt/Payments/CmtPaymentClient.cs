@@ -3,7 +3,7 @@ using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Common.Configuration;
-using MK.Booking.Api.Client.Android;
+using MK.Booking.Api.Client;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
