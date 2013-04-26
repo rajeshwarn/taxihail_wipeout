@@ -26,15 +26,11 @@ using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel,
-        IMvxServiceConsumer<IBookingService>,
-        IMvxServiceConsumer<AbstractLocationService>
+    public class BookingStatusViewModel : BaseViewModel
     {
-        private IBookingService _bookingService;
-        private const string _doneStatus = "wosDONE";
-        private const string _loadedStatus = "wosLOADED";
-        private AbstractLocationService _geolocator;
-        private const int _refreshPeriod = 20 ; //20 sec
+
+		private const int _refreshPeriod = 20 ; //20 sec
+
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
@@ -307,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
-
+		string vehicleNumber = null;
         private void RefreshStatus ()
         {
 
@@ -315,14 +311,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (Order.Id);
                 var isDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (status.IBSStatusId);
 
-                AddReminder(status);
+				if(status.VehicleNumber != null)
+				{
+					vehicleNumber = status.VehicleNumber;
+				}
+				else{
+					status.VehicleNumber = vehicleNumber;
+				}
+				
+
+                if(status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				{
+					AddReminder(status);
+				}
 
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;
 
 
-                    CenterMap (true);
+                    CenterMap ();
+						UpdatePayCancelButtons(status.IBSStatusId);
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
                         ConfirmationNoTxt = string.Format (Resources.GetString ("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
                     }
@@ -337,6 +346,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
             }
         }
+
+		void UpdatePayCancelButtons (string statusId)
+		{
+			IsPayButtonVisible = statusId == VehicleStatuses.Common.Arrived
+					||statusId == VehicleStatuses.Common.Done
+					||statusId == VehicleStatuses.Common.Loaded;
+			
+			IsCancelButtonVisible = !IsPayButtonVisible;
+
+            if (!Settings.PayByCreditCardEnabled) {
+                IsPayButtonVisible = false;
+            }
+		}
 
         private void ShowThankYouDialog ()
         {
@@ -451,13 +473,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand CallCompany {
             get {
                 return GetCommand (() =>
-                {
-                    Action call = () => {
-                        PhoneService.Call (Settings.PhoneNumber (Order.Settings.ProviderId.Value)); };
+                {                    
                     MessageService.ShowMessage (string.Empty, 
-                                               Settings.PhoneNumberDisplay (Order.Settings.ProviderId.Value), 
-                                               Resources.GetString ("CallButton"), 
-                                               call, Resources.GetString ("CancelBoutton"), 
+                                               Settings.PhoneNumberDisplay (Order.Settings.ProviderId), 
+                                               Str.CallButtonText, 
+					                           () => PhoneService.Call (Settings.PhoneNumber (Order.Settings.ProviderId)),
+						                       Str.CancelButtonText, 
                                                () => {});                    
                 });
             }

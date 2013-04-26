@@ -79,6 +79,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = this.GetService<IBookingService>();
             _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);
+#if DEBUG
+			//Panel.NavigateToUpdateProfile.Execute(null);
+#endif
         }
 
 		public override void Load()
