@@ -83,6 +83,7 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Patterns\ActionDisposable.cs" />
     <Compile Include="Patterns\Singleton.cs" />
+    <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

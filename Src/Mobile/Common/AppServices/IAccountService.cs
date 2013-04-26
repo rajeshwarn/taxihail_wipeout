@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void DeleteHistoryAddress(Guid addressId);
         
-        IEnumerable<Order> GetHistoryOrders();
+		IEnumerable<Order> GetHistoryOrders();
+		OrderStatusDetail[] GetActiveOrdersStatus();
         
         Order GetHistoryOrder(Guid id);
         

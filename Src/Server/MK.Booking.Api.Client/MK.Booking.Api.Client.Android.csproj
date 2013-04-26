@@ -85,6 +85,19 @@
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Cmt\Payments\LevelThreeData.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
+    <Compile Include="ICreditCardTokenizationService.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
+    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
+    <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
+    <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
+    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
+    <Compile Include="Client\CmtXmlServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -290,7 +290,6 @@
     <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
     <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
