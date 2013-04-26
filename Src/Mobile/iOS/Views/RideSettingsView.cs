@@ -67,7 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
 
             ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId.Value, x=> {
-
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
 

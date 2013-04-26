@@ -22,14 +22,19 @@ namespace apcurium.MK.Booking.Mobile
 	{
         private readonly BookingSettings _bookingSettings;
         private readonly IAccountService _accountService;
-		public RideSettingsViewModel (string bookingSettings)
+        public RideSettingsViewModel (string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
 		{
-            this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
+        
+        }
+
+        public RideSettingsViewModel(BookingSettings bookingSettings)
+        {
+            this._bookingSettings = bookingSettings;
             _accountService = this.GetService<IAccountService>();
             
             _vehicules = _accountService.GetVehiclesList().ToArray();
             _payments = _accountService.GetPaymentsList().ToArray();
-
+            
             var account = _accountService.CurrentAccount;
             var paymentInformation = new PaymentInformation {
                 CreditCardId = account.DefaultCreditCard,
@@ -37,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-		}
+        }
 
         public override void Restart ()
         {
@@ -95,9 +100,10 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? ChargeTypeId {
             get {
-                return _bookingSettings.ChargeTypeId;
+                return _bookingSettings.ChargeTypeId ?? ListItem.NullId;
             }
 			set {
+                var id = value == ListItem.NullId ? default(int?) : value;
 				if(value != _bookingSettings.ChargeTypeId){
 					_bookingSettings.ChargeTypeId = value;
                     FirePropertyChanged("ChargeTypeId");
@@ -108,6 +114,11 @@ namespace apcurium.MK.Booking.Mobile
 
         public string ChargeTypeName {
             get {
+                if(ChargeTypeId == ListItem.NullId)
+                {
+                    return base.Resources.GetString("NoPreference");
+                }
+
                 var chargeType = this.Payments.FirstOrDefault(x=>x.Id == ChargeTypeId);
                 if(chargeType == null) return null;
                 return chargeType.Display; 
@@ -174,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile
         }
 
         public int? ProviderId {
-            get{ return _bookingSettings.ProviderId;}
+            get{ return _bookingSettings.ProviderId ?? ListItem.NullId;}
         }
 
         public IMvxCommand SetCompany

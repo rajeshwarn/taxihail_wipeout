@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.ToJson () ) )
+            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.Settings ) )
                 .HandleErrors( )
                 .ContinueWith(t =>
                     {

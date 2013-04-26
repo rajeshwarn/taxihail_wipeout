@@ -501,19 +501,44 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<ListItem> GetCompaniesList ()
         {
-            return GetReferenceData().CompaniesList;            
+            var refData = GetReferenceData();
+            
+            if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().HideNoPreference
+                && refData.CompaniesList != null)
+            {
+                refData.CompaniesList.Insert(0, new ListItem
+                                            {
+                    Id = ListItem.NullId,
+                    Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                });
+            }
+            
+            return refData.CompaniesList;         
         }
 
         public IEnumerable<ListItem> GetVehiclesList ()
         {
-            return GetReferenceData().VehiclesList;
+            var refData = GetReferenceData();
+
+            if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().HideNoPreference
+                && refData.VehiclesList != null)
+            {
+                refData.VehiclesList.Insert(0, new ListItem
+                                         {
+                                            Id = ListItem.NullId,
+                                            Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                                         });
+            }
+
+            return refData.VehiclesList;
         }
 
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             var refData = GetReferenceData();
+            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             //add credit card on file if not already included and feature enabled
-            if (TinyIoCContainer.Current.Resolve<IAppSettings> ().PayByCreditCardEnabled
+            if (appSettings.PayByCreditCardEnabled
                 && refData.PaymentsList != null
                 && refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType))
             {
@@ -523,6 +548,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                             Id = ReferenceData.CreditCardOnFileType, 
                             Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
                           });
+            }
+
+            
+            if (!appSettings.HideNoPreference
+                && refData.PaymentsList != null)
+            {
+                refData.PaymentsList.Insert(0, new ListItem
+                                            {
+                    Id = ListItem.NullId,
+                    Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                });
             }
 
             return refData.PaymentsList;

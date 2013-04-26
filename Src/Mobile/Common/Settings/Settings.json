@@ -24,5 +24,6 @@
    "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
    "Package" : "com.apcurium.MK.TaxiHailDemo",
    "StreetNumberScreenEnabled" : "true",
-   "PayByCreditCardEnabled" : "true"
+   "PayByCreditCardEnabled" : "true",
+   "HideNoPreference" : "false"
 }

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _accountService = this.GetService<IAccountService>();
             Order = JsonSerializer.DeserializeFromString<Order>(order);
-            RideSettings = new RideSettingsViewModel( Order.Settings.ToJson ());
+            RideSettings = new RideSettingsViewModel( Order.Settings);
             FirePropertyChanged(() => Vehicles);
             FirePropertyChanged(() => Payments);
             FirePropertyChanged(() => VehicleName);
