@@ -59,6 +59,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool TutorialEnabled
         {
             get{
+				#if DEBUG				
+				return false;
+				#endif
                 if ( _data.TutorialEnabled.HasValue )
                 {
                     return _data.TutorialEnabled.Value;
