@@ -383,6 +383,10 @@
       <DependentUpon>BookPaymentSettingsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
+    <Compile Include="Views\Payments\PayPalView.cs" />
+    <Compile Include="Views\Payments\PayPalView.designer.cs">
+      <DependentUpon>PayPalView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -447,6 +451,7 @@
     <InterfaceDefinition Include="Views\Payments\ConfrimCarNumberPage.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation.xib" />
     <InterfaceDefinition Include="Views\Payments\BookPaymentSettingsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

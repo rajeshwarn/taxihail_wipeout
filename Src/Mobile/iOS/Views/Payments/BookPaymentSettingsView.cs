@@ -71,6 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
 
+            AppButtons.FormatStandardButton((GradientButton)btPayPal, Resources.GetValue("PayPalButton"), AppStyle.ButtonColor.Green);
+
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
 
@@ -109,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             this.AddBindings(new Dictionary<object, string>() {         
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
+                { btPayPal, "{'TouchUpInside':{'Path':'ProceedToPayPalCommand'}}" },
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
                 { btCreditCard, 

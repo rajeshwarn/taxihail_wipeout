@@ -1249,4 +1249,7 @@
   <data name="NoOrderId" xml:space="preserve">
     <value>Order Not ready</value>
   </data>
+  <data name="PayPalButton" xml:space="preserve">
+    <value>Pay with PayPal</value>
+  </data>
 </root>

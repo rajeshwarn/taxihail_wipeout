@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C2034</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -79,6 +79,33 @@
 											<double key="NSSize">15</double>
 											<int key="NSfFlags">16</int>
 										</object>
+									</object>
+									<object class="IBUIButton" id="475085918">
+										<reference key="NSNextResponder" ref="191373211"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{20, 376}, {280, 44}}</string>
+										<reference key="NSSuperview" ref="191373211"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="336279059"/>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<int key="IBUIButtonType">1</int>
+										<string key="IBUINormalTitle">Pay with PayPal</string>
+										<reference key="IBUIHighlightedTitleColor" ref="847572562"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="675148967"/>
+										<object class="IBUIFontDescription" key="IBUIFontDescription" id="824357837">
+											<string key="name">Helvetica-Bold</string>
+											<string key="family">Helvetica</string>
+											<int key="traits">2</int>
+											<double key="pointSize">15</double>
+										</object>
+										<reference key="IBUIFont" ref="638392890"/>
 									</object>
 									<object class="IBUILabel" id="319099212">
 										<reference key="NSNextResponder" ref="191373211"/>
@@ -177,12 +204,7 @@
 											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 										</object>
 										<reference key="IBUINormalTitleShadowColor" ref="675148967"/>
-										<object class="IBUIFontDescription" key="IBUIFontDescription">
-											<string key="name">Helvetica-Bold</string>
-											<string key="family">Helvetica</string>
-											<int key="traits">2</int>
-											<double key="pointSize">15</double>
-										</object>
+										<reference key="IBUIFontDescription" ref="824357837"/>
 										<reference key="IBUIFont" ref="638392890"/>
 									</object>
 									<object class="IBUILabel" id="1004777305">
@@ -191,7 +213,7 @@
 										<string key="NSFrame">{{190, 332}, {110, 21}}</string>
 										<reference key="NSSuperview" ref="191373211"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="336279059"/>
+										<reference key="NSNextKeyView" ref="475085918"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -494,6 +516,14 @@
 					</object>
 					<int key="connectionID">50</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btPayPal</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="475085918"/>
+					</object>
+					<int key="connectionID">53</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -545,6 +575,7 @@
 							<reference ref="565536210"/>
 							<reference ref="867317"/>
 							<reference ref="1004777305"/>
+							<reference ref="475085918"/>
 						</array>
 						<reference key="parent" ref="381177843"/>
 					</object>
@@ -603,6 +634,11 @@
 						<reference key="object" ref="667597256"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">51</int>
+						<reference key="object" ref="475085918"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -634,12 +670,14 @@
 				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.CustomClassName">GradientButton</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="51.CustomClassName">GradientButton</string>
+				<string key="51.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">50</int>
+			<int key="maxID">53</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -659,6 +697,7 @@
 						<string key="TotalStringLabel">UILabel</string>
 						<string key="btConfirm">GradientButton</string>
 						<string key="btCreditCard">CreditCardButton</string>
+						<string key="btPayPal">GradientButton</string>
 						<string key="lblCreditCardOnFile">FormLabel</string>
 						<string key="lblTipAmount">FormLabel</string>
 					</dictionary>
@@ -710,6 +749,10 @@
 						<object class="IBToOneOutletInfo" key="btCreditCard">
 							<string key="name">btCreditCard</string>
 							<string key="candidateClassName">CreditCardButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="btPayPal">
+							<string key="name">btPayPal</string>
+							<string key="candidateClassName">GradientButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="lblCreditCardOnFile">
 							<string key="name">lblCreditCardOnFile</string>

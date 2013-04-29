@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -68,6 +69,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 ReturnResult("");
 			});
 		}
+
+        public IMvxCommand ProceedToPayPalCommand
+        {
+            get
+            {
+                return GetCommand(() => 
+                {
+                    // call server to get paypal url
+                    var url = "http://www.google.com";
+
+                    RequestNavigate<PayPalViewModel>(new Dictionary<string, string>(){ {"url", url} });
+                });
+            }
+        }
 
         public IMvxCommand ConfirmOrderCommand
         {

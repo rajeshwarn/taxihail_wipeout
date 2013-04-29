@@ -27,6 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btCreditCard { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btPayPal { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Payments.TipSliderControl TipSlider { get; set; }
 
 		[Outlet]
@@ -78,6 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btCreditCard != null) {
 				btCreditCard.Dispose ();
 				btCreditCard = null;
+			}
+
+			if (btPayPal != null) {
+				btPayPal.Dispose ();
+				btPayPal = null;
 			}
 
 			if (TipSlider != null) {
