@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookAddressViewModel : BaseViewModel
        {
         private CancellationTokenSource _cancellationToken;
-        private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
         private Func<Address> _getAddress;
         private Action<Address> _setAddress;
