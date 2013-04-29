@@ -182,7 +182,6 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.DefaultCreditCard;
-                account.DefaultTipAmount = @event.DefaultTipAmount;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
             }

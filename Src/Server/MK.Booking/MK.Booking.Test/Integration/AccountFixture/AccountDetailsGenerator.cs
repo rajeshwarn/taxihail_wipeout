@@ -371,13 +371,11 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             public void when_update_payment_profile_then_account_dto_updated()
             {
                 Guid? creditCardId = Guid.NewGuid();
-                double? tipAmount = 10.0;
-                double? defaultTipPercent = 15.0;
+                int? defaultTipPercent = 15;
 
                 this.sut.Handle(new PaymentProfileUpdated
                 {
                     SourceId = _accountId,
-                    DefaultTipAmount = tipAmount,
                     DefaultCreditCard = creditCardId,
                     DefaultTipPercent = defaultTipPercent
                 });
@@ -388,7 +386,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                     Assert.NotNull(dto);
                     Assert.AreEqual(creditCardId, dto.DefaultCreditCard);
-                    Assert.AreEqual(tipAmount, dto.DefaultTipAmount);
                     Assert.AreEqual(defaultTipPercent, dto.DefaultTipPercent);
                 }
             }

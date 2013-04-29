@@ -294,7 +294,7 @@ namespace apcurium.MK.Web.Tests
         {
             Guid? creditCardId = Guid.NewGuid();
             double? tipAmount = 10.0;
-            double? defaultTipPercent = 15.0;
+            int? defaultTipPercent = 15;
 
             var settings = new BookingSettingsRequest
             {
@@ -306,7 +306,6 @@ namespace apcurium.MK.Web.Tests
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultCreditCard = creditCardId,
-                DefaultTipAmount = tipAmount,
                 DefaultTipPercent = defaultTipPercent
             };
 
