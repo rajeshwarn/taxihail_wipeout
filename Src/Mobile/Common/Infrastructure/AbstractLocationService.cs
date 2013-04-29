@@ -11,8 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         public abstract void Start();
 		public abstract void Stop ();
 
-
-
 		public abstract bool IsLocationServicesEnabled{get; }
 
 		public abstract bool IsStarted {			get;		}

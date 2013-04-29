@@ -85,6 +85,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+            
+        protected IGeolocService GeolocService{
+            get{
+                return TinyIoCContainer.Current.Resolve<IGeolocService> ();
+            }
+        }
+
         protected IAccountService AccountService{
             get{
                 return TinyIoCContainer.Current.Resolve<IAccountService> ();

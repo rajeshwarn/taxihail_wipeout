@@ -22,10 +22,7 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookAddressViewModel : BaseViewModel,
-        IMvxServiceConsumer<AbstractLocationService>,
-        IMvxServiceConsumer<IAccountService>,
-        IMvxServiceConsumer<IGeolocService>
+    public class BookAddressViewModel : BaseViewModel
        {
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -152,14 +149,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (!token.IsCancellationRequested)
                         {
                             IsExecuting = true;
-                            var accountAddress = this.GetService<IAccountService>().FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
+                            var accountAddress = AccountService.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null)
                             {
                                 return new Address[] { accountAddress};
                             }
                             else
                             {
-                                return this.GetService<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
+
+                                return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
                             }
                         }
                         return null;
@@ -271,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
                     {
-                        var a = this.GetService<IGeolocService>().SearchAddress(address.FullAddress, null , null );
+                        var a = GeolocService.SearchAddress(address.FullAddress, null , null );
                         if ( a.Count() > 0 )
                         {
                             address = a.First();
@@ -347,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     bool positionSet = false;
-                    LocationService.GetNextPosition(new TimeSpan(0,0,6), 50).Subscribe(
+                    LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
                         positionSet =true;

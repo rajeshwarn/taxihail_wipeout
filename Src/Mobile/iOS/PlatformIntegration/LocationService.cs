@@ -32,10 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public LocationService()
         {
-
             _locationManager = new CLLocationManager();
             _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _locationManager.DistanceFilter = -1;
+            _locationManager.DistanceFilter = -1;//The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
             _locationDelegate = new LocationManagerDelegate();
             _locationManager.Delegate = _locationDelegate;
             Positions = _locationDelegate;
