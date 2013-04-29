@@ -80,26 +80,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                     {
                         Logger.LogMessage("Status from IBS");
                         Logger.LogMessage(orderInfoFromIBS.Dump());
-                        var statusInfos = new IBSOrderInformation();
-                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
-                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
-                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? null : orderInfoFromIBS.VehicleNumber.Trim(); ;
-                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
-                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
-                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
-                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
-                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
-                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
-                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
-                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
-                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
-                        statusInfos.Fare = orderInfoFromIBS.Fare;
-                        statusInfos.Tip = orderInfoFromIBS.Tips;
-                        statusInfos.Toll = orderInfoFromIBS.Tolls;
-                        statusInfos.Eta = orderInfoFromIBS.ETATime == null || orderInfoFromIBS.ETATime.Year < DateTime.Now.Year ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
-                                                                                                            orderInfoFromIBS.ETATime.Month, orderInfoFromIBS.ETATime.Day,
-                                                                                                            orderInfoFromIBS.ETATime.Hour, orderInfoFromIBS.ETATime.Minute,
-                                                                                                            orderInfoFromIBS.ETATime.Second);
+
+                        var statusInfos = new IBSOrderInformation(orderInfoFromIBS);
+
                         result.Add(statusInfos);
                     }
                 });

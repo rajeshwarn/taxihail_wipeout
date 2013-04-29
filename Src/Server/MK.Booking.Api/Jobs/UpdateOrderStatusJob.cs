@@ -25,8 +25,6 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
-        private const string AssignedStatus = "wosASSIGNED";
-        private string[] _doneStatuses = new string[] { "wosDONE", "wosCANCELLED", "wosCANCELLED_DONE", "wosNone", "wosNOSHOW" };
 
         public UpdateOrderStatusJob(IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
@@ -41,45 +39,43 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var orders = _orderDao.GetOrdersInProgress();
+
                 var ibsOrdersIds = orders.Where(x => x.IBSOrderId.HasValue).Select(x => x.IBSOrderId.Value).ToList();
+
                 Logger.Debug("Call IBS for ids : " + ibsOrdersIds.Join(","));
+
                 var ordersStatusIbs = _bookingWebServiceClient.GetOrdersStatus(ibsOrdersIds);
 
-                foreach (var orderStatusDetail in orders){
+                foreach (var orderStatusDetail in orders)
+                {
                    
                     var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
 
+                    if (ibsStatus == null) { continue; }
+
+                    var statusChanged = ibsStatus.Status.HasValue()
+                                        && orderStatusDetail.IBSStatusId != ibsStatus.Status;
+
+                    var command = new ChangeOrderStatus
+                    {
+                        Status = orderStatusDetail,
+                        Fare = ibsStatus.Fare,
+                        Toll = ibsStatus.Toll,
+                        Tip = ibsStatus.Tip
+                    };
+
+
                     Logger.Debug("Status from IBS Webservice " + ibsStatus.Dump());
 
-                    if (ibsStatus != null &&
-                        ibsStatus.Status.HasValue()
-                        && orderStatusDetail.IBSStatusId != ibsStatus.Status)
+                    if (statusChanged)
                     {
                         string description = null;
                         Logger.Debug("Status Changed for " + orderStatusDetail.OrderId + " -- new status IBS : " + ibsStatus.Status);
-                        var command = new ChangeOrderStatus
-                            {
-                                Status = orderStatusDetail,
-                                Fare = ibsStatus.Fare,
-                                Toll = ibsStatus.Toll,
-                                Tip = ibsStatus.Tip
-                            };
 
-                        orderStatusDetail.IBSStatusId = ibsStatus.Status;
-                        orderStatusDetail.DriverInfos.FirstName = ibsStatus.FirstName;
-                        orderStatusDetail.DriverInfos.LastName = ibsStatus.LastName;
-                        orderStatusDetail.DriverInfos.MobilePhone = ibsStatus.MobilePhone;
-                        orderStatusDetail.DriverInfos.VehicleColor = ibsStatus.VehicleColor;
-                        orderStatusDetail.DriverInfos.VehicleMake = ibsStatus.VehicleMake;
-                        orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
-                        orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
-                        orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
-                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
-                        orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
-                        orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
-                        orderStatusDetail.Eta = ibsStatus.Eta;
+                        ibsStatus.Update(orderStatusDetail);
+                        
 
-                        if (ibsStatus.Status.SoftEqual(AssignedStatus))
+                        if (ibsStatus.IsAssigned)
                         {
                             description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
 
@@ -89,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             }
                         }
 
-                        if ( _doneStatuses.Any( s => ibsStatus.Status.SoftEqual(s) ))
+                        if ( VehicleStatuses.DoneStatuses.Any( s => ibsStatus.Status.SoftEqual(s) ))
                         {
                             orderStatusDetail.Status = OrderStatus.Completed;
 
@@ -114,15 +110,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                         
                         _commandBus.Send(command);
                     }
-                    else if (_doneStatuses.Any(s => ibsStatus.Status.SoftEqual(s)))
+                    else if (VehicleStatuses.DoneStatuses.Any(s => ibsStatus.Status.SoftEqual(s)))
                     {
-                        var command = new ChangeOrderStatus
-                        {
-                            Status = orderStatusDetail,
-                            Fare = ibsStatus.Fare,
-                            Toll = ibsStatus.Toll,
-                            Tip = ibsStatus.Tip
-                        };
 
                         orderStatusDetail.IBSStatusId = ibsStatus.Status;
                         orderStatusDetail.DriverInfos.FirstName = ibsStatus.FirstName;
