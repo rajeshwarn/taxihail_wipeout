@@ -5,7 +5,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class IDisposableExtensions
     {
-        public static void DisposeWith(this IDisposable disposable, CompositeDisposable composite)
+		public static void DisposeWith(this IDisposable disposable, CompositeDisposable composite)
         {
             if(disposable == null) throw new ArgumentNullException("disposable");
             if(composite == null) throw new ArgumentNullException("composite");

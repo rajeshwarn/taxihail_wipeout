@@ -18,7 +18,6 @@ using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-	[Register("HeaderedLayout")]
     public class HeaderedLayout : LinearLayout
     {
 

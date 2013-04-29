@@ -18,8 +18,6 @@ using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
-using apcurium.MK.Common;
-using MK.Common.Android;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected ICacheService Cache {
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
-
         public OrderValidationResult ValidateOrder (CreateOrder order)
         {
             var validationResut = new OrderValidationResult ();
@@ -50,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
             return validationResut;
         }
-
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail ();
@@ -108,8 +104,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask> ().MakePhoneCall (name, number);
         }
  
-
-
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
             OrderStatusDetail r = new OrderStatusDetail ();
@@ -172,15 +166,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool IsStatusCompleted (string statusId)
         {
             return statusId.IsNullOrEmpty () ||
-				statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
-				statusId.SoftEqual (VehicleStatuses.Common.Done) ||
-				statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone);
+                statusId.SoftEqual ("wosCANCELLED") ||
+                statusId.SoftEqual ("wosDONE") ||
+                statusId.SoftEqual ("wosNOSHOW") ||
+                statusId.SoftEqual ("wosCANCELLED_DONE");
+        }
+
+        public bool IsCallboxStatusActive(string statusId)
+        {
+            return statusId.IsNullOrEmpty() ||
+                statusId.SoftEqual("wosSCHEDULED") ||
+                statusId.SoftEqual("wosWAITING") ||
+                statusId.SoftEqual("wosASSIGNED") ||
+                statusId.SoftEqual("wosARRIVED");
+        }
+
+        public bool IsCallboxStatusCompleted(string statusId)
+        {
+            return
+                statusId.SoftEqual("wosARRIVED") ;
         }
 
         public bool IsStatusDone (string statusId)
         {
-			return statusId.SoftEqual (VehicleStatuses.Common.Done);
+            return statusId.SoftEqual ("wosDONE");
         }
 
         public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
@@ -268,9 +277,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
-
-		
-
 
     }
 }

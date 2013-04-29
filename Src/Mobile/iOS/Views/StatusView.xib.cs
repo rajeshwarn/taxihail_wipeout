@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -67,12 +68,34 @@ namespace apcurium.MK.Booking.Mobile.Client
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-                View.BringSubviewToFront (lblTitle);
-                View.BringSubviewToFront (lblStatus);
-                lblTitle.Text = Resources.LoadingMessage;
+                View.BringSubviewToFront (statusBar);
+
+
+
+                statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
+                lblConfirmation.Text = Resources.LoadingMessage;
+                txtDriver.Text = Resources.DriverInfoDriver;
+                txtDriver.TextColor = AppStyle.GreyText;
+                txtLicence.Text = Resources.DriverInfoLicence;
+                txtLicence.TextColor = AppStyle.GreyText;
+                txtMake.Text = Resources.DriverInfoMake;
+                txtMake.TextColor = AppStyle.GreyText;
+                txtModel.Text = Resources.DriverInfoModel;
+                txtModel.TextColor = AppStyle.GreyText;
+                txtTaxiType.Text = Resources.DriverInfoTaxiType;
+                txtTaxiType.TextColor = AppStyle.GreyText;
+                txtColor.Text = Resources.DriverInfoColor;
+                txtColor.TextColor = AppStyle.GreyText;
 
                 btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
-             
+
+                topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/backPickupDestination.png"));
+
+                viewLine.Frame = new System.Drawing.RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
+
+                AppButtons.FormatStandardButton ((GradientButton)btnCallDriver, "", AppStyle.ButtonColor.Grey, "Assets/phone.png");
+
                 AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
                 AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
@@ -84,32 +107,49 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if ( ViewModel.IsCallButtonVisible )
                 {
+                    btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
+                    btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
+                    btnPay.SetFrame(btnCancel.Frame);
+
+                    var callFrame = btnCall.Frame;
+                    UpdateCallButtonSize (callFrame);
                     ViewModel.PropertyChanged+= (sender, e) => {
                         InvokeOnMainThread(()=>
-                                           {
-                            if(!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible)
-                            {
-                                btnCall.SetX((View.Frame.Width - btnCancel.Frame.Width)/2)
-                                    .SetWidth(btnCancel.Frame.Width);
-                                
-                                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
-                            }
+                        {
+                            UpdateCallButtonSize (callFrame);
                         });
                     };
 
-                    btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
-                    btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-                    btnPay.SetFrame(btnCancel.Frame);
+
                 }
 
+                lblDriver.TextColor = AppStyle.DarkText;
+                lblLicence.TextColor = AppStyle.DarkText;
+                lblTaxiType.TextColor = AppStyle.DarkText;
+                lblMake.TextColor = AppStyle.DarkText;
+                lblModel.TextColor = AppStyle.DarkText;
+                lblColor.TextColor = AppStyle.DarkText;
+
+                lblConfirmation.TextColor = AppStyle.GreyText;
+                lblStatus.TextColor = AppStyle.DarkText;
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
+                    { lblStatus, "{'Text':{'Path':'StatusInfoText'}}" },
+                    { lblConfirmation, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
+                    { lblDriver, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.FullName'}}" },
+                    { lblLicence, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleRegistration'}}" },
+                    { lblTaxiType, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleType'}}" },
+                    { lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}}" },
+                    { lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}}" },
+                    { lblColor, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleColor'}}" },
+                    { statusBar, "{'IsEnabled':{'Path':'IsDriverInfoAvailable'}}" },
+                    { imgGrip, "{'Hidden':{'Path':'IsDriverInfoAvailable', 'Converter':'BoolInverter'}}" },
+                    { btnCallDriver, "{'TouchUpInside': {'Path': 'CallTaxi'}, 'Hidden':{'Path':'IsCallTaxiVisible', 'Converter':'BoolInverter'}}" },
+				
                     { mapStatus, new B("Pickup","Pickup.Model")
                         .Add("TaxiLocation","OrderStatusDetail")
                         .Add("MapCenter","MapCenter") },
 
-                    { lblTitle, new B("Text","StatusInfoText") },
-                    { lblStatus, new B("Text","ConfirmationNoTxt") },
                     { btnCancel, new B("TouchUpInside","CancelOrder")
                         .Add("Hidden","IsCancelButtonVisible","BoolInverter")},
 
@@ -121,6 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         .Add("TouchUpInside","CallCompany") },
 
                     { btnNewRide, new B("TouchUpInside","NewRide") }
+					
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;
@@ -130,6 +171,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
 
             this.View.ApplyAppFont ();
+        }
+
+        void UpdateCallButtonSize (RectangleF callFrame)
+        {
+            if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible) {
+                btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
+            }
+            else {
+                btnCall.SetFrame (callFrame);
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-
+            IsCancelButtonVisible = true;
 			_hasSeenReminder = false;
 		}
 	
@@ -146,6 +146,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				FirePropertyChanged (() => ConfirmationNoTxt);
 			}
 		}
+        public bool IsCallTaxiVisible
+        {
+            get { return IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
+        }
+        public bool IsDriverInfoAvailable
+        {
+            get { return ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
+                && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
+        }
+
 		
 		public bool IsCallButtonVisible {
 			get { return !bool.Parse (TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.HideCallDispatchButton")); }
@@ -339,6 +349,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 stringNeutral, actionNeutral
             );
         }
+
 
 
         private void CenterMap ()

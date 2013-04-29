@@ -4,6 +4,7 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile
 {

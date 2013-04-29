@@ -23,7 +23,9 @@ namespace MK.ConfigurationManager.Entities
         public bool DeployDB { get; set; }
         public bool InitDatabase { get; set; }
         public bool Android { get; set; }
-        public bool iOS { get; set; }
+		public bool CallBox { get;set; }
+        public bool iOS_AdHoc { get; set; }
+		public bool iOS_AppStore { get;set; }
 
         public TaxiHailEnvironment TaxHailEnv { get; set; }
 
@@ -34,8 +36,12 @@ namespace MK.ConfigurationManager.Entities
 		public Guid IBSServer_Id { get; set; }
 		[NotMapped]
 		public Guid TaxHailEnv_Id { get; set; }
+        [NotMapped]
+        public Guid Version_Id { get; set; }
 
         public DateTime? RequestedDate { get; set; }
+
+        public AppVersion Version { get; set; }
     }
 
     public enum JobStatus   

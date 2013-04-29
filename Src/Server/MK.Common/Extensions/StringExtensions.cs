@@ -36,6 +36,10 @@ namespace apcurium.MK.Common.Extensions
 			}
 			return 0;
 		}
+        public static string NullIfEmpty(this string instance)
+        {
+            return string.IsNullOrWhiteSpace(instance) ? null : instance;
+        }
 
         public static bool IsNullOrEmpty(this string instance)
         {

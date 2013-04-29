@@ -31,14 +31,31 @@
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>CLIENT;IOS</DefineConstants>
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>MKBookingMobileiOS</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>CLIENT;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,9 +73,6 @@
     </Reference>
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
-    </Reference>
-    <Reference Include="SystemReactiveMonoTouch">
-      <HintPath>..\Libraries\Monotouch\SystemReactiveMonoTouch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -126,7 +140,6 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
@@ -177,7 +190,6 @@
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="Messages\AddressRefinedMessage.cs" />
-    <Compile Include="Infrastructure\ILocationService.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
@@ -185,7 +197,6 @@
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
-    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
@@ -222,18 +233,24 @@
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
+    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="AppServices\IUseServiceClient.cs" />
+    <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
+    <Compile Include="Extensions\IObservableExtensions.cs" />
+    <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="ViewModels\Payment\Strings.Base.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
+    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
   </ItemGroup>
@@ -265,6 +282,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
+      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
+      <Name>System.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

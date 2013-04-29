@@ -27,6 +27,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
@@ -34,14 +35,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
-        IMvxServiceConsumer<ILocationService>,
+        IMvxServiceConsumer<AbstractLocationService>,
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<IApplicationInfoService>,
         IMvxServiceConsumer<ICacheService>
     {
         private bool _initialized;
         private IAccountService _accountService;
-        private ILocationService _geolocator;
+        private AbstractLocationService _geolocator;
         private IBookingService _bookingService;
         private IApplicationInfoService _applicationInfoService;
         private IEnumerable<CoordinateViewModel> _mapCenter;
@@ -74,13 +75,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _accountService = this.GetService<IAccountService>();
             _accountService = this.GetService<IAccountService>();
-            _geolocator = this.GetService<ILocationService>();
+            _geolocator = this.GetService<AbstractLocationService>();
             _bookingService = this.GetService<IBookingService>();
             _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);
-#if DEBUG
-			//Panel.NavigateToUpdateProfile.Execute(null);
-#endif
         }
 
 		public override void Load()
@@ -117,8 +115,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (! _useExistingOrder ) 
             {
                 var tutorialWasDisplayed = this.GetService<ICacheService>().Get<string>("TutorialWasDisplayed");
-
-
                 if (tutorialWasDisplayed.IsNullOrEmpty())
                 {
                     Task.Factory.SafeStartNew( () =>
@@ -543,7 +539,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                   
+                    MessageService.ShowProgress(true);
                     bool isValid = _bookingService.IsValid(Order);
                     if (!isValid)
                     {
@@ -601,38 +597,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
             }
         }
-
-        public IMvxCommand NavigateToOrderStatus
-        {
-            get
-            {
-                return GetCommand<Dictionary<string, object>>(order =>
-                {                   
-                    var orderGet = (Order)order["order"];                  
-                    var orderInfoGet = (OrderStatusDetail)order["orderInfo"];
-                    RequestNavigate<BookingStatusViewModel>(new {
-                        order =  orderGet.ToJson(),
-                        orderStatus = orderInfoGet.ToJson()
-                    });
-                });
-            }
-        }
-		private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
-		{
-			RequestNavigate<BookingStatusViewModel>(new
-			                                        {
-				order = data.ToJson(),
-				orderStatus = orderInfo.ToJson()
-			});
-		}
-
+		       
 
         private void CompleteOrder(CreateOrder order)
         {   
             NewOrder();
         }
 
-
+        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
+        {
+            RequestNavigate<BookingStatusViewModel>(new
+            {
+                order = data.ToJson(),
+                orderStatus = orderInfo.ToJson()
+            });
+        }
 
     }
 }

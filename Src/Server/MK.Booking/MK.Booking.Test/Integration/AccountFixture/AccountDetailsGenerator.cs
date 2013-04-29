@@ -177,10 +177,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(dto.Settings.Phone  , dto.Phone);
 
                 var config = new TestConfigurationManager();                
-                Assert.AreEqual(dto.Settings.ChargeTypeId.ToString(), config.GetSetting("DefaultBookingSettings.ChargeTypeId"));
+                Assert.IsNull(dto.Settings.ChargeTypeId);
                 Assert.AreEqual(dto.Settings.Passengers.ToString(), config.GetSetting("DefaultBookingSettings.NbPassenger"));
-                Assert.AreEqual(dto.Settings.VehicleTypeId.ToString(), config.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-                Assert.AreEqual(dto.Settings.ProviderId.ToString(), config.GetSetting("DefaultBookingSettings.ProviderId"));
+                Assert.IsNull(dto.Settings.VehicleTypeId);
+                Assert.IsNull(dto.Settings.ProviderId);
                 
             }
         }
@@ -371,11 +371,13 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             public void when_update_payment_profile_then_account_dto_updated()
             {
                 Guid? creditCardId = Guid.NewGuid();
-                int? defaultTipPercent = 15;
+                double? tipAmount = 10.0;
+                double? defaultTipPercent = 15.0;
 
                 this.sut.Handle(new PaymentProfileUpdated
                 {
                     SourceId = _accountId,
+                    DefaultTipAmount = tipAmount,
                     DefaultCreditCard = creditCardId,
                     DefaultTipPercent = defaultTipPercent
                 });
@@ -386,6 +388,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                     Assert.NotNull(dto);
                     Assert.AreEqual(creditCardId, dto.DefaultCreditCard);
+                    Assert.AreEqual(tipAmount, dto.DefaultTipAmount);
                     Assert.AreEqual(defaultTipPercent, dto.DefaultTipPercent);
                 }
             }

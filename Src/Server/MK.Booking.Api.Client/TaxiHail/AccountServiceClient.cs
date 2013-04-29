@@ -68,25 +68,25 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void AddFavoriteAddress(SaveAddress address)
         {
             var req = string.Format("/account/addresses");
-            var response = Client.Post<string>(req, address);
+            Client.Post<string>(req, address);
         }
 
         public void UpdateFavoriteAddress(SaveAddress address)
         {
             var req = string.Format("/account/addresses/{0}", address.Id);
-            var response = Client.Put<string>(req, address);
+            Client.Put<string>(req, address);
         }
 
         public void RemoveFavoriteAddress(Guid addressId)
         {
             var req = string.Format("/account/addresses/{0}", addressId);
-            var response = Client.Delete<string>(req);
+            Client.Delete<string>(req);
         }
 
         public void ResetPassword(string emailAddress)
         {
             var req = string.Format("/account/resetpassword/{0}", emailAddress);
-            var response = Client.Post<string>(req,null);
+            Client.Post<string>(req,null);
         }
 
         public string UpdatePassword(UpdatePassword updatePassword)
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void AddCreditCard(CreditCardRequest creditCardRequest)
         {
             var req = string.Format("/account/creditcards");
-            var response = Client.Post<string>(req, creditCardRequest);
+            Client.Post<string>(req, creditCardRequest);
         }
 
         public IList<CreditCardDetails> GetCreditCards()

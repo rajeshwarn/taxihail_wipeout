@@ -4,6 +4,17 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>TaxiHail</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MKDirectionsRequest</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.maps.directionsrequest</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string></string>
 	<key>CFBundleIconFiles</key>
@@ -12,7 +23,7 @@
 		<string>app@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.apcurium.MK.TaxiHailDemo</string>
+	<string>com.apcurium.mk.taxihail.dev</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -26,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.3.20</string>
+	<string>1.4.5</string>
 	<key>MinimumOSVersion</key>
 	<string>4.3</string>
 	<key>NSMainNibFile</key>

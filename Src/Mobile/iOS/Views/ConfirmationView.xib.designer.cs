@@ -12,13 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.StackView topStack { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
@@ -73,6 +73,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblChargeTypeValue != null) {
+				lblChargeTypeValue.Dispose ();
+				lblChargeTypeValue = null;
+			}
+
 			if (topStack != null) {
 				topStack.Dispose ();
 				topStack = null;
@@ -81,11 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (lblVehicleTypeValue != null) {
 				lblVehicleTypeValue.Dispose ();
 				lblVehicleTypeValue = null;
-			}
-
-			if (lblChargeTypeValue != null) {
-				lblChargeTypeValue.Dispose ();
-				lblChargeTypeValue = null;
 			}
 
 			if (lblPassengers != null) {

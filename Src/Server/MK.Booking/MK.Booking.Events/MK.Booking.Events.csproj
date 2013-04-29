@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Booking.Events</RootNamespace>
     <AssemblyName>apcurium.MK.Booking.Events</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -50,6 +53,7 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
+    <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
     <Compile Include="RuleActivated.cs" />
     <Compile Include="RuleDeactivated.cs" />
     <Compile Include="RuleCreated.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressUpdated.cs" />
+    <Compile Include="DeviceRegisteredForPushNotifications.cs" />
     <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="FavoriteAddressUpdated.cs" />
@@ -68,6 +73,7 @@
     <Compile Include="OrderCreated.cs" />
     <Compile Include="OrderRated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />
+    <Compile Include="OrderStatusChanged.cs" />
     <Compile Include="PaymentInformationSet.cs" />
     <Compile Include="PaymentProfileUpdated.cs" />
     <Compile Include="PopularAddressAdded.cs" />

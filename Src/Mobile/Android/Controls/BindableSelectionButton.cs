@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if ( StyleManager.Current.ButtonFontSize.HasValue )
             {
-                TextSize = DrawHelper.GetPixelsFromPt(  StyleManager.Current.ButtonFontSize.Value * 0.3f );
+                TextSize =  StyleManager.Current.ButtonFontSize.Value;
             }
 
         }

@@ -6,6 +6,7 @@ using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
@@ -13,7 +14,8 @@ namespace apcurium.MK.Booking.Domain
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
-        private int? _defaultTipPercent;
+        private double? _defaultTipAmount;
+        private double? _defaultTipPercent;
         private int _creditCardCount;
         protected Account(Guid id) : base(id)
         {
@@ -31,6 +33,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
             base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
+            base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
+            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
 
@@ -206,6 +210,7 @@ namespace apcurium.MK.Booking.Domain
                 this.Update(new PaymentProfileUpdated
                 {
                     DefaultCreditCard = creditCardId,
+                    DefaultTipAmount = _defaultTipAmount,
                     DefaultTipPercent = _defaultTipPercent
                 });
             }
@@ -219,11 +224,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdatePaymentProfile(Guid? defaultCreditCard,  int? defaultTipPercent)
+        public void UpdatePaymentProfile(Guid? defaultCreditCard, double? defaultTipAmount, double? defaultTipPercent)
         {
             this.Update(new PaymentProfileUpdated
             {
                 DefaultCreditCard = defaultCreditCard,
+                DefaultTipAmount = defaultTipAmount,
                 DefaultTipPercent = defaultTipPercent
             });
         }
@@ -231,6 +237,33 @@ namespace apcurium.MK.Booking.Domain
         public void GrantAdminRight()
         {
             this.Update(new AdminRightGranted());
+        }
+
+        public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)
+        {
+            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing device token");
+            }
+
+            this.Update(new DeviceRegisteredForPushNotifications
+            {
+                 DeviceToken = deviceToken,
+                 Platform = platform,
+            });
+        }
+
+        public void UnregisterDeviceForPushNotifications(string deviceToken)
+        {
+            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing device token");
+            }
+
+            this.Update(new DeviceUnregisteredForPushNotifications
+            {
+                DeviceToken = deviceToken,
+            });
         }
 
         private void OnAccountRegistered(AccountRegistered @event)
@@ -269,6 +302,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
         {
+            this._defaultTipAmount = @event.DefaultTipAmount;
             this._defaultTipPercent = @event.DefaultTipPercent;
         }
 
@@ -295,7 +329,6 @@ namespace apcurium.MK.Booking.Domain
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
         }
-
 
         public void ConfirmAccountByAdmin()
         {

@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

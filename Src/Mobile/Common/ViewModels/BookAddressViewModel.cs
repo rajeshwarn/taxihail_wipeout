@@ -22,13 +22,9 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookAddressViewModel : BaseViewModel,
-        IMvxServiceConsumer<ILocationService>,
-        IMvxServiceConsumer<IAccountService>,
-        IMvxServiceConsumer<IGeolocService>
-    {
+    public class BookAddressViewModel : BaseViewModel
+       {
         private CancellationTokenSource _cancellationToken;
-        private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
         private Func<Address> _getAddress;
         private Action<Address> _setAddress;
@@ -152,14 +148,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (!token.IsCancellationRequested)
                         {
                             IsExecuting = true;
-                            var accountAddress = this.GetService<IAccountService>().FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
+                            var accountAddress = AccountService.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null)
                             {
                                 return new Address[] { accountAddress};
                             }
                             else
                             {
-                                return this.GetService<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
+
+                                return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
                             }
                         }
                         return null;
@@ -213,7 +210,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content, true);
+            if ( selected.Content != null )
+            {
+                SetAddress(selected.Content, true);
+            }
+            else
+            {
+                ClearAddress ();
+            }
+
         }
 
         public bool IsExecuting
@@ -263,7 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
                     {
-                        var a = this.GetService<IGeolocService>().SearchAddress(address.FullAddress, null , null );
+                        var a = GeolocService.SearchAddress(address.FullAddress, null , null );
                         if ( a.Count() > 0 )
                         {
                             address = a.First();
@@ -331,36 +336,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CancelCurrentLocationCommand.Execute ();
 
-					if ( !LocationService.IsServiceEnabled )
+                    if ( !LocationService.IsLocationServicesEnabled )
                     {
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
                     }
-                    IsExecuting = true;
-                    _cancellationToken = new CancellationTokenSource ();
-                    LocationService.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
-                    {
-                        try
-                        {
-                            Logger.LogMessage("Request Location Command");
-                            if (t.IsFaulted)
-                            {
-                                Logger.LogMessage("Request Location Command : FAULTED");
-                                IsExecuting = false;
-                            }
-                            else if (t.IsCompleted && !t.IsCanceled)
-                            {
-                                Logger.LogMessage("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
-                                ThreadPool.QueueUserWorkItem(pos => SearchAddressForCoordinate((Position)pos), t.Result);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(ex);
-                            IsExecuting = false;
-                        }
 
-                    }, _scheduler);
+                    IsExecuting = true;
+                    bool positionSet = false;
+                    LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
+                    pos=>
+                    {
+                        positionSet =true;
+                        InvokeOnMainThread(()=>SearchAddressForCoordinate(pos));
+                    },
+                    ()=>
+                    {  
+                        if(!positionSet)
+                        {
+                            InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
+                        }
+                    });
                 });
             }
 

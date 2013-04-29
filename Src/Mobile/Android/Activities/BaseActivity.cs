@@ -11,10 +11,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
-using Cirrious.MvvmCross.Binding.Android.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Android.Views.InputMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Binding.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -37,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 	public abstract class BaseMapActivity<TViewModel> : MvxBindingMapActivityView<TViewModel> where TViewModel : BaseViewModel, IMvxViewModel
 	{
-
-
 		protected override void OnStart ()
 		{
 			base.OnStart ();
@@ -68,11 +65,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     {
         protected abstract int ViewTitleResourceId { get; }
 
-		public InputMethodManager InputMethodManager{
-			get{
-				return (InputMethodManager)GetSystemService(Context.InputMethodService);
-			}
-		}
 
         protected override void OnResume()
         {

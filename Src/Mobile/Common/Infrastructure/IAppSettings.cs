@@ -42,6 +42,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         bool StreetNumberScreenEnabled { get; }
 
         bool PayByCreditCardEnabled { get; }
+        bool PushNotificationsEnabled { get; }
+
+        bool HideNoPreference { get; }
 	}
 }
 

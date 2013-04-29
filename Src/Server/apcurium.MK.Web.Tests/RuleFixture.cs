@@ -58,13 +58,13 @@ namespace apcurium.MK.Web.Tests
             });
         }
 
-        private static void CreateDefaultRules(RulesServiceClient sut )
+        private static void CreateDefaultRules(RulesServiceClient sut)
         {
 
             if (sut.GetRules().None(r => (r.Category == RuleCategory.WarningRule) && (r.Type == RuleType.Default)))
             {
                 // Default rate does not exist for this company 
-                sut.CreateRule( new Rule
+                sut.CreateRule(new Rule
                 {
                     Type = RuleType.Default,
                     Category = RuleCategory.WarningRule,
@@ -169,7 +169,7 @@ namespace apcurium.MK.Web.Tests
             rule.Message = newMessage;
             rule.Name = newName;
             rule.Priority = 99;
-            
+
 
             rule.AppliesToCurrentBooking = false;
             rule.AppliesToFutureBooking = true;
@@ -189,11 +189,11 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newName, rule.Name);
             Assert.AreEqual(true, rule.AppliesToFutureBooking);
             Assert.AreEqual(false, rule.AppliesToCurrentBooking);
-            Assert.AreEqual ("200,201", rule.ZoneList );
+            Assert.AreEqual("200,201", rule.ZoneList);
             Assert.AreEqual(false, rule.IsActive);
             Assert.AreEqual(activeFromDateRef, rule.ActiveFrom);
             Assert.AreEqual(activeFromDateRef.AddMonths(4), rule.ActiveTo);
-            Assert.AreEqual( DayOfTheWeek.Monday | DayOfTheWeek.Wednesday, rule.DaysOfTheWeek);
+            Assert.AreEqual(DayOfTheWeek.Monday | DayOfTheWeek.Wednesday, rule.DaysOfTheWeek);
             Assert.AreEqual(new DateTime(2000, 1, 1, 20, 18, 8), rule.StartTime);
             Assert.AreEqual(new DateTime(2000, 1, 1, 21, 19, 9), rule.EndTime);
             Assert.AreEqual(99, rule.Priority);
@@ -230,15 +230,15 @@ namespace apcurium.MK.Web.Tests
         public void TestDefaultRule_Warning_NoZone()
         {
             var rule = CreateRule(r =>
-                {                    
-                    r.Category = RuleCategory.WarningRule;
-                    r.Type = RuleType.Default;
-                });
+            {
+                r.Category = RuleCategory.WarningRule;
+                r.Type = RuleType.Default;
+            });
 
 
 
             var validation = ValidateOrder(null);
-            
+
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule.Message, validation.Message);
 
@@ -259,10 +259,10 @@ namespace apcurium.MK.Web.Tests
 
 
 
-            var validation = ValidateOrder(o=> o.PickupDate = null);
+            var validation = ValidateOrder(o => o.PickupDate = null);
 
-            Assert.IsFalse(validation.HasWarning );
-            
+            Assert.IsFalse(validation.HasWarning);
+
 
         }
 
@@ -330,7 +330,7 @@ namespace apcurium.MK.Web.Tests
                 r.Priority = 6;
             });
 
-            
+
 
             var validation = ValidateOrder(null);
             Assert.IsTrue(validation.HasWarning);
@@ -351,7 +351,7 @@ namespace apcurium.MK.Web.Tests
 
             var validation = ValidateOrder(null);
 
-            Assert.IsFalse(validation.HasWarning);            
+            Assert.IsFalse(validation.HasWarning);
 
         }
 
@@ -370,7 +370,7 @@ namespace apcurium.MK.Web.Tests
             var validation = ValidateOrder(null, "101");
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
-            
+
 
         }
 
@@ -381,7 +381,7 @@ namespace apcurium.MK.Web.Tests
 
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int)activeFromDateRef.DayOfWeek;
-            
+
             var rule1 = CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
@@ -435,7 +435,7 @@ namespace apcurium.MK.Web.Tests
             });
 
 
-            
+
 
             var rule3 = CreateRule(r =>
             {
@@ -482,7 +482,7 @@ namespace apcurium.MK.Web.Tests
                 AppliesToFutureBooking = true,
                 ActiveFrom = activeFromDateRef.AddHours(-1),
                 ActiveTo = activeFromDateRef.AddHours(1),
-                DaysOfTheWeek = (DayOfTheWeek) dayOfTheWeek,
+                DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek,
                 StartTime = activeFromDateRef.AddHours(-1),
                 EndTime = activeFromDateRef.AddHours(1),
                 Priority = 23,
@@ -559,13 +559,14 @@ namespace apcurium.MK.Web.Tests
         public void TestWarningRuleIsApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId);
+            CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
-            rule.AppliesToFutureBooking= true;
+            rule.AppliesToFutureBooking = true;
             rule.IsActive = true;
             rules.UpdateRule(rule);
 
-             
+
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var order = new CreateOrder
             {
@@ -574,8 +575,8 @@ namespace apcurium.MK.Web.Tests
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
             };
-            
-            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1 , ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             var validation = sut.ValidateOrder(order);
 
@@ -591,6 +592,7 @@ namespace apcurium.MK.Web.Tests
         public void TestWarningRuleIsNotApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId);
+            CreateDefaultRules(rules);
             var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rules.DeactivateRule(rule.Id);
 
@@ -705,3 +707,4 @@ namespace apcurium.MK.Web.Tests
 
     }
 }
+

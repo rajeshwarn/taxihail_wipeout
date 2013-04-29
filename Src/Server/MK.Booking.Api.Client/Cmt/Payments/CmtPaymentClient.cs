@@ -3,7 +3,8 @@ using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Common.Configuration;
-using MK.Booking.Api.Client.Android;
+using MK.Booking.Api.Client;
+using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
@@ -43,18 +44,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
 		public AuthorizationResponse PreAuthorizeTransaction(string cardToken, double amount, string orderNumber)
 		{
-			return Client.Post(new AuthorizationRequest()
+			var request = new AuthorizationRequest()
 			{
 				Amount = (int)(amount*100),
 				CardOnFileToken = cardToken,
-				CurrencyCode = _appSettings.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString),
+                CurrencyCode = _appSettings.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString).NullIfEmpty()??AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar,
 				TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
 				CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
                 L3Data = new LevelThreeData()
                     {
                         PurchaseOrderNumber = orderNumber
                     }
-			});
+			};
+            return Client.Post(request);
 		}
 
         public CaptureResponse CapturePreAuthorized(long transactionId, string orderNumber)
@@ -73,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         public long PreAuthorize(string cardToken, double amount, string orderNumber)
 		{
 			var response = PreAuthorizeTransaction(cardToken,amount,orderNumber);
-            if(response.ResponseCode > 0 && response.ResponseCode <99)
+            if(response.ResponseCode == 1)
 			{
 				return response.TransactionId;
 			}

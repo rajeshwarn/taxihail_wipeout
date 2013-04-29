@@ -26,8 +26,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                var settings = context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x => x.Key, r => r.Value);
-                return settings;
+                return context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x => x.Key, r => r.Value);
             }
         }
 

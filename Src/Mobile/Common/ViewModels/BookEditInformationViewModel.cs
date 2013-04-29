@@ -27,14 +27,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _accountService = this.GetService<IAccountService>();
             Order = JsonSerializer.DeserializeFromString<Order>(order);
-            RideSettings = new RideSettingsModel(Order.Settings, _accountService.GetCompaniesList(), _accountService.GetVehiclesList(), _accountService.GetPaymentsList());
+            RideSettings = new RideSettingsViewModel( Order.Settings);
             FirePropertyChanged(() => Vehicles);
             FirePropertyChanged(() => Payments);
             FirePropertyChanged(() => VehicleName);
             FirePropertyChanged(() => ChargeType);
         }
 
-        public RideSettingsModel RideSettings { get; set; }
+        public RideSettingsViewModel RideSettings { get; set; }
 
         public void SetVehicleTypeId(int? id)
         {
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return RideSettings != null ? RideSettings.VehicleTypeList : null;
+                return RideSettings != null ? RideSettings.Vehicles : null;
             }
         }
 
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return RideSettings != null ? RideSettings.ChargeTypeList : null;
+                return RideSettings != null ? RideSettings.Payments : null;
             }
         }
 
@@ -153,9 +153,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return GetCommand(() => ReturnResult(Order));
+                return GetCommand(() => 
+                                  { 
+                                    if(RideSettings.ValidateRideSettings()) {
+                                        ReturnResult(Order);
+                                    }
+                                  });
             }
         }
+
         private string FormatAptRingCode(string apt, string rCode)
         {
             string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");

@@ -31,14 +31,23 @@
     <DefineConstants>CLIENT</DefineConstants>
     <AssemblyName>MK.Booking.Api.Client.iOS</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingApiClientiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <DefineConstants>CLIENT</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>MKBookingApiClientiOS</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -94,10 +103,10 @@
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="Client\CmtJsonServiceClient.cs" />
+    <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="ICreditCardTokenizationService.cs" />
     <Compile Include="IPaymentClient.cs" />
     <Compile Include="IVehicleClient.cs" />
-    <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
@@ -108,9 +117,10 @@
     <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
-    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
-    <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="Cmt\Payments\LevelThreeData.cs" />
+    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
+    <Compile Include="Client\CmtXmlServiceClient.cs" />
+    <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

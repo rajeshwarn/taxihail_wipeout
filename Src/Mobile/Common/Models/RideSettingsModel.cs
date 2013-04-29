@@ -22,8 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _companyList = companyList;
             _vehicleTypeList = vehicleTypeList;
             _chargeTypeList = chargeTypeList;
-
-			Data = data;
+            Data = data;
         }
 
         public BookingSettings Data
@@ -88,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
             
             
-        public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
+           public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
         public ListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }
         public ListItem[] ChargeTypeList { get { return _chargeTypeList.ToArray(); } }
 

@@ -26,14 +26,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private IApplicationInfoService _applicationInfoService;
-        private IAccountService _accountService;
-        private IFacebookService _facebookService;
-        private ITwitterService _twitterService;
+        readonly IAccountService _accountService;
+        readonly IFacebookService _facebookService;
+        readonly ITwitterService _twitterService;
+        readonly IPushNotificationService _pushService;
 
-        public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService)
+        public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
         {
             _applicationInfoService = applicationInfoService;
-            _accountService = accountService;
+			_accountService = accountService;		
+            _pushService = pushService;
 
             CheckVersion();
             _facebookService = facebookService;
@@ -44,21 +46,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
             
-
         }
-		public override void Start (bool firstStart)
-		{
-			base.Start (firstStart);
-#if DEBUG
-			SignIn();
-#endif
-		
-		}
+
    
         public override void Load()
         {
             base.Load();
-
+#if DEBUG
+            //Email = "john@taxihail.com";
+            //Password = "password";
+			SignIn();
+#endif
         }
 
         private void CheckVersion()
@@ -136,6 +134,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     needToHideProgress = false;
                     this.Password = string.Empty;
+
+                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
 
                     Task.Factory.SafeStartNew(() =>
                         {

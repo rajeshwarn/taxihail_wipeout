@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString();
 			ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString();
 			ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString();
-			SetContentView(Resource.Layout.View_Payments_CreditCardAdd);
+            ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString();
+			SetContentView(Resource.Layout.View_CreditCardAdd);
 		}
 
 		protected override int ViewTitleResourceId

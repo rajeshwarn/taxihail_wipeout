@@ -7,169 +7,71 @@ using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
 using MonoTouch.Foundation;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class LocationService : ILocationService
+    public class LocationService : AbstractLocationService
     {
-        private CLLocation _lastValidLocation;
         private CLLocationManager _locationManager;
         private LocationManagerDelegate _locationDelegate;
-        
-        public LocationService()
-        {
-        }
-        
-        public Position LastKnownPosition
-        {
-            get
-            { 
-                if ((_locationDelegate != null) && (_locationDelegate.LastKnownLocation != null))
-                {
-                    return new Position{ Latitude =  _locationDelegate.LastKnownLocation.Coordinate.Latitude, Longitude = _locationDelegate.LastKnownLocation.Coordinate.Longitude };
-                }
-                else
-                {
-                    return new Position{ Longitude = 98, Latitude = 40 };
-                }
-            }
-        }
-        
-        public CLLocation WaitForAccurateLocation(int timeout, float accuracy, out bool timeoutExpired)
-        {
-            
-            var result = _locationDelegate.LastKnownLocation;
-            
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
-            
-            timeoutExpired = true;
-            
-            bool exit = false;
-            var timeoutExpiredResult = true;
-            
-            Thread.Sleep(200);
-            
-            var watch = new Stopwatch();
-            watch.Start();            
-            while (!exit)
-            {
-                if (_locationDelegate.LastKnownLocation != null)
-                {                   
-                    result = _locationDelegate.LastKnownLocation;
-                    if (result.HorizontalAccuracy <= accuracy) 
-                    {
-                        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
-                                                                               result.HorizontalAccuracy.ToString());
-                        timeoutExpiredResult = false;
-                        exit = true;
-                    }
-                }
+        private static ILogger LoggerService {get{ return TinyIoCContainer.Current.Resolve<ILogger>();}}
                 
-
-                NSRunLoop.Current.RunUntil(DateTime.Now.AddMilliseconds(400));             
-                
-                if (watch.ElapsedMilliseconds >= timeout)
-                {
-                    exit = true;
-                    timeoutExpiredResult = true;
-                }
-            }
-            
-            
-            if (timeoutExpiredResult)
-            {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
-                result = _locationDelegate.LastKnownLocation;
-            }
-            
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Done WaitForAccurateLocation");
-            
-            timeoutExpired = timeoutExpiredResult;
-            return result;
-        }
-        
-        #region ILocationService implementation
-        
-        public void Initialize()
-        {
-            if (_locationManager != null)
-            {
-                _locationManager.StartUpdatingLocation();
-                return;
-            }
-            
-            _locationManager = new CLLocationManager();
-            _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _locationManager.DistanceFilter = -1;
-            _locationDelegate = new LocationManagerDelegate();
-            _locationManager.Delegate = _locationDelegate;
-            _locationManager.StartUpdatingLocation();
-
-
-        }
-        
-        private Task<Position> _last;
-
-        public bool IsServiceEnabled
+        public override bool IsLocationServicesEnabled
         {
             get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
         }
 
-        public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
+        bool _isStarted;
+        public override bool IsStarted {
+            get {
+                return _isStarted;
+            }
+        }
+
+
+        public LocationService()
         {
-           
-            if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
+            _locationManager = new CLLocationManager();
+            _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
+            _locationManager.DistanceFilter = -1;//The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+            _locationDelegate = new LocationManagerDelegate();
+            _locationManager.Delegate = _locationDelegate;
+            Positions = _locationDelegate;
+        }
+                
+        public override void Start()
+        {   
+            if(_isStarted)
             {
-                return _last;
+                return;
             }
+            _locationManager.StartUpdatingLocation();
+            _isStarted = true;
 
-            if (!IsServiceEnabled)
-            {
-                return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
-            }
-             
-            Initialize();
-
-            Console.WriteLine ( "**********GetPositionAsync**********" );
-
-            _last = new Task<Position>(() =>
-                                       {
-                 
-                bool timedout = false;
-                var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
-
-                if(timedout)
-                {
-                    result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
-                    if ( timedout )
-                    {
-                        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
-                        if ( _locationDelegate.LastKnownLocation != null )
-                        {
-                            result = _locationDelegate.LastKnownLocation;
-                        }
-                        else if ( _lastValidLocation != null )
-                        {
-                            result = _lastValidLocation;
-                        }                         
-                    }
-                }
-                return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
-            }, cancelToken);           
-
-            _last.ContinueWith(t => {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError(t.Exception);
-            }, TaskContinuationOptions.OnlyOnFaulted );
-            _last.Start();
-            return _last;
-            
         }
         
+        public override void Stop ()
+        {   
+            if(_isStarted)
+            {
+                _locationManager.StopUpdatingLocation ();
+                _isStarted = false;
+            }
 
-        public void Stop ()
-        {
-            _locationManager.StopUpdatingLocation ();
         }
-#endregion
+        
+        public override Position LastKnownPosition
+        {
+            get { return _locationDelegate.LastKnownPosition; }
+        }
+                
+        public override Position BestPosition
+        {
+            get { return _locationDelegate.BestPosition; }
+        }
+
+       
+
     }
 }

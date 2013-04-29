@@ -42,10 +42,11 @@
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <DataGrid  CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" VerticalAlignment="Stretch" AutoGenerateColumns="False" ItemsSource="{Binding IBSServers}">
+                    <Button  Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveIBSServer" />
+                    <DataGrid Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" VerticalAlignment="Stretch" AutoGenerateColumns="False" ItemsSource="{Binding IBSServers}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="200" Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Width="400" Header="Url" Binding="{Binding Url}" />
@@ -53,7 +54,7 @@
                             <DataGridTextColumn Width="100" Header="Password" Binding="{Binding Password}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="1" Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveIBSServer" />
+                    
                 </Grid>
                     </ScrollViewer>
             </TabItem>
@@ -61,10 +62,11 @@
                 <ScrollViewer>
                     <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <DataGrid  CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding TaxiHailEnvironments}" VerticalAlignment="Stretch">
+                        <Button  Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveTaxiHailEnvironment" />
+                        <DataGrid  Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding TaxiHailEnvironments}" VerticalAlignment="Stretch">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Width="100" Header="Ip" Binding="{Binding IP}" />
@@ -73,13 +75,31 @@
                             <DataGridTextColumn Width="200" Header="WebSitesFolder" Binding="{Binding WebSitesFolder}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Grid.Row="1" Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveTaxiHailEnvironment" />
+                    
                 </Grid>
                     </ScrollViewer>
             </TabItem>
+            <TabItem Header="Versions" >
+                <ScrollViewer>
+                    <Grid Background="#FFE5E5E5" MinHeight="937">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Button  Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveVersion" />
+                        <DataGrid  Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding Versions}" VerticalAlignment="Stretch">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="100" Header="Version" Binding="{Binding Display}" />
+                                <DataGridTextColumn Width="100" Header="Revision" Binding="{Binding Revision}" />                                
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        
+                    </Grid>
+                </ScrollViewer>
+
+            </TabItem>
             <TabItem Header="Deploy">
                 <ScrollViewer>
-
                     <Grid Background="#FFE5E5E5" MinHeight="937">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -99,12 +119,16 @@
                             <DataGridTextColumn Width="100" Header="IBSServer" Binding="{Binding IBSServer.Name}" />
                             <DataGridTextColumn Width="50" Header="Server" Binding="{Binding DeployServer}" />
                             <DataGridTextColumn Width="50" Header="Db" Binding="{Binding DeployDB}" />
-                            <DataGridTextColumn Width="75" Header="CreateDb" Binding="{Binding InitDatabase}" />
-                            <DataGridTextColumn Width="60" Header="Android" Binding="{Binding Android}" />
-                            <DataGridTextColumn Width="50" Header="iOS" Binding="{Binding iOS}" />
+                            <DataGridTextColumn Width="65" Header="CreateDb" Binding="{Binding InitDatabase}" />
+                            <DataGridTextColumn Width="55" Header="Android" Binding="{Binding Android}" />
+                            <DataGridTextColumn Width="50" Header="CallBox" Binding="{Binding CallBox}" />
+                            <DataGridTextColumn Width="45" Header="AdHoc" Binding="{Binding iOS_AdHoc}" />
+                            <DataGridTextColumn Width="60" Header="AppStore" Binding="{Binding iOS_AppStore}" />
                             <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
                             <DataGridTextColumn Width="250" Header="Details" Binding="{Binding Details}" />
-                        </DataGrid.Columns>
+                             <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />                            
+                             <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />                            
+                         </DataGrid.Columns>
                     </DataGrid>
                     <GroupBox Grid.Row="2" Margin="10,10,26,10" Header="New Deployment">
                             <StackPanel>
@@ -112,8 +136,11 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
@@ -131,22 +158,27 @@
                                 <ComboBox Grid.Column="1" Name="DeployCompanyCombobox" DisplayMemberPath="Name" SelectedItem="{Binding DeployCompany,Mode=TwoWay}" ItemsSource="{Binding Companies}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="1" VerticalAlignment="Center">IBSServer</TextBlock>
-                                    <ComboBox Grid.Row="1" Name="DeployIbsServerCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Row="1" Name="DeployIbsServerCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployIBSServer,Mode=TwoWay}" ItemsSource="{Binding IBSServers}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
-                                    <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox"   Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
-                                <TextBlock Grid.Row="4" VerticalAlignment="Center">Revision</TextBlock>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DeployRevision}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
-                                
-                                <CheckBox Grid.Row="5" Grid.Column="1" Content="Deploy Database" IsChecked="{Binding DeployDB}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="6" Grid.Column="1" Content="Drop/Create a new databse" IsChecked="{Binding DeployInitDatabse}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <TextBlock Grid.Row="3" VerticalAlignment="Center">Version-Rev.</TextBlock>
+                                <ComboBox Grid.Row="3" Grid.Column="1" Name="DeployVersionCombobox"  IsEditable="True"  DisplayMemberPath="Display" SelectedItem="{Binding DeployVersion,Mode=TwoWay}" ItemsSource="{Binding Versions}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
-                                <CheckBox Grid.Row="7" Grid.Column="1" Content="Server" IsChecked="{Binding DeployServer}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="8" Grid.Column="1" Content="Android" IsChecked="{Binding DeployAndroid}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="9" Grid.Column="1" Content="iOS" IsChecked="{Binding DeployIos}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                 <TextBlock Grid.Row="4" VerticalAlignment="Center">Or revision only</TextBlock>
+                                 <TextBox Text="{Binding DeployRevision}"  Grid.Row="4" Grid.Column="1" Width="250" Margin="10,10,10,10" HorizontalAlignment="Left" ></TextBox>
 
-                                <Button Grid.Row="10" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
+                                <CheckBox Grid.Row="0" Grid.Column="2" Content="Deploy Database" IsChecked="{Binding DeployDB}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="1" Grid.Column="2" Content="Drop/Create a new databse" IsChecked="{Binding DeployInitDatabse}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+
+                                <CheckBox Grid.Row="2" Grid.Column="2" Content="Server" IsChecked="{Binding DeployServer}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="3" Grid.Column="2" Content="Android" IsChecked="{Binding DeployAndroid}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="4" Grid.Column="2" Content="CallBox" IsChecked="{Binding DeployCallBox}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="5" Grid.Column="2" Content="iOS (AdHoc)" IsChecked="{Binding DeployIosAdHoc}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="6" Grid.Column="2" Content="iOS (AppStore)" IsChecked="{Binding DeployIosAppStore}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+
+                                <Button Grid.Row="11" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
                             </Grid>
                         </StackPanel>
                     </GroupBox>
@@ -166,6 +198,7 @@
                 </ScrollViewer>
 
             </TabItem>
+        
         </TabControl>
         <StatusBar Grid.Row="1" x:Name="StatusBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1000" Height="30">
             <StatusBarItem>

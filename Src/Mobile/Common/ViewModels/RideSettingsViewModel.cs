@@ -16,26 +16,32 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseViewModel,
+	
+    public class RideSettingsViewModel: BaseViewModel,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
         private readonly IAccountService _accountService;
-		public RideSettingsViewModel (string bookingSettings)
+        public RideSettingsViewModel (string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
 		{
-            this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
+        
+        }
+
+        public RideSettingsViewModel(BookingSettings bookingSettings)
+        {
+            this._bookingSettings = bookingSettings;
             _accountService = this.GetService<IAccountService>();
             
             _vehicules = _accountService.GetVehiclesList().ToArray();
             _payments = _accountService.GetPaymentsList().ToArray();
-
+            
             var account = _accountService.CurrentAccount;
             var paymentInformation = new PaymentInformation {
                 CreditCardId = account.DefaultCreditCard,
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-		}
+        }
 
         public override void Restart ()
         {
@@ -65,11 +71,12 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? VehicleTypeId {
 			get {
-				return _bookingSettings.VehicleTypeId;
+				return _bookingSettings.VehicleTypeId ?? ListItem.NullId;
 			}
 			set {
-				if(value != _bookingSettings.VehicleTypeId){
-					_bookingSettings.VehicleTypeId = value;
+				var id = value == ListItem.NullId ? default(int?) : value;
+				if(id != _bookingSettings.VehicleTypeId){
+					_bookingSettings.VehicleTypeId = id;
                     FirePropertyChanged("VehicleTypeId");
                     FirePropertyChanged("VehicleTypeName");
 				}
@@ -78,6 +85,12 @@ namespace apcurium.MK.Booking.Mobile
 
         public string VehicleTypeName {
             get {
+
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
+
                 var vehicle = this.Vehicles.FirstOrDefault(x=>x.Id == VehicleTypeId);
                 if(vehicle == null) return null;
                 return vehicle.Display;
@@ -86,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? ChargeTypeId {
             get {
-                return _bookingSettings.ChargeTypeId;
+                return _bookingSettings.ChargeTypeId ?? ListItem.NullId;
             }
 			set {
 				if(value != _bookingSettings.ChargeTypeId){
@@ -99,6 +112,11 @@ namespace apcurium.MK.Booking.Mobile
 
         public string ChargeTypeName {
             get {
+                if(ChargeTypeId == ListItem.NullId)
+                {
+                    return base.Resources.GetString("NoPreference");
+                }
+
                 var chargeType = this.Payments.FirstOrDefault(x=>x.Id == ChargeTypeId);
                 if(chargeType == null) return null;
                 return chargeType.Display; 
@@ -164,6 +182,10 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+        public int? ProviderId {
+            get{ return _bookingSettings.ProviderId ?? ListItem.NullId;}
+        }
+
         public IMvxCommand SetCompany
         {
             get{
@@ -183,16 +205,16 @@ namespace apcurium.MK.Booking.Mobile
                 return GetCommand(() => 
                                            {
 					if(ValidateRideSettings())
-					{
+                    {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-						_accountService.UpdateSettings (_bookingSettings, creditCard,  PaymentPreferences.Tip);
+                        _accountService.UpdateSettings (_bookingSettings, creditCard,  PaymentPreferences.Tip);
                         Close();
 					}
                 });
             }
         }
 
-		private bool ValidateRideSettings()
+		public bool ValidateRideSettings()
 		{
 			if (string.IsNullOrEmpty(Name) 
 			    || string.IsNullOrEmpty(Phone))

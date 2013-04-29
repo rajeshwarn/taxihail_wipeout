@@ -23,15 +23,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return Resource.String.View_PaymentCreditCardsOnFile; }
 		}
-
-
-
+		
+		
+		
 		protected override void OnStart ()
 		{
 			base.OnStart ();
-
+			
 		}
-				
+		
 		protected override void OnViewModelSet()
 		{            
 			SetContentView(Resource.Layout.View_Payments_ConfirmCarNumber);

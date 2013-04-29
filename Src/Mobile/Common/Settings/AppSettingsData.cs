@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public bool CanChangeServiceUrl{ get; set; }
         public bool CanChooseProvider { get; set; }
-		public string ServiceUrl { get; set; }
+        public string ServiceUrl { get; set; }
 
         public string DefaultPhoneNumber { get; set; }
         public string DefaultPhoneNumberDisplay { get; set; }
@@ -39,6 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool RatingEnabled { get; set; }        
         public bool StreetNumberScreenEnabled { get; set; }
         public bool PayByCreditCardEnabled { get; set; }
+        
+        public bool PushNotificationsEnabled { get; set; }
 
+        public bool HideNoPreference { get;set; }
     }
 }

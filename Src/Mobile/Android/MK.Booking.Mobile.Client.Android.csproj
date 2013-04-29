@@ -69,9 +69,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive.Android">
-      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Mono.Facebook">
@@ -79,6 +76,18 @@
     </Reference>
     <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="Mono.Android" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Infrastructure\rx-android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -98,11 +107,8 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
-    <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
-    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs">
-      <DependentUpon>EditTextSpinnerSelectedItemBinding.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
@@ -131,8 +137,6 @@
     <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
-    <Compile Include="Activities\Location\LocationDetailActivity.cs" />
-    <Compile Include="Activities\Location\LocationsActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
     <Compile Include="MapUtitilties\TaxiOverlay.cs" />
@@ -224,9 +228,13 @@
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <Compile Include="Controls\UnderlineTextView.cs" />
+    <Compile Include="Controls\UnderlineTextView.cs">
+      <DependentUpon>UnderlineTextView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StyledButton.cs" />
-    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
     <Compile Include="Controls\SearchButton.cs" />
@@ -237,6 +245,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
     <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
@@ -252,6 +262,14 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <AndroidResource Include="Resources\Drawable\notification_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_icon.png" />
+    <Compile Include="Animations\SlideDownAnimation.cs" />
+    <Compile Include="Controls\SlidingPanel.cs" />
+    <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
+    <AndroidResource Include="Resources\Drawable\backStatusVehicleInfo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\backStatusVehicleInfo.png" />
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
     <AndroidResource Include="Resources\Drawable\history.png" />
@@ -262,8 +280,14 @@
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\address.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
+    <AndroidResource Include="Resources\Drawable\visa_electron.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
+    <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
+      <DependentUpon>View_CreditCardsList.axml</DependentUpon>
+    </Compile>
+    <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
+    <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
@@ -288,6 +312,7 @@
     <AndroidResource Include="Resources\Drawable\sliderYellowBarBody.png" />
     <Compile Include="Controls\Slider\GrayBarControl.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
+    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -494,7 +519,9 @@
     <AndroidResource Include="Resources\Drawable\pin.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
-    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
+    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
     <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
@@ -542,6 +569,14 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
     <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
+    <AndroidResource Include="Resources\Drawable\grip.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\grip.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\phone.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -588,6 +623,10 @@
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
+      <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
+      <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

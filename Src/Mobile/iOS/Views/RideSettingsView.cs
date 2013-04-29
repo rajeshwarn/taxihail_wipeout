@@ -61,7 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
 
             ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId.Value, x=> {
-
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
 
@@ -86,8 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
                     .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
                     .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") },
-                { TipSlider, 
-                    new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
+                { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
             });         
 
         }

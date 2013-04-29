@@ -23,6 +23,8 @@ using Cirrious.MvvmCross.Binding.Touch.Target;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using MonoTouch.UIKit;
+using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -31,18 +33,20 @@ namespace apcurium.MK.Booking.Mobile.Client
         : MvxTouchDialogBindingSetup
     {
         IMvxTouchViewPresenter _presenter;
+        IDictionary<string, string> _options;
 
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter)
+        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter, IDictionary<string, string> options)
             : base(applicationDelegate, presenter)
         {
             _presenter = presenter;
+            _options = options;
         }
         
         #region Overrides of MvxBaseSetup
         
         protected override MvxApplication CreateApp()
         {
-            var app = new TaxiHailApp();
+            var app = new TaxiHailApp(_options);
             return app;
         }
         
@@ -62,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.FillTargetFactories (registry);
             registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
+            CustomBindingsLoader.Load(registry);
         }
 
         protected override void InitializeIoC()
@@ -69,8 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCServiceProviderSetup.Initialize();
 
             var locationService = new LocationService( );
-            locationService.Initialize();
-            TinyIoCContainer.Current.Register<ILocationService>(locationService );
+            locationService.Start();
+            TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
            
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
@@ -85,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
 
             TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
+            TinyIoCContainer.Current.Register<IPushNotificationService, PushNotificationService>();
             InitializeSocialNetwork();
         }
 
@@ -112,6 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
+
 #endregion
     }
 }
