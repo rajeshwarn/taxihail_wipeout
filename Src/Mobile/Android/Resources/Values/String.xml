@@ -405,4 +405,5 @@
   <string name="CmtTransactionResendConfirmationButtonText">Resend confirmation</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
+  <string name="PayPalButton">Pay with PayPal</string>
 </resources>

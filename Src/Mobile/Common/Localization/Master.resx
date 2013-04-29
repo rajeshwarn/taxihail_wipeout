@@ -1283,4 +1283,7 @@
   <data name="PayPalButton" xml:space="preserve">
     <value>Pay with PayPal</value>
   </data>
+  <data name="View_PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
 </root>

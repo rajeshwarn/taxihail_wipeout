@@ -313,6 +313,9 @@
     <Compile Include="Controls\Slider\GrayBarControl.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
+    <Compile Include="Activities\Book\BookPayPalActivity.cs">
+      <DependentUpon>BookPaymentActivity.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

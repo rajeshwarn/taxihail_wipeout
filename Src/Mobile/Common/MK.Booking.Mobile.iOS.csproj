@@ -251,7 +251,6 @@
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
-    <Compile Include="Settings\Settings.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

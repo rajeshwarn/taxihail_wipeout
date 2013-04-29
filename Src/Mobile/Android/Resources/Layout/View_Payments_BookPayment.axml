@@ -117,17 +117,33 @@
                         android:layout_marginRight="10.0dp" />
                 </FrameLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Green"
+                    android:id="@+id/PayPalBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/green_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dip"
+                    android:text="@string/PayPalButton"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="{'Click': {'Path': 'ProceedToPayPalCommand'}}" />
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Green"
+                    android:id="@+id/ConfirmBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/green_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dip"
+                    android:text="@string/CreateAccountPasswordConfrimation"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />
+            </LinearLayout>
         </LinearLayout>
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:id="@+id/ConfirmBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/green_button"
-            android:layout_width="fill_parent"
-            android:layout_height="35dip"
-            android:text="@string/CreateAccountPasswordConfrimation"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
