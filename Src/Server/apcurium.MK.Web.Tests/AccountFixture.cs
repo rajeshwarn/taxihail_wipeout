@@ -324,7 +324,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.ProviderId, account.Settings.ProviderId);
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
             Assert.AreEqual(creditCardId, account.DefaultCreditCard);
-            Assert.AreEqual(tipAmount, account.DefaultTipAmount);
             Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
         }
     }

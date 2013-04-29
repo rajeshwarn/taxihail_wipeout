@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private ICreditCardTokenizationService _tokenizationService;
 
-        public AccountServiceClient(string url, string sessionId, ICreditCardTokenizationService tokenizationService)
+        public AccountServiceClient(string url, string sessionId, ICreditCardTokenizationService tokenizationService =null)
             : base(url, sessionId)
         {
             _tokenizationService = tokenizationService;
