@@ -232,7 +232,6 @@
     <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
-    <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />

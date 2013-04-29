@@ -22,14 +22,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
         }
 
+        bool _isStarted;
+        public override bool IsStarted {
+            get {
+                return _isStarted;
+            }
+        }
+
+
         public LocationService()
         {
-            if (_locationManager != null)
-            {
-                _locationManager.StartUpdatingLocation();
-                return;
-            }
-            
+
             _locationManager = new CLLocationManager();
             _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
             _locationManager.DistanceFilter = -1;
@@ -40,12 +43,23 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
         public override void Start()
         {   
+            if(_isStarted)
+            {
+                return;
+            }
             _locationManager.StartUpdatingLocation();
+            _isStarted = true;
+
         }
         
         public override void Stop ()
-        {
-            _locationManager.StopUpdatingLocation ();
+        {   
+            if(_isStarted)
+            {
+                _locationManager.StopUpdatingLocation ();
+                _isStarted = false;
+            }
+
         }
         
         public override Position LastKnownPosition

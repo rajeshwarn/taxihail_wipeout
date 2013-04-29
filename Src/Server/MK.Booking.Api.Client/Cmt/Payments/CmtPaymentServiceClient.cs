@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MK.Booking.Api.Client.Android.Client;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.Client;
 using System.Net;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using ServiceStack.Service;
+using MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 {

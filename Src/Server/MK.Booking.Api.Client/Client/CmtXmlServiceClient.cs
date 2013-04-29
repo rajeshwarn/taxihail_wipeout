@@ -9,7 +9,7 @@ using System.IO;
 using System.Net;
 using System.Xml.Serialization;
 
-namespace MK.Booking.Api.Client.Android.Client
+namespace MK.Booking.Api.Client
 {
 
     public class CustomXmlServiceClient : IServiceClient, IRestClient
