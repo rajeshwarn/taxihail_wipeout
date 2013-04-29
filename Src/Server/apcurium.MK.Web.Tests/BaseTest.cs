@@ -52,6 +52,7 @@ namespace apcurium.MK.Web.Tests
         {
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
+            DummyConfigManager = new DummyConfigManager();
            
         }
 
