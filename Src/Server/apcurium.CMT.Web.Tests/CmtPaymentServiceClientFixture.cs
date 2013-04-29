@@ -5,14 +5,6 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
-using Microsoft.Practices.Unity;
-using ServiceStack.CacheAccess;
-using apcurium.MK.Common.Caching;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Web.Tests;
 
 
 namespace apcurium.CMT.Web.Tests

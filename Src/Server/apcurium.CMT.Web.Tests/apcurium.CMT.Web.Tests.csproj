@@ -59,6 +59,7 @@
     <Compile Include="CmtAccountFixture.cs" />
     <Compile Include="CmtAuthFixture.cs" />
     <Compile Include="CmtBaseTest.cs" />
+    <Compile Include="CmtPaymentServiceClientFixture.cs" />
     <Compile Include="CmtPreCogFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

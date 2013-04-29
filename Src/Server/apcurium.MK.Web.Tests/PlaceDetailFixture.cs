@@ -35,6 +35,12 @@ namespace apcurium.MK.Web.Tests
             var refService = new SearchLocationsServiceClient(BaseUrl, SessionId);
             var addresses = refService.Search("yul", 45.5227967351675, -73.6242310144007);
 
+
+            if (!addresses.Any())
+            {
+                Assert.Inconclusive("no places returned");
+            }
+
             var a1 = addresses.ElementAt(0);
             Assert.IsNotNullOrEmpty(a1.PlaceReference);
 
