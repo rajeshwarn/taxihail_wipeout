@@ -20,13 +20,61 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{			
 			_locationManager = (LocationManager)Application.Context.GetSystemService(Context.LocationService);     
 			LocationListener = new LocationListener();
+			
+			Positions = LocationListener;
+		}
+
+		
+		public bool IsNetworkProviderEnabled {
+			get {
+				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider );
+			}
+		}
+
+		public bool IsGpsProviderEnabled {
+			get {
+				return _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
+			}
+		}
+		
+		public override bool IsLocationServicesEnabled {
+			get {
+				return IsNetworkProviderEnabled && IsGpsProviderEnabled;
+			}
+		}
+		
+		public override Position BestPosition {
+			get {
+				return LocationListener.BestPosition;
+			}
+		}
+		
+		public override  Position LastKnownPosition
+		{
+			get { return LocationListener.LastKnownPosition;	}  
+		}
+		
+		private LocationManager _locationManager;
+		private LocationListener LocationListener;   
+		
+		
+		
+		public bool IsLocationServiceEnabled
+		{
+			get{
+				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider ) 
+					||  _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
+			}
 		}
 
 		bool _isStarted;
+			public override bool IsStarted{
+			get{ return _isStarted;}
+		}
 
 		public override void Stop()
 		{            
-			if(_isStarted)
+			if(IsStarted)
 			{
 				_locationManager.RemoveUpdates(LocationListener);
 			}
@@ -34,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		
 		public override void Start()
 		{   
-			if(_isStarted)
+			if(IsStarted)
 			{
 				return;
 			}
@@ -52,51 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				_locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, LocationListener, Looper.MainLooper);
 			}
 			_isStarted = true;
-			Positions = LocationListener;
-		}
-
-		public bool IsNetworkProviderEnabled {
-			get {
-				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider );
-			}
-		}
-		public bool IsGpsProviderEnabled {
-			get {
-				return _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
-			}
-		}
-
-		public override bool IsLocationServicesEnabled {
-			get {
-				return IsNetworkProviderEnabled && IsGpsProviderEnabled;
-			}
-		}
-
-		public override Position BestPosition {
-			get {
-				return LocationListener.BestPosition;
-			}
-		}
-		
-		public override  Position LastKnownPosition
-		{
-			get { return LocationListener.LastKnownPosition;	}  
-		}
-
-		private LocationManager _locationManager;
-		private LocationListener LocationListener;   
-
-
-		
-		public bool IsLocationServiceEnabled
-		{
-			get{
-				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider ) 
-					||  _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
-			}
-		}
-
-
-		
+		}		
 	}
 }

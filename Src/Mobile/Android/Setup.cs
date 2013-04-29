@@ -53,8 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
 			
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-			
-			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
 
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));			
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));

@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		public abstract bool IsLocationServicesEnabled{get; }
 
+		public abstract bool IsStarted {			get;		}
+
 		public IObservable<Position> Positions { get; protected set; }
                 
         public IObservable<Position> GetNextBest(TimeSpan timeout)
@@ -24,7 +26,14 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         public IObservable<Position> GetNextPosition(TimeSpan timeout, float maxAccuracy)
 		{
-			return Positions.Where(p => p.Accuracy <= maxAccuracy).Take(timeout).Take(1);
+			if(!IsStarted)
+			{
+				Start();
+			}
+			return Positions.Where(p => 
+			 {
+				return p.Accuracy <= maxAccuracy;
+			}).Take(timeout).Take(1);
 		}
 
 
