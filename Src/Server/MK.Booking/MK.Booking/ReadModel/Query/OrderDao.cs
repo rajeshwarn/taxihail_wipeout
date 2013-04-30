@@ -65,7 +65,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
+                                     where order.Status != OrderStatus.Canceled 
+                                        && order.Status != OrderStatus.Completed
                                      select order).ToList();
                 return currentOrders;
             }

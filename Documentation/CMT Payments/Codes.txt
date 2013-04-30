@@ -7,3 +7,10 @@ PayNet Credentials  (this will allow you to view your transactions)
 URL:  http://paynet-staging.cmtnyc.com
 Username:  TaxiHail
 Password: welcome123
+
+drivelinq.dyndns-ip.com:2140 
+Account: LINQ/tgray
+Pass: Password01 
+
+XDS Login: cantech
+Password: image

@@ -11,7 +11,7 @@ namespace apcurium.MK.Common.Entity
 
         public OrderStatus Status { get; set; }
         public DriverInfos DriverInfos { get; set; }
-        public int? IBSOrderId { get; set; }                
+        public int? IBSOrderId { get; set; }
         public string IBSStatusId { get; set; }
         public string IBSStatusDescription { get; set; }
         public string VehicleNumber { get; set; }
@@ -23,5 +23,13 @@ namespace apcurium.MK.Common.Entity
         public DateTime PickupDate { get; set; }
         public DateTime? Eta { get; set; }
         public string Name { get; set; }
+
+
+
+
+        public override string ToString()
+        {
+            return Status + " " + Name;
+        }
     }
 }

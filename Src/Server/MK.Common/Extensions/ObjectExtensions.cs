@@ -4,8 +4,8 @@ namespace apcurium.MK.Common.Extensions
 {
     public static class ObjectExtensions
     {
-  
-       
+
+
 
         public static void Maybe<TInstance>(this TInstance instance, Action action)
         {
