@@ -196,26 +196,24 @@ namespace apcurium.MK.Common.Extensions
             {
                 return value;
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
+
         public static bool TryToParse( this string value, bool defaultValue )
         {
             if ( value.IsNullOrEmpty() )
             {
                 return defaultValue ;
             }
-            else
-            {
-                bool r;
-                if ( bool.TryParse( value, out r ) )
-                {
-                    return r;
-                }
-                return defaultValue;
-            }
+            bool r;
+            return bool.TryParse( value, out r ) ? r : defaultValue;
+        }
+
+        public static string GetValue(this string instance, string fallback)
+        {
+            return instance == null || string.IsNullOrWhiteSpace(instance)
+                       ? fallback
+                       : instance;
         }
 
 
