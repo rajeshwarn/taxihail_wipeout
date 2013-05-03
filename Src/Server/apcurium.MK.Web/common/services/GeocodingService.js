@@ -1,7 +1,7 @@
 // Geocoding service
 
 (function () {
-
+    var url = "https://maps.googleapis.com/maps/api/geocode/json";
     TaxiHail.geocoder = {
         
         initialize: function (lat, lng) {
@@ -11,9 +11,19 @@
 
         geocode: function (lat, lng) {
 
-            return $.get(TaxiHail.parameters.apiRoot + '/geocode', { lat: lat, lng: lng }, function () { }, 'json')
-                    .done(cleanupResult);
-            
+            var result = $.Deferred();
+            $.get(url, {
+                latlng: lat + ',' + lng,
+                sensor: true
+            }, function () { }, 'json')
+                .then(function (geoResult) {
+                    $.post(TaxiHail.parameters.apiRoot + '/geocode', { lat: lat, lng: lng, geoResult: geoResult }, function () { }, 'json')
+                        .then(cleanupResult)
+                        .then(result.resolve, result.reject);
+                });
+
+            return result.promise();
+
         },
 
         search: function(address) {
