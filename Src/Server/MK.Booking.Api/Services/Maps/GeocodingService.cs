@@ -35,11 +35,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.Name.HasValue())
             {
-                return _geocoding.Search(request.Name);
+                return _geocoding.Search(request.Name, request.GeoResult);
             }
             else
             {
-                return _geocoding.Search(request.Lat.Value, request.Lng.Value);
+                return _geocoding.Search(request.Lat.Value, request.Lng.Value, request.GeoResult);
             }
 
         }

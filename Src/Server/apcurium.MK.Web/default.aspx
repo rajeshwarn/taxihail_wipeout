@@ -48,6 +48,8 @@
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
             TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
+            TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
+            TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
             TaxiHail.parameters.HideDispatchButton = <%: this.HideDispatchButton%>;
             TaxiHail.parameters.GeolocPopularRange = <%: this.GeolocPopularRange%>;
             TaxiHail.parameters.apiRoot = "api";

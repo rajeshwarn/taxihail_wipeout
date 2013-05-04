@@ -23,6 +23,8 @@ namespace apcurium.MK.Web
         protected string FacebookEnabled { get; private set; }
         protected string HideDispatchButton { get; private set; }
         protected string GeolocPopularRange { get; private set; }
+        protected string GeolocSearchFilter { get; private set; }
+        protected string GeolocSearchRegion { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -38,6 +40,26 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
             GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
+            
+            var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
+            if (filters.Length > 0)
+            {
+                GeolocSearchFilter = filters[0];
+            }
+            else
+            {
+                GeolocSearchFilter = "{0}";
+            }
+
+            if (filters.Length > 1 && filters[1].StartsWith("region="))
+            {
+                GeolocSearchRegion = filters[1].Split('=')[1];
+            }
+            else
+            {
+                GeolocSearchRegion = "";
+            }
+
         }
 
     }
