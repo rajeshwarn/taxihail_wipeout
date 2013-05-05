@@ -25,6 +25,7 @@ namespace apcurium.MK.Web
         protected string GeolocPopularRange { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
+        protected string GeolocSearchBounds { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -42,24 +43,21 @@ namespace apcurium.MK.Web
             GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
             
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
-            if (filters.Length > 0)
-            {
-                GeolocSearchFilter = filters[0];
-            }
-            else
-            {
-                GeolocSearchFilter = "{0}";
-            }
+            GeolocSearchFilter = filters.Length > 0 
+                ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
+                : "{0}";
+            GeolocSearchRegion = FindParam(filters, "region");
+            GeolocSearchBounds = FindParam(filters, "bounds");
 
-            if (filters.Length > 1 && filters[1].StartsWith("region="))
-            {
-                GeolocSearchRegion = filters[1].Split('=')[1];
-            }
-            else
-            {
-                GeolocSearchRegion = "";
-            }
+        }
 
+        protected string FindParam(string[] filters, string param)
+        {
+            var pair = filters.FirstOrDefault(x => x.StartsWith(param + "="));
+
+            return pair == null
+                ? string.Empty
+                : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
     }

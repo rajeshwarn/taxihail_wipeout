@@ -42,6 +42,7 @@
                 geoResult = $.get(url, {
                     address: filtered,
                     region: TaxiHail.parameters.geolocSearchRegion,
+                    bounds: TaxiHail.parameters.geolocSearchBounds,
                     sensor: true
                 });
             }
