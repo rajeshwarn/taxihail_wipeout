@@ -64,7 +64,9 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveCreditCard()
         {
-            var client = new CmtPaymentClient(DummyConfigManager);
+            
+            var client = GetCmtPaymentClient();
+
             var sut = new AccountServiceClient(BaseUrl, SessionId, client);
 
             const string creditCardComapny = "visa";

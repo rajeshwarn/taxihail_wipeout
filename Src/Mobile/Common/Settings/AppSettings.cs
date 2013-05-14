@@ -8,6 +8,8 @@ using ServiceStack.Text;
 using System.Reflection;
 using System.IO;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -181,6 +183,55 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool HideNoPreference {
             get { return _data.HideNoPreference; }
         }
+
+
+		public static string MERCHANT_TOKEN = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
+		public static string CONSUMER_KEY = "vmAoqWEY3zIvUCM4";
+		public static string CONSUMER_SECRET_KEY= "DUWzh0jAldPc7C5I";
+		
+		public static string PRODUCTION_BASE_URL = "https://payment.cmtapi.com/v2/merchants/"+MERCHANT_TOKEN+"/";        
+		public static string SANDBOX_BASE_URL = "https://payment-sandbox.cmtapi.com/v2/merchants/"+MERCHANT_TOKEN+"/";
+		#if DEBUG
+		public static string BASE_URL = SANDBOX_BASE_URL;
+		#else
+		public static string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production
+		#endif
+
+		public string PaymentBaseUrl
+		{
+			get
+			{
+				return BASE_URL;
+			}
+		}
+
+		public string PaymentConsumerKey
+		{
+			get
+			{
+				return CONSUMER_KEY;
+			}
+		}
+
+
+		public string PaymentConsumerSecretKey 
+		{
+			get
+			{
+				return CONSUMER_SECRET_KEY;
+			}
+		}
+
+		public string PaymentCurrencyCode
+		{
+			get
+			{
+				var configManager = TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+				return configManager.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString).NullIfEmpty()??AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar;
+				
+			}
+		}
+
 
     }
 }

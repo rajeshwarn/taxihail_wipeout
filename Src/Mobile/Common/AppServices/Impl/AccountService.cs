@@ -587,16 +587,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentClient> ();
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
             
-            int responseCode;
-            do{
-                
-                var response = creditAuthorizationService.Tokenize(creditCard.CardNumber,
-                                                                   new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1));
-                creditCard.Token = response.CardOnFileToken;
-                responseCode = response.ResponseCode;
-            }while(responseCode != 1);
+			try
+			{
+
+            int responseCode;                            
+			var response = creditAuthorizationService.Tokenize(creditCard.CardNumber, new DateTime(creditCard.ExpirationYear.ToInt(), 
+			                                                                                       creditCard.ExpirationMonth.ToInt(), 1)); 				
+			creditCard.Token = response.CardOnFileToken;            
+			responseCode = response.ResponseCode;
+			}
+			catch
+			{
+
+			}
+            
             
             var request = new CreditCardRequest
             {

@@ -98,9 +98,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
         
-        protected IPaymentClient PaymentClient{
+		protected IPaymentServiceClient PaymentClient{
             get{
-                return TinyIoCContainer.Current.Resolve<IPaymentClient> ();
+				return TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
             }
         }
         

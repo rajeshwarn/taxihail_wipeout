@@ -12,9 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Android", "..\Server\MK.Common\MK.Common.Android.csproj", "{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0B2090C8-7575-4992-9765-04354EEB73A5}"
-	ProjectSection(SolutionItems) = preProject
-		MvxApplicationObject.cs = MvxApplicationObject.cs
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Android", "Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj", "{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}"
 EndProject
@@ -47,11 +44,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Callbox.Mobile.Client.An
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
 		Android|Any CPU = Android|Any CPU
-		Mac|Any CPU = Mac|Any CPU
+		Debug|Any CPU = Debug|Any CPU
 		iOS|Any CPU = iOS|Any CPU
+		Mac|Any CPU = Mac|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Android|Any CPU.ActiveCfg = Debug|Any CPU
@@ -239,7 +236,7 @@ Global
 		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj
+		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

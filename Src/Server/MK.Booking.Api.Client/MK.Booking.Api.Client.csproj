@@ -100,8 +100,7 @@
     <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
-    <Compile Include="ICreditCardTokenizationService.cs" />
-    <Compile Include="IPaymentClient.cs" />
+    <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />

@@ -12,35 +12,38 @@ using MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 {
-    public class CmtPaymentServiceClient
+    public class CmtBasePaymentServiceClient
     {
-        public static string MERCHANT_TOKEN = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
-        public static string CONSUMER_KEY = "vmAoqWEY3zIvUCM4";
-        public static string CONSUMER_SECRET_KEY= "DUWzh0jAldPc7C5I";
+   
 
-        public static string PRODUCTION_BASE_URL = "https://payment.cmtapi.com/v2/merchants/"+MERCHANT_TOKEN+"/";        
-        public static string SANDBOX_BASE_URL = "https://payment-sandbox.cmtapi.com/v2/merchants/"+MERCHANT_TOKEN+"/";
-#if DEBUG
-        public static string BASE_URL = SANDBOX_BASE_URL;
-#else
-        public static string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production
-#endif
-
-        public CmtPaymentServiceClient(bool acceptAllHttps)
+		public CmtBasePaymentServiceClient(string baseUrl,  string consumerKey, string consumerSecretKey,  bool ignoreCertificateErrors )
         {
-            Client = new CustomXmlServiceClient(BASE_URL, acceptAllHttps)
+			ConsumerKey = consumerKey;
+			ConsumerSecretKey = consumerSecretKey;
+
+			Client = new CustomXmlServiceClient(baseUrl, ignoreCertificateErrors)
             {
                 Timeout = new TimeSpan(0, 0, 0, 20, 0),
                 LocalHttpWebRequestFilter = r=>SignRequest(r)
             };        
         }
 
+		protected string ConsumerKey {
+			get;
+			private set;
+		}
+
+		
+		protected string ConsumerSecretKey {
+			get;
+			private set;
+		}
         protected CustomXmlServiceClient Client { get; set; }
 
         private void SignRequest(WebRequest request)
         {
-            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(CONSUMER_KEY,
-                                                               CONSUMER_SECRET_KEY,
+            var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
+                                                               ConsumerSecretKey,
                                                                "",
                                                                "",
                                                                request.Method,
