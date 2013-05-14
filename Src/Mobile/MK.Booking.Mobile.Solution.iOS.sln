@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "iOS", "iOS", "{7BC56061-98BD-40AA-95FD-21840A4AF466}"
@@ -189,6 +189,22 @@ Global
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhone.Build.0 = Release|Any CPU
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.AdHoc|iPhone.ActiveCfg = AdHoc|iPhone
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.AdHoc|iPhone.Build.0 = AdHoc|iPhone
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|iPhone.Build.0 = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B201C111-F231-4D4A-9500-DF2CA8D5FD33}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{CF82F47F-A55D-45C6-B605-822458968E12}.AdHoc|iPhone.ActiveCfg = AdHoc|iPhone
 		{CF82F47F-A55D-45C6-B605-822458968E12}.AdHoc|iPhone.Build.0 = AdHoc|iPhone
 		{CF82F47F-A55D-45C6-B605-822458968E12}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
