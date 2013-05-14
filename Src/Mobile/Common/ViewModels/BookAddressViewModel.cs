@@ -344,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     bool positionSet = false;
-                    LocationService.GetNextPosition(TimeSpan.FromSeconds(1), 0).Subscribe(
+                    LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
                         positionSet =true;
