@@ -600,7 +600,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch
 			{
-
+                TinyIoC.TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage ( "Validation", "Cannot validate the credit card.");
+                return;
 			}
             
             
