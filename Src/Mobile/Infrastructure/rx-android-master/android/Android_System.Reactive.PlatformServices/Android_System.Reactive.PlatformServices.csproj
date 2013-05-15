@@ -35,6 +35,7 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AssemblyName>System.Reactive.PlatformServices</AssemblyName>
+    <DefineConstants>REACTIVE_2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'iOS|AnyCPU' ">
     <DebugType>none</DebugType>
