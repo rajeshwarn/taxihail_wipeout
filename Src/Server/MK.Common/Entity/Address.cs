@@ -51,8 +51,9 @@ namespace apcurium.MK.Common.Entity
         string ConcatAddressComponents ()
         {
             var prefixAddress = StreetNumber;
+
             if (BuildingName.HasValue ()) {
-                prefixAddress = BuildingName;
+                prefixAddress = BuildingName + " - " + StreetNumber;
             }
             var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
             if (components.Count > 1) {
