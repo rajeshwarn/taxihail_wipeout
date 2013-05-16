@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.IBS
 {
-    public class IBSOrderStauts
+    public class IBSOrderStatus
     {
         public string Status { get; set; }
         public double? VehicleLatitude { get; set; }
