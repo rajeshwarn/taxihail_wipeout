@@ -1,5 +1,6 @@
 {
    "IBS.AutoDispatch" : "true",   
+   "IBS.OrderPriority" : "true",   
    "IBS.DefaultAccountPassword" : "password",
    "IBS.ExcludedVehicleTypeId" : "22;21",
    "IBS.ExcludedPaymentTypeId" : "",

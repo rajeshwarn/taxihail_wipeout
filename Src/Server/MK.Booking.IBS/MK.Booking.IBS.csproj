@@ -95,7 +95,7 @@
     <Compile Include="IBSDriverInfos.cs" />
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
-    <Compile Include="IBSOrderStauts.cs" />
+    <Compile Include="IBSOrderStatus.cs" />
     <Compile Include="IDriverWebServiceClient.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
