@@ -5,6 +5,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using System.Threading;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -28,9 +29,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
         
-        public IBSOrderStauts GetOrderStatus(int orderId, int accountId, string contactPhone)
+        public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
-            var status = new IBSOrderStauts { Status = TWEBOrderStatusValue.wosNone.ToString() };
+            var status = new IBSOrderStatus { Status = TWEBOrderStatusValue.wosNone.ToString() };
             UseService(service =>
             {
                 var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty, accountId);
@@ -68,11 +69,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        
+
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
-            var order = new TBookOrder_5();
+            var order = new TBookOrder_7();
 
             order.ServiceProviderID = providerId;
             order.AccountID = accountId;
@@ -81,6 +82,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
             order.DispByAuto = autoDispatch;
+
+            var priority = ConfigManager.GetSetting("IBS.OrderPriority").SelectOrDefault(setting => bool.Parse(setting), true);
+            order.Priority = priority ? 1 : 0;
                        
 
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
@@ -107,18 +111,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_5 ) ) );
+                Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_7 ) ) );
                 Logger.LogMessage("WebService Creating IBS Order pickup : " + JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " + JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
 
-                orderId = service.SaveBookOrder_5(UserNameApp, PasswordApp, order);                
+                orderId = service.SaveBookOrder_7(UserNameApp, PasswordApp, order);                
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
         }
 
-        private bool ValidateZoneAddresses(TBookOrder_5 order)
+        private bool ValidateZoneAddresses(TBookOrder_7 order)
         {
             if (!ValidateZone(order.PickupAddress, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
             {
@@ -164,8 +168,25 @@ namespace apcurium.MK.Booking.IBS.Impl
             bool isCompleted = false;
             UseService(service =>
             {
-                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
-                isCompleted = result == 0;
+                int count = 0;
+                IBSOrderStatus status = null;
+                
+                //We need to try 5 times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up.
+                do
+                {
+                    if (count > 0)
+                    {
+                        Logger.LogMessage("WebService Cancel Order is not working!  Trying again in 500ms  : " + orderId + " " + accountId);
+                        Thread.Sleep(500);
+                    }
+
+                    var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
+                    count++;
+                    isCompleted = result == 0;
+                    status = GetOrderStatus(orderId, accountId, contactPhone);
+                }
+                while ( (status.Status.ToSafeString().Contains( "Cancel")) && ( count <= 5 ) );
+                
             });
             return isCompleted;
         }
