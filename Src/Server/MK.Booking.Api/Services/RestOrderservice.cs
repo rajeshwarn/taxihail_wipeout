@@ -15,14 +15,14 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly ICommandBus _commandBus;
         private IPaymentServiceClient _paymentClient;
-        private IVehicleClient _vehicleClient;
+        private IBookingWebServiceClient _bookingWebServiceClient;
         protected IOrderDao Dao { get; set; }
 
-        public RestOrderService(IOrderDao dao, ICommandBus commandBus, IPaymentServiceClient paymentClient, IVehicleClient vehicleClient)
+        public RestOrderService(IOrderDao dao, ICommandBus commandBus, IPaymentServiceClient paymentClient, IBookingWebServiceClient bookingWebServiceClient)
         {
             _commandBus = commandBus;
             _paymentClient = paymentClient;
-            _vehicleClient = vehicleClient;
+            _bookingWebServiceClient = bookingWebServiceClient;
             Dao = dao;
         }
 
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new WebException("Payment Error: Cannot complete transaction");
             }
 
-            _vehicleClient.SendMessageToDriver(request.CarNumber, "The passenger has payed " + request.Amount);
+            _bookingWebServiceClient.SendMessageToDriver("The passenger has payed " + request.Amount, request.CarNumber);
 
             _commandBus.Send(new CommitPaymentCommand()
             {
