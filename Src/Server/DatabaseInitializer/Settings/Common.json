@@ -16,6 +16,7 @@
    "OrderStatus.CabDriverNumberAssigned" : "Cab #{0} is assigned to you",
    "OrderStatus.CabDriverETA" : "ETA: {0}",
    "OrderStatus.DemoMode" : "false",
+   "OrderStatus.ServerPollingInterval" : "10",
    "OrderStatus.OrderDoneFareAvailable" : "Completed (Total cost : {0})",
    "OrderStatus.wosARRIVED" : "Taxi is at pickup location",
    "OrderStatus.wosASSIGNED" : "Driver assigned",

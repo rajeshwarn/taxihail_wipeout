@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     
                 _commandBus.Send(command);
             }
-
+            Logger.Debug("End Call IBS for Status");
         }
 
         private string FormatPrice(double? price)
