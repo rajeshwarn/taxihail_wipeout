@@ -25,6 +25,7 @@ using System.Xml.Serialization;
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Web.Services.WebServiceBindingAttribute(Name = "IWEBOrder_7binding", Namespace = "http://tempuri.org/")]
+[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TOrderStatus))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TException))]
 public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol
@@ -115,6 +116,8 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     private System.Threading.SendOrPostCallback GetVehicleLocationWithTaxiNoCompOperationCompleted;
 
     private System.Threading.SendOrPostCallback GetOrdersStatusOperationCompleted;
+
+    private System.Threading.SendOrPostCallback GetAvailableVehiclesOperationCompleted;
 
     /// <remarks/>
     public WebOrder7Service()
@@ -250,6 +253,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     /// <remarks/>
     public event GetOrdersStatusCompletedEventHandler GetOrdersStatusCompleted;
+
+    /// <remarks/>
+    public event GetAvailableVehiclesCompletedEventHandler GetAvailableVehiclesCompleted;
 
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
@@ -3258,6 +3264,71 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
 
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetAvailableVehicles", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public TVehiclePosition[] GetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
+    {
+        object[] results = this.Invoke("GetAvailableVehicles", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count});
+        return ((TVehiclePosition[])(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginGetAvailableVehicles(string Login, string Password, double Lon, double Lat, double maxRadius, int count, System.AsyncCallback callback, object asyncState)
+    {
+        return this.BeginInvoke("GetAvailableVehicles", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public TVehiclePosition[] EndGetAvailableVehicles(System.IAsyncResult asyncResult)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((TVehiclePosition[])(results[0]));
+    }
+
+    /// <remarks/>
+    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count)
+    {
+        this.GetAvailableVehiclesAsync(Login, Password, Lon, Lat, maxRadius, count, null);
+    }
+
+    /// <remarks/>
+    public void GetAvailableVehiclesAsync(string Login, string Password, double Lon, double Lat, double maxRadius, int count, object userState)
+    {
+        if ((this.GetAvailableVehiclesOperationCompleted == null))
+        {
+            this.GetAvailableVehiclesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAvailableVehiclesOperationCompleted);
+        }
+        this.InvokeAsync("GetAvailableVehicles", new object[] {
+                    Login,
+                    Password,
+                    Lon,
+                    Lat,
+                    maxRadius,
+                    count}, this.GetAvailableVehiclesOperationCompleted, userState);
+    }
+
+    private void OnGetAvailableVehiclesOperationCompleted(object arg)
+    {
+        if ((this.GetAvailableVehiclesCompleted != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.GetAvailableVehiclesCompleted(this, new GetAvailableVehiclesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
     public new void CancelAsync(object userState)
     {
         base.CancelAsync(userState);
@@ -3988,6 +4059,76 @@ public partial class TWEBTimeStamp
         set
         {
             this.fractionsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
+public partial class TVehiclePosition
+{
+
+    private string vehicleNumberField;
+
+    private double longitudeField;
+
+    private double latitudeField;
+
+    private TWEBTimeStamp gPSLastUpdatedField;
+
+    /// <remarks/>
+    public string VehicleNumber
+    {
+        get
+        {
+            return this.vehicleNumberField;
+        }
+        set
+        {
+            this.vehicleNumberField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double Longitude
+    {
+        get
+        {
+            return this.longitudeField;
+        }
+        set
+        {
+            this.longitudeField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double Latitude
+    {
+        get
+        {
+            return this.latitudeField;
+        }
+        set
+        {
+            this.latitudeField = value;
+        }
+    }
+
+    /// <remarks/>
+    public TWEBTimeStamp GPSLastUpdated
+    {
+        get
+        {
+            return this.gPSLastUpdatedField;
+        }
+        set
+        {
+            this.gPSLastUpdatedField = value;
         }
     }
 }
@@ -7049,6 +7190,36 @@ public partial class GetOrdersStatusCompletedEventArgs : System.ComponentModel.A
         {
             this.RaiseExceptionIfNecessary();
             return ((TOrderStatus[])(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+public delegate void GetAvailableVehiclesCompletedEventHandler(object sender, GetAvailableVehiclesCompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class GetAvailableVehiclesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal GetAvailableVehiclesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+        base(exception, cancelled, userState)
+    {
+        this.results = results;
+    }
+
+    /// <remarks/>
+    public TVehiclePosition[] Result
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((TVehiclePosition[])(this.results[0]));
         }
     }
 }
