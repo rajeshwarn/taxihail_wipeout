@@ -86,9 +86,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.Get<Common.Entity.OrderRatings>(req);
         }
 
-        public void FinailizePayment(string amount, string carNumber, long transactionId, Guid orderId, string ibsOrderNumber)
+        public void FinailizePayment(double amount, string carNumber, long transactionId, Guid orderId, int ibsOrderNumber)
         {
-            Client.Post(new CapturePaymentRequest()
+            Client.Post(new CapturePaymentRequest
                 {
                     Amount = amount,
                     CarNumber = carNumber,
