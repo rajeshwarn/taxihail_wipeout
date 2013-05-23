@@ -120,6 +120,7 @@
     <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
+    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />
