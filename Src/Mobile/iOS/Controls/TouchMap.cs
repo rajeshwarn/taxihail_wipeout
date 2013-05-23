@@ -293,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
-            if(!adressesToDisplay.Any())
+            if(adressesToDisplay == null || !adressesToDisplay.Any())
             {
                 return;
             }

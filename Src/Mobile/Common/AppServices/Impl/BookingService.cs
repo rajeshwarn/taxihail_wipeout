@@ -26,8 +26,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsValid (CreateOrder info)
         {
+
             return info.PickupAddress.BookAddress.HasValue () 
                 && info.PickupAddress.HasValidCoordinate ();
+
         }
 
         protected ILogger Logger {
@@ -37,14 +39,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected ICacheService Cache {
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
+
         public OrderValidationResult ValidateOrder (CreateOrder order)
         {
             var validationResut = new OrderValidationResult ();
             
             UseServiceClient<OrderServiceClient> (service =>
-                                                  {
+            {
                 validationResut = service.ValidateOrder  (order);
-            }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+            }, ex => Logger.LogError (ex));
             return validationResut;
         }
         public OrderStatusDetail CreateOrder (CreateOrder order)
@@ -136,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 UseServiceClient<OrderServiceClient> (service =>
                 {
                     result = service.GetOrderStatus (new Guid (lastOrderId));
-                }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+                }, ex => Logger.LogError (ex));
 
                 return result;
             });

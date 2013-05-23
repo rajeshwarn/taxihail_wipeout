@@ -217,8 +217,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Order.PickupAddress.RingCode = result.RingCode;
 							Order.PickupAddress.BuildingName = result.BuildingName;
 							InvokeOnMainThread(() => {
-								FirePropertyChanged("AptRingCode");
-								FirePropertyChanged("BuildingName");
+								FirePropertyChanged(()=>AptRingCode);
+								FirePropertyChanged(()=>BuildingName);
 							});
 						}
 					});
@@ -247,8 +247,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                     Order.Settings.Passengers = result.Settings.Passengers;
                                                                     InvokeOnMainThread(() =>
                                                                                            {
-                                                                                               FirePropertyChanged("AptRingCode");
-                                                                                               FirePropertyChanged("BuildingName");
+                                                                                               FirePropertyChanged(()=>AptRingCode);
+                                                                                               FirePropertyChanged(()=>BuildingName);
                                                                                                FirePropertyChanged(() => OrderPassengerNumber);
                                                                                                FirePropertyChanged(() => OrderPhone);
                                                                                                FirePropertyChanged(() => OrderName);
@@ -285,7 +285,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             					
             					if (orderInfo.IBSOrderId.HasValue
             					    && orderInfo.IBSOrderId > 0) {
-            						var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
+            						var orderCreated = new Order 
+                                    {
+                                        CreatedDate = DateTime.Now, 
+                                        DropOffAddress = Order.DropOffAddress, 
+                                        IBSOrderId = orderInfo.IBSOrderId, 
+                                        Id = Order.Id, PickupAddress = Order.PickupAddress,
+                                        Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+                                        Settings = Order.Settings,
+                                    };
             						
             						RequestNavigate<BookingStatusViewModel>(new
             						                                        {

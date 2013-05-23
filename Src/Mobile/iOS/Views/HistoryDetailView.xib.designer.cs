@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -73,6 +73,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnViewRating { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblAuthorization { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtAthorization { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -179,6 +185,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnViewRating != null) {
 				btnViewRating.Dispose ();
 				btnViewRating = null;
+			}
+
+			if (lblAuthorization != null) {
+				lblAuthorization.Dispose ();
+				lblAuthorization = null;
+			}
+
+			if (txtAthorization != null) {
+				txtAthorization.Dispose ();
+				txtAthorization = null;
 			}
 		}
 	}

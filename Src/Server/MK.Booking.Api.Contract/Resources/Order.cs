@@ -8,9 +8,12 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class Order : BaseDTO
     {
+
+
         public Guid Id { get; set; }
 
         public int? IBSOrderId { get; set; }
+
         
         public DateTime PickupDate { get; set; }
 

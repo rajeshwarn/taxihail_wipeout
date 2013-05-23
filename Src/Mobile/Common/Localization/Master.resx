@@ -261,6 +261,10 @@
   <data name="PickupMapTitle" xml:space="preserve">
     <value>Pickup location</value>
   </data>
+    
+    <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+        <value>Authorization</value>
+    </data>
   <data name="CancelBoutton" xml:space="preserve">
     <value>Cancel</value>
   </data>
