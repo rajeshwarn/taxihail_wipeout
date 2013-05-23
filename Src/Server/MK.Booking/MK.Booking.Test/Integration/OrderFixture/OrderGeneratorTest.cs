@@ -110,7 +110,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         public given_existing_order()
         {
             var pickupDate = DateTime.Now;
-            var requestDate = DateTime.Now.AddHours(1);
 
             this.sut.Handle(new OrderCreated()
                                 {
@@ -134,6 +133,24 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                     CreatedDate = DateTime.Now,                                    
                                 });
 
+        }
+
+
+        [Test]
+        public void when_payment_is_made()
+        {
+            this.sut.Handle(new TransactionIdSet()
+            {
+                SourceId = _orderId,
+                TransactionId = 1234,
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(1234, dto.TransactionId);
+            }
         }
 
         [Test]

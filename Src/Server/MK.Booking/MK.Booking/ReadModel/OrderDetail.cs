@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsRemovedFromHistory { get; set; }
 
+        public long TransactionId { get; set; }
+
         public bool IsRated { get; set; }
     }
 }

@@ -87,7 +87,7 @@
     <Compile Include="Integration\CreditCardFixture\CreditCardDetailsGenerator.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
-    <Compile Include="Integration\OrderFixture\OrderGenerator.cs" />
+    <Compile Include="Integration\OrderFixture\OrderGeneratorTest.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
