@@ -130,8 +130,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 OrderStatusDetail result = new OrderStatusDetail ();
 
-
-
                 if (!HasLastOrder) {
                     throw new InvalidOperationException ();
                 }
@@ -273,6 +271,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 orderRate = service.GetOrderRatings (orderId);
             });
             return orderRate;
+        }
+
+        
+        public void FinailizePayment (Guid orderId)
+        {
+            UseServiceClient<OrderServiceClient> (service =>
+            {
+                service.FinailizePayment (orderId);
+            });
         }
 
         public void SendRatingReview (Common.Entity.OrderRatings orderRatings)
