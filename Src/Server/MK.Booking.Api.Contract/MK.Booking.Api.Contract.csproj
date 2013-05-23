@@ -85,6 +85,7 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\AdminConfirmAccountRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
+    <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AppSetting.cs" />
+    <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Resources\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Cmt\LinkData.cs" />
     <Compile Include="Resources\Cmt\PreCogActionType.cs" />

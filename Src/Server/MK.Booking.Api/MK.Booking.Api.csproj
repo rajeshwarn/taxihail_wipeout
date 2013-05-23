@@ -116,6 +116,7 @@
     <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
+    <Compile Include="Services\AvailableVehiclesService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
+    <Compile Include="Validation\AvailableVehiclesValidator.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
     <Compile Include="Validation\RegisterAccountValidator.cs" />
