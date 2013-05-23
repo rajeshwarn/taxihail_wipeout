@@ -86,5 +86,10 @@ namespace Infrastructure.EventSourcing
             this.version = e.Version;
             this.pendingEvents.Add(e);
         }
+
+        protected void NoAction(VersionedEvent e)
+        {
+         
+        }
     }
 }

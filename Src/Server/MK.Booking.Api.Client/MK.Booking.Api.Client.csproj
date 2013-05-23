@@ -90,6 +90,7 @@
     <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
+    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />

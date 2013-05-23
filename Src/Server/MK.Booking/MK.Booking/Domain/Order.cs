@@ -24,8 +24,9 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderCompleted>(OnOrderCompleted);
             base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
             base.Handles<OrderRated>(OnOrderRated);
-            base.Handles<PaymentInformationSet>(OnPaymentInformationSet);
+            base.Handles<PaymentInformationSet>(NoAction);
             base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
+            Handles<TransactionIdSet>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -156,9 +157,13 @@ namespace apcurium.MK.Booking.Domain
             _isRated = true;
         }
 
-        private void OnPaymentInformationSet(PaymentInformationSet @event)
-        {
 
+        public void SetTransactonId(long transactionId)
+        {
+            Update(new TransactionIdSet
+            {
+                TransactionId = transactionId,
+            });
         }
 
         
