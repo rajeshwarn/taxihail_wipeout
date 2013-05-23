@@ -10,9 +10,11 @@ using Infrastructure.Messaging.InMemory;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
+using MK.Booking.Api.Client;
 using Microsoft.Practices.Unity;
 using PushSharp.Android;
 using PushSharp.Apple;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Common.Configuration;
@@ -69,6 +71,9 @@ namespace apcurium.MK.Web
             var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
+
+
+            
 
         }
 

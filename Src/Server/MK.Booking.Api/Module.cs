@@ -1,7 +1,9 @@
 ﻿using System;
 using Infrastructure.Messaging;
 using AutoMapper;
+using MK.Booking.Api.Client;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
@@ -25,6 +27,7 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
             container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+            container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
         }
 
         private void RegisterMaps()
