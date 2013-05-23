@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.Caching;
@@ -16,6 +17,7 @@ using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
@@ -106,7 +108,13 @@ namespace apcurium.MK.Web
             if (HttpRuntime.Cache[CacheKey] == null)
             {
                 Trace.WriteLine("Add OrderStatusJob in Cache");
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
+                var configurationManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+                int pollingValue;
+                if (!int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any, CultureInfo.InvariantCulture, out pollingValue))
+                {
+                    pollingValue = 10;
+                }
+                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(pollingValue), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
             }
         }
 
@@ -120,7 +128,13 @@ namespace apcurium.MK.Web
             }
             finally
             {
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
+                var configurationManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+                int pollingValue;
+                if (!int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any, CultureInfo.InvariantCulture, out pollingValue))
+                {
+                    pollingValue = 10;
+                }
+                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(pollingValue), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
             }
         }
 

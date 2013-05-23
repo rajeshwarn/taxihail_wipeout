@@ -10,7 +10,7 @@
    "FacebookEnabled" : "true",
    "SupportEmail" : "techsupport@apcurium.com",
    
-   "ServiceUrl" : "http://test.taxihail.biz:8181/Taxihail14/api/",
+   "ServiceUrl" : "http://test.taxihail.biz:8181/Taxihaildemo/api/",
    
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
