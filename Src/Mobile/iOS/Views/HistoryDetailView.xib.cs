@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStatus.Text = Resources.HistoryDetailStatusLabel;
             lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
+            lblAuthorization.Text =Resources.HistoryDetailAuthorizationLabel;
+           
 
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
@@ -78,7 +80,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ btnSendReceipt, "{'Hidden':{'Path': 'Status.FareAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
 				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
 				{ btnRebook, "{'TouchUpInside':{'Path':'RebookOrder'}}"},
-				{ txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
+                { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
+                { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"},
 				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
 				{ txtRequested, "{'Text':{'Path': 'RequestedTxt'}}"},

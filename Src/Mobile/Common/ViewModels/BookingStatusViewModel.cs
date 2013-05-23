@@ -289,7 +289,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 }
             } catch (Exception ex) {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
+                Logger.LogError (ex);
             }
         }
 
