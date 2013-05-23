@@ -939,7 +939,7 @@ public partial class TBookAccount2 : TBookAccount {
     
     private TWEBFavotiteAddress[] favoriteAddressesField;
     
-    private TException[] exceptionsField;
+    
     
     private TVehicleTypeItem[] vehicleTypesField;
     
@@ -1225,15 +1225,7 @@ public partial class TBookAccount2 : TBookAccount {
         }
     }
     
-    /// <remarks/>
-    public TException[] Exceptions {
-        get {
-            return this.exceptionsField;
-        }
-        set {
-            this.exceptionsField = value;
-        }
-    }
+   
     
     /// <remarks/>
     public TVehicleTypeItem[] VehicleTypes {
