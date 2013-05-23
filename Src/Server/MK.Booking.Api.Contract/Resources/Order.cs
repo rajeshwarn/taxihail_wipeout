@@ -36,5 +36,10 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public bool IsCompleted { get; set; }
 
         public bool IsRated { get; set; }
+
+        public string TransactionId {
+            get;
+            set;
+        }
     }
 }

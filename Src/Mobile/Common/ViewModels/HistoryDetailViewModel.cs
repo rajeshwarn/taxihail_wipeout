@@ -31,13 +31,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order _order;
 		public Order Order {
 			get{ return _order; }
-            set { _order = value; FirePropertyChanged(()=>Order); 
+            set { _order = value; 
+                AuthorizationNumber = _order.TransactionId;
+                FirePropertyChanged(()=>Order); 
                 FirePropertyChanged(()=>ConfirmationTxt); 
                 FirePropertyChanged(()=>RequestedTxt); 
                 FirePropertyChanged(()=>OriginTxt); 
                 FirePropertyChanged(()=>AptRingTxt); 
                 FirePropertyChanged(()=>DestinationTxt); 
-                FirePropertyChanged(()=>AuthorizationNumber); 
                 FirePropertyChanged(()=>PickUpDateTxt); }
 		}
 
@@ -260,7 +261,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadOrder() 
 		{
 			return Task.Factory.StartNew(() => {
-				this.Order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(this.OrderId);
+				this.Order = AccountService.GetHistoryOrder(this.OrderId);
 			});
 
 		}
@@ -356,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                     {
-                        TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(OrderId);
+                        BookingService.SendReceipt(OrderId);
                     }
                     RequestClose(this);
                 });

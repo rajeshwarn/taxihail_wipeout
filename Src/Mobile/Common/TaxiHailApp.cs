@@ -95,11 +95,16 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
+            /* Use fake please
 			TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>
-			                                                         {
+			{
 				var settings = c.Resolve<IAppSettings>();
 				return new CmtPaymentClient( settings.PaymentBaseUrl, settings.PaymentConsumerKey, settings.PaymentConsumerSecretKey, settings.PaymentCurrencyCode, true);
 			});
+            */
+            TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>new CmtFakeClient());//Fake
+
+
             TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
 
