@@ -17,5 +17,7 @@ namespace apcurium.MK.Booking.IBS
 
         bool SendMessageToDriver(string message, string carId);
 
+        IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count);
+
     }
 }

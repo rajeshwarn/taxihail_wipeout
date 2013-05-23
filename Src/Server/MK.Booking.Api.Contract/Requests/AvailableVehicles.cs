@@ -13,6 +13,15 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>
     {
+        public AvailableVehiclesResponse()
+        {
+            
+        }
 
+        public AvailableVehiclesResponse(IEnumerable<AvailableVehicle> list)
+            :base(list)
+        {
+            
+        }
     }
 }
