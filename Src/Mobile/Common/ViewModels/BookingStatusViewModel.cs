@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookingStatusViewModel : BaseViewModel
     {
 
-		private const int _refreshPeriod = 10; //in seconds
+		private int _refreshPeriod = 10; //in seconds
 
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
