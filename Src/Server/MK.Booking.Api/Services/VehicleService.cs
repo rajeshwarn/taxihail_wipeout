@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             return new SendMessageToDriverResponse()
                 {
-                    Success = _bookingWebServiceClient.SendMessageToDriver(request.CarNumber, request.Message)
+                    Success = _bookingWebServiceClient.SendMessageToDriver(request.Message, request.CarNumber)
                 };
         }
 
