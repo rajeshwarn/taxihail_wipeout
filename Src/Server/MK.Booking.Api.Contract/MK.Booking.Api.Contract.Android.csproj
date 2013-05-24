@@ -105,9 +105,9 @@
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
-    <Compile Include="Requests\SendMessageToDriverRequest.cs" />
-    <Compile Include="Requests\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
+    <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
+    <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

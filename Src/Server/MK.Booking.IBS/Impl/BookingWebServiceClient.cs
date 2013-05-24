@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var success = false;
             UseService(service =>
             {
-                var resultat = service.SendDriverMsg(UserNameApp, PasswordApp, message, carId);
+                var resultat = service.SendDriverMsg(UserNameApp, PasswordApp, carId,message);
                 success = resultat == 1;
             });
             return success;
