@@ -244,6 +244,8 @@
     <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
+    <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
+    <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

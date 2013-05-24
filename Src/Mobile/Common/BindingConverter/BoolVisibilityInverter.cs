@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
         public override MvxVisibility ConvertToMvxVisibility(object value, object parameter, CultureInfo culture)
         {
             var visibility = !(bool)value;
-            return visibility ? MvxVisibility.Visible : MvxVisibility.Collapsed;
+			return visibility ? MvxVisibility.Visible : MvxVisibility.Collapsed;
         }
     }
 }
