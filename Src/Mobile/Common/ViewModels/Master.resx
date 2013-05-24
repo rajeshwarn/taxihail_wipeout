@@ -307,7 +307,7 @@
     <value>Today</value>
   </data>
     <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
-        <value>Authorization</value>
+        <value>Authorization:</value>
     </data>
   <data name="TimeNow" xml:space="preserve">
     <value>As soon as possible</value>

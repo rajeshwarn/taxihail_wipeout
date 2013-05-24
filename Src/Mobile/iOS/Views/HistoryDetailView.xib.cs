@@ -17,6 +17,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.BindingConverter;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -81,13 +83,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
 				{ btnRebook, "{'TouchUpInside':{'Path':'RebookOrder'}}"},
                 { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
-                { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"},
 				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
 				{ txtRequested, "{'Text':{'Path': 'RequestedTxt'}}"},
 				{ txtAptCode, "{'Text':{'Path': 'AptRingTxt'}}"},
 				{ txtStatus, "{'Text':{'Path': 'Status.IBSStatusDescription'}}"},
-				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"}
+				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"},
+                
+                { lblAuthorization, new B("Hidden","AuthorizationNumber",typeof(NoValueToTrueConverter))},
+                { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"}
 			});
 
             ViewModel.Load();

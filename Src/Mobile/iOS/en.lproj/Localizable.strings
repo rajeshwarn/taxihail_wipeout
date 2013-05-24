@@ -403,4 +403,4 @@
 "OrderNumber"="Order #";
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
 "NoOrderId"="Order Not ready";
-"HistoryDetailAuthorizationLabel"="Authorization";
+"HistoryDetailAuthorizationLabel"="Authorization:";
