@@ -28,7 +28,6 @@ using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -42,9 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private bool _initialized;
         private IAccountService _accountService;
-        private AbstractLocationService _geolocator;
         private IBookingService _bookingService;
-        private IApplicationInfoService _applicationInfoService;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
@@ -75,9 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _accountService = this.GetService<IAccountService>();
             _accountService = this.GetService<IAccountService>();
-            _geolocator = this.GetService<AbstractLocationService>();
             _bookingService = this.GetService<IBookingService>();
-            _applicationInfoService= this.GetService<IApplicationInfoService>();
             Panel = new PanelViewModel(this);
         }
 

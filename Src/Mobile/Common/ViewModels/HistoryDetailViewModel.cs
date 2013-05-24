@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Order Order {
 			get{ return _order; }
             set { _order = value; 
-                AuthorizationNumber = _order.TransactionId;
+                AuthorizationNumber = _order.TransactionId+"";
                 FirePropertyChanged(()=>Order); 
                 FirePropertyChanged(()=>ConfirmationTxt); 
                 FirePropertyChanged(()=>RequestedTxt); 
