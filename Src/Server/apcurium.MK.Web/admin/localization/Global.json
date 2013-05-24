@@ -73,7 +73,8 @@
 	"IBS.ValidateDestinationZone" : "IBS validate destination zone",
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",
-	
+	"Client.OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
+	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
 
 	"/******* End settings Aliases *******/": ""
 }
