@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new WebException("Payment Error: Cannot complete transaction");
             }
 
-            _bookingWebServiceClient.SendMessageToDriver("The passenger has payed " + request.Amount, request.CarNumber);
+            _bookingWebServiceClient.SendMessageToDriver("The passenger has payed " + request.Amount.ToString("C"), request.CarNumber);
 
 
             if (!_bookingWebServiceClient.SendAuthCode(request.IbsOrderNumber, request.Amount,

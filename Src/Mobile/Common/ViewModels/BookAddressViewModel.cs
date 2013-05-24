@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             }
                             else
                             {
-                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
+                                Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
                                 ClearAddress();
                             }
                         });
@@ -365,29 +365,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void SearchAddressForCoordinate(Position p)
         {
             IsExecuting = true;
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
+            Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
 
-            var accountAddress = TinyIoCContainer.Current.Resolve<IAccountService>().FindInAccountAddresses(p.Latitude, p.Longitude);
+            var accountAddress = AccountService.FindInAccountAddresses(p.Latitude, p.Longitude);
             if (accountAddress != null)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Address found in account");
+                Logger.LogMessage("Address found in account");
                 SetAddress(accountAddress, false);
             }
             else
             {
-                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude,true);
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
+                var address = GeolocService.SearchAddress(p.Latitude, p.Longitude,false);
+                Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Count() > 0)
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" found {0} addresses", address.Count());
+                    Logger.LogMessage(" found {0} addresses", address.Count());
                     SetAddress(address[0], false);
                 }
                 else
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" clear addresses");
+                    Logger.LogMessage(" clear addresses");
                     ClearAddress();
                 }
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Exiting SearchAddress thread");
+                Logger.LogMessage("Exiting SearchAddress thread");
             }
 
             IsExecuting = false;

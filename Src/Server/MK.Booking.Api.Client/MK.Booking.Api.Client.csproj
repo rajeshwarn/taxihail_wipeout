@@ -123,6 +123,7 @@
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
+    <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">

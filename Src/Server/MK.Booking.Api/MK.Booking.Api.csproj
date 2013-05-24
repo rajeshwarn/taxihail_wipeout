@@ -158,6 +158,7 @@
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\AvailableVehiclesValidator.cs" />
+    <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
     <Compile Include="Validation\RegisterAccountValidator.cs" />

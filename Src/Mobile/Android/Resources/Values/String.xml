@@ -155,6 +155,7 @@
   <string name="NewPasswordConfirmationLabel">Confirmation</string>
   <string name="SaveButton">Save</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
+  <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="LocationDetailAptPlaceholder">Apartment</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="NoHistoryLabel">No booking history</string>
