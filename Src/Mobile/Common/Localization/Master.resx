@@ -1258,7 +1258,7 @@
     <value>Please enter the amount</value>
   </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
-    <value>Resend confirmation</value>
+    <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The Client has payed {0}</value>
