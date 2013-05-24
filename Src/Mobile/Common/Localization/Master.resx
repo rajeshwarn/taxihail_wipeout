@@ -1249,7 +1249,7 @@
     <value>Pay for this order</value>
   </data>
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
-    <value>Confirmation sent to the driver</value>
+    <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
   </data>
   <data name="CmtTransactionSuccessTitle" xml:space="preserve">
     <value>Payment Recieved</value>
@@ -1258,7 +1258,7 @@
     <value>Please enter the amount</value>
   </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
-    <value>Resend confirmation</value>
+    <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The Client has payed {0}</value>

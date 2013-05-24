@@ -396,9 +396,9 @@
 "CmtTransactionErrorMessage"="Transaction Denied";
 "OkButtonText"="Ok";
 "TaxiServerDownMessage"="Can't send message to Taxi";
-"CmtTransactionSuccessMessage"="Confirmation sent to the driver";
+"CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
 "CmtTransactionSuccessTitle"="Payment Recieved";
-"CmtTransactionResendConfirmationButtonText"="Resend confirmation";
+"CmtTransactionResendConfirmationButtonText"="Resend";
 "PaymentConfirmationMessageToDriver"="The Client has payed {0}";
 "OrderNumber"="Order #";
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
