@@ -58,13 +58,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		public void ShowConfirmation()
+		public void ShowConfirmation(long authorizationCode)
 		{
-			MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, Str.CmtTransactionSuccessMessage,
+            MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, authorizationCode),
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
 			{				
 				ConfirmPaymentForDriver();
-				ShowConfirmation();
+                ShowConfirmation(authorizationCode);
 			},
 			Str.OkButtonText, ()=>{
                 ReturnResult("");
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
 					MessageService.ShowProgress(false);
-					ShowConfirmation();					          
+                    ShowConfirmation(transactionId);					          
 					
 
                 }); 
