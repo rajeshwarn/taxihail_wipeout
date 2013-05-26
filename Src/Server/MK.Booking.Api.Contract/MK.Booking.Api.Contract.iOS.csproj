@@ -125,6 +125,7 @@
     <Compile Include="Requests\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
+    <Compile Include="Requests\AvailableVehicles.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -134,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\OrderRatings.cs" />
+    <BundleResource Include="Resources\AvailableVehicle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Requests\Cmt\" />
