@@ -225,13 +225,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		private IEnumerable<AvailableVehicle> _availableVehicles;
 		public IEnumerable<AvailableVehicle> AvailableVehicles
 		{
-			get { return _availableVehicles; }
 			set
 			{
-				_availableVehicles = value;
 				ShowAvailableVehicles (value);
 			}
 		}
