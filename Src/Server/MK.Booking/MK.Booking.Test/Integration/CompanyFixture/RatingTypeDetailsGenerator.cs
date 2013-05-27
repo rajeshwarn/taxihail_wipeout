@@ -119,5 +119,24 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.That(ratingType.IsHidden, Is.True);
             }
         }
+
+        [Test]
+        public void when_ratingType_with_same_name_created()
+        {
+            using (var context = new BookingDbContext(dbName))
+            {
+                var firstRatingType = context.Query<RatingTypeDetail>().FirstOrDefault();
+
+                this.sut.Handle(new RatingTypeAdded
+                {
+                    SourceId = (_companyId = Guid.NewGuid()),
+                    RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
+                    Name = firstRatingType.Name
+                });
+
+                var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
+                Assert.That(countWithName, Is.EqualTo(1));
+            }
+        }
     }
 }

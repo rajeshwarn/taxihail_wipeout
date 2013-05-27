@@ -267,36 +267,30 @@ namespace DatabaseInitializer
                         ConfimationToken = registerAdminAccountCommand.ConfimationToken
                     });
 
-                    //TODO: Add default rating types
-                    //commandBus.Send(new AddRatingType
-                    //{
-                    //    CompanyId = AppConstants.CompanyId, //TODO: Validate terms : Cab Cleanliness, Driver Politeness, Safety/Driving
-                    //    Name = "Cab Cleanliness"
-                    //});
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Knowledgable driver",
+                        RatingTypeId = Guid.NewGuid()
+                    });
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Politeness",
+                        RatingTypeId = Guid.NewGuid()
+                    });
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Safety",
+                        RatingTypeId = Guid.NewGuid()
+                    });
                 }
 
                 commandBus.Send(new AddOrUpdateAppSettings()
                 {
                     AppSettings = appSettings,
                     CompanyId = AppConstants.CompanyId
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Knowledgable driver",
-                    RatingTypeId = Guid.NewGuid()
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Politness",
-                    RatingTypeId = Guid.NewGuid()
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Safety",
-                    RatingTypeId = Guid.NewGuid()
                 });
             }
             catch (Exception e)
