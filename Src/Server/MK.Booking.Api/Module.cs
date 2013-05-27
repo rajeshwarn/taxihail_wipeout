@@ -1,8 +1,8 @@
 ﻿using System;
 using Infrastructure.Messaging;
 using AutoMapper;
-using MK.Booking.Api.Client;
 using Microsoft.Practices.Unity;
+using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
