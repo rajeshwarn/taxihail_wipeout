@@ -190,6 +190,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
             InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
             CenterMap(sender is bool ? !(bool)sender : false);
+            LoadAvailableVehicles (Pickup.Model.Latitude, Pickup.Model.Longitude);
 
             Task.Factory.SafeStartNew(() => CalculateEstimate());
             FirePropertyChanged(() => CanClearAddress);
@@ -321,10 +322,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _mapCenter = value;
                 FirePropertyChanged(() => MapCenter);
-				if (value != null && value.Any ()) {
-					var coordinate = value.First ().Coordinate;
-					LoadAvailableVehicles (coordinate.Latitude, coordinate.Longitude);
-				}
 			}
         }
 
