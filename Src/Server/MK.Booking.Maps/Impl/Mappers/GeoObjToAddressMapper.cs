@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName)
+        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName=null)
         {
             var address = new Address
             {

@@ -47,8 +47,10 @@ namespace apcurium.MK.Web.Tests
                 var a1 = addresses.ElementAt(0);
                 Assert.IsNotNullOrEmpty(a1.PlaceReference);
 
+
+
                 var sut = new PlaceDetailServiceClient(BaseUrl, SessionId);
-                var address = sut.GetPlaceDetail(a1.PlaceReference);
+                var address = sut.GetPlaceDetail(a1.PlaceReference,a1.FriendlyName);
                 Assert.AreNotEqual(0, address.Latitude);
                 Assert.AreNotEqual(0, address.Longitude);
                 Assert.IsNotNullOrEmpty(address.FullAddress);
