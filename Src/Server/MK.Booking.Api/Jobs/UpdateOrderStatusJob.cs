@@ -60,7 +60,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 var ibsStatus = ibsOrders.FirstOrDefault(status => status.IBSOrderId == order.IBSOrderId);
 
-                var statusChanged = ibsStatus != null && ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status;
+                if (ibsStatus == null) continue;
+
+                var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
+                    || order.VehicleLatitude != ibsStatus.VehicleLatitude
+                    || order.VehicleLongitude != ibsStatus.VehicleLongitude;
+
                 if (!statusChanged) { continue; }
 
                 var command = new ChangeOrderStatus
