@@ -225,6 +225,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+		private IEnumerable<AvailableVehicle> _availableVehicles;
+		public IEnumerable<AvailableVehicle> AvailableVehicles
+		{
+			get { return _availableVehicles; }
+			set
+			{
+				_availableVehicles = value;
+				ShowAvailableVehicles (value);
+			}
+		}
+		
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode {
 			get {
@@ -346,6 +358,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
 			}
 			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
+		}
+
+		private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+		{
+			if (vehicles == null)
+				return;
+
+			foreach (var v in vehicles)
+			{
+				MapService.AddPushPin (this,
+				                       Resources.GetDrawable (Resource.Drawable.pin_cab),
+				                       MapService.GetGeoPoint (v.Latitude, v.Longitude),
+				                       string.Empty);
+			}
 		}
     }
 }

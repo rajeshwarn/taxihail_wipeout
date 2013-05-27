@@ -335,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             { 
 				_availableVehicles = value;
-                FirePropertyChanged("AvailableVehicles");
+				FirePropertyChanged("AvailableVehicles");
             }
         }
 
@@ -632,6 +632,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
                 .Subscribe (result => {
                     InvokeOnMainThread(() =>{
+#if DEBUG
+						if(result.Length == 0) result = new [] { new AvailableVehicle { Latitude=latitude+0.001, Longitude=longitude+0.001}};
+#endif
                         this.AvailableVehicles = result;
                     });
                 });

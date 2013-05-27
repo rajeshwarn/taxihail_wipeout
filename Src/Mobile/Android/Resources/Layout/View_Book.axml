@@ -62,7 +62,7 @@
                             android:background="@color/transparent"
                             android:layout_marginRight="5dip"
                             android:drawableRight="@drawable/right_arrow"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.AddressLine1&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.AddressLine2&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Pickup.IsPlaceHolder&apos;} }"
+                            local:MvxBind="{'Click':{'Path':'Pickup.PickAddress'}, 'Cancel':{'Path':'Pickup.CancelCurrentLocationCommand'},'IsProgressing':{'Path':'Pickup.IsExecuting'},'TextLine1' : {'Path':'Pickup.AddressLine1'}, 'TextLine2' : {'Path':'Pickup.AddressLine2'},'IsPlaceHolder' : {'Path':'Pickup.IsPlaceHolder'} }"
                             android:paddingRight="5dip" />
                         <ImageButton
                             android:id="@+id/pickupIsActiveButton"
@@ -70,7 +70,7 @@
                             android:src="@drawable/hail_state"
                             style="@style/ButtonTextGray"
                             android:layout_height="40dip"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;AddressSelectionMode&apos;, &apos;Converter&apos;: &apos;EnumToBool&apos;, &apos;ConverterParameter&apos;: &apos;PickupSelection&apos; }}"
+                            local:MvxBind="{'Click':{'Path':'ActivatePickup'}, 'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection' }}"
                             android:layout_gravity="fill"
                             android:layout_width="40dip"
                             android:scaleType="fitCenter"
@@ -94,7 +94,7 @@
                             android:layout_marginBottom="5dip"
                             android:gravity="left"
                             android:layout_weight="1"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.AddressLine1&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.AddressLine2&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Dropoff.IsPlaceHolder&apos;} }"
+                            local:MvxBind="{'Click':{'Path':'Dropoff.PickAddress'}, 'Cancel':{'Path':'Dropoff.CancelCurrentLocationCommand'},'IsProgressing':{'Path':'Dropoff.IsExecuting'},'TextLine1' : {'Path':'Dropoff.AddressLine1'}, 'TextLine2' : {'Path':'Dropoff.AddressLine2'},'IsPlaceHolder' : {'Path':'Dropoff.IsPlaceHolder'} }"
                             android:background="@color/transparent"
                             android:layout_marginRight="5dip"
                             android:paddingRight="5dip"
@@ -104,7 +104,7 @@
                             android:background="@drawable/address_selector_button"
                             android:src="@drawable/flag_state"
                             style="@style/ButtonTextGray"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;AddressSelectionMode&apos;, &apos;Converter&apos;: &apos;EnumToBool&apos;, &apos;ConverterParameter&apos;: &apos;DropoffSelection&apos;}}"
+                            local:MvxBind="{'Click':{'Path':'ActivateDropoff'}, 'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}}"
                             android:layout_height="40dip"
                             android:layout_gravity="fill"
                             android:layout_marginLeft="10dip"
@@ -130,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;FareEstimate&apos;}, 'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}"
+                            local:MvxBind="{'Text':{'Path':'FareEstimate'}, 'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}"
                             android:gravity="center_horizontal|top"
                             style="@style/SmallTitle"
                             android:layout_gravity="center_horizontal|top" />
@@ -151,7 +151,7 @@
                                 android:layout_marginBottom="-50px"
                                 android:enabled="true"
                                 android:layout_margin="-20dip"
-                                local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;AddressSelectionMode&apos;: {&apos;Path&apos;: &apos;AddressSelectionMode&apos;}}"
+                                local:MvxBind="{                                 'Pickup':{'Path':'Pickup.Model'},                                 'Dropoff':{'Path':'Dropoff.Model'},                                 'MapMoved':{'Path':'SelectedAddress.SearchCommand'},                                 'Center':{'Path':'MapCenter'},                                 'AvailableVehicles':{'Path':'AvailableVehicles'},                                 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}                                 }"
                                 android:clickable="true" />
                             <View
                                 android:id="@+id/anchor"
