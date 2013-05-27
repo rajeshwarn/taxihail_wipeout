@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookingStatusViewModel : BaseViewModel
     {
 
-		private int _refreshPeriod = 10; //in seconds
+		private int _refreshPeriod = 5; //in seconds
 
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _refreshPeriod = periodInSettingsValue;
             }
 
-			Observable.Timer ( TimeSpan.FromSeconds ( 2 ), TimeSpan.FromSeconds (_refreshPeriod))
+			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
 					.DisposeWith (Subscriptions);
 		}
