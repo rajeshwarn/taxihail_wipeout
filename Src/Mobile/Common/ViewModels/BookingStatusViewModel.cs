@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Load ();
 			ShowRatingButton = true;
 
-
 			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
 
             Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
@@ -78,9 +77,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _refreshPeriod = periodInSettingsValue;
             }
 
+
+
+#if IOS
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
+#else
+			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
+#endif
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
-					.DisposeWith (Subscriptions);
+				.DisposeWith (Subscriptions);
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();

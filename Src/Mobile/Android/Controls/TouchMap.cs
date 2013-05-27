@@ -373,7 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			foreach (var v in vehicles)
 			{
 				var pushPin = MapService.AddPushPin (this,
-				                       Resources.GetDrawable (Resource.Drawable.pin_cab),
+				                       Resources.GetDrawable (Resource.Drawable.nearby_cab),
 				                       MapService.GetGeoPoint (v.Latitude, v.Longitude),
 				                       string.Empty);
 				_availableVehiclePushPins.Add (pushPin);

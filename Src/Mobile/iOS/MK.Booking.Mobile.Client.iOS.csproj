@@ -56,7 +56,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;CLIENT;</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -672,6 +672,8 @@
     <Content Include="Assets\Search\cancel%402x.png" />
     <Content Include="Assets\CreditCard\visa_electron.png" />
     <Content Include="Assets\CreditCard\visa_electron%402x.png" />
+    <Content Include="Assets\nearby-cab%402x.png" />
+    <Content Include="Assets\nearby-cab.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
