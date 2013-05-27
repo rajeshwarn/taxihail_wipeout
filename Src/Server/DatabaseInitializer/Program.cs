@@ -67,6 +67,8 @@ namespace DatabaseInitializer
                     sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ? "MSSQL10_50.MSSQLSERVER" : userSqlInstance;
                 }
 
+
+                Console.WriteLine("Working...");
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
                 IConfigurationManager configurationManager = new
