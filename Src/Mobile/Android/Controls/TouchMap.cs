@@ -360,17 +360,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
 		}
 
+		private List<PushPinOverlay> _availableVehiclePushPins = new List<PushPinOverlay> ();
 		private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
 		{
+			// remove currently displayed pushpins
+			foreach (var pp in _availableVehiclePushPins)
+			{
+				this.Overlays.Remove(pp);
+			}
+			_availableVehiclePushPins.Clear ();
+
 			if (vehicles == null)
 				return;
 
 			foreach (var v in vehicles)
 			{
-				MapService.AddPushPin (this,
+				var pushPin = MapService.AddPushPin (this,
 				                       Resources.GetDrawable (Resource.Drawable.pin_cab),
 				                       MapService.GetGeoPoint (v.Latitude, v.Longitude),
 				                       string.Empty);
+				_availableVehiclePushPins.Add (pushPin);
 			}
 		}
     }
