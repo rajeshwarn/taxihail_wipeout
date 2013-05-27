@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -28,6 +29,19 @@ namespace apcurium.MK.Booking.IBS.Impl
         protected override string GetUrl()
         {
             return base.GetUrl() + "IWEBOrder_7";
+        }
+
+        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count)
+        {
+            var result = default(IBSVehiclePosition[]);
+            UseService(service =>
+            {
+                result = service
+                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                    .Select(Mapper.Map<IBSVehiclePosition>)
+                    .ToArray();
+            });
+            return result;
         }
         
         public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
@@ -71,7 +85,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         
-   public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
             var result = new List<IBSOrderInformation>();
             UseService(service =>

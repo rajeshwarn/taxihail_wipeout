@@ -108,6 +108,8 @@
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
+    <Compile Include="Resources\AvailableVehicle.cs" />
+    <Compile Include="Requests\AvailableVehicles.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

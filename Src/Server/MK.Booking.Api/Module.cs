@@ -32,6 +32,10 @@ namespace apcurium.MK.Booking.Api
 
         private void RegisterMaps()
         {
+            var profile = new BookingApiMapperProfile();
+            Mapper.AddProfile(profile);
+            Mapper.AssertConfigurationIsValid(profile.ProfileName);
+
             Mapper.CreateMap<BookingSettingsRequest, Commands.UpdateBookingSettings>();
             Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
                 .ForMember(p=> p.Id, options=> options.Ignore())
@@ -101,6 +105,14 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>();
 
+        }
+    }
+
+    public class BookingApiMapperProfile :Profile
+    {
+        protected override void Configure()
+        {
+            this.CreateMap<IBSVehiclePosition, AvailableVehicle>();
         }
     }
 }

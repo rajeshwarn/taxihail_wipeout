@@ -39,6 +39,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -92,6 +95,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="IBookingWebServiceClient.cs" />
     <Compile Include="IBSAddress.cs" />
+    <Compile Include="IBSAutoMapperProfile.cs" />
+    <Compile Include="IBSVehiclePosition.cs" />
     <Compile Include="IBSDriverInfos.cs" />
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
