@@ -29,6 +29,9 @@ using System.Globalization;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
+using apcurium.Framework;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -42,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _initialized;
         private IAccountService _accountService;
         private IBookingService _bookingService;
+
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
@@ -133,8 +137,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CalculateEstimate ();
 
             _useExistingOrder = false;
-
-
 
             CenterMap(true);
 
@@ -319,6 +321,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _mapCenter = value;
                 FirePropertyChanged(() => MapCenter);
+				if (value != null && value.Any ()) {
+					var coordinate = value.First ().Coordinate;
+					LoadAvailableVehicles (coordinate.Latitude, coordinate.Longitude);
+				}
+			}
+        }
+
+        private IEnumerable<AvailableVehicle> _availableVehicles;
+        public IEnumerable<AvailableVehicle> AvailableVehicles
+        {
+            get{return _availableVehicles;}
+            set
+            { 
+				_availableVehicles = value;
+                FirePropertyChanged("AvailableVehicles");
             }
         }
 
@@ -608,5 +625,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
+        private IDisposable _getAvailableVehicles = NullDisposable.Instance;
+        private void LoadAvailableVehicles(double latitude, double longitude)
+        {
+            _getAvailableVehicles.Dispose ();
+            _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
+                .Subscribe (result => {
+                    InvokeOnMainThread(() =>{
+                        this.AvailableVehicles = result;
+                    });
+                });
+
+        }
     }
 }
