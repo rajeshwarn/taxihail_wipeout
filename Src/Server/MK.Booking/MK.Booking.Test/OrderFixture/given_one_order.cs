@@ -150,5 +150,64 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(0, sut.Events.Count);
 
         }
+
+        [Test]
+        public void when_ibs_status_changed()
+        {
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = new OrderStatusDetail
+                {
+                    OrderId = _orderId,
+                    IBSStatusId = Guid.NewGuid().ToString()
+                }
+            });
+
+            var @event = sut.ThenHasSingle<OrderStatusChanged>();
+        }
+
+        [Test]
+        public void when_ibs_status_has_not_changed_then_no_event()
+        {
+            var status = new OrderStatusDetail
+            {
+                OrderId = _orderId,
+                IBSStatusId = Guid.NewGuid().ToString()
+            };
+
+            this.sut.Given(new OrderStatusChanged
+            {
+                SourceId = _orderId,
+                Status = status
+            });
+
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = status,
+            });
+
+            Assert.AreEqual(0, this.sut.Events.Count);
+        }
+
+        [Test]
+        public void when_ibs_vehicle_position_changed()
+        {
+            var status = new OrderStatusDetail
+            {
+                OrderId = _orderId,
+                VehicleLatitude = 1.234,
+                VehicleLongitude = 4.321,
+            };
+
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = status,
+            });
+
+            var @event = this.sut.ThenHasSingle<OrderVehiclePositionChanged>();
+
+            Assert.AreEqual(1.234, @event.Latitude);
+            Assert.AreEqual(4.321, @event.Longitude);
+        }
     }
 }

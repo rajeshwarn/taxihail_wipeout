@@ -188,6 +188,26 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
+        public void when_vehicle_position_changed()
+        {
+            this.sut.Handle(new OrderVehiclePositionChanged
+            {
+                SourceId = _orderId,
+                Latitude = 1.234,
+                Longitude = 4.321
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(1.234, dto.VehicleLatitude);
+                Assert.AreEqual(4.321, dto.VehicleLongitude);
+            }
+            
+        }
+
+        [Test]
         public void when_removed_then_dto_updated()
         {
             var orderRemovedFromHistory = new OrderRemovedFromHistory(){ SourceId = _orderId };

@@ -15,6 +15,9 @@ namespace apcurium.MK.Booking.Domain
         private OrderStatus _status;
 
         private bool _isRated;
+        private string _ibsStatus;
+        private double? _vehicleLatitude;
+        private double? _vehicleLongitude;
 
         protected Order(Guid id)
             : base(id)
@@ -26,6 +29,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderRated>(OnOrderRated);
             base.Handles<PaymentInformationSet>(NoAction);
             base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
+            base.Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
             Handles<TransactionIdSet>(NoAction);
         }
 
@@ -121,15 +125,37 @@ namespace apcurium.MK.Booking.Domain
 
         public void ChangeStatus(OrderStatusDetail status)
         {
-            Update(new OrderStatusChanged
+            if(status == null) throw new InvalidOperationException();
+
+            if (status.IBSStatusId != this._ibsStatus)
             {
-                Status = status
+                Update(new OrderStatusChanged
+                {
+                    Status = status
+                });
+            }
+
+            if (status.VehicleLatitude != this._vehicleLatitude || status.VehicleLongitude != this._vehicleLongitude)
+            {
+                Update(new OrderVehiclePositionChanged
+                {
+                    Latitude = status.VehicleLatitude,
+                    Longitude = status.VehicleLongitude,
+                });
+            }
+        }
+
+        public void SetTransactonId(long transactionId)
+        {
+            Update(new TransactionIdSet
+            {
+                TransactionId = transactionId,
             });
         }
 
-        private void OnOrderStatusChanged(OrderStatusChanged status)
+        private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
-           
+            _ibsStatus = @event.Status.IBSStatusId;
         }
 
         private void OnOrderCreated(OrderCreated obj)
@@ -157,13 +183,10 @@ namespace apcurium.MK.Booking.Domain
             _isRated = true;
         }
 
-
-        public void SetTransactonId(long transactionId)
+        private void OnOrderVehiclePositionChanged(OrderVehiclePositionChanged @event)
         {
-            Update(new TransactionIdSet
-            {
-                TransactionId = transactionId,
-            });
+            this._vehicleLatitude = @event.Latitude;
+            this._vehicleLongitude = @event.Longitude;
         }
 
         
