@@ -32,17 +32,23 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             PushPinOverlay pushpinOverlay = null;
             if (location != null)
             {
-                var point = new GeoPoint(CoordinatesHelper.ConvertToE6(location.Latitude),
-                                         CoordinatesHelper.ConvertToE6(location.Longitude));
-
-                //map.Overlays.Clear();
-                //MapService.AddMyLocationOverlay(map, map.Context, null);
-                pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
-                map.Overlays.Add(pushpinOverlay);
+                pushpinOverlay = AddPushPin (map, mapPin, GetGeoPoint(location.Latitude, location.Longitude), title);
             }
             return pushpinOverlay;
 
         }
+
+		public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin, GeoPoint point, string title)
+		{
+			PushPinOverlay pushpinOverlay = null;
+			if (point != null)
+			{
+				pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
+				map.Overlays.Add(pushpinOverlay);
+			}
+			return pushpinOverlay;
+
+		}
 
         public static void AddMyLocationOverlay(MapView map, Context context, Func<bool> needToRunOnFirstFix)
         {

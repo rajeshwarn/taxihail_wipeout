@@ -114,7 +114,14 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}}"},       
                 { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
                 { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
-                { mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'}, 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}}" },
+                { mapView, @"{
+'Pickup':{'Path':'Pickup.Model'},
+'Dropoff':{'Path':'Dropoff.Model'},
+'MapMoved':{'Path':'SelectedAddress.SearchCommand'},
+'MapCenter':{'Path':'MapCenter'},
+'AvailableVehicles': {'Path': 'AvailableVehicles'},
+'AddressSelectionMode': {'Path': 'AddressSelectionMode'}
+}" },
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}, 'Hidden':{'Path':'ShowEstimate', 'Converter':'BoolInverter'}}" },              
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
                 { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },

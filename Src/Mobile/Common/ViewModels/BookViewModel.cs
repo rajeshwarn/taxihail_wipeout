@@ -190,6 +190,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
             InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
             CenterMap(sender is bool ? !(bool)sender : false);
+            LoadAvailableVehicles (Pickup.Model.Latitude, Pickup.Model.Longitude);
 
             Task.Factory.SafeStartNew(() => CalculateEstimate());
             FirePropertyChanged(() => CanClearAddress);
@@ -321,10 +322,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _mapCenter = value;
                 FirePropertyChanged(() => MapCenter);
-				if (value != null && value.Any ()) {
-					var coordinate = value.First ().Coordinate;
-					LoadAvailableVehicles (coordinate.Latitude, coordinate.Longitude);
-				}
 			}
         }
 
@@ -335,7 +332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             { 
 				_availableVehicles = value;
-                FirePropertyChanged("AvailableVehicles");
+				FirePropertyChanged("AvailableVehicles");
             }
         }
 
@@ -632,6 +629,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
                 .Subscribe (result => {
                     InvokeOnMainThread(() =>{
+#if DEBUG
+						if(result.Length == 0) result = new [] { new AvailableVehicle { Latitude=latitude+0.001, Longitude=longitude+0.001}};
+#endif
                         this.AvailableVehicles = result;
                     });
                 });

@@ -225,6 +225,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+		public IEnumerable<AvailableVehicle> AvailableVehicles
+		{
+			set
+			{
+				ShowAvailableVehicles (value);
+			}
+		}
+		
+
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode {
 			get {
@@ -346,6 +355,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
 			}
 			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
+		}
+
+		private List<PushPinOverlay> _availableVehiclePushPins = new List<PushPinOverlay> ();
+		private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+		{
+			// remove currently displayed pushpins
+			foreach (var pp in _availableVehiclePushPins)
+			{
+				this.Overlays.Remove(pp);
+			}
+			_availableVehiclePushPins.Clear ();
+
+			if (vehicles == null)
+				return;
+
+			foreach (var v in vehicles)
+			{
+				var pushPin = MapService.AddPushPin (this,
+				                       Resources.GetDrawable (Resource.Drawable.pin_cab),
+				                       MapService.GetGeoPoint (v.Latitude, v.Longitude),
+				                       string.Empty);
+				_availableVehiclePushPins.Add (pushPin);
+			}
 		}
     }
 }
