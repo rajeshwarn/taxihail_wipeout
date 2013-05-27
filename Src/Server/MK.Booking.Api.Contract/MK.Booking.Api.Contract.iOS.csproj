@@ -127,6 +127,7 @@
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
+    <Compile Include="Requests\PlaceDetailRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

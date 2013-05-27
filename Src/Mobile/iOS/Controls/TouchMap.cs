@@ -455,7 +455,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var v in vehicles)
             {
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), AddressAnnotationType.Taxi, string.Empty, string.Empty);
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), AddressAnnotationType.NearbyTaxi, string.Empty, string.Empty);
                 AddAnnotation (pushPin);
                 _availableVehiclePushPins.Add (pushPin);
             }
