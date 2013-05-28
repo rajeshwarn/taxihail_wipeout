@@ -545,7 +545,7 @@ namespace MK.DeploymentService.Mobile
 				{
 					throw new Exception("Error during get of latest revision name");
 				}
-				revision = exeProcess.StandardOutput.ReadToEnd();
+				revision = exeProcess.StandardOutput.ReadLine();
 			}
 
 			return revision;
