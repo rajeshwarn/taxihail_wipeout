@@ -435,11 +435,21 @@ namespace MK.DeploymentService.Mobile
 
 		    Observable.FromEventPattern<DataReceivedEventArgs>(exeProcess, "OutputDataReceived")
 		              .Timeout(TimeSpan.FromSeconds(5))
-		              .Subscribe(_ => logger.Debug(_.EventArgs.Data), error => exeProcess.CancelOutputRead(), delegate { });
+		              .Subscribe(_ => logger.Debug(_.EventArgs.Data), error =>
+		                {
+                            logger.Debug("Observable timeout");
+                            exeProcess.CancelOutputRead();
+                            exeProcess.StandardOutput.BaseStream.Flush();
+		                }, delegate { });
 
             Observable.FromEventPattern<DataReceivedEventArgs>(exeProcess, "ErrorDataReceived")
                       .Timeout(TimeSpan.FromSeconds(5))
-                      .Subscribe(_ => logger.Debug(_.EventArgs.Data), error => exeProcess.CancelErrorRead(), delegate { });
+                      .Subscribe(_ => logger.Debug(_.EventArgs.Data), error =>
+                        {
+                            logger.Debug("Observable timeout");
+                            exeProcess.CancelErrorRead();
+                            exeProcess.StandardError.BaseStream .Flush();
+                        }, delegate { });
 
             exeProcess.BeginOutputReadLine();
             exeProcess.BeginErrorReadLine();
