@@ -29,14 +29,14 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel
+	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
+		private IBookingService _bookingService;
 
 		private int _refreshPeriod = 5; //in seconds
 
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
-
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;
 			_hasSeenReminder = false;
+			_bookingService = this.GetService<IBookingService>();
 		}
 	
 		public override void Load ()
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-#if IOS
+#if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 #else
 			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
@@ -425,7 +426,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                            var isSuccess = BookingService.CancelOrder (Order.Id);      
 	                            if (isSuccess) 
 	                            {
-	                                MessengerHub.Publish (new OrderCanceled (this, Order, null));
+									_bookingService.ClearLastOrder();
 	                                RequestNavigate<BookViewModel> (clearTop: true);
 	                            } 
 	                            else 
