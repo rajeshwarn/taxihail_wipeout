@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
 using log4net;
 using MK.ConfigurationManager.Entities;
@@ -426,9 +427,22 @@ namespace MK.DeploymentService.Mobile
 			{
 				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
 				UseShellExecute = false,
-				Arguments = buildArgs
+				Arguments = buildArgs,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
 			};
 			var exeProcess = Process.Start(buildiOSproject);
+
+		    Observable.FromEventPattern<DataReceivedEventArgs>(exeProcess, "OutputDataReceived")
+		              .Timeout(TimeSpan.FromSeconds(5))
+		              .Subscribe(_ => logger.Debug(_.EventArgs.Data), error => exeProcess.CancelOutputRead(), delegate { });
+
+            Observable.FromEventPattern<DataReceivedEventArgs>(exeProcess, "ErrorDataReceived")
+                      .Timeout(TimeSpan.FromSeconds(5))
+                      .Subscribe(_ => logger.Debug(_.EventArgs.Data), error => exeProcess.CancelErrorRead(), delegate { });
+
+            exeProcess.BeginOutputReadLine();
+            exeProcess.BeginErrorReadLine();
 			exeProcess.WaitForExit();
 		}
 
