@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var existingAddress = context.Find<AddressDetails>(@event.SourceId);
+                var existingAddress = context.Find<AddressDetails>(@event.Address.Id);
                 if (existingAddress != null)
                 {
                     // TODO: Log this problem
