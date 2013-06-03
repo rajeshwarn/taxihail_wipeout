@@ -71,6 +71,8 @@
 	"IBS.PickupZoneToExclude": "IBS pickup zone to exclude",
 	"IBS.TimeDifference" : "IBS time difference",
 	"IBS.ValidateDestinationZone" : "IBS validate destination zone",
+	"IBS.OrderPriority" : "Create order with priority high",
+	
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",
 	"Client.OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
