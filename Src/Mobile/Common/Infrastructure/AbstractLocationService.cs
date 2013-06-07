@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 				Start();
 			}
 			return Positions.Where(p => 
-			 {
+			{
 				return p.Accuracy <= maxAccuracy;
 			}).Take(timeout).Take(1);
 		}

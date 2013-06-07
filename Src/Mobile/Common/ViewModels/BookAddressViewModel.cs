@@ -344,6 +344,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     bool positionSet = false;
+
+                    if(LocationService.BestPosition != null)
+                    {                        
+                        InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ));
+                        return;
+                    }
+
                     LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
