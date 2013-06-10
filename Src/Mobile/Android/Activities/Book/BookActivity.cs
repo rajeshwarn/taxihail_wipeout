@@ -127,11 +127,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
         protected override void OnStop()
-        {
-            
+        {            
             base.OnStop();
 			
-			TinyIoC.TinyIoCContainer.Current.Resolve<LocationService>().Stop();
+			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
         }
 
 
