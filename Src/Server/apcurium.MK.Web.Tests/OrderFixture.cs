@@ -139,6 +139,7 @@ namespace apcurium.MK.Web.Tests
             var status = sut.GetOrderStatus(_orderId);
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
+            Assert.AreEqual("wosCANCELLED_DONE", status.IBSStatusId);
         }
 
         [Test]

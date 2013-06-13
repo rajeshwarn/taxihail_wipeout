@@ -72,6 +72,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (details != null)
                 {
                     details.Status = OrderStatus.Canceled;
+                    details.IBSStatusId = "wosCANCELLED_DONE";
+                    details.IBSStatusDescription = "Order Cancelled";
                     context.Save(details);
                 }
             }

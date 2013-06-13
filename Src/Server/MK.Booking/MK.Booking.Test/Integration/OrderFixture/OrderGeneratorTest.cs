@@ -135,6 +135,24 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
         }
 
+        [Test]
+        public void when_cancelled_ibs_and_status_is_set()
+        {
+            this.sut.Handle(new OrderCancelled { SourceId = _orderId });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual((int)OrderStatus.Canceled, dto.Status);
+
+                var dtoDetails = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dtoDetails);
+                Assert.AreEqual(OrderStatus.Canceled, dtoDetails.Status);
+                Assert.AreEqual("wosCANCELLED_DONE", dtoDetails.IBSStatusId);
+            }
+        }
+
 
         [Test]
         public void when_payment_is_made()
