@@ -54,6 +54,7 @@ namespace apcurium.MK.Web.Tests
             var orderDetails = sut.GetOrder(details.OrderId);
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
+            Assert.AreEqual(6, orderDetails.Settings.Passengers);
         }
         
         [Test]

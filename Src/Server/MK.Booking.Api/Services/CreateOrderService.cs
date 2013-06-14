@@ -70,6 +70,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
 
+            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers; 
+
             var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
             if (!ibsOrderId.HasValue
