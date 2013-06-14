@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.EventHandlers
                                      FacebookId = @event.FacebookId,
                                      TwitterId = @event.TwitterId,
                                      Language = @event.Language,
-                                     IsAdmin = @event.IsAdmin
+                                     IsAdmin = @event.IsAdmin,
+                                     CreationDate = @event.EventDate
                                  };
 
 
