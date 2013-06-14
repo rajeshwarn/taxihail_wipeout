@@ -76,36 +76,46 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #region IPhoneService implementation
 
+
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
         {
-
-            EventStore.RequestAccess (EKEntityType.Event,
-                                                  (bool granted, NSError e) => {
-                    if (granted)
-                    {
-                        EKEvent newEvent = EKEvent.FromStore ( EventStore );
-                        newEvent.AddAlarm ( EKAlarm.FromDate ( alertDate ) );
-                        newEvent.StartDate = startDate;
-                        newEvent.EndDate = startDate.AddHours(1);
-                        newEvent.Title = title;
-                        newEvent.Notes = addInfo ;
-                        newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
-                        NSError err = null;
-                        EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
-                        if (err != null) 
+            if(EventStore.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("requestAccessToEntityType:completion:")))
+            {
+                //iOS6 code
+                EventStore.RequestAccess (EKEntityType.Event,(bool granted, NSError e) => {
+                        if (granted)
                         {
-                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Err Saving Event : " + err.ToString());
-                            return;
-                        } else 
-                        {
-                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Event Saved,  ID: " + newEvent.EventIdentifier);
+                            AddEvent (title, addInfo, startDate, alertDate);
                         }
-                    }
-                    else
-                    {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
-                    }
-            } );
+                        else
+                        {
+                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                        }
+                } );
+            }else{
+                //iOS 5 code
+                AddEvent (title, addInfo, startDate, alertDate);
+            }
+        }
+
+        void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
+        {
+            EKEvent newEvent = EKEvent.FromStore (EventStore);
+            newEvent.AddAlarm (EKAlarm.FromDate (alertDate));
+            newEvent.StartDate = startDate;
+            newEvent.EndDate = startDate.AddHours (1);
+            newEvent.Title = title;
+            newEvent.Notes = addInfo;
+            newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
+            NSError err = null;
+            EventStore.SaveEvent (newEvent, EKSpan.ThisEvent, out err);
+            if (err != null) {
+                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Err Saving Event : " + err.ToString ());
+                return;
+            }
+            else {
+                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
+            }
         }
 
 
