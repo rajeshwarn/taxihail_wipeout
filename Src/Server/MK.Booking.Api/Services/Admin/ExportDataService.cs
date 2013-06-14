@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using ServiceStack.Common.Web;
@@ -6,7 +7,9 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services.Admin
 {
@@ -14,15 +17,18 @@ namespace apcurium.MK.Booking.Api.Services.Admin
     {
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
+        private readonly IConfigurationManager _configurationManager;
 
-        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao)
+        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
+            _configurationManager = configurationManager;
         }
 
         public override object OnGet(ExportDataRequest request)
         {
+            
             switch (request.Target)
             {
                case DataType.Accounts:
@@ -31,6 +37,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                break;
                case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
+                    var ibsServerTimeDifference = _configurationManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
+                    var offset = new TimeSpan(ibsServerTimeDifference);
                     return orders.Select(x => new
                                                   {
                                                       x.Id,
@@ -39,8 +47,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                                       x.Name,
                                                       x.Phone,
                                                       x.Email,
-                                                      Date = x.CreatedDate.ToString("d", CultureInfo.InvariantCulture),
-                                                      Time = x.CreatedDate.ToString("t", CultureInfo.InvariantCulture),
+                                                      PickupDate = x.PickupDate.ToString("d", CultureInfo.InvariantCulture),
+                                                      PickupTime = x.PickupDate.ToString("t", CultureInfo.InvariantCulture),
+                                                      CreateDate = x.CreatedDate.Add(offset).ToString("d", CultureInfo.InvariantCulture),
+                                                      CreateTime = x.CreatedDate.Add(offset).ToString("t", CultureInfo.InvariantCulture),
                                                       Status = (OrderStatus)x.Status,
                                                       PickupAddress = x.PickupAddress.BookAddress,
                                                       DropOffAddress = x.DropOffAddress.BookAddress,
