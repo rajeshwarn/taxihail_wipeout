@@ -45,6 +45,7 @@
         <script type="text/javascript">
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "../api";
+            TaxiHail.parameters.version = '<%: ApplicationVersion %>';
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>

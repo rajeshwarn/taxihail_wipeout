@@ -9,5 +9,6 @@
 	"Settings" : "Settings",
 	"Export" : "Export",
 	"ExportAccounts" : "Accounts",
-	"ExportOrders" : "Orders"
+	"ExportOrders" : "Orders",
+	"Version" : "Version"
 }
