@@ -85,14 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return _searchingTitle;
                 }
-                if (GetAddress().HasValue())
-                {
-                    return GetAddress();
-                }
-                else
-                {
-                    return EmptyAddressPlaceholder;
-                }
+                return GetAddress().HasValue() ? GetAddress() : EmptyAddressPlaceholder;
             }
         }
 
@@ -107,11 +100,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
             }
-            if (Params.Get(adr.StreetNumber, adr.Street).Any(s => s.HasValue() && s.Trim().HasValue()))
-            {
-                return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
-            }
-            return adr.FullAddress;
+            return Params.Get(adr.StreetNumber, adr.Street).Any(s => s.HasValue() && s.Trim().HasValue())
+                 ? Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ") 
+                 : adr.FullAddress;
         }
 
 
@@ -231,9 +222,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<string>(_notUsed => {
-                    CancelCurrentLocation();
-                });
+                return new MvxRelayCommand<string>(_ => CancelCurrentLocation());
             }
         }
 
@@ -262,8 +251,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
                     {
-                        var a = GeolocService.SearchAddress(address.FullAddress, null , null );
-                        if ( a.Count() > 0 )
+                        var a = GeolocService.SearchAddress(address.FullAddress );
+                        if ( a.Any() )
                         {
                             address = a.First();
                         }
@@ -378,7 +367,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 var address = GeolocService.SearchAddress(p.Latitude, p.Longitude,false);
                 Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
-                if (address.Count() > 0)
+                if (address.Any())
                 {
                     Logger.LogMessage(" found {0} addresses", address.Count());
                     SetAddress(address[0], false);
