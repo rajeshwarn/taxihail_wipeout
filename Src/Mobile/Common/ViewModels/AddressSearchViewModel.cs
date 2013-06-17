@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
 using TinyIoC;
@@ -24,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly string _ownerId;
         private readonly IGoogleService _googleService;
-        private ObservableCollection<AddressViewModel> _addressViewModels = new ObservableCollection<AddressViewModel> ();
+        private readonly ObservableCollection<AddressViewModel> _addressViewModels = new ObservableCollection<AddressViewModel> ();
         private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource ();
         private bool _isSearching;
         private string _criteria;
@@ -64,14 +62,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CancelSearch ()
         {
-            try {
-                if (_searchCancellationToken != null) {
-                    _searchCancellationToken.Cancel ();
-                    _searchCancellationToken.Dispose ();
-                    _searchCancellationToken = null;
-                }
-            } catch {
-            }
+            if (_searchCancellationToken == null) return;
+            _searchCancellationToken.Cancel ();
+            _searchCancellationToken.Dispose ();
+            _searchCancellationToken = null;
         }
 
         private void OnSearch ()
