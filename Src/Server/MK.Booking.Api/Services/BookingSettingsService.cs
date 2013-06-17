@@ -12,12 +12,10 @@ namespace apcurium.MK.Booking.Api.Services
     public class BookingSettingsService : RestServiceBase<BookingSettingsRequest>
     {
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configurationManager;
 
-        public BookingSettingsService(ICommandBus commandBus, IConfigurationManager configurationManager)
+        public BookingSettingsService(ICommandBus commandBus)
         {
             _commandBus = commandBus;
-            _configurationManager = configurationManager;
         }
 
         public override object OnPut(BookingSettingsRequest request)

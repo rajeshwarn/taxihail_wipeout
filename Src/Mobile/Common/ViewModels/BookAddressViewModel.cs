@@ -103,21 +103,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return "";
             }
-            else
+            if (adr.BuildingName.HasValue())
             {
-                if (adr.BuildingName.HasValue())
-                {
-                    return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
-                }
-                else if (Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
-                {
-                    return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
-                }
-                else
-                {
-                    return adr.FullAddress;
-                }
+                return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
             }
+            if (Params.Get(adr.StreetNumber, adr.Street).Any(s => s.HasValue() && s.Trim().HasValue()))
+            {
+                return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
+            }
+            return adr.FullAddress;
         }
 
 
