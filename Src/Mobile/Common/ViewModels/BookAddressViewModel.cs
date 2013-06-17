@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -26,13 +27,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
        {
         private CancellationTokenSource _cancellationToken;
         private bool _isExecuting;
-        private Func<Address> _getAddress;
-        private Action<Address> _setAddress;
-        private string _id;
-        private string _searchingTitle;
+        private readonly Func<Address> _getAddress;
+        private readonly Action<Address> _setAddress;
+        private readonly string _id;
+        private readonly string _searchingTitle;
 
         public event EventHandler AddressChanged;
-
         public event EventHandler AddressCleared;
 
         public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
@@ -52,25 +52,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return "";
                 }
-                else
+                var addressDisplay = "";
+                var adr = _getAddress();
+                if (adr != null)
                 {
-                    var addressDisplay = "";
-                    var adr = _getAddress();
-                    if (adr != null)
+                    if ((adr.AddressType == "place") || (Params.Get(adr.City, adr.State, adr.ZipCode).Count(s => s.HasValue()) == 0))
                     {
-                        if ((adr.AddressType == "place") || (Params.Get(adr.City, adr.State, adr.ZipCode).Count(s => s.HasValue()) == 0))
-                        {
-                            addressDisplay =  adr.FullAddress;
-                        }
-                        else
-                        {
-                            addressDisplay =  Params.Get(adr.City, adr.State, adr.ZipCode).Where(s => s.HasValue()).JoinBy(", ");
-                        }
+                        addressDisplay =  adr.FullAddress;
                     }
-                    return addressDisplay;
-
-
+                    else
+                    {
+                        addressDisplay =  Params.Get(adr.City, adr.State, adr.ZipCode).Where(s => s.HasValue()).JoinBy(", ");
+                    }
                 }
+                return addressDisplay;
             }
         }
 
@@ -136,13 +131,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var accountAddress = AccountService.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null)
                             {
-                                return new Address[] { accountAddress};
+                                return new[] { accountAddress};
                             }
-                            else
-                            {
-
-                                return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
-                            }
+                            return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
                         }
                         return null;
 
@@ -355,7 +346,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void SearchAddressForCoordinate(Position p)
         {
             IsExecuting = true;
-            Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
+            Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture));
 
             var accountAddress = AccountService.FindInAccountAddresses(p.Latitude, p.Longitude);
             if (accountAddress != null)
