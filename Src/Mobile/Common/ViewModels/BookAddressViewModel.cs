@@ -311,13 +311,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     },
                     ()=>
                     {  
+						positionSet = false;
+
+
                         if(!positionSet)
                         {
                             InvokeOnMainThread(() =>
                                 {
                                     if (LocationService.BestPosition == null)
                                     {
-                                        //do nothing 
+                                        MessageService.ShowToast("Cant find location, please try again",ToastDuration.Short);
                                     }
                                     else
                                     {
