@@ -221,43 +221,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() =>
             {
                 IsExecuting = true;
-                try
+
+                CancelCurrentLocation();
+
+
+                if ((address.Street.IsNullOrEmpty()) && (address.ZipCode.IsNullOrEmpty()) &&
+                    (address.AddressType != "place") && (address.AddressType != "popular"))
+                    // This should only be true when using an address from a version smaller than 1.3                    
                 {
-
-                    if (IsExecuting)
+                    var a = GeolocService.SearchAddress(address.FullAddress);
+                    if (a.Any())
                     {
-                        CancelCurrentLocation();
+                        address = a.First();
                     }
-
-                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
-                    {
-                        var a = GeolocService.SearchAddress(address.FullAddress );
-                        if ( a.Any() )
-                        {
-                            address = a.First();
-                        }
-                    }
-
-                    address.CopyTo(Model);
-
-                    FirePropertyChanged(() => AddressLine1);
-                    FirePropertyChanged(() => AddressLine2);
-                    FirePropertyChanged(() => Model);
-
-
-                    if (AddressChanged != null)
-                    {
-                        AddressChanged(userInitiated, EventArgs.Empty);
-                    }
-
-                }
-                finally
-                {
-
-
-                    IsExecuting = false;
                 }
 
+                address.CopyTo(Model);
+
+                FirePropertyChanged(() => AddressLine1);
+                FirePropertyChanged(() => AddressLine2);
+                FirePropertyChanged(() => Model);
+
+
+                if (AddressChanged != null)
+                {
+                    AddressChanged(userInitiated, EventArgs.Empty);
+                }
             });
         }
 
@@ -306,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
                     IsExecuting = true;
-                    bool positionSet = false;
+                    var positionSet = false;
 
                     if(LocationService.BestPosition != null)
                     {                        
@@ -324,7 +313,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {  
                         if(!positionSet)
                         {
-                            InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
+                            InvokeOnMainThread(() =>
+                                {
+                                    if (LocationService.BestPosition == null)
+                                    {
+                                        //do nothing 
+                                    }
+                                    else
+                                    {
+                                        SearchAddressForCoordinate(LocationService.BestPosition);    
+                                    }
+                                    
+                                });
                         }
                     });
                 });

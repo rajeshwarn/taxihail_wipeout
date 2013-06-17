@@ -53,23 +53,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private AbstractLocationService _locationService;
         protected AbstractLocationService LocationService{
-            get{
-                if(_locationService == null)
-                {
-                    _locationService = TinyIoCContainer.Current.Resolve<AbstractLocationService> ();
-                }
-                return _locationService;
+            get {
+                return _locationService ?? (_locationService = TinyIoCContainer.Current.Resolve<AbstractLocationService>());
             }
         }
+
         private IBookingService _bookingService;
         protected IBookingService BookingService{
-            get{
-                if(_bookingService == null)
-                {
-                    _bookingService = TinyIoCContainer.Current.Resolve<IBookingService> ();
-                }
-                return _bookingService;
-            }
+            get { return _bookingService ?? (_bookingService = TinyIoCContainer.Current.Resolve<IBookingService>()); }
         }
         
         protected ICacheService CacheService{

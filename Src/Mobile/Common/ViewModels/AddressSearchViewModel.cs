@@ -26,13 +26,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource ();
         private bool _isSearching;
         private string _criteria;
-        private readonly IAccountService _accountService;
-        private readonly IGeolocService _geolocService;
 
-        public AddressSearchViewModel (string ownerId, string search, IGoogleService googleService, IAccountService accountService, IGeolocService geolocService, string places = "false")
+        public AddressSearchViewModel (string ownerId, string search, IGoogleService googleService, string places = "false")
         {
-            _geolocService = geolocService;
-            _accountService = accountService;
             _ownerId = ownerId;
             _googleService = googleService;
         
@@ -56,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void OnSearchStart ()
         {
             IsSearching = true;
-            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("OnSearchStarted");
+            Logger.LogMessage ("OnSearchStarted");
             CancelSearch ();
         }
 
@@ -72,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             IsSearching = true;
 
-            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("OnSearch");
+            Logger.LogMessage ("OnSearch");
             CancelSearch ();
 
             _searchCancellationToken = new CancellationTokenSource ();
@@ -117,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
      
         protected IEnumerable<AddressViewModel> SearchPlaces ()
         {           
-            Position position = LocationService.BestPosition;
+            var position = LocationService.BestPosition;
 
             if (position == null) {
 
@@ -140,8 +136,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected IEnumerable<AddressViewModel> SearchFavoriteAndHistoryAddresses ()
         {
-            var addresses = _accountService.GetFavoriteAddresses ();
-            var historicAddresses = _accountService.GetHistoryAddresses ();
+            var addresses = AccountService.GetFavoriteAddresses ();
+            var historicAddresses = AccountService.GetHistoryAddresses ();
 
             Func<Address, bool> predicate = c => true;
             if (Criteria.HasValue ()) {
@@ -155,17 +151,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected IEnumerable<AddressViewModel> SearchGeocodeAddresses ()
         {
-            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
+            Logger.LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
             var position = TinyIoCContainer.Current.Resolve<AbstractLocationService> ().LastKnownPosition;
 
             Address[] addresses;
             
             if (position == null) {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("No Position SearchAddresses : " + Criteria.ToSafeString ());
-                addresses = _geolocService.SearchAddress (Criteria);                
+                Logger.LogMessage ("No Position SearchAddresses : " + Criteria.ToSafeString ());
+                addresses = GeolocService.SearchAddress (Criteria);                
             } else {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Position SearchAddresses : " + Criteria.ToSafeString ());
-                addresses = _geolocService.SearchAddress (Criteria, position.Latitude, position.Longitude);
+                Logger.LogMessage ("Position SearchAddresses : " + Criteria.ToSafeString ());
+                addresses = GeolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
             }
             return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToList ();
         }
@@ -188,13 +184,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         a.IsFirst = a.Equals (AddressViewModels.First ());
                         a.IsLast = a.Equals (AddressViewModels.Last ());
-
                     });
-
-
                 }
             });
-            
         }
 
         public  void BubbleSort (ObservableCollection<AddressViewModel> o)
@@ -231,36 +223,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
                     {
-                        if (address.Address != null) {
+                        if (address.Address == null) return;
 
-
-                            if ((address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue ())) {
-                                var placeAddress = _googleService.GetPlaceDetail (address.Address.FriendlyName, address.Address.PlaceReference);
-                                placeAddress.FriendlyName = address.Address.FriendlyName;
-                                placeAddress.BuildingName = address.Address.FriendlyName;
-                                placeAddress.AddressType = address.Address.AddressType;
-                                if ( address.Address.FullAddress.HasValue () )
-                                {
-                                    placeAddress.FullAddress = address.Address.FullAddress;
-                                }
-                                RequestClose (this);
-                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId)));
-                            } else if (address.Address.AddressType == "localContact") {
-                                var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService> ();
-                                var addresses = geolocService.SearchAddress (address.Address.FullAddress);
-                                if (addresses.Any()) {
-                                    RequestClose (this);
-                                    InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
-                                } else {
-                                    var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverTitle");
-                                    var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverMessage");
-                                    TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, msg);
-                                }
-                            } else {
-                                RequestClose (this);
-                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId)));
+                        if ((address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue ())) {
+                            var placeAddress = _googleService.GetPlaceDetail (address.Address.FriendlyName, address.Address.PlaceReference);
+                            placeAddress.FriendlyName = address.Address.FriendlyName;
+                            placeAddress.BuildingName = address.Address.FriendlyName;
+                            placeAddress.AddressType = address.Address.AddressType;
+                            if ( address.Address.FullAddress.HasValue () )
+                            {
+                                placeAddress.FullAddress = address.Address.FullAddress;
                             }
+                            RequestClose (this);
+                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId)));
+                        } else if (address.Address.AddressType == "localContact") {
 
+                            var addresses = GeolocService.SearchAddress (address.Address.FullAddress);
+                            if (addresses.Any()) {
+                                RequestClose (this);
+                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
+                            } else {
+                                    
+                                var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverTitle");
+                                var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverMessage");
+                                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, msg);
+                            }
+                        } else {
+                            RequestClose (this);
+                                
+                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId)));
                         }
                     }));
             }
