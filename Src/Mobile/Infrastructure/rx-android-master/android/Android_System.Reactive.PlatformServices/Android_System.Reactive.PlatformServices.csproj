@@ -64,12 +64,7 @@
     <Compile Include="..\..\System.Reactive\System.Reactive.Concurrency\ThreadPoolScheduler.cs">
       <Link>System.Reactive.Concurrency\ThreadPoolScheduler.cs</Link>
     </Compile>
-    <Compile Include="..\..\System.Reactive.PlatformServices\System.Reactive.PlatformServices\CurrentPlatformEnlightenmentProvider.Full.cs">
-      <Link>System.Reactive.PlatformServices\CurrentPlatformEnlightenmentProvider.Full.cs</Link>
-    </Compile>
-    <Compile Include="..\..\System.Reactive.PlatformServices\System.Reactive.PlatformServices\EnlightenmentProvider.cs">
-      <Link>System.Reactive.PlatformServices\EnlightenmentProvider.cs</Link>
-    </Compile>
+    <Compile Include="System.Reactive.PlatformServices\CurrentPlatformEnlightenmentProvider.full.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
