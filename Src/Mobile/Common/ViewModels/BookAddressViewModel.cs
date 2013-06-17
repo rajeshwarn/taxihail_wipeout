@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
@@ -11,12 +8,8 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
@@ -139,25 +132,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     }, token);
 
-                    task.ContinueWith(t =>
-                    { 
-                        InvokeOnMainThread(() => {
-                            if (t.Result != null && t.Result.Any())
-                            {
-                                var address = t.Result[0];                                
-                                // Replace result coordinates  by search coordinates (= user position)
-                                address.Latitude = coordinate.Latitude;
-                                address.Longitude = coordinate.Longitude;
-                                SetAddress(address, true);
-                            }
-                            else
-                            {
-                                Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
-                                ClearAddress();
-                            }
-                        });
-                        
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    task.ContinueWith(t => InvokeOnMainThread(() => {
+                                                                        if (t.Result != null && t.Result.Any())
+                                                                        {
+                                                                            var address = t.Result[0];                                
+                                                                            // Replace result coordinates  by search coordinates (= user position)
+                                                                            address.Latitude = coordinate.Latitude;
+                                                                            address.Longitude = coordinate.Longitude;
+                                                                            SetAddress(address, true);
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
+                                                                            ClearAddress();
+                                                                        }
+                    }), TaskContinuationOptions.OnlyOnRanToCompletion);
 
                 });
             }
@@ -173,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Settings.StreetNumberScreenEnabled 
                         && Model.BookAddress.HasValue())
                     {
-                        RequestNavigate<BookStreetNumberViewModel>(new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
+                        RequestNavigate<BookStreetNumberViewModel>(new { address = JsonSerializer.SerializeToString(Model), ownerId = _id });
                     }
                     else
                     {
@@ -356,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                var address = GeolocService.SearchAddress(p.Latitude, p.Longitude,false);
+                var address = GeolocService.SearchAddress(p.Latitude, p.Longitude);
                 Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Any())
                 {
