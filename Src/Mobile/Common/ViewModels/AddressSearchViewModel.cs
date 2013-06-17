@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         public ObservableCollection<AddressViewModel> AddressViewModels { 
-            get { return this._addressViewModels; }
+            get { return _addressViewModels; }
         }
 
         public string Criteria {
@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
             var position = TinyIoCContainer.Current.Resolve<AbstractLocationService> ().LastKnownPosition;
 
-            var addresses = new apcurium.MK.Common.Entity.Address[0];
+            Address[] addresses;
             
             if (position == null) {
                 TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("No Position SearchAddresses : " + Criteria.ToSafeString ());
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Position SearchAddresses : " + Criteria.ToSafeString ());
                 addresses = _geolocService.SearchAddress (Criteria, position.Latitude, position.Longitude);
             }
-            return addresses.Select (a => new AddressViewModel () { Address = a, Icon="address"}).ToList ();
+            return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToList ();
         }
      
         public void RefreshResults (Task<IEnumerable<AddressViewModel>> task, Task concurentTask)
@@ -199,14 +199,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public  void BubbleSort (ObservableCollection<AddressViewModel> o)
         {
-            for (int i = o.Count - 1; i >= 0; i--) {
-                for (int j = 1; j <= i; j++) {
-                    AddressViewModel o1 = o [j - 1];
-                    AddressViewModel o2 = o [j];
-                    if (Compare (o2, o1)) {
-                        o.Remove (o1);
-                        o.Insert (j, o1);
-                    }
+            for (var i = o.Count - 1; i >= 0; i--) {
+                for (var j = 1; j <= i; j++) {
+                    var o1 = o [j - 1];
+                    var o2 = o [j];
+                    if (!Compare(o2, o1)) continue;
+                    o.Remove (o1);
+                    o.Insert (j, o1);
                 }
             }
         }
@@ -215,12 +214,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (o1.Icon.SoftEqual ("favorites")) {
                 return  !o2.Icon.SoftEqual ("favorites");                
-            } else if (o1.Icon.SoftEqual ("history")) {
+            }
+            if (o1.Icon.SoftEqual ("history")) {
 
                 return (!o2.Icon.SoftEqual ("favorites")) && (!o2.Icon.SoftEqual ("history"));
-            } else {
-                return false;
             }
+            return false;
         }
 
         public void ClearResults ()
@@ -230,9 +229,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand RowSelectedCommand {
             get {
-                return GetCommand<AddressViewModel> (address =>
-                {
-                    ThreadPool.QueueUserWorkItem (o =>
+                return GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
                     {
                         if (address.Address != null) {
 
@@ -251,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             } else if (address.Address.AddressType == "localContact") {
                                 var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService> ();
                                 var addresses = geolocService.SearchAddress (address.Address.FullAddress);
-                                if (addresses.Count () > 0) {
+                                if (addresses.Any()) {
                                     RequestClose (this);
                                     InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
                                 } else {
@@ -265,9 +262,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             }
 
                         }
-                    });
-                        
-                });
+                    }));
             }
         }
 
