@@ -323,25 +323,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 };
             }
+
+            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse(false);
+
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            MessageService.ShowMessage (Resources.GetString ("View_BookingStatus_ThankYouTitle"),
-                String.Format (Resources.GetString ("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
-                Resources.GetString ("ReturnBookingScreen"), () =>
+
+            if (sendReceiptAvailable)
             {
-                if (orderRatedToken != null) {
-                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
-                                                            .Unsubscribe<OrderRated> (orderRatedToken);
-                }
-                this.Close ();
-            },
-                Resources.GetString ("HistoryDetailSendReceiptButton"), () =>
-            {
-                if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-                    TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
-                }
-            },
-                stringNeutral, actionNeutral
-            );
+                MessageService.ShowMessage(Resources.GetString("View_BookingStatus_ThankYouTitle"),
+                                           String.Format(Resources.GetString("View_BookingStatus_ThankYouMessage"),
+                                                         settings.ApplicationName),
+                                           Resources.GetString("ReturnBookingScreen"), () =>
+                                               {
+                                                   if (orderRatedToken != null)
+                                                   {
+                                                       TinyIoCContainer.Current.Resolve<ITinyMessengerHub>()
+                                                                       .Unsubscribe<OrderRated>(orderRatedToken);
+                                                   }
+                                                   this.Close();
+                                               },
+                                           Resources.GetString("HistoryDetailSendReceiptButton"), () =>
+                                               {
+                                                   if (Common.Extensions.GuidExtensions.HasValue(Order.Id))
+                                                   {
+                                                       TinyIoCContainer.Current.Resolve<IBookingService>()
+                                                                       .SendReceipt(Order.Id);
+                                                   }
+                                               },
+                                           stringNeutral, actionNeutral
+                    );
+            }
         }
 
         private void CenterMap (bool changeZoom)

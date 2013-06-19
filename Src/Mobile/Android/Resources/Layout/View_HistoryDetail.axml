@@ -239,7 +239,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:visibility="gone"
-                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;Status.FareAvailable&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Status.FareAvailable&apos;,&apos;Converter&apos;:&apos;Visibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;SendReceipt&apos;}}" />
+                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;SendReceiptAvailable&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;SendReceiptAvailable&apos;,&apos;Converter&apos;:&apos;Visibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;SendReceipt&apos;}}" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Red"
                     android:id="@+id/HistoryOrderDeleteBtn"
