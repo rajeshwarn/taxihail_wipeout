@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Entity;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -42,17 +43,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged(()=>OriginTxt); 
                 FirePropertyChanged(()=>AptRingTxt); 
                 FirePropertyChanged(()=>DestinationTxt); 
-                FirePropertyChanged(()=>PickUpDateTxt); }
+                FirePropertyChanged(()=>PickUpDateTxt); 
+            }
 		}
 
         private OrderStatusDetail _status = new OrderStatusDetail{ IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage") };
 		public OrderStatusDetail Status {
 			get{ return _status; }
-            set { _status = value; FirePropertyChanged("Status");}
-            FirePropertyChanged("SendReceiptAvailable");
-            
-            }
-
+		    set
+		    {
+		        _status = value;
+		        FirePropertyChanged("Status");
+		        FirePropertyChanged("SendReceiptAvailable");
+		    }
 
 		}
 
