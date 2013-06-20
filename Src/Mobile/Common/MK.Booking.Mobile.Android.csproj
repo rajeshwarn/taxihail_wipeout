@@ -274,6 +274,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="ViewModels\Master.resx">
       <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
