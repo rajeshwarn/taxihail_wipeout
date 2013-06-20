@@ -5,13 +5,14 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -47,10 +48,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private OrderStatusDetail _status = new OrderStatusDetail{ IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage") };
 		public OrderStatusDetail Status {
 			get{ return _status; }
-            set { _status = value; FirePropertyChanged(()=>Status);}
+            set { _status = value; FirePropertyChanged("Status");}
+            FirePropertyChanged("SendReceiptAvailable");
+            
+            }
+
+
 		}
 
-     
+        
+
+        public bool SendReceiptAvailable 
+        {
+            get
+            {
+               var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse( false);
+                return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
+            }
+        }
+
+
 
         private bool _isDone;
         public bool IsDone

@@ -321,46 +321,65 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowThankYouDialog ()
         {
-			var hub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ();
+
+            string stringNeutral = null;
+            Action actionNeutral = null;
             TinyMessageSubscriptionToken orderRatedToken = null;
+            
+			if (ShowRatingButton) {
+                stringNeutral = Resources.GetString ("RateBtn");
+                actionNeutral = () =>
+                {
+                    if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
+                        Order.Id = Order.Id;
+                        orderRatedToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
+                                                            .Subscribe<OrderRated> (HideRatingButton);
+                        NavigateToRatingPage.Execute ();
+                    }
+                };
+            }
 
-			Action showRating = () =>
-			{
-				if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
-					Order.Id = Order.Id;
-					orderRatedToken = hub.Subscribe<OrderRated> (HideRatingButton);
-					NavigateToRatingPage.Execute ();
-				}
-			};
 
-			Action closeAction = () =>
+			Action returnToBookingScreen = () =>
 			{
 				if (orderRatedToken != null) {
-					hub.Unsubscribe<OrderRated> (orderRatedToken);
+					TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
+						.Unsubscribe<OrderRated> (orderRatedToken);
 				}
 				this.Close ();
 			};
 
-			Action sendRecieptAction = () =>
+
+			Action sendReceiptAction = () =>
 			{
 				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-					BookingService.SendReceipt (Order.Id);
+					TinyIoCContainer.Current.Resolve<IBookingService> ()
+						.SendReceipt (Order.Id);
 				}
 			};
 
-			string stringNeutral = ShowRatingButton ? Str.RateButtonText : null;
-			Action actionNeutral = ShowRatingButton ?  showRating : null;    
+            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse(false);
 
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 
-            MessageService.ShowMessage (
-				Str.ThankYouTitle,
-				Str.ThankYouMessage,
-				Str.ReturnBookingScreenMessage, 
-				closeAction,
-                Str.HistoryDetailSendReceiptButtonText, 
-				sendRecieptAction,
-                stringNeutral, actionNeutral
-            );
+			if (sendReceiptAvailable) {
+				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
+				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+				                            Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction,
+				                            stringNeutral, actionNeutral
+				);
+			} else if (stringNeutral != null) {
+				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
+				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+				                            stringNeutral, actionNeutral
+				);
+			} else {
+				MessageService.ShowMessage(Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
+				                           					returnToBookingScreen);
+			}
         }
 
 
