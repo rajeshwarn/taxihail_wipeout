@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			};
 
-            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse(false);
+            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideSendReceipt").TryToParse(false);
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 
