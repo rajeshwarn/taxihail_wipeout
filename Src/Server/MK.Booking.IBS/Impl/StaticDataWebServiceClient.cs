@@ -49,12 +49,14 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
 
-        public string GetZoneByCoordinate(double latitude, double longitude)
+        public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
             string zone = "";
             UseService(service =>
                            {
-                               zone = service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
+                               zone = providerId.HasValue 
+                                   ? service.GetCompanyZoneByGPS(UserNameApp, PasswordApp, providerId.Value, latitude, longitude)
+                                   : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
                            });
             return zone;
         }

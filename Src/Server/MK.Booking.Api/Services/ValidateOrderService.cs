@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
             var zone = request.TestZone;
             if (!request.TestZone.HasValue())
             {
-                zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
             var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);            
             

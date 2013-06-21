@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             Trace.WriteLine("Create order request : " + request);
-            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
           
             if (rule!= null)
