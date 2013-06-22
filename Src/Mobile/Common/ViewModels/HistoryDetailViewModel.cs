@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-               var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse( false);
+                var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideSendReceipt").TryToParse(false);
                 return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
             }
         }

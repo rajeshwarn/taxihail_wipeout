@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
+            TaxiHailApp_LifetimeChanged (null, new MvxLifetimeEventArgs( MvxLifetimeEvent.ActivatedFromDisk));
         }
 
 
