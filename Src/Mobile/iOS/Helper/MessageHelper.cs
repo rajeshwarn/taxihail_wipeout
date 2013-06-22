@@ -31,7 +31,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             UIApplication.SharedApplication.InvokeOnMainThread ( delegate
                                                                 {                   
                 LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle,neutralActionTitle );
+                UIAlertView av = null;
+
+                if ( neutralAction != null )
+                {
+                    av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle,neutralActionTitle );
+                }   
+                else
+                {
+                    av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle);
+                }
                 av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                     if (e.ButtonIndex == 1) {
                         
