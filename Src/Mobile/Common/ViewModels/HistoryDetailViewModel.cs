@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isCompleted = true;
 		public bool IsCompleted {
 			get {
+                return false;
 				return _isCompleted;
 			}
 			set { 
