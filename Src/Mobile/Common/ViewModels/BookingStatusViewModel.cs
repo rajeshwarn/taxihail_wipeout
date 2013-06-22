@@ -349,14 +349,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 
-			if (sendReceiptAvailable) {
-				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
-				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
-				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
-				                            Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction,
-				                            stringNeutral, actionNeutral
-				);
-			} else if (stringNeutral != null) {
+            if (sendReceiptAvailable && ShowRatingButton) {
+                MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+                String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
+                Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+                Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction,
+                stringNeutral, actionNeutral);
+            } else if (sendReceiptAvailable && !ShowRatingButton) {
+                MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+                                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
+                                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+                                            Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction, null, null );
+            }
+            else if (!sendReceiptAvailable && ShowRatingButton) { 
 				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
 				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
 				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
