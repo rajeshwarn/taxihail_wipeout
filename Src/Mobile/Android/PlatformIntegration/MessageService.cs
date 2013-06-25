@@ -21,6 +21,7 @@ using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Android.Interfaces;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -181,7 +182,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 					}
 				}
 			});
-        }      
+        }
+
+		public IDisposable ShowProgress()
+		{
+			ShowProgress (true);
+			return Disposable.Create (() => ShowProgress(false));
+
+		}
 
         public void ShowToast(string message, ToastDuration duration )
         {
