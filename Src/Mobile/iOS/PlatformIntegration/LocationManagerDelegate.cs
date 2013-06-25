@@ -24,6 +24,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         public Position LastKnownPosition {get;set;}
         public Position BestPosition {get;set;}
 
+        [Obsolete ("Deprecated in iOS 6.0")]
+        public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
+        {
+            var locations = new List<CLLocation> ();
+            if (oldLocation != null) locations.Add (oldLocation);
+            locations.Add (newLocation);
+            LocationsUpdated (manager, locations.ToArray ());
+        }
+
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
             var newLocation = locations.Last();
