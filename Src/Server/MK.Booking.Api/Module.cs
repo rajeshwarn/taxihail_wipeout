@@ -28,9 +28,21 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
             container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
-            container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-            container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+            var mockIbsStatusUpdate = bool.Parse(container
+                               .Resolve<IConfigurationManager>()
+                               .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+            if (mockIbsStatusUpdate)
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
+                container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
+            }
+            else
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+                container.RegisterType<OrderStatusHelper, OrderStatusHelper>();
+
+            }
         }
 
         private void RegisterMaps()
