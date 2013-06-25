@@ -108,10 +108,11 @@
                     </Grid.RowDefinitions>
                    
                     <StackPanel Orientation="Horizontal">
-                            <Button Content="Refresh" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="RefreshDeployments" />
-                            <Button Content="Clear deploy history" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="ClearDeployHistory" />
+                            <Button Content="Refresh" HorizontalAlignment="Left" Margin="10" Width="125" Click="RefreshDeployments" />
+                            <CheckBox x:Name="AutoRefreshCheckbox"  Margin="15">Auto Refresh</CheckBox>
+                            <Button Content="Clear deploy history" HorizontalAlignment="Left" Margin="10" Width="125" Click="ClearDeployHistory" />
                         </StackPanel>
-                    <DataGrid Name="DeployDataGrid"  Grid.Row="1" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding DeploymentJobs}">
+                    <DataGrid Name="DeployDataGrid"  Grid.Row="1" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding DeploymentJobs}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
                             <DataGridTextColumn Width="100" Header="Company" Binding="{Binding Company.Name}" />

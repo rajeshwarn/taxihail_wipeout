@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 namespace apcurium.CMT.Web.Tests
 {
     [TestFixture]
+    [Ignore("CMT - Should this be removed???")]
     public class CmtPreCogFixture : CmtBaseTest
     {
 
