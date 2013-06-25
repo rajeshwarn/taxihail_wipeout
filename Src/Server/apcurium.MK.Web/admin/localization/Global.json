@@ -53,6 +53,7 @@
 	"Booking.ConfirmationEmail" : "Send confirmation email",
 	"Client.HideCallDispatchButton" : "Hide call dispatch button",
 	"Client.HideReportProblem": "Hide report problem button",
+	"Client.HideSendReceipt": "Hide send receipt option",	
 	"Client.NumberOfCharInRefineAddress": "Number of char in refine address",
 	"Client.ShowRingCodeField": "Show ring code field",
 	"Client.ShowPassengerName": "Show passenger name",

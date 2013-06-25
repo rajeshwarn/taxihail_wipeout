@@ -43,7 +43,7 @@
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "false",
    "Client.NumberOfCharInRefineAddress" : "10",
-   "Client.SendReceiptAvailable" : "true",   
+   "Client.HideSendReceipt" : "false",   
    "Client.ShowEstimate" : "true",   
    "Client.ShowRingCodeField" : "true",   
    "Client.ShowPassengerName" : "true",   
