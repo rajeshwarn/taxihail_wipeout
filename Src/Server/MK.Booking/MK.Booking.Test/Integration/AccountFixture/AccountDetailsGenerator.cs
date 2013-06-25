@@ -199,7 +199,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                                     SourceId = _accountId,
                                     Name = "Bob",                                    
                                     Email = "bob.smith@acpurium.com",
-                                    Password = new byte[1] {1}
+                                    Password = new byte[1] {1},
+                                    
                                 });
 
         }
