@@ -124,7 +124,7 @@ namespace apcurium.MK.Web
             {
                 Trace.WriteLine("Check Order Status");
                 var statusJobService = UnityServiceLocator.Instance.Resolve<IUpdateOrderStatusJob>();
-                statusJobService.CheckStatus();
+                //statusJobService.CheckStatus();
             }
             finally
             {
