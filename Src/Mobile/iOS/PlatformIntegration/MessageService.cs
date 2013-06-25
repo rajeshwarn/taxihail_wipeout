@@ -9,6 +9,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -71,6 +72,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 });
             }
 		}
+
+        public IDisposable ShowProgress()
+        {
+            ShowProgress (true);
+            return Disposable.Create (() => ShowProgress(false));
+        }
 
         public void ShowDialogActivity(Type type)
         {
