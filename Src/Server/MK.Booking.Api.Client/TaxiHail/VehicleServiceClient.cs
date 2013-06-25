@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using MK.Common.Android;
 using apcurium.MK.Booking.Mobile;
+using System;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -30,11 +31,22 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public AvailableVehicle[] GetAvailableVehicles(double latitude, double longitude)
         {
-            return Client.Get(new AvailableVehicles
+            try{                           
+                var x=  Client.Get(new AvailableVehicles
+                {
+                    Latitude = latitude,
+                    Longitude = longitude
+                });
+                
+                return x.ToArray();
+            }
+            catch(Exception)
             {
-                Latitude = latitude,
-                Longitude = longitude
-            }).ToArray();
+#warning Dirty!!
+                //todo fix this
+                return new AvailableVehicle[0];
+            }
+
         }
     }
 }

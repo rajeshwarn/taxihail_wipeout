@@ -101,6 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TipSlider.Enabled = true;
             };
 
+            TipAmountLabel.ClearsOnBeginEditing = true;
 
             TipAmountLabel.EditingChanged+= (sender, e) => {
                 UpdateAmounts(false);

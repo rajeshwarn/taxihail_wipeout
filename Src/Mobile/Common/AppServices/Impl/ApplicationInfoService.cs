@@ -55,6 +55,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     isUpToDate = true;
                 }
 
+#if DEBUG
+                isUpToDate = true;
+#endif
+
                 if (!isUpToDate)
                 {
 
