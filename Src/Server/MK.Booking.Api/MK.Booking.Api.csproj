@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
