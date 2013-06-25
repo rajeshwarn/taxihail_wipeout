@@ -54,30 +54,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             MessageHelper.Show( title, message,additionalButton);
         }
 
-        		
-		public void ShowProgress( bool show, Action cancel )
-		{
-            
-    			if( show )
-    			{
-                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                      {				
-    				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
-                    });
-    			}
-    			else
-                {
-                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                      {
-    				LoadingOverlay.StopAnimatingLoading(  );
-                    });
-    			}
-            
-        }
-
 		public void ShowProgress( bool show )
 		{
-			ShowProgress( show, null );
+            if( show )
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                    {               
+                    LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, null );
+                });
+            }
+            else
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                    {
+                    LoadingOverlay.StopAnimatingLoading(  );
+                });
+            }
 		}
 
         public void ShowDialogActivity(Type type)
