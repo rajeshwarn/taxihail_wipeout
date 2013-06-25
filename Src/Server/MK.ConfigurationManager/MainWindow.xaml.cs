@@ -8,6 +8,7 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -71,6 +72,29 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
             Versions = new ObservableCollection<AppVersion>();
+
+            AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
+
+        }
+
+        void AutoRefreshCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
+            {
+                AutoRefresh();
+            }
+        }
+
+        private void AutoRefresh()
+        {
+            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ => 
+            {
+                RefreshData();
+                if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
+                {
+                    AutoRefresh();
+                }
+            });
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
