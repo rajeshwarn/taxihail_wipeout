@@ -22,17 +22,14 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {
         private readonly IOrderDao _orderDao;
-        private readonly IConfigurationManager _configManager;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
-        private readonly ICommandBus _commandBus;
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
+        public UpdateOrderStatusJob(IOrderDao orderDao, IBookingWebServiceClient bookingWebServiceClient, OrderStatusUpdater orderStatusUpdater)
         {
             _orderDao = orderDao;
-            _configManager = configManager;
             _bookingWebServiceClient = bookingWebServiceClient;
-            _commandBus = commandBus;
+            _orderStatusUpdater = orderStatusUpdater;
         }
 
         public void CheckStatus()
@@ -62,63 +59,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (ibsStatus == null) continue;
 
-                var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
-                    || order.VehicleLatitude != ibsStatus.VehicleLatitude
-                    || order.VehicleLongitude != ibsStatus.VehicleLongitude;
-
-                if (!statusChanged) { continue; }
-
-                var command = new ChangeOrderStatus
-                {
-                    Status = order,
-                    Fare = ibsStatus.Fare,
-                    Toll = ibsStatus.Toll,
-                    Tip = ibsStatus.Tip
-                };
-                    
-                ibsStatus.Update(order);
-                    
-                Logger.Debug("Status from IBS Webservice " + ibsStatus.Dump());
-                Logger.Debug("Status Changed for " + order.OrderId + " -- new status IBS : " + ibsStatus.Status);
-                string description = null;
-                        
-                if (ibsStatus.IsAssigned)
-                {
-                    description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
-
-                    if (ibsStatus.Eta.HasValue)
-                    {
-                        description += " - " + string.Format(_configManager.GetSetting("OrderStatus.CabDriverETA"), ibsStatus.Eta.Value.ToString("t"));
-                    }
-                }
-                else if ( ibsStatus.IsComplete)
-                {
-                    order.Status = OrderStatus.Completed;
-
-                    if (ibsStatus.Fare.HasValue || ibsStatus.Tip.HasValue || ibsStatus.Toll.HasValue)
-                    {
-                        //FormatPrice
-                        var total = Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip).Where(amount => amount.HasValue).Select(amount => amount).Sum();
-
-                        description = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
-                        order.FareAvailable = true;
-                    }
-                }
-
-                order.IBSStatusDescription = description.HasValue() 
-                                                                ? description 
-                                                                : _configManager.GetSetting("OrderStatus." + ibsStatus.Status);
-                    
-                _commandBus.Send(command);
+                _orderStatusUpdater.Update(ibsStatus, order);
             }
             Logger.Debug("End Call IBS for Status");
         }
 
-        private string FormatPrice(double? price)
-        {
-            var culture = _configManager.GetSetting("PriceFormat");
-            return string.Format(new CultureInfo(culture), "{0:C}", price.HasValue ? price.Value : 0);
-        }
+        
 
         private void DemoModeFakePosition(OrderStatusDetail status)
         {
@@ -136,6 +82,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private static readonly Dictionary<Guid, List<Location>> _fakeTaxiPositions = new Dictionary<Guid, List<Location>>();
         private static readonly Dictionary<Guid, int> _fakeTaxiPositionsIndex = new Dictionary<Guid, int>();
+        private readonly OrderStatusUpdater _orderStatusUpdater;
 
         private Location BuildFakeDirectionForOrder(Guid guid, double lat, double lng)
         {

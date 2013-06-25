@@ -79,7 +79,6 @@ namespace Infrastructure.EventSourcing
 
         protected void Update(VersionedEvent e)
         {
-            e.EventDate = DateTime.UtcNow;
             e.SourceId = this.Id;
             e.Version = this.version + 1;
             this.handlers[e.GetType()].Invoke(e);

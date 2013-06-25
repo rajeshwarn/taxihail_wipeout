@@ -6,6 +6,7 @@ using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
@@ -26,8 +27,22 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
-            container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
             container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
+            container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
+            var mockIbsStatusUpdate = bool.Parse(container
+                               .Resolve<IConfigurationManager>()
+                               .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+            if (mockIbsStatusUpdate)
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
+                container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
+            }
+            else
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+                container.RegisterType<OrderStatusHelper, OrderStatusHelper>();
+
+            }
         }
 
         private void RegisterMaps()

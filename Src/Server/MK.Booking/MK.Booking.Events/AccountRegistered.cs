@@ -4,6 +4,10 @@ namespace apcurium.MK.Booking.Events
 {
     public class AccountRegistered : VersionedEvent
     {
+        public AccountRegistered()
+        {
+            
+        }
         public string Name { get; set; }  
         public string Email { get; set; }
         public string Phone { get; set; }

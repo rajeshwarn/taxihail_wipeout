@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.IBS
             return Status + " " + FirstName;
         }
 
+        public IBSOrderInformation()
+        {
+            
+        }
+
         public IBSOrderInformation(TOrderStatus orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
