@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_7();
 
-            order.ServiceProviderID = providerId;
+            order.ServiceProviderID = providerId.GetValueOrDefault();
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
