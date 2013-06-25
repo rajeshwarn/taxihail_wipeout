@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using MK.ConfigurationManager.Entities;
 using Newtonsoft.Json.Linq;
 
@@ -73,7 +74,10 @@ namespace MK.ConfigurationManager
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
             Versions = new ObservableCollection<AppVersion>();
 
+            IBSServers.CollectionChanged += IBSServersCollectionChanged;
+            TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
             AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
+            Versions.CollectionChanged += VersionsOnCollectionChanged;
 
         }
 
@@ -87,15 +91,27 @@ namespace MK.ConfigurationManager
 
         private void AutoRefresh()
         {
-            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ => 
-            {
-                RefreshData();
-                if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
+            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
                 {
-                    AutoRefresh();
-                }
-            });
+                    Dispatcher.Invoke(() =>
+                        {
+                            RefreshButton.IsEnabled = false;
+                        });
+                    Dispatcher.Invoke(() =>
+                        {
+                            RefreshData();
+                            if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
+                            {
+                                AutoRefresh();
+                            }
+                        });
+                    Dispatcher.Invoke(() =>
+                    {
+                        RefreshButton.IsEnabled = true;
+                    });
+                });
         }
+
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
@@ -121,24 +137,40 @@ namespace MK.ConfigurationManager
             }
             DbContext = new ConfigurationManagerDbContext(connectionString);
             DbContext.Database.CreateIfNotExists();
-           
+
+
+            foreach (var company in  DbContext.Set<Company>().OrderBy(x => x.Name))
+            {
+                if (!Companies.Any(c => c.Id == company.Id))
+                {
+                    Companies.Add(company);
+                }
+            }
             
-            Companies.Clear();
-            DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
+            foreach (var server in DbContext.Set<IBSServer>().OrderBy(x => x.Name))
+            {
+                if (!IBSServers.Any(s => s.Id == server.Id))
+                {
+                    IBSServers.Add(server);
+                }
+            }
 
-            IBSServers.Clear();
-            DbContext.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add);
-            IBSServers.CollectionChanged += IBSServersCollectionChanged;
+            foreach (var env in DbContext.Set<TaxiHailEnvironment>())
+            {
+                if (!TaxiHailEnvironments.Any(e => e.Id == env.Id))
+                {
+                    TaxiHailEnvironments.Add(env);
+                }
+            }
 
-            TaxiHailEnvironments.Clear();
-            DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
-            TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
-
-            Versions.Clear();
-            DbContext.Set<AppVersion>().ToList().ForEach(Versions.Add);
-            Versions.CollectionChanged += VersionsOnCollectionChanged;
-
-
+            foreach (var ver in DbContext.Set<AppVersion>())
+            {
+                if (!Versions.Any(v => v.Id == ver.Id))
+                {
+                    Versions.Add(ver);
+                }
+            }
+            
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";

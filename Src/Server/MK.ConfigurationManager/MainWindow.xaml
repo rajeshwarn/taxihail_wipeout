@@ -108,7 +108,7 @@
                     </Grid.RowDefinitions>
                    
                     <StackPanel Orientation="Horizontal">
-                            <Button Content="Refresh" HorizontalAlignment="Left" Margin="10" Width="125" Click="RefreshDeployments" />
+                            <Button x:Name="RefreshButton" Content="Refresh" HorizontalAlignment="Left" Margin="10" Width="125" Click="RefreshDeployments" />
                             <CheckBox x:Name="AutoRefreshCheckbox"  Margin="15">Auto Refresh</CheckBox>
                             <Button Content="Clear deploy history" HorizontalAlignment="Left" Margin="10" Width="125" Click="ClearDeployHistory" />
                         </StackPanel>
