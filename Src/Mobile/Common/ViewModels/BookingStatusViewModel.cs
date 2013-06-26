@@ -207,8 +207,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				FirePropertyChanged (() => OrderStatusDetail);
+                FirePropertyChanged (() => IsDriverInfoAvailable);
+                FirePropertyChanged (() => IsCallTaxiVisible);
 			}
 		}
+
+        public IMvxCommand CallTaxi
+        {
+            get { return GetCommand(() =>
+                                        {
+                    if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
+                    {
+                        PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+                    }
+                    else
+                    {
+                        MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
+                    }
+                }); }
+        }
 
 		private bool _showRatingButton;
 		public bool ShowRatingButton {
@@ -279,7 +296,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                status.IBSStatusId = VehicleStatuses.Common.Arrived;
+                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
+
 #endif
 
                 if (status != null) {

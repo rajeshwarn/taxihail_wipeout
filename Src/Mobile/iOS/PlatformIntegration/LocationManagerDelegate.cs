@@ -9,7 +9,7 @@ using System.Reactive;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using MK.Common.iOS.Patterns;
-
+using Cirrious.MvvmCross.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var position = new Position()
             {
                 Accuracy = (float)((newLocation.HorizontalAccuracy + newLocation.VerticalAccuracy)/2),
-                Time = DateTime.Now,
+                Time = newLocation.Timestamp.ToDateTimeUtc(),
                 Latitude = newLocation.Coordinate.Latitude,
                 Longitude = newLocation.Coordinate.Longitude
             };

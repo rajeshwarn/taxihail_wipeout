@@ -5,6 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
+    android:id="@+id/layoutRoot"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <RelativeLayout
@@ -51,6 +52,7 @@
                         android:gravity="right|center_vertical"
                         android:width="150dp"
                         android:layout_marginTop="6dp"
+                        android:selectAllOnFocus="true"
                         local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
                 </FrameLayout>
             </LinearLayout>
@@ -87,6 +89,7 @@
                         android:gravity="right|center_vertical"
                         android:width="150dp"
                         android:layout_gravity="right"
+                        android:selectAllOnFocus="true"
                         local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
                 </FrameLayout>
             </LinearLayout>
