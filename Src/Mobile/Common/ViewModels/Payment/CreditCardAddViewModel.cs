@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-
 		public CreditCardAddViewModel (string messageId) : base(messageId)
         {
             Data = new CreditCardInfos();
@@ -47,7 +46,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = "Visa Electron", Id = 3 });
             CreditCardType = 0;
 
-		  
+            ExpirationYears = new List<ListItem>();
+            for (int i = 0; i <= 15; i++)
+            {
+                ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString() });
+            }
+
+            ExpirationMonths = new List<ListItem>();
+            ExpirationMonths.Add (new ListItem { Display = "January", Id = 1 });
+            ExpirationMonths.Add (new ListItem { Display = "February", Id = 2 });
+            ExpirationMonths.Add (new ListItem { Display = "March", Id = 3 });
+            ExpirationMonths.Add (new ListItem { Display = "April", Id = 4 });
+            ExpirationMonths.Add (new ListItem { Display = "May", Id = 5 });
+            ExpirationMonths.Add (new ListItem { Display = "June", Id = 6 });
+            ExpirationMonths.Add (new ListItem { Display = "July", Id = 7 });
+            ExpirationMonths.Add (new ListItem { Display = "August", Id = 8 });
+            ExpirationMonths.Add (new ListItem { Display = "September", Id = 9 });
+            ExpirationMonths.Add (new ListItem { Display = "October", Id = 10 });
+            ExpirationMonths.Add (new ListItem { Display = "November", Id = 11 });
+            ExpirationMonths.Add (new ListItem { Display = "December", Id = 12 });
+
 #if DEBUG
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 			Data.CardNumber = DummyVisa.Number;
@@ -107,9 +125,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public int? ExpirationYear {
+            get {
+                return string.IsNullOrEmpty(Data.ExpirationYear) 
+                    ? default(int?) 
+                    : int.Parse(Data.ExpirationYear);
+            }
+            set {
+                var year = value;
+                var current = string.IsNullOrEmpty(Data.ExpirationYear) ? default(int?) : int.Parse(Data.ExpirationYear);
+
+                if(year != current){
+                    Data.ExpirationYear = year.ToSafeString();
+                    FirePropertyChanged("ExpirationYear");
+                }
+            }
+        }
+
+        public int? ExpirationMonth {
+            get {
+                return string.IsNullOrEmpty(Data.ExpirationMonth) 
+                    ? default(int?) 
+                    : int.Parse(Data.ExpirationMonth);
+            }
+            set {
+                var month = value;
+                var current = string.IsNullOrEmpty(Data.ExpirationMonth) ? default(int?) : int.Parse(Data.ExpirationMonth);
+
+                if(month != current){
+                    Data.ExpirationMonth = month.ToSafeString();
+                    FirePropertyChanged("ExpirationMonth");
+                    FirePropertyChanged("ExpirationMonthDisplay");
+                }
+            }
+        }
+
+        public string ExpirationMonthDisplay {
+            get {
+                var type = ExpirationMonths.FirstOrDefault(x => x.Id == ExpirationMonth);
+                return type == null ? null : type.Display;
+            }
+        }
+
 		public List<ListItem> CardCategories { get; set; }
 
         public List<ListItem> CreditCardCompanies { get; set; }
+
+        public List<ListItem> ExpirationYears { get; set; }
+
+        public List<ListItem> ExpirationMonths { get; set; }
 
 		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<object>(item => {
 					Data.CreditCardCompany = item.ToSafeString();	
