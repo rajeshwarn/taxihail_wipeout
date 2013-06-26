@@ -8,6 +8,7 @@ using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
 using MonoTouch.Foundation;
 using System.Reactive.Linq;
+using Cirrious.MvvmCross.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -46,6 +47,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return;
             }
+
+            if (_locationManager.Location != null) {
+                
+                _locationDelegate.BestPosition = new Position()
+                {
+                    Accuracy = (float)_locationManager.Location.HorizontalAccuracy ,
+                    Time = _locationManager.Location.Timestamp.ToDateTimeUtc(),
+                    Latitude = _locationManager.Location.Coordinate.Latitude,
+                    Longitude = _locationManager.Location.Coordinate.Longitude
+                };
+            }
+
             _locationManager.StartUpdatingLocation();
             _isStarted = true;
 
