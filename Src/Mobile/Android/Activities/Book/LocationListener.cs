@@ -13,6 +13,9 @@ using Android.Locations;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.iOS.Patterns;
 
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class LocationListener : Java.Lang.Object, ILocationListener, IObservable<Position>
@@ -33,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			var position = new Position()
 			{
-				Time = DateTime.Now,
+				Time = location.Time.ToDateTime(),
 				Error = location.Accuracy,
 				Latitude = location.Latitude,
 				Longitude = location.Longitude

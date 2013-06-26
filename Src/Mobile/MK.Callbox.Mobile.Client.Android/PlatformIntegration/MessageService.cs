@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Android.Interfaces;
 using apcurium.MK.Callbox.Mobile.Client.Activities;
 using apcurium.MK.Callbox.Mobile.Client.Messages;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
@@ -175,7 +176,13 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 					}
 				}
 			});
-        }      
+        }
+
+		public IDisposable ShowProgress()
+		{
+			ShowProgress (true);
+			return Disposable.Create (() => ShowProgress(false));
+		}
 
         public void ShowToast(string message, ToastDuration duration )
         {
