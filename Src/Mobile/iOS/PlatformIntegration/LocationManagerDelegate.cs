@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var position = new Position()
             {
-                Accuracy = (float)((newLocation.HorizontalAccuracy + newLocation.VerticalAccuracy)/2),
+                Error = (float)newLocation.HorizontalAccuracy,
                 Time = newLocation.Timestamp.ToDateTimeUtc(),
                 Latitude = newLocation.Coordinate.Latitude,
                 Longitude = newLocation.Coordinate.Longitude
