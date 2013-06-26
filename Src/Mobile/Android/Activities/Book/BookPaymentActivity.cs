@@ -32,28 +32,28 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public double TipAmount {
 			get{
-				return _tipAmountTextView.Text.FromDollars();
+				return CultureProvider.ParseCurrency(_tipAmountTextView.Text);
 			}
 			set{
-				_tipAmountTextView.Text = value.ToDollars();
+				_tipAmountTextView.Text = CultureProvider.FormatCurrency(value);
 			}
 		}
 
 		public double MeterAmount {
 			get{
-				return _meterAmountTextView.Text.FromDollars();
+				return CultureProvider.ParseCurrency(_meterAmountTextView.Text);
 			}
 			set{
-				_meterAmountTextView.Text = value.ToDollars();
+				_meterAmountTextView.Text = CultureProvider.FormatCurrency (value);
 			}
 		}
 
 		public double TotalAmount {
 			get{
-				return _totalAmountTextView.Text.FromDollars();
+						return CultureProvider.ParseCurrency(_totalAmountTextView.Text);
 			}
 			set{
-				_totalAmountTextView.Text = value.ToDollars();
+				_totalAmountTextView.Text = CultureProvider.FormatCurrency (value);
 			}
 		}
 

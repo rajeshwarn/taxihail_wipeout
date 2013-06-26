@@ -38,8 +38,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus {get; set;}
 
-		private double AmountDouble { get{ return Amount.FromDollars(); }}
-		public string Amount { get; set;}
+		public string TextAmount { get; set;}
+		public double Amount
+		{ 
+			get 
+			{ 
+				return CultureProvider.ParseCurrency (TextAmount);
+			}
+		}
 
         public PaymentDetailsViewModel PaymentPreferences {
             get;
@@ -50,7 +56,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			try
 			{
-				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
+				var formattedAmount = CultureProvider.FormatCurrency(Amount); 
+				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
 			}
 			catch(Exception){
 			}
@@ -84,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
 						return;
 					}
-					if(AmountDouble <= 0)
+					if(Amount <= 0)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
@@ -99,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
 					}
 
-					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble, Order.IBSOrderId.Value +"");
+					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token, Amount, Order.IBSOrderId.Value +"");
 
 
 
@@ -112,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 
                     try{
-                        BookingService.FinailizePayment(Order.Id, AmountDouble, OrderStatus.VehicleNumber,transactionId, Order.IBSOrderId.Value);
+                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber,transactionId, Order.IBSOrderId.Value);
                     }
                     catch(Exception e)
                     {

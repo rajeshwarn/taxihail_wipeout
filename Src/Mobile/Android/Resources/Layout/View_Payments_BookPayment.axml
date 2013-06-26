@@ -112,7 +112,7 @@
                         android:text="$900.45"
                         android:id="@+id/totalAmountTextView"
                         style="@style/FormLabelText"
-                        local:MvxBind="{'Text': {'Path': 'Amount', 'Mode':'TwoWay'}}"
+                        local:MvxBind="{'Text': {'Path': 'TextAmount', 'Mode':'TwoWay'}}"
                         android:layout_gravity="right"
                         android:layout_marginRight="10.0dp" />
                 </FrameLayout>
