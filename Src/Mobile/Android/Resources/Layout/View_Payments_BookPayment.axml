@@ -5,6 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
+    android:id="@+id/layoutRoot"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <RelativeLayout
@@ -51,7 +52,8 @@
                         android:gravity="right|center_vertical"
                         android:hint="$0.00"
                         android:width="150dp"
-                        android:layout_marginTop="6dp" />
+                        android:layout_marginTop="6dp"
+                        android:selectAllOnFocus="true" />
                 </FrameLayout>
             </LinearLayout>
             <apcurium.mk.booking.mobile.client.controls.TipSlider
@@ -87,7 +89,8 @@
                         android:gravity="right|center_vertical"
                         android:hint="$0.00"
                         android:width="150dp"
-                        android:layout_gravity="right" />
+                        android:layout_gravity="right"
+                        android:selectAllOnFocus="true" />
                 </FrameLayout>
             </LinearLayout>
             <LinearLayout

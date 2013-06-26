@@ -30,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		TextView _totalAmountTextView;
 		TipSlider _tipSlider;
 
+		LinearLayout _layoutRoot;
+
 		public double TipAmount {
 			get{
 				return _tipAmountTextView.Text.FromDollars();
@@ -64,12 +66,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_tipAmountTextView = FindViewById<EditText>(Resource.Id.tipAmountTextView);
 			_meterAmountTextView = FindViewById<EditText>(Resource.Id.meterAmountTextView);
 			_totalAmountTextView =  FindViewById<TextView>(Resource.Id.totalAmountTextView);
+			_layoutRoot = FindViewById<LinearLayout> (Resource.Id.layoutRoot);
 
 			UpdateAmounts();
 
 			_tipAmountTextView.TextChanged += (sender, e) => {
-				
 				UpdateAmounts();
+			};
+			_meterAmountTextView.FocusChange+= (sender, e) => {
+				if(!e.HasFocus)
+				{
+					MeterAmount = MeterAmount;
+				}
 			};
 
 			_meterAmountTextView.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>  {
@@ -103,7 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			_tipSlider.PercentChanged += (object sender, EventArgs e) => 
 			{
-				TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));		
+				TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));	
+				_layoutRoot.RequestFocus();
 				UpdateAmounts();
 			};
 
