@@ -518,51 +518,53 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    MessageService.ShowProgress(true);
-                    bool isValid = _bookingService.IsValid(Order);
-                    if (!isValid)
-                    {
-                        Order.PickupDate = null;
-                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
-                        return;
-                    }
+                    using(MessageService.ShowProgress())
+					{
+	                    bool isValid = _bookingService.IsValid(Order);
+	                    if (!isValid)
+	                    {
+	                        Order.PickupDate = null;
+	                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
+	                        return;
+	                    }
 
-                    if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
-                    {
-                        Order.PickupDate = null;
-                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
-                        return;
-                    }
+	                    if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
+	                    {
+	                        Order.PickupDate = null;
+	                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
+	                        return;
+	                    }
 
-                    TinyMessageSubscriptionToken token = null;
-                    token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
-                    {
-                        if (token != null)
-                        {
-                            MessengerHub.Unsubscribe<OrderConfirmed>(token);
-                        }
-                        if (msg.IsCancelled)
-                        {
-                            //User cancelled
-                            Order.PickupDate = null;
-                        }
-                        else
-                        {
-                            Task.Factory.StartNew(CompleteOrder);
-                        }
-                    });
+	                    TinyMessageSubscriptionToken token = null;
+	                    token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
+	                    {
+	                        if (token != null)
+	                        {
+	                            MessengerHub.Unsubscribe<OrderConfirmed>(token);
+	                        }
+	                        if (msg.IsCancelled)
+	                        {
+	                            //User cancelled
+	                            Order.PickupDate = null;
+	                        }
+	                        else
+	                        {
+	                            Task.Factory.StartNew(CompleteOrder);
+	                        }
+	                    });
 
-                    InvokeOnMainThread(() =>
-                    {
-                        Order.Settings = _accountService.CurrentAccount.Settings;                        
-                        if ( Order.Settings.Passengers <= 0 )
-                        {
-                            Order.Settings.Passengers = 1;
-                        }
+	                    InvokeOnMainThread(() =>
+	                    {
+	                        Order.Settings = _accountService.CurrentAccount.Settings;                        
+	                        if ( Order.Settings.Passengers <= 0 )
+	                        {
+	                            Order.Settings.Passengers = 1;
+	                        }
 
-                        var serialized = Order.ToJson();
-                        RequestNavigate<BookConfirmationViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
-                    });
+	                        var serialized = Order.ToJson();
+	                        RequestNavigate<BookConfirmationViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
+	                    });
+					}
                 });
             }
         }

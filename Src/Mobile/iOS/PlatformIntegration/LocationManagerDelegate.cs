@@ -9,7 +9,7 @@ using System.Reactive;
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using MK.Common.iOS.Patterns;
-
+using Cirrious.MvvmCross.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -24,6 +24,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         public Position LastKnownPosition {get;set;}
         public Position BestPosition {get;set;}
 
+        [Obsolete ("Deprecated in iOS 6.0")]
+        public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
+        {
+            var locations = new List<CLLocation> ();
+            if (oldLocation != null) locations.Add (oldLocation);
+            locations.Add (newLocation);
+            LocationsUpdated (manager, locations.ToArray ());
+        }
+
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
             var newLocation = locations.Last();
@@ -31,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var position = new Position()
             {
                 Accuracy = (float)((newLocation.HorizontalAccuracy + newLocation.VerticalAccuracy)/2),
-                Time = DateTime.Now,
+                Time = newLocation.Timestamp.ToDateTimeUtc(),
                 Latitude = newLocation.Coordinate.Latitude,
                 Longitude = newLocation.Coordinate.Longitude
             };
