@@ -304,6 +304,7 @@
     <AndroidResource Include="Resources\Drawable\nearby_cab.png" />
     <AndroidResource Include="Resources\drawable-hdpi\nearby_cab.png" />
     <Compile Include="Extensions\EditTextExtensions.cs" />
+    <Compile Include="Extensions\LocationTimeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
