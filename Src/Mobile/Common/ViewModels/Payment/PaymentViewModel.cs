@@ -38,6 +38,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus {get; set;}
 
+		public string PlaceholderAmount
+		{
+			get{ return CultureProvider.FormatCurrency (0d); }
+		}
+
 		public string TextAmount { get; set;}
 		public double Amount
 		{ 

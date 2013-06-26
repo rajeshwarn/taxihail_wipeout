@@ -49,9 +49,9 @@
                         style="@style/FormLabelText"
                         android:layout_gravity="right"
                         android:gravity="right|center_vertical"
-                        android:hint="$0.00"
                         android:width="150dp"
-                        android:layout_marginTop="6dp" />
+                        android:layout_marginTop="6dp"
+                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
                 </FrameLayout>
             </LinearLayout>
             <apcurium.mk.booking.mobile.client.controls.TipSlider
@@ -85,9 +85,9 @@
                         android:inputType="numberDecimal"
                         style="@style/FormLabelText"
                         android:gravity="right|center_vertical"
-                        android:hint="$0.00"
                         android:width="150dp"
-                        android:layout_gravity="right" />
+                        android:layout_gravity="right"
+                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
                 </FrameLayout>
             </LinearLayout>
             <LinearLayout
@@ -109,7 +109,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$900.45"
+                        android:text=""
                         android:id="@+id/totalAmountTextView"
                         style="@style/FormLabelText"
                         local:MvxBind="{'Text': {'Path': 'TextAmount', 'Mode':'TwoWay'}}"
