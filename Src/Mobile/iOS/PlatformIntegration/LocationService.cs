@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 _locationDelegate.BestPosition = new Position()
                 {
-                    Accuracy = (float)_locationManager.Location.HorizontalAccuracy ,
+                    Error = (float)_locationManager.Location.HorizontalAccuracy,
                     Time = _locationManager.Location.Timestamp.ToDateTimeUtc(),
                     Latitude = _locationManager.Location.Coordinate.Latitude,
                     Longitude = _locationManager.Location.Coordinate.Longitude
