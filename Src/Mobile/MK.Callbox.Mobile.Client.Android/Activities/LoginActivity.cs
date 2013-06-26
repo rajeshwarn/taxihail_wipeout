@@ -55,6 +55,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             {
                 var serverUrl = input.Text;
                 TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+	
             });
 
             alert.SetNegativeButton("Cancel", (s, e) =>

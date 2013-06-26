@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using Android.Views.InputMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -112,7 +113,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_tipSlider.PercentChanged += (object sender, EventArgs e) => 
 			{
 				TipAmount = MeterAmount * ((((double)_tipSlider.Percent)/100.00));	
+
+				((InputMethodManager)GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(_tipAmountTextView.WindowToken,0);
+
 				_layoutRoot.RequestFocus();
+				//Window.SetSoftInputMode(SoftInput.StateAlwaysHidden);//hide keyboard
+
+
 				UpdateAmounts();
 			};
 
