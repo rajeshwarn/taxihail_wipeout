@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 return false;
             }
 
-            return thisPosition.Accuracy > thatPosition.Accuracy;
+            return thisPosition.Accuracy < thatPosition.Accuracy;
         }
     }
 }
