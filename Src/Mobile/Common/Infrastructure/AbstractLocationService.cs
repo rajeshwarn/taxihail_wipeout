@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 			}
 			return Positions.Where(p => 
 			{
-				return p.Accuracy <= maxAccuracy;
+				return p.Error <= maxAccuracy;
 			}).Take(timeout).Take(1);
 		}
 
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
     public class Position
     {
-        public float Accuracy  { get; set; }
+        public float Error  { get; set; }
 
         public DateTime Time  { get; set; }
 
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 return false;
             }
 
-            return thisPosition.Accuracy < thatPosition.Accuracy;
+            return thisPosition.Error < thatPosition.Error;
         }
     }
 }

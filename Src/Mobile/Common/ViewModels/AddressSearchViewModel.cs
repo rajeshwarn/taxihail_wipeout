@@ -189,6 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
+        [Obsolete("This is terrible - why would you do this?")]
         public  void BubbleSort (ObservableCollection<AddressViewModel> o)
         {
             for (var i = o.Count - 1; i >= 0; i--) {
