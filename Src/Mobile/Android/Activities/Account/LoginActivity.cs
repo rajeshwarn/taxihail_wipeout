@@ -26,6 +26,7 @@ using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Common.Configuration;
+using Android.Text;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -137,6 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             var input = new EditText(this);
             
+			input.InputType = InputTypes.TextFlagNoSuggestions;
             input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             alert.SetView(input);
 
