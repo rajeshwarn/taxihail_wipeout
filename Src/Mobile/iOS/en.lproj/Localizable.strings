@@ -404,3 +404,15 @@
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
 "NoOrderId"="Order Not ready";
 "HistoryDetailAuthorizationLabel"="Authorization:";
+"November"="November";
+"January"="January";
+"May"="May";
+"October"="October";
+"June"="June";
+"February"="February";
+"April"="April";
+"December"="December";
+"March"="March";
+"September"="September";
+"August"="August";
+"July"="July";
