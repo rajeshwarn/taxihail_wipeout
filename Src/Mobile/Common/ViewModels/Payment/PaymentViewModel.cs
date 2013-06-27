@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using BraintreeEncryption.Library;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -92,10 +92,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                 {                    
 
-                    var braintree = new Braintree("your-client-side-encryption-key");
-                    var encryptedCreditCardNumber = braintree.Encrypt("4111111111111111");
-                    var encryptedCvv = braintree.Encrypt("111");
-                    var encryptedExpirationDate = braintree.Encrypt("01/2014");
 
 					if(PaymentPreferences.SelectedCreditCard == null)
 					{
