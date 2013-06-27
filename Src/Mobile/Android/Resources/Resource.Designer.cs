@@ -1426,11 +1426,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070048
 			public const int ApproxPrice = 2131165256;
 			
+			// aapt resource value: 0x7f07019d
+			public const int April = 2131165597;
+			
 			// aapt resource value: 0x7f070021
 			public const int AptNumber = 2131165217;
 			
 			// aapt resource value: 0x7f070119
 			public const int AptNumberTextPlaceholder = 2131165465;
+			
+			// aapt resource value: 0x7f0701a2
+			public const int August = 2131165602;
 			
 			// aapt resource value: 0x7f070176
 			public const int BackButton = 2131165558;
@@ -1744,6 +1750,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700b1
 			public const int DateToday = 2131165361;
 			
+			// aapt resource value: 0x7f07019f
+			public const int December = 2131165599;
+			
 			// aapt resource value: 0x7f07008b
 			public const int DefaultRideSettingsViewTitle = 2131165323;
 			
@@ -1833,6 +1842,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070097
 			public const int FavoritesButton = 2131165335;
+			
+			// aapt resource value: 0x7f07019c
+			public const int February = 2131165596;
 			
 			// aapt resource value: 0x7f070138
 			public const int GenericTitle = 2131165496;
@@ -1939,6 +1951,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700e1
 			public const int InvalidPickupAddress = 2131165409;
 			
+			// aapt resource value: 0x7f070197
+			public const int January = 2131165591;
+			
+			// aapt resource value: 0x7f0701a3
+			public const int July = 2131165603;
+			
+			// aapt resource value: 0x7f07019b
+			public const int June = 2131165595;
+			
 			// aapt resource value: 0x7f0700d8
 			public const int Language = 2131165400;
 			
@@ -2004,6 +2025,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070007
 			public const int LoginForgotPasswordButton = 2131165191;
+			
+			// aapt resource value: 0x7f0701a0
+			public const int March = 2131165600;
+			
+			// aapt resource value: 0x7f070199
+			public const int May = 2131165593;
 			
 			// aapt resource value: 0x7f070009
 			public const int NbPassenger = 2131165193;
@@ -2071,8 +2098,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07015a
 			public const int NotesToDriveLabel = 2131165530;
 			
+			// aapt resource value: 0x7f070196
+			public const int November = 2131165590;
+			
 			// aapt resource value: 0x7f07012c
 			public const int Now = 2131165484;
+			
+			// aapt resource value: 0x7f07019a
+			public const int October = 2131165594;
 			
 			// aapt resource value: 0x7f07018b
 			public const int OkButtonText = 2131165579;
@@ -2262,6 +2295,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070192
 			public const int SendMessageErrorMessage = 2131165586;
+			
+			// aapt resource value: 0x7f0701a1
+			public const int September = 2131165601;
 			
 			// aapt resource value: 0x7f0700ae
 			public const int ServerInfo = 2131165358;
@@ -2484,6 +2520,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f07004c
 			public const int UpdateBookingSettingsInvalidDataTitle = 2131165260;
+			
+			// aapt resource value: 0x7f07019e
+			public const int VehicleNumberErrorMessage = 2131165598;
+			
+			// aapt resource value: 0x7f070198
+			public const int VehicleNumberErrorTitle = 2131165592;
 			
 			// aapt resource value: 0x7f0700de
 			public const int Version = 2131165406;

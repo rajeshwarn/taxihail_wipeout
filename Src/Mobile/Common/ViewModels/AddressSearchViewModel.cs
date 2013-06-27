@@ -23,9 +23,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly string _ownerId;
         private readonly IGoogleService _googleService;
         private readonly ObservableCollection<AddressViewModel> _addressViewModels = new ObservableCollection<AddressViewModel> ();
-        private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource ();
         private bool _isSearching;
         private string _criteria;
+
+        private IDisposable Disposable { get; set; }
 
         public AddressSearchViewModel (string ownerId, string search, IGoogleService googleService, string places = "false")
         {
@@ -58,10 +59,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CancelSearch ()
         {
-            if (_searchCancellationToken == null) return;
-            _searchCancellationToken.Cancel ();
-            _searchCancellationToken.Dispose ();
-            _searchCancellationToken = null;
+            if (Disposable == null) return;
+            Disposable.Dispose ();
+            Disposable = null;
         }
 
         private void OnSearch ()
@@ -71,22 +71,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Logger.LogMessage ("OnSearch");
             CancelSearch ();
 
-            _searchCancellationToken = new CancellationTokenSource ();
 
-            if (!IsPlaceSearch) {
-                var task = new Task<IEnumerable<AddressViewModel>> (SearchFavoriteAndHistoryAddresses, _searchCancellationToken.Token);
-                var task2 = new Task<IEnumerable<AddressViewModel>> (SearchGeocodeAddresses, _searchCancellationToken.Token);
+            Disposable = Observable.Start (()=> 
+            {
+                if(IsPlaceSearch)                
+                {
+                    return SearchPlaces();
+                }
+                return SearchFavoriteAndHistoryAddresses().Concat(SearchGeocodeAddresses());                
+            })
+            .Subscribe(addresses=>{
+                RefreshResults(addresses);
+            });
 
-                task.ContinueWith (r => RefreshResults (r, task2));
-                task2.ContinueWith (r => RefreshResults (r, task));
-
-                task2.Start ();
-                task.Start ();
-            } else {
-                var task = new Task<IEnumerable<AddressViewModel>> (SearchPlaces, _searchCancellationToken.Token);                
-                task.ContinueWith (r => RefreshResults (r, null));
-                task.Start ();
-            }
         }
 
         public ObservableCollection<AddressViewModel> AddressViewModels { 
@@ -116,17 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var position = LocationService.BestPosition;
 
             if (position == null) {
-
-                position = LocationService.GetNextPosition(new TimeSpan(0,0,1),1000).FirstOrDefault();
-
-                if(position == null && LocationService.BestPosition != null)
-                {
-                    position =  LocationService.BestPosition;
-                }
-
-                if (position == null) {
-                    return Enumerable.Empty<AddressViewModel> ();
-                }
+                return Enumerable.Empty<AddressViewModel> ();
             }
             var fullAddresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude, Criteria.HasValue () ? Criteria : null);
             var addresses = fullAddresses.ToList ();
@@ -140,8 +127,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var historicAddresses = AccountService.GetHistoryAddresses ();
 
             Func<Address, bool> predicate = c => true;
-            if (Criteria.HasValue ()) {
-                predicate = x => (x.FriendlyName != null && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) || (x.FullAddress != null && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
+
+            if (Criteria.HasValue ()) 
+            {
+                predicate = x => (x.FriendlyName != null 
+                                  && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) 
+                                  || (x.FullAddress != null 
+                                  && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
             }
             var a1 = addresses.Where (predicate).Select (a => new AddressViewModel { Address = a, Icon = "favorites"});
             var a2 = historicAddresses.Where (predicate).Select (a => new AddressViewModel { Address = a,  Icon = "history" });
@@ -149,43 +141,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return r;
         }
 
-        protected IEnumerable<AddressViewModel> SearchGeocodeAddresses ()
+        protected AddressViewModel[] SearchGeocodeAddresses ()
         {
-            Logger.LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
-            var position = TinyIoCContainer.Current.Resolve<AbstractLocationService> ().LastKnownPosition;
+            var searchText = Criteria.ToSafeString();
+
+            Logger.LogMessage ("Starting SearchAddresses : " + searchText);
+            var position = LocationService.BestPosition;
 
             Address[] addresses;
-            
+
             if (position == null) {
-                Logger.LogMessage ("No Position SearchAddresses : " + Criteria.ToSafeString ());
-                addresses = GeolocService.SearchAddress (Criteria);                
+                Logger.LogMessage ("No Position SearchAddresses : " + searchText);
+                addresses = GeolocService.SearchAddress (searchText);                
             } else {
-                Logger.LogMessage ("Position SearchAddresses : " + Criteria.ToSafeString ());
-                addresses = GeolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
+                Logger.LogMessage ("Position SearchAddresses : " + searchText);
+                addresses = GeolocService.SearchAddress(searchText, position.Latitude, position.Longitude);
             }
-            return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToList ();
+            return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToArray ();
         }
      
-        public void RefreshResults (Task<IEnumerable<AddressViewModel>> task, Task concurentTask)
+        public void RefreshResults (IEnumerable<AddressViewModel> result)
         {          
             InvokeOnMainThread (() =>
             {                   
-                if (task.IsCompleted && !task.IsCanceled && !task.IsFaulted) {
-                    if ((concurentTask == null) || (concurentTask.IsCompleted)) {
-                        IsSearching = false;
-                    }
-                    if ((concurentTask == null) || (!concurentTask.IsCompleted)) {
-                        AddressViewModels.Clear ();
-                    }
+                AddressViewModels.Clear ();                   
 
-                    AddressViewModels.AddRange (task.Result);
-                    BubbleSort (AddressViewModels);
-                    AddressViewModels.ForEach (a => 
-                    {
-                        a.IsFirst = a.Equals (AddressViewModels.First ());
-                        a.IsLast = a.Equals (AddressViewModels.Last ());
-                    });
-                }
+                AddressViewModels.AddRange (result);
+                BubbleSort (AddressViewModels);
+                AddressViewModels.ForEach (a => 
+                {
+                    a.IsFirst = a.Equals (AddressViewModels.First ());
+                    a.IsLast = a.Equals (AddressViewModels.Last ());
+                });
+                IsSearching =false;
             });
         }
 
@@ -208,9 +196,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (o1.Icon.SoftEqual ("favorites")) {
                 return  !o2.Icon.SoftEqual ("favorites");                
             }
-            if (o1.Icon.SoftEqual ("history")) {
-
-                return (!o2.Icon.SoftEqual ("favorites")) && (!o2.Icon.SoftEqual ("history"));
+            if (o1.Icon.SoftEqual ("history")) 
+            {
+                return (!o2.Icon.SoftEqual ("favorites")) 
+                    && (!o2.Icon.SoftEqual ("history"));
             }
             return false;
         }

@@ -11,6 +11,7 @@
    "IBS.ValidateDestinationZone" : "false",
    "IBS.ValidatePickupZone" : "true",
    "IBS.FakeOrderStatusUpdate": "false",
+   "IBS.NoteTemplate" : "{{userNote}}\r\n{{buildingName}}",
    "Email.NoReply" : "dotnotreply@taxihail.com",    
    "Map.PlacesApiKey" : "AIzaSyAAgAGS4SjtSwqni_wpgCo2XnY30m0rhLs",
    "NearbyPlacesService.DefaultRadius" : "500",
