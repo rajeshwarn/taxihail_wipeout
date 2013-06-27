@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string TwitterId { get; set; }
         public string FacebookId { get; set; }
         public bool IsConfirmed { get; set; }
+        public bool DisabledByAdmin { get; set; }
         public string Language { get; set; }
         public bool IsAdmin { get; set; }
         

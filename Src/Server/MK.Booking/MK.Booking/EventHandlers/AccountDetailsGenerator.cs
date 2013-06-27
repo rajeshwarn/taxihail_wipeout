@@ -81,6 +81,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
+                account.DisabledByAdmin = false;
                 context.Save(account);
             }
         }
@@ -91,6 +92,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = false;
+                account.DisabledByAdmin = true;
                 context.Save(account);
             }
         }

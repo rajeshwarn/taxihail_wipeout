@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("FacebookId", dto.FacebookId);
                 Assert.AreEqual("TwitterId", dto.TwitterId);
                 Assert.AreEqual(false, dto.IsConfirmed);
+                Assert.AreEqual(false, dto.DisabledByAdmin);
                 Assert.AreEqual("fr", dto.Language);
             }
         }
@@ -98,6 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(false, dto.IsConfirmed );
+                Assert.AreEqual(false, dto.DisabledByAdmin );
             }
         }
 
@@ -219,6 +221,25 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(true, dto.IsConfirmed);
+                Assert.AreEqual(false, dto.DisabledByAdmin);
+            }
+        }
+
+        [Test]
+        public void when_account_disabled_then_account_dto_updated()
+        {
+            this.sut.Handle(new AccountDisabled
+            {
+                SourceId = _accountId,
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(false, dto.IsConfirmed);
+                Assert.AreEqual(true, dto.DisabledByAdmin);
             }
         }
 

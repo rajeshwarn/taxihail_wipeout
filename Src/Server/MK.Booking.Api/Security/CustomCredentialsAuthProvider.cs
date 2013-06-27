@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Api.Security
 
             return (account != null) 
                 && account.IsConfirmed 
+                && !account.DisabledByAdmin
                 && _passwordService.IsValid(password, account.Id.ToString(), account.Password);
         }
         
