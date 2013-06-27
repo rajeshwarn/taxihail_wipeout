@@ -53,18 +53,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             ExpirationMonths = new List<ListItem>();
-            ExpirationMonths.Add (new ListItem { Display = "January", Id = 1 });
-            ExpirationMonths.Add (new ListItem { Display = "February", Id = 2 });
-            ExpirationMonths.Add (new ListItem { Display = "March", Id = 3 });
-            ExpirationMonths.Add (new ListItem { Display = "April", Id = 4 });
-            ExpirationMonths.Add (new ListItem { Display = "May", Id = 5 });
-            ExpirationMonths.Add (new ListItem { Display = "June", Id = 6 });
-            ExpirationMonths.Add (new ListItem { Display = "July", Id = 7 });
-            ExpirationMonths.Add (new ListItem { Display = "August", Id = 8 });
-            ExpirationMonths.Add (new ListItem { Display = "September", Id = 9 });
-            ExpirationMonths.Add (new ListItem { Display = "October", Id = 10 });
-            ExpirationMonths.Add (new ListItem { Display = "November", Id = 11 });
-            ExpirationMonths.Add (new ListItem { Display = "December", Id = 12 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("January"), Id = 1 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("February"), Id = 2 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("March"), Id = 3 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("April"), Id = 4 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("May"), Id = 5 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("June"), Id = 6 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("July"), Id = 7 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("August"), Id = 8 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("September"), Id = 9 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("October"), Id = 10 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("November"), Id = 11 });
+            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("December"), Id = 12 });
 
 #if DEBUG
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
