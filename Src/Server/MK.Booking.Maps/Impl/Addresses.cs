@@ -39,6 +39,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 		/// </param>
         public Address[] Search(string name, double? latitude, double? longitude)
         {
+            if(name.IsNullOrEmpty())
+            {
+                return new Address[0];
+            }
+
             IEnumerable<Address> addressesGeocode = new Address[0];
             IEnumerable<Address> addressesPlaces = new Address[0];
 

@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if(IsPlaceSearch)                
                 {
-                    return SearchPlaces().Concat(SearchGeocodeAddresses());
+                    return SearchPlaces();
                 }
                 return SearchFavoriteAndHistoryAddresses().Concat(SearchGeocodeAddresses());                
             })
@@ -143,12 +143,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected AddressViewModel[] SearchGeocodeAddresses ()
         {
-            Logger.LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
+            var searchText = Criteria.ToSafeString();
+
+            Logger.LogMessage ("Starting SearchAddresses : " + searchText);
             var position = LocationService.BestPosition;
 
             Address[] addresses;
-
-            var searchText = Criteria.ToSafeString();
 
             if (position == null) {
                 Logger.LogMessage ("No Position SearchAddresses : " + searchText);
