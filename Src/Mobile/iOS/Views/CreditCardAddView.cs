@@ -68,13 +68,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
                 ViewModel.CreditCardType =  x.Id; });
-           this.AddBindings(new Dictionary<object, string>{
+
+            ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear.Value, x=> {
+                ViewModel.ExpirationYear = x.Id;
+            });
+
+            ((ModalTextField)pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth.Value, x=> {
+                ViewModel.ExpirationMonth = x.Id;
+            });
+
+            this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
                 { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
                 { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
                 { pickerCreditCardType, "{'Text': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }, 'LeftImagePath' : {'Path': 'CreditCardImagePath'}}" }, 
-                { txtExpMonth, "{'Text': {'Path': 'Data.ExpirationMonth', 'Mode': 'TwoWay' }}" }, 
-                { txtExpYear, "{'Text': {'Path': 'Data.ExpirationYear', 'Mode': 'TwoWay' }}" }, 
+                { pickerExpirationMonth, "{'Text': {'Path': 'ExpirationMonthDisplay'}}" }, 
+                { pickerExpirationYear, "{'Text': {'Path': 'ExpirationYear' }}" }, 
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }, 
                 { txtZipCode, "{'Text': {'Path': 'Data.ZipCode', 'Mode': 'TwoWay' }}" }, 
             });

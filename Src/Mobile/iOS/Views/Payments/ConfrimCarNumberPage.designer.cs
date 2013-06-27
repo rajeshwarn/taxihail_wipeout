@@ -12,16 +12,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 	partial class ConfrimCarNumberPage
 	{
 		[Outlet]
-		MonoTouch.UIKit.UITextField CarNumberTextBox { get; set; }
+		MonoTouch.UIKit.UILabel CarNumber { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton ConfirmButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton HideKeyboardButton { get; set; }
+		MonoTouch.UIKit.UIView Container { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView Container { get; set; }
+		MonoTouch.UIKit.UIButton HideKeyboardButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TextLine1 { get; set; }
@@ -31,9 +31,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (CarNumberTextBox != null) {
-				CarNumberTextBox.Dispose ();
-				CarNumberTextBox = null;
+			if (CarNumber != null) {
+				CarNumber.Dispose ();
+				CarNumber = null;
 			}
 
 			if (ConfirmButton != null) {

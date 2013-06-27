@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
     public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
     {
-
         public ConfrimCarNumberPage(MvxShowViewModelRequest request) 
             : base(request)
         {
@@ -25,27 +24,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             Container.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-
             HideKeyboardButton.TouchDown += (sender, e) => {
                 View.ResignFirstResponderOnSubviews();
             };
 
-            CarNumberTextBox.ReturnKeyType = UIReturnKeyType.Done;
-
-            
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Resources.ConfirmButton, AppStyle.ButtonColor.Green ); 
-
-            CarNumberTextBox.EditingDidEndOnExit += (sender, e) => {
-                View.ResignFirstResponderOnSubviews();
-            };
-
-
 
             this.AddBindings(new Dictionary<object, string>{
                 { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 
-                { CarNumberTextBox, new B("Text","CarNumber", B.Mode.TwoWay) }, 
+                { CarNumber, new B("Text","CarNumber") }, 
             });
-
             
             View.ApplyAppFont ();
         }
