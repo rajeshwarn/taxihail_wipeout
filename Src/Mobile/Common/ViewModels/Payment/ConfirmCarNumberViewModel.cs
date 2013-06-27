@@ -14,24 +14,17 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
-
-
-
 		}
 
-		Order Order {get; set;}
-		OrderStatusDetail OrderStatus {get; set;}
+		Order Order { get; set; }
+		OrderStatusDetail OrderStatus { get; set; }
 
 		public string CarNumber{
 			get{
 				return OrderStatus.VehicleNumber;
 			}
-			set{
-				OrderStatus.VehicleNumber = value;
-			}
 		}
-
-
+             
 		public IMvxCommand ConfirmTaxiNumber 
 		{
 			get {
@@ -43,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile
                         orderStatus = OrderStatus.ToJson(),
                     }.ToStringDictionary(), 
                     _=>{RequestClose(this);});
-
 				});
 			}
 		}

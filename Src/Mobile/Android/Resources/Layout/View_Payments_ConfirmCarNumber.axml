@@ -33,15 +33,16 @@
             android:layout_width="fill_parent"
             android:layout_height="25dp"
             android:layout_weight="1" />
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4585"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:gravity="center"
-            android:selectAllOnFocus="true"
-            android:inputType="textPhonetic"
             local:MvxBind="{'Text':{'Path':'CarNumber'}}"
-            android:width="150dp"
+            android:width="200dp"
             android:layout_gravity="center_horizontal" />
         <View
             android:layout_width="fill_parent"

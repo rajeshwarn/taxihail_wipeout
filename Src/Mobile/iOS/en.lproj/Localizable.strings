@@ -416,3 +416,5 @@
 "September"="September";
 "August"="August";
 "July"="July";
+"VehicleNumberErrorTitle"="Error";
+"VehicleNumberErrorMessage"="Unable to retrieve vehicle number. Please pay in car.";

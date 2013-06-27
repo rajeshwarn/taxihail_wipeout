@@ -486,7 +486,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
-						
+                        if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
+                            MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
+                            return;
+                        }
+
 						RequestNavigate<ConfirmCarNumberViewModel>(
 						new 
 						{ 

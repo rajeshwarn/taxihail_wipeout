@@ -1320,4 +1320,10 @@
   <data name="December" xml:space="preserve">
     <value>December</value>
   </data>
+  <data name="VehicleNumberErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="VehicleNumberErrorMessage" xml:space="preserve">
+    <value>Unable to retrieve vehicle number. Please pay in car.</value>
+  </data>
 </root>
