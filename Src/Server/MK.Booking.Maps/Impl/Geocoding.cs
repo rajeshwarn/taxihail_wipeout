@@ -28,9 +28,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address[] Search(string addressName)
+        public Address[] Search(string addressName, GeoResult geoResult = null)
         {
-            var geoResult = SearchUsingName(addressName, true);
+            geoResult = geoResult ?? SearchUsingName(addressName, true);
 
             if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
             {
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Address[] Search(double latitude, double longitude, bool searchPopularAddress = false)
+        public Address[] Search(double latitude, double longitude, GeoResult geoResult = null, bool searchPopularAddress = false)
         {
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
@@ -69,8 +69,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
 
-
-            var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
+            geoResult = geoResult ?? _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {
                 return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null)).ToArray();
