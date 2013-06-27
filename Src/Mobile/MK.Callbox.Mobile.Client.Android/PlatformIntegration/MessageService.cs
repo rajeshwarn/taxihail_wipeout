@@ -175,7 +175,12 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 					}
 				}
 			});
-        }      
+        }
+
+        public IDisposable ShowProgress()
+        {
+            throw new NotImplementedException();
+        }
 
         public void ShowToast(string message, ToastDuration duration )
         {
