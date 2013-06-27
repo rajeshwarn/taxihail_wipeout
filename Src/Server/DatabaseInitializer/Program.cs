@@ -247,7 +247,7 @@ namespace DatabaseInitializer
                         Email = "taxihail@apcurium.com",
                         Name = "Administrator",
                         Phone = "5146543024",
-                        Password = "1l1k3B4n4n@",
+                        Password = "1l1k3B4n4n@",//Todo Make the admin portal customizable
                         IsAdmin = true
                     };
 
