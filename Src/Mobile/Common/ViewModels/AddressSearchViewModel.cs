@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Address[] addresses;
 
-            var searchText = Criteria;
+            var searchText = Criteria.ToSafeString();
 
             if (position == null) {
                 Logger.LogMessage ("No Position SearchAddresses : " + searchText);
