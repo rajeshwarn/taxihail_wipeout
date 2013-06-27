@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			var position = new Position()
 			{
 				Time = location.Time.ToDateTime(),
-				Accuracy = location.Accuracy,
+				Error = location.Accuracy,
 				Latitude = location.Latitude,
 				Longitude = location.Longitude
 			};
