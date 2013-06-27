@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
             base.Handles<AccountConfirmed>(NoAction);
+            base.Handles<AccountDisabled>(NoAction);
             base.Handles<AccountUpdated>(NoAction);
             base.Handles<FavoriteAddressAdded>(OnAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
@@ -326,9 +327,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ConfirmAccountByAdmin()
+        public void EnableAccountByAdmin()
         {
             this.Update(new AccountConfirmed());  
+        }
+
+        public void DisableAccountByAdmin()
+        {
+            this.Update(new AccountDisabled());
         }
     }
 }

@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class AccountDetailsGenerator :
         IEventHandler<AccountRegistered>,
         IEventHandler<AccountConfirmed>,
+        IEventHandler<AccountDisabled>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
@@ -78,9 +79,18 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AccountDisabled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = false;
                 context.Save(account);
             }
         }
