@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.IBS
 {
@@ -26,5 +30,73 @@ namespace apcurium.MK.Booking.IBS
         public string MobilePhone;
 
         public DateTime? Eta { get; set; }
+
+        public override string ToString()
+        {
+            return Status + " " + FirstName;
+        }
+
+        public IBSOrderInformation()
+        {
+            
+        }
+
+        public IBSOrderInformation(TOrderStatus orderInfoFromIBS)
+        {
+            Status = orderInfoFromIBS.OrderStatus.ToString();
+
+            IBSOrderId = orderInfoFromIBS.OrderID;
+
+            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim(); ;
+            MobilePhone = orderInfoFromIBS.DriverMobilePhone.GetValue(MobilePhone);
+            FirstName = orderInfoFromIBS.DriverFirstName.GetValue(FirstName);
+            LastName = orderInfoFromIBS.DriverLastName.GetValue(LastName);
+            VehicleColor = orderInfoFromIBS.VehicleColor.GetValue(VehicleColor);
+            VehicleMake = orderInfoFromIBS.VehicleMake.GetValue(VehicleMake);
+            VehicleModel = orderInfoFromIBS.VehicleModel.GetValue(VehicleModel);
+            VehicleRegistration = orderInfoFromIBS.VehicleRegistration.GetValue(VehicleRegistration);
+
+            VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? orderInfoFromIBS.VehicleCoordinateLat : VehicleLatitude;
+            VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
+
+            Fare = orderInfoFromIBS.Fare;
+            Tip = orderInfoFromIBS.Tips;
+            Toll = orderInfoFromIBS.Tolls;
+
+            Eta = orderInfoFromIBS.ETATime.ToDateTime();
+        }
+
+
+        public void Update(OrderStatusDetail orderStatusDetail)
+        {
+            orderStatusDetail.IBSStatusId = Status;
+
+            orderStatusDetail.DriverInfos.FirstName = FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
+            orderStatusDetail.DriverInfos.LastName = LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
+            orderStatusDetail.DriverInfos.MobilePhone = MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
+            orderStatusDetail.DriverInfos.VehicleColor = VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
+            orderStatusDetail.DriverInfos.VehicleMake = VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
+            orderStatusDetail.DriverInfos.VehicleModel = VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
+            orderStatusDetail.DriverInfos.VehicleRegistration = VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
+            orderStatusDetail.DriverInfos.VehicleType = VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
+            orderStatusDetail.VehicleNumber = VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
+
+            orderStatusDetail.VehicleLatitude = VehicleLatitude ?? orderStatusDetail.VehicleLatitude;
+            orderStatusDetail.VehicleLongitude = VehicleLongitude ?? orderStatusDetail.VehicleLongitude;
+            orderStatusDetail.Eta = Eta ?? orderStatusDetail.Eta;
+        }
+
+        public bool IsAssigned 
+        { 
+            get
+            {
+                return Status.SoftEqual(VehicleStatuses.Common.Assigned);
+            } 
+        }
+
+        public bool IsComplete
+        {
+            get { return VehicleStatuses.DoneStatuses.Any(s => s.SoftEqual(Status)); }
+        }
     }
 }

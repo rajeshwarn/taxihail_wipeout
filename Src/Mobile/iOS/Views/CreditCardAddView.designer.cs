@@ -1,6 +1,6 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
+// This file has been generated automatically by Xamarin Studio to store outlets and
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
@@ -45,10 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblExpYear { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtExpMonth { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerExpirationMonth { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtExpYear { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerExpirationYear { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblSecurityCode { get; set; }
@@ -119,14 +119,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblExpYear = null;
 			}
 
-			if (txtExpMonth != null) {
-				txtExpMonth.Dispose ();
-				txtExpMonth = null;
+			if (pickerExpirationMonth != null) {
+				pickerExpirationMonth.Dispose ();
+				pickerExpirationMonth = null;
 			}
 
-			if (txtExpYear != null) {
-				txtExpYear.Dispose ();
-				txtExpYear = null;
+			if (pickerExpirationYear != null) {
+				pickerExpirationYear.Dispose ();
+				pickerExpirationYear = null;
 			}
 
 			if (lblSecurityCode != null) {

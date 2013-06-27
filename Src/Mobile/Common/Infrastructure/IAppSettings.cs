@@ -45,6 +45,13 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         bool PushNotificationsEnabled { get; }
 
         bool HideNoPreference { get; }
+
+		string PaymentBaseUrl {get;}
+		string PaymentConsumerKey {get;}
+		string PaymentConsumerSecretKey {get;}
+		string PaymentCurrencyCode {get;}
+
+
 	}
 }
 

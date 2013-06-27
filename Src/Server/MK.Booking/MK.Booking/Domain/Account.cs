@@ -14,8 +14,7 @@ namespace apcurium.MK.Booking.Domain
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
-        private double? _defaultTipAmount;
-        private double? _defaultTipPercent;
+        private int? _defaultTipPercent;
         private int _creditCardCount;
         protected Account(Guid id) : base(id)
         {
@@ -210,7 +209,6 @@ namespace apcurium.MK.Booking.Domain
                 this.Update(new PaymentProfileUpdated
                 {
                     DefaultCreditCard = creditCardId,
-                    DefaultTipAmount = _defaultTipAmount,
                     DefaultTipPercent = _defaultTipPercent
                 });
             }
@@ -224,12 +222,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdatePaymentProfile(Guid? defaultCreditCard, double? defaultTipAmount, double? defaultTipPercent)
+        public void UpdatePaymentProfile(Guid? defaultCreditCard, int? defaultTipPercent)
         {
             this.Update(new PaymentProfileUpdated
             {
                 DefaultCreditCard = defaultCreditCard,
-                DefaultTipAmount = defaultTipAmount,
                 DefaultTipPercent = defaultTipPercent
             });
         }
@@ -302,7 +299,6 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
         {
-            this._defaultTipAmount = @event.DefaultTipAmount;
             this._defaultTipPercent = @event.DefaultTipPercent;
         }
 

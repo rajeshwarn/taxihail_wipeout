@@ -16,6 +16,7 @@ namespace apcurium.MK.Web.admin
     {
         protected string ApplicationKey { get; private set; }
         protected string ApplicationName { get; private set; }
+        protected string ApplicationVersion { get; private set; }
         
         protected bool IsAuthenticated { get; private set; }
         
@@ -25,6 +26,7 @@ namespace apcurium.MK.Web.admin
 
             ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
             ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
+            ApplicationVersion = config.GetSetting("TaxiHail.Version");
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
             if(!base.UserSession.HasPermission(Permissions.Admin))

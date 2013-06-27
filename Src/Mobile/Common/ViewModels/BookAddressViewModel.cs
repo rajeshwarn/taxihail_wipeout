@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
@@ -10,12 +8,8 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
@@ -26,13 +20,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
        {
         private CancellationTokenSource _cancellationToken;
         private bool _isExecuting;
-        private Func<Address> _getAddress;
-        private Action<Address> _setAddress;
-        private string _id;
-        private string _searchingTitle;
+        private readonly Func<Address> _getAddress;
+        private readonly Action<Address> _setAddress;
+        private readonly string _id;
+        private readonly string _searchingTitle;
 
         public event EventHandler AddressChanged;
-
         public event EventHandler AddressCleared;
 
         public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
@@ -52,25 +45,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return "";
                 }
-                else
+                var addressDisplay = "";
+                var adr = _getAddress();
+                if (adr != null)
                 {
-                    var addressDisplay = "";
-                    var adr = _getAddress();
-                    if (adr != null)
+                    if ((adr.AddressType == "place") || (Params.Get(adr.City, adr.State, adr.ZipCode).Count(s => s.HasValue()) == 0))
                     {
-                        if ((adr.AddressType == "place") || (Params.Get(adr.City, adr.State, adr.ZipCode).Count(s => s.HasValue()) == 0))
-                        {
-                            addressDisplay =  adr.FullAddress;
-                        }
-                        else
-                        {
-                            addressDisplay =  Params.Get(adr.City, adr.State, adr.ZipCode).Where(s => s.HasValue()).JoinBy(", ");
-                        }
+                        addressDisplay =  adr.FullAddress;
                     }
-                    return addressDisplay;
-
-
+                    else
+                    {
+                        addressDisplay =  Params.Get(adr.City, adr.State, adr.ZipCode).Where(s => s.HasValue()).JoinBy(", ");
+                    }
                 }
+                return addressDisplay;
             }
         }
 
@@ -85,14 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return _searchingTitle;
                 }
-                if (GetAddress().HasValue())
-                {
-                    return GetAddress();
-                }
-                else
-                {
-                    return EmptyAddressPlaceholder;
-                }
+                return GetAddress().HasValue() ? GetAddress() : EmptyAddressPlaceholder;
             }
         }
 
@@ -103,21 +84,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return "";
             }
-            else
+            if (adr.BuildingName.HasValue())
             {
-                if (adr.BuildingName.HasValue())
-                {
-                    return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
-                }
-                else if (Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
-                {
-                    return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
-                }
-                else
-                {
-                    return adr.FullAddress;
-                }
+                return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
             }
+            return Params.Get(adr.StreetNumber, adr.Street).Any(s => s.HasValue() && s.Trim().HasValue())
+                 ? Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ") 
+                 : adr.FullAddress;
         }
 
 
@@ -151,37 +124,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             var accountAddress = AccountService.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null)
                             {
-                                return new Address[] { accountAddress};
+                                return new[] { accountAddress};
                             }
-                            else
-                            {
-
-                                return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
-                            }
+                            return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
                         }
                         return null;
 
                     }, token);
 
-                    task.ContinueWith(t =>
-                    { 
-                        InvokeOnMainThread(() => {
-                            if (t.Result != null && t.Result.Any())
-                            {
-                                var address = t.Result[0];                                
-                                // Replace result coordinates  by search coordinates (= user position)
-                                address.Latitude = coordinate.Latitude;
-                                address.Longitude = coordinate.Longitude;
-                                SetAddress(address, true);
-                            }
-                            else
-                            {
-                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
-                                ClearAddress();
-                            }
-                        });
-                        
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    task.ContinueWith(t => InvokeOnMainThread(() => {
+                                                                        if (t.Result != null && t.Result.Any())
+                                                                        {
+                                                                            var address = t.Result[0];                                
+                                                                            // Replace result coordinates  by search coordinates (= user position)
+                                                                            address.Latitude = coordinate.Latitude;
+                                                                            address.Longitude = coordinate.Longitude;
+                                                                            SetAddress(address, true);
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
+                                                                            ClearAddress();
+                                                                        }
+                    }), TaskContinuationOptions.OnlyOnRanToCompletion);
 
                 });
             }
@@ -197,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Settings.StreetNumberScreenEnabled 
                         && Model.BookAddress.HasValue())
                     {
-                        RequestNavigate<BookStreetNumberViewModel>(new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
+                        RequestNavigate<BookStreetNumberViewModel>(new { address = JsonSerializer.SerializeToString(Model), ownerId = _id });
                     }
                     else
                     {
@@ -237,9 +202,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<string>(_notUsed => {
-                    CancelCurrentLocation();
-                });
+                return new MvxRelayCommand<string>(_ => CancelCurrentLocation());
             }
         }
 
@@ -258,43 +221,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() =>
             {
                 IsExecuting = true;
-                try
+
+                CancelCurrentLocation();
+
+
+                if ((address.Street.IsNullOrEmpty()) && (address.ZipCode.IsNullOrEmpty()) &&
+                    (address.AddressType != "place") && (address.AddressType != "popular"))
+                    // This should only be true when using an address from a version smaller than 1.3                    
                 {
-
-                    if (IsExecuting)
+                    var a = GeolocService.SearchAddress(address.FullAddress);
+                    if (a.Any())
                     {
-                        CancelCurrentLocation();
+                        address = a.First();
                     }
-
-                    if ( ( address.Street.IsNullOrEmpty() ) && (address.ZipCode.IsNullOrEmpty () ) && (address.AddressType != "place")  && (address.AddressType != "popular")) // This should only be true when using an address from a version smaller than 1.3                    
-                    {
-                        var a = GeolocService.SearchAddress(address.FullAddress, null , null );
-                        if ( a.Count() > 0 )
-                        {
-                            address = a.First();
-                        }
-                    }
-
-                    address.CopyTo(Model);
-
-                    FirePropertyChanged(() => AddressLine1);
-                    FirePropertyChanged(() => AddressLine2);
-                    FirePropertyChanged(() => Model);
-
-
-                    if (AddressChanged != null)
-                    {
-                        AddressChanged(userInitiated, EventArgs.Empty);
-                    }
-
-                }
-                finally
-                {
-
-
-                    IsExecuting = false;
                 }
 
+                address.CopyTo(Model);
+
+                FirePropertyChanged(() => AddressLine1);
+                FirePropertyChanged(() => AddressLine2);
+                FirePropertyChanged(() => Model);
+
+
+                if (AddressChanged != null)
+                {
+                    AddressChanged(userInitiated, EventArgs.Empty);
+                }
             });
         }
 
@@ -343,7 +295,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
                     IsExecuting = true;
-                    bool positionSet = false;
+                    var positionSet = false;
+
+                    if(LocationService.BestPosition != null)
+                    {                        
+                        InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ));
+                        return;
+                    }
+
                     LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
@@ -352,9 +311,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     },
                     ()=>
                     {  
+						positionSet = false;
+
+
                         if(!positionSet)
                         {
-                            InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ?? new Position(){Latitude = 60,Longitude = 60}));
+                            InvokeOnMainThread(() =>
+                                {
+                                    if (LocationService.BestPosition == null)
+                                    {
+                                        MessageService.ShowToast("Cant find location, please try again",ToastDuration.Short);
+                                    }
+                                    else
+                                    {
+                                        SearchAddressForCoordinate(LocationService.BestPosition);    
+                                    }
+                                    
+                                });
                         }
                     });
                 });
@@ -365,29 +338,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void SearchAddressForCoordinate(Position p)
         {
             IsExecuting = true;
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
+            Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture));
 
-            var accountAddress = TinyIoCContainer.Current.Resolve<IAccountService>().FindInAccountAddresses(p.Latitude, p.Longitude);
+            var accountAddress = AccountService.FindInAccountAddresses(p.Latitude, p.Longitude);
             if (accountAddress != null)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Address found in account");
+                Logger.LogMessage("Address found in account");
                 SetAddress(accountAddress, false);
             }
             else
             {
-                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude,true);
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
-                if (address.Count() > 0)
+                var address = GeolocService.SearchAddress(p.Latitude, p.Longitude);
+                Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
+                if (address.Any())
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" found {0} addresses", address.Count());
+                    Logger.LogMessage(" found {0} addresses", address.Count());
                     SetAddress(address[0], false);
                 }
                 else
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" clear addresses");
+                    Logger.LogMessage(" clear addresses");
                     ClearAddress();
                 }
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Exiting SearchAddress thread");
+                Logger.LogMessage("Exiting SearchAddress thread");
             }
 
             IsExecuting = false;

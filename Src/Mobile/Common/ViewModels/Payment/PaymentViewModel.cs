@@ -15,6 +15,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PaymentViewModel : BaseSubViewModel<object>
@@ -39,8 +40,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus {get; set;}
 
-		private double AmountDouble { get{ return Amount.FromDollars(); }}
-		public string Amount { get; set;}
+		public string PlaceholderAmount
+		{
+			get{ return CultureProvider.FormatCurrency (0d); }
+		}
+
+		public string TextAmount { get; set;}
+		public double Amount
+		{ 
+			get 
+			{ 
+				return CultureProvider.ParseCurrency (TextAmount);
+			}
+		}
 
         public PaymentDetailsViewModel PaymentPreferences {
             get;
@@ -51,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			try
 			{
-				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber,Str.GetPaymentConfirmationMessageToDriver(Amount));
+				var formattedAmount = CultureProvider.FormatCurrency(Amount); 
+				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
 			}
 			catch(Exception){
 			}
@@ -59,13 +72,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		public void ShowConfirmation()
+		public void ShowConfirmation(long authorizationCode)
 		{
-			MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, Str.CmtTransactionSuccessMessage,
+            MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, authorizationCode),
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
 			{				
 				ConfirmPaymentForDriver();
-				ShowConfirmation();
+                ShowConfirmation(authorizationCode);
 			},
 			Str.OkButtonText, ()=>{
                 ReturnResult("");
@@ -93,13 +106,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 
                 return GetCommand(() => 
                 {                    
+
+
 					if(PaymentPreferences.SelectedCreditCard == null)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
 						return;
 					}
-					if(AmountDouble <= 0)
+					if(Amount <= 0)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
@@ -114,28 +129,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
 					}
 
-					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,AmountDouble, Order.IBSOrderId.Value +"");
+					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token, Amount, Order.IBSOrderId.Value +"");
+
+
+
 
 					if(transactionId <= 0)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+                        return;
 					}
-					else if(!ConfirmPaymentForDriver())
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
-					}
-					else if(!PaymentClient.CommitPreAuthorized(transactionId, Order.IBSOrderId.Value+""))
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.SendMessageErrorMessage);
-					}
-					else
-					{
-						MessageService.ShowProgress(false);
-						ShowConfirmation();					          
-					}
+
+                    try{
+                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber,transactionId, Order.IBSOrderId.Value);
+                    }
+                    catch(Exception e)
+                    {
+                        MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+                        return;
+                    }
+
+					MessageService.ShowProgress(false);
+                    ShowConfirmation(transactionId);					          
+					
 
                 }); 
                 

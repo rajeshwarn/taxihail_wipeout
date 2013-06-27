@@ -155,6 +155,7 @@
   <string name="NewPasswordConfirmationLabel">Confirmation</string>
   <string name="SaveButton">Save</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
+  <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
   <string name="LocationDetailAptPlaceholder">Apartment</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="NoHistoryLabel">No booking history</string>
@@ -400,10 +401,23 @@
   <string name="CmtTransactionSuccessTitle">Payment Recieved</string>
   <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
-  <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver</string>
+  <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
-  <string name="CmtTransactionResendConfirmationButtonText">Resend confirmation</string>
+  <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
-  <string name="PayPalButton">Pay with PayPal</string>
+  <string name="November">November</string>
+  <string name="January">January</string>
+  <string name="VehicleNumberErrorTitle">Error</string>
+  <string name="May">May</string>
+  <string name="October">October</string>
+  <string name="June">June</string>
+  <string name="February">February</string>
+  <string name="April">April</string>
+  <string name="VehicleNumberErrorMessage">Unable to retrieve vehicle number. Please pay in car.</string>
+  <string name="December">December</string>
+  <string name="March">March</string>
+  <string name="September">September</string>
+  <string name="August">August</string>
+  <string name="July">July</string>
 </resources>

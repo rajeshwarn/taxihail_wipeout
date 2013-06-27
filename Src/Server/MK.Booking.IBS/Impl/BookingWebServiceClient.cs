@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using System.Threading;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -28,10 +30,23 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             return base.GetUrl() + "IWEBOrder_7";
         }
-        
-        public IBSOrderStauts GetOrderStatus(int orderId, int accountId, string contactPhone)
+
+        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count)
         {
-            var status = new IBSOrderStauts { Status = TWEBOrderStatusValue.wosNone.ToString() };
+            var result = default(IBSVehiclePosition[]);
+            UseService(service =>
+            {
+                result = service
+                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                    .Select(Mapper.Map<IBSVehiclePosition>)
+                    .ToArray();
+            });
+            return result;
+        }
+        
+        public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
+        {
+            var status = new IBSOrderStatus { Status = TWEBOrderStatusValue.wosNone.ToString() };
             UseService(service =>
             {
                 var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty, accountId);
@@ -70,7 +85,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         
-   public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
             var result = new List<IBSOrderInformation>();
             UseService(service =>
@@ -80,37 +95,42 @@ namespace apcurium.MK.Booking.IBS.Impl
                     {
                         Logger.LogMessage("Status from IBS");
                         Logger.LogMessage(orderInfoFromIBS.Dump());
-                        var statusInfos = new IBSOrderInformation();
-                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
-                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
-                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? null : orderInfoFromIBS.VehicleNumber.Trim(); ;
-                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
-                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
-                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
-                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
-                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
-                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
-                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
-                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
-                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
-                        statusInfos.Fare = orderInfoFromIBS.Fare;
-                        statusInfos.Tip = orderInfoFromIBS.Tips;
-                        statusInfos.Toll = orderInfoFromIBS.Tolls;
-                        statusInfos.Eta = orderInfoFromIBS.ETATime == null || orderInfoFromIBS.ETATime.Year < DateTime.Now.Year ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
-                                                                                                            orderInfoFromIBS.ETATime.Month, orderInfoFromIBS.ETATime.Day,
-                                                                                                            orderInfoFromIBS.ETATime.Hour, orderInfoFromIBS.ETATime.Minute,
-                                                                                                            orderInfoFromIBS.ETATime.Second);
+
+                        var statusInfos = new IBSOrderInformation(orderInfoFromIBS);
+
                         result.Add(statusInfos);
                     }
                 });
 
             return result;
         }
-		
+
+        public bool SendMessageToDriver(string message, string carId)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var resultat = service.SendDriverMsg(UserNameApp, PasswordApp, carId,message);
+                success = resultat == 1;
+            });
+            return success;
+        }
+
+        public bool SendAuthCode(int ibsOrderId, double amount, string authNum)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var resultat = service.SaveExtrPayment(UserNameApp, PasswordApp, ibsOrderId, amount, authNum);
+                success = resultat == 1;
+            });
+            return success;
+        }
+
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
-            var order = new TBookOrder_5();
+            var order = new TBookOrder_7();
 
             order.ServiceProviderID = providerId ?? 0;
             order.AccountID = accountId;
@@ -119,6 +139,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
             order.DispByAuto = autoDispatch;
+
+            var priority = ConfigManager.GetSetting("IBS.OrderPriority").SelectOrDefault(setting => bool.Parse(setting), true);
+            order.Priority = priority ? 1 : 0;
                        
 
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
@@ -145,18 +168,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_5 ) ) );
+                Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_7 ) ) );
                 Logger.LogMessage("WebService Creating IBS Order pickup : " + JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " + JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
 
-                orderId = service.SaveBookOrder_5(UserNameApp, PasswordApp, order);                
+                orderId = service.SaveBookOrder_7(UserNameApp, PasswordApp, order);                
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
         }
 
-        private bool ValidateZoneAddresses(TBookOrder_5 order)
+        private bool ValidateZoneAddresses(TBookOrder_7 order)
         {
             if (!ValidateZone(order.PickupAddress, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
             {
@@ -208,8 +231,25 @@ namespace apcurium.MK.Booking.IBS.Impl
             bool isCompleted = false;
             UseService(service =>
             {
-                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
-                isCompleted = result == 0;
+                int count = 0;
+                IBSOrderStatus status = null;
+                
+                //We need to try 5 times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up.
+                do
+                {
+                    if (count > 0)
+                    {
+                        Logger.LogMessage("WebService Cancel Order is not working!  Trying again in 500ms  : " + orderId + " " + accountId);
+                        Thread.Sleep(500);
+                    }
+
+                    var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
+                    count++;
+                    isCompleted = result == 0;
+                    status = GetOrderStatus(orderId, accountId, contactPhone);
+                }
+                while ( (status.Status.ToSafeString().Contains( "Cancel")) && ( count <= 5 ) );
+                
             });
             return isCompleted;
         }

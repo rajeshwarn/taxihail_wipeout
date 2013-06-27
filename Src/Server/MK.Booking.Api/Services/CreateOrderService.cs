@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Api.Services
                 throw err;
             }
 
-
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             //TODO: Fix this when IBS will accept more than 10 digits phone numbers
@@ -69,6 +68,8 @@ namespace apcurium.MK.Booking.Api.Services
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
+
+            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers; 
 
             var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
@@ -126,18 +127,10 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
 
-
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
 
-            // Building Name is not handled by IBS
-            // Put Building Name in note, if specified
-            var note = string.Format("{0}{1}", Environment.NewLine, request.Note) ;
-            if(!string.IsNullOrWhiteSpace(request.PickupAddress.BuildingName))
-            {
-                var buildingName = "Building Name: " + request.PickupAddress.BuildingName;
-                note += (Environment.NewLine + buildingName).Trim();
-            }
+            var note = BuildNote(request.Note, request.PickupAddress.BuildingName);
 
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                                                     request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
@@ -150,5 +143,23 @@ namespace apcurium.MK.Booking.Api.Services
             return ((address != null) && address.FullAddress.HasValue() && address.Longitude != 0 && address.Latitude != 0);
         }
 
+        private string BuildNote(string note, string buildingName)
+        {
+            var noteTemplate = _configManager.GetSetting("IBS.NoteTemplate");
+
+            if (!string.IsNullOrWhiteSpace(noteTemplate))
+            {
+                return noteTemplate.Replace("{{userNote}}", note ?? string.Empty).Replace("{{buildingName}}", buildingName ?? string.Empty);
+            }
+
+            // Building Name is not handled by IBS
+            // Put Building Name in note, if specified
+            var formattedNote = string.Format("{0}{1}", Environment.NewLine, note);
+            if (!string.IsNullOrWhiteSpace(buildingName))
+            {
+                formattedNote += (Environment.NewLine + buildingName).Trim();
+            }
+            return formattedNote;
+        }
     }
 }

@@ -471,6 +471,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("HistoryDetailStatusLabel"); }
 		}
 
+        public static string HistoryDetailAuthorizationLabel {
+            get { return GetValue ("HistoryDetailAuthorizationLabel"); }
+        }
+
 		public static string HistoryDetailAptRingCodeLabel {
 			get { return GetValue ("HistoryDetailAptRingCodeLabel"); }
 		}

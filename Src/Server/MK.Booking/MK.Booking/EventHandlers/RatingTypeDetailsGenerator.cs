@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -19,12 +20,15 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new RatingTypeDetail()
+                if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name) == null)
+                {
+                    context.Save(new RatingTypeDetail()
                                  {
                                      CompanyId = @event.SourceId,
                                      Id = @event.RatingTypeId,
                                      Name = @event.Name
                                  });
+                }
             }
         }
 

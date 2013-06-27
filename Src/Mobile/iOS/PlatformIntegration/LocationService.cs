@@ -8,6 +8,7 @@ using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
 using MonoTouch.Foundation;
 using System.Reactive.Linq;
+using Cirrious.MvvmCross.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             _locationManager = new CLLocationManager();
             _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _locationManager.DistanceFilter = -1;//The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+            _locationManager.DistanceFilter = 10;//The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
             _locationDelegate = new LocationManagerDelegate();
             _locationManager.Delegate = _locationDelegate;
             Positions = _locationDelegate;
@@ -46,6 +47,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return;
             }
+
+            if (_locationManager.Location != null) {
+                
+                _locationDelegate.BestPosition = new Position()
+                {
+                    Error = (float)_locationManager.Location.HorizontalAccuracy,
+                    Time = _locationManager.Location.Timestamp.ToDateTimeUtc(),
+                    Latitude = _locationManager.Location.Coordinate.Latitude,
+                    Longitude = _locationManager.Location.Coordinate.Longitude
+                };
+            }
+
             _locationManager.StartUpdatingLocation();
             _isStarted = true;
 

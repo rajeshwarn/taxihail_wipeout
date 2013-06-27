@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
 
+        void FinalizePayment (Guid orderId, double amount, string carNumber, long transactionId, int ibsOrderNumber);
+
 
     }
 }

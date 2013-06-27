@@ -6,6 +6,7 @@ using Infrastructure.Sql.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using log4net;
 
@@ -116,12 +117,6 @@ namespace DatabaseInitializer.Services
             statusChangedEvent.Status.VehicleLongitude = ibsInformations.VehicleLongitude;
         }
 
-        private const string AssignedStatus = "wosASSIGNED";
-        private const string DoneStatus = "wosDONE";
-        private const string CancelStatus = "wosCANCELLED_DONE";
-        private const string NoneStatus = "wosNone";
-        private const string NoShowStatus = "wosNOSHOW";
-        private const string WaitingStatus = "wosWAITING";
 
 
         private OrderStatus MapStatus(string statusIBS)
@@ -129,22 +124,22 @@ namespace DatabaseInitializer.Services
             var status = OrderStatus.Pending;
             switch (statusIBS)
             {
-                case AssignedStatus:
+                case VehicleStatuses.Common.Assigned:
                     return status = OrderStatus.Pending;
                     break;
-                case DoneStatus:
+                case VehicleStatuses.Common.Done:
                     return status = OrderStatus.Completed;
                     break;
-                case CancelStatus:
+                case VehicleStatuses.Common.Cancelled:
                     return status = OrderStatus.Canceled;
                     break;
-                case NoneStatus:
+                case VehicleStatuses.Unknown.None:
                     return status = OrderStatus.Completed;
                     break;
-                case NoShowStatus:
+                case VehicleStatuses.Common.NoShow:
                     return status = OrderStatus.Completed;
                     break;
-                case WaitingStatus:
+                case VehicleStatuses.Common.Waiting:
                     return status = OrderStatus.Pending;
                     break;
             }

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
-        private ICreditCardTokenizationService _tokenizationService;
+		private IPaymentServiceClient _tokenizationService;
 
-        public AccountServiceClient(string url, string sessionId, ICreditCardTokenizationService tokenizationService)
+		public AccountServiceClient(string url, string sessionId, IPaymentServiceClient tokenizationService =null)
             : base(url, sessionId)
         {
             _tokenizationService = tokenizationService;

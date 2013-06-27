@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.EventHandlers
                                      FacebookId = @event.FacebookId,
                                      TwitterId = @event.TwitterId,
                                      Language = @event.Language,
-                                     IsAdmin = @event.IsAdmin
+                                     IsAdmin = @event.IsAdmin,
+                                     CreationDate = @event.EventDate
                                  };
 
 
@@ -182,10 +183,11 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.DefaultCreditCard;
-                account.DefaultTipAmount = @event.DefaultTipAmount;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
             }
         }
     }
 }
+
+

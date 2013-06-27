@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -15,10 +12,10 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CancelOrderService : RestServiceBase<CancelOrder>
     {
-        private ICommandBus _commandBus;
-        private IBookingWebServiceClient _bookingWebServiceClient;
-        private IOrderDao _orderDao;
-        private IAccountDao _accountDao;
+        private readonly ICommandBus _commandBus;
+        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
 
         public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao)
         {
@@ -33,15 +30,11 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            if (order != null)
+            if (order == null)
             {
-                var command = new Commands.CancelOrder();
-                command.Id = Guid.NewGuid();
-                command.OrderId = request.OrderId;
-                _commandBus.Send(command);
-
+                return new HttpResult(HttpStatusCode.NotFound);
             }
-
+            
             if (!order.IBSOrderId.HasValue)
             {
                 throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
@@ -62,6 +55,9 @@ namespace apcurium.MK.Booking.Api.Services
                     throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
                 }
             }
+
+            var command = new Commands.CancelOrder {Id = Guid.NewGuid(), OrderId = request.OrderId};
+            _commandBus.Send(command);
             
             return new HttpResult(HttpStatusCode.OK);
         }

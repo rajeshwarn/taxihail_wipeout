@@ -217,8 +217,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Order.PickupAddress.RingCode = result.RingCode;
 							Order.PickupAddress.BuildingName = result.BuildingName;
 							InvokeOnMainThread(() => {
-								FirePropertyChanged("AptRingCode");
-								FirePropertyChanged("BuildingName");
+								FirePropertyChanged(()=>AptRingCode);
+								FirePropertyChanged(()=>BuildingName);
 							});
 						}
 					});
@@ -247,8 +247,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                     Order.Settings.Passengers = result.Settings.Passengers;
                                                                     InvokeOnMainThread(() =>
                                                                                            {
-                                                                                               FirePropertyChanged("AptRingCode");
-                                                                                               FirePropertyChanged("BuildingName");
+                                                                                               FirePropertyChanged(()=>AptRingCode);
+                                                                                               FirePropertyChanged(()=>BuildingName);
                                                                                                FirePropertyChanged(() => OrderPassengerNumber);
                                                                                                FirePropertyChanged(() => OrderPhone);
                                                                                                FirePropertyChanged(() => OrderName);
@@ -272,41 +272,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                     {
 
-                        if(Order.Settings.ChargeTypeId == ReferenceData.CreditCardOnFileType)
-                        {
-                            var serialized = Order.ToJson();
-                            RequestNavigate<PaymentViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
 
-                        }else{
                         Order.Id = Guid.NewGuid ();
-            					try {
-            					MessageService.ShowProgress (true);
-            					var orderInfo = _bookingService.CreateOrder (Order);
-            					
-            					if (orderInfo.IBSOrderId.HasValue
-            					    && orderInfo.IBSOrderId > 0) {
-            						var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
-            						
-            						RequestNavigate<BookingStatusViewModel>(new
-            						                                        {
-            							order = orderCreated.ToJson(),
-            							orderStatus = orderInfo.ToJson()
-            						});	
-            						Close();
-            						MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
-            					}		
-            					
-            				} catch (Exception ex) {
+	    				try
+						{
+	    					MessageService.ShowProgress (true);
+	    					var orderInfo = _bookingService.CreateOrder (Order);
+    					
+    						if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0) 
+							{
+	    						var orderCreated = new Order 
+	                            {
+	                                CreatedDate = DateTime.Now, 
+	                                DropOffAddress = Order.DropOffAddress, 
+	                                IBSOrderId = orderInfo.IBSOrderId, 
+	                                Id = Order.Id, PickupAddress = Order.PickupAddress,
+	                                Note = Order.Note, 
+                                    PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+	                                Settings = Order.Settings,
+	                            };
+	    						
+	    						RequestNavigate<BookingStatusViewModel>(new
+	    						{
+	    							order = orderCreated.ToJson(),
+	    							orderStatus = orderInfo.ToJson()
+	    						});	
+	    						Close();
+	    						MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+    						}		
+    					
+        				} 
+						catch (Exception ex) 
+						{
             					InvokeOnMainThread (() =>
-            					                    {
+            					{
             						var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             						string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
             						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
             					});
-            				} finally {
+            			}
+						finally {
             					MessageService.ShowProgress(false);
-            				} 
-                        }
+            			}                         
                     }); 
                
             }

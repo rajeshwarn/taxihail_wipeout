@@ -342,6 +342,9 @@
     <Content Include="taxi-hail.js" />
     <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
     <Content Include="themes\CasinoTaxi\img\logo.png" />
+    <Content Include="themes\MetroTaxiCT\img\cancel-icon.png" />
+    <Content Include="themes\MetroTaxiCT\img\location.png" />
+    <Content Include="themes\MetroTaxiCT\img\logo.png" />
     <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
     <Content Include="themes\DispatchTaxi\img\location.png" />
     <Content Include="themes\DispatchTaxi\img\logo.png" />
@@ -373,6 +376,9 @@
     <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
     <Content Include="themes\VictoriaTaxi\img\location.png" />
     <Content Include="themes\VictoriaTaxi\img\Logo.png" />
+    <Content Include="themes\YellowCabJacksonville\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabJacksonville\img\location.png" />
+    <Content Include="themes\YellowCabJacksonville\img\logo.png" />
     <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
     <Content Include="themes\YellowCabTampa\img\header-bg.png" />
     <Content Include="themes\YellowCabTampa\img\location.png" />
@@ -491,6 +497,14 @@
     <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
     <Content Include="admin\templates\RuleItem.handlebars" />
     <Content Include="admin\localization\RuleItem.json" />
+    <Content Include="themes\MetroTaxiCT\less\combined-responsive.less" />
+    <Content Include="themes\MetroTaxiCT\less\combined.less" />
+    <Content Include="themes\MetroTaxiCT\less\style.less" />
+    <Content Include="themes\MetroTaxiCT\less\variables.less" />
+    <Content Include="themes\YellowCabJacksonville\less\combined-responsive.less" />
+    <Content Include="themes\YellowCabJacksonville\less\combined.less" />
+    <Content Include="themes\YellowCabJacksonville\less\style.less" />
+    <Content Include="themes\YellowCabJacksonville\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

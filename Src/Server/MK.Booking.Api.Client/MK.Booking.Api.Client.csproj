@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\CmtJsonServiceClient.cs" />
+    <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="Cmt\CmtAccountServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthCredentials.cs" />
     <Compile Include="Cmt\CmtAuthResponse.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
     <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
+    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
     <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
@@ -99,8 +101,7 @@
     <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
     <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
-    <Compile Include="ICreditCardTokenizationService.cs" />
-    <Compile Include="IPaymentClient.cs" />
+    <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
+    <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">

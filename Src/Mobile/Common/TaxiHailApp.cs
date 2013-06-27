@@ -54,14 +54,14 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
 
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => 
-                                                                     new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentClient>()),
+                                                                     new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentServiceClient>()),
                                                                      "NotAuthenticated");
             
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
-                                                                     new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentClient>()),
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentServiceClient>()),
                                                                      "Authenticate");
             
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentClient>()));
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentServiceClient>()));
 
             TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
@@ -95,7 +95,16 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
-            TinyIoCContainer.Current.Register<IPaymentClient>((c, p) => new CmtPaymentClient(c.Resolve<IConfigurationManager>(), true));
+            /* Use fake please
+			TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>
+			{
+				var settings = c.Resolve<IAppSettings>();
+				return new CmtPaymentClient( settings.PaymentBaseUrl, settings.PaymentConsumerKey, settings.PaymentConsumerSecretKey, settings.PaymentCurrencyCode, true);
+			});
+            */
+            TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>new CmtFakeClient());//Fake
+
+
             TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
 

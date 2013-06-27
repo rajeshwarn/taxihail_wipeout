@@ -290,10 +290,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        public IEnumerable<AvailableVehicle> AvailableVehicles
+        {
+            set
+            {
+                ShowAvailableVehicles (value);
+            }
+        }
+
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
-            if(!adressesToDisplay.Any())
+            if(adressesToDisplay == null || !adressesToDisplay.Any())
             {
                 return;
             }
@@ -430,6 +438,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 AddAnnotation (_pickupPin);
             }
             if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
+        }
+
+        private List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
+        private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+        {
+            // remove currently displayed pushpins
+            foreach (var pp in _availableVehiclePushPins)
+            {
+                RemoveAnnotation(pp);
+            }
+            _availableVehiclePushPins.Clear ();
+
+            if (vehicles == null)
+                return;
+
+            foreach (var v in vehicles)
+            {
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), AddressAnnotationType.NearbyTaxi, string.Empty, string.Empty);
+                AddAnnotation (pushPin);
+                _availableVehiclePushPins.Add (pushPin);
+            }
         }
     }
 }

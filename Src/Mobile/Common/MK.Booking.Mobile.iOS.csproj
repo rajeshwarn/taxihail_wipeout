@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;CLIENT;IOS</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT;MONOTOUCH</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -26,7 +26,7 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
-    <DefineConstants>CLIENT;IOS</DefineConstants>
+    <DefineConstants>CLIENT;MONOTOUCH</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
@@ -38,6 +38,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <DefineConstants>MONOTOUCH</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -46,6 +47,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <DefineConstants>MONOTOUCH</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -179,11 +181,6 @@
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByGeoCodingViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
@@ -203,7 +200,6 @@
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
-    <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="Messages\SubNavigationResultMessage.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
@@ -252,6 +248,7 @@
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
+    <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

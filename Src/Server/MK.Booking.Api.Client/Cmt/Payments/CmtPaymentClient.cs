@@ -15,15 +15,22 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// cardholder data to create the token so there is no way to get the cardholder information 
     /// with just the token alone
     /// </summary>
-    public class CmtPaymentClient : CmtPaymentServiceClient, IPaymentClient
+	public class CmtPaymentClient : CmtBasePaymentServiceClient, IPaymentServiceClient
     {
-        private readonly IConfigurationManager _appSettings;
+		private string _consumerKey;
+		private string _consumerSecretKey;
+		private string _currencyCode;
 
-        public CmtPaymentClient(IConfigurationManager appSettings, bool acceptAllHttps=false)
-			: base(acceptAllHttps)
+		public CmtPaymentClient(string baseUrl,  string consumerKey, string consumerSecretKey, string currencyCode, bool ignoreCertificateErrors=false)
+			: 	base( baseUrl, consumerKey, consumerSecretKey, ignoreCertificateErrors)
         {
-            _appSettings = appSettings;
-        }
+			_consumerKey = consumerKey;
+			_consumerSecretKey = consumerSecretKey;
+			_currencyCode = currencyCode;
+
+		
+        
+		}
 
         public TokenizeResponse Tokenize(string accountNumber, DateTime expiryDate)
         {
@@ -31,7 +38,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             {
                 AccountNumber = accountNumber,
                 ExpiryDateYYMM = expiryDate.ToString("yyMM")
-            });
+            });
+
         }
 
         public TokenizeDeleteResponse ForgetTokenizedCard(string cardToken)
@@ -48,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 			{
 				Amount = (int)(amount*100),
 				CardOnFileToken = cardToken,
-                CurrencyCode = _appSettings.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString).NullIfEmpty()??AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar,
+                CurrencyCode = _currencyCode,
 				TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
 				CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
                 L3Data = new LevelThreeData()

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Android_System.Reactive.PlatformServices</RootNamespace>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;REACTIVE_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AssemblyName>System.Reactive.PlatformServices</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AssemblyName>System.Reactive.PlatformServices</AssemblyName>
+    <DefineConstants>REACTIVE_2_0</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'iOS|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\iOS</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AssemblyName>Android_System.Reactive.PlatformServices</AssemblyName>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\..\System.Reactive\System.Reactive.Concurrency\EventLoopScheduler.cs">
+      <Link>System.Reactive.Concurrency\EventLoopScheduler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\System.Reactive\System.Reactive.Concurrency\NewThreadScheduler.cs">
+      <Link>System.Reactive.Concurrency\NewThreadScheduler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\System.Reactive\System.Reactive.Concurrency\TaskPoolScheduler.cs">
+      <Link>System.Reactive.Concurrency\TaskPoolScheduler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\System.Reactive\System.Reactive.Concurrency\ThreadPoolScheduler.cs">
+      <Link>System.Reactive.Concurrency\ThreadPoolScheduler.cs</Link>
+    </Compile>
+    <Compile Include="System.Reactive.PlatformServices\CurrentPlatformEnlightenmentProvider.full.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="System.Reactive.PlatformServices\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Android_System.Reactive.Interfaces\Android_System.Reactive.Interfaces.csproj">
+      <Project>{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}</Project>
+      <Name>Android_System.Reactive.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Android_System.Reactive.Core\Android_System.Reactive.Core.csproj">
+      <Project>{0565924B-A569-4ED4-B538-FEF130AEBA5A}</Project>
+      <Name>Android_System.Reactive.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

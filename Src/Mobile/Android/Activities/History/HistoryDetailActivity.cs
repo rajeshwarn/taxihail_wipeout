@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
             get { return Resource.String.View_HistoryDetail; }
         }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

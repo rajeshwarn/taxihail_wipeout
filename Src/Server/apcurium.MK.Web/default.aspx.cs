@@ -15,6 +15,7 @@ namespace apcurium.MK.Web
     {
         protected string ApplicationKey { get; private set; }
         protected string ApplicationName { get; private set; }
+        protected string ApplicationVersion { get; private set; }
         protected string DefaultLatitude { get; private set; }
         protected string DefaultLongitude { get; private set; }
         protected string DefaultPhoneNumber { get; private set; }
@@ -38,6 +39,7 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
             GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
+            ApplicationVersion = config.GetSetting("TaxiHail.Version");
         }
 
     }

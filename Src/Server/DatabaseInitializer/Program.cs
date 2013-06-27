@@ -67,6 +67,8 @@ namespace DatabaseInitializer
                     sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ? "MSSQL10_50.MSSQLSERVER" : userSqlInstance;
                 }
 
+
+                Console.WriteLine("Working...");
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
                 IConfigurationManager configurationManager = new
@@ -245,7 +247,7 @@ namespace DatabaseInitializer
                         Email = "taxihail@apcurium.com",
                         Name = "Administrator",
                         Phone = "5146543024",
-                        Password = "1l1k3B4n4n@",
+                        Password = "1l1k3B4n4n@",//Todo Make the admin portal customizable
                         IsAdmin = true
                     };
 
@@ -267,36 +269,30 @@ namespace DatabaseInitializer
                         ConfimationToken = registerAdminAccountCommand.ConfimationToken
                     });
 
-                    //TODO: Add default rating types
-                    //commandBus.Send(new AddRatingType
-                    //{
-                    //    CompanyId = AppConstants.CompanyId, //TODO: Validate terms : Cab Cleanliness, Driver Politeness, Safety/Driving
-                    //    Name = "Cab Cleanliness"
-                    //});
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Knowledgable driver",
+                        RatingTypeId = Guid.NewGuid()
+                    });
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Politeness",
+                        RatingTypeId = Guid.NewGuid()
+                    });
+                    commandBus.Send(new AddRatingType()
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Name = "Safety",
+                        RatingTypeId = Guid.NewGuid()
+                    });
                 }
 
                 commandBus.Send(new AddOrUpdateAppSettings()
                 {
                     AppSettings = appSettings,
                     CompanyId = AppConstants.CompanyId
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Knowledgable driver",
-                    RatingTypeId = Guid.NewGuid()
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Politness",
-                    RatingTypeId = Guid.NewGuid()
-                });
-                commandBus.Send(new AddRatingType()
-                {
-                    CompanyId = AppConstants.CompanyId,
-                    Name = "Safety",
-                    RatingTypeId = Guid.NewGuid()
                 });
             }
             catch (Exception e)

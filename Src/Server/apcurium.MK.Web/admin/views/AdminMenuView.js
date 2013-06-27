@@ -8,8 +8,7 @@
         },
 
         render: function() {
-            this.$el.html(this.renderTemplate());
-
+            this.$el.html(this.renderTemplate({ version: TaxiHail.parameters.version }));
             return this;
         },
         

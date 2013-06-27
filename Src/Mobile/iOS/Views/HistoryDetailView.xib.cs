@@ -17,6 +17,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.BindingConverter;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -54,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStatus.Text = Resources.HistoryDetailStatusLabel;
             lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
+            lblAuthorization.Text =Resources.HistoryDetailAuthorizationLabel;
+           
 
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
@@ -75,16 +79,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ btnRateTrip, "{'Hidden':{'Path': 'ShowRateButton', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
 				{ btnViewRating, "{'Hidden':{'Path': 'HasRated', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
 				{ btnCancel, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'CancelOrder'}}"},
-				{ btnSendReceipt, "{'Hidden':{'Path': 'Status.FareAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
+				{ btnSendReceipt, "{'Hidden':{'Path': 'SendReceiptAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
 				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
 				{ btnRebook, "{'TouchUpInside':{'Path':'RebookOrder'}}"},
-				{ txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
+                { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
 				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
 				{ txtRequested, "{'Text':{'Path': 'RequestedTxt'}}"},
 				{ txtAptCode, "{'Text':{'Path': 'AptRingTxt'}}"},
 				{ txtStatus, "{'Text':{'Path': 'Status.IBSStatusDescription'}}"},
-				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"}
+				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"},
+                
+                { lblAuthorization, new B("Hidden","AuthorizationNumber",typeof(NoValueToTrueConverter))},
+                { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"}
 			});
 
             ViewModel.Load();

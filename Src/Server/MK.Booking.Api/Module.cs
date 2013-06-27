@@ -2,8 +2,11 @@
 using Infrastructure.Messaging;
 using AutoMapper;
 using Microsoft.Practices.Unity;
+using MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
@@ -24,11 +27,30 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
-            container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+            container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
+            container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
+            var mockIbsStatusUpdate = bool.Parse(container
+                               .Resolve<IConfigurationManager>()
+                               .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+            if (mockIbsStatusUpdate)
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
+                container.RegisterType<OrderStatusHelper, OrderStatusIbsMock>();
+            }
+            else
+            {
+                container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
+                container.RegisterType<OrderStatusHelper, OrderStatusHelper>();
+
+            }
         }
 
         private void RegisterMaps()
         {
+            var profile = new BookingApiMapperProfile();
+            Mapper.AddProfile(profile);
+            Mapper.AssertConfigurationIsValid(profile.ProfileName);
+
             Mapper.CreateMap<BookingSettingsRequest, Commands.UpdateBookingSettings>();
             Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
                 .ForMember(p=> p.Id, options=> options.Ignore())
@@ -98,6 +120,14 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>();
 
+        }
+    }
+
+    public class BookingApiMapperProfile :Profile
+    {
+        protected override void Configure()
+        {
+            this.CreateMap<IBSVehiclePosition, AvailableVehicle>();
         }
     }
 }

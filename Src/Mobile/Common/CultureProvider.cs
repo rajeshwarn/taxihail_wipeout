@@ -18,7 +18,25 @@ namespace apcurium.MK.Booking.Mobile
         {
             return date.Date.ToLongDateString();
         }
+
+		public static string FormatCurrency(double amount)
+		{
+			return amount.ToString("C", CultureInfo.GetCultureInfo(CultureInfoString));
+		}
         
+		public static double ParseCurrency(string amount)
+		{
+			if (amount == null) return 0;
+
+			try
+			{
+				return double.Parse(amount, NumberStyles.Currency, CultureInfo.GetCultureInfo(CultureInfoString));
+			}
+			catch
+			{
+				return 0;
+			}
+		}
         
         public static string CultureInfoString
         {

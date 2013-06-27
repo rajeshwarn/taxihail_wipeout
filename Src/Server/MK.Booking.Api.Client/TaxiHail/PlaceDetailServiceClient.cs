@@ -1,4 +1,5 @@
 using System.Globalization;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -11,9 +12,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
          
-        public Address GetPlaceDetail(string reference)
+        public Address GetPlaceDetail(string reference, string placeName)
         {
-            var result = Client.Get<Address>(string.Format(CultureInfo.InvariantCulture, "/places/{0}", reference));
+            var result = Client.Get(new PlaceDetailRequest()
+                {
+                    ReferenceId = reference,
+                    PlaceName = placeName
+                });
             return result;
         }
     }

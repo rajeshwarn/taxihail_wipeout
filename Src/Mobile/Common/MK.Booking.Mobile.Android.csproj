@@ -57,18 +57,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Infrastructure\rx-android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Infrastructure\rx-android\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Infrastructure\rx-android\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Infrastructure\rx-android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -148,7 +136,6 @@
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
-    <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
@@ -203,19 +190,14 @@
     <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByGeoCodingViewModel.cs" />
     <Compile Include="ViewModels\AddressSearchViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
-    <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
@@ -257,6 +239,8 @@
     <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
+    <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
+    <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -287,6 +271,22 @@
       <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
       <Name>Cirrious.MvvmCross.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-android-master\android\Android_System.Reactive.PlatformServices\Android_System.Reactive.PlatformServices.csproj">
+      <Project>{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}</Project>
+      <Name>Android_System.Reactive.PlatformServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-android-master\android\Android_System.Reactive.Linq\Android_System.Reactive.Linq.csproj">
+      <Project>{3D915092-7092-4A12-BF9A-463AE4522E4C}</Project>
+      <Name>Android_System.Reactive.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-android-master\android\Android_System.Reactive.Interfaces\Android_System.Reactive.Interfaces.csproj">
+      <Project>{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}</Project>
+      <Name>Android_System.Reactive.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\rx-android-master\android\Android_System.Reactive.Core\Android_System.Reactive.Core.csproj">
+      <Project>{0565924B-A569-4ED4-B538-FEF130AEBA5A}</Project>
+      <Name>Android_System.Reactive.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx">
@@ -300,6 +300,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="ViewModels\Master.resx">
       <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

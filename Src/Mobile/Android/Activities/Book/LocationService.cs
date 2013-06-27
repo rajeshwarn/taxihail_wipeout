@@ -75,7 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		public override void Stop()
 		{            
 			if(IsStarted)
-			{
+			{   
+				_isStarted = false;
 				_locationManager.RemoveUpdates(LocationListener);
 			}
 		}

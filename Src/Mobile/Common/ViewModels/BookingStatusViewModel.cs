@@ -29,14 +29,14 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel
+	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
+		private IBookingService _bookingService;
 
-		private const int _refreshPeriod = 20 ; //20 sec
+		private int _refreshPeriod = 5; //in seconds
 
         private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
-
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
@@ -44,13 +44,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;
 			_hasSeenReminder = false;
+			_bookingService = this.GetService<IBookingService>();
 		}
 	
 		public override void Load ()
         {
 			base.Load ();
 			ShowRatingButton = true;
-
 
 			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
 
@@ -71,9 +71,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start (firstStart);
 
-			Observable.Timer ( TimeSpan.FromSeconds ( 2 ), TimeSpan.FromSeconds (_refreshPeriod))
+            var periodInSettings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.OrderStatus.ClientPollingInterval");
+            int periodInSettingsValue;
+            if(int.TryParse(periodInSettings, out periodInSettingsValue))
+            {
+                _refreshPeriod = periodInSettingsValue;
+            }
+
+
+
+#if MONOTOUCH
+			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
+#else
+			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
+#endif
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
-					.DisposeWith (Subscriptions);
+				.DisposeWith (Subscriptions);
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
@@ -194,8 +207,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				FirePropertyChanged (() => OrderStatusDetail);
+                FirePropertyChanged (() => IsDriverInfoAvailable);
+                FirePropertyChanged (() => IsCallTaxiVisible);
 			}
 		}
+
+        public IMvxCommand CallTaxi
+        {
+            get { return GetCommand(() =>
+                                        {
+                    if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
+                    {
+                        PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+                    }
+                    else
+                    {
+                        MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
+                    }
+                }); }
+        }
 
 		private bool _showRatingButton;
 		public bool ShowRatingButton {
@@ -266,7 +296,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                status.IBSStatusId = VehicleStatuses.Common.Arrived;
+                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
+
 #endif
 
                 if (status != null) {
@@ -289,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 }
             } catch (Exception ex) {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
+                Logger.LogError (ex);
             }
         }
 
@@ -308,46 +339,65 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowThankYouDialog ()
         {
-			var hub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ();
+
+            string stringNeutral = null;
+            Action actionNeutral = null;
             TinyMessageSubscriptionToken orderRatedToken = null;
+            
+			if (ShowRatingButton) {
+                stringNeutral = Resources.GetString ("RateBtn");
+                actionNeutral = () =>
+                {
+                    if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
+                        Order.Id = Order.Id;
+                        orderRatedToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
+                                                            .Subscribe<OrderRated> (HideRatingButton);
+                        NavigateToRatingPage.Execute ();
+                    }
+                };
+            }
 
-			Action showRating = () =>
-			{
-				if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
-					Order.Id = Order.Id;
-					orderRatedToken = hub.Subscribe<OrderRated> (HideRatingButton);
-					NavigateToRatingPage.Execute ();
-				}
-			};
 
-			Action closeAction = () =>
+			Action returnToBookingScreen = () =>
 			{
 				if (orderRatedToken != null) {
-					hub.Unsubscribe<OrderRated> (orderRatedToken);
+					TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
+						.Unsubscribe<OrderRated> (orderRatedToken);
 				}
 				this.Close ();
 			};
 
-			Action sendRecieptAction = () =>
+
+			Action sendReceiptAction = () =>
 			{
 				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-					BookingService.SendReceipt (Order.Id);
+					TinyIoCContainer.Current.Resolve<IBookingService> ()
+						.SendReceipt (Order.Id);
 				}
 			};
 
-			string stringNeutral = ShowRatingButton ? Str.RateButtonText : null;
-			Action actionNeutral = ShowRatingButton ?  showRating : null;    
+            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse(false);
 
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 
-            MessageService.ShowMessage (
-				Str.ThankYouTitle,
-				Str.ThankYouMessage,
-				Str.ReturnBookingScreenMessage, 
-				closeAction,
-                Str.HistoryDetailSendReceiptButtonText, 
-				sendRecieptAction,
-                stringNeutral, actionNeutral
-            );
+			if (sendReceiptAvailable) {
+				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
+				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+				                            Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction,
+				                            stringNeutral, actionNeutral
+				);
+			} else if (stringNeutral != null) {
+				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
+				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
+				                            stringNeutral, actionNeutral
+				);
+			} else {
+				MessageService.ShowMessage(Resources.GetString("View_BookingStatus_ThankYouTitle"),
+				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
+				                           					returnToBookingScreen);
+			}
         }
 
 
@@ -413,7 +463,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                            var isSuccess = BookingService.CancelOrder (Order.Id);      
 	                            if (isSuccess) 
 	                            {
-	                                MessengerHub.Publish (new OrderCanceled (this, Order, null));
+									_bookingService.ClearLastOrder();
 	                                RequestNavigate<BookViewModel> (clearTop: true);
 	                            } 
 	                            else 
@@ -436,7 +486,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
-						
+                        if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
+                            MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
+                            return;
+                        }
+
 						RequestNavigate<ConfirmCarNumberViewModel>(
 						new 
 						{ 

@@ -6,11 +6,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AddressViewModel : BaseViewModel
 	{
-		
-        //public AddressViewModel( ObservableCollection< AddressViewMod
+        public Address Address { get; set; }
+        public bool ShowRightArrow { get; set; }
+        public bool ShowPlusSign { get; set; }
+        public string Icon { get; set; }	
+        public bool IsAddNew { get; set; }
 
-
-		public Address Address { get; set; }
+        private bool _isFirst;
+        private bool _isLast;
 
         public string DisplayLine1
         {
@@ -20,14 +23,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return Address.FriendlyName;
                 }
-                else if ( Params.Get( Address.StreetNumber,Address.Street).Count ( s=> s.HasValue () ) == 0 ) 
-                {
-                    return Address.FullAddress;
-                }
-                else
-                {
-                    return Params.Get( Address.StreetNumber , Address.Street ).Where ( s=> s.HasValue () ).JoinBy( " " );
-                }
+                return Params.Get( Address.StreetNumber,Address.Street).Count ( s=> s.HasValue () ) == 0 
+                    ? Address.FullAddress
+                    : Params.Get( Address.StreetNumber , Address.Street ).Where ( s=> s.HasValue () ).JoinBy( " " );
             }
         }
 
@@ -39,16 +37,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return Address.FullAddress;
                 }
-                else
-                {
-                    return Params.Get( Address.City,Address.State, Address.ZipCode ).Where ( s=> s.HasValue () ).JoinBy( ", " );
-                }
+                return Params.Get( Address.City,Address.State, Address.ZipCode ).Where ( s=> s.HasValue () ).JoinBy( ", " );
             }
         }
 
-		public bool ShowRightArrow { get; set; }
-		public bool ShowPlusSign { get; set; }
-        public string Icon { get; set; }
 		
         public bool IsFirst { get{return _isFirst;} 
             set 
@@ -65,15 +57,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged( () => IsLast );
             }
         }
-
-		
-        private bool _isFirst;
-        private bool _isLast;
-
-        public bool IsAddNew { get; set; }
-
-
-
 	}
 }
 

@@ -1,32 +1,13 @@
-﻿// Project: Umbrella, File: StringExtensions.cs
-// Namespace: apcurium.Framework.Extensions, Class: StringExtensions
-// Path: C:\Projects - CodePlex\umbrella\Main\Src\Umbrella\Extensions, Author: stephane.lapointe
-// Code lines: 89, Size of file: 3.63 KB
-// Creation date: 11/11/2008 1:46 PM
-// Last modified: 11/11/2008 2:14 PM
-// Generated with Commenter
-
-#region Using directives
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Text;
-#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
     public static class StringExtensions
     {
-		public static double FromDollars(this string instance)
-		{
-            if(instance == null)
-            {
-                return 0;
-            }
-			return instance.Replace("$","").ToDouble();
-		}
-
 		public static double ToDouble(this string instance)
 		{
 			double amount;
@@ -196,26 +177,24 @@ namespace apcurium.MK.Common.Extensions
             {
                 return value;
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
+
         public static bool TryToParse( this string value, bool defaultValue )
         {
             if ( value.IsNullOrEmpty() )
             {
                 return defaultValue ;
             }
-            else
-            {
-                bool r;
-                if ( bool.TryParse( value, out r ) )
-                {
-                    return r;
-                }
-                return defaultValue;
-            }
+            bool r;
+            return bool.TryParse( value, out r ) ? r : defaultValue;
+        }
+
+        public static string GetValue(this string instance, string fallback)
+        {
+            return instance == null || string.IsNullOrWhiteSpace(instance)
+                       ? fallback
+                       : instance;
         }
 
 

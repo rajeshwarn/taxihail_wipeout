@@ -35,18 +35,18 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <OutputPath>bin\iPhone\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
+    <AssemblyName>SystemReactive</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>NO_EXPRESSIONS;NO_LARGEARITY;NO_TASK_DELAY;MONOTOUCH</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
-    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <OutputPath>bin\iPhone\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingMobileiOS</AssemblyName>
+    <AssemblyName>SystemReactive</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>NO_EXPRESSIONS;NO_LARGEARITY;NO_TASK_DELAY;MONOTOUCH</DefineConstants>
   </PropertyGroup>

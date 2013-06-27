@@ -15,7 +15,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
-        IEventHandler<OrderStatusChanged>
+        IEventHandler<TransactionIdSet>,
+        IEventHandler<OrderStatusChanged>,
+        IEventHandler<OrderVehiclePositionChanged>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -70,6 +72,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (details != null)
                 {
                     details.Status = OrderStatus.Canceled;
+                    details.IBSStatusId = "wosCANCELLED_DONE";
+                    details.IBSStatusDescription = "Order Cancelled";
                     context.Save(details);
                 }
             }
@@ -175,6 +179,28 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.SaveChanges();
             }
         }
-       
+        
+        public void Handle(TransactionIdSet @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.TransactionId = @event.TransactionId;
+
+                context.Save(order);
+            }
+        }
+
+        public void Handle(OrderVehiclePositionChanged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderStatusDetail>(@event.SourceId);
+                order.VehicleLatitude = @event.Latitude;
+                order.VehicleLongitude = @event.Longitude;
+
+                context.Save(order);
+            }
+        }
     }
 }

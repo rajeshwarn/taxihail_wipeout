@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -261,6 +261,10 @@
   <data name="PickupMapTitle" xml:space="preserve">
     <value>Pickup location</value>
   </data>
+    
+    <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+        <value>Authorization:</value>
+    </data>
   <data name="CancelBoutton" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -1245,7 +1249,7 @@
     <value>Pay for this order</value>
   </data>
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
-    <value>Confirmation sent to the driver</value>
+    <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
   </data>
   <data name="CmtTransactionSuccessTitle" xml:space="preserve">
     <value>Payment Recieved</value>
@@ -1254,7 +1258,7 @@
     <value>Please enter the amount</value>
   </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
-    <value>Resend confirmation</value>
+    <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The Client has payed {0}</value>
@@ -1283,7 +1287,49 @@
   <data name="PayPalButton" xml:space="preserve">
     <value>Pay with PayPal</value>
   </data>
+  <data name="January" xml:space="preserve">
+    <value>January</value>
+  </data>
   <data name="View_PayPal" xml:space="preserve">
     <value>PayPal</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="VehicleNumberErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="VehicleNumberErrorMessage" xml:space="preserve">
+    <value>Unable to retrieve vehicle number. Please pay in car.</value>
   </data>
 </root>

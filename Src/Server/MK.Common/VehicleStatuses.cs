@@ -7,6 +7,9 @@ namespace apcurium.MK.Common
 {
     public class VehicleStatuses
     {
+
+        public static string[] DoneStatuses = new[] { Common.Done, Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
+
         public class Common
         {
             public const string Done = "wosDONE";
@@ -30,6 +33,7 @@ namespace apcurium.MK.Common
             public const string AddressValid = "wosAddrValid";
             public const string AddressPostalValidQry = "wosAddrPostalValidQry";
         }
+
         public class CreditCards
         {
             public const string CreditCardPreauthorizedQry = "wosCCPreauthQry";
@@ -39,6 +43,7 @@ namespace apcurium.MK.Common
             public const string CreditCardEncryptInfo = "wosCCEncryptCCInfo";
             public const string CreditCardEncryptInfoDone = "wosCCEncryptCCInfoDone";
         }
+
         public class Unknown
         {
             public const string Post = "wosPost";

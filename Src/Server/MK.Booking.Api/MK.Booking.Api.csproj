@@ -102,7 +102,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\OrderStatusHelper.cs" />
+    <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
@@ -122,6 +126,7 @@
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\RestOrderservice.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
@@ -155,6 +160,8 @@
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
+    <Compile Include="Validation\AvailableVehiclesValidator.cs" />
+    <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
     <Compile Include="Validation\RegisterAccountValidator.cs" />
@@ -169,6 +176,10 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Api.Client\MK.Booking.Api.Client.csproj">
+      <Project>{304F8E9E-0E9C-40F4-81FB-E7558286C5C1}</Project>
+      <Name>MK.Booking.Api.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>

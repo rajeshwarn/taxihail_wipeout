@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Commands.Orders;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
@@ -75,6 +76,20 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             sut.ThenHasSingle<OrderRemovedFromHistory>();
         }
+
+        [Test]
+        public void when_paying_for_an_order()
+        {
+            this.sut.When(new CommitPaymentCommand
+                {
+                    OrderId = _orderId,
+                    TransactionId = 12345
+                });
+
+            var @event = sut.ThenHasSingle<TransactionIdSet>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(12345, @event.TransactionId);
+        }
         
         [Test]
         public void when_rating_order_successfully()
@@ -134,6 +149,65 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             this.sut.When(rateOrder2);
             Assert.AreEqual(0, sut.Events.Count);
 
+        }
+
+        [Test]
+        public void when_ibs_status_changed()
+        {
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = new OrderStatusDetail
+                {
+                    OrderId = _orderId,
+                    IBSStatusId = Guid.NewGuid().ToString()
+                }
+            });
+
+            var @event = sut.ThenHasSingle<OrderStatusChanged>();
+        }
+
+        [Test]
+        public void when_ibs_status_has_not_changed_then_no_event()
+        {
+            var status = new OrderStatusDetail
+            {
+                OrderId = _orderId,
+                IBSStatusId = Guid.NewGuid().ToString()
+            };
+
+            this.sut.Given(new OrderStatusChanged
+            {
+                SourceId = _orderId,
+                Status = status
+            });
+
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = status,
+            });
+
+            Assert.AreEqual(0, this.sut.Events.Count);
+        }
+
+        [Test]
+        public void when_ibs_vehicle_position_changed()
+        {
+            var status = new OrderStatusDetail
+            {
+                OrderId = _orderId,
+                VehicleLatitude = 1.234,
+                VehicleLongitude = 4.321,
+            };
+
+            this.sut.When(new ChangeOrderStatus
+            {
+                Status = status,
+            });
+
+            var @event = this.sut.ThenHasSingle<OrderVehiclePositionChanged>();
+
+            Assert.AreEqual(1.234, @event.Latitude);
+            Assert.AreEqual(4.321, @event.Longitude);
         }
     }
 }

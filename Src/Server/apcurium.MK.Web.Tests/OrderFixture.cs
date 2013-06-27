@@ -54,6 +54,7 @@ namespace apcurium.MK.Web.Tests
             var orderDetails = sut.GetOrder(details.OrderId);
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
+            Assert.AreEqual(6, orderDetails.Settings.Passengers);
         }
         
         [Test]
@@ -114,6 +115,14 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void order_was_payed()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            sut.FinailizePayment(90,"1234",1234,_orderId,1234);
+
+        }
+
+        [Test]
         public void can_not_get_order_another_account()
         {
             CreateAndAuthenticateTestAccount();
@@ -131,6 +140,7 @@ namespace apcurium.MK.Web.Tests
             var status = sut.GetOrderStatus(_orderId);
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
+            Assert.AreEqual("wosCANCELLED_DONE", status.IBSStatusId);
         }
 
         [Test]

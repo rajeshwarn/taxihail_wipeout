@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Api.Contract.Requests.Orders;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -85,6 +86,17 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.Get<Common.Entity.OrderRatings>(req);
         }
 
+        public void FinailizePayment(double amount, string carNumber, long transactionId, Guid orderId, int ibsOrderNumber)
+        {
+            Client.Post(new CapturePaymentRequest
+                {
+                    Amount = amount,
+                    CarNumber = carNumber,
+                    TransactionId = transactionId,
+                    OrderId = orderId,
+                    IbsOrderNumber = ibsOrderNumber
+                });
+        }
 
         public OrderValidationResult ValidateOrder(CreateOrder order, string testZone = null)
         {
@@ -99,5 +111,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 return Client.Post<OrderValidationResult>(req, order);
             }
         }
+
+
     }
 }

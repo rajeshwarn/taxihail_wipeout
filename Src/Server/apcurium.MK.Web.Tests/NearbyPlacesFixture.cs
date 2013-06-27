@@ -40,6 +40,11 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId);
             var addresses = sut.GetNearbyPlaces(Latitude, Longitude);
+            
+            if (!addresses.Any())
+            {
+                Assert.Inconclusive("no places returned");
+            }
 
             Assert.IsNotEmpty(addresses);
             CollectionAssert.AllItemsAreNotNull(addresses.Select(x => x.FriendlyName));
@@ -52,6 +57,11 @@ namespace apcurium.MK.Web.Tests
             var sut = new NearbyPlacesClient(BaseUrl, SessionId);
             var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 100);
             var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 10);
+
+            if (!greatRadius.Any() || !smallRadius.Any())
+            {
+                Assert.Inconclusive("no places returned");
+            }
 
             Assert.IsNotEmpty(greatRadius);
             Assert.IsNotEmpty(smallRadius);
@@ -69,7 +79,13 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_an_order_with_a_nearby_place()
         {
             var orderId = Guid.NewGuid();
-            var address = new NearbyPlacesClient(BaseUrl, SessionId).GetNearbyPlaces(Latitude, Longitude).First();
+            var address = new NearbyPlacesClient(BaseUrl, SessionId).GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
+
+            if (address == null)
+            {
+                Assert.Inconclusive("no places returned");
+            }
+
             var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             sut.CreateOrder(new CreateOrder

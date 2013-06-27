@@ -26,8 +26,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsValid (CreateOrder info)
         {
+
             return info.PickupAddress.BookAddress.HasValue () 
                 && info.PickupAddress.HasValidCoordinate ();
+
         }
 
         protected ILogger Logger {
@@ -37,14 +39,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected ICacheService Cache {
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
+
         public OrderValidationResult ValidateOrder (CreateOrder order)
         {
             var validationResut = new OrderValidationResult ();
             
             UseServiceClient<OrderServiceClient> (service =>
-                                                  {
+            {
                 validationResut = service.ValidateOrder  (order);
-            }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+            }, ex => Logger.LogError (ex));
             return validationResut;
         }
         public OrderStatusDetail CreateOrder (CreateOrder order)
@@ -127,8 +130,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 OrderStatusDetail result = new OrderStatusDetail ();
 
-
-
                 if (!HasLastOrder) {
                     throw new InvalidOperationException ();
                 }
@@ -136,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 UseServiceClient<OrderServiceClient> (service =>
                 {
                     result = service.GetOrderStatus (new Guid (lastOrderId));
-                }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+                }, ex => Logger.LogError (ex));
 
                 return result;
             });
@@ -270,6 +271,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 orderRate = service.GetOrderRatings (orderId);
             });
             return orderRate;
+        }
+
+        
+        public void FinalizePayment (Guid orderId, double amount, string carNumber, long transactionId, int ibsOrderNumber)
+        {               
+            UseServiceClient<OrderServiceClient> (service =>
+            {
+                service.FinailizePayment (amount,carNumber,transactionId,orderId,ibsOrderNumber);
+            });
         }
 
         public void SendRatingReview (Common.Entity.OrderRatings orderRatings)

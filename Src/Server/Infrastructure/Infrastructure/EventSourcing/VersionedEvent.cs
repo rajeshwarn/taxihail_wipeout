@@ -17,6 +17,11 @@ namespace Infrastructure.EventSourcing
 
     public abstract class VersionedEvent : IVersionedEvent
     {
+        protected VersionedEvent()
+        {
+            EventDate = DateTime.UtcNow;
+        }
+
         public Guid SourceId { get; set; }
 
         public int Version { get; set; }

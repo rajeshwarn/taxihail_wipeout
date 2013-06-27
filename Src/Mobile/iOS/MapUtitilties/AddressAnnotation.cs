@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 		Pickup = 0,
 		Destination = 1,
 		Taxi = 2,
+        NearbyTaxi = 3
 	}
 	public class AddressAnnotation : MKAnnotation
 	{
@@ -53,8 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
             switch (addressType) {
             case AddressAnnotationType.Destination:
                 return "Assets/pin_destination.png";
-            case  AddressAnnotationType.Taxi:
+            case AddressAnnotationType.Taxi:
                 return "Assets/pin_cab.png";
+            case AddressAnnotationType.NearbyTaxi:
+                return "Assets/nearby-cab.png";
             case AddressAnnotationType.Pickup:
             default:
                 return "Assets/pin_hail.png";

@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Extensions;
+using ServiceStack.Text;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -32,9 +34,10 @@ namespace apcurium.MK.Booking.Mobile
 
         public void Start ()
         {
-            
+			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
+
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
                 RequestNavigate<LoginViewModel> ();

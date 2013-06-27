@@ -53,9 +53,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.Load();
 #if DEBUG
-            //Email = "john@taxihail.com";
-            //Password = "password";
-			SignIn();
+            Email = "john@taxihail.com";
+            Password = "password";			
 #endif
         }
 

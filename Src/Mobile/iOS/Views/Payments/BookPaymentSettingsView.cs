@@ -24,29 +24,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         double MeterAmount{
             get{
-                return MeterAmountLabel.Text.FromDollars();
+                return CultureProvider.ParseCurrency(MeterAmountLabel.Text);
             }
             set{
-                MeterAmountLabel.Text = value.ToDollars();
+                MeterAmountLabel.Text = CultureProvider.FormatCurrency(value);
             }
         }
 
         double TipAmount{
             get{
-                return TipAmountLabel.Text.FromDollars();
+                return CultureProvider.ParseCurrency(TipAmountLabel.Text);
             }
             set{
-                TipAmountLabel.Text = value.ToDollars();
+                TipAmountLabel.Text = CultureProvider.FormatCurrency(value);
             }
         }
 
         double TotalAmount{
             get{
-                return TotalAmountLabel.Text.FromDollars();
+                return CultureProvider.ParseCurrency(TotalAmountLabel.Text);
             }
             set{
-                TotalAmountLabel.Text = value.ToDollars();
-                ViewModel.Amount = TotalAmountLabel.Text;//Todo ugly binding done in code behind
+                TotalAmountLabel.Text = CultureProvider.FormatCurrency(value);
+                ViewModel.TextAmount = TotalAmountLabel.Text;//Todo ugly binding done in code behind
             }
         }
 
@@ -103,6 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TipSlider.Enabled = true;
             };
 
+            TipAmountLabel.ClearsOnBeginEditing = true;
 
             TipAmountLabel.EditingChanged+= (sender, e) => {
                 UpdateAmounts(false);
@@ -114,6 +115,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { btPayPal, "{'TouchUpInside':{'Path':'ProceedToPayPalCommand'}}" },
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
+                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },
+                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
                 { btCreditCard, 
                     new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
                         .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")

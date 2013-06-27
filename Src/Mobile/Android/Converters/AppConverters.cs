@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Converters.Visibility;
 using apcurium.MK.Booking.Mobile.BindingConverter;
+using BindingConverter;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
@@ -19,7 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
     public class AppConverters
     {
         public readonly CoordinateConverter CoordinateConverter = new CoordinateConverter();
-        public readonly MvxVisibilityConverter Visibility = new MvxVisibilityConverter();
+		public readonly MvxVisibilityConverter Visibility = new MvxVisibilityConverter();
+		public readonly HasValueToVisibilityConverter HasValueToVisibilityConverter = new HasValueToVisibilityConverter();
         public readonly MvxInvertedVisibilityConverter InvertedVisibility = new MvxInvertedVisibilityConverter();
         public readonly BoolInverter BoolInverter = new BoolInverter();
 		public readonly EmptyToResourceConverter EmptyToResource = new EmptyToResourceConverter();
