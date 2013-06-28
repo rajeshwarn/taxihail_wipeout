@@ -124,7 +124,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (Exception e)
                 {
                     var title = Resources.GetString("InvalidLoginMessageTitle");
-                    var message = Resources.GetString("InvalidLoginMessage");
+                    var message = Resources.GetString(e.Message);
+//                    if(e.Message == AuthenticationErrorCode.AccountDisabled){
+//                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+//                        message = string.Format(Resources.GetString(e.Message), settings.ApplicationName, settings.PhoneNumberDisplay);
+//                    }
 
                     MessageService.ShowMessage(title, message);
                 }
