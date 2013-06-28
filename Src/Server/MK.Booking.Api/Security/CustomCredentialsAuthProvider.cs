@@ -1,18 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
+using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Security
 {
     public class CustomCredentialsAuthProvider : CredentialsAuthProvider
     {
         private readonly IPasswordService _passwordService;
+        private ICommandBus _commandBus;
 
-        public CustomCredentialsAuthProvider(IAccountDao dao, IPasswordService passwordService)
+        public CustomCredentialsAuthProvider(ICommandBus commandBus, IAccountDao dao, IPasswordService passwordService)
         {
             _passwordService = passwordService;
+            _commandBus = commandBus;
             Dao = dao;
         }
 
@@ -24,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Security
 
             return (account != null) 
                 && account.IsConfirmed 
+                && !account.DisabledByAdmin
                 && _passwordService.IsValid(password, account.Id.ToString(), account.Password);
         }
         
@@ -38,6 +48,40 @@ namespace apcurium.MK.Booking.Api.Security
             }
             authService.SaveSession(session, SessionExpiry);
         }
-    }
 
+        public override object Authenticate(IServiceBase authService, IAuthSession session, Auth request)
+        {
+            try
+            {
+                var authResponse = (AuthResponse)base.Authenticate(authService, session, request);
+                return authResponse;
+            }
+            catch (Exception e)
+            {
+                var account = Dao.FindByEmail(request.UserName);
+
+                if(account == null || !_passwordService.IsValid(request.Password, account.Id.ToString(), account.Password))
+                {
+                    throw HttpError.Unauthorized(AuthenticationErrorCode.InvalidLoginMessage);
+                }
+                
+                if(account.DisabledByAdmin)
+                {
+                    throw HttpError.Unauthorized(AuthenticationErrorCode.AccountDisabled);
+                }
+                
+                if (!account.IsConfirmed)
+                {
+                    //_commandBus.Send(new SendAccountConfirmationEmail
+                    //{
+                    //    EmailAddress = account.Email,
+                    //    ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", account.Email, account.ConfirmationToken)),
+                    //});
+                    throw HttpError.Unauthorized(AuthenticationErrorCode.AccountNotActivated);
+                }
+
+                throw e;
+            }
+        }
+    }
 }

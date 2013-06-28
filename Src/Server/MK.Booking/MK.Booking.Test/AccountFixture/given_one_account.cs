@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_confirming_byadmin_account_successfully()
         {
-            this.sut.When(new ConfirmAccountByAdmin { AccountId = _accountId });
+            this.sut.When(new EnableAccountByAdmin { AccountId = _accountId });
 
             var @event = sut.ThenHasSingle<AccountConfirmed>();
             Assert.AreEqual(_accountId, @event.SourceId);

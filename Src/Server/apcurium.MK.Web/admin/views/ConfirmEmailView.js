@@ -6,14 +6,12 @@
         className: 'form-horizontal',
         
         events: {
-            'click [data-action=confirmemail]': 'confirmemail'
+            'click [data-action=confirmemail]': 'confirmemail',
+            'click [data-action=disableemail]': 'disableemail'
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
-
-        
-        
             return this;
         },
         
@@ -22,7 +20,7 @@
             var email = this.$('[name=email]').val();
             return $.ajax({
                 type: 'PUT',
-                url: '../api/account/adminconfirm',
+                url: '../api/account/adminenable',
                 data: {
                     accountEmail: email
                 },
@@ -33,11 +31,24 @@
             }).fail(_.bind(function (e) {
                 this.$('.errors').text(TaxiHail.localize('confirmEmailError'));
             }),this);
+        },
+        
+        disableemail: function (e) {
+            e.preventDefault();
+            var email = this.$('[name=email]').val();
+            return $.ajax({
+                type: 'PUT',
+                url: '../api/account/admindisable',
+                data: {
+                    accountEmail: email
+                },
+                dataType: 'json',
+                success : _.bind(function() {
+                    this.$('.errors').text(TaxiHail.localize('disableEmailSuccess'));
+                },this)
+            }).fail(_.bind(function (e) {
+                this.$('.errors').text(TaxiHail.localize('disableEmailError'));
+            }),this);
         }
-
-   
     });
-
-    
-
 }());

@@ -3,5 +3,8 @@
 	"Email Address" : "Email Address",
 	"Password" : "Password",
 	"Signup" : "Signup",
-	"Forgot password" : "I forgot my password"
+	"Forgot password" : "I forgot my password",
+	"InvalidLoginMessage" : "The email or/and password is invalid.",
+	"AccountDisabled" : "Your account has been disabled, please contact {{ApplicationName}} at {{PhoneNumber}} to activate your account.",
+	"AccountNotActivated" : "Your account has not been activated.  Another activation email was sent to you."
 }

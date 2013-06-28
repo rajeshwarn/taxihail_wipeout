@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class AccountDetailsGenerator :
         IEventHandler<AccountRegistered>,
         IEventHandler<AccountConfirmed>,
+        IEventHandler<AccountDisabled>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
@@ -44,7 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers
                                      TwitterId = @event.TwitterId,
                                      Language = @event.Language,
                                      IsAdmin = @event.IsAdmin,
-                                     CreationDate = @event.EventDate
+                                     CreationDate = @event.EventDate,
+                                     ConfirmationToken = @event.ConfirmationToken
                                  };
 
 
@@ -78,9 +80,20 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
+                account.DisabledByAdmin = false;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AccountDisabled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = false;
+                account.DisabledByAdmin = true;
                 context.Save(account);
             }
         }

@@ -43,8 +43,10 @@
 	"Saved" : "Saved",
     "Tariff_DuplicateName": "This tariff already exists",
 	"You cannot exclude all options from a list." : "You cannot exclude all options from a list.",
-	"confirmEmailSuccess" : "User has correctly been confirmed." ,
+	"confirmEmailSuccess" : "User has correctly been enabled." ,
 	"confirmEmailError" : "Error: Check that the email address exists in the system",
+	"disableEmailSuccess" : "User has correctly been disabled." ,
+	"disableEmailError" : "Error: Check that the email address exists in the system",
 	"Default": "Default",
 
 	"/******* Begin settings Aliases *******/":"",

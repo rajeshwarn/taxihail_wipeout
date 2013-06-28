@@ -49,7 +49,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         x.TwitterId, 
                         x.FacebookId, 
                         x.IsAdmin, 
-                        x.IsConfirmed } );
+                        x.IsConfirmed,
+                        x.DisabledByAdmin} );
                break;
                case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();

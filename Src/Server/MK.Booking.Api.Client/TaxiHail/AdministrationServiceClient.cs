@@ -18,9 +18,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Put<string>(req, request);
         }
 
-        public void ConfirmAccount(AdminConfirmAccountRequest request)
+        public void EnableAccount(EnableAccountByAdminRequest request)
         {
-            var req = string.Format("/account/adminconfirm");
+            var req = string.Format("/account/adminenable");
+            Client.Put<string>(req, request);
+        }
+
+        public void DisableAccount(DisableAccountByAdminRequest request)
+        {
+            var req = string.Format("/account/admindisable");
             Client.Put<string>(req, request);
         }
 
