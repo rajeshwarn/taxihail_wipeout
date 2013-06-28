@@ -31,7 +31,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
@@ -84,6 +83,8 @@
     <Compile Include="Patterns\ActionDisposable.cs" />
     <Compile Include="Patterns\Singleton.cs" />
     <Compile Include="VehicleStatuses.cs" />
+    <Compile Include="Enumeration\AppSettingsType.cs" />
+    <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
