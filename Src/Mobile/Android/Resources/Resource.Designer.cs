@@ -1399,6 +1399,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07007b
 			public const int AccountActivationTitle = 2131165307;
 			
+			// aapt resource value: 0x7f0701a5
+			public const int AccountDisabled = 2131165605;
+			
+			// aapt resource value: 0x7f0701a4
+			public const int AccountNotActivated = 2131165604;
+			
 			// aapt resource value: 0x7f07016d
 			public const int AddCreditCardTitle = 2131165549;
 			

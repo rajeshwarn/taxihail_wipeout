@@ -270,7 +270,7 @@
 "RideHistoryButton"="Ride History";
 "SendEmail"="Send mail...";
 "PickupWasActivatedToastMessage"="Pickup selection is active.";
-"InvalidLoginMessageTitle"="Invalid information";
+"InvalidLoginMessageTitle"="Login error";
 "View_About"="About Us";
 "NoConnectionTitle"="Connection error";
 "PickupOffButtonImageName"="Assets/Button/btnPickup_off_en.png";

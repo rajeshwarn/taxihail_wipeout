@@ -217,7 +217,7 @@
     <value>Loading...</value>
   </data>
   <data name="InvalidLoginMessageTitle" xml:space="preserve">
-    <value>Invalid information</value>
+    <value>Login error</value>
   </data>
   <data name="InvalidLoginMessage" xml:space="preserve">
     <value>The email or/and password is invalid.</value>
@@ -226,7 +226,7 @@
     <value>Your account has been disabled, please contact {0} at {1} to activate your account.</value>
   </data>
   <data name="AccountNotActivated" xml:space="preserve">
-    <value>Your account has not been activated.  Another activation email was sent to you.</value>
+    <value>Your account has not been activated. Another activation email was sent to you.</value>
   </data>
   <data name="BookItButton" xml:space="preserve">
     <value>Book Now</value>
