@@ -38,8 +38,7 @@ namespace apcurium.MK.Web.Tests
 
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException",
-            ExpectedMessage = "Invalid UserName or Password")]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
         public void when_user_sign_in_with_invalid_password()
         {
             var sut = new AuthServiceClient(BaseUrl, null);
@@ -47,7 +46,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
         public void when_user_sign_in_with_invalid_email()
         {
             var sut = new AuthServiceClient(BaseUrl, null);
