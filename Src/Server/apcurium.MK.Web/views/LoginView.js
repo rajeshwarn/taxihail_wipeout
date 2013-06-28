@@ -82,7 +82,10 @@
             }
             var $alert = $('<div class="alert alert-error" />');
             if (result.message) {
-                $alert.append($('<div />').text(this.localize(result.errorCode)));
+                var message = this.localize(result.errorCode)
+                    .replace('{{ApplicationName}}', TaxiHail.parameters.applicationName)
+                    .replace('{{PhoneNumber}}', TaxiHail.parameters.defaultPhoneNumber);
+                $alert.append($('<div />').text(message));
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.errorCode)));

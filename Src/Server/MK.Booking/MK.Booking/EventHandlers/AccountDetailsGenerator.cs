@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers
                                      TwitterId = @event.TwitterId,
                                      Language = @event.Language,
                                      IsAdmin = @event.IsAdmin,
-                                     CreationDate = @event.EventDate
+                                     CreationDate = @event.EventDate,
+                                     ConfirmationToken = @event.ConfirmationToken
                                  };
 
 

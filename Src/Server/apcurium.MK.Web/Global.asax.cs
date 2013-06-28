@@ -5,6 +5,7 @@ using System.IO;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Optimization;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
@@ -76,7 +77,7 @@ namespace apcurium.MK.Web
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                     new IAuthProvider[]
                     {
-                        new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
+                        new CustomCredentialsAuthProvider(container.Resolve<ICommandBus>(), container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
                         new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
                         new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
                     }));

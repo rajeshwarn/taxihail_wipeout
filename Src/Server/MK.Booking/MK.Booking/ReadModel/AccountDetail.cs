@@ -25,7 +25,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool DisabledByAdmin { get; set; }
         public string Language { get; set; }
         public bool IsAdmin { get; set; }
-        
+        public string ConfirmationToken { get; set; }
+
         public BookingSettings Settings { get; set; }
 
         public Guid? DefaultCreditCard { get; set; }
