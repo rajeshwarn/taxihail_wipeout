@@ -1,6 +1,7 @@
 ﻿using System;
+using apcurium.MK.Booking.Api.Client.Responses;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.CmtPayments
+namespace apcurium.MK.Booking.Api.Client
 {
     public class FakePaymentClient : IPaymentServiceClient
     {

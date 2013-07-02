@@ -7,12 +7,13 @@ using Braintree;
 using BraintreeEncryption.Library;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using apcurium.MK.Booking.Api.Client.Responses;
 using apcurium.MK.Common.Configuration.Impl;
 using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
 {
-    public class BraintreeClient : IPaymentServiceClient
+    public class BraintreeServiceClient : IPaymentServiceClient
     {
         public static BraintreeGateway Client { get; set; }
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
          * P: apcurium5200!
          */
         
-        public BraintreeClient(BraintreeSettings settings)
+        public BraintreeServiceClient(BraintreeSettings settings)
         {
             var env = Environment.SANDBOX;
             if (!settings.IsSandBox)
@@ -72,7 +73,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
                     IsSuccessfull = result.IsSuccess(),
                     Message = result.Message,
                 };
-            
         }
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)

@@ -1,7 +1,7 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.CmtPayments;
+using apcurium.MK.Booking.Api.Client.Responses;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -18,12 +18,20 @@ namespace apcurium.MK.Booking.Api.Client
 
         public IPaymentServiceClient GetClient()
         {
-            var paymentSettings = _configurationManager.GetPaymentSettings() ?? new PaymentSetting();
+            var paymentSettings = _configurationManager.GetPaymentSettings();
+
+
+            const string onErrorMessage = "Payment Method not found or unknown";
+            if (paymentSettings == null)
+            {
+                throw new Exception(onErrorMessage);
+            }
+
 
             switch (paymentSettings.PaymentMode)
             {
                 case PaymentSetting.PaymentMethod.Braintree:
-                    return new BraintreeClient(paymentSettings.BraintreeSettings);
+                    return new BraintreeServiceClient(paymentSettings.BraintreeSettings);
                     
                 case PaymentSetting.PaymentMethod.Cmt:
                     return new CmtPaymentClient(paymentSettings.CmtPaymentSettings);
@@ -31,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Client
                 case PaymentSetting.PaymentMethod.Fake:
                     return new FakePaymentClient();
                 default:
-                    throw new Exception("No Payment Method found");
+                    throw new Exception(onErrorMessage);
             }
         }
         

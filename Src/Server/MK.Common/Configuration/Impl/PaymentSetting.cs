@@ -22,7 +22,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeSettings = new BraintreeSettings();
         }
-        
+       
         [Key]
         public Guid CompanyId { get; set; }
 

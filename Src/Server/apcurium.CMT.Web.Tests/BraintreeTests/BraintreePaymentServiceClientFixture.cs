@@ -23,7 +23,7 @@ namespace apcurium.CMT.Web.Tests.BraintreeTests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new BraintreeClient(new BraintreeSettings());
+            return new BraintreeServiceClient(new BraintreeSettings());
         }
     }
 }
