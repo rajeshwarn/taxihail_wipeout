@@ -287,7 +287,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                                DropOffAddress = Order.DropOffAddress, 
 	                                IBSOrderId = orderInfo.IBSOrderId, 
 	                                Id = Order.Id, PickupAddress = Order.PickupAddress,
-	                                Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+	                                Note = Order.Note, 
+                                    PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
 	                                Settings = Order.Settings,
 	                            };
 	    						

@@ -127,8 +127,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var historicAddresses = AccountService.GetHistoryAddresses ();
 
             Func<Address, bool> predicate = c => true;
-            if (Criteria.HasValue ()) {
-                predicate = x => (x.FriendlyName != null && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) || (x.FullAddress != null && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
+
+            if (Criteria.HasValue ()) 
+            {
+                predicate = x => (x.FriendlyName != null 
+                                  && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) 
+                                  || (x.FullAddress != null 
+                                  && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
             }
             var a1 = addresses.Where (predicate).Select (a => new AddressViewModel { Address = a, Icon = "favorites"});
             var a2 = historicAddresses.Where (predicate).Select (a => new AddressViewModel { Address = a,  Icon = "history" });
@@ -138,16 +143,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected AddressViewModel[] SearchGeocodeAddresses ()
         {
-            Logger.LogMessage ("Starting SearchAddresses : " + Criteria.ToSafeString ());
+            var searchText = Criteria.ToSafeString();
+
+            Logger.LogMessage ("Starting SearchAddresses : " + searchText);
             var position = LocationService.BestPosition;
 
             Address[] addresses;
-
-            var searchText = Criteria;
-            if(!searchText.HasValue())
-            {
-                searchText = "e";
-            }
 
             if (position == null) {
                 Logger.LogMessage ("No Position SearchAddresses : " + searchText);
