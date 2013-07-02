@@ -19,6 +19,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
+            modelBuilder.Entity<PaymentSetting>().ToTable(typeof(PaymentSetting).Name, SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class
@@ -28,7 +29,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public IQueryable<T> Query<T>() where T : class
         {
-            return this.Set<T>();
+            return Set<T>();
         }
 
         public void Save<T>(T entity) where T : class

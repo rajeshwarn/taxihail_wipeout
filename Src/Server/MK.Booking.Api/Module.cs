@@ -3,7 +3,9 @@ using Infrastructure.Messaging;
 using AutoMapper;
 using Microsoft.Practices.Unity;
 using MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -14,6 +16,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 
@@ -28,7 +31,23 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
-            container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
+            var paymentSettings = container.Resolve<IConfigurationManager>().GetPaymentSettings() ?? new PaymentSetting();
+
+            switch (paymentSettings.PaymentMode)
+            {
+                case PaymentSetting.PaymentMethod.Braintree:
+                    container.RegisterInstance<IPaymentServiceClient>(new BraintreeClient(paymentSettings.BraintreeSettings));
+                    break;
+                case PaymentSetting.PaymentMethod.Cmt:
+                    container.RegisterInstance<IPaymentServiceClient>(new CmtPaymentClient(paymentSettings.CmtPaymentSettings));
+                    break;
+                case PaymentSetting.PaymentMethod.Fake:
+                    container.RegisterInstance<IPaymentServiceClient>(new CmtFakeClient());
+                    break;
+                default:
+                    //Do nothing
+                    break;
+            }
             
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
             var mockIbsStatusUpdate = bool.Parse(container
@@ -84,10 +103,10 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
  
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
+           Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
@@ -96,22 +115,22 @@ namespace apcurium.MK.Booking.Api
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.CreateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.CreateRule>()
                 .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.UpdateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.UpdateRule>()
                 .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
+           Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleActivateRequest, Commands.ActivateRule>()               
+           Mapper.CreateMap<Contract.Requests.RuleActivateRequest, Commands.ActivateRule>()               
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleDeactivateRequest, Commands.DeactivateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleDeactivateRequest, Commands.DeactivateRule>()
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
             

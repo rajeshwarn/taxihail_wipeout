@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -35,31 +36,32 @@ namespace apcurium.MK.Booking.Domain
 
         private void RegisterHandlers()
         {
-            base.Handles<DefaultFavoriteAddressAdded>(OnEventDoNothing);
-            base.Handles<DefaultFavoriteAddressRemoved>(OnEventDoNothing);
-            base.Handles<DefaultFavoriteAddressUpdated>(OnEventDoNothing);
+            Handles<DefaultFavoriteAddressAdded>(OnEventDoNothing);
+            Handles<DefaultFavoriteAddressRemoved>(OnEventDoNothing);
+            Handles<DefaultFavoriteAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<PopularAddressAdded>(OnEventDoNothing);
-            base.Handles<PopularAddressRemoved>(OnEventDoNothing);
-            base.Handles<PopularAddressUpdated>(OnEventDoNothing);
+            Handles<PopularAddressAdded>(OnEventDoNothing);
+            Handles<PopularAddressRemoved>(OnEventDoNothing);
+            Handles<PopularAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<CompanyCreated>(OnEventDoNothing);
-            base.Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
+            Handles<CompanyCreated>(OnEventDoNothing);
+            Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
+            Handles<PaymentSettingUpdated>(OnEventDoNothing);
 
-            base.Handles<TariffCreated>(OnRateCreated);
-            base.Handles<TariffUpdated>(OnEventDoNothing);
-            base.Handles<TariffDeleted>(OnEventDoNothing);
+            Handles<TariffCreated>(OnRateCreated);
+            Handles<TariffUpdated>(OnEventDoNothing);
+            Handles<TariffDeleted>(OnEventDoNothing);
 
-            base.Handles<RuleCreated>(OnRuleCreated);
-            base.Handles<RuleUpdated>(OnEventDoNothing);
-            base.Handles<RuleDeleted>(OnEventDoNothing);
-            base.Handles<RuleActivated>(OnEventDoNothing);
-            base.Handles<RuleDeactivated>(OnEventDoNothing);
+            Handles<RuleCreated>(OnRuleCreated);
+            Handles<RuleUpdated>(OnEventDoNothing);
+            Handles<RuleDeleted>(OnEventDoNothing);
+            Handles<RuleActivated>(OnEventDoNothing);
+            Handles<RuleDeactivated>(OnEventDoNothing);
 
 
-            base.Handles<RatingTypeAdded>(OnEventDoNothing);
-            base.Handles<RatingTypeHidded>(OnEventDoNothing);
-            base.Handles<RatingTypeUpdated>(OnEventDoNothing);
+            Handles<RatingTypeAdded>(OnEventDoNothing);
+            Handles<RatingTypeHidded>(OnEventDoNothing);
+            Handles<RatingTypeUpdated>(OnEventDoNothing);
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -104,7 +106,7 @@ namespace apcurium.MK.Booking.Domain
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new PopularAddressUpdated
+            Update(new PopularAddressUpdated
             {
                 Address = address
             });
@@ -112,7 +114,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void RemovePopularAddress(Guid addressId)
         {
-            this.Update(new PopularAddressRemoved
+            Update(new PopularAddressRemoved
             {
                 AddressId = addressId
             });
@@ -120,7 +122,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void AddOrUpdateAppSettings(IDictionary<string, string> appSettings)
         {
-            this.Update(new AppSettingsAddedOrUpdated
+            Update(new AppSettingsAddedOrUpdated
             {
                 AppSettings = appSettings
             });
@@ -318,7 +320,14 @@ namespace apcurium.MK.Booking.Domain
             {
                 RuleId = ruleId
             });
+        }
 
+        public void UpdatePaymentSettings(UpdatePaymentSettings command)
+        {
+            this.Update(new PaymentSettingUpdated()
+            {
+                PaymentSettings = command.PaymentSettings
+            });
         }
 
         public void ActivateRule(Guid ruleId)
@@ -388,5 +397,6 @@ namespace apcurium.MK.Booking.Domain
         {
             // Do nothing
         }
+
     }
 }

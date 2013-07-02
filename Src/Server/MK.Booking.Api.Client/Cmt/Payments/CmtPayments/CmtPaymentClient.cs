@@ -2,8 +2,10 @@
 using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using MK.Booking.Api.Client;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 
 
@@ -19,11 +21,13 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     {
 		private readonly string _currencyCode;
 
-		public CmtPaymentClient(string baseUrl,  string consumerKey, string consumerSecretKey, string currencyCode, bool ignoreCertificateErrors=false)
-			: 	base( baseUrl, consumerKey, consumerSecretKey, ignoreCertificateErrors)
+
+
+        public CmtPaymentClient(CmtPaymentSettings settings)
+            : base(settings.BaseUrl,settings.CustomerKey,settings.ConsumerSecretKey,true)
         {
-			_currencyCode = currencyCode;
-		}
+            _currencyCode = settings.CurrencyCode;
+        }
 
         public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {

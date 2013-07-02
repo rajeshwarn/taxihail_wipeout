@@ -43,13 +43,9 @@ namespace apcurium.MK.Web.Tests
 
         protected CmtPaymentClient GetCmtPaymentClient()
         {
+            var cmtSettings = DummyConfigManager.GetPaymentSettings().CmtPaymentSettings;
 
-            string MERCHANT_TOKEN = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
-            string CONSUMER_KEY = "vmAoqWEY3zIvUCM4";
-            string CONSUMER_SECRET_KEY = "DUWzh0jAldPc7C5I";
-            string SANDBOX_BASE_URL = "https://payment-sandbox.cmtapi.com/v2/merchants/" + MERCHANT_TOKEN + "/";
-            string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production		
-            return new CmtPaymentClient(BASE_URL, CONSUMER_KEY, CONSUMER_SECRET_KEY, AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar, true);
+            return new CmtPaymentClient(cmtSettings);
         }
         public virtual void TestFixtureSetup()
         {

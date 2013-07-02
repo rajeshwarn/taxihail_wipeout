@@ -3,6 +3,7 @@ using System.Net;
 using Infrastructure.Messaging;
 using MK.Booking.Api.Client;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests.Orders;
 using apcurium.MK.Booking.Commands.Orders;
 using apcurium.MK.Booking.IBS;

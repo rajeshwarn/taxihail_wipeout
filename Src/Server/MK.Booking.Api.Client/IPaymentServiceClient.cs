@@ -1,8 +1,6 @@
 using System;
-using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 
-namespace MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client
 {
 	public interface IPaymentServiceClient
 	{

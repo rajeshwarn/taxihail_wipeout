@@ -42,6 +42,11 @@ namespace apcurium.MK.Booking.Common.Tests
             }
         }
 
+        public PaymentSetting GetPaymentSettings()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetSetting(string key)
         {
             return _config[key];

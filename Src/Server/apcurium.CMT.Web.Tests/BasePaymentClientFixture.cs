@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MK.Booking.Api.Client;
 using NUnit.Framework;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Common;
