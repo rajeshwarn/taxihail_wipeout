@@ -22,13 +22,13 @@ namespace apcurium.MK.Booking.Api.Services
             _configManager = configurationManager;
         }
 
-        public override object OnGet(SearchLocationsRequest request)
+        public override object OnPost(SearchLocationsRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Name))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
             }
-            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault());
+            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), request.GeoResult);
            
         }
     }
