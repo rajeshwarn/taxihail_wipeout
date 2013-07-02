@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             };
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
 		{
             var request = new AuthorizationRequest()
             {

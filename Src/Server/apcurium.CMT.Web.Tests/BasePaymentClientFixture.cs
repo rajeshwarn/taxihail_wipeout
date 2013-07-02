@@ -77,7 +77,7 @@ namespace apcurium.CMT.Web.Tests
             var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 21.56;
-            var response = client.PreAuthorize(token, TestCreditCards.Mastercard.AvcCvvCvv2+"", amount, "orderNumber");
+            var response = client.PreAuthorize(token,  amount, "orderNumber");
 
             Assert.AreNotEqual("-1", response);
 
@@ -92,7 +92,7 @@ namespace apcurium.CMT.Web.Tests
 
             const double amount = 99.50;
             const string orderNumber = "12345";
-            var authorization = client.PreAuthorize(token, TestCreditCards.Discover.AvcCvvCvv2+"", amount, orderNumber);
+            var authorization = client.PreAuthorize(token, amount, orderNumber);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);
 

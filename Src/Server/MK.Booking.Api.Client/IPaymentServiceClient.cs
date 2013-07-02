@@ -10,7 +10,7 @@ namespace MK.Booking.Api.Client
 
         DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken);
 
-        PreAuthorizePaymentResponse PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber);
+        PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber);
 
         CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber);
 	}
