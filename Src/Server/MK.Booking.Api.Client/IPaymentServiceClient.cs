@@ -6,13 +6,13 @@ namespace MK.Booking.Api.Client
 {
 	public interface IPaymentServiceClient
 	{
-		TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate);
+		TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
 
 		TokenizeDeleteResponse ForgetTokenizedCard(string cardToken);
 
-        long PreAuthorize(string cardToken, double amount, string orderNumber);
+        string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber);
 
-        bool CommitPreAuthorized(long transactionId, string orderNumber);
+        bool CommitPreAuthorized(string transactionId, string orderNumber);
 	}
 }
 

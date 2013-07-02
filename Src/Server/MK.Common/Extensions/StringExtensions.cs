@@ -17,6 +17,12 @@ namespace apcurium.MK.Common.Extensions
 			}
 			return 0;
 		}
+
+        public static long ToLong(this string instance)
+        {
+            return long.Parse(instance);
+        }
+
         public static string NullIfEmpty(this string instance)
         {
             return string.IsNullOrWhiteSpace(instance) ? null : instance;

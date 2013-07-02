@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             _random = new Random();
         }
 
-        public TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate)
+        public TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             return new TokenizeResponse()
                 {
@@ -34,13 +34,12 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 };
         }
 
-        public long PreAuthorize(string cardToken, double amount, string orderNumber)
+        public string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
         {
-
-            return 100000000 + _random.Next(999);
+            return 100000000 + _random.Next(999)+"";
         }
 
-        public bool CommitPreAuthorized(long transactionId, string orderNumber)
+        public bool CommitPreAuthorized(string transactionId, string orderNumber)
         {
             return true;
         }

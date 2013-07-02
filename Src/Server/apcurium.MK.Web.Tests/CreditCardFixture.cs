@@ -79,7 +79,7 @@ namespace apcurium.MK.Web.Tests
             DummyConfigManager.AddOrSet(AuthorizationRequest.CurrencyCodes.CurrencyCodeString, AuthorizationRequest.CurrencyCodes.Main.CanadaDollar);
 
 
-            var tokenResponse = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate);
+            var tokenResponse = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, "NOT USED");
 
             sut.AddCreditCard(new CreditCardRequest
             {

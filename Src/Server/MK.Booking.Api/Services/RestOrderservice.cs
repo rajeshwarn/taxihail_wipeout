@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public void Post(CapturePaymentRequest request)
         {
-            if (!_paymentClient.CommitPreAuthorized(request.TransactionId, request.IbsOrderNumber.ToString(CultureInfo.InvariantCulture)))
+            if (!_paymentClient.CommitPreAuthorized(request.TransactionId+"", request.IbsOrderNumber.ToString(CultureInfo.InvariantCulture)))
             {
                 throw new WebException("Payment Error: Cannot complete transaction");
             }

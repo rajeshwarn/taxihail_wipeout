@@ -17,24 +17,17 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// </summary>
 	public class CmtPaymentClient : CmtBasePaymentServiceClient, IPaymentServiceClient
     {
-		private string _consumerKey;
-		private string _consumerSecretKey;
-		private string _currencyCode;
+		private readonly string _currencyCode;
 
 		public CmtPaymentClient(string baseUrl,  string consumerKey, string consumerSecretKey, string currencyCode, bool ignoreCertificateErrors=false)
 			: 	base( baseUrl, consumerKey, consumerSecretKey, ignoreCertificateErrors)
         {
-			_consumerKey = consumerKey;
-			_consumerSecretKey = consumerSecretKey;
 			_currencyCode = currencyCode;
-
-		
-        
 		}
 
-        public TokenizeResponse Tokenize(string accountNumber, DateTime expiryDate)
+        public TokenizeResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            return Client.Post(new TokenizeRequest()
+            return Client.Post(new TokenizeRequest
             {
                 AccountNumber = accountNumber,
                 ExpiryDateYYMM = expiryDate.ToString("yyMM")
@@ -79,19 +72,20 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             });
         }
 
-
-        public long PreAuthorize(string cardToken, double amount, string orderNumber)
+        public string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
 		{
 			var response = PreAuthorizeTransaction(cardToken,amount,orderNumber);
             if(response.ResponseCode == 1)
 			{
-				return response.TransactionId;
+				return response.TransactionId+"";
 			}
-			return -1;
+			return "-1";
 		}
-        public bool CommitPreAuthorized(long transactionId, string orderNumber)
+
+        public bool CommitPreAuthorized(string transactionId, string orderNumber)
 		{
-            return CapturePreAuthorized(transactionId, orderNumber).ResponseCode == 1;
+            return CapturePreAuthorized(transactionId.ToLong(), orderNumber).ResponseCode == 1;
 		}
+
     }
 }

@@ -130,6 +130,10 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
+      <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
+      <Name>BrainTreeEncryption.Library.net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>

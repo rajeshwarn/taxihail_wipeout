@@ -50,7 +50,7 @@ namespace apcurium.CMT.Web.Tests
         public void when_tokenizing_a_credit_card_visa()
         {
             var client = GetCmtPaymentClient();
-            var response = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate);
+            var response = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, "NOT USED");
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
         }
 
@@ -58,7 +58,7 @@ namespace apcurium.CMT.Web.Tests
         public void when_tokenizing_a_credit_card_mastercard()
         {
             var client = GetCmtPaymentClient();
-            var response = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate);
+            var response = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, "NOT USED");
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
         }
 
@@ -67,7 +67,7 @@ namespace apcurium.CMT.Web.Tests
         {
             var client = GetCmtPaymentClient();
 
-            var response = client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate);
+            var response = client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, "NOT USED");
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
         }
 
@@ -76,7 +76,7 @@ namespace apcurium.CMT.Web.Tests
         {
             var client = GetCmtPaymentClient();
 
-            var response = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate);
+            var response = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, "NOT USED");
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
         }
 
@@ -86,7 +86,7 @@ namespace apcurium.CMT.Web.Tests
             var client = GetCmtPaymentClient();
 
 
-            var token = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate).CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, "NOT USED").CardOnFileToken;
 
             var response = client.ForgetTokenizedCard(token);
             Assert.AreEqual(1, response.ResponseCode, response.ResponseMessage);
@@ -123,7 +123,7 @@ namespace apcurium.CMT.Web.Tests
         {
             var client = GetCmtPaymentClient();
 
-            var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate).CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, "NOT USED").CardOnFileToken;
 
             const double amount = 21.56;
             var response = client.PreAuthorizeTransaction(token, amount, "orderNumber");
@@ -168,7 +168,7 @@ namespace apcurium.CMT.Web.Tests
             var client = GetCmtPaymentClient();
 
 
-            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate).CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, "NOT USED").CardOnFileToken;
 
             const double amount = 99.50;
             const string orderNumber = "12345";

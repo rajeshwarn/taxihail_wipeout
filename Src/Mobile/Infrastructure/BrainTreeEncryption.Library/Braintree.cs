@@ -2,12 +2,12 @@
 
 namespace BraintreeEncryption.Library
 {
-    public class Braintree
+    public class BraintreeEncrypter
     {
         private const String Version = "1.0.0";
         private readonly String _publicKey;
 
-        public Braintree(String publicKey)
+        public BraintreeEncrypter(String publicKey)
         {
             _publicKey = publicKey;
         }
