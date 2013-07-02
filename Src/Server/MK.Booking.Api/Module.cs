@@ -6,6 +6,7 @@ using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -30,29 +31,13 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
-
-            var paymentSettings = container.Resolve<IConfigurationManager>().GetPaymentSettings() ?? new PaymentSetting();
-
-            switch (paymentSettings.PaymentMode)
-            {
-                case PaymentSetting.PaymentMethod.Braintree:
-                    container.RegisterInstance<IPaymentServiceClient>(new BraintreeClient(paymentSettings.BraintreeSettings));
-                    break;
-                case PaymentSetting.PaymentMethod.Cmt:
-                    container.RegisterInstance<IPaymentServiceClient>(new CmtPaymentClient(paymentSettings.CmtPaymentSettings));
-                    break;
-                case PaymentSetting.PaymentMethod.Fake:
-                    container.RegisterInstance<IPaymentServiceClient>(new CmtFakeClient());
-                    break;
-                default:
-                    //Do nothing
-                    break;
-            }
             
+            container.RegisterInstance<IPaymentServiceClient>(new PaymentClientDeligate(container.Resolve<IConfigurationManager>()));
+
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-            var mockIbsStatusUpdate = bool.Parse(container
-                               .Resolve<IConfigurationManager>()
-                               .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+            var mockIbsStatusUpdate = bool.Parse(container.Resolve<IConfigurationManager>()
+                .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
+
             if (mockIbsStatusUpdate)
             {
                 container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();
@@ -65,6 +50,7 @@ namespace apcurium.MK.Booking.Api
 
             }
         }
+
 
         private void RegisterMaps()
         {

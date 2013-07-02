@@ -1,0 +1,58 @@
+﻿using System;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.CmtPayments;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+
+namespace apcurium.MK.Booking.Api.Client
+{
+    public class PaymentClientDeligate : IPaymentServiceClient
+    {
+        private readonly IConfigurationManager _configurationManager;
+
+        public PaymentClientDeligate(IConfigurationManager configurationManager)
+        {
+            _configurationManager = configurationManager;
+        }
+
+        public IPaymentServiceClient GetClient()
+        {
+            var paymentSettings = _configurationManager.GetPaymentSettings() ?? new PaymentSetting();
+
+            switch (paymentSettings.PaymentMode)
+            {
+                case PaymentSetting.PaymentMethod.Braintree:
+                    return new BraintreeClient(paymentSettings.BraintreeSettings);
+                    
+                case PaymentSetting.PaymentMethod.Cmt:
+                    return new CmtPaymentClient(paymentSettings.CmtPaymentSettings);
+
+                case PaymentSetting.PaymentMethod.Fake:
+                    return new FakePaymentClient();
+                default:
+                    throw new Exception("No Payment Method found");
+            }
+        }
+        
+        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        {
+            return GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
+        }
+
+        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
+        {
+            return GetClient().ForgetTokenizedCard(cardToken);
+        }
+
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
+        {
+            return GetClient().PreAuthorize(cardToken, amount, orderNumber);
+        }
+
+        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        {
+            return GetClient().CommitPreAuthorized(transactionId, orderNumber);
+        }
+    }
+}

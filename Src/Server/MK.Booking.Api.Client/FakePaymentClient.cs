@@ -1,14 +1,12 @@
 ﻿using System;
-using MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
+namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.CmtPayments
 {
-    public class CmtFakeClient : IPaymentServiceClient
+    public class FakePaymentClient : IPaymentServiceClient
     {
         private readonly Random _random;
 
-        public CmtFakeClient()
+        public FakePaymentClient()
         {
             _random = new Random();
         }
