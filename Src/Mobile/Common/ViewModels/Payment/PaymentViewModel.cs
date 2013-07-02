@@ -79,9 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				ConfirmPaymentForDriver();
                 ShowConfirmation(tranactionId);
 			},
-			Str.OkButtonText, ()=>{
-                ReturnResult("");
-			});
+			Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
         public IMvxCommand ConfirmOrderCommand
@@ -114,8 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 
                     var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
-
-
+                    
                     if (preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);

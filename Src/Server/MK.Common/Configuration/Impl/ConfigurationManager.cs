@@ -19,6 +19,8 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             GetSettings().TryGetValue(key, out value);
 
+            var x = GetSettings().ToArray();
+
             return value;
         }
 
@@ -26,7 +28,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x => x.Key, r => r.Value);
+                return context.Query<AppSetting>().ToArray().ToDictionary(kv => kv.Key, kv => kv.Value);
             }
         }
 

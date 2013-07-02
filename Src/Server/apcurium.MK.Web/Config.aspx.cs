@@ -23,16 +23,16 @@ namespace apcurium.MK.Web
             {
                 var datatable = new DataTable();
 
-                string[] includeKeys = new string[] { "DefaultBookingSettings.ChargeTypeId" ,"DefaultBookingSettings.NbPassenger"
-                                                    ,"DefaultBookingSettings.ProviderId","DefaultBookingSettings.VehicleTypeId"
-                                                    ,"Direction.FlateRate","Direction.RatePerKm"
-                                                    ,"Email.NoReply","DefaultBookingSettings.NbPassenger"
-                                                    ,"IBS.AutoDispatch","IBS.WebServicesPassword"
-                                                    ,"IBS.WebServicesUrl","IBS.WebServicesUserName"
-                                                    ,"Smtp.Credentials.Password","Smtp.Credentials.Username"
-                                                    ,"Smtp.DeliveryMethod","Smtp.EnableSsl"
-                                                    ,"Smtp.Host","Smtp.Port"
-                                                    ,"Smtp.UseDefaultCredentials","TaxiHail.SiteName"};
+                var includeKeys = new[] {   "DefaultBookingSettings.ChargeTypeId" ,"DefaultBookingSettings.NbPassenger"
+                                            ,"DefaultBookingSettings.ProviderId","DefaultBookingSettings.VehicleTypeId"
+                                            ,"Direction.FlateRate","Direction.RatePerKm"
+                                            ,"Email.NoReply","DefaultBookingSettings.NbPassenger"
+                                            ,"IBS.AutoDispatch","IBS.WebServicesPassword"
+                                            ,"IBS.WebServicesUrl","IBS.WebServicesUserName"
+                                            ,"Smtp.Credentials.Password","Smtp.Credentials.Username"
+                                            ,"Smtp.DeliveryMethod","Smtp.EnableSsl"
+                                            ,"Smtp.Host","Smtp.Port"
+                                            ,"Smtp.UseDefaultCredentials","TaxiHail.SiteName"};
 
 
                 var connectionString = new BookingDbContext("DbContext.Booking").Database.Connection.ConnectionString;

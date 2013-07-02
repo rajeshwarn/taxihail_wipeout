@@ -85,7 +85,6 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
-    <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Resources\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Cmt\LinkData.cs" />
     <Compile Include="Resources\Cmt\PreCogActionType.cs" />

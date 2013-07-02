@@ -132,7 +132,6 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
-    <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Resources\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Cmt\LinkData.cs" />

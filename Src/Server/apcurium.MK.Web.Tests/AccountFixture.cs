@@ -293,7 +293,6 @@ namespace apcurium.MK.Web.Tests
         public void UpdateBookingSettingsAccountTest()
         {
             Guid? creditCardId = Guid.NewGuid();
-            double? tipAmount = 10.0;
             int? defaultTipPercent = 15;
 
             var settings = new BookingSettingsRequest
