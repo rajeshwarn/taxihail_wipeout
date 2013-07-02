@@ -582,6 +582,9 @@
     <Folder Include="Localization\Mapper\" />
     <Folder Include="Extensions\" />
     <Folder Include="Controls\Slider\" />
+    <Folder Include="Resources\drawable-ldpi\" />
+    <Folder Include="Resources\drawable-mdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
