@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Requests.Orders;
 using apcurium.MK.Booking.Commands.Orders;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -46,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(new CommitPaymentCommand()
             {
-                TransactionId = request.TransactionId,
+                TransactionId = request.TransactionId.ToLong(),
                 OrderId = request.OrderId
             });
 
