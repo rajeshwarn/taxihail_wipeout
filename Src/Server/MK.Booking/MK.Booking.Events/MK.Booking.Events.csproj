@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountConfirmed.cs" />
+    <Compile Include="AccountDisabled.cs" />
     <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />

@@ -125,7 +125,6 @@ namespace MK.ConfigurationManager
 
         private void RefreshData()
         {
-            
             int selectedCompanyIndex = DeployCompanyCombobox.SelectedIndex;
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
@@ -138,39 +137,21 @@ namespace MK.ConfigurationManager
             DbContext = new ConfigurationManagerDbContext(connectionString);
             DbContext.Database.CreateIfNotExists();
 
+            Companies.Clear();
+            DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
 
-            foreach (var company in  DbContext.Set<Company>().OrderBy(x => x.Name))
-            {
-                if (!Companies.Any(c => c.Id == company.Id))
-                {
-                    Companies.Add(company);
-                }
-            }
-            
-            foreach (var server in DbContext.Set<IBSServer>().OrderBy(x => x.Name))
-            {
-                if (!IBSServers.Any(s => s.Id == server.Id))
-                {
-                    IBSServers.Add(server);
-                }
-            }
+            IBSServers.Clear();
+            DbContext.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add);
+            IBSServers.CollectionChanged += IBSServersCollectionChanged;
 
-            foreach (var env in DbContext.Set<TaxiHailEnvironment>())
-            {
-                if (!TaxiHailEnvironments.Any(e => e.Id == env.Id))
-                {
-                    TaxiHailEnvironments.Add(env);
-                }
-            }
+            TaxiHailEnvironments.Clear();
+            DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
+            TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
-            foreach (var ver in DbContext.Set<AppVersion>())
-            {
-                if (!Versions.Any(v => v.Id == ver.Id))
-                {
-                    Versions.Add(ver);
-                }
-            }
-            
+            Versions.Clear();
+            DbContext.Set<AppVersion>().ToList().ForEach(Versions.Add);
+            Versions.CollectionChanged += VersionsOnCollectionChanged;
+
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
@@ -178,10 +159,7 @@ namespace MK.ConfigurationManager
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
             DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;
             DeployTaxiHailEnvCombobox.SelectedIndex = selectedTaxiHailEnvIndex;
-
         }
-
-
 
         private void VersionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

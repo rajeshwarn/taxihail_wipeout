@@ -142,10 +142,29 @@ namespace apcurium.MK.Web.Tests
             CreateAndAuthenticateTestAdminAccount();
 
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
-            sut.ConfirmAccount(new AdminConfirmAccountRequest{ AccountEmail = email });
+            sut.EnableAccount(new EnableAccountByAdminRequest{ AccountEmail = email });
 
             var auth = new AuthServiceClient(BaseUrl, null);
             Assert.DoesNotThrow(() => auth.Authenticate(email, "password"));
+        }
+
+        [Test]
+        public void registering_account_confirm_by_admin_and_disable_by_admin_then_is_not_confirmed()
+        {
+            string email = GetTempEmail();
+
+            var client = new AccountServiceClient(BaseUrl, SessionId);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
+            client.RegisterAccount(newAccount);
+
+            CreateAndAuthenticateTestAdminAccount();
+
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            sut.EnableAccount(new EnableAccountByAdminRequest { AccountEmail = email });
+            sut.DisableAccount(new DisableAccountByAdminRequest { AccountEmail = email });
+
+            var auth = new AuthServiceClient(BaseUrl, null);
+            Assert.Throws<WebServiceException>(() => auth.Authenticate(email, "password"));
         }
 
         [Test]

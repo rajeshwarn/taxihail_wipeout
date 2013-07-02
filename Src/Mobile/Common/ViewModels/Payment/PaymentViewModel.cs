@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using BraintreeEncryption.Library;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

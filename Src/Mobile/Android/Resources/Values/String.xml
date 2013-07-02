@@ -275,7 +275,7 @@
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendEmail">Send mail...</string>
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
-  <string name="InvalidLoginMessageTitle">Invalid information</string>
+  <string name="InvalidLoginMessageTitle">Login error</string>
   <string name="View_About">About Us</string>
   <string name="NoConnectionTitle">Connection error</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
@@ -401,9 +401,25 @@
   <string name="CmtTransactionSuccessTitle">Payment Recieved</string>
   <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
-  <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver</string>
+  <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
-  <string name="CmtTransactionResendConfirmationButtonText">Resend confirmation</string>
+  <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
+  <string name="November">November</string>
+  <string name="January">January</string>
+  <string name="VehicleNumberErrorTitle">Error</string>
+  <string name="May">May</string>
+  <string name="October">October</string>
+  <string name="June">June</string>
+  <string name="February">February</string>
+  <string name="April">April</string>
+  <string name="VehicleNumberErrorMessage">Unable to retrieve vehicle number. Please pay in car.</string>
+  <string name="December">December</string>
+  <string name="March">March</string>
+  <string name="September">September</string>
+  <string name="August">August</string>
+  <string name="July">July</string>
+  <string name="AccountNotActivated">Your account has not been activated.  Another activation email was sent to you.</string>
+  <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
 </resources>

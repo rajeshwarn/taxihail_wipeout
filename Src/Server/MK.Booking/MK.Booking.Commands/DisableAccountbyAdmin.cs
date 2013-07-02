@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class ConfirmAccountByAdmin : ICommand
+    public class DisableAccountByAdmin : ICommand
     {
-        public ConfirmAccountByAdmin()
+        public DisableAccountByAdmin()
         {
             Id = Guid.NewGuid();
         }

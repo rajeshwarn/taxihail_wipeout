@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Events
         public string ConfirmationToken { get; set; }
         public string Language { get; set; }
         public bool IsAdmin { get; set; }
+        public bool AccountActivationDisabled { get; set; }
     }
     
 }

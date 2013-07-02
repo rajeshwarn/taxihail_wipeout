@@ -23,24 +23,24 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _geocoding = geocoding;
         }
-
-        public override object OnGet(GeocodingRequest request)
+        
+        public override object OnPost(GeocodingRequest request)
         {
 
-             if ((request.Lat.HasValue && request.Lng.HasValue && !request.Name.IsNullOrEmpty()) ||
-                (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
+            if ((request.Lat.HasValue && request.Lng.HasValue && !request.Name.IsNullOrEmpty()) ||
+               (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "You must specify the name or the coordinate");
             }
 
-             if (request.Name.HasValue())
-             {
-                 return _geocoding.Search(request.Name);
-             }
-             else
-             {
-                 return _geocoding.Search(request.Lat.Value, request.Lng.Value);
-             }
+            if (request.Name.HasValue())
+            {
+                return _geocoding.Search(request.Name, request.GeoResult);
+            }
+            else
+            {
+                return _geocoding.Search(request.Lat.Value, request.Lng.Value, request.GeoResult);
+            }
 
         }
 

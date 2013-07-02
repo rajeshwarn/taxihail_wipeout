@@ -30,5 +30,7 @@
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "true",
-   "IBS.TimeDifference" : "0"
+   "IBS.TimeDifference" : "0",
+   "IBS.NoteTemplate" : "{{userNote}}\\r\\n{{buildingName}}",
+   "AccountActivationDisabled" : "false"
 }

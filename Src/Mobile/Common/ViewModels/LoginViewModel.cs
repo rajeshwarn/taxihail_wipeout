@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -124,7 +125,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (Exception e)
                 {
                     var title = Resources.GetString("InvalidLoginMessageTitle");
-                    var message = Resources.GetString("InvalidLoginMessage");
+                    var message = Resources.GetString(e.Message);
+                    if(e.Message == AuthenticationErrorCode.AccountDisabled){
+                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+                        var companyName = settings.ApplicationName;
+                        var phoneNumber = settings.PhoneNumberDisplay(0);
+                        message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
+                    }
 
                     MessageService.ShowMessage(title, message);
                 }

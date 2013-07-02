@@ -217,10 +217,16 @@
     <value>Loading...</value>
   </data>
   <data name="InvalidLoginMessageTitle" xml:space="preserve">
-    <value>Invalid information</value>
+    <value>Login error</value>
   </data>
   <data name="InvalidLoginMessage" xml:space="preserve">
     <value>The email or/and password is invalid.</value>
+  </data>
+  <data name="AccountDisabled" xml:space="preserve">
+    <value>Your account has been disabled, please contact {0} at {1} to activate your account.</value>
+  </data>
+  <data name="AccountNotActivated" xml:space="preserve">
+    <value>Your account has not been activated. Another activation email was sent to you.</value>
   </data>
   <data name="BookItButton" xml:space="preserve">
     <value>Book Now</value>
@@ -1281,8 +1287,49 @@
   <data name="OrderNumber" xml:space="preserve">
     <value>Order #</value>
   </data>
-  
   <data name="NoOrderId" xml:space="preserve">
     <value>Order Not ready</value>
+  </data>
+  <data name="January" xml:space="preserve">
+    <value>January</value>
+  </data>
+  <data name="February" xml:space="preserve">
+    <value>February</value>
+  </data>
+  <data name="March" xml:space="preserve">
+    <value>March</value>
+  </data>
+  <data name="April" xml:space="preserve">
+    <value>April</value>
+  </data>
+  <data name="May" xml:space="preserve">
+    <value>May</value>
+  </data>
+  <data name="June" xml:space="preserve">
+    <value>June</value>
+  </data>
+  <data name="July" xml:space="preserve">
+    <value>July</value>
+  </data>
+  <data name="August" xml:space="preserve">
+    <value>August</value>
+  </data>
+  <data name="September" xml:space="preserve">
+    <value>September</value>
+  </data>
+  <data name="October" xml:space="preserve">
+    <value>October</value>
+  </data>
+  <data name="November" xml:space="preserve">
+    <value>November</value>
+  </data>
+  <data name="December" xml:space="preserve">
+    <value>December</value>
+  </data>
+  <data name="VehicleNumberErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="VehicleNumberErrorMessage" xml:space="preserve">
+    <value>Unable to retrieve vehicle number. Please pay in car.</value>
   </data>
 </root>

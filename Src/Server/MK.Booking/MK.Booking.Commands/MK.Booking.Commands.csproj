@@ -58,9 +58,10 @@
     <Compile Include="AddRatingType.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
+        <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="Orders\CommitPaymentCommand.cs" />
     <Compile Include="ConfirmAccount.cs" />
-    <Compile Include="ConfirmAccountByAdmin.cs" />
+    <Compile Include="EnableAccountbyAdmin.cs" />
     <Compile Include="ActivateRule.cs" />
     <Compile Include="DeactivateRule.cs" />
     <Compile Include="UpdateRule.cs" />

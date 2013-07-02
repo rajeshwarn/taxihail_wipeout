@@ -110,6 +110,7 @@
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
+    <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

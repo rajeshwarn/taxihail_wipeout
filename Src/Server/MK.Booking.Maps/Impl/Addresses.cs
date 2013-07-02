@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Google;
+using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using System;
@@ -37,7 +38,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 		/// <param name='longitude'>
 		/// Longitude
 		/// </param>
-        public Address[] Search(string name, double? latitude, double? longitude)
+        public Address[] Search(string name, double? latitude, double? longitude, GeoResult geoResult = null)
         {
             if(name.IsNullOrEmpty())
             {
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
 
-            var allResults = geoCodingService.Search(name);
+                var allResults = geoCodingService.Search(name, geoResult);
             if ( latitude.HasValue && longitude.HasValue && ( latitude.Value != 0 || longitude.Value != 0 )  )
             {
                 addressesGeocode = allResults

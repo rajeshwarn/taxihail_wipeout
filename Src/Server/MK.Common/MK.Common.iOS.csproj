@@ -98,6 +98,8 @@
     <Compile Include="Patterns\Singleton.cs" />
     <Compile Include="Patterns\ActionDisposable.cs" />
     <Compile Include="VehicleStatuses.cs" />
+    <Compile Include="Enumeration\AppSettingsType.cs" />
+    <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
