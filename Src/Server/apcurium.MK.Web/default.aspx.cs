@@ -27,6 +27,7 @@ namespace apcurium.MK.Web
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
+        protected string AccountActivationDisabled { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -43,6 +44,9 @@ namespace apcurium.MK.Web
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
             GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
             ApplicationVersion = config.GetSetting("TaxiHail.Version");
+
+            var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
+            AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled) ? bool.FalseString.ToLower() : accountActivationDisabled;
             
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
             GeolocSearchFilter = filters.Length > 0 

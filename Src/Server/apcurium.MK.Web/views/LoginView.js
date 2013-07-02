@@ -47,11 +47,16 @@
 
         },
         
-        showConfirmationMessage: function() {
+        showConfirmationMessage: function () {
+            var $confirmationMessage = this.localize('signup.confirmation');
+            if (TaxiHail.parameters.AccountActivationDisabled) {
+                $confirmationMessage = this.localize('signup.confirmationWithoutActivation');
+            }
+
             this.$('#alert')
                 .addClass('alert')
                 .addClass('alert-success')
-                .html(this.localize('signup.confirmation'));
+                .html($confirmationMessage);
         },
 
         onsubmit: function (form) {
