@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Web;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.FluentValidation;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Commands;
@@ -72,11 +74,14 @@ namespace apcurium.MK.Booking.Api.Security
                 
                 if (!account.IsConfirmed)
                 {
-                    //_commandBus.Send(new SendAccountConfirmationEmail
-                    //{
-                    //    EmailAddress = account.Email,
-                    //    ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", account.Email, account.ConfirmationToken)),
-                    //});
+                    var aspnetReq = (HttpRequest)authService.RequestContext.Get<IHttpRequest>().OriginalRequest;
+                    var root = new Uri(aspnetReq.Url, VirtualPathUtility.ToAbsolute("~")).ToString();
+
+                    _commandBus.Send(new SendAccountConfirmationEmail
+                    {
+                        EmailAddress = account.Email,
+                        ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", account.Email, account.ConfirmationToken)),
+                    });
                     throw HttpError.Unauthorized(AuthenticationErrorCode.AccountNotActivated);
                 }
 
