@@ -84,6 +84,19 @@ namespace apcurium.MK.Web
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
                 
+                RequestFilters.Add((httpReq, httpResp, requestDto) =>
+                {
+                    var authSession = httpReq.GetSession();
+                    if (authSession != null && authSession.UserAuthId != null)
+                    {
+                        var account = container.Resolve<IAccountDao>().FindById(new Guid(authSession.UserAuthId));
+                        if (account.DisabledByAdmin)
+                        {
+                            httpReq.RemoveSession();
+                        }
+                    }
+                });
+
                 SetConfig(new EndpointHostConfig
                 {
                     GlobalResponseHeaders =
