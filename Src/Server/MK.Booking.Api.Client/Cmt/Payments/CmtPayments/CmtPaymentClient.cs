@@ -25,67 +25,83 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 			_currencyCode = currencyCode;
 		}
 
-        public TokenizeResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
+        public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            return Client.Post(new TokenizeRequest
+            var response = Client.Post(new TokenizeRequest
             {
                 AccountNumber = accountNumber,
                 ExpiryDateYYMM = expiryDate.ToString("yyMM")
             });
 
+            return new TokenizedCreditCardResponse()
+                {
+                    CardOnFileToken = response.CardOnFileToken,
+                    IsSuccessfull = response.ResponseCode == 1,
+                    Message = response.ResponseMessage,
+                    CardType = response.CardType,
+                    LastFour = response.LastFour,
+                };
+
         }
 
-        public TokenizeDeleteResponse ForgetTokenizedCard(string cardToken)
+        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            return Client.Delete(new TokenizeDeleteRequest()
+            var response = Client.Delete(new TokenizeDeleteRequest()
                 {
                     CardToken = cardToken
                 });
+
+            return new DeleteTokenizedCreditcardResponse()
+                {
+                    IsSuccessfull = response.ResponseCode == 1,
+                    Message = response.ResponseMessage
+                };
         }
 
-		public AuthorizationResponse PreAuthorizeTransaction(string cardToken, double amount, string orderNumber)
-		{
-			var request = new AuthorizationRequest()
-			{
-				Amount = (int)(amount*100),
-				CardOnFileToken = cardToken,
-                CurrencyCode = _currencyCode,
-				TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-				CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                L3Data = new LevelThreeData()
-                    {
-                        PurchaseOrderNumber = orderNumber
-                    }
-			};
-            return Client.Post(request);
-		}
 
-        public CaptureResponse CapturePreAuthorized(long transactionId, string orderNumber)
+        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
-            return Client.Post(new CaptureRequest
+            var response = Client.Post(new CaptureRequest
             {
-                TransactionId = transactionId,
+                TransactionId = transactionId.ToLong(),
                 L3Data = new LevelThreeData()
                 {
                     PurchaseOrderNumber = orderNumber
                 }
             });
+
+            return new CommitPreauthoriedPaymentResponse()
+            {
+                IsSuccessfull = response.ResponseCode == 1,
+                Message = response.ResponseMessage,
+            };
         }
 
-        public string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
 		{
-			var response = PreAuthorizeTransaction(cardToken,amount,orderNumber);
-            if(response.ResponseCode == 1)
-			{
-				return response.TransactionId+"";
-			}
-			return "-1";
+            var request = new AuthorizationRequest()
+            {
+                Amount = (int)(amount * 100),
+                CardOnFileToken = cardToken,
+                CurrencyCode = _currencyCode,
+                TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
+                CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
+                L3Data = new LevelThreeData()
+                {
+                    PurchaseOrderNumber = orderNumber
+                }
+            };
+            var response = Client.Post(request);
+
+            return new PreAuthorizePaymentResponse()
+            {
+                IsSuccessfull = response.ResponseCode == 1,
+                Message = response.ResponseMessage,
+                TransactionId = response.TransactionId + "",
+            };
 		}
 
-        public bool CommitPreAuthorized(string transactionId, string orderNumber)
-		{
-            return CapturePreAuthorized(transactionId.ToLong(), orderNumber).ResponseCode == 1;
-		}
+
 
     }
 }

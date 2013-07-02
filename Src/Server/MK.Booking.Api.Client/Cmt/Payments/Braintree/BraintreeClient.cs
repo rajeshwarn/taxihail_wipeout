@@ -7,64 +7,76 @@ using Braintree;
 using BraintreeEncryption.Library;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
 {
     public class BraintreeClient : IPaymentServiceClient
     {
-        public static BraintreeGateway Client
+        public static BraintreeGateway Client { get; set; }
+
+        /*
+         * Braintree Creds:
+         * U: apcurium
+         * P: apcurium5200!
+         */
+
+        private const string CLIENT_KEY = "MIIBCgKCAQEAoj1SlyPOlcbsemg8jNsZkgBjYspWd8goY7Dyf7IAMi68s6lX1QkEZ5iRVDZW8WANT46bbXFSZcerULT9nUx9lMWP8rrcv+i7Qy9LGjj2Zys7D0b98mzcdOoYiAg1GKDWjDW49mEtzlRbTSpgETvzCt3tonqAgZKt5E68P8SkQX+lem7N06KwaW5jFJRYNkYc5cNTyo3pMoCGnWJvBLMuW1CV4dXWxvTQU8dgnug6Y/i0AVJGJtnH2iaqk40+w6mifzpjDI6luTFw9ZXI7wlXitrQDcE0a3Dqx896IdvqP7PNLi6zVGM2DtOojO5f5KIXiFcBkepYnDkzJ33L1iwTKQIDAQAB";
+        
+        public BraintreeClient(Environment env)
         {
-            get
+            Client = new BraintreeGateway
             {
-                return new BraintreeGateway
-                {
-                    Environment = Braintree.Environment.SANDBOX,
-                    MerchantId = "grpc45xgw92ns363",
-                    PublicKey = "kw827xn4rby289z7",
-                    PrivateKey = "519c90ba4a227a74da354533d38db54b"
-                };
-            }
+                Environment = env,
+                MerchantId = "v3kjnzjzhv8z37pq",
+                PublicKey = "d268b7by244xnvw9",
+                PrivateKey = "92780e4aa457e9269b1910d88ac79d17"
+            };
         }
 
-        private const string CLIENT_KEY = "MIIBCgKCAQEAvEQ88pEhx4MyX4B/JmW1/iJcvMEkwV3iKPV2ikCt2BldJmFVpPQpzlTXY5MJ0i8uxMjj1lsvVKgugHGQGPa8qUWUTeO/WmyTsYAO/CeK/9yJq+p4u3IZbSslyknkl7voDEJejXQAi+rVITxLoN5y/j+APk1addiPHb7nqK/ldmLgVP9PNO3uuKq0xWppBRT+7h7RHGT+SUhqiFGhFhv3E593Xr+U1iBaJtj5avLcmp4XO5As+F5qpVLwYEVjpsJhYG5AQn2YirBXp2OlUOmxLa3DNOddwal9sYtWvSdoVaGQ570UJ0Vzhf6qiMtcUa82N0rq2nAxxlMYBpRSX8usmwIDAQAB";
 
-        public TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string encryptedCvv)
         {
             var braintree = new BraintreeEncrypter(CLIENT_KEY);
             
             var request = new CustomerRequest
             {
-
                 CreditCard = new CreditCardRequest()
                 {
-                    CVV = braintree.Encrypt("4111111111111111"),
-                    ExpirationDate = braintree.Encrypt("111"),
-                    Number = braintree.Encrypt("01/2013")
+                    Number = braintree.Encrypt(creditCardNumber),
+                    ExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy")),
+                    CVV = braintree.Encrypt(encryptedCvv),
                 }
             };
 
             var result = Client.Customer.Create(request);
 
             var customer = result.Target;
-            Console.WriteLine("Success!: " + customer.Id);
+
             var cc = customer.CreditCards.First();
-            return new TokenizeResponse()
+            return new TokenizedCreditCardResponse()
                 {
                     CardOnFileToken = cc.Token,
                     CardType = cc.CardType.ToString(),
                     LastFour = cc.LastFour,
-                    ResponseCode = result.IsSuccess() ? 0 : 1,
-                    ResponseMessage = result.Message,
+                    IsSuccessfull = result.IsSuccess(),
+                    Message = result.Message,
                 };
             
         }
 
-        public TokenizeDeleteResponse ForgetTokenizedCard(string cardToken)
+        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            throw new NotImplementedException();
+            Client.CreditCard.Delete(cardToken);
+            return new DeleteTokenizedCreditcardResponse()
+                {
+                    IsSuccessfull = true,
+                    Message = "Success"
+                };
+
         }
 
-        public string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
         {
             var request = new TransactionRequest
             {
@@ -83,15 +95,24 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
 
             var result = Client.Transaction.Sale(request);
 
-            return result.Target.OrderId;
+            return new PreAuthorizePaymentResponse()
+                {
+                    TransactionId = result.Target.Id,
+                    IsSuccessfull = result.IsSuccess(),
+                    Message = "Success",
+                };
 
         }
 
-        public bool CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
             var result = Client.Transaction.SubmitForSettlement(transactionId);
 
-            return result.IsSuccess();
+            return new CommitPreauthoriedPaymentResponse()
+                {
+                    IsSuccessfull = result.IsSuccess(),
+                    Message = "Success"
+                };
         }
     }
 }

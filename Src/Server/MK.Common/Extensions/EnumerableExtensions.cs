@@ -33,6 +33,13 @@ namespace apcurium.MK.Common.Extensions
             return !items.Any(predicate);
         }
 
+        static Random random = new Random();
+        public static T GetRandom<T>(this T[] items)
+        {
+            var index = random.Next(0, items.Length);
+            return items[index];
+        }
+
         public static bool Empty<T>(this IEnumerable<T> items)
         {
             return !items.Any();

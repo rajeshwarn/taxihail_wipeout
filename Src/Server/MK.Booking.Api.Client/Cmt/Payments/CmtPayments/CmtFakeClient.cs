@@ -6,42 +6,49 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 {
     public class CmtFakeClient : IPaymentServiceClient
     {
-        private Random _random;
+        private readonly Random _random;
 
         public CmtFakeClient()
         {
             _random = new Random();
         }
 
-        public TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
-            return new TokenizeResponse()
+            return new TokenizedCreditCardResponse()
                 {
                     CardOnFileToken = "4043702891740165y",
                     CardType = "Visa",
                     LastFour = creditCardNumber.Substring(creditCardNumber.Length-4),
-                    ResponseCode = 0,
-                    ResponseMessage = "Success"
+                    IsSuccessfull = true,
+                    Message = "Success"
                 };
         }
 
-        public TokenizeDeleteResponse ForgetTokenizedCard(string cardToken)
+        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            return new TokenizeDeleteResponse()
+            return new DeleteTokenizedCreditcardResponse()
                 {
-                    ResponseCode = 0,
-                    ResponseMessage = "Success"
+                    IsSuccessfull = true,
+                    Message = "Success"
                 };
         }
 
-        public string PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, string encryptedCvv, double amount, string orderNumber)
         {
-            return 100000000 + _random.Next(999)+"";
+            return new PreAuthorizePaymentResponse
+                {
+                    TransactionId = 100000000 + _random.Next(999) + ""
+                };
         }
 
-        public bool CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
-            return true;
+            return new CommitPreauthoriedPaymentResponse()
+                {
+                    IsSuccessfull = true,
+                    Message = "Success"
+                };
         }
     }
 }
