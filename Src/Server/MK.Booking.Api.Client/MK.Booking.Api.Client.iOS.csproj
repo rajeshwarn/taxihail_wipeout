@@ -75,6 +75,10 @@
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
       <Name>MK.Booking.Api.Contract.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.Ios.csproj">
+      <Project>{630CB5BB-15F8-4413-A1AB-2A895507E299}</Project>
+      <Name>BrainTreeEncryption.Library.Ios</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,22 +109,24 @@
     <Compile Include="Client\CmtJsonServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
-    <Compile Include="Cmt\Payments\LevelThreeData.cs" />
-    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
     <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
-    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
+    <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
+    <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
+    <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="Payments\PaymentClientDeligator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

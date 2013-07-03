@@ -156,7 +156,6 @@
     <Compile Include="BouncyCastle\Util\Arrays.cs" />
     <Compile Include="BouncyCastle\Util\Platform.cs" />
     <Compile Include="BouncyCastle\Util\Strings.cs" />
-    <Compile Include="BouncyCastle\AssemblyInfo.cs" />
     <Compile Include="Aes.cs" />
     <Compile Include="Braintree.cs" />
     <Compile Include="Rsa.cs" />

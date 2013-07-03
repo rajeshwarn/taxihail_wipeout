@@ -114,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Api.Contract.Resources.AppSetting>();
 
 
             JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
