@@ -36,7 +36,22 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("888", ((AccountRegistered)sut.Events.Single()).Phone);
             Assert.AreEqual(999, ((AccountRegistered)sut.Events.Single()).IbsAcccountId);
             Assert.AreEqual("fr", ((AccountRegistered)sut.Events.Single()).Language);
+        }
 
+        [Test]
+        public void when_registering_account_successfully_when_account_activation_disabled()
+        {
+            this.sut.When(new RegisterAccount { AccountId = _accountId, Name = "Bob Smith", Phone = "888", Password = "bsmith", Email = "bob.smith@apcurium.com", IbsAccountId = 999, Language = "fr", ConfimationToken = "token", AccountActivationDisabled = true});
+
+            Assert.AreEqual(1, sut.Events.Count);
+            Assert.AreEqual(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
+            Assert.AreEqual("Bob Smith", ((AccountRegistered)sut.Events.Single()).Name);
+            Assert.IsNotEmpty(((AccountRegistered)sut.Events.Single()).Password);
+            Assert.AreEqual("bob.smith@apcurium.com", ((AccountRegistered)sut.Events.Single()).Email);
+            Assert.AreEqual("888", ((AccountRegistered)sut.Events.Single()).Phone);
+            Assert.AreEqual(999, ((AccountRegistered)sut.Events.Single()).IbsAcccountId);
+            Assert.AreEqual("fr", ((AccountRegistered)sut.Events.Single()).Language);
+            Assert.AreEqual(true, ((AccountRegistered)sut.Events.Single()).AccountActivationDisabled);
         }
 
         [Test]

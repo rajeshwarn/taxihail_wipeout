@@ -10,6 +10,7 @@ using Infrastructure.Messaging;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
@@ -20,13 +21,15 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private ICommandBus _commandBus;
         private IAccountDao _accountDao;
+        private IConfigurationManager _configManager;
         private readonly IAccountWebServiceClient _accountWebServiceClient;
 
-        public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient, IAccountDao accountDao)
+        public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient, IAccountDao accountDao, IConfigurationManager configManager)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
             _accountWebServiceClient = accountWebServiceClient;
+            _configManager = configManager;
         }
 
         public override object OnPost(RegisterAccount request)
@@ -69,6 +72,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
+                var setting = _configManager.GetSetting("AccountActivationDisabled");
+                var accountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+
                 var confirmationToken = Guid.NewGuid();
                 var command = new Commands.RegisterAccount();
 
@@ -82,6 +88,7 @@ namespace apcurium.MK.Booking.Api.Services
                                                                                 command.Phone);
 
                 command.ConfimationToken = confirmationToken.ToString();
+                command.AccountActivationDisabled = accountActivationDisabled;
                 _commandBus.Send(command);
             
                 // Determine the root path to the app 
@@ -104,11 +111,15 @@ namespace apcurium.MK.Booking.Api.Services
                     // We Assume there is no virtual path
                 }
 
-                _commandBus.Send(new SendAccountConfirmationEmail
+                if (!accountActivationDisabled)
                 {
-                    EmailAddress = command.Email,
-                    ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
-                });
+                    _commandBus.Send(new SendAccountConfirmationEmail
+                    {
+                        EmailAddress = command.Email,
+                        ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                    });
+                }
+                
                 return new Account { Id = command.AccountId };
             }
         }

@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -124,7 +125,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (Exception e)
                 {
                     var title = Resources.GetString("InvalidLoginMessageTitle");
-                    var message = Resources.GetString("InvalidLoginMessage");
+                    var message = Resources.GetString(e.Message);
+                    if(e.Message == AuthenticationErrorCode.AccountDisabled){
+                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+                        var companyName = settings.ApplicationName;
+                        var phoneNumber = settings.PhoneNumberDisplay(0);
+                        message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
+                    }
 
                     MessageService.ShowMessage(title, message);
                 }
@@ -197,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (data != null)
             {
-                if (data.FacebookId.HasValue() || data.TwitterId.HasValue())
+                if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
                 {
                     var facebookId = data.FacebookId;
                     var twitterId = data.TwitterId;
@@ -207,14 +214,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Thread.Sleep(500);
                         var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                         Account account;
-                        if (facebookId.HasValue())
+                        if (facebookId.HasValue() || twitterId.HasValue())
                         {
-                            account = service.GetFacebookAccount(facebookId);
+                            if (facebookId.HasValue())
+                            {
+                                account = service.GetFacebookAccount(facebookId);
+                            }
+                            else
+                            {
+                                account = service.GetTwitterAccount(twitterId);
+                            }
                         }
                         else
                         {
-                            account = service.GetTwitterAccount(twitterId);
+                            account = service.GetAccount(data.Email, data.Password);
                         }
+
                         if (account != null)
                         {
                             RequestNavigate<BookViewModel>(true);

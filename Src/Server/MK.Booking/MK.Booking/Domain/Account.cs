@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
             base.Handles<AccountConfirmed>(NoAction);
+            base.Handles<AccountDisabled>(NoAction);
             base.Handles<AccountUpdated>(NoAction);
             base.Handles<FavoriteAddressAdded>(OnAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
@@ -36,14 +37,13 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
-
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {               
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language, bool isAdmin=false)
+        public Account(Guid id, string name, string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking.Domain
                 IbsAcccountId = ibsAccountId,
                 ConfirmationToken = confirmationToken,
                 Language = language,
-                IsAdmin = isAdmin
+                IsAdmin = isAdmin,
+                AccountActivationDisabled = accountActivationDisabled
             });
         }
 
@@ -326,9 +327,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ConfirmAccountByAdmin()
+        public void EnableAccountByAdmin()
         {
             this.Update(new AccountConfirmed());  
+        }
+
+        public void DisableAccountByAdmin()
+        {
+            this.Update(new AccountDisabled());
         }
     }
 }

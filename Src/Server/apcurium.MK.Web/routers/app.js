@@ -74,8 +74,6 @@
                 } else {
                     this.navigate('', { trigger: true });
                 }
-                
-                    
             }
                     
             TaxiHail.auth.on('change', function(isloggedIn, urlToRedirect) {
@@ -108,6 +106,11 @@
         signupconfirmation: function (url) {
             var fbId = window.localStorage.getItem('fbId');
             var twId = window.localStorage.getItem('twId');
+            var accountActivationDisabled = TaxiHail.parameters.AccountActivationDisabled;
+            
+            var $email = $('[name=email]').val(),
+                $password = $('[name=password]').val();
+
             if (fbId) {
                 if (url) {
                     TaxiHail.auth.fblogin(url);
@@ -120,13 +123,18 @@
                 } else {
                     TaxiHail.auth.twlogin();
                 }
+            } else if (accountActivationDisabled) {
+                if (url) {
+                    TaxiHail.auth.login($email, $password, url);
+                } else {
+                    TaxiHail.auth.login($email, $password, '');
+                }
             } else {
                 var view = renderView(new TaxiHail.LoginView({
                     returnUrl: url
                 }));
                 view.showConfirmationMessage();
             }
-            
         },
         
         book: function () {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceHost;
+﻿using ServiceStack.ServiceHost;
+using apcurium.MK.Booking.Google.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/geocode", "GET")]
+    [RestService("/geocode", "POST")]
     public class GeocodingRequest : BaseDTO
     {
         public string Name{ get; set; }
@@ -15,5 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? Lat{ get; set; }
         
         public double? Lng { get; set; }
+
+        public GeoResult GeoResult { get; set; }
     }
 }

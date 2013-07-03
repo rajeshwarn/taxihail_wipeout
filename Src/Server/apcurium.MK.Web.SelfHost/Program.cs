@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
@@ -47,7 +48,7 @@ namespace apcurium.MK.Web.SelfHost
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                 new IAuthProvider[]
                     {
-                        new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
+                        new CustomCredentialsAuthProvider(container.Resolve<ICommandBus>(), container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
                         new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
                         new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
                     }));

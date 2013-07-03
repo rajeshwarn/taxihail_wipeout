@@ -5,6 +5,7 @@ using System.IO;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Optimization;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
@@ -76,13 +77,26 @@ namespace apcurium.MK.Web
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                     new IAuthProvider[]
                     {
-                        new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
+                        new CustomCredentialsAuthProvider(container.Resolve<ICommandBus>(), container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
                         new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
                         new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
                     }));
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
                 
+                RequestFilters.Add((httpReq, httpResp, requestDto) =>
+                {
+                    var authSession = httpReq.GetSession();
+                    if (authSession != null && authSession.UserAuthId != null)
+                    {
+                        var account = container.Resolve<IAccountDao>().FindById(new Guid(authSession.UserAuthId));
+                        if (account.DisabledByAdmin)
+                        {
+                            httpReq.RemoveSession();
+                        }
+                    }
+                });
+
                 SetConfig(new EndpointHostConfig
                 {
                     GlobalResponseHeaders =

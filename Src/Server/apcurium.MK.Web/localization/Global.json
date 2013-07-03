@@ -15,6 +15,7 @@
     "error.friendlyNameRequired": "Friendly Name is required",  
     "error.fullAddressRequired": "Address is required",	
 	"signup.confirmation" : "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",	
+	"signup.confirmationWithoutActivation" : "Account created. Thank you!",	
 	"search.no-result": "Start typing an address or a place name",
     "favorites.no-result": "You don't have any favorite address yet",
     "history.no-result": "You don't have any address history",

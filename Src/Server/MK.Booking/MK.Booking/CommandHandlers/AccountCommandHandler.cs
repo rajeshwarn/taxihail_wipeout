@@ -9,7 +9,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
     public partial class AccountCommandHandler : ICommandHandler<RegisterAccount>,
                                                  ICommandHandler<ConfirmAccount>,
-                                         ICommandHandler<ConfirmAccountByAdmin>,
+                                                 ICommandHandler<EnableAccountByAdmin>,
+                                                 ICommandHandler<DisableAccountByAdmin>,
                                                  ICommandHandler<ResetAccountPassword>,
                                                  ICommandHandler<UpdateAccount>,
                                                  ICommandHandler<UpdateBookingSettings>,
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterAccount command)
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language, command.IsAdmin);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -135,12 +136,18 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
         
-         public void Handle(ConfirmAccountByAdmin command)
+        public void Handle(EnableAccountByAdmin command)
         {
             var account = _repository.Find(command.AccountId);
-            account.ConfirmAccountByAdmin();
+            account.EnableAccountByAdmin();
             _repository.Save(account, command.Id.ToString());
         }
 
+        public void Handle(DisableAccountByAdmin command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.DisableAccountByAdmin();
+            _repository.Save(account, command.Id.ToString());
+        }
     }
 }
