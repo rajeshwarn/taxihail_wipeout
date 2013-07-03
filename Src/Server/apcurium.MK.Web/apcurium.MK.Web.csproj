@@ -551,9 +551,6 @@
     <Compile Include="PageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PingdomCheck.ashx.cs">
-      <DependentUpon>PingdomCheck.ashx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -608,9 +605,6 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="PingdomCheck.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\bootstrap\.gitignore" />

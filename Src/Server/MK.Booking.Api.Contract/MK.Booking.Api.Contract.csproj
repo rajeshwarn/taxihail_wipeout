@@ -110,6 +110,7 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\RuleActivateRequest.cs" />
     <Compile Include="Requests\RuleDeactivateRequest.cs" />
