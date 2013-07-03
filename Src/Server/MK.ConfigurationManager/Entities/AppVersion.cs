@@ -16,6 +16,7 @@ namespace MK.ConfigurationManager.Entities
 
         public string Revision { get; set; }
 
+        public bool Hidden { get; set; }
     }
 }
  
