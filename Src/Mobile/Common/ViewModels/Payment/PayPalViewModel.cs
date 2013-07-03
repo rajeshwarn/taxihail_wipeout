@@ -1,4 +1,6 @@
 using System;
+using apcurium.MK.Booking.Mobile.AppServices;
+using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -9,14 +11,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             Url = url;
         }
 
-        public string Url { get; set; }
-
-        public void SetExpressCheckout()
-        {
-            var url = "https://api-3t.sandbox.paypal.com/nvp";
-
-
-        }
+        public string Url { get; private set; }
     }
 }
 

@@ -118,6 +118,7 @@
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <Folder Include="Security\" />
     <Folder Include="Requests\Messages\" />
+    <Folder Include="Requests\Payment\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

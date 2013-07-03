@@ -14,11 +14,12 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
+using System.Reactive.Threading.Tasks;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PaymentViewModel : BaseSubViewModel<object>
+    public class PaymentViewModel : BaseSubViewModel<object>, IMvxServiceConsumer<IPayPalExpressCheckoutService>
     {
 
         public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
@@ -89,10 +90,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() => 
                 {
-                    // call server to get paypal url
-                    var url = "http://www.google.com";
-
-                    RequestNavigate<PayPalViewModel>(new Dictionary<string, string>(){ {"url", url} });
+                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
+                    paypal.SetExpressCheckoutForAmount(10m)
+                        .ToObservable()
+                        .Subscribe(checkoutUrl => {
+                                RequestNavigate<PayPalViewModel>(new { url = checkoutUrl});
+                        });
+                    
                 });
             }
         }
