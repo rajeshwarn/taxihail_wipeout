@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.Reflection;
@@ -185,12 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.HideNoPreference; }
         }
 
-		public ClientPaymentSettings ClientPaymentSettings 
-		{ 
-			get{
-				return new ClientPaymentSettings();
-			}
-		}
+
 	
 
 

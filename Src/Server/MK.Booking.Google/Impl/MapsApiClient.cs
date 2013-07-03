@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using MK.Common.Android.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;

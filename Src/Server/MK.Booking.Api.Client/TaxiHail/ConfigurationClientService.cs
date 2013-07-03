@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using MK.Common.Android.Configuration;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Linq;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -60,8 +62,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
         public ClientPaymentSettings GetPaymentSettings()
-        {
-            throw new NotImplementedException();
+		{
+			return Client.Get (new PaymentSettingsRequest ()).ClientPaymentSettings;
         }
     }
 }

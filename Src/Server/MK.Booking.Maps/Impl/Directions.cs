@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Google;
+﻿using MK.Common.Android.Configuration;
+using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System;

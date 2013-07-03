@@ -43,9 +43,7 @@ namespace apcurium.MK.Web.Tests
 
         protected CmtPaymentClient GetCmtPaymentClient()
         {
-            var cmtSettings = ((ServerPaymentSettings)DummyConfigManager.GetPaymentSettings()).CmtPaymentSettings;
-
-            return new CmtPaymentClient(BaseUrl,null,cmtSettings.BaseUrl);
+            return new CmtPaymentClient(BaseUrl,null,new CmtPaymentSettings());
         }
         public virtual void TestFixtureSetup()
         {

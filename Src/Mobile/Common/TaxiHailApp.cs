@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
+using MK.Common.Android.Configuration;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -107,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			container.Register<IPaymentServiceClient>((c, p) =>
 			{
-				var settings = c.Resolve<IAppSettings>().ClientPaymentSettings;
+				var settings = c.Resolve<IConfigurationManager>().GetPaymentSettings();
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
@@ -116,7 +117,6 @@ namespace apcurium.MK.Booking.Mobile
 				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
 			});
             
-            container.Register<IPaymentServiceClient>((c, p) =>new FakePaymentClient());//Fake
 
             container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 

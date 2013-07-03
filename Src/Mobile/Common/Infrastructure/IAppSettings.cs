@@ -47,8 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         bool HideNoPreference { get; }
 
-		ClientPaymentSettings ClientPaymentSettings { get;}
-
 
 
 	}
