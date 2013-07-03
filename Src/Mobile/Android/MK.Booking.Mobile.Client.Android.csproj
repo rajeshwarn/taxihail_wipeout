@@ -301,6 +301,9 @@
     <Compile Include="Controls\Slider\GrayBarControl.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
+    <Compile Include="Activities\Book\BookPayPalActivity.cs">
+      <DependentUpon>BookPaymentActivity.cs</DependentUpon>
+    </Compile>
     <AndroidResource Include="Resources\Drawable\nearby_cab.png" />
     <AndroidResource Include="Resources\drawable-hdpi\nearby_cab.png" />
     <Compile Include="Extensions\EditTextExtensions.cs" />

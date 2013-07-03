@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using System.Collections.Generic;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -81,6 +82,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			},
 			Str.OkButtonText, ()=> ReturnResult(""));
 		}
+
+        public IMvxCommand ProceedToPayPalCommand
+        {
+            get
+            {
+                return GetCommand(() => 
+                {
+                    // call server to get paypal url
+                    var url = "http://www.google.com";
+
+                    RequestNavigate<PayPalViewModel>(new Dictionary<string, string>(){ {"url", url} });
+                });
+            }
+        }
 
         public IMvxCommand ConfirmOrderCommand
         {

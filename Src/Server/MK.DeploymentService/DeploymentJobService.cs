@@ -106,10 +106,21 @@ namespace MK.DeploymentService
             }
         }
 
+        private string GetRevisionNumber(DeploymentJob job)
+        {
+            if (job.Version != null)
+            {
+                return job.Version.Revision;
+            }
+
+            return string.IsNullOrEmpty(job.Revision) ? string.Empty : job.Revision;
+        }
+
         private void FetchSourceAndBuild(DeploymentJob job, string sourceDirectory)
         {
             //pull source from bitbucket if not done yet
-            var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
+            var revisionNumber = GetRevisionNumber(job);
+            var revision = string.IsNullOrEmpty(revisionNumber) ? string.Empty : "-r " + revisionNumber;
 
             if (!Directory.Exists(sourceDirectory))
             {
@@ -144,9 +155,9 @@ namespace MK.DeploymentService
             }
 
 
-            if (!string.IsNullOrEmpty(job.Revision))
+            if (!string.IsNullOrEmpty(revision))
             {
-                logger.DebugFormat("Update to revision {0}", job.Revision);
+                logger.DebugFormat("Update to revision {0}", revision);
                 var hgUpdate = new ProcessStartInfo
                                    {
                                        FileName = "hg.exe",
@@ -154,7 +165,7 @@ namespace MK.DeploymentService
                                        UseShellExecute = false,
                                        CreateNoWindow = false,
                                        Arguments =
-                                           string.Format("update --repository {0} -r {1}", sourceDirectory, job.Revision)
+                                           string.Format("update --repository {0} -r {1}", sourceDirectory, revision)
                                    };
 
                 using (var exeProcess = Process.Start(hgUpdate))
@@ -285,7 +296,10 @@ namespace MK.DeploymentService
         private void DeployServer(DeploymentJob job, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             logger.DebugFormat("Deploying IIS");
-            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision + "." + DateTime.Now.Ticks +"\\";
+
+            var revision = GetRevisionNumber(job);
+            
+            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + revision + "." + DateTime.Now.Ticks +"\\";
             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 

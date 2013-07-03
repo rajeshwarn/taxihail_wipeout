@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
@@ -30,11 +31,13 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
-            
-            container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
-            var mockIbsStatusUpdate = bool.Parse(container.Resolve<IConfigurationManager>()
-                .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
 
+            container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
+
+            container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
+            var mockIbsStatusUpdate = bool.Parse(container
+                               .Resolve<IConfigurationManager>()
+                               .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");
             if (mockIbsStatusUpdate)
             {
                 container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJobStub>();

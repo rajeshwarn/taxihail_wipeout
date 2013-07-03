@@ -154,37 +154,40 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int main_settings = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int navBar = 2130837514;
+			public const int monoandroidsplash = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int newBlackButton = 2130837515;
+			public const int navBar = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int orderListBackground = 2130837516;
+			public const int newBlackButton = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int password_cell = 2130837517;
+			public const int orderListBackground = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int red_button = 2130837518;
+			public const int password_cell = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int server_button = 2130837519;
+			public const int red_button = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int server_button_state = 2130837520;
+			public const int server_button = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int sign_in_btn = 2130837521;
+			public const int server_button_state = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int social_media_login_btn = 2130837522;
+			public const int sign_in_btn = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int social_media_login_btn_hit = 2130837523;
+			public const int social_media_login_btn = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int social_media_login_btn_state = 2130837524;
+			public const int social_media_login_btn_hit = 2130837524;
+			
+			// aapt resource value: 0x7f020015
+			public const int social_media_login_btn_state = 2130837525;
 			
 			static Drawable()
 			{
@@ -309,13 +312,16 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int Main = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int View_CallTaxi = 2130903043;
+			public const int monoandroidsplash = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int View_Login = 2130903044;
+			public const int View_CallTaxi = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int View_OrderList = 2130903045;
+			public const int View_Login = 2130903045;
+			
+			// aapt resource value: 0x7f030006
+			public const int View_OrderList = 2130903046;
 			
 			static Layout()
 			{
@@ -526,6 +532,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f080008
 			public const int ListTitle = 2131230728;
+			
+			// aapt resource value: 0x7f08001a
+			public const int Mono_Android_Theme_Splash = 2131230746;
 			
 			// aapt resource value: 0x7f080005
 			public const int SearchButtonText = 2131230725;
