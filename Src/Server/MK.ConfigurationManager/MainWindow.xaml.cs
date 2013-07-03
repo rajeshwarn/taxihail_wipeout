@@ -8,13 +8,16 @@ using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using MK.ConfigurationManager.Entities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MK.ConfigurationManager
@@ -58,9 +61,22 @@ namespace MK.ConfigurationManager
             }
         }
 
+        private void InitializeDatabase()
+        {
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
+            if (this.currentDbList.SelectedItem != null)
+            {
+                connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
+            }
+            DbContext = new ConfigurationManagerDbContext(connectionString);
+            DbContext.Database.CreateIfNotExists();
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+
+            InitializeDatabase();
 
             this.Loaded += MainWindowLoaded;
 
@@ -74,11 +90,59 @@ namespace MK.ConfigurationManager
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
             Versions = new ObservableCollection<AppVersion>();
 
+            FetchRepoTags();
+
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
             AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
             Versions.CollectionChanged += VersionsOnCollectionChanged;
+        }
 
+        private void FetchRepoTags()
+        {
+            var bitbucketTags = GetTags().Select(x => new { 
+                Display = string.Format("[Bitbucket] {0}", x.Key),
+                Revision = x.Value.node
+            }).ToList();
+
+            var dbVersions = DbContext.Set<AppVersion>().ToList();
+
+            foreach (var tag in bitbucketTags)
+            {
+                var correspondingVersion = dbVersions.FirstOrDefault(x => x.Display == tag.Display);
+                if (correspondingVersion != null)
+                {
+                    correspondingVersion.Revision = tag.Revision;
+                }
+                else
+                {
+                    DbContext.Set<AppVersion>().Add(new AppVersion
+                    {
+                        Id = Guid.NewGuid(),
+                        Display = tag.Display,
+                        Revision = tag.Revision
+                    });
+                }
+            }
+
+            DbContext.SaveChanges();
+        }
+
+        private Dictionary<string, BitbucketTagsResponse> GetTags()
+        {
+            var req = WebRequest.Create("https://bitbucket.org/api/1.0/repositories/apcurium/mk-taxi/tags") as HttpWebRequest;
+
+            var authInfo = "buildapcurium:apcurium5200!";
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            req.Headers["Authorization"] = "Basic " + authInfo;
+
+            string result = null;
+            using (var resp = req.GetResponse()as HttpWebResponse)
+            {
+                var reader = new StreamReader(resp.GetResponseStream());
+                result = reader.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<Dictionary<string, BitbucketTagsResponse>>(result);
         }
 
         void AutoRefreshCheckbox_Checked(object sender, RoutedEventArgs e)
@@ -128,14 +192,6 @@ namespace MK.ConfigurationManager
             int selectedCompanyIndex = DeployCompanyCombobox.SelectedIndex;
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
-
-            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
-            if (this.currentDbList.SelectedItem != null)
-            {
-                connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
-            }
-            DbContext = new ConfigurationManagerDbContext(connectionString);
-            DbContext.Database.CreateIfNotExists();
 
             Companies.Clear();
             DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
