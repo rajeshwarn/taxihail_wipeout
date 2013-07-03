@@ -3,6 +3,7 @@ using System.Net;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
@@ -10,17 +11,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
 
         public CmtPaymentServiceClient(
-            string baseUrl,  bool ignoreCertificateErrors )
-            :base(baseUrl,ignoreCertificateErrors)
+			CmtPaymentSettings cmtSettings,  bool ignoreCertificateErrors )
+			:base(cmtSettings.BaseUrl,ignoreCertificateErrors)
         {
             Timeout = new TimeSpan(0, 0, 0, 20, 0);
             LocalHttpWebRequestFilter = SignRequest;
 
-		    string consumerKey = "";
-		    string consumerSecretKey = "";
-
-			ConsumerKey = consumerKey;
-			ConsumerSecretKey = consumerSecretKey;  
+			ConsumerKey = cmtSettings.CustomerKey;
+			ConsumerSecretKey = cmtSettings.ConsumerSecretKey;  
         }
 
 		protected string ConsumerKey {

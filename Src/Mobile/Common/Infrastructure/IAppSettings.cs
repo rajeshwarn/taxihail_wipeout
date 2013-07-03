@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -46,10 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         bool HideNoPreference { get; }
 
-		string PaymentBaseUrl {get;}
-		string PaymentConsumerKey {get;}
-		string PaymentConsumerSecretKey {get;}
-		string PaymentCurrencyCode {get;}
+		ClientPaymentSettings ClientPaymentSettings { get;}
+
 
 
 	}

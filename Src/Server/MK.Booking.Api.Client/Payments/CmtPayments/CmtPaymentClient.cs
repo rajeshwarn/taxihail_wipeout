@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
 using MK.Booking.Api.Client;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
@@ -23,10 +24,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-        public CmtPaymentClient(string baseUrl,string sessionId, string cmtBaseUrl)
+		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings)
             : base(baseUrl,sessionId)
         {
-            CmtClient = new CmtPaymentServiceClient(cmtBaseUrl,true);
+			CmtClient = new CmtPaymentServiceClient(cmtSettings,true);
         }
 
         private CmtPaymentServiceClient CmtClient { get; set; }

@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using apcurium.MK.Booking.Api.Client.Payments;
+using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -95,13 +97,18 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
             TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
-            /* Use fake please
+
 			TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>
 			{
-				var settings = c.Resolve<IAppSettings>();
-				return new CmtPaymentClient( settings.PaymentBaseUrl, settings.PaymentConsumerKey, settings.PaymentConsumerSecretKey, settings.PaymentCurrencyCode, true);
+				var settings = c.Resolve<IAppSettings>().ClientPaymentSettings;
+				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
+				var sessionId = this.GetSessionId(c);
+
+				return new PaymentClientDeligate(settings,
+				                                 new BraintreeServiceClient(baseUrl,sessionId), 
+				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
 			});
-            */
+            
             TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) => new FakePaymentClient());//Fake
 
 
