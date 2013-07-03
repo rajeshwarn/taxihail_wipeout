@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile
 						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
 						if (result)
 						{
-							if (!HasSocialInfo || !Data.AccountActivationDisabled)
+							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
 								MessageService.ShowMessage(Resources.GetString("AccountActivationTitle"), Resources.GetString("AccountActivationMessage"));
 							}
