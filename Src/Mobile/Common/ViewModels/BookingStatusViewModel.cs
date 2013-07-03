@@ -6,6 +6,7 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using MK.Common.Android.Configuration;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;

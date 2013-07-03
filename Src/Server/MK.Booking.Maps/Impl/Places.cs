@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Google;
+﻿using MK.Common.Android.Configuration;
+using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;

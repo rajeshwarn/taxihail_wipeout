@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
+using MK.Common.Android.Configuration;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;

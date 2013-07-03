@@ -12,7 +12,6 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public ServerPaymentSettings() //for serialization
         {
-            CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeSettings = new BraintreeSettings();
         }
 
@@ -20,15 +19,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             CompanyId = companyId;
 
-            CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeSettings = new BraintreeSettings();
         }
        
         [Key]
         public Guid CompanyId { get; set; }
-
-        public CmtPaymentSettings CmtPaymentSettings { get; set; }
-
+        
         public BraintreeSettings BraintreeSettings { get; set; }
 
 

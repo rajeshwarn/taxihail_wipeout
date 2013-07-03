@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MK.Common.Android.Configuration;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
