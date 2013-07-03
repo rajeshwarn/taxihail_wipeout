@@ -126,8 +126,7 @@
     <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
     <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
-    <Compile Include="Payments\PaymentClientDeligator.cs" />  
-      <Compile Include="PayPal\PayPalExpressCheckoutClient.cs" />
+    <Compile Include="Payments\PaymentClientDeligator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

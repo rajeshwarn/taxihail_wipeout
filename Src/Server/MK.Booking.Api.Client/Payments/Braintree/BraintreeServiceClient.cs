@@ -1,5 +1,4 @@
 ﻿using System;
-using BraintreeEncryption.Library;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
