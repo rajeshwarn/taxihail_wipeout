@@ -60,7 +60,6 @@ namespace apcurium.MK.Web
         protected string FindParam(string[] filters, string param)
         {
             var pair = filters.FirstOrDefault(x => x.StartsWith(param + "="));
-
             return pair == null
                 ? string.Empty
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
