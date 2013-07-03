@@ -85,7 +85,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Dialog\DialogViewController.cs" />
     <Compile Include="Dialog\Elements\MessageSummaryView.cs" />

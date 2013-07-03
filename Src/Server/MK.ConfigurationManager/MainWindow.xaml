@@ -89,8 +89,9 @@
                         <Button  Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveVersion" />
                         <DataGrid  Grid.Row="1" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,10,10,10" AutoGenerateColumns="False" ItemsSource="{Binding Versions}" VerticalAlignment="Stretch">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Width="100" Header="Version" Binding="{Binding Display}" />
-                                <DataGridTextColumn Width="100" Header="Revision" Binding="{Binding Revision}" />                                
+                                <DataGridTextColumn Width="200" Header="Version" Binding="{Binding Display}" />
+                                <DataGridTextColumn Width="100" Header="Revision" Binding="{Binding Revision}" />
+                                <DataGridCheckBoxColumn Width="50" Header="Hidden" Binding="{Binding Hidden}" />
                             </DataGrid.Columns>
                         </DataGrid>
                         
@@ -165,7 +166,7 @@
                                 <ComboBox Grid.Row="2" Name="DeployTaxiHailEnvCombobox"   Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                 <TextBlock Grid.Row="3" VerticalAlignment="Center">Version-Rev.</TextBlock>
-                                <ComboBox Grid.Row="3" Grid.Column="1" Name="DeployVersionCombobox"  IsEditable="True"  DisplayMemberPath="Display" SelectedItem="{Binding DeployVersion,Mode=TwoWay}" ItemsSource="{Binding Versions}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <ComboBox Grid.Row="3" Grid.Column="1" Name="DeployVersionCombobox"  IsEditable="False"  DisplayMemberPath="Display" SelectedItem="{Binding DeployVersion,Mode=TwoWay}" ItemsSource="{Binding VersionsNotHidden}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
                                  <TextBlock Grid.Row="4" VerticalAlignment="Center">Or revision only</TextBlock>
                                  <TextBox Text="{Binding DeployRevision}"  Grid.Row="4" Grid.Column="1" Width="250" Margin="10,10,10,10" HorizontalAlignment="Left" ></TextBox>

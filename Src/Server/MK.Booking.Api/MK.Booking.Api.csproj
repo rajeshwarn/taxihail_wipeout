@@ -42,6 +42,10 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Braintree-2.23.1, Version=2.23.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Braintree.2.23.1\lib\Braintree-2.23.1.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -122,11 +126,14 @@
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\Payment\BraintreePaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\Payment\CmtPaymentService.cs" />
+    <Compile Include="Services\Payment\PaymentService.cs" />
     <Compile Include="Services\Payment\PayPalService.cs" />
     <Compile Include="Services\RestOrderservice.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />

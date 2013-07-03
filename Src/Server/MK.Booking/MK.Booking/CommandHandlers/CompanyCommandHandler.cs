@@ -2,14 +2,26 @@
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateTariff>, ICommandHandler<UpdateTariff>, ICommandHandler<DeleteTariff>, ICommandHandler<AddOrUpdateAppSettings>,
-        ICommandHandler<CreateRule>, ICommandHandler<UpdateRule>, ICommandHandler<DeleteRule>, ICommandHandler<ActivateRule>, ICommandHandler<DeactivateRule>,
+    public class CompanyCommandHandler : 
+        ICommandHandler<CreateCompany>,
+        ICommandHandler<CreateTariff>, 
+        ICommandHandler<UpdateTariff>,
+        ICommandHandler<DeleteTariff>, 
+        ICommandHandler<AddOrUpdateAppSettings>,
+        ICommandHandler<CreateRule>, 
+        ICommandHandler<UpdateRule>, 
+        ICommandHandler<DeleteRule>, 
+        ICommandHandler<ActivateRule>, 
+        ICommandHandler<DeactivateRule>,
         ICommandHandler<AddRatingType>,
-        ICommandHandler<UpdateRatingType>, ICommandHandler<HideRatingType>
+        ICommandHandler<UpdateRatingType>,
+        ICommandHandler<UpdatePaymentSettings>,
+        ICommandHandler<HideRatingType>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -195,6 +207,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.HideRatingType(command.RatingTypeId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdatePaymentSettings command)
+        {
+            var company = _repository.Get(command.ServerPaymentSettings.CompanyId);
+
+            company.UpdatePaymentSettings(command);
 
             _repository.Save(company, command.Id.ToString());
         }

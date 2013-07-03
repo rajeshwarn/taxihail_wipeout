@@ -54,6 +54,7 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
+    <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
     <Compile Include="OrderVehiclePositionChanged.cs" />
     <Compile Include="RuleActivated.cs" />

@@ -61,7 +61,6 @@
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
-    <Compile Include="Requests\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
@@ -72,6 +71,16 @@
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
+    <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
@@ -84,20 +93,25 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
-    <Compile Include="Resources\AppSetting.cs" />
-    <Compile Include="Resources\Cmt\CmtResponse.cs" />
-    <Compile Include="Resources\Cmt\LinkData.cs" />
-    <Compile Include="Resources\Cmt\PreCogActionType.cs" />
-    <Compile Include="Resources\Cmt\PreCogChoice.cs" />
-    <Compile Include="Resources\Cmt\PreCogFeature.cs" />
-    <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
-    <Compile Include="Resources\Cmt\PreCogMessage.cs" />
-    <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogChoice.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogFeature.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMapItem.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMessage.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
+    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
+    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
@@ -129,5 +143,7 @@
       <Name>MK.Booking.Google.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Payments\Braintree\" />
+  </ItemGroup>
 </Project>

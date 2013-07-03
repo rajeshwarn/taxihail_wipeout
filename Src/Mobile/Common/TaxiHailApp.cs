@@ -28,6 +28,8 @@ using System.Collections.Generic;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Api.Client.Payments;
+using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -102,15 +104,19 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
 
-            /* Use fake please
+
 			container.Register<IPaymentServiceClient>((c, p) =>
 			{
-				var settings = c.Resolve<IAppSettings>();
-				return new CmtPaymentClient( settings.PaymentBaseUrl, settings.PaymentConsumerKey, settings.PaymentConsumerSecretKey, settings.PaymentCurrencyCode, true);
-			});
-            */
-            container.Register<IPaymentServiceClient>((c, p) =>new CmtFakeClient());//Fake
+				var settings = c.Resolve<IAppSettings>().ClientPaymentSettings;
+				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
+				var sessionId = this.GetSessionId(c);
 
+				return new PaymentClientDeligate(settings,
+				                                 new BraintreeServiceClient(baseUrl,sessionId), 
+				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
+			});
+            
+            container.Register<IPaymentServiceClient>((c, p) =>new FakePaymentClient());//Fake
 
             container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 

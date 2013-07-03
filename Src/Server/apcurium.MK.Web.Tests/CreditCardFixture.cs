@@ -76,10 +76,8 @@ namespace apcurium.MK.Web.Tests
             const string last4Digits = "4025";
             //const string token = "jjwcnSLWm85";
 
-            DummyConfigManager.AddOrSet(AuthorizationRequest.CurrencyCodes.CurrencyCodeString, AuthorizationRequest.CurrencyCodes.Main.CanadaDollar);
-
-
-            var tokenResponse = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate);
+            var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
+            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2+"");
 
             sut.AddCreditCard(new CreditCardRequest
             {

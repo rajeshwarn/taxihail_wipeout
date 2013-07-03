@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Common
 {
@@ -34,6 +35,11 @@ namespace apcurium.MK.Common
         public void SetSettings(IDictionary<string, string> appSettings)
         {
             AppSettings = appSettings;
+        }
+
+        public ClientPaymentSettings GetPaymentSettings()
+        {
+           return new ServerPaymentSettings(Guid.NewGuid());
         }
 
         private IDictionary<string, string> AppSettings { get; set; }

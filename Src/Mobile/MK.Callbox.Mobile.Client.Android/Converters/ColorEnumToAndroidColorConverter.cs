@@ -13,13 +13,10 @@ namespace apcurium.MK.Callbox.Mobile.Client.Converters
             {
                 case ColorEnum.Black:
                     return Android.Graphics.Color.Black;
-                    break;
                 case ColorEnum.Green:
                     return Android.Graphics.Color.Green;
-                    break;
                     case ColorEnum.Red:
                     return Android.Graphics.Color.Red;
-                    break;
                     case ColorEnum.LightGray:
                     return Android.Graphics.Color.Gray;
             }

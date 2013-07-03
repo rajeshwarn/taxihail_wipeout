@@ -592,15 +592,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 
-            int responseCode;                            
-			var response = creditAuthorizationService.Tokenize(creditCard.CardNumber, new DateTime(creditCard.ExpirationYear.ToInt(), 
-			                                                                                       creditCard.ExpirationMonth.ToInt(), 1)); 				
-			creditCard.Token = response.CardOnFileToken;            
-			responseCode = response.ResponseCode;
+                var response = creditAuthorizationService.Tokenize(
+                    creditCard.CardNumber,
+                    new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
+                    creditCard.CCV); 				
+			    creditCard.Token = response.CardOnFileToken;       
+			
 			}
 			catch
 			{
-                TinyIoC.TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage ( "Validation", "Cannot validate the credit card.");
+                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage ( "Validation", "Cannot validate the credit card.");
                 return;
 			}
             

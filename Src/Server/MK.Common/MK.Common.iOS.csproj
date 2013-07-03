@@ -100,6 +100,9 @@
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
+    <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="CurencyCodes.cs" />
+    <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />

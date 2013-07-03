@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
         {
             var settings = new Dictionary<string,string>()
             {
-                {"IBS.ExcludedVehicleTypeId", request.ExcludedVehicleTypeId == null ? null :  string.Join(";",request.ExcludedVehicleTypeId.Select(x=>x.ToString()))  },
-                {"IBS.ExcludedPaymentTypeId", request.ExcludedPaymentTypeId == null ? null : string.Join(";",request.ExcludedPaymentTypeId.Select(x=>x.ToString()))  },
-                {"IBS.ExcludedProviderId", request.ExcludedProviderId == null ? null :string.Join(";",request.ExcludedProviderId.Select(x=>x.ToString()))  }
+                {"IBS.ExcludedVehicleTypeId",   request.ExcludedVehicleTypeId == null   ? null :    string.Join(";",request.ExcludedVehicleTypeId.Select(x=>x.ToString()))  },
+                {"IBS.ExcludedPaymentTypeId",   request.ExcludedPaymentTypeId == null   ? null :    string.Join(";",request.ExcludedPaymentTypeId.Select(x=>x.ToString()))  },
+                {"IBS.ExcludedProviderId",      request.ExcludedProviderId == null      ? null :    string.Join(";",request.ExcludedProviderId.Select(x=>x.ToString()))  }
             };
 
             var command = new Commands.AddOrUpdateAppSettings { AppSettings = settings, CompanyId = AppConstants.CompanyId };

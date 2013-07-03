@@ -102,19 +102,9 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
-    <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
-    <Compile Include="Requests\Cmt\PreCogRequest.cs" />
-    <Compile Include="Resources\Cmt\CmtResponse.cs" />
-    <Compile Include="Resources\Cmt\LinkData.cs" />
-    <Compile Include="Resources\Cmt\PreCogActionType.cs" />
-    <Compile Include="Resources\Cmt\PreCogChoice.cs" />
-    <Compile Include="Resources\Cmt\PreCogFeature.cs" />
-    <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
-    <Compile Include="Resources\Cmt\PreCogMessage.cs" />
-    <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
@@ -129,6 +119,30 @@
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\Payment\PayPalRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
+    <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\PayPalRequest.cs" />
+    <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogChoice.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogFeature.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMapItem.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMessage.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
+    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
+    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -144,8 +158,6 @@
     <BundleResource Include="Resources\OrderRatings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Requests\Cmt\" />
-    <Folder Include="Resources\Cmt\" />
     <Folder Include="Security\" />
     <Folder Include="Requests\Messages\" />
     <Folder Include="Requests\Payment\" />

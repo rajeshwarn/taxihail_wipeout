@@ -58,5 +58,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             throw new NotImplementedException ();
         }
+
+        public ClientPaymentSettings GetPaymentSettings()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

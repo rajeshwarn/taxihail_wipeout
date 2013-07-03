@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Orders
     [Route("/order/payments/{TransactionId}", "POST")]
     public class CapturePaymentRequest : IReturnVoid
     {
-        public long TransactionId { get; set; }
+        public string TransactionId { get; set; }
 
         public Guid OrderId { get; set; }
 
