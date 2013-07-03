@@ -113,6 +113,7 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
+    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />

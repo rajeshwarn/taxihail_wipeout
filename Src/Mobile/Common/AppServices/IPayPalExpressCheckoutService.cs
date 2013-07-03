@@ -1,10 +1,12 @@
 using System;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IPayPalExpressCheckoutService
     {
-        void SetExpressCheckout();
+        Task<string> SetExpressCheckoutForAmount(decimal amount);
+
     }
 }
 

@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 
@@ -54,52 +55,58 @@ namespace apcurium.MK.Booking.Mobile
         
         private void InitalizeServices()
         {
-            TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
+            var container = TinyIoCContainer.Current;
+            container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => 
+            container.Register<IAccountServiceClient>((c, p) => 
                                                                      new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentServiceClient>()),
                                                                      "NotAuthenticated");
             
-            TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
+            container.Register<IAccountServiceClient>((c, p) =>
 			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentServiceClient>()),
                                                                      "Authenticate");
             
-			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentServiceClient>()));
+            container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentServiceClient>()));
 
-            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-            TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-            TinyIoCContainer.Current.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-			TinyIoCContainer.Current.Register<PushNotificationRegistrationServiceClient>((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<PushNotificationRegistrationServiceClient>((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             
-            TinyIoCContainer.Current.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<IAccountService, AccountService>();
-            TinyIoCContainer.Current.Register<IBookingService, BookingService>();
+            container.Register<IAccountService, AccountService>();
+            container.Register<IBookingService, BookingService>();
 
-            TinyIoCContainer.Current.Register<ITutorialService, TutorialService>();
+            container.Register<ITutorialService, TutorialService>();
 
 
 
-            TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
-            TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
-            TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
+            container.Register<IGeolocService, GeolocService>();
+            container.Register<IGoogleService, GoogleService>();
+            container.Register<IApplicationInfoService, ApplicationInfoService>();
 
-            TinyIoCContainer.Current.Register<IPriceCalculator, PriceCalculator>();
-            TinyIoCContainer.Current.Register<IAddresses, Addresses>();
-            TinyIoCContainer.Current.Register<IDirections, Directions>();
-            TinyIoCContainer.Current.Register<IGeocoding, Geocoding>();
-            TinyIoCContainer.Current.Register<IPlaces, Places>();
-            TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
-            TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
-            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
+            container.Register<IPriceCalculator, PriceCalculator>();
+            container.Register<IAddresses, Addresses>();
+            container.Register<IDirections, Directions>();
+            container.Register<IGeocoding, Geocoding>();
+            container.Register<IPlaces, Places>();
+            container.Register<IMapsApiClient, MapsApiClient>();
+            container.Register<IPopularAddressProvider, PopularAddressProvider>();
+            container.Register<ITariffProvider, TariffProvider>();
+            // ***** PayPal *****
+            container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
+            container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-			TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>
+
+
+			container.Register<IPaymentServiceClient>((c, p) =>
 			{
 				var settings = c.Resolve<IConfigurationManager>().GetPaymentSettings();
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
@@ -111,12 +118,11 @@ namespace apcurium.MK.Booking.Mobile
 			});
             
 
+            container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-
-            TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
-            TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
+            container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
+            container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
         }
