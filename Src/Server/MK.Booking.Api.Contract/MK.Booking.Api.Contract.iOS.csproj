@@ -128,6 +128,7 @@
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\Payment\PayPalRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -147,6 +148,7 @@
     <Folder Include="Resources\Cmt\" />
     <Folder Include="Security\" />
     <Folder Include="Requests\Messages\" />
+    <Folder Include="Requests\Payment\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

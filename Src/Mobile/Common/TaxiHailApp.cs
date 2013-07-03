@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -96,6 +97,11 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IMapsApiClient, MapsApiClient>();
             container.Register<IPopularAddressProvider, PopularAddressProvider>();
             container.Register<ITariffProvider, TariffProvider>();
+            // ***** PayPal *****
+            container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
+            container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+
+
             /* Use fake please
 			container.Register<IPaymentServiceClient>((c, p) =>
 			{

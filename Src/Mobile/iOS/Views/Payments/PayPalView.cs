@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             ViewModel.Load();
 
             webView.ShouldStartLoad = LoadHook;
+
             webView.LoadRequest(new NSUrlRequest(new NSUrl(ViewModel.Url)));
 
             // Perform any additional setup after loading the view, typically from a nib.

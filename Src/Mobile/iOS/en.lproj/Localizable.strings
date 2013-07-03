@@ -270,7 +270,7 @@
 "RideHistoryButton"="Ride History";
 "SendEmail"="Send mail...";
 "PickupWasActivatedToastMessage"="Pickup selection is active.";
-"InvalidLoginMessageTitle"="Invalid information";
+"InvalidLoginMessageTitle"="Login error";
 "View_About"="About Us";
 "NoConnectionTitle"="Connection error";
 "PickupOffButtonImageName"="Assets/Button/btnPickup_off_en.png";
@@ -420,3 +420,5 @@
 "VehicleNumberErrorMessage"="Unable to retrieve vehicle number. Please pay in car.";
 "PayPalButton"="Pay with PayPal";
 "View_PayPal"="PayPal";
+"AccountNotActivated"="Your account has not been activated. Another activation email was sent to you.";
+"AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
