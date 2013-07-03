@@ -216,6 +216,8 @@
     <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
+    <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
+    <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
     <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
     <Content Include="assets\bootstrap-timepicker\compiled\timepicker.css" />
