@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterAccount command)
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language, command.IsAdmin);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
 

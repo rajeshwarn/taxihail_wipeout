@@ -27,5 +27,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Language { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public bool AccountActivationDisabled { get; set; }
     }
 }

@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-
                 var account = new AccountDetail
                                  {
                                      Name = @event.Name,
@@ -46,9 +45,9 @@ namespace apcurium.MK.Booking.EventHandlers
                                      Language = @event.Language,
                                      IsAdmin = @event.IsAdmin,
                                      CreationDate = @event.EventDate,
-                                     ConfirmationToken = @event.ConfirmationToken
+                                     ConfirmationToken = @event.ConfirmationToken,
+                                     IsConfirmed = @event.AccountActivationDisabled
                                  };
-
 
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
@@ -72,7 +71,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     RingCode = c.RingCode
                 }));
                 context.SaveChanges();
-
             }
         }
 
