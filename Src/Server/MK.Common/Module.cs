@@ -19,7 +19,7 @@ namespace apcurium.MK.Common
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
 
             container.RegisterInstance<ILogger>(new Logger());
-            container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
+            container.RegisterInstance<IConfigurationManager>(new Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
 
             Database.SetInitializer<CachingDbContext>(null);
             container.RegisterType<CachingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
