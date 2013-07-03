@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 this.Resources.GetString("YesButton"),
                 () =>
                 {
-                    this.GetService<IAccountService>().RemoveCreditCard(creditCardId);
+                    AccountService.RemoveCreditCard(creditCardId);
                     var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
                     if (creditCardToRemove != null)
                     {
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return Task.Factory.StartNew(() =>
             {
-                var creditCards = TinyIoCContainer.Current.Resolve<IAccountService>().GetCreditCards().ToList();
+                var creditCards = AccountService.GetCreditCards().ToList();
                 creditCards.Add(new CreditCardDetails
                 {
                     FriendlyName = Resources.GetString("AddCreditCardTitle"),

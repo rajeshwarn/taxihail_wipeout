@@ -1,4 +1,5 @@
 using System;
+using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
