@@ -21,27 +21,27 @@ namespace MK.DeploymentService
 {
     public class DeploymentJobService
     {
-        private readonly Timer timer;
-        private readonly ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
-        private readonly ILog logger;
+        private readonly Timer _timer;
+        private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private readonly ILog _logger;
         
         public DeploymentJobService()
         {
-            timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
-            logger = LogManager.GetLogger("DeploymentJobService");
+            _timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
+            _logger = LogManager.GetLogger("DeploymentJobService");
         }
 
         public void Start()
         {
             Database.SetInitializer<ConfigurationManagerDbContext>(null);
-            timer.Change(0, 2000);
+            _timer.Change(0, 2000);
         }
 
         private void TimerOnElapsed(object state)
         {
             try
             {
-                if (@lock.TryEnterWriteLock(0))
+                if (_lock.TryEnterWriteLock(0))
                 {
                     CheckAndRunJobWithBuild();
                 }
@@ -53,14 +53,14 @@ namespace MK.DeploymentService
             }
             finally
             {
-                if (@lock.IsWriteLockHeld) @lock.ExitWriteLock();
+                if (_lock.IsWriteLockHeld) _lock.ExitWriteLock();
             }
         }
 
         private void CheckAndRunJobWithBuild()
         {
-            var DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
-            var job = DbContext.Set<DeploymentJob>()
+            var dbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
+            var job = dbContext.Set<DeploymentJob>()
                 .Include(x => x.Company)
                 .Include(x => x.IBSServer)
                 .Include(x => x.TaxHailEnv)
@@ -70,9 +70,9 @@ namespace MK.DeploymentService
             {
                 try
                 {
-                    logger.DebugFormat("New Job for {0}", job.Company.Name);
+                    _logger.DebugFormat("New Job for {0}", job.Company.Name);
                     job.Status = JobStatus.INPROGRESS;
-                    DbContext.SaveChanges();
+                    dbContext.SaveChanges();
 
                     var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
                     if (Properties.Settings.Default.Mode == "Build")
@@ -89,19 +89,19 @@ namespace MK.DeploymentService
                             packagesDirectory = Properties.Settings.Default.DeployFolder;
                         }
                         DeployTaxiHail(job, packagesDirectory);
-                        logger.DebugFormat("Job Done");
+                        _logger.DebugFormat("Job Done");
                     }
 
                     job.Details = string.Empty;
                     job.Status = JobStatus.SUCCESS;
-                    DbContext.SaveChanges();
+                    dbContext.SaveChanges();
 
                 }catch(Exception e)
                 {
-                    logger.Error(e.Message, e);
+                    _logger.Error(e.Message, e);
                     job.Status = JobStatus.ERROR;
                     job.Details = e.Message;
-                    DbContext.SaveChanges();
+                    dbContext.SaveChanges();
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace MK.DeploymentService
 
             if (!Directory.Exists(sourceDirectory))
             {
-                logger.DebugFormat("Clone Source Code");
+                _logger.DebugFormat("Clone Source Code");
                 Directory.CreateDirectory(sourceDirectory);
                 var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
                                          sourceDirectory, revision);
@@ -149,7 +149,7 @@ namespace MK.DeploymentService
             }
             else
             {
-                logger.DebugFormat("Revert, Purge and Update Source Code");
+                _logger.DebugFormat("Revert, Purge and Update Source Code");
                 //already clone just do a revert and update the source
                 RevertAndPull(sourceDirectory);
             }
@@ -157,7 +157,7 @@ namespace MK.DeploymentService
 
             if (!string.IsNullOrEmpty(revision))
             {
-                logger.DebugFormat("Update to revision {0}", revision);
+                _logger.DebugFormat("Update to revision {0}", revision);
                 var hgUpdate = new ProcessStartInfo
                                    {
                                        FileName = "hg.exe",
@@ -178,7 +178,7 @@ namespace MK.DeploymentService
                 }
             }
 
-            logger.DebugFormat("Build Databse Initializer");
+            _logger.DebugFormat("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
             var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
@@ -194,7 +194,7 @@ namespace MK.DeploymentService
             var sourcePath = Path.Combine(sourceDirectory, @"Src\Server\DatabaseInitializer\bin\Release");
             CopyFiles(sourcePath, targetDir);
 
-            logger.DebugFormat("Build Web Site");
+            _logger.DebugFormat("Build Web Site");
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
             buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Package" }, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
@@ -226,7 +226,7 @@ namespace MK.DeploymentService
 
         private void DeployTaxiHail(DeploymentJob job, string packagesDirectory)
         {
-            logger.DebugFormat("Deploying");
+            _logger.DebugFormat("Deploying");
             var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
@@ -254,7 +254,7 @@ namespace MK.DeploymentService
 
         private void DeployDataBase(DeploymentJob job, string packagesDirectory, string companyName)
         {
-            logger.DebugFormat("Deploying DB");
+            _logger.DebugFormat("Deploying DB");
             var jsonSettings = new JObject();
             foreach (var setting in job.Company.ConfigurationProperties)
             {
@@ -295,7 +295,7 @@ namespace MK.DeploymentService
 
         private void DeployServer(DeploymentJob job, string companyName, string packagesDirectory, ServerManager iisManager)
         {
-            logger.DebugFormat("Deploying IIS");
+            _logger.DebugFormat("Deploying IIS");
 
             var revision = GetRevisionNumber(job);
             
@@ -350,82 +350,90 @@ namespace MK.DeploymentService
 
         private void RevertAndPull(string repository)
         {
-            var hgRevert = new ProcessStartInfo
-                               {
-                                   FileName = "hg.exe",
-                                   WindowStyle = ProcessWindowStyle.Hidden,
-                                   UseShellExecute = false,
-                                   CreateNoWindow = false,
-                                   Arguments = string.Format("update --repository {0} -C -r default", repository)
-                               };
-
+            var hgRevert = GetProcess("hg.exe", string.Format("update --repository {0} -C -r default", repository));
+ 
             using (var exeProcess = Process.Start(hgRevert))
             {
-                exeProcess.WaitForExit();
+                var output = GetOutput(exeProcess);
+
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during revert source code step");
+                    throw new Exception("Error during revert source code step" + output);
                 }
             }
 
-            var hgPurge = new ProcessStartInfo
-                              {
-                                  FileName = "hg.exe",
-                                  WindowStyle = ProcessWindowStyle.Hidden,
-                                  UseShellExecute = false,
-                                  CreateNoWindow = false,
-                                  Arguments = string.Format("purge --all --repository {0}", repository)
-                              };
+            var hgPurge = GetProcess("hg.exe",string.Format("purge --all --repository {0}", repository));
 
             using (var exeProcess = Process.Start(hgPurge))
             {
-                exeProcess.WaitForExit();
+                var output = GetOutput(exeProcess);
+
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during purge source code step");
+                    throw new Exception("Error during purge source code step"+output);
                 }
             }
-
-            var hgPull = new ProcessStartInfo
-                             {
-                                 FileName = "hg.exe",
-                                 WindowStyle = ProcessWindowStyle.Hidden,
-                                 UseShellExecute = false,
-                                 CreateNoWindow = false,
-                                 Arguments = string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository)
-                             };
+            
+            var hgPull = GetProcess("hg.exe", string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 
             using (var exeProcess = Process.Start(hgPull))
             {
-                exeProcess.WaitForExit();
+                var output = GetOutput(exeProcess);
+
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during pull source code step");
+                    throw new Exception("Error during pull source code step" + output );
                 }
             }
 
-            var hgUpdate = new ProcessStartInfo
-            {
-                FileName = "hg.exe",
-                WindowStyle = ProcessWindowStyle.Hidden,
-                UseShellExecute = false,
-                CreateNoWindow = false,
-                Arguments = string.Format("update --repository {0}", repository)
-            };
+            var hgUpdate = GetProcess("hg.exe", string.Format("update --repository {0}", repository));
 
             using (var exeProcess = Process.Start(hgUpdate))
             {
-                exeProcess.WaitForExit();
+                var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during revert source code step");
+                    throw new Exception("Error during revert source code step" + output);
                 }
             }
         }
 
+        private static ProcessStartInfo GetProcess(string filename, string args)
+        {
+            return  new ProcessStartInfo
+                {
+                    FileName = filename,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    UseShellExecute = false,
+                    CreateNoWindow = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    Arguments = args
+                };
+        }
+
+        private static string GetOutput(Process exeProcess)
+        {
+            var output = "\n---------------------------------------------output\n";
+
+            exeProcess.OutputDataReceived += (s, e) =>
+            {
+                output += e.Data+"\n";
+            };
+            exeProcess.ErrorDataReceived += (s, e) => 
+            {
+                output += e.Data + "\n";
+            };
+            
+            exeProcess.BeginOutputReadLine();
+            exeProcess.BeginErrorReadLine();
+            exeProcess.WaitForExit();
+            return output + "\n---------------------------------------------output\n";
+        }
+
         public void Stop()
         {
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
         }
     }
 }
