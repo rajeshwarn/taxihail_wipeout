@@ -2,11 +2,14 @@
 using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
+using apcurium.MK.Booking.Api.Contract.Requests.Orders;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
 using MK.Booking.Api.Client;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 
 
@@ -18,21 +21,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// cardholder data to create the token so there is no way to get the cardholder information 
     /// with just the token alone
     /// </summary>
-	public class CmtPaymentClient : CmtBasePaymentServiceClient, IPaymentServiceClient
+    public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-		private readonly string _currencyCode;
-
-
-
-        public CmtPaymentClient(CmtPaymentSettings settings)
-            : base(settings.BaseUrl,settings.CustomerKey,settings.ConsumerSecretKey,true)
+        public CmtPaymentClient(string baseUrl,string sessionId, string cmtBaseUrl)
+            : base(baseUrl,sessionId)
         {
-            _currencyCode = settings.CurrencyCode;
+            CmtClient = new CmtPaymentServiceClient(cmtBaseUrl,true);
         }
+
+        private CmtPaymentServiceClient CmtClient { get; set; }
 
         public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            var response = Client.Post(new TokenizeRequest
+            var response = CmtClient.Post(new TokenizeRequest
             {
                 AccountNumber = accountNumber,
                 ExpiryDateYYMM = expiryDate.ToString("yyMM")
@@ -51,60 +52,34 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            var response = Client.Delete(new TokenizeDeleteRequest()
+            return Client.Post(new DeleteTokenizedCreditcardCmtRequest()
                 {
                     CardToken = cardToken
                 });
-
-            return new DeleteTokenizedCreditcardResponse()
-                {
-                    IsSuccessfull = response.ResponseCode == 1,
-                    Message = response.ResponseMessage
-                };
-        }
-
-
-        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
-        {
-            var response = Client.Post(new CaptureRequest
-            {
-                TransactionId = transactionId.ToLong(),
-                L3Data = new LevelThreeData()
-                {
-                    PurchaseOrderNumber = orderNumber
-                }
-            });
-
-            return new CommitPreauthoriedPaymentResponse()
-            {
-                IsSuccessfull = response.ResponseCode == 1,
-                Message = response.ResponseMessage,
-            };
         }
 
         public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
-		{
-            var request = new AuthorizationRequest()
-            {
-                Amount = (int)(amount * 100),
-                CardOnFileToken = cardToken,
-                CurrencyCode = _currencyCode,
-                TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                L3Data = new LevelThreeData()
+        {
+            return Client.Post(new PreAuthorizePaymentCmtRequest()
                 {
-                    PurchaseOrderNumber = orderNumber
-                }
-            };
-            var response = Client.Post(request);
+                    Amount = amount,
+                    CardToken = cardToken,
+                    OrderNumber = orderNumber
+                });
 
-            return new PreAuthorizePaymentResponse()
-            {
-                IsSuccessfull = response.ResponseCode == 1,
-                Message = response.ResponseMessage,
-                TransactionId = response.TransactionId + "",
-            };
-		}
+        }
+
+
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        {
+            return Client.Post(new CommitPreauthorizedPaymentCmtRequest()
+                {
+                    OrderNumber = orderNumber,
+                    TransactionId = transactionId
+                });
+        }
+
+        
 
 
 

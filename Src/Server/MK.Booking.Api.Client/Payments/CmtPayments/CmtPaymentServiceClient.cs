@@ -1,31 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Client.Client;
 using System.Net;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
-using ServiceStack.Service;
 using MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
-    public class CmtBasePaymentServiceClient
+    public class CmtPaymentServiceClient : CustomXmlServiceClient
     {
-   
 
-		public CmtBasePaymentServiceClient(string baseUrl,  string consumerKey, string consumerSecretKey,  bool ignoreCertificateErrors )
+        public CmtPaymentServiceClient(
+            string baseUrl,  bool ignoreCertificateErrors )
+            :base(baseUrl,ignoreCertificateErrors)
         {
-			ConsumerKey = consumerKey;
-			ConsumerSecretKey = consumerSecretKey;
+            Timeout = new TimeSpan(0, 0, 0, 20, 0);
+            LocalHttpWebRequestFilter = SignRequest;
 
-			Client = new CustomXmlServiceClient(baseUrl, ignoreCertificateErrors)
-            {
-                Timeout = new TimeSpan(0, 0, 0, 20, 0),
-                LocalHttpWebRequestFilter = r=>SignRequest(r)
-            };        
+		    string consumerKey = "";
+		    string consumerSecretKey = "";
+
+			ConsumerKey = consumerKey;
+			ConsumerSecretKey = consumerSecretKey;  
         }
 
 		protected string ConsumerKey {
@@ -38,8 +33,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 			get;
 			private set;
 		}
-        protected CustomXmlServiceClient Client { get; set; }
 
+        
         private void SignRequest(WebRequest request)
         {
             var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,

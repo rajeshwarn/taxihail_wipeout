@@ -43,9 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\IConfigurationManager.cs" />
-    <Compile Include="Configuration\Impl\BrainTreeSettings.cs" />
-    <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
-    <Compile Include="Configuration\Impl\PaymentSetting.cs" />
+    <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />

@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Client
 
         PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber);
 
-        CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber);
+        CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber);
 	}
 }
 

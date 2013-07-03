@@ -37,7 +37,7 @@ namespace apcurium.MK.Common
             AppSettings = appSettings;
         }
 
-        public PaymentSetting GetPaymentSettings()
+        public ClientPaymentSetting GetPaymentSettings()
         {
            return new PaymentSetting(Guid.NewGuid());
         }

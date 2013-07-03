@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
-namespace apcurium.MK.Booking.Api.Contract.Requests.Braintree
+namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
 {
-    [Route("/payments/braintree/CommitPreauthorizedPaymentPayment", "POST")]
-    public class CommitPreauthorizedPaymentBraintreeRequest : IReturn<CommitPreauthorizedPaymentResponse>
+
+    [Route("/payments/cmt/preAuthorizePayment", "POST")]
+    public class CommitPreauthorizedPaymentCmtRequest : IReturn<CommitPreauthorizedPaymentResponse>
     {
         public string TransactionId { get; set; }
 
+        public string OrderNumber { get; set; }
     }
 }

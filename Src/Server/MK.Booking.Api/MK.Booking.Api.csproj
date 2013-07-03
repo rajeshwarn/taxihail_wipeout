@@ -131,6 +131,7 @@
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\CmtPaymentService.cs" />
     <Compile Include="Services\RestOrderservice.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />

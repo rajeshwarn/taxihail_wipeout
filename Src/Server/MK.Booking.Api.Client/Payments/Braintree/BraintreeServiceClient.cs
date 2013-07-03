@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Braintree;
 using BraintreeEncryption.Library;
-using MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common.Configuration.Impl;
-using Environment = Braintree.Environment;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
+namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
@@ -63,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
 
         }
 
-        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
             return Client.Post(new CommitPreauthorizedPaymentBraintreeRequest()
                 {

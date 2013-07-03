@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -18,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _configurationManager = configurationManager;
 
-            var settings = _configurationManager.GetPaymentSettings().BraintreeSettings;
+            var settings = ((PaymentSetting)_configurationManager.GetPaymentSettings()).BraintreeSettings;
 
             var env = Braintree.Environment.SANDBOX;
             if (!settings.IsSandBox)
@@ -108,11 +110,11 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        public CommitPreauthoriedPaymentResponse Post(CommitPreauthorizedPaymentBraintreeRequest request)
+        public CommitPreauthorizedPaymentResponse Post(CommitPreauthorizedPaymentBraintreeRequest request)
         {
             var result = Client.Transaction.SubmitForSettlement(request.TransactionId);
 
-            return new CommitPreauthoriedPaymentResponse()
+            return new CommitPreauthorizedPaymentResponse()
             {
                 IsSuccessfull = result.IsSuccess(),
                 Message = "Success"

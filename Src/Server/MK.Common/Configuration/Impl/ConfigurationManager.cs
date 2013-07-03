@@ -40,7 +40,8 @@ namespace apcurium.MK.Common.Configuration.Impl
             throw new NotImplementedException();
         }
         
-        public PaymentSetting GetPaymentSettings()
+
+        public ClientPaymentSetting GetPaymentSettings()
         {
             using (var context = _contextFactory.Invoke())
             {

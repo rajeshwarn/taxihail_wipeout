@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using apcurium.MK.Common.Configuration.Impl;
+using MK.Common.Android.Configuration.Impl;
 
 namespace apcurium.MK.Common.Configuration
 {
@@ -11,6 +11,12 @@ namespace apcurium.MK.Common.Configuration
         IDictionary<string, string> GetSettings();
         void SetSettings(IDictionary<string, string> appSettings);
 
-        PaymentSetting GetPaymentSettings();
+
+        ClientPaymentSetting GetPaymentSettings();
+    }
+
+    public class ClientPaymentSetting
+    {
+        public PaymentMethod PaymentMode { get; set; }
     }
 }

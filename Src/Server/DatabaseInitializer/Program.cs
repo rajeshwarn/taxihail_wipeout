@@ -83,7 +83,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-                    paymentSettingsFromDb = configurationManager.GetPaymentSettings();
+                    paymentSettingsFromDb = (PaymentSetting)configurationManager.GetPaymentSettings();
                     //version would be updated from information in the Configuraton Manager DB
                     settingsInDb.Remove("TaxiHail.Version");
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);

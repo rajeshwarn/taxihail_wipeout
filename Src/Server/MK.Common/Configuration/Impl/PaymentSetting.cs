@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MK.Common.Android.Configuration.Impl;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class PaymentSetting
+    public class PaymentSetting : ClientPaymentSetting
     {
         public PaymentSetting() //for serialization
         {
@@ -30,14 +31,6 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public BraintreeSettings BraintreeSettings { get; set; }
 
-        public PaymentMethod PaymentMode { get; set; }
 
-        public enum PaymentMethod
-        {
-            None,
-            Cmt,
-            Braintree,
-            Fake
-        }
     }
 }

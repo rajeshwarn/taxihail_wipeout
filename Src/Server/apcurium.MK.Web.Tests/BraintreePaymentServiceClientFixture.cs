@@ -8,7 +8,7 @@ using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
+using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 

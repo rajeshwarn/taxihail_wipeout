@@ -1,9 +1,9 @@
 ﻿using System;
+using MK.Common.Android.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
+using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Client.Payments
 {
@@ -11,11 +11,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments
     {
         private readonly IConfigurationManager _configurationManager;
         private readonly BraintreeServiceClient _braintreeServiceClient;
+        private readonly CmtPaymentClient _cmtServiceClient;
 
-        public PaymentClientDeligate(IConfigurationManager configurationManager, BraintreeServiceClient braintreeServiceClient)
+        public PaymentClientDeligate(IConfigurationManager configurationManager, BraintreeServiceClient braintreeServiceClient, CmtPaymentClient cmtServiceClient)
         {
             _configurationManager = configurationManager;
             _braintreeServiceClient = braintreeServiceClient;
+            _cmtServiceClient = cmtServiceClient;
         }
 
         public IPaymentServiceClient GetClient()
@@ -32,13 +34,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments
 
             switch (paymentSettings.PaymentMode)
             {
-                case PaymentSetting.PaymentMethod.Braintree:
+                case PaymentMethod.Braintree:
                     return _braintreeServiceClient;
                     
-                case PaymentSetting.PaymentMethod.Cmt:
-                    return new CmtPaymentClient(paymentSettings.CmtPaymentSettings);
+                case PaymentMethod.Cmt:
+                    return _cmtServiceClient;
 
-                case PaymentSetting.PaymentMethod.Fake:
+                case PaymentMethod.Fake:
                     return new FakePaymentClient();
                 default:
                     throw new Exception(onErrorMessage);
@@ -60,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             return GetClient().PreAuthorize(cardToken, amount, orderNumber);
         }
 
-        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
             return GetClient().CommitPreAuthorized(transactionId, orderNumber);
         }

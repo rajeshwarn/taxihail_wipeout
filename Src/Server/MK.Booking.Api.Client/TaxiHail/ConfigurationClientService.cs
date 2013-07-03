@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using System.Linq;
 
@@ -60,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             throw new NotImplementedException ();
         }
 
-        public PaymentSetting GetPaymentSettings()
+        public ClientPaymentSetting GetPaymentSettings()
         {
             throw new NotImplementedException();
         }

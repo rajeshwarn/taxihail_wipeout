@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Common.Tests
 {
     public class TestConfigurationManager : IConfigurationManager
     {
-        private Dictionary<string, string> _config;
+        private readonly Dictionary<string, string> _config;
 
         public TestConfigurationManager()
         {
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Common.Tests
             }
         }
 
-        public PaymentSetting GetPaymentSettings()
+        public ClientPaymentSetting GetPaymentSettings()
         {
             throw new NotImplementedException();
         }

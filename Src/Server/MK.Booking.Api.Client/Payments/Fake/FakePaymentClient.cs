@@ -41,9 +41,9 @@ namespace apcurium.MK.Booking.Api.Client
                 };
         }
 
-        public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
-            return new CommitPreauthoriedPaymentResponse()
+            return new CommitPreauthorizedPaymentResponse()
                 {
                     IsSuccessfull = true,
                     Message = "Success"

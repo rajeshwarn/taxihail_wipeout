@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
@@ -43,9 +44,9 @@ namespace apcurium.MK.Web.Tests
 
         protected CmtPaymentClient GetCmtPaymentClient()
         {
-            var cmtSettings = DummyConfigManager.GetPaymentSettings().CmtPaymentSettings;
+            var cmtSettings = ((PaymentSetting)DummyConfigManager.GetPaymentSettings()).CmtPaymentSettings;
 
-            return new CmtPaymentClient(cmtSettings);
+            return new CmtPaymentClient(BaseUrl,null,cmtSettings.BaseUrl);
         }
         public virtual void TestFixtureSetup()
         {

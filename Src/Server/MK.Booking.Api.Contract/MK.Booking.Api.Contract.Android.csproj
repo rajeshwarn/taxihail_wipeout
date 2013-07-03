@@ -59,6 +59,10 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
+    <Compile Include="Requests\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
+    <Compile Include="Requests\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\Cmt\PreCogRequest.cs" />
@@ -97,6 +101,11 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
+    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
@@ -127,5 +136,7 @@
       <Name>MK.Booking.Google.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Braintree\" />
+  </ItemGroup>
 </Project>

@@ -7,12 +7,13 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 
 
 namespace apcurium.CMT.Web.Tests
 {
     [TestFixture]
-    //[Ignore("Cmt Payments - Is supposed to provide a new API - 2013-06-25")]
+    [Ignore("Cmt Payments - Is supposed to provide a new API - 2013-06-25")]
     public class CmtPaymentServiceClientFixture : BasePaymentClientFixture
     {
         public CmtPaymentServiceClientFixture() : base(TestCreditCards.TestCreditCardSetting.Cmt)
@@ -31,7 +32,7 @@ namespace apcurium.CMT.Web.Tests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new CmtPaymentClient(DummyConfigManager.GetPaymentSettings().CmtPaymentSettings);
+            return new CmtPaymentClient(BaseUrl,null,"");
         }
     }
 }
