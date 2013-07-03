@@ -32,8 +32,6 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
             
-            container.RegisterInstance<IPaymentServiceClient>(new PaymentClientDeligate(container.Resolve<IConfigurationManager>()));
-
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
             var mockIbsStatusUpdate = bool.Parse(container.Resolve<IConfigurationManager>()
                 .GetSetting("IBS.FakeOrderStatusUpdate") ?? "false");

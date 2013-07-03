@@ -60,12 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePaymentClientFixture.cs" />
-    <Compile Include="BraintreeTests\BraintreePaymentServiceClientFixture.cs" />
     <Compile Include="Cmt\CmtAccountFixture.cs" />
     <Compile Include="Cmt\CmtAuthFixture.cs" />
     <Compile Include="Cmt\CmtBaseTest.cs" />
-    <Compile Include="Cmt\CmtPaymentServiceClientFixture.cs" />
     <Compile Include="Cmt\CmtPreCogFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,7 +83,9 @@
       <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BraintreeTests\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

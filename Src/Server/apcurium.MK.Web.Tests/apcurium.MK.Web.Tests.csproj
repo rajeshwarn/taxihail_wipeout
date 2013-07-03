@@ -99,7 +99,10 @@
     <Compile Include="ApplicationInfoFixture.cs" />
     <Compile Include="AppSettingsFixture.cs" />
     <Compile Include="AuthFixture.cs" />
+    <Compile Include="BasePaymentClientFixture.cs" />
     <Compile Include="BaseTest.cs" />
+    <Compile Include="BraintreePaymentServiceClientFixture.cs" />
+    <Compile Include="CmtPaymentServiceClientFixture.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
     <Compile Include="CreditCardFixture.cs" />

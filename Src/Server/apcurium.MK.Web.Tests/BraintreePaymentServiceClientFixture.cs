@@ -16,6 +16,8 @@ namespace apcurium.CMT.Web.Tests.BraintreeTests
 {
     public class BraintreePaymentServiceClientFixture :BasePaymentClientFixture
     {
+
+
         public BraintreePaymentServiceClientFixture() : base(TestCreditCards.TestCreditCardSetting.Braintree)
         {
             
@@ -23,7 +25,7 @@ namespace apcurium.CMT.Web.Tests.BraintreeTests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new BraintreeServiceClient(new BraintreeSettings());
+            return new BraintreeServiceClient(BaseUrl,null);
         }
     }
 }

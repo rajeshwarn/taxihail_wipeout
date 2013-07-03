@@ -7,118 +7,68 @@ using Braintree;
 using BraintreeEncryption.Library;
 using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
-using apcurium.MK.Booking.Api.Client.Responses;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration.Impl;
 using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree
 {
-    public class BraintreeServiceClient : IPaymentServiceClient
+    public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
-        public static BraintreeGateway Client { get; set; }
-
-        /*
-         * Braintree Creds:
-         * U: apcurium
-         * P: apcurium5200!
-         */
         
-        public BraintreeServiceClient(BraintreeSettings settings)
+        public BraintreeServiceClient(string url, string sessionId):base(url, sessionId)
         {
-            var env = Environment.SANDBOX;
-            if (!settings.IsSandBox)
-            {
-                env = Environment.PRODUCTION;
-            }
-
-            Client = new BraintreeGateway
-            {
-                Environment = env,
-                MerchantId = settings.MerchantId,
-                PublicKey = settings.PublicKey,
-                PrivateKey = settings.PrivateKey,
-            };
-
-            ClientKey = settings.ClientKey;
+            //todo client side get
+            ClientKey =
+                "MIIBCgKCAQEAoj1SlyPOlcbsemg8jNsZkgBjYspWd8goY7Dyf7IAMi68s6lX1QkEZ5iRVDZW8WANT46bbXFSZcerULT9nUx9lMWP8rrcv+i7Qy9LGjj2Zys7D0b98mzcdOoYiAg1GKDWjDW49mEtzlRbTSpgETvzCt3tonqAgZKt5E68P8SkQX+lem7N06KwaW5jFJRYNkYc5cNTyo3pMoCGnWJvBLMuW1CV4dXWxvTQU8dgnug6Y/i0AVJGJtnH2iaqk40+w6mifzpjDI6luTFw9ZXI7wlXitrQDcE0a3Dqx896IdvqP7PNLi6zVGM2DtOojO5f5KIXiFcBkepYnDkzJ33L1iwTKQIDAQAB";
 
         }
 
         protected string ClientKey { get; set; }
 
 
-        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string encryptedCvv)
+        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             var braintree = new BraintreeEncrypter(ClientKey);
-            
-            var request = new CustomerRequest
+            var encryptedNumber = braintree.Encrypt(creditCardNumber);
+            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy"));
+            var encryptedCvv = braintree.Encrypt(cvv);
+
+            return Client.Post(new TokenizeCreditCardBraintreeRequest()
             {
-                CreditCard = new CreditCardRequest()
-                {
-                    Number = braintree.Encrypt(creditCardNumber),
-                    ExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy")),
-                    CVV = braintree.Encrypt(encryptedCvv),
-                }
-            };
-
-            var result = Client.Customer.Create(request);
-
-            var customer = result.Target;
-
-            var cc = customer.CreditCards.First();
-            return new TokenizedCreditCardResponse()
-                {
-                    CardOnFileToken = cc.Token,
-                    CardType = cc.CardType.ToString(),
-                    LastFour = cc.LastFour,
-                    IsSuccessfull = result.IsSuccess(),
-                    Message = result.Message,
-                };
+                EncryptedCreditCardNumber = encryptedNumber,
+                EncryptedExpirationDate = encryptedExpirationDate,
+                EncryptedCvv = encryptedCvv,
+            });
         }
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            Client.CreditCard.Delete(cardToken);
-            return new DeleteTokenizedCreditcardResponse()
+            return Client.Delete(new DeleteTokenizedCreditcardBraintreeRequest()
                 {
-                    IsSuccessfull = true,
-                    Message = "Success"
-                };
-
+                    CardToken = cardToken,
+                });
         }
 
         public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
         {
-            var request = new TransactionRequest
-            {
-                Amount = (decimal)amount,
-                PaymentMethodToken = cardToken,
-       
-                Options = new TransactionOptionsRequest
+            return Client.Post(new PreAuthorizePaymentBraintreeRequest()
                 {
-                    SubmitForSettlement = false
-                }
-            };
-
-            var result = Client.Transaction.Sale(request);
-
-            return new PreAuthorizePaymentResponse()
-                {
-                    TransactionId = result.Target.Id,
-                    IsSuccessfull = result.IsSuccess(),
-                    Message = "Success",
-                };
+                    Amount = (decimal) amount,
+                    CardToken = cardToken,
+                    OrderNumber = orderNumber,
+                });
 
         }
 
         public CommitPreauthoriedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
         {
-            var result = Client.Transaction.SubmitForSettlement(transactionId);
-
-            return new CommitPreauthoriedPaymentResponse()
+            return Client.Post(new CommitPreauthorizedPaymentBraintreeRequest()
                 {
-                    IsSuccessfull = result.IsSuccess(),
-                    Message = "Success"
-                };
+                    TransactionId = transactionId,
+                });
         }
     }
 }

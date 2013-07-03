@@ -1,5 +1,5 @@
 using System;
-using apcurium.MK.Booking.Api.Client.Responses;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Api.Client
 {

@@ -85,7 +85,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Responses\BasePaymentResponse.cs" />
     <Compile Include="Client\CmtJsonServiceClient.cs" />
     <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="Cmt\CmtAccountServiceClient.cs" />
@@ -99,8 +98,6 @@
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
-    <Compile Include="Responses\CommitPreauthoriedPaymentResponse.cs" />
-    <Compile Include="Responses\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Payments\PaymentClientDeligator.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
@@ -115,7 +112,6 @@
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
-    <Compile Include="Responses\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\AdministrationServiceClient.cs" />
@@ -137,7 +133,6 @@
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
-    <Compile Include="Responses\TokenizedCreditCardResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">

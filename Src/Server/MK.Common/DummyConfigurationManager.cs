@@ -39,7 +39,7 @@ namespace apcurium.MK.Common
 
         public PaymentSetting GetPaymentSettings()
         {
-            throw new NotImplementedException();
+           return new PaymentSetting(Guid.NewGuid());
         }
 
         private IDictionary<string, string> AppSettings { get; set; }

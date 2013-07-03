@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BraintreeEncryption.Library;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
@@ -9,12 +10,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
-		private IPaymentServiceClient _tokenizationService;
+		private IPaymentServiceClient _paymentServiceClient;
 
 		public AccountServiceClient(string url, string sessionId, IPaymentServiceClient tokenizationService =null)
             : base(url, sessionId)
         {
-            _tokenizationService = tokenizationService;
+            _paymentServiceClient = tokenizationService;
         }
 
 
@@ -121,8 +122,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Delete<string>(req);
 			if(!string.IsNullOrWhiteSpace(cardOnFileToken))
 			{
-            	_tokenizationService.ForgetTokenizedCard(cardOnFileToken);
+            	_paymentServiceClient.ForgetTokenizedCard(cardOnFileToken);
 			}
         }
+
+     
+
     }
 }

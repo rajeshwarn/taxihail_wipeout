@@ -9,11 +9,24 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Common;
+using apcurium.MK.Web.Tests;
 
 namespace apcurium.CMT.Web.Tests
 {
-    public abstract class BasePaymentClientFixture
+    public abstract class BasePaymentClientFixture : BaseTest
     {
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
         protected BasePaymentClientFixture(TestCreditCards.TestCreditCardSetting settings)
         {
             TestCreditCards = new TestCreditCards(settings);

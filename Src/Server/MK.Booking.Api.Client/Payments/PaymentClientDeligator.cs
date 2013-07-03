@@ -1,7 +1,7 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
-using apcurium.MK.Booking.Api.Client.Responses;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -10,10 +10,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments
     public class PaymentClientDeligate : IPaymentServiceClient
     {
         private readonly IConfigurationManager _configurationManager;
+        private readonly BraintreeServiceClient _braintreeServiceClient;
 
-        public PaymentClientDeligate(IConfigurationManager configurationManager)
+        public PaymentClientDeligate(IConfigurationManager configurationManager, BraintreeServiceClient braintreeServiceClient)
         {
             _configurationManager = configurationManager;
+            _braintreeServiceClient = braintreeServiceClient;
         }
 
         public IPaymentServiceClient GetClient()
@@ -31,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             switch (paymentSettings.PaymentMode)
             {
                 case PaymentSetting.PaymentMethod.Braintree:
-                    return new BraintreeServiceClient(paymentSettings.BraintreeSettings);
+                    return _braintreeServiceClient;
                     
                 case PaymentSetting.PaymentMethod.Cmt:
                     return new CmtPaymentClient(paymentSettings.CmtPaymentSettings);
