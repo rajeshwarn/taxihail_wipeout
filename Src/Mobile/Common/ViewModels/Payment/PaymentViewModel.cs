@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
 					}
-
+                    
                     var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
                     
                     if (preAuthResponse.IsSuccessfull)

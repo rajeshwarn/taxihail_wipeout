@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Api.Client.Responses;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.Payments
 {
     public class PaymentClientDeligate : IPaymentServiceClient
     {

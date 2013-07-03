@@ -6,6 +6,7 @@ using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.BrainTree;
+using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
