@@ -65,6 +65,9 @@
     <Compile Include="Requests\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
+    <Compile Include="Requests\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
+    <Compile Include="Requests\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />

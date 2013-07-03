@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile
 				return new CmtPaymentClient( settings.PaymentBaseUrl, settings.PaymentConsumerKey, settings.PaymentConsumerSecretKey, settings.PaymentCurrencyCode, true);
 			});
             */
-            TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>new CmtFakeClient());//Fake
+            TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) => new FakePaymentClient());//Fake
 
 
             TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));

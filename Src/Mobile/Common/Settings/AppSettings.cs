@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.Reflection;
 using System.IO;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Common.Extensions;
@@ -227,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			get
 			{
 				var configManager = TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>();
-				return configManager.GetSetting(AuthorizationRequest.CurrencyCodes.CurrencyCodeString).NullIfEmpty()??AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar;
+				return configManager.GetSetting(CurrencyCodes.CurrencyCodeString).NullIfEmpty()?? CurrencyCodes.Main.UnitedStatesDollar;
 				
 			}
 		}
