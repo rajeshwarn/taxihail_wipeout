@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 using MK.ConfigurationManager.Entities;
 using Newtonsoft.Json;
@@ -37,6 +39,7 @@ namespace MK.ConfigurationManager
         public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get; set; }
 
         public ObservableCollection<AppVersion> Versions { get; set; }
+        public ObservableCollection<AppVersion> VersionsNotHidden { get; set; }
 
         public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; }
 
@@ -69,6 +72,7 @@ namespace MK.ConfigurationManager
                 connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
             }
             DbContext = new ConfigurationManagerDbContext(connectionString);
+            Database.SetInitializer<ConfigurationManagerDbContext>(null);
             DbContext.Database.CreateIfNotExists();
         }
 
@@ -89,6 +93,7 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
             Versions = new ObservableCollection<AppVersion>();
+            VersionsNotHidden = new ObservableCollection<AppVersion>();
 
             FetchRepoTags();
 
@@ -137,11 +142,19 @@ namespace MK.ConfigurationManager
             req.Headers["Authorization"] = "Basic " + authInfo;
 
             string result = null;
-            using (var resp = req.GetResponse()as HttpWebResponse)
+            try
             {
-                var reader = new StreamReader(resp.GetResponseStream());
-                result = reader.ReadToEnd();
+                using (var resp = req.GetResponse() as HttpWebResponse)
+                {
+                    var reader = new StreamReader(resp.GetResponseStream());
+                    result = reader.ReadToEnd();
+                }
             }
+            catch
+            {
+                return new Dictionary<string, BitbucketTagsResponse>();
+            }
+            
             return JsonConvert.DeserializeObject<Dictionary<string, BitbucketTagsResponse>>(result);
         }
 
@@ -205,8 +218,11 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
             Versions.Clear();
-            DbContext.Set<AppVersion>().ToList().ForEach(Versions.Add);
+            DbContext.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add);
             Versions.CollectionChanged += VersionsOnCollectionChanged;
+
+            VersionsNotHidden.Clear();
+            DbContext.Set<AppVersion>().Where(x => !x.Hidden).OrderBy(x => x.Display).ToList().ForEach(VersionsNotHidden.Add);
 
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
