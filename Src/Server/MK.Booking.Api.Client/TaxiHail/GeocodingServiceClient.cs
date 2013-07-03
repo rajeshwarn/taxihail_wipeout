@@ -13,8 +13,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Address[] Search( string addressName )
         {
-            var resource = string.Format("/geocode?Name={0}", addressName);
-            var result = Client.Get<Address[]>(resource);
+            var result = Client.Post<Address[]>("/geocode", new {
+                                                                    Name = addressName
+                                                                });
             return result;
         }
 
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Address[] Search(double latitude, double longitude)
         {
             var resource = string.Format(CultureInfo.InvariantCulture, "/geocode?Lat={0}&Lng={1}", latitude, longitude );
-            var result = Client.Get<Address[]>(resource);
+            var result = Client.Post<Address[]>(resource, null);
             return result;
         }
 

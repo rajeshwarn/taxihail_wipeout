@@ -247,6 +247,7 @@
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
+    <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
   </ItemGroup>
   <ItemGroup>

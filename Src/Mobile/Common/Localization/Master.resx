@@ -1290,8 +1290,14 @@
   <data name="NoOrderId" xml:space="preserve">
     <value>Order Not ready</value>
   </data>
+  <data name="PayPalButton" xml:space="preserve">
+    <value>Pay with PayPal</value>
+  </data>
   <data name="January" xml:space="preserve">
     <value>January</value>
+  </data>
+  <data name="View_PayPal" xml:space="preserve">
+    <value>PayPal</value>
   </data>
   <data name="February" xml:space="preserve">
     <value>February</value>
