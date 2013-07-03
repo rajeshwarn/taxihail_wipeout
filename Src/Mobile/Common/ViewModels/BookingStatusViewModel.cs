@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
+                status.IBSStatusId = VehicleStatuses.Common.Arrived;
 
 #endif
 
@@ -486,10 +486,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
+#if DEBUG
+#else
                         if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
                             MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
                             return;
-                        }
+                       }
+#endif
 
 						RequestNavigate<ConfirmCarNumberViewModel>(
 						new 

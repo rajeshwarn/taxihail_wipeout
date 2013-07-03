@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) =>
 			{
-				var settings = c.Resolve<IAppSettings>().ClientPaymentSettings;
+				var settings = c.Resolve<IConfigurationManager>().GetPaymentSettings();
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
@@ -109,7 +109,6 @@ namespace apcurium.MK.Booking.Mobile
 				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
 			});
             
-            TinyIoCContainer.Current.Register<IPaymentServiceClient>((c, p) => new FakePaymentClient());//Fake
 
 
             TinyIoCContainer.Current.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));

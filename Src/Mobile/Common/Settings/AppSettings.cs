@@ -185,12 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.HideNoPreference; }
         }
 
-		public ClientPaymentSettings ClientPaymentSettings 
-		{ 
-			get{
-				return new ClientPaymentSettings();
-			}
-		}
+
 	
 
 
