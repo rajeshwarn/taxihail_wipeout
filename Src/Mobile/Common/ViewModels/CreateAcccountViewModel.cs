@@ -90,10 +90,13 @@ namespace apcurium.MK.Booking.Mobile
 					{
 						string error;
 						
+                        var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
+                        Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+
 						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
 						if (result)
 						{
-							if (!HasSocialInfo)
+							if (!HasSocialInfo || !Data.AccountActivationDisabled)
 							{
 								MessageService.ShowMessage(Resources.GetString("AccountActivationTitle"), Resources.GetString("AccountActivationMessage"));
 							}

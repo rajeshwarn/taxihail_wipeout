@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (data != null)
             {
-                if (data.FacebookId.HasValue() || data.TwitterId.HasValue())
+                if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
                 {
                     var facebookId = data.FacebookId;
                     var twitterId = data.TwitterId;
@@ -214,14 +214,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Thread.Sleep(500);
                         var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                         Account account;
-                        if (facebookId.HasValue())
+                        if (facebookId.HasValue() || twitterId.HasValue())
                         {
-                            account = service.GetFacebookAccount(facebookId);
+                            if (facebookId.HasValue())
+                            {
+                                account = service.GetFacebookAccount(facebookId);
+                            }
+                            else
+                            {
+                                account = service.GetTwitterAccount(twitterId);
+                            }
                         }
                         else
                         {
-                            account = service.GetTwitterAccount(twitterId);
+                            account = service.GetAccount(data.Email, data.Password);
                         }
+
                         if (account != null)
                         {
                             RequestNavigate<BookViewModel>(true);
