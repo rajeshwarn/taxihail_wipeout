@@ -420,4 +420,6 @@
   <string name="September">September</string>
   <string name="August">August</string>
   <string name="July">July</string>
+  <string name="PayPalButton">Pay with PayPal</string>
+  <string name="View_PayPal">PayPal</string>
 </resources>

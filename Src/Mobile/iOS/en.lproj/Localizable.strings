@@ -418,3 +418,5 @@
 "July"="July";
 "VehicleNumberErrorTitle"="Error";
 "VehicleNumberErrorMessage"="Unable to retrieve vehicle number. Please pay in car.";
+"PayPalButton"="Pay with PayPal";
+"View_PayPal"="PayPal";

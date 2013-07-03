@@ -121,11 +121,13 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
+    <Compile Include="PayPal\PayPalExpressCheckoutClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />
     <Folder Include="TaxiHail\" />
     <Folder Include="Client\" />
+    <Folder Include="PayPal\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
