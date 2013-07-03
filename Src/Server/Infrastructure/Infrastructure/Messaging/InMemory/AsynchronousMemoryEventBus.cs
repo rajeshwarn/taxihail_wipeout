@@ -166,40 +166,40 @@ namespace Infrastructure.Messaging.InMemory
 
         public void Publish(Envelope<IEvent> @event)
         {
-            Task.Factory.StartNew(() =>
+            try
             {
-                try
+                Action<IEvent, string, string, string> dispatch;
+                if (this.dispatchersByEventType.TryGetValue(@event.Body.GetType(), out dispatch))
                 {
-                    Action<IEvent, string, string, string> dispatch;
-                    if (this.dispatchersByEventType.TryGetValue(@event.Body.GetType(), out dispatch))
-                    {
-                        dispatch(@event.Body, @event.MessageId, @event.CorrelationId, string.Empty);
-                    }
-                    // Invoke also the generic handlers that have registered to handle IEvent directly.
-                    if (this.dispatchersByEventType.TryGetValue(typeof (IEvent), out dispatch))
-                    {
-                        dispatch(@event.Body, @event.MessageId, @event.CorrelationId, string.Empty);
-                    }
-
-                }catch(Exception e)
-                {
-                    var payload = _serializer.Serialize(@event);
-                    string innerException = string.Empty;
-                    if (e.InnerException != null)
-                    {
-                        innerException = e.InnerException.ToString();
-                    }
-                    Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
+                    dispatch(@event.Body, @event.MessageId, @event.CorrelationId, string.Empty);
                 }
-            });
+                // Invoke also the generic handlers that have registered to handle IEvent directly.
+                if (this.dispatchersByEventType.TryGetValue(typeof (IEvent), out dispatch))
+                {
+                    dispatch(@event.Body, @event.MessageId, @event.CorrelationId, string.Empty);
+                }
+
+            }catch(Exception e)
+            {
+                var payload = _serializer.Serialize(@event);
+                string innerException = string.Empty;
+                if (e.InnerException != null)
+                {
+                    innerException = e.InnerException.ToString();
+                }
+                Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
+            }
         }
 
         public void Publish(IEnumerable<Envelope<IEvent>> events)
         {
-            foreach (var @event in events)
+            Task.Factory.StartNew(() =>
             {
-                this.Publish(@event);
-            }
+                foreach (var @event in events)
+                {
+                    this.Publish(@event);
+                }
+            });
         }
     }
 }
