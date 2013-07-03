@@ -18,7 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             string value;
 
             GetSettings().TryGetValue(key, out value);
-
+            
             return value;
         }
 
@@ -26,7 +26,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x => x.Key, r => r.Value);
+                return context.Query<AppSetting>().ToArray().ToDictionary(kv => kv.Key, kv => kv.Value);
             }
         }
 
@@ -38,6 +38,15 @@ namespace apcurium.MK.Common.Configuration.Impl
         public void Reset()
         {
             throw new NotImplementedException();
+        }
+        
+
+        public ClientPaymentSettings GetPaymentSettings()
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<ServerPaymentSettings>().SingleOrDefault();
+            }
         }
     }
 }

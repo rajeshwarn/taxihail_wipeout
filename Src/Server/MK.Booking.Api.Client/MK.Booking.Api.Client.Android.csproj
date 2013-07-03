@@ -65,6 +65,21 @@
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
+    <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
+    <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="Payments\PaymentClientDeligator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />
@@ -82,22 +97,9 @@
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
-    <Compile Include="Cmt\Payments\LevelThreeData.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
-    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
     <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
-    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -108,6 +110,10 @@
   </Target>
   -->
   <ItemGroup>
+    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
+      <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
+      <Name>BraintreeEncryption.Library.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
       <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
       <Name>MK.Booking.Api.Contract.Android</Name>

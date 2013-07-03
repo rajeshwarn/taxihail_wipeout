@@ -36,6 +36,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Braintree-2.23.1">
+      <HintPath>..\packages\Braintree.2.23.1\lib\Braintree-2.23.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
@@ -87,21 +94,23 @@
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
     <Compile Include="Cmt\CmtLinkServiceClient.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationRequest.cs" />
-    <Compile Include="Cmt\Payments\Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureRequest.cs" />
-    <Compile Include="Cmt\Payments\Capture\CaptureResponse.cs" />
-    <Compile Include="Cmt\Payments\CmtFakeClient.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentServiceClient.cs" />
+    <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
+    <Compile Include="Payments\PaymentClientDeligator.cs" />
+    <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
-    <Compile Include="Cmt\Payments\LevelThreeData.cs" />
-    <Compile Include="Cmt\Payments\PaymentResponse.cs" />
-    <Compile Include="Cmt\Payments\CmtPaymentClient.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeDeleteResponse.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeRequest.cs" />
-    <Compile Include="Cmt\Payments\Tokenize\TokenizeResponse.cs" />
+    <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
+    <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
+    <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -127,6 +136,10 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
+      <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
+      <Name>BrainTreeEncryption.Library.net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>

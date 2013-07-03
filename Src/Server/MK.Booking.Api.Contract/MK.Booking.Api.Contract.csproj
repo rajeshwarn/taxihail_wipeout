@@ -83,6 +83,13 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
+    <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\DisableAccountByAdminRequest.cs" />
     <Compile Include="Requests\EnableAccountByAdminRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
@@ -90,7 +97,7 @@
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
-    <Compile Include="Requests\Cmt\PreCogRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
@@ -110,6 +117,7 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\RuleActivateRequest.cs" />
@@ -134,16 +142,15 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
-    <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
-    <Compile Include="Resources\Cmt\CmtResponse.cs" />
-    <Compile Include="Resources\Cmt\LinkData.cs" />
-    <Compile Include="Resources\Cmt\PreCogActionType.cs" />
-    <Compile Include="Resources\Cmt\PreCogChoice.cs" />
-    <Compile Include="Resources\Cmt\PreCogFeature.cs" />
-    <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
-    <Compile Include="Resources\Cmt\PreCogMessage.cs" />
-    <Compile Include="Resources\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogChoice.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogFeature.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMapItem.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogMessage.cs" />
+    <Compile Include="Resources\Payments\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
@@ -151,6 +158,12 @@
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
+    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
+    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
@@ -173,7 +186,9 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\Payments\Braintree\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

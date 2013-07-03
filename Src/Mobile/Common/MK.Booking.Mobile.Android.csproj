@@ -263,6 +263,10 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
+      <Project>{4a5874eb-5ecf-4bc2-a099-e2814edb0c8f}</Project>
+      <Name>BraintreeEncryption.Library.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
       <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
       <Name>Cirrious.MvvmCross.Binding.Android</Name>

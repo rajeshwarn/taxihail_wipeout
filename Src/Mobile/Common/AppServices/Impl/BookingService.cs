@@ -274,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         
-        public void FinalizePayment (Guid orderId, double amount, string carNumber, long transactionId, int ibsOrderNumber)
+        public void FinalizePayment (Guid orderId, double amount, string carNumber, string transactionId, int ibsOrderNumber)
         {               
             UseServiceClient<OrderServiceClient> (service =>
             {

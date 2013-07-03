@@ -3,7 +3,9 @@ using Infrastructure.Messaging;
 using AutoMapper;
 using Microsoft.Practices.Unity;
 using MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -15,8 +17,10 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
+using PaymentSettings = apcurium.MK.Booking.Api.Contract.Resources.PaymentSettings;
 
 namespace apcurium.MK.Booking.Api
 {
@@ -28,7 +32,7 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
-            container.RegisterType<IPaymentServiceClient, CmtFakeClient>();
+
             container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
@@ -47,6 +51,7 @@ namespace apcurium.MK.Booking.Api
 
             }
         }
+
 
         private void RegisterMaps()
         {
@@ -85,10 +90,10 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
  
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
+           Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
@@ -97,22 +102,22 @@ namespace apcurium.MK.Booking.Api
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.CreateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.CreateRule>()
                 .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.UpdateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleRequest, Commands.UpdateRule>()
                 .ForMember(p => p.RuleId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
+           Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleActivateRequest, Commands.ActivateRule>()               
+           Mapper.CreateMap<Contract.Requests.RuleActivateRequest, Commands.ActivateRule>()               
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Contract.Requests.RuleDeactivateRequest, Commands.DeactivateRule>()
+           Mapper.CreateMap<Contract.Requests.RuleDeactivateRequest, Commands.DeactivateRule>()
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
             

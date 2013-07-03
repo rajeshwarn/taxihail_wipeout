@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, GetCmtPaymentClient()); } }
 
 
-        protected DummyConfigManager DummyConfigManager { get; set; }
+        protected DummyConfigManager DummyConfigManager { get { return new DummyConfigManager(); } }
 
         static BaseTest()
         {
@@ -40,16 +41,11 @@ namespace apcurium.MK.Web.Tests
             _appHost.Init();
         }
 
-
         protected CmtPaymentClient GetCmtPaymentClient()
         {
+            var cmtSettings = ((ServerPaymentSettings)DummyConfigManager.GetPaymentSettings()).CmtPaymentSettings;
 
-            string MERCHANT_TOKEN = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
-            string CONSUMER_KEY = "vmAoqWEY3zIvUCM4";
-            string CONSUMER_SECRET_KEY = "DUWzh0jAldPc7C5I";
-            string SANDBOX_BASE_URL = "https://payment-sandbox.cmtapi.com/v2/merchants/" + MERCHANT_TOKEN + "/";
-            string BASE_URL = SANDBOX_BASE_URL; // for now will will not use production		
-            return new CmtPaymentClient(BASE_URL, CONSUMER_KEY, CONSUMER_SECRET_KEY, AuthorizationRequest.CurrencyCodes.Main.UnitedStatesDollar, true);
+            return new CmtPaymentClient(BaseUrl,null,cmtSettings.BaseUrl);
         }
         public virtual void TestFixtureSetup()
         {
@@ -64,7 +60,7 @@ namespace apcurium.MK.Web.Tests
         {
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
-            DummyConfigManager = new DummyConfigManager();
+           
            
         }
 

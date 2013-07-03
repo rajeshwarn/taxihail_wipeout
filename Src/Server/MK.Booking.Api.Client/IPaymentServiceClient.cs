@@ -1,18 +1,18 @@
 using System;
-using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
-namespace MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client
 {
 	public interface IPaymentServiceClient
 	{
-		TokenizeResponse Tokenize(string creditCardNumber, DateTime expiryDate);
 
-		TokenizeDeleteResponse ForgetTokenizedCard(string cardToken);
+        TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
 
-        long PreAuthorize(string cardToken, double amount, string orderNumber);
+        DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken);
 
-        bool CommitPreAuthorized(long transactionId, string orderNumber);
+        PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber);
+
+        CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber);
 	}
 }
 

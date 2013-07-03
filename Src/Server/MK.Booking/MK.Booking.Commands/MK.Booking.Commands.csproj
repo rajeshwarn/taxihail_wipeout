@@ -57,7 +57,8 @@
     <Compile Include="CancelOrder.cs" />
     <Compile Include="AddRatingType.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
-    <Compile Include="DisableAccountbyAdmin.cs" />
+    <Compile Include="UpdatePaymentSettings.cs" />
+        <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="Orders\CommitPaymentCommand.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="EnableAccountbyAdmin.cs" />

@@ -69,15 +69,21 @@ namespace DatabaseInitializer
 
 
                 Console.WriteLine("Working...");
+
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
                 IConfigurationManager configurationManager = new
                     apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
                     () => new ConfigurationDbContext(connectionString.ConnectionString));
+                
                 IDictionary<string, string> settingsInDb = null;
+
+                var paymentSettingsFromDb = new ServerPaymentSettings(AppConstants.CompanyId);
+                
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
+                    paymentSettingsFromDb = (ServerPaymentSettings)configurationManager.GetPaymentSettings();
                     //version would be updated from information in the Configuraton Manager DB
                     settingsInDb.Remove("TaxiHail.Version");
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
@@ -149,6 +155,16 @@ namespace DatabaseInitializer
 
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
+
+                commandBus.Send(new UpdatePaymentSettings()
+                {
+                    ServerPaymentSettings = paymentSettingsFromDb
+                });
+                
+                
+
+
+
 
                 if (isUpdate)
                 {
@@ -345,6 +361,8 @@ namespace DatabaseInitializer
 
         private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
         {
+
+
             commandBus.Send(new AddOrUpdateAppSettings
                             {
                                 AppSettings = appSettings,

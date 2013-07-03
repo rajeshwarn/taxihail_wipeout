@@ -118,7 +118,7 @@ namespace apcurium.MK.Web.Tests
         public void order_was_payed()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
-            sut.FinailizePayment(90,"1234",1234,_orderId,1234);
+            sut.FinailizePayment(90,"1234","1234",_orderId,1234);
 
         }
 

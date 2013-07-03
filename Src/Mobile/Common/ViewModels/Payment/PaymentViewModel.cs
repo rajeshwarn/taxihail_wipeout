@@ -72,17 +72,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		public void ShowConfirmation(long authorizationCode)
+		public void ShowConfirmation(string tranactionId)
 		{
-            MessageService.ShowMessage (Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, authorizationCode),
+            MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, tranactionId),
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
 			{				
 				ConfirmPaymentForDriver();
-                ShowConfirmation(authorizationCode);
+                ShowConfirmation(tranactionId);
 			},
-			Str.OkButtonText, ()=>{
-                ReturnResult("");
-			});
+			Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
         public IMvxCommand ProceedToPayPalCommand
@@ -107,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                 {                    
 
-
 					if(PaymentPreferences.SelectedCreditCard == null)
 					{
 						MessageService.ShowProgress(false);
@@ -128,13 +125,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
 					}
-
-					var transactionId = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token, Amount, Order.IBSOrderId.Value +"");
-
-
-
-
-					if(transactionId <= 0)
+                    
+                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
+                    
+                    if (preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
@@ -142,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 
                     try{
-                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber,transactionId, Order.IBSOrderId.Value);
+                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber, preAuthResponse.TransactionId, Order.IBSOrderId.Value);
                     }
                     catch(Exception e)
                     {
@@ -151,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
 
 					MessageService.ShowProgress(false);
-                    ShowConfirmation(transactionId);					          
+                    ShowConfirmation(preAuthResponse.TransactionId);					          
 					
 
                 }); 
