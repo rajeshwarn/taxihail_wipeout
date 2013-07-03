@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Web.Hosting;
 using MK.Booking.PayPal;
 
 namespace apcurium.MK.Booking.Api.Payment
@@ -12,7 +8,10 @@ namespace apcurium.MK.Booking.Api.Payment
     {
         public ExpressCheckoutServiceClient CreateService()
         {
-            return new ExpressCheckoutServiceClient(new SandboxCredentials(), new RegionInfo("en-US"), "http://www.google.com", "http://www.google.com", useSandbox: true);
+            var successUrl = HostingEnvironment.MapPath("~/PayPalExpressCheckout/mobile-success.html");
+            var cancelUrl = HostingEnvironment.MapPath("~/PayPalExpressCheckout/mobile-cancel.html");
+
+            return new ExpressCheckoutServiceClient(new SandboxCredentials(), new RegionInfo("en-US"), successUrl, cancelUrl, useSandbox: true);
         }
         /// <summary>
         /// Temporary, for development purpose only
