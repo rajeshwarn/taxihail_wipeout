@@ -88,7 +88,7 @@
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
-    <Compile Include="Configuration\Impl\PaymentSetting.cs" />
+    <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />

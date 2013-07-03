@@ -12,10 +12,10 @@ namespace apcurium.MK.Common.Configuration
         void SetSettings(IDictionary<string, string> appSettings);
 
 
-        ClientPaymentSetting GetPaymentSettings();
+        ClientPaymentSettings GetPaymentSettings();
     }
 
-    public class ClientPaymentSetting
+    public class ClientPaymentSettings
     {
         public PaymentMethod PaymentMode { get; set; }
     }

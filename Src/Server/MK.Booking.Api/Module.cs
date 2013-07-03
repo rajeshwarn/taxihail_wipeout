@@ -20,6 +20,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
+using PaymentSettings = apcurium.MK.Booking.Api.Contract.Resources.PaymentSettings;
 
 namespace apcurium.MK.Booking.Api
 {

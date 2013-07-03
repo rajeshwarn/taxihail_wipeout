@@ -41,11 +41,11 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
         
 
-        public ClientPaymentSetting GetPaymentSettings()
+        public ClientPaymentSettings GetPaymentSettings()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PaymentSetting>().SingleOrDefault();
+                return context.Query<ServerPaymentSettings>().SingleOrDefault();
             }
         }
     }

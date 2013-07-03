@@ -213,7 +213,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(UpdatePaymentSettings command)
         {
-            var company = _repository.Get(command.PaymentSettings.CompanyId);
+            var company = _repository.Get(command.ServerPaymentSettings.CompanyId);
 
             company.UpdatePaymentSettings(command);
 

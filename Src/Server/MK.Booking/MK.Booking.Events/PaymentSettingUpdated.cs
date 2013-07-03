@@ -9,6 +9,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class PaymentSettingUpdated : VersionedEvent
     {
-        public PaymentSetting PaymentSettings { get; set; }
+        public ServerPaymentSettings ServerPaymentSettings { get; set; }
     }
 }

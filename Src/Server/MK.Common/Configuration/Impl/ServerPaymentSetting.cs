@@ -8,15 +8,15 @@ using MK.Common.Android.Configuration.Impl;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class PaymentSetting : ClientPaymentSetting
+    public class ServerPaymentSettings : ClientPaymentSettings
     {
-        public PaymentSetting() //for serialization
+        public ServerPaymentSettings() //for serialization
         {
             CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeSettings = new BraintreeSettings();
         }
 
-        public PaymentSetting(Guid companyId)
+        public ServerPaymentSettings(Guid companyId)
         {
             CompanyId = companyId;
 

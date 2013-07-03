@@ -126,13 +126,14 @@
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
-    <Compile Include="Services\BraintreePaymentService.cs" />
+    <Compile Include="Services\Payment\BraintreePaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
-    <Compile Include="Services\CmtPaymentService.cs" />
+    <Compile Include="Services\Payment\CmtPaymentService.cs" />
+    <Compile Include="Services\Payment\PaymentService.cs" />
     <Compile Include="Services\Payment\PayPalService.cs" />
     <Compile Include="Services\RestOrderservice.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />

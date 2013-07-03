@@ -326,7 +326,7 @@ namespace apcurium.MK.Booking.Domain
         {
             this.Update(new PaymentSettingUpdated()
             {
-                PaymentSettings = command.PaymentSettings
+                ServerPaymentSettings = command.ServerPaymentSettings
             });
         }
 

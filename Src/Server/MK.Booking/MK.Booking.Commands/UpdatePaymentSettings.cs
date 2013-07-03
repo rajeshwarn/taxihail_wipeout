@@ -16,6 +16,6 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid Id { get;  set; }
         
-        public PaymentSetting PaymentSettings { get; set; }
+        public ServerPaymentSettings ServerPaymentSettings { get; set; }
     }
 }
