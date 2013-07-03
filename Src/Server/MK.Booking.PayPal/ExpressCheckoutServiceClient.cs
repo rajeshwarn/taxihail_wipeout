@@ -8,15 +8,12 @@ namespace MK.Booking.PayPal
     public class ExpressCheckoutServiceClient
     {
         const string ApiVersion = "104";
-        const string SandboxApiUrl = "https://api-3t.sandbox.paypal.com/2.0/";
-        const string ProductionApiUrl = "https://api-3t.paypal.com/2.0/ ";
-        const string CheckoutUrlFormat = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout-mobile&token={0}";
-        readonly string _url;
+        readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
         readonly CurrencyCodeType _currency;
         readonly string _returnUrl;
         readonly string _cancelUrl;
-        
+
 
         public ExpressCheckoutServiceClient(IPayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
         {
@@ -29,13 +26,8 @@ namespace MK.Booking.PayPal
 
             _returnUrl = returnUrl;
             _cancelUrl = cancelUrl;
-            
-            _url = useSandbox
-                            ? SandboxApiUrl
-                            : ProductionApiUrl;
-
+            _urls = new Urls(useSandbox);
             _currency = (CurrencyCodeType)Enum.Parse(typeof(CurrencyCodeType), region.ISOCurrencySymbol);
-            
             _credentials = new UserIdPasswordType
             {
                 Username = credentials.Username,
@@ -59,7 +51,7 @@ namespace MK.Booking.PayPal
                 Debug.Assert(response.Ack == AckCodeType.Success);
                 Debug.Assert(response.Token != null);
 
-                return BuildCheckoutUrl(response);
+                return _urls.GetCheckoutUrl(response.Token);
             }
         }
 
@@ -71,7 +63,7 @@ namespace MK.Booking.PayPal
                                      };
             var api = new PayPalAPIAASoapBinding
                           {
-                              Url = _url,
+                              Url = _urls.GetApiUrl(),
                               RequesterCredentials = securityHeader,
                           };
             return api;
@@ -107,9 +99,34 @@ namespace MK.Booking.PayPal
             return request;
         }
 
-        private string BuildCheckoutUrl(SetExpressCheckoutResponseType response)
+        private class Urls
         {
-            return string.Format(CheckoutUrlFormat, Uri.EscapeDataString(response.Token));
+            const string SandboxApiUrl = "https://api-3t.sandbox.paypal.com/2.0/";
+            const string ProductionApiUrl = "https://api-3t.paypal.com/2.0/ ";
+            const string CheckoutUrlFormat = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout-mobile&token={0}";
+            const string SandboxCheckoutUrlFormat = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout-mobile&token={0}";
+            readonly bool _useSandbox;
+
+            public Urls(bool useSandbox)
+            {
+                _useSandbox = useSandbox;
+            }
+
+            public string GetApiUrl()
+            {
+                return _useSandbox
+                            ? SandboxApiUrl
+                            : ProductionApiUrl;
+            }
+
+            public string GetCheckoutUrl(string token)
+            {
+                var urlFormat = _useSandbox
+                                    ? SandboxCheckoutUrlFormat
+                                    : CheckoutUrlFormat;
+
+                return string.Format(urlFormat, Uri.EscapeDataString(token));
+            }
         }
     }
 
