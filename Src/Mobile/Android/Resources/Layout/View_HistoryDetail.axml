@@ -209,7 +209,7 @@
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
                     android:visibility="gone"
-                    local:MvxBind="{'Enabled':{'Path':'IsCompleted'},'Visibility':{'Path':'IsCompleted','Converter':'Visibility'}, 'Click':{'Path':'RebookOrder'}}" />
+                    local:MvxBind="{'Enabled':{'Path':'IsCompleted'},'Visibility':{'Path':'RebookIsAvailable','Converter':'Visibility'}, 'Click':{'Path':'RebookOrder'}}" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Grey"
                     android:id="@+id/StatusBtn"
