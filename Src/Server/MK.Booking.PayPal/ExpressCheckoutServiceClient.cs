@@ -59,9 +59,12 @@ namespace MK.Booking.PayPal
         {
             Debug.Assert(response.Ack == AckCodeType.Success);
             Debug.Assert(response.Token != null);
-            foreach (var error in response.Errors)
+            if (response.Errors != null)
             {
-                Trace.WriteLine(error.LongMessage);
+                foreach (var error in response.Errors)
+                {
+                    Trace.WriteLine(error.LongMessage);
+                }
             }
             if (response.Token == null)
             {
