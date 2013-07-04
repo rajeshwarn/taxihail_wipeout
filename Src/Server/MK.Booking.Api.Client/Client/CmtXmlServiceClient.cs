@@ -8,25 +8,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Xml.Serialization;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.Api.Client
 {
 
     public class CustomXmlServiceClient : IServiceClient, IRestClient
     {
-        public CustomXmlServiceClient(string url, bool acceptAnyCert, IWebProxy proxy = null)
-        {
-            BaseUrl = url;
-            if (acceptAnyCert)
-            {
-                //todo - Bug accept all certificates
-                ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
-            }
-			if(proxy !=null)
-			{
-				Proxy = proxy;
-			}
-        }
 
         public string BaseUrl { get; set; }
 		public IWebProxy Proxy { get; set; }
@@ -41,6 +29,23 @@ namespace MK.Booking.Api.Client
             Indent = true,
             NewLineOnAttributes = true,
         };
+
+        protected CustomXmlServiceClient(CmtPaymentSettings cmtSettings, bool acceptAnyCert, IWebProxy proxy = null)
+        {
+            BaseUrl = cmtSettings.IsSandbox
+                ? cmtSettings.SandboxBaseUrl 
+                : cmtSettings.BaseUrl;
+
+            if (acceptAnyCert)
+            {
+                //todo - Bug accept all certificates
+                ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
+            }
+            if (proxy != null)
+            {
+                Proxy = proxy;
+            }
+        }
 
         private static XmlSerializer GetOrCreate(Type t)
         {
@@ -92,16 +97,17 @@ namespace MK.Booking.Api.Client
 			var webRequest = WebRequest.Create(BaseUrl + GetEndpoint(request));
 			webRequest.Method  = method;
 			webRequest.ContentType = "application/xml";
-			webRequest.ContentLength = requestStream.Length;
+			//webRequest.ContentLength = requestStream.Length;
 			if(Proxy!=null)
 			{
 				webRequest.Proxy=Proxy;
 			}
 
 			LocalHttpWebRequestFilter(webRequest);
-			
-			var os = webRequest.GetRequestStream();
-			requestStream.WriteTo(os);
+            using (Stream webRequestStream = webRequest.GetRequestStream())
+            {
+                requestStream.WriteTo(webRequestStream);
+            }
 			
 			var webResponse = webRequest.GetResponse();
 #if DEBUG

@@ -15,8 +15,11 @@ namespace apcurium.MK.Common.Configuration.Impl
             ConsumerSecretKey = "DUWzh0jAldPc7C5I";
             SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
             BaseUrl = "https://payment.cmtapi.com/"; // for now will will not use production
+            IsSandbox = true;
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
         }
+
+        public bool IsSandbox { get; set; }
 
         public  string BaseUrl { get; set; }
 

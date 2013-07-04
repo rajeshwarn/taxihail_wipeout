@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
 
             TestAccount = AccountService.GetTestAccount(0);
             var referenceClient = new ReferenceDataServiceClient(BaseUrl, null);
-            referenceClient.GetReferenceData();
+            //referenceClient.GetReferenceData();
         }
 
         public virtual void Setup()
