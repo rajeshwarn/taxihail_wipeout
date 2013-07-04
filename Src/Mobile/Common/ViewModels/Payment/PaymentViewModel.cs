@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     
                     var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
                     
-                    if (preAuthResponse.IsSuccessfull)
+                    if (!preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
