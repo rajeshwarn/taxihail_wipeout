@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 
 namespace MK.Booking.PayPal
 {
@@ -48,10 +49,23 @@ namespace MK.Booking.PayPal
                 var request = BuildRequest(orderTotal);
                 var response = api.SetExpressCheckout(request);
 
-                Debug.Assert(response.Ack == AckCodeType.Success);
-                Debug.Assert(response.Token != null);
+                ThrowIfError(response);
 
                 return _urls.GetCheckoutUrl(response.Token);
+            }
+        }
+
+        private static void ThrowIfError(SetExpressCheckoutResponseType response)
+        {
+            Debug.Assert(response.Ack == AckCodeType.Success);
+            Debug.Assert(response.Token != null);
+            foreach (var error in response.Errors)
+            {
+                Trace.TraceError(error.LongMessage);
+            }
+            if (response.Token == null)
+            {
+                throw new InvalidOperationException("token should not be null");
             }
         }
 
