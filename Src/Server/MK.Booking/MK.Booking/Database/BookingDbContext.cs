@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);
 
 
+            modelBuilder.Entity<ServerPaymentSettings>().ToTable(typeof(ServerPaymentSettings).Name, SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class
