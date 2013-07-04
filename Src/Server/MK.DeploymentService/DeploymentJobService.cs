@@ -260,7 +260,7 @@ namespace MK.DeploymentService
                 var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during deploy DB step ");
+                    throw new Exception("Error during deploy DB step" + output);
                 }
             }
         }
@@ -323,7 +323,7 @@ namespace MK.DeploymentService
                 var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during revert source code step");
+                    throw new Exception("Error during revert source code step" + output);
                 }
             }
 
@@ -333,7 +333,7 @@ namespace MK.DeploymentService
                 var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during purge source code step");
+                    throw new Exception("Error during purge source code step" + output);
                 }
             }
 
@@ -343,7 +343,7 @@ namespace MK.DeploymentService
                 var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during pull source code step");
+                    throw new Exception("Error during pull source code step" + output);
                 }
             }
 
@@ -353,7 +353,7 @@ namespace MK.DeploymentService
                 var output = GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
-                    throw new Exception("Error during update source code step");
+                    throw new Exception("Error during update source code step" + output);
                 }
             }
         }
@@ -374,9 +374,9 @@ namespace MK.DeploymentService
             };
         }
 
-        private static string GetOutput(Process exeProcess)
+        private string GetOutput(Process exeProcess)
         {
-            var output = "\n---------------------------------------------output\n";
+            var output = "\n---------------------------------------------\n";
 
             exeProcess.OutputDataReceived += (s, e) =>
             {
@@ -390,7 +390,8 @@ namespace MK.DeploymentService
             exeProcess.BeginOutputReadLine();
             exeProcess.BeginErrorReadLine();
             exeProcess.WaitForExit();
-            return output + "\n---------------------------------------------output\n";
+
+            return output += "\n---------------------------------------------\n";
         }
 
         public void Stop()
