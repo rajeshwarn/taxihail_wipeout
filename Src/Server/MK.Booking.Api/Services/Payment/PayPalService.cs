@@ -7,16 +7,18 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class PayPalService: Service
     {
-        readonly ExpressCheckoutServiceClient _client;
+        readonly ExpressCheckoutServiceFactory _factory;
 
         public PayPalService(ExpressCheckoutServiceFactory factory)
         {
-            _client = factory.CreateService();
+            _factory = factory;
         }
 
         public PayPalResponse Post(PayPalRequest request)
         {
-            var checkoutUrl = _client.SetExpressCheckout(request.Amount);
+            var checkoutUrl = _factory
+                .CreateService(RequestContext)
+                .SetExpressCheckout(request.Amount);
 
             return new PayPalResponse
             {
