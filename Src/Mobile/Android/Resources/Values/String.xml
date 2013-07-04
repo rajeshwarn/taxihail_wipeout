@@ -275,7 +275,7 @@
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendEmail">Send mail...</string>
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
-  <string name="InvalidLoginMessageTitle">Invalid information</string>
+  <string name="InvalidLoginMessageTitle">Login error</string>
   <string name="View_About">About Us</string>
   <string name="NoConnectionTitle">Connection error</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
@@ -422,4 +422,6 @@
   <string name="July">July</string>
   <string name="PayPalButton">Pay with PayPal</string>
   <string name="View_PayPal">PayPal</string>
+  <string name="AccountNotActivated">Your account has not been activated. Another activation email was sent to you.</string>
+  <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
 </resources>

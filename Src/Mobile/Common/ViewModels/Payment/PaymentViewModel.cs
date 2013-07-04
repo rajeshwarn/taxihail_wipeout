@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
         {
+			
+			PaymentClient = null;//ensure that the payment settings are reloaded at least once
 
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -132,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     
                     var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
                     
-                    if (preAuthResponse.IsSuccessfull)
+                    if (!preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
