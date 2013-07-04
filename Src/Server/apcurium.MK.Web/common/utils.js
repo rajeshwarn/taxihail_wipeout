@@ -226,10 +226,10 @@
     
     Handlebars.registerHelper('invertedBool', function (obj) {
         if (obj === true) {
-            return false;
+            return "false";
         }
         if (obj === false) {
-            return false;
+            return "false";
         }
 
 

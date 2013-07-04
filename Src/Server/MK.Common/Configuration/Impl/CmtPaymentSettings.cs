@@ -13,8 +13,8 @@ namespace apcurium.MK.Common.Configuration.Impl
             MerchantToken = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
             CustomerKey = "vmAoqWEY3zIvUCM4";
             ConsumerSecretKey = "DUWzh0jAldPc7C5I";
-            SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/v2/merchants/" + MerchantToken + "/";
-            BaseUrl = SandboxBaseUrl; // for now will will not use production
+            SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
+            BaseUrl = "https://payment.cmtapi.com/"; // for now will will not use production
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
         }
 

@@ -5,9 +5,9 @@
 
 
   <select name="paymentMode">
-    <option value="brainTree">{{localize "Braintree Payments"}}</option>
-    <option value="cmt">{{localize "CMT Payments"}}</option>
-    <option value="fake">{{localize "Demo Payment Service"}}</option>
+    <option value="Cmt">{{localize "CMT Payments"}}</option>
+    <option value="Braintree">{{localize "Braintree Payments"}}</option>
+    <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
   <br />
   <br />
@@ -30,7 +30,7 @@
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
     
     <select  name="braintreeIsSandBox" class="settingsBox">
-      <option value="{{braintreeServerSettings.isSandBox}}" >{{localizeBool braintreeServerSettings.isSandBox true="Yes" false="No"}}</option>
+      <option value="{{braintreeServerSettings.isSandBox}}" selected >{{localizeBool braintreeServerSettings.isSandBox true="Yes" false="No"}}</option>
       <option value="{{invertedBool braintreeServerSettings.isSandBox}}">{{localizeBool braintreeServerSettings.isSandBox true="No" false="Yes"}}</option>
     </select>
     
