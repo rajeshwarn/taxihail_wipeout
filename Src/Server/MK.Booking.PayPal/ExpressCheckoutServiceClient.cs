@@ -61,7 +61,7 @@ namespace MK.Booking.PayPal
             Debug.Assert(response.Token != null);
             foreach (var error in response.Errors)
             {
-                Trace.TraceError(error.LongMessage);
+                Trace.WriteLine(error.LongMessage);
             }
             if (response.Token == null)
             {
