@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
-            ((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
+            ((GradientButton)btnBook).SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             if ( !ViewModel.ShowRingCodeField )
@@ -91,11 +91,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtRingCode, "{'Text': {'Path': 'RingCode'}}" },
                 { txtName, "{'Text': {'Path': 'FriendlyName'}}" },
                 { btnSave, "{'TouchUpInside': {'Path': 'SaveAddress'}}" },
-                { btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'IsNew'}}" },
+				{ btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'IsNew'}}" },
                 { btnDelete, "{'TouchUpInside': {'Path': 'DeleteAddress'}, 'Hidden': {'Path': 'IsNew'}}" },
             });
 
-            btnBook.Hidden = true;
             btnSave.Hidden = true;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(  Resources.SaveButton , UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute () );

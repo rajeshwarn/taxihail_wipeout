@@ -112,8 +112,8 @@ namespace apcurium.MK.Booking.Mobile
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
-				return new PaymentClientDeligate(settings,
-				                                 new BraintreeServiceClient(baseUrl,sessionId), 
+				return new PaymentClientDeligate(settings.PaymentMode,
+				                                 new BraintreeServiceClient(baseUrl,sessionId,settings.BraintreeClientSettings.ClientKey), 
 				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
 			});
             
