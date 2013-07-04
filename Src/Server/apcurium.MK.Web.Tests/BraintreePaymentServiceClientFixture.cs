@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.CMT.Web.Tests.BraintreeTests
@@ -25,7 +26,7 @@ namespace apcurium.CMT.Web.Tests.BraintreeTests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new BraintreeServiceClient(BaseUrl,null);
+            return new BraintreeServiceClient(BaseUrl,null, new BraintreeClientSettings().ClientKey);
         }
     }
 }

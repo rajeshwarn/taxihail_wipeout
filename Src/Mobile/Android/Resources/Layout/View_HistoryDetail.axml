@@ -200,6 +200,17 @@
                 android:paddingLeft="20dip"
                 android:paddingRight="20dip">
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Green"
+                    android:id="@+id/RebookTripBtn"
+                    android:background="@drawable/green_button"
+                    style="@style/ButtonText"
+                    android:text="@string/HistoryDetailRebookButton"
+                    android:layout_height="40dip"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:visibility="gone"
+                    local:MvxBind="{'Enabled':{'Path':'IsCompleted'},'Visibility':{'Path':'RebookIsAvailable','Converter':'Visibility'}, 'Click':{'Path':'RebookOrder'}}" />
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Grey"
                     android:id="@+id/StatusBtn"
                     style="@style/ButtonText"
@@ -252,7 +263,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:visibility="gone"
-                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;SendReceiptAvailable&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;SendReceiptAvailable&apos;,&apos;Converter&apos;:&apos;Visibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;SendReceipt&apos;}}" />
+                    local:MvxBind="{'Enabled':{'Path':'SendReceiptAvailable'},'Visibility':{'Path':'SendReceiptAvailable','Converter':'Visibility'},'Click':{'Path':'SendReceipt'}}" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Red"
                     android:id="@+id/HistoryOrderDeleteBtn"

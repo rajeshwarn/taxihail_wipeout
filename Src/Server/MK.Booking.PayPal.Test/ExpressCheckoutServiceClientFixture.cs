@@ -31,7 +31,7 @@ namespace MK.Booking.PayPal.Test
 
             var checkoutUrl = new Uri(response);
 
-            Assert.AreEqual("www.paypal.com", checkoutUrl.Authority);
+            Assert.AreEqual("www.sandbox.paypal.com", checkoutUrl.Authority);
             var lookup = GetQueryStringLookup(checkoutUrl);
 
 

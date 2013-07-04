@@ -9,13 +9,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments
 {
     public class PaymentClientDeligate : IPaymentServiceClient
     {
-		private readonly ClientPaymentSettings _clientPaymentSettings;
+		private readonly PaymentMethod _paymentMethod;
         private readonly BraintreeServiceClient _braintreeServiceClient;
-        private readonly CmtPaymentClient _cmtServiceClient;
+		private readonly CmtPaymentClient _cmtServiceClient;
 
-		public PaymentClientDeligate(ClientPaymentSettings clientPaymentSettings, BraintreeServiceClient braintreeServiceClient, CmtPaymentClient cmtServiceClient)
+		public PaymentClientDeligate(PaymentMethod paymentMethod, BraintreeServiceClient braintreeServiceClient, CmtPaymentClient cmtServiceClient)
         {
-			_clientPaymentSettings = clientPaymentSettings;
+			_paymentMethod = paymentMethod;
             _braintreeServiceClient = braintreeServiceClient;
             _cmtServiceClient = cmtServiceClient;
         }
@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             const string onErrorMessage = "Payment Method not found or unknown";
   
 
-			switch (_clientPaymentSettings.PaymentMode)
+			switch (_paymentMethod)
             {
                 case PaymentMethod.Braintree:
                     return _braintreeServiceClient;

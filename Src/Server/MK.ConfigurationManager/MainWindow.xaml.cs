@@ -30,6 +30,7 @@ namespace MK.ConfigurationManager
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Company _currentCompany;
+
         ConfigurationManagerDbContext DbContext { get; set; }
 
         public ObservableCollection<Company> Companies { get; set; }
@@ -72,7 +73,6 @@ namespace MK.ConfigurationManager
                 connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
             }
             DbContext = new ConfigurationManagerDbContext(connectionString);
-            Database.SetInitializer<ConfigurationManagerDbContext>(null);
             DbContext.Database.CreateIfNotExists();
         }
 
@@ -205,6 +205,8 @@ namespace MK.ConfigurationManager
             int selectedCompanyIndex = DeployCompanyCombobox.SelectedIndex;
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
+
+            InitializeDatabase();
 
             Companies.Clear();
             DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
@@ -406,11 +408,11 @@ namespace MK.ConfigurationManager
             command = string.Format(command, keystoreFile, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyAlias").Value, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyPassStorePass").Value, CurrentCompany.Name);
 
 
-            const string pathToKeyToo = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe";
+            string pathToKeyTool = FindKeytoolPath();
             
             var generateKeyTool = new ProcessStartInfo
                                 {
-                                    FileName = pathToKeyToo,
+                                    FileName = pathToKeyTool,
                                     Arguments = command
                                 };
             using (var exeProcess = Process.Start(generateKeyTool))
@@ -435,7 +437,7 @@ namespace MK.ConfigurationManager
 
             var generateMD5 = new ProcessStartInfo
             {
-                FileName = pathToKeyToo,
+                FileName = pathToKeyTool,
                 Arguments = commandMD5,
                 UseShellExecute = false,
                 RedirectStandardOutput = true
@@ -501,6 +503,34 @@ namespace MK.ConfigurationManager
             }
             DbContext.SaveChanges();
             this.RefreshData();
+        }
+
+        private static string FindKeytoolPath()
+        {
+            var p = new Process
+                {
+                    StartInfo =
+                        {
+                            RedirectStandardInput = true,
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                            FileName = "cmd.exe"
+                        }
+                };
+            p.Start();
+            p.StandardInput.WriteLine("where /R \"c:\\Program Files (x86)\\Java\" keytool");
+            p.StandardInput.WriteLine("exit");
+
+            var lines = new List<string>();
+            while (!p.StandardOutput.EndOfStream)
+            {
+                var line = p.StandardOutput.ReadLine();
+                lines.Add(line);
+            }
+
+            var keytoolPath = lines.Last(x => x.EndsWith("keytool.exe"));
+            Debug.WriteLine(keytoolPath);
+            return keytoolPath;
         }
     }
 }

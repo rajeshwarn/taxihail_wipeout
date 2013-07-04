@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ btnCancel, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'CancelOrder'}}"},
 				{ btnSendReceipt, "{'Hidden':{'Path': 'SendReceiptAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
 				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
-				{ btnRebook, "{'TouchUpInside':{'Path':'RebookOrder'}}"},
+				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
                 { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
 				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},

@@ -128,7 +128,6 @@
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
-    <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
     <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
@@ -157,11 +156,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\OrderRatings.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Security\" />
-    <Folder Include="Requests\Messages\" />
-    <Folder Include="Requests\Payment\" />
-  </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>

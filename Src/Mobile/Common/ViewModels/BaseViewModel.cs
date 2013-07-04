@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Logger = this.GetService<ILogger>();
             PhoneService = this.GetService<IPhoneService>();
 
+
             Initialize();
         }
         
@@ -91,10 +92,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
         
+		private IPaymentServiceClient _paymentClient;
 		protected IPaymentServiceClient PaymentClient{
             get{
-				return TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
+				if(_paymentClient==null)
+				{
+					_paymentClient = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
+				}
+
+				return _paymentClient;
             }
+			set{
+				_paymentClient = value;
+			}
         }
         
         protected IVehicleClient VehicleClient{
