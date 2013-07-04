@@ -1,7 +1,7 @@
 ﻿(function () {
 
     TaxiHail.PaymentSettings = Backbone.Model.extend({
-        urlRoot: TaxiHail.parameters.apiRoot + "/settings/payments",
+        urlRoot: TaxiHail.parameters.apiRoot + "/settings/payments/server",
 
         batchSave: function (settings) {
 

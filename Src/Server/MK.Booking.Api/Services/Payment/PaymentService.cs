@@ -32,7 +32,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 };
         }
 
-        public void Get(UpdatePaymentSettingsRequest request)
+        public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
+        {
+            return new ServerPaymentSettingsResponse()
+            {
+                ServerPaymentSettings = _configurationDao.GetPaymentSettings()
+            };
+        }
+
+        public void Post(UpdateServerPaymentSettingsRequest request)
         {
             _commandBus.Send(new UpdatePaymentSettings()
                 {

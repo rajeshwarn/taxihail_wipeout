@@ -124,6 +124,7 @@ namespace apcurium.MK.Web
                 "~/admin/models/Tariff.js",
                 "~/admin/models/Rule.js",
                 "~/admin/models/CompanySettings.js",
+                "~/admin/models/PaymentSettings.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/admin/collections/CompanySettingsCollection.js",
@@ -136,6 +137,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/RulesController.js",
                 "~/admin/controllers/ExclusionsController.js",
                 "~/admin/controllers/CompanySettingsController.js",
+                "~/admin/controllers/PaymentSettingsController.js",
                 "~/admin/controllers/DefaultAddressesController.js",
                 "~/admin/controllers/PopularAddressesController.js",
                 /* Views */
@@ -155,6 +157,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/ManageRulesView.js",
                 "~/admin/views/ManagePopularAddressesView.js",
                 "~/admin/views/ManageCompanySettingsView.js",
+                "~/admin/views/ManagePaymentSettingsView.js",
                 "~/admin/views/SettingsItemView.js",
                 "~/admin/views/RuleItemView.js",
                 "~/admin/views/EditRuleView.js",

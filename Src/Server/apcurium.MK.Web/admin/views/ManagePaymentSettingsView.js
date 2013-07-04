@@ -8,12 +8,7 @@
             
             var data = this.model.toJSON();
             
-            var sum = _.reduce(data, function (memo, value, key) {
-                memo.push({ key: key, value: value });
-                return memo;
-            }, []);
-
-            this.$el.html(this.renderTemplate({ settings: sum }));
+            this.$el.html(this.renderTemplate(data.serverPaymentSettings ));
             
             this.validate({
                 submitHandler: this.save
@@ -22,11 +17,33 @@
             return this;
         },
 
-        save: function (form) {
-            
+        save: function(form) {
+
             var data = this.serializeForm(form);
 
-            this.model.batchSave(data)
+            var newData = {};
+            newData = {};
+            newData.companyId = this.model.toJSON().serverPaymentSettings.companyId;
+            newData.paymentMode = data.paymentMode;
+
+            newData.braintreeClientSettings = {};
+            newData.braintreeClientSettings.clientKey = data.braintreeClientKey;
+
+            newData.braintreeServerSettings = {};
+            newData.braintreeServerSettings.isSandBox = data.braintreeIsSandBox;
+            newData.braintreeServerSettings.merchantId = data.braintreeMerchantId;
+            newData.braintreeServerSettings.privateKey = data.braintreePrivateKey;
+            newData.braintreeServerSettings.publicKey = data.braintreePublicKey;
+            
+            newData.cmtPaymentSettings = {};
+            newData.cmtPaymentSettings.baseUrl = data.cmtBaseUrl;
+            newData.cmtPaymentSettings.consumerSecretKey = data.cmtConsumerSecretKey;
+            newData.cmtPaymentSettings.customerKey = data.cmtConsumerSecretKey;
+            newData.cmtPaymentSettings.merchantToken = data.cmtMerchantToken;
+            newData.cmtPaymentSettings.sandboxBaseUrl = data.cmtSandboxBaseUrl;
+            
+
+            this.model.batchSave(newData)
                  .always(_.bind(function() {
 
                      this.$(':submit').button('reset');

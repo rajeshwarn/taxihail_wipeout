@@ -5,8 +5,7 @@ using apcurium.MK.Common.Configuration.Impl;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Route("/settings/payments", "GET")]
-    public class UpdatePaymentSettingsRequest : IReturnVoid
+    public class PaymentSettingsRequest : IReturn<PaymentSettingsResponse>
     {
-        public ServerPaymentSettings ServerPaymentSettings { get; set; }
     }
 }

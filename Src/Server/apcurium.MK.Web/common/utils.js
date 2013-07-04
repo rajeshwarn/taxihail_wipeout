@@ -200,9 +200,12 @@
     });
 
     Handlebars.registerHelper('localizeBool', function (value, options) {
+        if (value === true) return options.hash["true"];
+        if (value === false) return options.hash["false"];
+
         if (value == "true") return options.hash["true"];
         if (value == "false") return options.hash["false"];
-        return '';
+        return 'not a bool';
     });
     
     Handlebars.registerHelper('isBool', function (obj,options) {
@@ -222,13 +225,23 @@
     });
     
     Handlebars.registerHelper('invertedBool', function (obj) {
+        if (obj === true) {
+            return false;
+        }
+        if (obj === false) {
+            return false;
+        }
+
+
         if (obj == "true") {
             return "false";
-        } else if(obj=="false") {
-            return "true";
-        } else {
-            return "param is not a bool";
         }
+        if (obj == "false") {
+            return "true";
+        }
+        
+        return "param is not a bool";
+        
     });
 
     Handlebars.registerHelper('ifCond', function (v1, v2, options) {

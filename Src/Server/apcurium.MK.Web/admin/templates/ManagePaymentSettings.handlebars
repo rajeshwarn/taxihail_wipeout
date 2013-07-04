@@ -1,13 +1,74 @@
 ﻿
-<h4 class="table-title">{{localize "Manage Settings"}}</h4>
+<h4 class="table-title">{{localize "Payment Mode"}}</h4>
 <div class="message"></div>
 
-<div class="control-group">
-	<label  class="control-label" style="margin-right:150px; white-space:nowrap;" >{{{localize "Hello"}}}</label>
-	<div class="controls">
 
-	</div>
-</div>
+
+  <select name="paymentMode">
+    <option value="brainTree">{{localize "Braintree Payments"}}</option>
+    <option value="cmt">{{localize "CMT Payments"}}</option>
+    <option value="fake">{{localize "Demo Payment Service"}}</option>
+  </select>
+  <br />
+  <br />
+
+  <div class="control-group" id="braintreeSettingsDiv">
+
+    <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
+    
+    <h5  >{{{localize "Client Settings"}}}</h5>
+
+    <label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeClientKey" value="{{braintreeClientSettings.clientKey}}" />
+
+    <br />
+    <br />
+
+    
+    <h5  >{{{localize "Server Settings"}}}</h5>
+    
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
+    
+    <select  name="braintreeIsSandBox" class="settingsBox">
+      <option value="{{braintreeServerSettings.isSandBox}}" >{{localizeBool braintreeServerSettings.isSandBox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool braintreeServerSettings.isSandBox}}">{{localizeBool braintreeServerSettings.isSandBox true="No" false="Yes"}}</option>
+    </select>
+    
+    
+    <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeMerchantId" value="{{braintreeServerSettings.merchantId}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Private Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreePrivateKey" value="{{braintreeServerSettings.privateKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Public Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreePublicKey" value="{{braintreeServerSettings.publicKey}}" />
+  </div>
+
+
+  <div class="control-group" id="cmtSettingsDiv">
+
+    <h4 class="table-title">{{localize "CMT Settings"}}</h4>
+
+    <label class="control-label settingsLabel" >{{{localize "Server Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtBaseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Server Sandbox Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtSandboxBaseUrl" value="{{cmtPaymentSettings.sandboxBaseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Consumer Secret Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtConsumerSecretKey" value="{{cmtPaymentSettings.consumerSecretKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Customer Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtCustomerKey" value="{{cmtPaymentSettings.customerKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Merchant Token"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtMerchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
+
+  </div>
+
+
+
 
 <div>
   <button type='submit' class='btn btn-primary' >{{localize "Save"}}</button>
