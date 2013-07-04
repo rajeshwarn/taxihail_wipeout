@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -13,9 +14,9 @@ namespace apcurium.MK.Booking.EventHandlers
     public class PaymentSettingGenerator :
         IEventHandler<PaymentSettingUpdated>
     {
-        private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public PaymentSettingGenerator(Func<ConfigurationDbContext> contextFactory)
+        public PaymentSettingGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
