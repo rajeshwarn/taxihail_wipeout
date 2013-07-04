@@ -12,20 +12,20 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public ServerPaymentSettings() //for serialization
         {
-            BraintreeSettings = new BraintreeSettings();
+            BraintreeServerSettings = new BraintreeServerSettings();
         }
 
         public ServerPaymentSettings(Guid companyId)
         {
             CompanyId = companyId;
 
-            BraintreeSettings = new BraintreeSettings();
+            BraintreeServerSettings = new BraintreeServerSettings();
         }
        
         [Key]
         public Guid CompanyId { get; set; }
         
-        public BraintreeSettings BraintreeSettings { get; set; }
+        public BraintreeServerSettings BraintreeServerSettings { get; set; }
 
 
     }

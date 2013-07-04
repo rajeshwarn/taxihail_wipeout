@@ -81,7 +81,8 @@
     <Compile Include="Caching\CacheItem.cs" />
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
-    <Compile Include="Configuration\ClientPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
+    <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\AppSetting.cs" />
     <Compile Include="Configuration\Impl\BrainTreeSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />

@@ -63,6 +63,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
+    <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
@@ -103,12 +105,8 @@
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
-    <Compile Include="Configuration\ClientPaymentSettings.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-    <Folder Include="Patterns\" />
-  </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
