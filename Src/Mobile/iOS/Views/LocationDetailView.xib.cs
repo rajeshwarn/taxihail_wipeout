@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtRingCode, "{'Text': {'Path': 'RingCode'}}" },
                 { txtName, "{'Text': {'Path': 'FriendlyName'}}" },
                 { btnSave, "{'TouchUpInside': {'Path': 'SaveAddress'}}" },
-				{ btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'IsNew'}}" },
+				{ btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}}" },
                 { btnDelete, "{'TouchUpInside': {'Path': 'DeleteAddress'}, 'Hidden': {'Path': 'IsNew'}}" },
             });
 
