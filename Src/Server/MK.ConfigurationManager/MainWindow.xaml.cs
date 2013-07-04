@@ -30,6 +30,7 @@ namespace MK.ConfigurationManager
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Company _currentCompany;
+
         ConfigurationManagerDbContext DbContext { get; set; }
 
         public ObservableCollection<Company> Companies { get; set; }
@@ -72,7 +73,6 @@ namespace MK.ConfigurationManager
                 connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
             }
             DbContext = new ConfigurationManagerDbContext(connectionString);
-            Database.SetInitializer<ConfigurationManagerDbContext>(null);
             DbContext.Database.CreateIfNotExists();
         }
 
@@ -205,6 +205,8 @@ namespace MK.ConfigurationManager
             int selectedCompanyIndex = DeployCompanyCombobox.SelectedIndex;
             int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
             int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
+
+            InitializeDatabase();
 
             Companies.Clear();
             DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
