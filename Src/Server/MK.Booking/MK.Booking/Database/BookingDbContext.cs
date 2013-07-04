@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Database
@@ -43,6 +44,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderRatingDetails>().ToTable("OrderRatingDetails", SchemaName);
             modelBuilder.Entity<RatingScoreDetails>().ToTable("RatingScoreDetails", SchemaName);
             modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);
+
+
+            modelBuilder.Entity<ServerPaymentSettings>().ToTable(typeof(ServerPaymentSettings).Name, SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class
