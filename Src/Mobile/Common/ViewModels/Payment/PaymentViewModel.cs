@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
         {
+			
+			PaymentClient = null;//ensure that the payment settings are reloaded at least once
 
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
