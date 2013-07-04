@@ -78,12 +78,12 @@ namespace DatabaseInitializer
                 
                 IDictionary<string, string> settingsInDb = null;
 
-                var paymentSettingsFromDb = new ServerPaymentSettings(AppConstants.CompanyId);
+                //var paymentSettingsFromDb = new ServerPaymentSettings(AppConstants.CompanyId);
                 
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-                    paymentSettingsFromDb = (ServerPaymentSettings)configurationManager.GetPaymentSettings();
+                    //paymentSettingsFromDb = (ServerPaymentSettings)configurationManager.GetPaymentSettings();
                     //version would be updated from information in the Configuraton Manager DB
                     settingsInDb.Remove("TaxiHail.Version");
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
