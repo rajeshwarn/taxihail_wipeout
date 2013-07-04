@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public CreditCardDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
@@ -22,13 +22,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<CreditCardDetails>().Where(c => c.AccountId.Equals(accountId)).ToList();
             }
         }
-
-        public ServerPaymentSettings GetPaymentSettings()
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                return context.Query<ServerPaymentSettings>().SingleOrDefault();
-            }
-        }
     }
+
 }
