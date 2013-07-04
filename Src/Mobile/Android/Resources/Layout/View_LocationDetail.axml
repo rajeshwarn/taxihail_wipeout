@@ -33,7 +33,7 @@
                 android:paddingRight="7dip"
                 android:hint="@string/LocationDetailGiveItANamePlaceholder"
                 android:inputType="text"
-                local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;FriendlyName&apos;}}" />
+                local:MvxBind="{'Text': {'Path': 'FriendlyName'}}" />
             <EditText
                 android:id="@+id/LocationAddress"
                 android:layout_width="fill_parent"
@@ -42,7 +42,7 @@
                 android:paddingRight="5dip"
                 android:hint="@string/LocationDetailStreetAddressPlaceholder"
                 android:inputType="text"
-                local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;BookAddress&apos;}}" />
+                local:MvxBind="{'Text': {'Path': 'BookAddress'}}" />
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="42dp"
@@ -50,12 +50,12 @@
                 android:paddingRight="5dip"
                 android:hint="@string/ApartmentLabel"
                 android:inputType="text"
-                local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Apartment&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsFutureBooking&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}" />
+                local:MvxBind="{'Text': {'Path': 'Apartment'},'Visibility':{'Path':'IsFutureBooking', 'Converter':'Visibility'}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowRingCodeField&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}"
+                local:MvxBind="{'Visibility':{'Path':'ShowRingCodeField', 'Converter':'Visibility'}}"
                 android:gravity="center_horizontal">
                 <EditText
                     android:id="@+id/LocationAppartment"
@@ -69,7 +69,7 @@
                     android:lines="0"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Apartment&apos;}}" />
+                    local:MvxBind="{'Text': {'Path': 'Apartment'}}" />
                 <EditText
                     android:id="@+id/RingCode"
                     android:layout_width="fill_parent"
@@ -82,7 +82,7 @@
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:inputType="text"
-                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;RingCode&apos;}}" />
+                    local:MvxBind="{'Text': {'Path': 'RingCode'}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
@@ -101,7 +101,7 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/SaveButton"
-                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveAddress&apos;}}" />
+                    local:MvxBind="{'Click': {'Path': 'SaveAddress'}}" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Red"
                     android:id="@+id/LocationDeleteBtn"
@@ -111,7 +111,17 @@
                     android:layout_height="40dip"
                     android:layout_weight="0.33"
                     android:text="@string/DeleteButton"
-                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;DeleteAddress&apos;}, Visibility: {&apos;Path&apos;: &apos;IsNew&apos;, &apos;Converter&apos;: &apos;InvertedVisibility&apos;}}" />
+                    local:MvxBind="{'Click': {'Path': 'DeleteAddress'}, Visibility: {'Path': 'IsNew', 'Converter': 'InvertedVisibility'}}" />
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
+                    android:id="@+id/LocationBookBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/gray_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_weight="0.33"
+                    android:text="@string/HistoryDetailRebookButton"
+                    local:MvxBind="{'Click': {'Path': 'RebookOrder'}, Visibility: {'Path': 'IsNew', 'Converter': 'InvertedVisibility'}}" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
