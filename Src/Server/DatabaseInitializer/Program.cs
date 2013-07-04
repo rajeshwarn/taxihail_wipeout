@@ -156,10 +156,11 @@ namespace DatabaseInitializer
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
-                commandBus.Send(new UpdatePaymentSettings()
-                {
-                    ServerPaymentSettings = paymentSettingsFromDb
-                });
+                // This doesnt work...
+                //commandBus.Send(new UpdatePaymentSettings()
+                //{
+                //    ServerPaymentSettings = paymentSettingsFromDb
+                //});
                 
                 
 
