@@ -12,7 +12,7 @@ namespace SocialNetworks.Services.MonoTouch
 {
     public class FacebookServiceMT : FBSessionDelegate, IFacebookService 
     {
-        private Facebook facebookClient;
+        private readonly Facebook facebookClient;
         private const string FBAccessTokenKey = "FBAccessTokenKey";
         private const string FBExpirationDateKey = "FBExpirationDateKey";
 

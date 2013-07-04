@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _configurationManager = configurationManager;
 
-            var settings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeSettings;
+            var settings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeServerSettings;
 
             var env = Braintree.Environment.SANDBOX;
             if (!settings.IsSandBox)
