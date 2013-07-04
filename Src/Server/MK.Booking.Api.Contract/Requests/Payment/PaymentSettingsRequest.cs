@@ -1,9 +1,12 @@
 ﻿using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    public class PaymentSettingsRequest : IReturn<PaymentSettingsResponse>
+    [Route("/settings/payments", "GET")]
+    public class UpdatePaymentSettingsRequest : IReturnVoid
     {
+        public ServerPaymentSettings ServerPaymentSettings { get; set; }
     }
 }
