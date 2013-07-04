@@ -96,7 +96,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     paypal.SetExpressCheckoutForAmount(10m)
                         .ToObservable()
                         .Subscribe(checkoutUrl => {
-                                RequestNavigate<PayPalViewModel>(new { url = checkoutUrl});
+								this.RequestSubNavigate<PayPalViewModel, bool>(new Dictionary<string, string>() {
+									{"url", checkoutUrl},
+								}, _ => {
+									ReturnResult(null);
+								});
                         });
                     
                 });
