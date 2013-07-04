@@ -42,7 +42,7 @@
    "Smtp.UseDefaultCredentials" : "false",  
    "Receipt.Note": "Thank You!",
    "Booking.ConfirmationEmail" : "true",
-   "Client.HideCallDispatchButton" : "false",
+   "Client.HideRebookOrder" : "false",
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "false",
    "Client.NumberOfCharInRefineAddress" : "10",

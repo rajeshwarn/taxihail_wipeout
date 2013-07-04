@@ -29,6 +29,7 @@
    "TaxiHail.ServerCompanyName" : "TaxiHail",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
+   "Client.HideRebookOrder" : "false",
    "Client.HideReportProblem" : "true",
    "IBS.TimeDifference" : "0",
    "IBS.NoteTemplate" : "{{userNote}}\\r\\n{{buildingName}}",
