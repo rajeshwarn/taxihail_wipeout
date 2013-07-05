@@ -8,7 +8,7 @@ using apcurium.MK.Common.Configuration.Impl;
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    //[Ignore("Cmt Payments - Is supposed to provide a new API - 2013-06-25")]
+    [Ignore("Cmt Payments - Is supposed to provide a new API - 2013-06-25")]
     public class CmtPaymentServiceClientFixture : BasePaymentClientFixture
     {
         public CmtPaymentServiceClientFixture() : base(TestCreditCards.TestCreditCardSetting.Cmt)

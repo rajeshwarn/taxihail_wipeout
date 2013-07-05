@@ -3,10 +3,15 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class CreditCardDetailsGenerator :  IEventHandler<CreditCardAdded>, IEventHandler<CreditCardRemoved>
+    public class CreditCardDetailsGenerator : 
+        IEventHandler<CreditCardAdded>, 
+        IEventHandler<CreditCardRemoved>,
+        IEventHandler<PaymentModeChanged>
+
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -35,6 +40,15 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Set<CreditCardDetails>().Remove(address);
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public void Handle(PaymentModeChanged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveAll<CreditCardDetails>();
+                context.SaveChanges();
             }
         }
     }
