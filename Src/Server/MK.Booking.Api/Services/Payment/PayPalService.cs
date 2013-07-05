@@ -2,6 +2,8 @@
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Payment;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -9,9 +11,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         readonly ExpressCheckoutServiceClient _client;
 
-        public PayPalService(ExpressCheckoutServiceFactory factory)
+        public PayPalService(ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager)
         {
-            _client = factory.CreateService();
+            var paymentSettings = ((ServerPaymentSettings) configurationManager.GetPaymentSettings()).PayPalSettings;
+            var creds = paymentSettings.IsSandBox
+                            ? paymentSettings.PayPalSandboxCredentials
+                            : paymentSettings.PayPalCredentials;
+
+            _client = factory.CreateService(creds);
         }
 
         public PayPalResponse Post(PayPalRequest request)

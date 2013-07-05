@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.PayPal
 {
@@ -16,7 +17,7 @@ namespace MK.Booking.PayPal
         readonly string _cancelUrl;
 
 
-        public ExpressCheckoutServiceClient(IPayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
@@ -144,10 +145,5 @@ namespace MK.Booking.PayPal
         }
     }
 
-    public interface IPayPalCredentials
-    {
-        string Username { get; }
-        string Password { get; }
-        string Signature { get; }
-    }
+
 }

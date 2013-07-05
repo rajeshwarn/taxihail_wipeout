@@ -27,6 +27,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
 
+        public PayPalSettings PayPalSettings { get; set; }
+
 
     }
 }
