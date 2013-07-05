@@ -14,9 +14,9 @@ namespace apcurium.MK.Booking.EventHandlers
     public class PaymentSettingGenerator :
         IEventHandler<PaymentSettingUpdated>
     {
-        private readonly Func<ConfigurationDbContext> _contextFactory;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public PaymentSettingGenerator(Func<ConfigurationDbContext> contextFactory)
+        public PaymentSettingGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
