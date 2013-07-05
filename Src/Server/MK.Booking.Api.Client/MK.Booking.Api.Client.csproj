@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Client\CmtJsonServiceClient.cs" />
     <Compile Include="Client\CmtXmlServiceClient.cs" />
+    <Compile Include="Client\TaxiHailJsonServiceClient.cs" />
     <Compile Include="Cmt\CmtAccountServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthCredentials.cs" />
     <Compile Include="Cmt\CmtAuthResponse.cs" />

@@ -1,10 +1,8 @@
 using System;
 using System.Net;
+using MK.Booking.Api.Client;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
-using MK.Booking.Api.Client.iOS.Client;
-
-
 #if !CLIENT
 #else
 using ServiceStack.Common.ServiceClient.Web;
@@ -42,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Console.WriteLine ( "-----------------------------------  CreateClient Session ID :" + _sessionId );
             JsConfig.DateHandler = JsonDateHandler.ISO8601;         
             
-			var client = new TaxihailJsonServiceClient(_url);
+			var client = new TaxiHailJsonServiceClient(_url);
             client.Timeout = new TimeSpan(0, 0, 2,0, 0);
 
             var uri = new Uri(_url);
