@@ -11,11 +11,18 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public PayPalSettings()
         {
-            Id = Guid.NewGuid();
+
+        }
+
+        public PayPalSettings(Guid id)
+        {
+            Id = id;
             SandboxCredentials = new PayPalCredentials();
             Credentials = new PayPalCredentials();
             IsSandbox = true;
         }
+
+  
 
         [Key]
         public Guid Id { get; set; }

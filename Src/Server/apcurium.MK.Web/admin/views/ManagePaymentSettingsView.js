@@ -28,28 +28,9 @@
 
         save: function(form) {
 
-            var data = this.serializeForm(form);
-
-            var newData = this.model.toJSON();
-            newData.companyId = serverPaymentSettings.companyId;
-            newData.paymentMode = data.paymentMode;
+            var data = $(form).serializeObjectChris();
             
-            newData.braintreeClientSettings.clientKey = data.braintreeClientKey;
-
-            newData.braintreeServerSettings.isSandbox = data.braintreeIsSandbox;
-            newData.braintreeServerSettings.merchantId = data.braintreeMerchantId;
-            newData.braintreeServerSettings.privateKey = data.braintreePrivateKey;
-            newData.braintreeServerSettings.publicKey = data.braintreePublicKey;
-            
-            newData.cmtPaymentSettings.isSandbox = data.cmtIsSandbox;
-            newData.cmtPaymentSettings.baseUrl = data.cmtBaseUrl;
-            newData.cmtPaymentSettings.consumerSecretKey = data.cmtConsumerSecretKey;
-            newData.cmtPaymentSettings.customerKey = data.cmtCustomerKey;
-            newData.cmtPaymentSettings.merchantToken = data.cmtMerchantToken;
-            newData.cmtPaymentSettings.sandboxBaseUrl = data.cmtSandboxBaseUrl;
-            
-
-            this.model.batchSave(newData)
+            this.model.batchSave(data)
                  .always(_.bind(function() {
 
                      this.$(':submit').button('reset');

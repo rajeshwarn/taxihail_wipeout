@@ -34,14 +34,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
         {
+            var settings = _configurationDao.GetPaymentSettings();
             return new ServerPaymentSettingsResponse()
             {
-                ServerPaymentSettings = _configurationDao.GetPaymentSettings()
+                ServerPaymentSettings = settings
             };
         }
 
         public void Post(UpdateServerPaymentSettingsRequest request)
         {
+
+            var settings = _configurationDao.GetPaymentSettings();
+            request.ServerPaymentSettings.CompanyId = settings.CompanyId;
+            request.ServerPaymentSettings.PayPalSettings.Id = settings.PayPalSettings.Id;
+
             _commandBus.Send(new UpdatePaymentSettings()
                 {
                     ServerPaymentSettings = request.ServerPaymentSettings,
