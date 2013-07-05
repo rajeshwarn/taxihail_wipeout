@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.RemoveAll<PayPalSettings>();
+                context.RemoveAll<PayPalServerSettings>();
                 context.SaveChanges();
                 context.RemoveAll<ServerPaymentSettings>();
                 context.SaveChanges();

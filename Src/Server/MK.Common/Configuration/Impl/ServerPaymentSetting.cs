@@ -22,7 +22,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             CompanyId = companyId;
             BraintreeServerSettings = new BraintreeServerSettings();
-            PayPalSettings = new PayPalSettings(Guid.NewGuid());
+            PayPalServerSettings = new PayPalServerSettings(Guid.NewGuid());
         }
        
         [Key]
@@ -30,6 +30,6 @@ namespace apcurium.MK.Common.Configuration.Impl
         
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
 
-        public PayPalSettings PayPalSettings { get; set; }
+        public PayPalServerSettings PayPalServerSettings { get; set; }
     }
 }

@@ -6,38 +6,38 @@
 
 
 <label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
-<select  name="payPalSettings.isEnabled" class="settingsBox">
-  <option value="{{payPalSettings.isEnabled}}" selected="" >{{localizeBool payPalSettings.isEnabled true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalSettings.isEnabled}}">{{localizeBool payPalSettings.isEnabled true="No" false="Yes"}}</option>
+<select  name="payPalClientSettings.isEnabled" class="settingsBox">
+  <option value="{{payPalClientSettings.isEnabled}}" selected="" >{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>
 </select>
 
 <label class="control-label settingsLabel" >{{{localize "Sandbox Mode"}}}</label>
-<select  name="payPalSettings.isSandbox" class="settingsBox">
-  <option value="{{payPalSettings.isSandbox}}" selected="" >{{localizeBool payPalSettings.isSandbox true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalSettings.isSandbox}}">{{localizeBool payPalSettings.isSandbox true="No" false="Yes"}}</option>
+<select  name="payPalServerSettings.isSandbox" class="settingsBox">
+  <option value="{{payPalServerSettings.isSandbox}}" selected="" >{{localizeBool payPalServerSettings.isSandbox true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalServerSettings.isSandbox}}">{{localizeBool payPalServerSettings.isSandbox true="No" false="Yes"}}</option>
 </select>
 
 <h5  >{{{localize "Sandbox Credentials"}}}</h5>
 
 <label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.sandboxCredentials.username" value="{{payPalSettings.sandboxCredentials.username}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.username" value="{{payPalServerSettings.sandboxCredentials.username}}" />
 
 <label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.sandboxCredentials.password" value="{{payPalSettings.sandboxCredentials.password}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.password" value="{{payPalServerSettings.sandboxCredentials.password}}" />
 
 <label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.sandboxCredentials.signature" value="{{payPalSettings.sandboxCredentials.signature}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.signature" value="{{payPalServerSettings.sandboxCredentials.signature}}" />
 
 <h5  >{{{localize "Production Credentials"}}}</h5>
 
 <label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.credentials.username" value="{{payPalSettings.credentials.username}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.username" value="{{payPalServerSettings.credentials.username}}" />
 
 <label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.credentials.password" value="{{payPalSettings.credentials.password}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.password" value="{{payPalServerSettings.credentials.password}}" />
 
 <label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalSettings.credentials.signature" value="{{payPalSettings.credentials.signature}}" />
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.signature" value="{{payPalServerSettings.credentials.signature}}" />
 
 
 

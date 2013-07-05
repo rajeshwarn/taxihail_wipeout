@@ -15,7 +15,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
 
         public DbSet<ServerPaymentSettings> ServerPaymentSettings { get; set; }
-        public DbSet<PayPalSettings> PayPalSettings { get; set; }
+        public DbSet<PayPalServerSettings> PayPalSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -23,13 +23,13 @@ namespace apcurium.MK.Common.Configuration.Impl
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             
             modelBuilder.Entity<ServerPaymentSettings>()
-                .HasRequired(e => e.PayPalSettings)
+                .HasRequired(e => e.PayPalServerSettings)
                 .WithRequiredDependent()
                 
                 .WillCascadeOnDelete(true);
             
             modelBuilder.CreateTable<ServerPaymentSettings>(SchemaName);
-            modelBuilder.CreateTable<PayPalSettings>(SchemaName);
+            modelBuilder.CreateTable<PayPalServerSettings>(SchemaName);
             base.OnModelCreating(modelBuilder);
             
             

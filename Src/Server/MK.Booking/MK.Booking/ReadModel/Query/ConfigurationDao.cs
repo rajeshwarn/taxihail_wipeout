@@ -29,8 +29,8 @@ namespace apcurium.MK.Booking.ReadModel
                 var settings = context.ServerPaymentSettings.SingleOrDefault();
                 if (settings != null)
                 {
-                    var ppSettings = context.Query<PayPalSettings>().SingleOrDefault();
-                    settings.PayPalSettings = ppSettings;
+                    var ppSettings = context.Query<PayPalServerSettings>().SingleOrDefault();
+                    settings.PayPalServerSettings = ppSettings;
                     return settings;
                 }
                 return new ServerPaymentSettings(Guid.NewGuid());
