@@ -90,6 +90,8 @@
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />

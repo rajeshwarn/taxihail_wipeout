@@ -117,6 +117,8 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
+    <Compile Include="Requests\Payment\ServerPaymentSettingsRequest.cs" />
+    <Compile Include="Requests\Payment\UpdateServerPaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\PayPalRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
+    <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />

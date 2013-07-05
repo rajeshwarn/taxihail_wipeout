@@ -21,6 +21,9 @@
             /* settings */
             "settings" : "manageCompanySettings",
 
+            /* paymentSettings */
+            "paymentSettings": "managePaymentSettings",
+            
             /* Tariffs */
             "tariffs": "manageTariffs", //#tariffs
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
@@ -53,7 +56,11 @@
         manageCompanySettings: function () {
             action(TaxiHail.CompanySettingsController, 'index');
         },
-           
+
+        managePaymentSettings: function () {
+            action(TaxiHail.PaymentSettingsController, 'index');
+        },
+        
         manageDefaultAddresses: function () {
             action(TaxiHail.DefaultAddressesController, 'index');
         },

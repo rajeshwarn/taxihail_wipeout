@@ -22,13 +22,11 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CmtPaymentService : Service
     {
-        public CmtPaymentServiceClient Client { get; set; }
-        readonly IConfigurationManager _configurationManager;
-
-        public CmtPaymentService(IConfigurationManager configurationManager, CmtPaymentServiceClient client)
+        private CmtPaymentServiceClient Client { get; set; }
+        public CmtPaymentService(IConfigurationManager configurationManager)
         {
-            Client = client;
-            _configurationManager = configurationManager;
+
+            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, true);
 
 
         }

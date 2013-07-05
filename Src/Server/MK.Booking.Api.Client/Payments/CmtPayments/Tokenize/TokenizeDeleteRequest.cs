@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
 {
-    [Route("tokenize/{CardToken}")]
+    [Route("v2/tokenize/{CardToken}")]
     public class TokenizeDeleteRequest : IReturn<TokenizeDeleteResponse>
     {
         [XmlIgnore]

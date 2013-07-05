@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MK.Booking.Api.Client;
-using NUnit.Framework;
+﻿using apcurium.CMT.Web.Tests;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 
-namespace apcurium.CMT.Web.Tests.BraintreeTests
+namespace apcurium.MK.Web.Tests
 {
     public class BraintreePaymentServiceClientFixture :BasePaymentClientFixture
     {

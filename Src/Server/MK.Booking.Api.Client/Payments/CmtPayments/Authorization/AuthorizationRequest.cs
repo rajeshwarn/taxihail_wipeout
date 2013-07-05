@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 {
-    [Route("authorize")]
+    [Route("/v2/authorize")]
     public class AuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public AuthorizationRequest()
