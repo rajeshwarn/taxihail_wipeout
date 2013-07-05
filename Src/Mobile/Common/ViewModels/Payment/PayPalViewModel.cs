@@ -15,11 +15,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         }
 
         public string Url { get; private set; }
+
+		public override void Load ()
+		{
+			base.Load ();
+			// Show progress indicator while loading first request
+			MessageService.ShowProgress (true);
+		}
+
+		private bool _webViewLoadFinishedOnce = false;
+		public void WebViewLoadFinished ()
+		{
+			if (!_webViewLoadFinishedOnce) {
+				MessageService.ShowProgress (false);
+				_webViewLoadFinishedOnce = true;
+			}
+		}
+
 		public IMvxCommand Finish
 		{
 			get{
-				return GetCommand (() => {
-					ReturnResult(true);
+				return GetCommand<bool>(success => {
+					ReturnResult(success);
 				});
 			}
 		}

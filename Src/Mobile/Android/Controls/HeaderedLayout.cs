@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
                 txt.Typeface = AppFonts.Medium;
-                txt.TextSize = DrawHelper.GetPixels(16); // AppFonts.GetTitleSize();
+				txt.SetTextSize (ComplexUnitType.Dip, 16);
                 txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue));
             }
 

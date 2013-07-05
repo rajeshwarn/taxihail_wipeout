@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.DateHandler = JsonDateHandler.ISO8601;         
             var serialized = NSUserDefaults.StandardUserDefaults.StringForKey(CacheKey + key);
            
-            Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
+            //Console.WriteLine( "-----------------------------ICacheService " + key + " : " + serialized );
 
             var result = default( T );
 

@@ -397,7 +397,7 @@
 "OkButtonText"="Ok";
 "TaxiServerDownMessage"="Can't send message to Taxi";
 "CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
-"CmtTransactionSuccessTitle"="Payment Recieved";
+"CmtTransactionSuccessTitle"="Payment Received";
 "CmtTransactionResendConfirmationButtonText"="Resend";
 "PaymentConfirmationMessageToDriver"="The Client has payed {0}";
 "OrderNumber"="Order #";
@@ -422,3 +422,7 @@
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "PayPalButton"="Pay with PayPal";
 "View_PayPal"="PayPal";
+"PayPalExpressCheckoutCancelMessage"="PayPal payment was cancelled. Your account has not been charged.";
+"PayPalExpressCheckoutCancelTitle"="Payment cancelled";
+"PayPalExpressCheckoutSuccessTitle"="Payment successful";
+"PayPalExpressCheckoutSuccessMessage"="PayPal payment was successful. Confirmation sent to the driver.";
