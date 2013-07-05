@@ -3,6 +3,7 @@ using System.Web.Hosting;
 using MK.Booking.PayPal;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Payment
 {
