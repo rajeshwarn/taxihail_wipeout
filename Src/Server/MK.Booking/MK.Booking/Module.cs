@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
+            container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
         }
     }
 }

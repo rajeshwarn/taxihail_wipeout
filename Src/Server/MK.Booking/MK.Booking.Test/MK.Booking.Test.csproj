@@ -97,6 +97,10 @@
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="OrderFixture\given_one_order.cs" />
+    <Compile Include="PayPalPaymentFixture\given_a_completed_payment.cs" />
+    <Compile Include="PayPalPaymentFixture\given_a_cancelled_payment.cs" />
+    <Compile Include="PayPalPaymentFixture\given_a_payment.cs" />
+    <Compile Include="PayPalPaymentFixture\given_no_payment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration\AccountDbContextFixture.cs" />
     <Compile Include="TestConfigurationManager.cs" />

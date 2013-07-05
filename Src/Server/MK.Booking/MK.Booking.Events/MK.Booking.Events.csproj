@@ -57,6 +57,9 @@
     <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
     <Compile Include="OrderVehiclePositionChanged.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentCancelled.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="RuleActivated.cs" />
     <Compile Include="RuleDeactivated.cs" />
     <Compile Include="RuleCreated.cs" />
