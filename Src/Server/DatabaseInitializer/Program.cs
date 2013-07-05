@@ -303,6 +303,8 @@ namespace DatabaseInitializer
                     AppSettings = appSettings,
                     CompanyId = AppConstants.CompanyId
                 });
+
+
             }
             catch (Exception e)
             {

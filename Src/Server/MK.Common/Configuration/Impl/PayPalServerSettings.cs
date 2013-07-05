@@ -7,20 +7,26 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
-    public class PayPalSettings
+    public class PayPalServerSettings
     {
-        public PayPalSettings()
+        public PayPalServerSettings()
         {
-            Id = Guid.NewGuid();
+
+        }
+
+        public PayPalServerSettings(Guid id)
+        {
+            Id = id;
             SandboxCredentials = new PayPalCredentials();
             Credentials = new PayPalCredentials();
             IsSandbox = true;
         }
 
+  
+
         [Key]
         public Guid Id { get; set; }
 
-        public bool IsEnabled { get; set; }
         public bool IsSandbox {get; set;}
         public PayPalCredentials SandboxCredentials { get; set; }
         public PayPalCredentials Credentials { get; set; }

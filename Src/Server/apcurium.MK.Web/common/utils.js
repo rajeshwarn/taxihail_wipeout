@@ -229,7 +229,7 @@
             return "false";
         }
         if (obj === false) {
-            return "false";
+            return "true";
         }
 
 

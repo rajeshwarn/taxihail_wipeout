@@ -11,6 +11,7 @@ namespace apcurium.MK.Common.Extensions
     {
         public static void RemoveAll<T>(this DbContext thisObj) where T : class
         {
+
             var table = thisObj.Set<T>();
 
             if (!table.Any())
@@ -18,12 +19,13 @@ namespace apcurium.MK.Common.Extensions
                 return;
             }
 
-            var lines = thisObj.Set<T>().ToArray();
+            var lines = thisObj.Set<T>();
 
             foreach (var entity in lines)
             {
                 table.Remove(entity);
             }
+
         }
     }
 }

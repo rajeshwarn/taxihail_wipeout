@@ -46,7 +46,13 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<ServerPaymentSettings>().SingleOrDefault();
+                var settings = context.Query<ServerPaymentSettings>().SingleOrDefault();
+                if (settings != null)
+                {
+                    var ppSettings = context.Query<PayPalServerSettings>().SingleOrDefault();
+                    settings.PayPalServerSettings = ppSettings;
+                }
+                return settings;
             }
         }
     }

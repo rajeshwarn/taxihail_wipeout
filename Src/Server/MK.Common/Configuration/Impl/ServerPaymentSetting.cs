@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,16 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public ServerPaymentSettings() //for serialization
         {
-            BraintreeServerSettings = new BraintreeServerSettings();
-                PayPalSettings = new PayPalSettings();   
+
+
         }
 
-        public ServerPaymentSettings(Guid companyId) : this()
+        public ServerPaymentSettings(Guid companyId)
+
         {
             CompanyId = companyId;
+            BraintreeServerSettings = new BraintreeServerSettings();
+            PayPalServerSettings = new PayPalServerSettings(Guid.NewGuid());
         }
        
         [Key]
@@ -26,8 +30,6 @@ namespace apcurium.MK.Common.Configuration.Impl
         
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
 
-        public PayPalSettings PayPalSettings { get; set; }
-
-
+        public PayPalServerSettings PayPalServerSettings { get; set; }
     }
 }

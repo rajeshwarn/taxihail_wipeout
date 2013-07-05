@@ -26,9 +26,14 @@ namespace apcurium.MK.Booking.ReadModel
         {
             using (var context = _contextFactory.Invoke())
             {
-                var settings = context.Query<ServerPaymentSettings>().SingleOrDefault() ??
-                               new ServerPaymentSettings(AppConstants.CompanyId);
-                return settings;
+                var settings = context.ServerPaymentSettings.SingleOrDefault();
+                if (settings != null)
+                {
+                    var ppSettings = context.Query<PayPalServerSettings>().SingleOrDefault();
+                    settings.PayPalServerSettings = ppSettings;
+                    return settings;
+                }
+                return new ServerPaymentSettings(Guid.NewGuid());
             }
         }
     
