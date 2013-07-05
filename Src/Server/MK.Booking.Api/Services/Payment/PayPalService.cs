@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private PayPalCredentials GetPayPalCredentials()
         {
             var paymentSettings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).PayPalSettings;
-            return paymentSettings.IsSandBox
+            return paymentSettings.IsSandbox
                             ? paymentSettings.SandboxCredentials
                             : paymentSettings.Credentials;
         }

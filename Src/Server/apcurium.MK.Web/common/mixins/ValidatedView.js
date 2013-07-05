@@ -56,6 +56,8 @@
 
         serializeForm: function(form) {
             var o = {};
+            var x = $(form).serializeObject();
+
            var a = $(form).serializeArray();
            $.each(a, function() {
                if (o[this.name]) {

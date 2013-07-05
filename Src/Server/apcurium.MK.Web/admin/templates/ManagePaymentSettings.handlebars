@@ -7,21 +7,39 @@
 
 <label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
 <select  name="payPalIsEnabled" class="settingsBox">
-  <option value="{{payPalSettings.isSandbox}}" selected="" >{{localizeBool payPalSettings.isSandbox true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalSettings.isSandbox}}">{{localizeBool payPalSettings.isSandbox true="No" false="Yes"}}</option>
+  <option value="{{payPalSettings.isEnabled}}" selected="" >{{localizeBool payPalSettings.isEnabled true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalSettings.isEnabled}}">{{localizeBool payPalSettings.isEnabled true="No" false="Yes"}}</option>
 </select>
 
-<label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
+<label class="control-label settingsLabel" >{{{localize "Sandbox Mode"}}}</label>
 <select  name="payPalIsEnabled" class="settingsBox">
   <option value="{{payPalSettings.isSandbox}}" selected="" >{{localizeBool payPalSettings.isSandbox true="Yes" false="No"}}</option>
   <option value="{{invertedBool payPalSettings.isSandbox}}">{{localizeBool payPalSettings.isSandbox true="No" false="Yes"}}</option>
 </select>
 
-<h5  >{{{localize "Client Settings"}}}</h5>
+<h5  >{{{localize "Sandbox Credentials"}}}</h5>
+
+<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxUsername" value="{{payPalSettings.sandboxCredentials.username}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxPassword" value="{{payPalSettings.sandboxCredentials.password}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxSignature" value="{{payPalSettings.sandboxCredentials.signature}}" />
+
+<h5  >{{{localize "Production Credentials"}}}</h5>
+
+<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxUsername" value="{{payPalSettings.sandboxCredentials.username}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxPassword" value="{{payPalSettings.sandboxCredentials.password}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalSandboxSignature" value="{{payPalSettings.sandboxCredentials.signature}}" />
 
 
-<label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalClientKey" value="{{payPalClientSettings.clientKey}}" />
 
 <br />
 <br />
