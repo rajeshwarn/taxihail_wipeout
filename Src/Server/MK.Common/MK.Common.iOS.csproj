@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
