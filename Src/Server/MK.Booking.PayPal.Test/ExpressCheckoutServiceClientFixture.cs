@@ -27,7 +27,18 @@ namespace MK.Booking.PayPal.Test
             var cancelUrl = "http://example.net/cancel";
             var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), returnUrl, cancelUrl, useSandbox: true);
 
-            var response = sut.SetExpressCheckout(12.34m);
+            var token = sut.SetExpressCheckout(12.34m);
+            Assert.IsNotEmpty(token);
+        }
+
+        [Test]
+        public void GetCheckoutUrlTest()
+        {
+            var returnUrl = "http://example.net/return";
+            var cancelUrl = "http://example.net/cancel";
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), returnUrl, cancelUrl, useSandbox: true);
+
+            var response = sut.GetCheckoutUrl("thetoken");
             Assert.NotNull(response);
 
             var checkoutUrl = new Uri(response);
@@ -38,7 +49,6 @@ namespace MK.Booking.PayPal.Test
 
             Assert.AreEqual("_express-checkout-mobile", lookup["cmd"].Single());
             Assert.IsNotEmpty(lookup["token"].Single());
-
         }
 
         static ILookup<string, string> GetQueryStringLookup(Uri url)
