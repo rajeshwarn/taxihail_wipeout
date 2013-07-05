@@ -13,13 +13,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         public ServerPaymentSettings() //for serialization
         {
             BraintreeServerSettings = new BraintreeServerSettings();
+                PayPalSettings = new PayPalSettings();   
         }
 
-        public ServerPaymentSettings(Guid companyId)
+        public ServerPaymentSettings(Guid companyId) : this()
         {
             CompanyId = companyId;
-
-            BraintreeServerSettings = new BraintreeServerSettings();
         }
        
         [Key]

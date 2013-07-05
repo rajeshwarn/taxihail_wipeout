@@ -34,8 +34,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var paymentSettings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).PayPalSettings;
             return paymentSettings.IsSandBox
-                            ? paymentSettings.PayPalSandboxCredentials
-                            : paymentSettings.PayPalCredentials;
+                            ? paymentSettings.SandboxCredentials
+                            : paymentSettings.Credentials;
         }
     }
 }

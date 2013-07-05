@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,18 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public PayPalSettings()
         {
-            PayPalSandboxCredentials = new PayPalCredentials();
-            PayPalCredentials = new PayPalCredentials();
-            IsSandBox = true;
-
+            Id = Guid.NewGuid();
+            SandboxCredentials = new PayPalCredentials();
+            Credentials = new PayPalCredentials();
+            IsSandbox = true;
         }
-        public bool IsSandBox {get; set;}
 
-        public PayPalCredentials PayPalSandboxCredentials { get; set; }
-        public PayPalCredentials PayPalCredentials { get; set; }
+        [Key]
+        public Guid Id { get; set; }
+
+        public bool IsEnabled { get; set; }
+        public bool IsSandbox {get; set;}
+        public PayPalCredentials SandboxCredentials { get; set; }
+        public PayPalCredentials Credentials { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace apcurium.MK.Common.Configuration.Impl
             MerchantId = "v3kjnzjzhv8z37pq";
             PublicKey = "d268b7by244xnvw9";
             PrivateKey = "92780e4aa457e9269b1910d88ac79d17";
-            IsSandBox = true;
+            IsSandbox = true;
         }
 
-        public bool IsSandBox { get; set; }
+        public bool IsSandbox { get; set; }
 
         public string MerchantId { get; set; }
 

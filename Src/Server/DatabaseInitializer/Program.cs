@@ -78,12 +78,9 @@ namespace DatabaseInitializer
                 
                 IDictionary<string, string> settingsInDb = null;
 
-                //var paymentSettingsFromDb = new ServerPaymentSettings(AppConstants.CompanyId);
-                
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-                    //paymentSettingsFromDb = (ServerPaymentSettings)configurationManager.GetPaymentSettings();
                     //version would be updated from information in the Configuraton Manager DB
                     settingsInDb.Remove("TaxiHail.Version");
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
@@ -156,11 +153,6 @@ namespace DatabaseInitializer
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
-                // This doesnt work...
-                //commandBus.Send(new UpdatePaymentSettings()
-                //{
-                //    ServerPaymentSettings = paymentSettingsFromDb
-                //});
                 
                 
 

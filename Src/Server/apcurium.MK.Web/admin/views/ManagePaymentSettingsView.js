@@ -30,20 +30,18 @@
 
             var data = this.serializeForm(form);
 
-            var newData = {};
-            newData.companyId = this.model.toJSON().serverPaymentSettings.companyId;
+            var newData = this.model.toJSON();
+            newData.companyId = serverPaymentSettings.companyId;
             newData.paymentMode = data.paymentMode;
-
-            newData.braintreeClientSettings = {};
+            
             newData.braintreeClientSettings.clientKey = data.braintreeClientKey;
 
-            newData.braintreeServerSettings = {};
-            newData.braintreeServerSettings.isSandBox = data.braintreeIsSandBox;
+            newData.braintreeServerSettings.isSandbox = data.braintreeIsSandbox;
             newData.braintreeServerSettings.merchantId = data.braintreeMerchantId;
             newData.braintreeServerSettings.privateKey = data.braintreePrivateKey;
             newData.braintreeServerSettings.publicKey = data.braintreePublicKey;
             
-            newData.cmtPaymentSettings = {};
+            newData.cmtPaymentSettings.isSandbox = data.cmtIsSandbox;
             newData.cmtPaymentSettings.baseUrl = data.cmtBaseUrl;
             newData.cmtPaymentSettings.consumerSecretKey = data.cmtConsumerSecretKey;
             newData.cmtPaymentSettings.customerKey = data.cmtCustomerKey;

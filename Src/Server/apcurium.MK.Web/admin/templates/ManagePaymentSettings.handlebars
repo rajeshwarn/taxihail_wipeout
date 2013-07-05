@@ -1,8 +1,35 @@
-﻿
+﻿<div class="message"></div>
+
+
+<!-- PAYPAL SETTINGS-->
+<h4 class="table-title">{{localize "PayPal Settings"}}</h4>
+
+
+<label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
+<select  name="payPalIsEnabled" class="settingsBox">
+  <option value="{{payPalSettings.isSandbox}}" selected="" >{{localizeBool payPalSettings.isSandbox true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalSettings.isSandbox}}">{{localizeBool payPalSettings.isSandbox true="No" false="Yes"}}</option>
+</select>
+
+<label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
+<select  name="payPalIsEnabled" class="settingsBox">
+  <option value="{{payPalSettings.isSandbox}}" selected="" >{{localizeBool payPalSettings.isSandbox true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalSettings.isSandbox}}">{{localizeBool payPalSettings.isSandbox true="No" false="Yes"}}</option>
+</select>
+
+<h5  >{{{localize "Client Settings"}}}</h5>
+
+
+<label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalClientKey" value="{{payPalClientSettings.clientKey}}" />
+
+<br />
+<br />
+
+
+
+<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
-<div class="message"></div>
-
-
 
   <select name="paymentMode">
     <option value="Cmt">{{localize "CMT Payments"}}</option>
@@ -12,6 +39,7 @@
   <br />
   <br />
 
+<!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
 
     <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
@@ -29,9 +57,9 @@
     
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
     
-    <select  name="braintreeIsSandBox" class="settingsBox">
-      <option value="{{braintreeServerSettings.isSandBox}}" selected >{{localizeBool braintreeServerSettings.isSandBox true="Yes" false="No"}}</option>
-      <option value="{{invertedBool braintreeServerSettings.isSandBox}}">{{localizeBool braintreeServerSettings.isSandBox true="No" false="Yes"}}</option>
+    <select  name="braintreeIsSandbox" class="settingsBox">
+      <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
     
     
@@ -45,11 +73,18 @@
     <input type="text" class="input-block-level settingsBox" name="braintreePublicKey" value="{{braintreeServerSettings.publicKey}}" />
   </div>
 
-
+<!-- CMT SETTINGS-->
   <div class="control-group" id="cmtSettingsDiv">
 
     <h4 class="table-title">{{localize "CMT Settings"}}</h4>
 
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
+
+    <select  name="cmtIsSandbox" class="settingsBox">
+      <option value="{{cmtPaymentSettings.isSandbox}}" selected="" >{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
+    </select>
+    
     <label class="control-label settingsLabel" >{{{localize "Server Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtBaseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
 
