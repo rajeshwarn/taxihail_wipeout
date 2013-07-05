@@ -30,16 +30,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             ViewModel.Load();
 
             webView.ShouldStartLoad = LoadHook;
-
             webView.LoadRequest(new NSUrlRequest(new NSUrl(ViewModel.Url)));
-
-            // Perform any additional setup after loading the view, typically from a nib.
         }
 
         bool LoadHook (UIWebView sender, NSUrlRequest request, UIWebViewNavigationType navType)
         {
-            var requestString = request.Url.AbsoluteString;
-            return true;
+			if(request.Url.Scheme.StartsWith("taxihail"))
+			{
+				ViewModel.Finish.Execute();
+				return false;
+			}
+			return true;
         }
     }
 }
