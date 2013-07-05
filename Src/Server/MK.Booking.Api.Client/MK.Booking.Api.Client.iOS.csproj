@@ -128,6 +128,7 @@
     <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="Payments\PaymentClientDeligator.cs" />
+    <Compile Include="Client\JsonServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />
