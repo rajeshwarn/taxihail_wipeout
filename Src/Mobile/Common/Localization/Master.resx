@@ -1282,7 +1282,13 @@
     <value>Payment cancelled</value>
   </data>
   <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>PayPal payment was cancelled, your account has not been charged</value>
+    <value>PayPal payment was cancelled. Your account has not been charged.</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
+    <value>Payment successful</value>
+  </data>
+  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
+    <value>PayPal payment was successful. Confirmation sent to the driver.</value>
   </data>
   <data name="OkButtonText" xml:space="preserve">
     <value>Ok</value>

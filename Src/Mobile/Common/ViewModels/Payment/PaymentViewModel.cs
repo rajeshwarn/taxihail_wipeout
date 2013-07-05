@@ -99,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
 	                    paypal.SetExpressCheckoutForAmount(Convert.ToDecimal(Amount))
 	                        .ToObservable()
+							// Always Hide progress indicator
 						    .Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))
 	                        .Subscribe(checkoutUrl => {
 
@@ -108,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 									this.RequestSubNavigate<PayPalViewModel, bool>(@params, success => {
 										if(success)
 										{
-											MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, "super!",
+											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"), Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
 										                           Str.CmtTransactionResendConfirmationButtonText, ()=> ConfirmPaymentForDriver(), Str.OkButtonText, ()=> ReturnResult(""));
 										} else {
 											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));

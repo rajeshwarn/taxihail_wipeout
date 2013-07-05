@@ -422,5 +422,7 @@
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "PayPalButton"="Pay with PayPal";
 "View_PayPal"="PayPal";
-"PayPalExpressCheckoutCancelMessage"="PayPal payment was cancelled, your account has not been charged";
+"PayPalExpressCheckoutCancelMessage"="PayPal payment was cancelled. Your account has not been charged.";
 "PayPalExpressCheckoutCancelTitle"="Payment cancelled";
+"PayPalExpressCheckoutSuccessTitle"="Payment successful";
+"PayPalExpressCheckoutSuccessMessage"="PayPal payment was successful. Confirmation sent to the driver.";
