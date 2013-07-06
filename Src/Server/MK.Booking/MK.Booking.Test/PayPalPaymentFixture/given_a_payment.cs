@@ -54,9 +54,11 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             sut.When(new CompletePayPalExpressCheckoutPayment
             {
                 PaymentId = _paymentId,
+                PayPalPayerId = "payerid",
             });
 
             var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentCompleted>();
+            Assert.AreEqual("payerid", @event.PayPalPayerId);
 
         }
     }

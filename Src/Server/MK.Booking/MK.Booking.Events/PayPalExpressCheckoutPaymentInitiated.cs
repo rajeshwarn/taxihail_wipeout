@@ -1,11 +1,12 @@
-﻿using Infrastructure.EventSourcing;
+﻿using System;
+using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
     public class PayPalExpressCheckoutPaymentInitiated: VersionedEvent
     {
-        public object OrderId { get; set; }
-        public object Token { get; set; }
+        public Guid OrderId { get; set; }
+        public string Token { get; set; }
         public decimal Amount { get; set; }
     }
 }
