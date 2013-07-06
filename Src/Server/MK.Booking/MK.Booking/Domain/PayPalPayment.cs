@@ -45,7 +45,10 @@ namespace apcurium.MK.Booking.Domain
         public void Complete(string payerId)
         {
             if(_cancelled) throw new InvalidOperationException("Payment is cancelled");
-            this.Update(new PayPalExpressCheckoutPaymentCompleted());
+            this.Update(new PayPalExpressCheckoutPaymentCompleted
+            {
+                PayPalPayerId = payerId,
+            });
         }
 
         private void OnPayPalExpressCheckoutPaymentCancelled(PayPalExpressCheckoutPaymentCancelled obj)
