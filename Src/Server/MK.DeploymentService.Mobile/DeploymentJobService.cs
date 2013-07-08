@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -209,20 +210,14 @@ namespace MK.DeploymentService.Mobile
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
 
-				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
-				                         sourceDirectory, revision);
-				
-				var hgClone = new ProcessStartInfo
+				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
+				var hgClone = GetProcess(HgPath, args);
+				using (var exeProcess = Process.Start(hgClone))
 				{
-					FileName = HgPath,
-					UseShellExecute = false,
-					Arguments = args
-				};
-				
-				using (var exeProcess = Process.Start(hgClone)) {
-					exeProcess.WaitForExit ();
-					if (exeProcess.ExitCode > 0) {
-						throw new Exception ("Error during clone source code step");
+					var output = GetOutput(exeProcess);
+					if (exeProcess.ExitCode > 0)
+					{
+						throw new Exception("Error during clone source code step" + output);
 					}
 				}
 			} else {
@@ -234,18 +229,14 @@ namespace MK.DeploymentService.Mobile
 			//fetch revision if needed
 			if (!string.IsNullOrEmpty (revision)) {
 				logger.DebugFormat ("Update to revision {0}", revision);
-				var hgUpdate = new ProcessStartInfo
+
+				var hgUpdate = GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
+				using (var exeProcess = Process.Start(hgUpdate))
 				{
-					FileName = HgPath,
-					UseShellExecute = false,
-					Arguments =
-					string.Format("update --repository {0} {1}", sourceDirectory, revision)
-				};
-				
-				using (var exeProcess = Process.Start(hgUpdate)) {
-					exeProcess.WaitForExit ();
-					if (exeProcess.ExitCode > 0) {
-						throw new Exception ("Error during revert source code step");
+					var output = GetOutput(exeProcess);
+					if (exeProcess.ExitCode > 0)
+					{
+						throw new Exception("Error during updating to revision step" + output);
 					}
 				}
 			}
@@ -312,7 +303,6 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			logger.DebugFormat ("Customization Finished");
-
 			logger.DebugFormat ("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo
@@ -343,7 +333,6 @@ namespace MK.DeploymentService.Mobile
 			
 			logger.DebugFormat ("Build Solution");
 
-
 			if (job.iOS_AdHoc) {			
 				
 				logger.DebugFormat ("Build iOS AdHoc");
@@ -369,9 +358,6 @@ namespace MK.DeploymentService.Mobile
 				
 				logger.Debug("Build iOS AppStore done");
 			}
-
-
-
 
 			if (job.Android || job.CallBox) {
 
@@ -421,80 +407,56 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			logger.Debug("Build Project : " + buildArgs);
-			var buildiOSproject = new ProcessStartInfo
+			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
+			using (var exeProcess = Process.Start(buildiOSproject))
 			{
-				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
-				UseShellExecute = false,
-				Arguments = buildArgs
-			};
-			var exeProcess = Process.Start(buildiOSproject);
-			exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during build project step" + output);
+				}
+			}
 		}
 
 		private void RevertAndPull(string repository)
 		{
-			var hgRevert = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("update --repository {0} -C", repository)
-			};
-			
+			var hgRevert = GetProcess(HgPath, string.Format("update --repository {0} -C", repository));
 			using (var exeProcess = Process.Start(hgRevert))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during revert source code step");
+					throw new Exception("Error during revert source code step" + output);
 				}
 			}
-			
-			var hgPurge = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("purge --all --repository {0}", repository)
-			};
-			
+
+			var hgPurge = GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPurge))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during purge source code step");
+					throw new Exception("Error during purge source code step" + output);
 				}
 			}
-			
-			var hgPull = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository)
-			};
-			
+
+			var hgPull = GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPull))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during pull source code step");
+					throw new Exception("Error during pull source code step" + output);
 				}
 			}
-			
-			var hgUpdate = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("update --repository {0}", repository)
-			};
-			
+
+			var hgUpdate = GetProcess(HgPath, string.Format ("update --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgUpdate))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during revert source code step");
+					throw new Exception("Error during update source code step" + output);
 				}
 			}
 		}
@@ -549,6 +511,42 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			return revision;
+		}
+
+		private ProcessStartInfo GetProcess(string filename, string args, bool loadUserProfile = false)
+		{
+			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
+			return new ProcessStartInfo
+			{
+				FileName = filename,
+				WindowStyle = ProcessWindowStyle.Hidden,
+				UseShellExecute = false,
+				CreateNoWindow = false,
+				LoadUserProfile = loadUserProfile,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				Arguments = args
+			};
+		}
+
+		private string GetOutput(Process exeProcess)
+		{
+			var output = "\n---------------------------------------------\n";
+
+			exeProcess.OutputDataReceived += (s, e) =>
+			{
+				output += e.Data + "\n";
+			};
+			exeProcess.ErrorDataReceived += (s, e) =>
+			{
+				output += e.Data + "\n";
+			};
+
+			exeProcess.BeginOutputReadLine();
+			exeProcess.BeginErrorReadLine();
+			exeProcess.WaitForExit();
+
+			return output += "\n---------------------------------------------\n";
 		}
 	}
 }
