@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
-    public class PaymentSettingsUpdater : 
+    public class PaymentSettingsUpdater :
+        IIntegrationEventHandler,
         IEventHandler<PaymentModeChanged>
     {
         private IAccountDao _accountDao;
