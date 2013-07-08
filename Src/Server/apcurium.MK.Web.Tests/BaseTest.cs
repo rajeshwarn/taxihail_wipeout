@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.IO;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -28,7 +29,7 @@ namespace apcurium.MK.Web.Tests
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
 
-        protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, GetCmtPaymentClient()); } }
+        protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, GetFakePaymentClient()); } }
 
 
         protected DummyConfigManager DummyConfigManager { get { return new DummyConfigManager(); } }
@@ -41,9 +42,9 @@ namespace apcurium.MK.Web.Tests
             _appHost.Init();
         }
 
-        protected CmtPaymentClient GetCmtPaymentClient()
+        protected IPaymentServiceClient GetFakePaymentClient()
         {
-            return new CmtPaymentClient(BaseUrl,null,new CmtPaymentSettings());
+            return new FakePaymentClient();
         }
         public virtual void TestFixtureSetup()
         {

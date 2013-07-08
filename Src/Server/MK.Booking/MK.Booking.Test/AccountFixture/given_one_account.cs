@@ -166,5 +166,21 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(deviceToken, @event.DeviceToken);
 
         }
+    
+        [Test]
+        public void when_all_ccs_deleted()
+        {
+            var x = new Guid[] { _accountId};
+            this.sut.When(new DeleteAllCreditCards()
+            {
+                AccountIds = x
+            });
+
+            var @event = sut.ThenHasSingle<AllCreditCardsRemoved>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            
+
+        }
     }
 }
