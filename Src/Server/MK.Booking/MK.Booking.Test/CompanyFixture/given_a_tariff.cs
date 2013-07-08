@@ -46,9 +46,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                              DaysOfTheWeek = DayOfTheWeek.Wednesday
                          });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<TariffUpdated>(sut.Events.Single());
-            var evt = (TariffUpdated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<TariffUpdated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_tariffId, evt.TariffId);
             Assert.AreEqual(12, evt.FlatRate);
@@ -66,9 +64,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_deleting_tariff()
         {
             sut.When(new DeleteTariff{ CompanyId = _companyId, TariffId = _tariffId});
-            Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<TariffDeleted>(sut.Events.Single());
-            var evt = (TariffDeleted)sut.Events.Single();
+
+            var evt = sut.ThenHasSingle<TariffDeleted>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_tariffId, evt.TariffId);
         }
@@ -78,9 +75,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         {
             Assert.Throws<InvalidOperationException>(
                 () => sut.When(new DeleteTariff {CompanyId = _companyId, TariffId = _tariffRateId}));
-
         }
-
-        
     }
 }

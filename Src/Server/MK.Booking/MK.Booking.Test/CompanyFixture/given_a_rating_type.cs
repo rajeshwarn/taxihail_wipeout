@@ -36,9 +36,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                              Name = "Updated"
                          });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<RatingTypeUpdated>(sut.Events.Single());
-            var evt = (RatingTypeUpdated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<RatingTypeUpdated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_ratingTypeId, evt.RatingTypeId);
             Assert.AreEqual("Updated", evt.Name);
@@ -48,9 +46,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_hidding_rating_type()
         {
             sut.When(new HideRatingType { CompanyId = _companyId, RatingTypeId = _ratingTypeId });
-            Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<RatingTypeHidded>(sut.Events.Single());
-            var evt = (RatingTypeHidded)sut.Events.Single();
+
+            var evt = sut.ThenHasSingle<RatingTypeHidded>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_ratingTypeId, evt.RatingTypeId);
         }

@@ -56,8 +56,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             this.sut.When(new RemoveFavoriteAddress { AccountId = _accountId, AddressId = _addressId });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (FavoriteAddressRemoved) sut.Events.Single();
+            var evt = sut.ThenHasSingle<FavoriteAddressRemoved>();
             Assert.AreEqual(_accountId, evt.SourceId);
             Assert.AreEqual(_addressId, evt.AddressId);
         }
@@ -67,8 +66,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             this.companySut.When(new RemoveDefaultFavoriteAddress { AddressId = _addressId });
 
-            Assert.AreEqual(1, companySut.Events.Count);
-            var evt = (DefaultFavoriteAddressRemoved)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<DefaultFavoriteAddressRemoved>();
             Assert.AreEqual(_addressId, evt.AddressId);
         }
 
@@ -77,8 +75,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             this.companySut.When(new RemovePopularAddress { AddressId = _addressId });
 
-            Assert.AreEqual(1, companySut.Events.Count);
-            var evt = (PopularAddressRemoved)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<PopularAddressRemoved>();
             Assert.AreEqual(_addressId, evt.AddressId);
         }
 
@@ -97,8 +94,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, Address = new Address { Id = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" } });
 
-            Assert.AreEqual(1, sut.Events.Count());
-            var evt = (FavoriteAddressUpdated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<FavoriteAddressUpdated>();
             Assert.AreEqual(_accountId, evt.SourceId);
             Assert.AreEqual(_addressId, evt.Address.Id);
             Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
@@ -112,8 +108,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                 Address = new Address { Id = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" }
             });
 
-            Assert.AreEqual(1, companySut.Events.Count());
-            var evt = (DefaultFavoriteAddressUpdated)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<DefaultFavoriteAddressUpdated>();
             Assert.AreEqual(_addressId, evt.Address.Id);
             Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
         }
@@ -123,8 +118,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             this.companySut.When(new UpdatePopularAddress { Address = new Address { Id =_addressId, FriendlyName = "Chez Costo popular", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" } });
 
-            Assert.AreEqual(1, companySut.Events.Count());
-            var evt = (PopularAddressUpdated)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<PopularAddressUpdated>();
             Assert.AreEqual(_addressId, evt.Address.Id);
             Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
         }

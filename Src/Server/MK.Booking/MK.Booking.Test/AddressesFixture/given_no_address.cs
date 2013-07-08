@@ -33,24 +33,22 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         {
             var addressId = Guid.NewGuid();
             this.sut.When(new AddFavoriteAddress
-                              {
-                                  
-                                  AccountId = _accountId,
-                                  Address = new Address
-                {
-                    Id = addressId,
-                    FriendlyName = "Chez François",
-                    Apartment = "3939",
-                    FullAddress = "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    BuildingName = "Hôtel de Ville",
-                    Latitude = 45.515065,
-                    Longitude = -73.558064
-                }
-                              });
+            {
+                AccountId = _accountId,
+                Address = new Address
+                    {
+                        Id = addressId,
+                        FriendlyName = "Chez François",
+                        Apartment = "3939",
+                        FullAddress = "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        BuildingName = "Hôtel de Ville",
+                        Latitude = 45.515065,
+                        Longitude = -73.558064
+                    }
+            });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (FavoriteAddressAdded)sut.Events.Single();
+            var evt = sut.ThenHasSingle<FavoriteAddressAdded>();
             Assert.AreEqual(_accountId, evt.SourceId);
             Assert.AreEqual(addressId, evt.Address.Id);
             Assert.AreEqual("Chez François", evt.Address.FriendlyName);
@@ -60,7 +58,6 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
             Assert.AreEqual(45.515065, evt.Address.Latitude);
             Assert.AreEqual(-73.558064, evt.Address.Longitude);
-
         }
 
         [Test]
@@ -82,8 +79,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                }
             });
 
-            Assert.AreEqual(1, companySut.Events.Count);
-            var evt = (DefaultFavoriteAddressAdded)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<DefaultFavoriteAddressAdded>();
             Assert.AreEqual(addressId, evt.Address.Id);
             Assert.AreEqual("Chez François",  evt.Address.FriendlyName);
             Assert.AreEqual("3939", evt.Address.Apartment);
@@ -116,9 +112,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                               }
             });
 
-            Assert.AreEqual(1, companySut.Events.Count);
-            
-            var evt = (PopularAddressAdded)companySut.Events[0];
+            var evt = companySut.ThenHasSingle<PopularAddressAdded>();
             Assert.AreEqual(addressId, evt.Address.Id);
             Assert.AreEqual("Chez François popular", evt.Address.FriendlyName);
             Assert.AreEqual("3939", evt.Address.Apartment);
@@ -127,7 +121,6 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
             Assert.AreEqual(45.515065, evt.Address.Latitude);
             Assert.AreEqual(-73.558064, evt.Address.Longitude);
-
         }
 
         [Test]
