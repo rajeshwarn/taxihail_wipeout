@@ -407,15 +407,25 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
-			using (var exeProcess = Process.Start(buildiOSproject))
+			logger.Debug("Build Project : " + buildArgs);
+			var buildiOSproject = new ProcessStartInfo
 			{
-				var output = GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during build project step" + output);
-				}
-			}
+				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
+				UseShellExecute = false,
+				Arguments = buildArgs
+			};
+			var exeProcess = Process.Start(buildiOSproject);
+			exeProcess.WaitForExit();
+
+//			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
+//			using (var exeProcess = Process.Start(buildiOSproject))
+//			{
+//				var output = GetOutput(exeProcess);
+//				if (exeProcess.ExitCode > 0)
+//				{
+//					throw new Exception("Error during build project step" + output);
+//				}
+//			}
 		}
 
 		private void RevertAndPull(string repository)
@@ -513,16 +523,13 @@ namespace MK.DeploymentService.Mobile
 			return revision;
 		}
 
-		private ProcessStartInfo GetProcess(string filename, string args, bool loadUserProfile = false)
+		private ProcessStartInfo GetProcess(string filename, string args)
 		{
 			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
 			return new ProcessStartInfo
 			{
 				FileName = filename,
-				WindowStyle = ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
-				CreateNoWindow = false,
-				LoadUserProfile = loadUserProfile,
 				RedirectStandardOutput = true,
 				RedirectStandardError = true,
 				Arguments = args
