@@ -176,12 +176,11 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_paymentsettings_updated_successfully()
         {
-            var newSettings = new ServerPaymentSettings(Guid.NewGuid());
-            newSettings.CompanyId = _companyId;
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid()) {CompanyId = _companyId};
 
             sut.Given(new PaymentSettingUpdated()
                 {
-                 //   SourceId = _companyId,
+                    SourceId = _companyId,
                     ServerPaymentSettings = newSettings
                 });
 
