@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.ReadModel
                     settings.PayPalServerSettings = ppSettings;
                     return settings;
                 }
-                return new ServerPaymentSettings(Guid.NewGuid());
+                return new ServerPaymentSettings(AppConstants.CompanyId);
             }
         }
     

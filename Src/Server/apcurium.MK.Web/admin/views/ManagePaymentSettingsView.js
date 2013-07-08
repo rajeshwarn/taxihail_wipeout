@@ -5,9 +5,12 @@
         className: 'well clearfix form-horizontal',
 
         events: {
-            'change [name=paymentMode]': 'onPaymentModeChanged'
+            'change [name=paymentMode]': 'onPaymentModeChanged',
+            'change [name=acceptChange]': 'onAcceptPaymentModeChange',
         },
-
+        
+        saveButton: {},
+        warningDiv:{},
         
         render: function () {
             
@@ -17,6 +20,9 @@
             
             this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode +"]").attr("selected","selected") ;
 
+            this.warningDiv = this.$("#warning");
+            this.saveButton = this.$("#saveButton");
+            
             this.onPaymentModeChanged();
 
             this.validate({
@@ -30,6 +36,8 @@
 
             var data = $(form).serializeObjectChris();
             
+
+
             this.model.batchSave(data)
                  .always(_.bind(function() {
 
@@ -57,12 +65,35 @@
 
                  }, this));
         },
+        
+        onAcceptPaymentModeChange: function () {
+
+            
+            
+            if (this.$("[name = acceptChange]").prop("checked")) {
+
+                this.saveButton.removeAttr('disabled');
+            } else {
+                this.saveButton.attr('disabled', 'disabled');
+            }
+        },
                 
-        onPaymentModeChanged: function() {
+        onPaymentModeChanged: function () {
+            
             var method = this.$("[name=paymentMode]").val();
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
+
+
+            if (this.model.toJSON().serverPaymentSettings.paymentMode != method) {
+                this.warningDiv.show();
+                this.onAcceptPaymentModeChange();
+            } else {
+                this.warningDiv.hide();
+
+                this.saveButton.removeAttr('disabled');
+            }
 
             if (method == "Cmt") {
                 btDiv.hide();

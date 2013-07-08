@@ -1,7 +1,4 @@
-﻿<div class="message"></div>
-
-
-<!-- PAYPAL SETTINGS-->
+﻿<!-- PAYPAL SETTINGS-->
 <h4 class="table-title">{{localize "PayPal Settings"}}</h4>
 
 
@@ -124,5 +121,8 @@
 
 
 <div>
-  <button type='submit' class='btn btn-primary' >{{localize "Save"}}</button>
+  <div id="warning" class="alert">
+    <input type="checkbox" name="acceptChange"  > {{localize "I Understand that changeing the payment mode will DELETE all stored creditcard information for ALL users."}}</input>
+  </div>
+  <button type='submit' id="saveButton" class='btn btn-primary' >{{localize "Save"}}</button>
 </div>
