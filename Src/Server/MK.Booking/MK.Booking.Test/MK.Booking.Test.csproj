@@ -83,7 +83,6 @@
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
-    <Compile Include="AddressesFixture\given_no_address.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />

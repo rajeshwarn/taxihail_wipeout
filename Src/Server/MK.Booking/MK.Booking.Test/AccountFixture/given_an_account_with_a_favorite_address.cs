@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _accountId = Guid.NewGuid();
             _addressId = Guid.NewGuid();
             this.sut = new EventSourcingTestHelper<Account>();
-            this.sut.Setup(new AddressCommandHandler(this.sut.Repository, null));
+            this.sut.Setup(new AccountCommandHandler(this.sut.Repository, null));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com" });
             this.sut.Given(new FavoriteAddressAdded
             {

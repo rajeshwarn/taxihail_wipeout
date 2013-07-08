@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
     public class given_a_company
     {
         private EventSourcingTestHelper<Company> sut;
-        readonly Guid _companyId = Guid.NewGuid();
+        readonly Guid _companyId = AppConstants.CompanyId;
 
         [SetUp]
         public void given_a_company_setup()
@@ -209,6 +209,80 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             var evt2 = sut.ThenHas<PaymentModeChanged>().First();
 
             Assert.AreEqual(_companyId, evt2.SourceId);
+        }
+
+        [Test]
+        public void when_adding_an_company_default_address_successfully()
+        {
+            var addressId = Guid.NewGuid();
+            sut.When(new AddDefaultFavoriteAddress
+            {
+                Address = new Address
+                {
+                    Id = addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
+            });
+
+            var evt = sut.ThenHasSingle<DefaultFavoriteAddressAdded>();
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François", evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
+
+        }
+
+        [Test]
+        public void when_adding_an_company_popular_address_successfully()
+        {
+            var addressId = Guid.NewGuid();
+            sut.When(new AddPopularAddress
+            {
+                Address = new Address
+                {
+
+                    Id = addressId,
+                    FriendlyName = "Chez François popular",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
+            });
+
+            var evt = sut.ThenHasSingle<PopularAddressAdded>();
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François popular", evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
+        }
+
+        [Test]
+        public void when_adding_an_company_default_address_with_missing_required_fields()
+        {
+            Assert.Throws<InvalidOperationException>(() => sut.When(new AddDefaultFavoriteAddress { Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 } }));
+        }
+
+        [Test]
+        public void when_adding_an_company_popular_address_with_missing_required_fields()
+        {
+            Assert.Throws<InvalidOperationException>(() => sut.When(new AddPopularAddress { Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 } }));
         }
     }
 }

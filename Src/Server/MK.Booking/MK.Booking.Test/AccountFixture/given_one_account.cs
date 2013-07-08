@@ -9,6 +9,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
@@ -184,6 +185,38 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
+        public void when_adding_an_address_successfully()
+        {
+            var addressId = Guid.NewGuid();
+            this.sut.When(new AddFavoriteAddress
+            {
+                AccountId = _accountId,
+                Address = new Address
+                {
+                    Id = addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
+            });
+
+            var evt = sut.ThenHasSingle<FavoriteAddressAdded>();
+            Assert.AreEqual(_accountId, evt.SourceId);
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François", evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
+        }
+
+        [Test]
         public void when_removing_address_from_history_successfully()
         {
             var addressId = Guid.NewGuid();
@@ -193,6 +226,51 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(addressId, @event.AddressId);
+        }
+
+        [Test]
+        public void when_adding_an_address_with_missing_required_fields()
+        {
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress
+            {
+                AccountId = _accountId,
+                Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }
+            }));
+        }
+
+        [Test]
+        public void when_adding_an_address_with_and_invalid_latitude_or_longitude()
+        {
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => this
+                .sut.When(new AddFavoriteAddress
+                {
+                    AccountId = _accountId,
+                    Address = new Address
+                    {
+                        FriendlyName = "Chez François",
+                        Apartment = "3939",
+                        FullAddress = "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        Latitude = 180,
+                        Longitude = -73.558064
+                    }
+                }));
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => this
+                .sut.When(new AddFavoriteAddress
+                {
+                    AccountId = _accountId,
+                    Address = new Address
+                    {
+                        FriendlyName = "Chez François",
+                        Apartment = "3939",
+                        FullAddress = "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        Latitude = 0,
+                        Longitude = -200.558064
+                    }
+                }));
         }
     }
 }
