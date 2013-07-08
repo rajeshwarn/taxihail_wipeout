@@ -215,17 +215,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand CallTaxi
         {
-            get { return GetCommand(() =>
-                                        {
+            get { 
+				return GetCommand(() =>
+                {
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
-                        PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+						MessageService.ShowMessage (string.Empty, 
+						                            OrderStatusDetail.DriverInfos.MobilePhone, 
+						                            Str.CallButtonText, 
+						                            () => PhoneService.Call (OrderStatusDetail.DriverInfos.MobilePhone),
+						                            Str.CancelButtonText, 
+						                            () => {});   
                     }
                     else
                     {
                         MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
                     }
-                }); }
+                }); 
+			}
         }
 
 		private bool _showRatingButton;
