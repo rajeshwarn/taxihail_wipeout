@@ -94,10 +94,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         private PayPalCredentials GetPayPalCredentials()
         {
-            var paymentSettings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).PayPalServerSettings;
-            return paymentSettings.IsSandbox
-                            ? paymentSettings.SandboxCredentials
-                            : paymentSettings.Credentials;
+            var paymentSettings = (ServerPaymentSettings) _configurationManager.GetPaymentSettings();
+            if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "Payment settings not found");
+            
+            var payPalSettings = paymentSettings.PayPalServerSettings;
+            if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
+
+            return payPalSettings.IsSandbox
+                            ? payPalSettings.SandboxCredentials
+                            : payPalSettings.Credentials;
         }
     }
 }
