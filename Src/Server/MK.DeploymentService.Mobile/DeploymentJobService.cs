@@ -93,7 +93,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
-					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR }, job.Id);
+					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR, details = e.Message }, job.Id);
 				}
 			} catch (Exception e) {
 				logger.Error (e.Message);
