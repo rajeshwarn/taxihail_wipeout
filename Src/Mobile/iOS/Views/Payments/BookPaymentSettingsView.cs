@@ -112,7 +112,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             this.AddBindings(new Dictionary<object, string>() {         
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
-                { btPayPal, "{'TouchUpInside':{'Path':'ProceedToPayPalCommand'}}" },
+				{ btPayPal, new B("TouchUpInside","ProceedToPayPalCommand")
+								.Add("Hidden","IsPayPalEnabled", "BoolInverter") },
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
                 { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },

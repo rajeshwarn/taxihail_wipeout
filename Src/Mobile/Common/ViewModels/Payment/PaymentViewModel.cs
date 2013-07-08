@@ -40,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
+		public bool IsPayPalEnabled{ get{
+				return ConfigurationManager.GetPaymentSettings().
+			}}
+
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus {get; set;}
 
