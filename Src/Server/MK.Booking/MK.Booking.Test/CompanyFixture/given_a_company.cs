@@ -202,6 +202,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
 
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(key,evt.ServerPaymentSettings.BraintreeClientSettings.ClientKey);
+            
+            Assert.AreSame(newSettings,evt.ServerPaymentSettings);
         }
 
 
