@@ -29,8 +29,10 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         {
             this.sut.When(new CreateCompany { CompanyId = _companyId});
 
+            var @event = sut.ThenHasSingle<CompanyCreated>();
+
             Assert.AreEqual(1, sut.Events.Count);
-            Assert.AreEqual(_companyId, ((CompanyCreated)sut.Events.Single()).SourceId);
+            Assert.AreEqual(_companyId, @event.SourceId);
         }
     }
 }

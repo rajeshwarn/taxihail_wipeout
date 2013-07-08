@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             sut.Given(new CompanyCreated {SourceId = _companyId});
         }
 
-
         [Test]
         public void when_creating_a_new_rate()
         {
@@ -49,8 +48,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                                   Type = TariffType.Recurring
                               });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (TariffCreated) sut.Events.Single();
+            var evt = sut.ThenHasSingle<TariffCreated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(tariffId, evt.TariffId);
             Assert.AreEqual("Week-End", evt.Name);
@@ -65,9 +63,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(20, evt.EndTime.Hour);
             Assert.AreEqual(00, evt.EndTime.Minute);
             Assert.AreEqual(TariffType.Recurring, evt.Type);
-
         }
-
 
         [Test]
         public void when_creating_a_new_rule()
@@ -83,14 +79,12 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 Message = "Due to..."
             });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (RuleCreated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<RuleCreated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(ruleId, evt.RuleId);
             Assert.AreEqual(RuleCategory.DisableRule, evt.Category);
             Assert.AreEqual(RuleType.Default, evt.Type);
             Assert.AreEqual("Due to...", evt.Message);
-
         }
 
         [Test]
@@ -107,8 +101,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 Message = "Due to..."
             });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (RuleCreated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<RuleCreated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(ruleId, evt.RuleId);
             Assert.AreEqual(RuleCategory.DisableRule, evt.Category);
@@ -133,21 +126,15 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(RuleCategory.WarningRule, evt.Category);
             Assert.AreEqual(RuleType.Default, evt.Type);
             Assert.AreEqual("Due to...", evt.Message);
-
-
         }
 
-
-       
-        
        [Test]
         public void when_appsettings_added_successfully()
         {
             //this.sut.When(new AddAppSettings() { CompanyId = _companyId,  Key = "Key.hi", Value = "Value.hi" });
             this.sut.When(new AddOrUpdateAppSettings() { CompanyId = _companyId, AppSettings = new Dictionary<string, string> { { "Key.hi", "Value.hi" } } });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<AppSettingsAddedOrUpdated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual("Key.hi", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.hi", evt.AppSettings.First().Value);
@@ -163,12 +150,10 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.newValue"}}
                 });
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
+            var evt = sut.ThenHasSingle<AppSettingsAddedOrUpdated>();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
-
         }
 
         [Test]
@@ -196,7 +181,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 });
 
             
-            Assert.AreEqual(1, sut.Events.Count);
             var evt = sut.ThenHasSingle<PaymentSettingUpdated>();
             sut.ThenHasNo<PaymentModeChanged>();//dont delete cc if payment mode doesnt change
 
@@ -205,7 +189,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             
             Assert.AreSame(newSettings,evt.ServerPaymentSettings);
         }
-
 
         [Test]
         public void when_paymentmode_changed()
@@ -227,6 +210,5 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
 
             Assert.AreEqual(_companyId, evt2.SourceId);
         }
-
     }
 }

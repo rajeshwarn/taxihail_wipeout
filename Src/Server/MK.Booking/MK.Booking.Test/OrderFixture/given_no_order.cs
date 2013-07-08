@@ -48,8 +48,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             this.sut.When(order );
 
-            Assert.AreEqual(1, sut.Events.Count);
-            var orderCreated = (OrderCreated) sut.Events.First();
+            var orderCreated = sut.ThenHasSingle<OrderCreated>();
             Assert.AreEqual(_accountId, orderCreated.AccountId);
             Assert.AreEqual(pickupDate, orderCreated.PickupDate);                        
             Assert.AreEqual("3939", orderCreated.PickupAddress.Apartment);
@@ -112,9 +111,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             this.sut.When(order);
-            
-            Assert.AreEqual(1, sut.Events.Count);
-            var orderCreated = (OrderCreated)sut.Events.First();
+
+            var orderCreated = sut.ThenHasSingle<OrderCreated>();
             Assert.AreEqual(_accountId, orderCreated.AccountId);
             Assert.AreEqual(pickupDate, orderCreated.PickupDate);
             Assert.AreEqual("3939", orderCreated.PickupAddress.Apartment);
