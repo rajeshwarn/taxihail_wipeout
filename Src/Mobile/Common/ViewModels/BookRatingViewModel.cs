@@ -13,7 +13,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookRatingViewModel : BaseViewModel
+    public class BookRatingViewModel : BaseSubViewModel<OrderRated>
     {
         private List<RatingModel> _ratingList;
 
@@ -21,7 +21,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public List<RatingModel> RatingList
         {
             get { return _ratingList; }
-            set { _ratingList = value; FirePropertyChanged("RatingList"); }
+            set { _ratingList = value; 
+				FirePropertyChanged(()=>RatingList); }
         }
         
         private string _note;
@@ -29,18 +30,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string Note
         {
             get { return _note; }
-            set { _note = value; FirePropertyChanged("Note"); }
+            set { 
+				_note = value; 
+				FirePropertyChanged(()=>Note);
+			}
         }
 
         private bool _canRating;
-
         public bool CanRating
         {
             get
             {
                 return _canRating;
             }
-            set { _canRating = value;FirePropertyChanged("CanRating"); }
+            set {
+				_canRating = value;
+				FirePropertyChanged(()=>CanRating); 
+			}
 
         }
 
@@ -56,35 +62,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(value != _canSubmit)
 				{
 					_canSubmit = value;
-					FirePropertyChanged("CanSubmit");
+					FirePropertyChanged(()=>CanSubmit);
 				}
 			}
 			
 		}
 
         private Guid _orderId;
-
         public Guid OrderId
         {
             get
             {
                 return _orderId;
             }
-            set { _orderId = value; FirePropertyChanged("OrderId"); }
+            set 
+			{
+				_orderId = value; 
+				FirePropertyChanged(()=>OrderId); 
+			}
 
         }
 
-        public BookRatingViewModel()
+        public BookRatingViewModel(string messageId):base(messageId)
         {
-            RatingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
+            RatingList = BookingService.GetRatingType().Select(c => new RatingModel() 
+			{
+				RatingTypeId = c.Id, 
+				RatingTypeName = c.Name 
+			})
+				.OrderBy(c=>c.RatingTypeId).ToList();
             CanRating = false;
         }
        
 
-		public BookRatingViewModel (string orderId, string canRate="false")
+		public BookRatingViewModel (string messageId, string orderId, string canRate="false"):base(messageId)
 		{
-			var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService> ().GetRatingType ();
-            RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
+			var ratingTypes = BookingService.GetRatingType ();
+            RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) 
+			{
+				RatingTypeId = c.Id, 
+				RatingTypeName = c.Name 
+			}).OrderBy(c=>c.RatingTypeId).ToList();
+
 			foreach (var rating in RatingList) {
 				rating.PropertyChanged += HandleRatingPropertyChanged;
 			}
@@ -96,9 +115,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CanRating = bool.Parse(canRate);
             if(!CanRating)
             {
-                var orderRatings = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(orderId));
+                var orderRatings = BookingService.GetOrderRating(Guid.Parse(orderId));
                 Note = orderRatings.Note;
-                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false){RatingTypeId = c.RatingTypeId,Score = c.Score,RatingTypeName = c.Name}).OrderBy(c=>c.RatingTypeId).ToList();
+                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false)
+				{
+					RatingTypeId = c.RatingTypeId,
+					Score = c.Score,
+					RatingTypeName = c.Name
+				}).OrderBy(c=>c.RatingTypeId).ToList();
 
             }
         }
@@ -122,20 +146,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             OrderId = this.OrderId,
                             RatingScores =
                                 this._ratingList.Select(
-                                    c => new RatingScore() { RatingTypeId = c.RatingTypeId, Score = c.Score, Name = c.RatingTypeName}).
-                                ToList()
+                                    c => new RatingScore() 
+								{ 
+									RatingTypeId = c.RatingTypeId, 
+									Score = c.Score, 
+									Name = c.RatingTypeName
+								}).ToList()
                         };
-                        try
-                        {
-                            TinyIoCContainer.Current.Resolve<IBookingService>().SendRatingReview(orderRating);
-                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderRated(this, OrderId)));
-							RequestClose(this);
 
-                        }
-                        catch (Exception e)
-                        {
-                            throw;
-                        }
+						BookingService.SendRatingReview(orderRating);
+						ReturnResult(new OrderRated(this, OrderId));
+
                     }
                 });
             }

@@ -398,7 +398,7 @@
   <string name="OkButtonText">Ok</string>
   <string name="OrderNumber">Order #</string>
   <string name="NoAmountSelectedMessage">Please enter the amount</string>
-  <string name="CmtTransactionSuccessTitle">Payment Recieved</string>
+  <string name="CmtTransactionSuccessTitle">Payment Received</string>
   <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
@@ -424,4 +424,8 @@
   <string name="View_PayPal">PayPal</string>
   <string name="AccountNotActivated">Your account has not been activated. Another activation email was sent to you.</string>
   <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
+  <string name="PayPalExpressCheckoutCancelMessage">PayPal payment was cancelled. Your account has not been charged.</string>
+  <string name="PayPalExpressCheckoutSuccessTitle">Payment successful</string>
+  <string name="PayPalExpressCheckoutSuccessMessage">PayPal payment was successful. Confirmation sent to the driver.</string>
+  <string name="PayPalExpressCheckoutCancelTitle">Payment cancelled</string>
 </resources>
