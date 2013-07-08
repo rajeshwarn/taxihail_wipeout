@@ -125,6 +125,9 @@ namespace MK.DeploymentService.Mobile
 
 				if (job.Android) {
 					logger.DebugFormat("Copying Apk");
+					if (!Directory.Exists (apkPath)) {
+						throw new Exception("Android release dir does not exist, there probably was a problem with the build.");
+					}
 					var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(apkFile != null)
 					{
@@ -207,6 +210,8 @@ namespace MK.DeploymentService.Mobile
 				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
 			}
 			 			
+			logger.DebugFormat("Fetching revision: {0}", revision == string.Empty ? GetLatestRevision(sourceDirectory) : revision);
+
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
 
