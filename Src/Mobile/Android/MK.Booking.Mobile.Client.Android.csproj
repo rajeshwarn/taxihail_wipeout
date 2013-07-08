@@ -317,6 +317,10 @@
     <AndroidResource Include="Resources\drawable-hdpi\nearby_cab.png" />
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
+    <Compile Include="Activities\Book\RideSummaryActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Book_RideSummaryPage.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

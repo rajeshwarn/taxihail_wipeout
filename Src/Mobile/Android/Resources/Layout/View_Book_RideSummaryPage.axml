@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    local:HideLogo="false"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    local:BackgroundSource="backgroundblue"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        android:id="@+id/ContentSection"
+        android:layout_below="@+id/HeaderSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/HeaderSection"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
+            android:paddingTop="25dip"
+            android:background="@android:color/transparent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
+                    local:MvxBind="{'Click':{'Path':'NavigateToRatingPage'}}"
+                    android:background="@drawable/gray_button"
+                    android:text="@string/RateBtn"
+                    android:layout_width="250dip"
+                    android:layout_height="40dip"
+                    android:layout_margin="3dp"
+                    android:gravity="center"
+                    android:paddingBottom="5dip"
+                    android:paddingTop="5dip"
+                    android:width="10dip" />
+                <View
+                    android:layout_height="15dip"
+                    android:layout_width="20dip"
+                    android:gravity="center"
+                    android:visibility="invisible" />
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
+                    local:MvxBind="{'Click':{'Path':'SendReceiptCommand'}}"
+                    android:background="@drawable/gray_button"
+                    android:text="@string/HistoryDetailSendReceiptButton"
+                    android:layout_width="250dip"
+                    android:layout_height="40dip"
+                    android:layout_margin="3dp"
+                    android:gravity="center"
+                    android:paddingBottom="5dip"
+                    android:paddingTop="5dip"
+                    android:width="10dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
