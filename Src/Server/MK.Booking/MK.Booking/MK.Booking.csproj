@@ -114,7 +114,6 @@
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
     <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
-    <Compile Include="CommandHandlers\AddressCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />

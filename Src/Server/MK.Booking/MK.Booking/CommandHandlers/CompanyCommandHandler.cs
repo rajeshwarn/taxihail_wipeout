@@ -3,6 +3,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.CommandHandlers
@@ -21,7 +22,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddRatingType>,
         ICommandHandler<UpdateRatingType>,
         ICommandHandler<UpdatePaymentSettings>,
-        ICommandHandler<HideRatingType>
+        ICommandHandler<HideRatingType>,
+        ICommandHandler<AddPopularAddress>,
+        ICommandHandler<RemovePopularAddress>,
+        ICommandHandler<UpdatePopularAddress>,
+        ICommandHandler<AddDefaultFavoriteAddress>,
+        ICommandHandler<RemoveDefaultFavoriteAddress>,
+        ICommandHandler<UpdateDefaultFavoriteAddress>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -220,6 +227,53 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(company, command.Id.ToString());
         }
+
+        #region Popular Addresses
+        public void Handle(AddPopularAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.AddPopularAddress(command.Address);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(RemovePopularAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.RemovePopularAddress(command.AddressId);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdatePopularAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.UpdatePopularAddress(command.Address);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        #endregion
+
+        #region Default Favorite Addresses
+        public void Handle(AddDefaultFavoriteAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.AddDefaultFavoriteAddress(command.Address);
+            _repository.Save(company, command.Id.ToString());
+
+        }
+        public void Handle(RemoveDefaultFavoriteAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.RemoveDefaultFavoriteAddress(command.AddressId);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdateDefaultFavoriteAddress command)
+        {
+            var company = _repository.Get(AppConstants.CompanyId);
+            company.UpdateDefaultFavoriteAddress(command.Address);
+            _repository.Save(company, command.Id.ToString());
+        }
+        #endregion
 
     }
 }

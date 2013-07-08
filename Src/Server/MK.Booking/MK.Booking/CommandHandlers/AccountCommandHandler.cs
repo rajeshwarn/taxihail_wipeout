@@ -23,7 +23,11 @@ namespace apcurium.MK.Booking.CommandHandlers
                                                  ICommandHandler<RemoveCreditCard>,
                                                  ICommandHandler<DeleteAllCreditCards>,
                                                  ICommandHandler<RegisterDeviceForPushNotifications>,
-                                                 ICommandHandler<UnregisterDeviceForPushNotifications>
+                                                 ICommandHandler<UnregisterDeviceForPushNotifications>,
+                                                 ICommandHandler<AddFavoriteAddress>,
+                                                 ICommandHandler<RemoveFavoriteAddress>,
+                                                 ICommandHandler<UpdateFavoriteAddress>,
+                                                 ICommandHandler<RemoveAddressFromHistory>
     {
         private readonly IEventSourcedRepository<Account> _repository;
         private readonly IPasswordService _passwordService;
@@ -162,5 +166,41 @@ namespace apcurium.MK.Booking.CommandHandlers
                 _repository.Save(account, command.Id.ToString());
             }
         }
+
+        #region Addresses
+        public void Handle(AddFavoriteAddress command)
+        {
+            var account = _repository.Get(command.AccountId);
+
+            account.AddFavoriteAddress(command.Address);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RemoveFavoriteAddress command)
+        {
+            var account = _repository.Get(command.AccountId);
+
+            account.RemoveFavoriteAddress(command.AddressId);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdateFavoriteAddress command)
+        {
+            var account = _repository.Get(command.AccountId);
+
+            account.UpdateFavoriteAddress(command.Address);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RemoveAddressFromHistory command)
+        {
+            var account = _repository.Get(command.AccountId);
+            account.RemoveAddressFromHistory(command.AddressId);
+            _repository.Save(account, command.Id.ToString());
+        }
+        #endregion
     }
 }

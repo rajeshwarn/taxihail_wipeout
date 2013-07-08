@@ -69,20 +69,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountFixture\given_an_account_with_a_favorite_address.cs" />
     <Compile Include="AccountFixture\given_booking_settings.cs" />
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
     <Compile Include="AccountFixture\given_one_account_for_credit_card.cs" />
     <Compile Include="AutoMapperFixture\ValidateProfile.cs" />
+    <Compile Include="CompanyFixture\given_a_company_with_a_default_address.cs" />
+    <Compile Include="CompanyFixture\given_a_company_with_a_popular_address.cs" />
     <Compile Include="CompanyFixture\given_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_a_rating_type.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
-    <Compile Include="AddressesFixture\given_an_address.cs" />
     <Compile Include="AddressesFixture\given_no_address.cs" />
-    <Compile Include="given_a_company_and_accounts.cs" />
+    <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />

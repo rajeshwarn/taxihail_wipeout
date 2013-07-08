@@ -115,7 +115,6 @@ namespace apcurium.MK.Booking
         private void RegisterCommandHandlers(IUnityContainer container)
         {
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, AddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");

@@ -182,5 +182,17 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             
 
         }
+
+        [Test]
+        public void when_removing_address_from_history_successfully()
+        {
+            var addressId = Guid.NewGuid();
+            this.sut.When(new RemoveAddressFromHistory { AddressId = addressId, AccountId = _accountId });
+
+            var @event = sut.ThenHasSingle<AddressRemovedFromHistory>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(addressId, @event.AddressId);
+        }
     }
 }
