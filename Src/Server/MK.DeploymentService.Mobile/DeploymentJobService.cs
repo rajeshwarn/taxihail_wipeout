@@ -126,7 +126,7 @@ namespace MK.DeploymentService.Mobile
 				if (job.Android) {
 					logger.DebugFormat("Copying Apk");
 					if (!Directory.Exists (apkPath)) {
-						throw new Exception("Android release dir does not exist, there probably was a problem with the build.");
+						throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
 					}
 					var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(apkFile != null)
@@ -368,10 +368,21 @@ namespace MK.DeploymentService.Mobile
 
 				var configAndroid = "Release";
 				var projectLists = new List<string>{
-					"Android_System.Reactive.Interfaces", "Android_System.Reactive.Core", "Android_System.Reactive.PlatformServices", "Android_System.Reactive.Linq",
+					"Android_System.Reactive.Interfaces", 
+					"Android_System.Reactive.Core", 
+					"Android_System.Reactive.PlatformServices", 
+					"Android_System.Reactive.Linq",
 					"PushSharp.Client.MonoForAndroid.Gcm",
-					"Newtonsoft.Json.MonoDroid", "Cirrious.MvvmCross.Android", "Cirrious.MvvmCross.Binding.Android", "Cirrious.MvvmCross.Android.Maps",
-					"MK.Common.Android", "MK.Booking.Google.Android", "MK.Booking.Maps.Android", "MK.Booking.Api.Contract.Android", "MK.Booking.Api.Client.Android",
+					"Newtonsoft.Json.MonoDroid", 
+					"Cirrious.MvvmCross.Android", 
+					"Cirrious.MvvmCross.Binding.Android", 
+					"Cirrious.MvvmCross.Android.Maps",
+					"BraintreeEncryption.Library.Android",
+					"MK.Common.Android",
+					"MK.Booking.Google.Android", 
+					"MK.Booking.Maps.Android", 
+					"MK.Booking.Api.Contract.Android", 
+					"MK.Booking.Api.Client.Android",
 					"MK.Booking.Mobile.Android"
 				};
 				
