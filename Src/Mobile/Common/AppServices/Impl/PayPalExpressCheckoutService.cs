@@ -6,12 +6,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PayPalExpressCheckoutService: BaseService, IPayPalExpressCheckoutService
     {
-        public Task<string> SetExpressCheckoutForAmount(decimal amount)
+        public Task<string> SetExpressCheckoutForAmount(Guid orderId, decimal amount)
         {
             return Task.Factory.StartNew(()=>{
                 string checkoutUrl = string.Empty;
                 UseServiceClient<PayPalServiceClient> (client => {
-                    checkoutUrl = client.SetExpressCheckoutForAmount(amount);
+                    checkoutUrl = client.SetExpressCheckoutForAmount(orderId, amount);
                 });
                 return checkoutUrl;
             });
