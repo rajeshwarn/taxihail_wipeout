@@ -80,7 +80,9 @@
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
-    <Compile Include="Requests\Payment\PayPalRequest.cs" />
+    <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
