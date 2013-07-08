@@ -25,10 +25,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			TitleLabel.Text = Resources.GetValue ("View_BookingStatus_ThankYouTitle");
 			MessageLabel.Text = Resources.GetValue ("View_BookingStatus_ThankYouMessage");
-			SendRecieptButton.SetTitle (Resources.GetValue ("HistoryDetailSendReceiptButton"), UIControlState.Normal);
-			RateButton.SetTitle (Resources.GetValue ("RateBtn"), UIControlState.Normal);
 
-			
+			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Black);
+			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Black);
+
+
+
 			this.AddBindings(new Dictionary<object, string>(){
 				{ SendRecieptButton, new B("TouchUpInside","SendReceiptCommand")
 									.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },

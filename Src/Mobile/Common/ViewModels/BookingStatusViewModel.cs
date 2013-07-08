@@ -324,9 +324,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public void GoToSummary(){
+			
+			Close ();
 			RequestNavigate<RideSummaryViewModel> (new {
 				order = Order
 			});
+
 		}
         
 
@@ -369,6 +372,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
+					
+					GoToSummary();
+
+
 					if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
                         MessageService.ShowMessage (Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
                         return;
@@ -408,6 +415,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
+
 #if DEBUG
 #else
                         if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
