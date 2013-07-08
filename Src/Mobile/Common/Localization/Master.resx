@@ -1039,9 +1039,6 @@
   <data name="View_RatePage" xml:space="preserve">
     <value>Rate your trip</value>
   </data>
-  <data name="ReturnBookingScreen" xml:space="preserve">
-    <value>Return to main screen</value>
-  </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">
     <value>Password was reset successfully</value>
   </data>

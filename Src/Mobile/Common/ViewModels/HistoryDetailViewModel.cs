@@ -271,7 +271,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		protected override void Initialize ()
 		{
-			MessengerHub.Subscribe<OrderRated>(RefreshOrderStatus);
 		}
 
 		public override void Load ()
@@ -322,7 +321,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString()});
+													RequestSubNavigate<BookRatingViewModel,OrderRated>(new 
+					            	                    {														
+															orderId = OrderId, 
+															canRate = canRate.ToString()
+														}.ToStringDictionary(),_=>
+														{
+														RefreshOrderStatus(_);
+														});
                                                });
             }
         }

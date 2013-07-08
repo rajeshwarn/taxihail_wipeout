@@ -43,11 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                         
             scrollView.AutoSize ();
 
-            lblName.Text= Resources.GetValue("RideSettingsName");
-            lblPhone.Text= Resources.GetValue("RideSettingsPhone");
-            lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
-            lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
-            lblPassword.Text = Resources.GetValue("RideSettingsPassword");
+			lblName.Text= Resources.GetValue("RideSettingsName");
+			lblPhone.Text= Resources.GetValue("RideSettingsPhone");
+			lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
+			lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+			lblPassword.Text = Resources.GetValue("RideSettingsPassword");
 
             base.DismissKeyboardOnReturn(txtName, txtPhone);
             
