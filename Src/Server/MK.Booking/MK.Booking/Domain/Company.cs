@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<CompanyCreated>(OnEventDoNothing);
             Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
             Handles<PaymentModeChanged>(OnEventDoNothing);
-            Handles<PaymentSettingUpdated>(OnEventDoNothing);
+            Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
             Handles<TariffUpdated>(OnEventDoNothing);
@@ -64,6 +64,11 @@ namespace apcurium.MK.Booking.Domain
             Handles<RatingTypeAdded>(OnEventDoNothing);
             Handles<RatingTypeHidded>(OnEventDoNothing);
             Handles<RatingTypeUpdated>(OnEventDoNothing);
+        }
+
+        private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
+        {
+            PaymentMode = obj.ServerPaymentSettings.PaymentMode;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -328,7 +333,6 @@ namespace apcurium.MK.Booking.Domain
         {
             if (PaymentMode != command.ServerPaymentSettings.PaymentMode)
             {
-                PaymentMode = command.ServerPaymentSettings.PaymentMode;
                 Update(new PaymentModeChanged()
                 { });
             }

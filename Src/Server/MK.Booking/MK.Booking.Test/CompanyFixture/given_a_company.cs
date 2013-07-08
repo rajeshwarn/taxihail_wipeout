@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.CompanyFixture
@@ -157,13 +159,43 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_appsettings_updated_successfully()
         {
             //this.sut.When(new UpdateAppSettings() { CompanyId = _companyId, Key = "Key.Default", Value = "Value.newValue" });
-            this.sut.When(new AddOrUpdateAppSettings() { CompanyId = _companyId, AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.newValue" } } });
+            this.sut.When(new AddOrUpdateAppSettings()
+                {
+                    CompanyId = _companyId,
+                    AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.newValue"}}
+                });
 
             Assert.AreEqual(1, sut.Events.Count);
             var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
+
+        }
+
+        [Test]
+        public void when_paymentsettings_updated_successfully()
+        {
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid());
+            newSettings.CompanyId = _companyId;
+
+            sut.Given(new PaymentSettingUpdated()
+                {
+                 //   SourceId = _companyId,
+                    ServerPaymentSettings = newSettings
+                });
+
+            sut.When(new UpdatePaymentSettings()
+                {
+                    ServerPaymentSettings = newSettings
+                });
+
+            
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = sut.Events.Single();
+            //Assert.AreEqual(_companyId, evt.SourceId);
+            //Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
+            //Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
 
         }
 

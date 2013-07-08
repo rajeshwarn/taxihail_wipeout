@@ -13,13 +13,11 @@ namespace apcurium.MK.Booking.Commands
         public UpdatePaymentSettings()
         {
             Id = Guid.NewGuid();
-            CompanyId = AppConstants.CompanyId;
         }
 
         public Guid Id { get;  set; }
         
         public ServerPaymentSettings ServerPaymentSettings { get; set; }
 
-        public Guid CompanyId { get; set; }
     }
 }
