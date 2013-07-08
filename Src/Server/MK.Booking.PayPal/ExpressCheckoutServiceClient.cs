@@ -52,8 +52,13 @@ namespace MK.Booking.PayPal
 
                 ThrowIfError(response);
 
-                return _urls.GetCheckoutUrl(response.Token);
+                return response.Token;
             }
+        }
+
+        public string GetCheckoutUrl(string token)
+        {
+            return _urls.GetCheckoutUrl(token);
         }
 
         private static void ThrowIfError(SetExpressCheckoutResponseType response)
@@ -146,6 +151,7 @@ namespace MK.Booking.PayPal
                 return string.Format(urlFormat, Uri.EscapeDataString(token));
             }
         }
+
     }
 
 
