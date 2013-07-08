@@ -90,6 +90,9 @@
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
+    <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\DbContextExtensions.cs" />
+    <Compile Include="Extensions\DbModelBuilderExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />

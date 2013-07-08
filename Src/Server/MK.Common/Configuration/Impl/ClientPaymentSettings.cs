@@ -12,9 +12,12 @@ namespace apcurium.MK.Common.Configuration
 			PaymentMode = PaymentMethod.Fake;
 			CmtPaymentSettings = new CmtPaymentSettings();
             BraintreeClientSettings = new BraintreeClientSettings();
+		    PayPalClientSettings = new PayPalClientSettings();
 		}
         public PaymentMethod PaymentMode { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
+
+        public PayPalClientSettings PayPalClientSettings { get; set; }
     }
 }

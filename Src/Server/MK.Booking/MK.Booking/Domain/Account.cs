@@ -32,10 +32,12 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AdminRightGranted>(NoAction);
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            base.Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
             base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
             base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
             base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
+
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -222,6 +224,10 @@ namespace apcurium.MK.Booking.Domain
                 CreditCardId = creditCardId
             });
         }
+        private void OnAllCreditCardsRemoved(AllCreditCardsRemoved obj)
+        {
+            _creditCardCount = 0;
+        }
 
         public void UpdatePaymentProfile(Guid? defaultCreditCard, int? defaultTipPercent)
         {
@@ -335,6 +341,12 @@ namespace apcurium.MK.Booking.Domain
         public void DisableAccountByAdmin()
         {
             this.Update(new AccountDisabled());
+        }
+
+
+        public void RemoveAllCreditCards()
+        {
+            this.Update(new AllCreditCardsRemoved());
         }
     }
 }

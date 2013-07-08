@@ -6,6 +6,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -29,17 +30,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             base.ViewDidLoad ();
             ViewModel.Load();
 
+			// Hide navigation bar, full screen height is required for displaying paypal page
+			this.NavigationController.NavigationBarHidden = true;
+
             webView.ShouldStartLoad = LoadHook;
-
-            webView.LoadRequest(new NSUrlRequest(new NSUrl(ViewModel.Url)));
-
-            // Perform any additional setup after loading the view, typically from a nib.
+			var request = new NSUrlRequest (new NSUrl (ViewModel.Url));
+            
+			webView.LoadRequest(request);
+			webView.LoadFinished += (s,e) => {
+				ViewModel.WebViewLoadFinished();
+			}; 
         }
 
         bool LoadHook (UIWebView sender, NSUrlRequest request, UIWebViewNavigationType navType)
         {
-            var requestString = request.Url.AbsoluteString;
-            return true;
+			if(request.Url.Scheme.StartsWith("taxihail"))
+			{
+				if (request.Url.Host == "success") {
+					ViewModel.Finish.Execute (true);
+				} else {
+					ViewModel.Finish.Execute (false);
+				}
+				return false;
+			}
+			return true;
         }
     }
 }

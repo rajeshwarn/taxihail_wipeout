@@ -15,6 +15,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
+using System.Reactive.Linq;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -76,13 +77,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		public void ShowConfirmation(string tranactionId)
+		public void ShowConfirmation(string transactionId)
 		{
-            MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, tranactionId),
+            MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, transactionId),
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
 			{				
 				ConfirmPaymentForDriver();
-                ShowConfirmation(tranactionId);
+                ShowConfirmation(transactionId);
 			},
 			Str.OkButtonText, ()=> ReturnResult(""));
 		}
@@ -93,13 +94,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() => 
                 {
-                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
-                    paypal.SetExpressCheckoutForAmount(10m)
-                        .ToObservable()
-                        .Subscribe(checkoutUrl => {
-                                RequestNavigate<PayPalViewModel>(new { url = checkoutUrl});
-                        });
-                    
+					if(CanProceedToPayment(requireCreditCard: false))
+					{
+						MessageService.ShowProgress(true);
+	                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
+	                    paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount))
+	                        .ToObservable()
+							// Always Hide progress indicator
+						    .Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))
+	                        .Subscribe(checkoutUrl => {
+
+									var @params = new Dictionary<string, string>() {
+										{"url", checkoutUrl},
+									};
+									this.RequestSubNavigate<PayPalViewModel, bool>(@params, success => {
+										if(success)
+										{
+											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"), Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+										                           Str.CmtTransactionResendConfirmationButtonText, ()=> ConfirmPaymentForDriver(), Str.OkButtonText, ()=> ReturnResult(""));
+										} else {
+											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
+										}
+									});
+								}, error => {
+
+								});
+					}
                 });
             }
         }
@@ -112,53 +132,63 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                 {                    
 
-					if(PaymentPreferences.SelectedCreditCard == null)
+					if(CanProceedToPayment())
 					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
-						return;
-					}
-					if(Amount <= 0)
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
-						return;
-					}
+						using(MessageService.ShowProgress ())
+						{
+		                
+		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
+		                    
+		                    if (!preAuthResponse.IsSuccessfull)
+							{
+								MessageService.ShowProgress(false);
+								MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+		                        return;
+							}
 
-                    MessageService.ShowProgress (true);
+		                    try{
+		                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber, preAuthResponse.TransactionId, Order.IBSOrderId.Value);
+		                    }
+		                    catch(Exception e)
+		                    {
+		                        MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+		                        return;
+		                    }
 
-					if(!Order.IBSOrderId.HasValue)
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
+							ShowConfirmation(preAuthResponse.TransactionId);					          
+						}
 					}
-                    
-                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
-                    
-                    if (!preAuthResponse.IsSuccessfull)
-					{
-						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
-                        return;
-					}
-
-                    try{
-                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber, preAuthResponse.TransactionId, Order.IBSOrderId.Value);
-                    }
-                    catch(Exception e)
-                    {
-                        MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
-                        return;
-                    }
-
-					MessageService.ShowProgress(false);
-                    ShowConfirmation(preAuthResponse.TransactionId);					          
-					
 
                 }); 
                 
             }
         }
+
+		private bool CanProceedToPayment(bool requireCreditCard = true)
+		{
+			if(requireCreditCard && PaymentPreferences.SelectedCreditCard == null)
+			{
+				MessageService.ShowProgress(false);
+				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
+				return false;
+			}
+
+			if(Amount <= 0)
+			{
+				MessageService.ShowProgress(false);
+				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
+				return false;
+			}
+
+			if(!Order.IBSOrderId.HasValue)
+			{
+				MessageService.ShowProgress(false);
+				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
+				return false;
+			}			
+
+			return true;
+		}
 
     }
 }

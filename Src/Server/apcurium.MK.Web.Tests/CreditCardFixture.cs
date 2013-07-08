@@ -62,11 +62,10 @@ namespace apcurium.MK.Web.Tests
 
 
         [Test]
-        [Ignore] //service CMT ne marche pas pour le moment
         public void RemoveCreditCard()
         {
             
-            var client = GetCmtPaymentClient();
+            var client = GetFakePaymentClient();
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, client);
 
@@ -93,6 +92,10 @@ namespace apcurium.MK.Web.Tests
             var creditCards = sut.GetCreditCards();
             Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
         }
+
+
+
+   
 
     }
 }

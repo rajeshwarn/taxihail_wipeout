@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
+    <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\Address.cs" />

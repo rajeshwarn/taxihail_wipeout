@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                                                  ICommandHandler<GrantAdminRight>,
                                                  ICommandHandler<AddCreditCard>,
                                                  ICommandHandler<RemoveCreditCard>,
+                                                 ICommandHandler<DeleteAllCreditCards>,
                                                  ICommandHandler<RegisterDeviceForPushNotifications>,
                                                  ICommandHandler<UnregisterDeviceForPushNotifications>
     {
@@ -148,6 +150,17 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             account.DisableAccountByAdmin();
             _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(DeleteAllCreditCards command)
+        {
+            foreach (var accountId in command.AccountIds)
+            {
+                var account = _repository.Find(accountId);
+            
+                account.RemoveAllCreditCards();
+                _repository.Save(account, command.Id.ToString());
+            }
         }
     }
 }

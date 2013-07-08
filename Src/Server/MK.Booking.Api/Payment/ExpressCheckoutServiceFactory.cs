@@ -1,35 +1,22 @@
 ﻿using System.Globalization;
-using System.Web.Hosting;
 using MK.Booking.PayPal;
+using ServiceStack.ServiceHost;
+using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Payment
 {
     public class ExpressCheckoutServiceFactory
     {
-        public ExpressCheckoutServiceClient CreateService()
+        public ExpressCheckoutServiceClient CreateService(IRequestContext requestContext, PayPalCredentials payPalCredentials)
         {
-            var successUrl = HostingEnvironment.MapPath("~/PayPalExpressCheckout/mobile-success.html");
-            var cancelUrl = HostingEnvironment.MapPath("~/PayPalExpressCheckout/mobile-cancel.html");
+            var root = ApplicationPathResolver.GetApplicationPath(requestContext);
+            var successUrl = root + "/payment/paypal/success";
+            var cancelUrl = root + "/payment/paypal/cancel";
 
-            return new ExpressCheckoutServiceClient(new SandboxCredentials(), new RegionInfo("en-US"), successUrl, cancelUrl, useSandbox: true);
+
+            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo("en-US"), successUrl, cancelUrl, useSandbox: true);
         }
-        /// <summary>
-        /// Temporary, for development purpose only
-        /// </summary>
-        private class SandboxCredentials: IPayPalCredentials
-        {
-            public string Username
-            {
-                get { return "vincent.costel-facilitator_api1.gmail.com"; }
-            }
-            public string Password
-            {
-                get { return "1372362468"; }
-            }
-            public string Signature
-            {
-                get { return "AFcWxV21C7fd0v3bYYYRCpSSRl31ADYXGX.gPsewqg6pNBBa9JL5zoCL"; }
-            }
-        }
+
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using MK.Common.Android.Configuration.Impl;
-
 
 namespace apcurium.MK.Common.Configuration
 {

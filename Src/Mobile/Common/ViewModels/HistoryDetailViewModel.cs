@@ -93,9 +93,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if (value != _isCompleted) {
 					_isCompleted = value;
 					FirePropertyChanged (()=>IsCompleted);
+					FirePropertyChanged (()=>RebookIsAvailable);
 				}
 			}
-			
+		}
+
+		public bool RebookIsAvailable {
+			get {
+				var setting = ConfigurationManager.GetSetting("Client.HideRebookOrder");
+				return IsCompleted && !bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+			}
 		}
 
         private bool _hasRated;

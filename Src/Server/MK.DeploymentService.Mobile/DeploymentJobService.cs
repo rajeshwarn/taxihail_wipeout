@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -92,7 +93,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
-					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR }, job.Id);
+					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR, details = e.Message }, job.Id);
 				}
 			} catch (Exception e) {
 				logger.Error (e.Message);
@@ -124,6 +125,9 @@ namespace MK.DeploymentService.Mobile
 
 				if (job.Android) {
 					logger.DebugFormat("Copying Apk");
+					if (!Directory.Exists (apkPath)) {
+						throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+					}
 					var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(apkFile != null)
 					{
@@ -206,23 +210,19 @@ namespace MK.DeploymentService.Mobile
 				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
 			}
 			 			
+			logger.DebugFormat("Fetching revision: {0}", revision == string.Empty ? GetLatestRevision(sourceDirectory) : revision);
+
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
 
-				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
-				                         sourceDirectory, revision);
-				
-				var hgClone = new ProcessStartInfo
+				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
+				var hgClone = GetProcess(HgPath, args);
+				using (var exeProcess = Process.Start(hgClone))
 				{
-					FileName = HgPath,
-					UseShellExecute = false,
-					Arguments = args
-				};
-				
-				using (var exeProcess = Process.Start(hgClone)) {
-					exeProcess.WaitForExit ();
-					if (exeProcess.ExitCode > 0) {
-						throw new Exception ("Error during clone source code step");
+					var output = GetOutput(exeProcess);
+					if (exeProcess.ExitCode > 0)
+					{
+						throw new Exception("Error during clone source code step" + output);
 					}
 				}
 			} else {
@@ -234,18 +234,14 @@ namespace MK.DeploymentService.Mobile
 			//fetch revision if needed
 			if (!string.IsNullOrEmpty (revision)) {
 				logger.DebugFormat ("Update to revision {0}", revision);
-				var hgUpdate = new ProcessStartInfo
+
+				var hgUpdate = GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
+				using (var exeProcess = Process.Start(hgUpdate))
 				{
-					FileName = HgPath,
-					UseShellExecute = false,
-					Arguments =
-					string.Format("update --repository {0} {1}", sourceDirectory, revision)
-				};
-				
-				using (var exeProcess = Process.Start(hgUpdate)) {
-					exeProcess.WaitForExit ();
-					if (exeProcess.ExitCode > 0) {
-						throw new Exception ("Error during revert source code step");
+					var output = GetOutput(exeProcess);
+					if (exeProcess.ExitCode > 0)
+					{
+						throw new Exception("Error during updating to revision step" + output);
 					}
 				}
 			}
@@ -312,7 +308,6 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			logger.DebugFormat ("Customization Finished");
-
 			logger.DebugFormat ("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo
@@ -343,7 +338,6 @@ namespace MK.DeploymentService.Mobile
 			
 			logger.DebugFormat ("Build Solution");
 
-
 			if (job.iOS_AdHoc) {			
 				
 				logger.DebugFormat ("Build iOS AdHoc");
@@ -370,17 +364,25 @@ namespace MK.DeploymentService.Mobile
 				logger.Debug("Build iOS AppStore done");
 			}
 
-
-
-
 			if (job.Android || job.CallBox) {
 
 				var configAndroid = "Release";
 				var projectLists = new List<string>{
-					"Android_System.Reactive.Interfaces", "Android_System.Reactive.Core", "Android_System.Reactive.PlatformServices", "Android_System.Reactive.Linq",
+					"Android_System.Reactive.Interfaces", 
+					"Android_System.Reactive.Core", 
+					"Android_System.Reactive.PlatformServices", 
+					"Android_System.Reactive.Linq",
 					"PushSharp.Client.MonoForAndroid.Gcm",
-					"Newtonsoft.Json.MonoDroid", "Cirrious.MvvmCross.Android", "Cirrious.MvvmCross.Binding.Android", "Cirrious.MvvmCross.Android.Maps",
-					"MK.Common.Android", "MK.Booking.Google.Android", "MK.Booking.Maps.Android", "MK.Booking.Api.Contract.Android", "MK.Booking.Api.Client.Android",
+					"Newtonsoft.Json.MonoDroid", 
+					"Cirrious.MvvmCross.Android", 
+					"Cirrious.MvvmCross.Binding.Android", 
+					"Cirrious.MvvmCross.Android.Maps",
+					"BraintreeEncryption.Library.Android",
+					"MK.Common.Android",
+					"MK.Booking.Google.Android", 
+					"MK.Booking.Maps.Android", 
+					"MK.Booking.Api.Contract.Android", 
+					"MK.Booking.Api.Client.Android",
 					"MK.Booking.Mobile.Android"
 				};
 				
@@ -430,71 +432,57 @@ namespace MK.DeploymentService.Mobile
 			};
 			var exeProcess = Process.Start(buildiOSproject);
 			exeProcess.WaitForExit();
+
+//			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
+//			using (var exeProcess = Process.Start(buildiOSproject))
+//			{
+//				var output = GetOutput(exeProcess);
+//				if (exeProcess.ExitCode > 0)
+//				{
+//					throw new Exception("Error during build project step" + output);
+//				}
+//			}
 		}
 
 		private void RevertAndPull(string repository)
 		{
-			var hgRevert = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("update --repository {0} -C", repository)
-			};
-			
+			var hgRevert = GetProcess(HgPath, string.Format("update --repository {0} -C", repository));
 			using (var exeProcess = Process.Start(hgRevert))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during revert source code step");
+					throw new Exception("Error during revert source code step" + output);
 				}
 			}
-			
-			var hgPurge = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("purge --all --repository {0}", repository)
-			};
-			
+
+			var hgPurge = GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPurge))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during purge source code step");
+					throw new Exception("Error during purge source code step" + output);
 				}
 			}
-			
-			var hgPull = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository)
-			};
-			
+
+			var hgPull = GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPull))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during pull source code step");
+					throw new Exception("Error during pull source code step" + output);
 				}
 			}
-			
-			var hgUpdate = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("update --repository {0}", repository)
-			};
-			
+
+			var hgUpdate = GetProcess(HgPath, string.Format ("update --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgUpdate))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during revert source code step");
+					throw new Exception("Error during update source code step" + output);
 				}
 			}
 		}
@@ -549,6 +537,39 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			return revision;
+		}
+
+		private ProcessStartInfo GetProcess(string filename, string args)
+		{
+			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
+			return new ProcessStartInfo
+			{
+				FileName = filename,
+				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				Arguments = args
+			};
+		}
+
+		private string GetOutput(Process exeProcess)
+		{
+			var output = "\n---------------------------------------------\n";
+
+			exeProcess.OutputDataReceived += (s, e) =>
+			{
+				output += e.Data + "\n";
+			};
+			exeProcess.ErrorDataReceived += (s, e) =>
+			{
+				output += e.Data + "\n";
+			};
+
+			exeProcess.BeginOutputReadLine();
+			exeProcess.BeginErrorReadLine();
+			exeProcess.WaitForExit();
+
+			return output += "\n---------------------------------------------\n";
 		}
 	}
 }

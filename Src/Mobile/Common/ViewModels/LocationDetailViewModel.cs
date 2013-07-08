@@ -114,10 +114,18 @@ namespace apcurium.MK.Booking.Mobile
                 if(value != _isNew)
                 {
                     _isNew = value;
-                    FirePropertyChanged("IsNew");
+                    FirePropertyChanged(() => IsNew);
+					FirePropertyChanged(() => RebookIsAvailable);
                 }
             }
         }
+
+		public bool RebookIsAvailable {
+			get {
+				var setting = ConfigurationManager.GetSetting("Client.HideRebookOrder");
+				return !IsNew && !bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+			}
+		}
 
         public IMvxCommand ValidateAddress {
             get {

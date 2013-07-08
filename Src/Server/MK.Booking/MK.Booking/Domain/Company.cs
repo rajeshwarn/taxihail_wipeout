@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.EventSourcing;
+using MK.Common.Android.Configuration.Impl;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
@@ -46,7 +47,8 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<CompanyCreated>(OnEventDoNothing);
             Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
-            Handles<PaymentSettingUpdated>(OnEventDoNothing);
+            Handles<PaymentModeChanged>(OnEventDoNothing);
+            Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
             Handles<TariffUpdated>(OnEventDoNothing);
@@ -62,6 +64,11 @@ namespace apcurium.MK.Booking.Domain
             Handles<RatingTypeAdded>(OnEventDoNothing);
             Handles<RatingTypeHidded>(OnEventDoNothing);
             Handles<RatingTypeUpdated>(OnEventDoNothing);
+        }
+
+        private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
+        {
+            PaymentMode = obj.ServerPaymentSettings.PaymentMode;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -324,15 +331,23 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdatePaymentSettings(UpdatePaymentSettings command)
         {
-            this.Update(new PaymentSettingUpdated()
+            if (PaymentMode != command.ServerPaymentSettings.PaymentMode)
+            {
+                Update(new PaymentModeChanged()
+                { });
+            }
+
+            Update(new PaymentSettingUpdated()
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
         }
 
+        protected PaymentMethod PaymentMode { get; set; }
+
         public void ActivateRule(Guid ruleId)
         {            
-            this.Update(new RuleActivated
+            Update(new RuleActivated
             {
                 RuleId = ruleId
             });

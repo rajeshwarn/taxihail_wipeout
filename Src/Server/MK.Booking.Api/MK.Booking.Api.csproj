@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />

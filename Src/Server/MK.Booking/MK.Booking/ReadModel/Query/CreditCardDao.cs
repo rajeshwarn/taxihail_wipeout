@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {

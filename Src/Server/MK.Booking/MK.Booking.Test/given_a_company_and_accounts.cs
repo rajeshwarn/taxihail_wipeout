@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.CompanyFixture
@@ -21,20 +23,18 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [SetUp]
         public void given_a_company_setup()
         {
-            this.sut = new EventSourcingTestHelper<Company>();
-            this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
-            this.sut.Given(new CompanyCreated { SourceId = _companyId });
-            //this.sut.Given(new AppSettingsAdded() { Key = "Key.Default", Value = "Value.Default" });
-            this.sut.Given(new AppSettingsAddedOrUpdated { AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Default" } } });
+            sut = new EventSourcingTestHelper<Company>();
+            sut.Setup(new CompanyCommandHandler(this.sut.Repository));
+            sut.Given(new CompanyCreated {SourceId = _companyId});
         }
 
-        
+
         [Test]
         public void when_creating_a_new_rate()
         {
             var tariffId = Guid.NewGuid();
 
-            this.sut.When(new CreateTariff
+            sut.When(new CreateTariff
                               {
                                   CompanyId = _companyId,
                                   TariffId = tariffId,
@@ -157,7 +157,11 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_appsettings_updated_successfully()
         {
             //this.sut.When(new UpdateAppSettings() { CompanyId = _companyId, Key = "Key.Default", Value = "Value.newValue" });
-            this.sut.When(new AddOrUpdateAppSettings() { CompanyId = _companyId, AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.newValue" } } });
+            this.sut.When(new AddOrUpdateAppSettings()
+                {
+                    CompanyId = _companyId,
+                    AppSettings = new Dictionary<string, string> {{"Key.Default", "Value.newValue"}}
+                });
 
             Assert.AreEqual(1, sut.Events.Count);
             var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
@@ -165,6 +169,63 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
             Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
 
+        }
+
+        [Test]
+        public void when_paymentsettings_updated_successfully()
+        {
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
+                {
+                    CompanyId = _companyId,
+                };
+
+            var key = Guid.NewGuid().ToString();
+
+            newSettings.BraintreeClientSettings.ClientKey = key;
+
+
+            sut.Given(new PaymentSettingUpdated()
+                {
+                    SourceId = _companyId,
+                    ServerPaymentSettings = newSettings
+                });
+
+            sut.When(new UpdatePaymentSettings()
+                {
+                    ServerPaymentSettings = newSettings
+                });
+
+            
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = sut.ThenHasSingle<PaymentSettingUpdated>();
+            sut.ThenHasNo<PaymentModeChanged>();//dont delete cc if payment mode doesnt change
+
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(key,evt.ServerPaymentSettings.BraintreeClientSettings.ClientKey);
+            
+            Assert.AreSame(newSettings,evt.ServerPaymentSettings);
+        }
+
+
+        [Test]
+        public void when_paymentmode_changed()
+        {
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
+            {
+                CompanyId = _companyId,
+            };
+
+            sut.When(new UpdatePaymentSettings()
+            {
+                ServerPaymentSettings = newSettings
+            });
+
+
+            Assert.AreEqual(2, sut.Events.Count);
+            var evt = sut.ThenHas<PaymentSettingUpdated>();
+            var evt2 = sut.ThenHas<PaymentModeChanged>().First();
+
+            Assert.AreEqual(_companyId, evt2.SourceId);
         }
 
     }

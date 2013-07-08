@@ -343,5 +343,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(creditCardId, account.DefaultCreditCard);
             Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
         }
+
+
     }
 }

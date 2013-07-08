@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public CmtPaymentServiceClient(
 			CmtPaymentSettings cmtSettings,  bool ignoreCertificateErrors )
-			:base(cmtSettings.BaseUrl,ignoreCertificateErrors)
+            : base(cmtSettings, ignoreCertificateErrors)
         {
             Timeout = new TimeSpan(0, 0, 0, 20, 0);
             LocalHttpWebRequestFilter = SignRequest;

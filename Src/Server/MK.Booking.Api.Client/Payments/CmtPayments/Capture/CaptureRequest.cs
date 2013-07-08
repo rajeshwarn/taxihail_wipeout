@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture
 {
-    [Route("capture")]
+    [Route("/v2/capture")]
     public class CaptureRequest : IReturn<CaptureResponse>
     {
         

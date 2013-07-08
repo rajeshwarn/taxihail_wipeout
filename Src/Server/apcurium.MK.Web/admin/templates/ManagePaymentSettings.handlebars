@@ -1,0 +1,128 @@
+﻿<!-- PAYPAL SETTINGS-->
+<h4 class="table-title">{{localize "PayPal Settings"}}</h4>
+
+
+<label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
+<select  name="payPalClientSettings.isEnabled" class="settingsBox">
+  <option value="{{payPalClientSettings.isEnabled}}" selected="" >{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>
+</select>
+
+<label class="control-label settingsLabel" >{{{localize "Sandbox Mode"}}}</label>
+<select  name="payPalServerSettings.isSandbox" class="settingsBox">
+  <option value="{{payPalServerSettings.isSandbox}}" selected="" >{{localizeBool payPalServerSettings.isSandbox true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalServerSettings.isSandbox}}">{{localizeBool payPalServerSettings.isSandbox true="No" false="Yes"}}</option>
+</select>
+
+<h5  >{{{localize "Sandbox Credentials"}}}</h5>
+
+<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.username" value="{{payPalServerSettings.sandboxCredentials.username}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.password" value="{{payPalServerSettings.sandboxCredentials.password}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.signature" value="{{payPalServerSettings.sandboxCredentials.signature}}" />
+
+<h5  >{{{localize "Production Credentials"}}}</h5>
+
+<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.username" value="{{payPalServerSettings.credentials.username}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.password" value="{{payPalServerSettings.credentials.password}}" />
+
+<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.signature" value="{{payPalServerSettings.credentials.signature}}" />
+
+
+
+<br />
+<br />
+
+
+
+<!-- PAYMENT OPTION-->
+<h4 class="table-title">{{localize "Payment Mode"}}</h4>
+
+  <select name="paymentMode">
+    <option value="Cmt">{{localize "CMT Payments"}}</option>
+    <option value="Braintree">{{localize "Braintree Payments"}}</option>
+    <option value="Fake">{{localize "Demo Payment Service"}}</option>
+  </select>
+  <br />
+  <br />
+
+<!-- BRAINTREE SETTINGS-->
+  <div class="control-group" id="braintreeSettingsDiv">
+
+    <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
+    
+    <h5  >{{{localize "Client Settings"}}}</h5>
+
+    <label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeClientSettings.clientKey" value="{{braintreeClientSettings.clientKey}}" />
+
+    <br />
+    <br />
+
+    
+    <h5  >{{{localize "Server Settings"}}}</h5>
+    
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
+    
+    <select  name="braintreeServerSettings.isSandbox" class="settingsBox">
+      <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
+    </select>
+    
+    
+    <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.merchantId" value="{{braintreeServerSettings.merchantId}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Private Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.privateKey" value="{{braintreeServerSettings.privateKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Public Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.publicKey" value="{{braintreeServerSettings.publicKey}}" />
+  </div>
+
+<!-- CMT SETTINGS-->
+  <div class="control-group" id="cmtSettingsDiv">
+
+    <h4 class="table-title">{{localize "CMT Settings"}}</h4>
+
+    <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
+
+    <select  name="cmtPaymentSettings.isSandbox" class="settingsBox">
+      <option value="{{cmtPaymentSettings.isSandbox}}" selected="" >{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
+      <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
+    </select>
+    
+    <label class="control-label settingsLabel" >{{{localize "Server Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.baseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Server Sandbox Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxBaseUrl" value="{{cmtPaymentSettings.sandboxBaseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Consumer Secret Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerSecretKey" value="{{cmtPaymentSettings.consumerSecretKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Customer Key"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.customerKey" value="{{cmtPaymentSettings.customerKey}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Merchant Token"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.merchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
+
+  </div>
+
+
+
+
+<div>
+  <div id="warning" class="alert">
+    <input type="checkbox" name="acceptChange"  > {{localize "I Understand that changeing the payment mode will DELETE all stored creditcard information for ALL users."}}</input>
+  </div>
+  <button type='submit' id="saveButton" class='btn btn-primary' >{{localize "Save"}}</button>
+</div>

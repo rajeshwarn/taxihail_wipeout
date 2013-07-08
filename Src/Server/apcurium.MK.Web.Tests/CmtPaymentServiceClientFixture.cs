@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using MK.Booking.Api.Client;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using apcurium.CMT.Web.Tests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 
-
-namespace apcurium.CMT.Web.Tests
+namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     [Ignore("Cmt Payments - Is supposed to provide a new API - 2013-06-25")]

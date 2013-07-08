@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.PayPal
 {
@@ -16,7 +17,7 @@ namespace MK.Booking.PayPal
         readonly string _cancelUrl;
 
 
-        public ExpressCheckoutServiceClient(IPayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
@@ -51,17 +52,25 @@ namespace MK.Booking.PayPal
 
                 ThrowIfError(response);
 
-                return _urls.GetCheckoutUrl(response.Token);
+                return response.Token;
             }
+        }
+
+        public string GetCheckoutUrl(string token)
+        {
+            return _urls.GetCheckoutUrl(token);
         }
 
         private static void ThrowIfError(SetExpressCheckoutResponseType response)
         {
             Debug.Assert(response.Ack == AckCodeType.Success);
             Debug.Assert(response.Token != null);
-            foreach (var error in response.Errors)
+            if (response.Errors != null)
             {
-                Trace.TraceError(error.LongMessage);
+                foreach (var error in response.Errors)
+                {
+                    Trace.WriteLine(error.LongMessage);
+                }
             }
             if (response.Token == null)
             {
@@ -142,12 +151,8 @@ namespace MK.Booking.PayPal
                 return string.Format(urlFormat, Uri.EscapeDataString(token));
             }
         }
+
     }
 
-    public interface IPayPalCredentials
-    {
-        string Username { get; }
-        string Password { get; }
-        string Signature { get; }
-    }
+
 }

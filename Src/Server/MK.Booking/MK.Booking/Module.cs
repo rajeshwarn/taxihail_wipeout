@@ -40,15 +40,12 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IRuleDao>(new RuleDao  (() => container.Resolve<BookingDbContext>()));
-
             container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
-
             container.RegisterInstance<IRatingTypeDao>(new RatingTypeDao(() => container.Resolve<BookingDbContext>()));
-
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
-
             container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
+            container.RegisterInstance<IPayPalExpressCheckoutPaymentDao>(new PayPalExpressCheckoutPaymentDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>(), container.Resolve<IConfigurationManager>()));
             
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
@@ -106,9 +103,12 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
             container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof(PaymentSettingGenerator).Name);
+            container.RegisterType<IEventHandler, PayPalExpressCheckoutPaymentDetailsGenerator>("PayPalExpressCheckoutPaymentDetailsGenerator");
             
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
+            container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof(PaymentSettingsUpdater).Name);
+            
             container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
         }
 
@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
+            container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
         }
     }
 }

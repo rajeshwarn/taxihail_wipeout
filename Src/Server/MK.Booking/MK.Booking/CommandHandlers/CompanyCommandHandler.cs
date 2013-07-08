@@ -215,9 +215,11 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Get(command.ServerPaymentSettings.CompanyId);
 
+
             company.UpdatePaymentSettings(command);
 
             _repository.Save(company, command.Id.ToString());
         }
+
     }
 }

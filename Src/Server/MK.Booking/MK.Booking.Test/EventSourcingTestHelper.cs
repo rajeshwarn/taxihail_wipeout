@@ -12,6 +12,8 @@
 // ==============================================================================================================
 
 using NUnit.Framework;
+using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Common.Tests
 {
@@ -51,6 +53,11 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public void Given(params IVersionedEvent[] history)
         {
+            var badEvent = history.FirstOrDefault(evnt => evnt.SourceId == default(Guid));
+            if (badEvent != null)
+            {
+                throw new ArgumentException("Please set the source ID on your events, " + badEvent.GetType().Name);
+            }
             this.repository.History.AddRange(history);
         }
 
@@ -61,7 +68,26 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public void When(IEvent @event)
         {
+
             ((dynamic)this.handler).Handle((dynamic)@event);
+        }
+
+        public IEnumerable<TEvent> ThenHas<TEvent>() where TEvent : IVersionedEvent
+        {
+            var evts = Events.OfType<TEvent>().ToArray();
+            if (!evts.Any())
+            {
+                throw new Exception("No events found");
+            }
+            return evts;
+        }
+        public bool ThenHasNo<TEvent>() where TEvent : IVersionedEvent
+        {
+            if (Events.OfType<TEvent>().IsEmpty())
+            {
+                return true;
+            }
+            throw new Exception("Events found for type "+ typeof(TEvent));
         }
 
         public bool ThenContains<TEvent>() where TEvent : IVersionedEvent

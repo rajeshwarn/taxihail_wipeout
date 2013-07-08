@@ -6,6 +6,7 @@ using MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Payments;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
             container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
+
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
             var mockIbsStatusUpdate = bool.Parse(container
