@@ -9,15 +9,16 @@ namespace apcurium.MK.Booking.Domain
     {
         private bool _cancelled;
         private bool _completed;
+        private Guid _orderId;
 
         protected PayPalPayment(Guid id)
             : base(id)
         {
-            Handles<PayPalExpressCheckoutPaymentInitiated>(NoAction);
+            Handles<PayPalExpressCheckoutPaymentInitiated>(OnPayPalExpressCheckoutPaymentInitiated);
             Handles<PayPalExpressCheckoutPaymentCancelled>(OnPayPalExpressCheckoutPaymentCancelled);
             Handles<PayPalExpressCheckoutPaymentCompleted>(OnPayPalExpressCheckoutPaymentCompleted);
         }
-
+        
         public PayPalPayment(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {               
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new PayPalExpressCheckoutPaymentCompleted
             {
                 PayPalPayerId = payerId,
+                OrderId = _orderId,
             });
         }
 
@@ -59,6 +61,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnPayPalExpressCheckoutPaymentCompleted(PayPalExpressCheckoutPaymentCompleted obj)
         {
             this._completed = true;
+        }
+
+        private void OnPayPalExpressCheckoutPaymentInitiated(PayPalExpressCheckoutPaymentInitiated obj)
+        {
+            _orderId = obj.OrderId;
         }
     }
 }

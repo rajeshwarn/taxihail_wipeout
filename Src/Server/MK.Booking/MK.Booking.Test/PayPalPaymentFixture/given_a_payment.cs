@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
 
             var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentCompleted>();
             Assert.AreEqual("payerid", @event.PayPalPayerId);
+            Assert.AreEqual(_orderId, @event.OrderId);
 
         }
     }
