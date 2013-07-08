@@ -251,6 +251,7 @@
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
     <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
     <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
+    <Compile Include="ViewModels\RideSummaryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

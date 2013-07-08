@@ -36,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private int _refreshPeriod = 5; //in seconds
 
-        private bool _isThankYouDialogDisplayed = false;
         private bool _hasSeenReminder = false;
 
 		public BookingStatusViewModel (string order, string orderStatus)
@@ -51,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void Load ()
         {
 			base.Load ();
-			ShowRatingButton = true;
 
 			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
 
@@ -78,8 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _refreshPeriod = periodInSettingsValue;
             }
-
-
 
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
@@ -235,30 +231,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		private bool _showRatingButton;
-		public bool ShowRatingButton {
-			get { 
-				if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().RatingEnabled) {
-					return false;
-				} else {
-					return _showRatingButton;
-				}
-			}
-			set { 
-				_showRatingButton = value;
-				FirePropertyChanged (() => ShowRatingButton);
-			}
-		}
+
 
 		#endregion
 
 
 
-        private void HideRatingButton (OrderRated orderRated)
-        {
-            ShowRatingButton = false;
-            ShowThankYouDialog ();
-        }
+
 
         private void AddReminder (OrderStatusDetail status)
         {
@@ -304,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
 #if DEBUG
-                status.IBSStatusId = VehicleStatuses.Common.Arrived;
+                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 
 #endif
 
@@ -320,12 +299,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
                     }
 
-                    if (isDone) {
-                        if (!_isThankYouDialogDisplayed) {
-                            _isThankYouDialogDisplayed = true;
-                            InvokeOnMainThread (ShowThankYouDialog);
-                        }
+                    if (isDone) 
+					{
+						GoToSummary();
                     }
+                    
                 }
             } catch (Exception ex) {
                 Logger.LogError (ex);
@@ -345,68 +323,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        private void ShowThankYouDialog ()
-        {
+		public void GoToSummary(){
+			
+			Close ();
+			RequestNavigate<RideSummaryViewModel> (new {
+				order = Order
+			});
 
-            string stringNeutral = null;
-            Action actionNeutral = null;
-            TinyMessageSubscriptionToken orderRatedToken = null;
-            
-			if (ShowRatingButton) {
-                stringNeutral = Resources.GetString ("RateBtn");
-                actionNeutral = () =>
-                {
-                    if ((Common.Extensions.GuidExtensions.HasValue (Order.Id))) {
-                        Order.Id = Order.Id;
-                        orderRatedToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
-                                                            .Subscribe<OrderRated> (HideRatingButton);
-                        NavigateToRatingPage.Execute ();
-                    }
-                };
-            }
-
-
-			Action returnToBookingScreen = () =>
-			{
-				if (orderRatedToken != null) {
-					TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ()
-						.Unsubscribe<OrderRated> (orderRatedToken);
-				}
-				this.Close ();
-			};
-
-
-			Action sendReceiptAction = () =>
-			{
-				if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-					TinyIoCContainer.Current.Resolve<IBookingService> ()
-						.SendReceipt (Order.Id);
-				}
-			};
-
-            var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse(false);
-
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-
-			if (sendReceiptAvailable) {
-				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
-				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"), settings.ApplicationName),
-				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
-				                            Resources.GetString ("HistoryDetailSendReceiptButton"), sendReceiptAction,
-				                            stringNeutral, actionNeutral
-				);
-			} else if (stringNeutral != null) {
-				MessageService.ShowMessage (Resources.GetString("View_BookingStatus_ThankYouTitle"),
-				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
-				                            Resources.GetString ("ReturnBookingScreen"), returnToBookingScreen,
-				                            stringNeutral, actionNeutral
-				);
-			} else {
-				MessageService.ShowMessage(Resources.GetString("View_BookingStatus_ThankYouTitle"),
-				                            String.Format (Resources.GetString("View_BookingStatus_ThankYouMessage"),settings.ApplicationName),
-				                           					returnToBookingScreen);
-			}
-        }
+		}
+        
 
 
 
@@ -426,15 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		#region Commands
-        public IMvxCommand NavigateToRatingPage {
-            get {
-                return GetCommand (() =>
-                {
-                    MessengerHub.Subscribe<OrderRated> (HideRatingButton);
-                    RequestNavigate<BookRatingViewModel> (new { orderId = Order.Id.ToString (), canRate = true.ToString (CultureInfo.InvariantCulture), isFromStatus = true.ToString (CultureInfo.InvariantCulture) });
-                });
-            }
-        }
+
 
         public IMvxCommand NewRide {
             get {
@@ -455,6 +372,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
+					
+					GoToSummary();
+
+
 					if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
                         MessageService.ShowMessage (Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
                         return;
@@ -494,6 +415,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
+
 #if DEBUG
 #else
                         if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
