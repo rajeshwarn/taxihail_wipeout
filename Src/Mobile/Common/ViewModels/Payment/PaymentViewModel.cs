@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						MessageService.ShowProgress(true);
 	                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
-	                    paypal.SetExpressCheckoutForAmount(Convert.ToDecimal(Amount))
+	                    paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount))
 	                        .ToObservable()
 							// Always Hide progress indicator
 						    .Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))

@@ -12,9 +12,9 @@ namespace MK.Booking.Api.Client.TaxiHail
             
         }
 
-        public string SetExpressCheckoutForAmount(decimal amount)
+        public string SetExpressCheckoutForAmount(Guid orderId, decimal amount)
         {
-            var response = this.Client.Post (new PayPalRequest { Amount= amount });
+            var response = this.Client.Post (new InitiatePayPalExpressCheckoutPaymentRequest { OrderId = orderId, Amount= amount,  });
             return response.CheckoutUrl;
         }
     }
