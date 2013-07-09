@@ -47,6 +47,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="ConfigFile.cs" />
     <Compile Include="AppConfig.cs" />
+    <Compile Include="ConfigSplash.cs" />
     <Compile Include="ConfigXML.cs" />
     <Compile Include="ConfigXmlNamespace.cs" />
     <Compile Include="Program.cs" />
@@ -75,6 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ninePatchMaker\NinePatchMaker.csproj">
+      <Project>{6F2C07F8-598F-4018-AA7B-6BFBF5D7210E}</Project>
+      <Name>NinePatchMaker</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
