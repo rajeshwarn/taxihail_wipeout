@@ -159,10 +159,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_paymentsettings_updated_successfully()
         {
-            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
-                {
-                    CompanyId = _companyId,
-                };
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid());
 
             var key = Guid.NewGuid().ToString();
 
@@ -193,10 +190,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_paymentmode_changed()
         {
-            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
-            {
-                CompanyId = _companyId,
-            };
+            var newSettings = new ServerPaymentSettings(Guid.NewGuid());
 
             sut.When(new UpdatePaymentSettings()
             {
