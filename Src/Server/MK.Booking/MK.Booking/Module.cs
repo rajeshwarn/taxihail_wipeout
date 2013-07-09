@@ -108,8 +108,9 @@ namespace apcurium.MK.Booking
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
             container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof(PaymentSettingsUpdater).Name);
-            
+
             container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
+            container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

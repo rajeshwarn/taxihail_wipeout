@@ -7,5 +7,9 @@ namespace apcurium.MK.Booking.Events
     {
         public string PayPalPayerId { get; set; }
         public Guid OrderId { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public object Token { get; set; }
     }
 }

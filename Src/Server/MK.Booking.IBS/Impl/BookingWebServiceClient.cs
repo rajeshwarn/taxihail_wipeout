@@ -43,7 +43,18 @@ namespace apcurium.MK.Booking.IBS.Impl
             });
             return result;
         }
-        
+
+        public void ConfirmExternalPayment(int orderId, decimal amount, string transactionId)
+        {
+            int result = 0;
+            UseService(service =>
+            {
+                result = service.SaveExtrPayment(UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount), transactionId);
+            });
+
+            if (result != 1) throw new Exception("SaveExtrPayment failed");
+        }
+
         public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
             var status = new IBSOrderStatus { Status = TWEBOrderStatusValue.wosNone.ToString() };
