@@ -19,8 +19,8 @@ namespace apcurium.MK.Booking.Api.Payment
         public ExpressCheckoutServiceClient CreateService(IRequestContext requestContext, PayPalCredentials payPalCredentials, bool useSandbox)
         {
             var root = ApplicationPathResolver.GetApplicationPath(requestContext);
-            var successUrl = root + "/payment/paypal/success";
-            var cancelUrl = root + "/payment/paypal/cancel";
+            var successUrl = root + "/api/payment/paypal/success";
+            var cancelUrl = root + "/api/payment/paypal/cancel";
             var cultureName = _configurationManager.GetSetting("PriceFormat");
 
             return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(cultureName), successUrl, cancelUrl, useSandbox);
