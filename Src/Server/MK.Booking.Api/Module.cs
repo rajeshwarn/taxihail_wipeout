@@ -1,24 +1,18 @@
 ﻿using System;
-using Infrastructure.Messaging;
 using AutoMapper;
 using Microsoft.Practices.Unity;
-using MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Payments;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using PaymentSettings = apcurium.MK.Booking.Api.Contract.Resources.PaymentSettings;
@@ -35,7 +29,7 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
             container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
-
+            container.RegisterType<IIBSOrderService, IBSOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
             var mockIbsStatusUpdate = bool.Parse(container

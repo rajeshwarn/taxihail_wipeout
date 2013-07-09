@@ -31,8 +31,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public PayPalExpressCheckoutPaymentResponse Post(
             InitiatePayPalExpressCheckoutPaymentRequest expressCheckoutPaymentRequest)
         {
+            var payPalSettings = GetPayPalSettings();
+            var credentials = payPalSettings.IsSandbox
+                                  ? payPalSettings.SandboxCredentials
+                                  : payPalSettings.Credentials;
+
             var service = _factory
-                .CreateService(RequestContext, GetPayPalCredentials());
+                .CreateService(RequestContext, credentials, payPalSettings.IsSandbox);
 
             var token = service.SetExpressCheckout(expressCheckoutPaymentRequest.Amount);
             var checkoutUrl = service.GetCheckoutUrl(token);
@@ -92,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        private PayPalCredentials GetPayPalCredentials()
+        private PayPalServerSettings GetPayPalSettings()
         {
             var paymentSettings = (ServerPaymentSettings) _configurationManager.GetPaymentSettings();
             if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "Payment settings not found");
@@ -100,9 +105,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var payPalSettings = paymentSettings.PayPalServerSettings;
             if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
 
-            return payPalSettings.IsSandbox
-                            ? payPalSettings.SandboxCredentials
-                            : payPalSettings.Credentials;
+            return payPalSettings;
         }
     }
 }

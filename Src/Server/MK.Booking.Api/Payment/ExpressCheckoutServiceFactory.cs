@@ -2,20 +2,28 @@
 using MK.Booking.PayPal;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Payment
 {
     public class ExpressCheckoutServiceFactory
     {
-        public ExpressCheckoutServiceClient CreateService(IRequestContext requestContext, PayPalCredentials payPalCredentials)
+        readonly IConfigurationManager _configurationManager;
+
+        public ExpressCheckoutServiceFactory(IConfigurationManager configurationManager)
+        {
+            _configurationManager = configurationManager;
+        }
+
+        public ExpressCheckoutServiceClient CreateService(IRequestContext requestContext, PayPalCredentials payPalCredentials, bool useSandbox)
         {
             var root = ApplicationPathResolver.GetApplicationPath(requestContext);
             var successUrl = root + "/payment/paypal/success";
             var cancelUrl = root + "/payment/paypal/cancel";
+            var cultureName = _configurationManager.GetSetting("PriceFormat");
 
-
-            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo("en-US"), successUrl, cancelUrl, useSandbox: true);
+            return new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(cultureName), successUrl, cancelUrl, useSandbox);
         }
 
     }

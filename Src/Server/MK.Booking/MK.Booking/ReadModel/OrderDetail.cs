@@ -48,7 +48,5 @@ namespace apcurium.MK.Booking.ReadModel
         public long TransactionId { get; set; }
 
         public bool IsRated { get; set; }
-
-        public bool IsPayed { get; set; }
     }
 }
