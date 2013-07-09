@@ -26,7 +26,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	[IntentFilter(new[] { "android.intent.action.VIEW" }, Categories = new[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" }, DataScheme = "@string/ApplicationName")]
+	//[IntentFilter(new[] { "android.intent.action.VIEW" }, Categories = new[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" }, DataScheme = "TaxiHailDemo")]
 	public class SplashActivity : MvxBaseSplashScreenActivity
     {
         public SplashActivity()
