@@ -64,6 +64,7 @@ namespace MK.DeploymentService
                 .Include(x => x.Company)
                 .Include(x => x.IBSServer)
                 .Include(x => x.TaxHailEnv)
+                .Include(x => x.Version)
                 .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && (x.DeployServer || x.DeployDB));
 
             if (job != null)

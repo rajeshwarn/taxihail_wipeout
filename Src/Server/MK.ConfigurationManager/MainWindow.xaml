@@ -129,7 +129,7 @@
                             <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
                             <DataGridTextColumn Width="250" Header="Details" Binding="{Binding Details}" />
                              <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />                            
-                             <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />                            
+                             <DataGridTextColumn Width="50" Header="Version" Binding="{Binding Version.Display}" />                            
                          </DataGrid.Columns>
                     </DataGrid>
                     <GroupBox Grid.Row="2" Margin="10,10,26,10" Header="New Deployment">
