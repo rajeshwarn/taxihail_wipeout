@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         }
 
         public PayPalExpressCheckoutPaymentResponse Post(
-            InitiatePayPalExpressCheckoutPaymentRequest expressCheckoutPaymentRequest)
+            InitiatePayPalExpressCheckoutPaymentRequest request)
         {
             var payPalSettings = GetPayPalSettings();
             var credentials = payPalSettings.IsSandbox
@@ -39,14 +39,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var service = _factory
                 .CreateService(RequestContext, credentials, payPalSettings.IsSandbox);
 
-            var token = service.SetExpressCheckout(expressCheckoutPaymentRequest.Amount);
+            var token = service.SetExpressCheckout(request.Amount);
             var checkoutUrl = service.GetCheckoutUrl(token);
 
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
                                  {
-                                     OrderId = expressCheckoutPaymentRequest.OrderId,
+                                     OrderId = request.OrderId,
                                      PaymentId = Guid.NewGuid(),
-                                     Token = token
+                                     Token = token,
+                                     Amount = request.Amount,
                                  });
 
             return new PayPalExpressCheckoutPaymentResponse

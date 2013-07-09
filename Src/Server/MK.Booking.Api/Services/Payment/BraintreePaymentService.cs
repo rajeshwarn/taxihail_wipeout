@@ -35,8 +35,6 @@ namespace apcurium.MK.Booking.Api.Services
                 PublicKey = settings.PublicKey,
                 PrivateKey = settings.PrivateKey,
             };
-
-
         }
         
         public static BraintreeGateway Client { get; set; }
