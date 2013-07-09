@@ -11,7 +11,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Test.CompanyFixture
 {
     [TestFixture]
-    public class given_a_rating_type
+    public class given_a_compnay_with_a_rating_type
     {
         private EventSourcingTestHelper<Company> sut;
         readonly Guid _companyId = Guid.NewGuid();
