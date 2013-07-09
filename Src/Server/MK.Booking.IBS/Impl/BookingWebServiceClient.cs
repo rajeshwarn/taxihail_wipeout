@@ -57,7 +57,11 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IBSOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
         {
-            var status = new IBSOrderStatus { Status = TWEBOrderStatusValue.wosNone.ToString() };
+            var status = new IBSOrderStatus
+                {
+                    Status = TWEBOrderStatusValue.wosNone.ToString()
+                };
+
             UseService(service =>
             {
                 var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, contactPhone, string.Empty, accountId);
@@ -67,12 +71,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double longitude = 0;
                 var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref longitude, ref latitude);
 
-                if (result == 0)
-                {
-                    status.VehicleLatitude = latitude;
-                    status.VehicleLongitude = longitude;
-                }
+                if (result != 0) return;
 
+                status.VehicleLatitude = latitude;
+                status.VehicleLongitude = longitude;
             });
             return status;
         }

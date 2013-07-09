@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Reactive.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Optimization;
@@ -30,31 +31,31 @@ using System.Threading;
 
 namespace apcurium.MK.Web
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : HttpApplication
     {
-        private const string CacheKey = "OrderStatusJob";
 
         public class MKWebAppHost : AppHostBase
         {
-            
-
             public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly)
             {
 
-                ServiceStack.Text.JsConfig.Reset();
-                ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
-                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;
-                ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
+                JsConfig.Reset();
+                JsConfig.EmitCamelCaseNames = true;
+                JsConfig.DateHandler = JsonDateHandler.ISO8601;
+                JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
+
 
             }
+            
+
 
             private DateTime? NullableDateTimeRawDesirializtion(string s)
             {
                 try
                 {
-                    if (s.IndexOf(".") > 0)
+                    if (s.IndexOf('.') > 0)
                     {
-                        s = s.Substring(0, s.IndexOf("."));
+                        s = s.Substring(0, s.IndexOf('.'));
                     }
                     return DateTimeSerializer.ParseShortestXsdDateTime(s);
                 }
@@ -62,8 +63,6 @@ namespace apcurium.MK.Web
                 {
                     return null;
                 }
-                throw new NotImplementedException();
-
             }
 
             public override void Configure(Container containerFunq)
@@ -81,6 +80,7 @@ namespace apcurium.MK.Web
                         new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
                         new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
                     }));
+
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
                 
@@ -106,9 +106,6 @@ namespace apcurium.MK.Web
                         },
                 });
 
-                
-
-
                 Trace.WriteLine("Configure AppHost finished");
             }
             
@@ -119,38 +116,40 @@ namespace apcurium.MK.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             XmlConfigurator.Configure();
             new MKWebAppHost().Init();
-            if (HttpRuntime.Cache[CacheKey] == null)
+            
+            StatusJobService = UnityServiceLocator.Instance.Resolve<IUpdateOrderStatusJob>();
+
+            var configurationManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+            int pollingValue;
+            if (!int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any, CultureInfo.InvariantCulture, out pollingValue))
             {
-                Trace.WriteLine("Add OrderStatusJob in Cache");
-                var configurationManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
-                int pollingValue;
-                if (!int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any, CultureInfo.InvariantCulture, out pollingValue))
-                {
-                    pollingValue = 10;
-                }
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(pollingValue), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
+                pollingValue = 10;
             }
+            PollIbs(pollingValue);
         }
 
-        private void CacheItemRemoved(string key, object value, CacheItemRemovedReason reason)
+        protected IUpdateOrderStatusJob StatusJobService { get; set; }
+
+        private void PollIbs(int pollingValue)
         {
-            try
-            {
-                Trace.WriteLine("Check Order Status");
-                var statusJobService = UnityServiceLocator.Instance.Resolve<IUpdateOrderStatusJob>();
-                statusJobService.CheckStatus();
-            }
-            finally
-            {
-                var configurationManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
-                int pollingValue;
-                if (!int.TryParse(configurationManager.GetSetting("OrderStatus.ServerPollingInterval"), NumberStyles.Any, CultureInfo.InvariantCulture, out pollingValue))
+            Trace.WriteLine("Queue OrderStatusJob "+DateTime.Now.ToString("HH:MM:ss"));
+            Observable.Timer(TimeSpan.FromSeconds(pollingValue))
+                .Subscribe(_ =>
                 {
-                    pollingValue = 10;
-                }
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(pollingValue), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
-            }
+                    try
+                    {
+                        Trace.WriteLine("Check Order Status " + DateTime.Now.ToString("HH:MM:ss"));
+                        StatusJobService.CheckStatus();
+                    }
+                    finally
+                    {
+                        PollIbs(pollingValue);
+                    }
+                });
+
         }
+
+
 
         protected void Session_Start(object sender, EventArgs e)
         {

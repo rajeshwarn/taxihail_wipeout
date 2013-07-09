@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Helpers
                 return new OrderStatusDetail
                            {
                                OrderId = orderId,
-                               Status = apcurium.MK.Common.Entity.OrderStatus.Created,
+                               Status = OrderStatus.Created,
                                IBSOrderId = 0,
                                IBSStatusId = "",
                                IBSStatusDescription = "Processing your order"

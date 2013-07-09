@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
             }
 
-            var IBSOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+            var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
-            if(IBSOrder.Fare.GetValueOrDefault() < .1)
+            if(ibsOrder.Fare.GetValueOrDefault() < .1)
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
             }
@@ -64,10 +64,10 @@ namespace apcurium.MK.Booking.Api.Services
                 EmailAddress = account.Email,
                 IBSOrderId = order.IBSOrderId.Value,
                 TransactionDate = order.PickupDate,
-                VehicleNumber = IBSOrder.VehicleNumber,
-                Fare = IBSOrder.Fare.GetValueOrDefault(),
-                Toll = IBSOrder.Toll.GetValueOrDefault(),
-                Tip = IBSOrder.Tip.GetValueOrDefault(),
+                VehicleNumber = ibsOrder.VehicleNumber,
+                Fare = ibsOrder.Fare.GetValueOrDefault(),
+                Toll = ibsOrder.Toll.GetValueOrDefault(),
+                Tip = ibsOrder.Tip.GetValueOrDefault(),
             };
 
             _commandBus.Send(command);
