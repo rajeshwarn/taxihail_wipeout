@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     //new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
 
                     //new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
-                    new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\Drawable\splash.png" },
+                    new ConfigSplash(this,"splash.png",@"Mobile\Android\Resources\","splash.png"),
                     //new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },            
 	               
                     //new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\Android\Resources\Drawable\navBar.png" },            

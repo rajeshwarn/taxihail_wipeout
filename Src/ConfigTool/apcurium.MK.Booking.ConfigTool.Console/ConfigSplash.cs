@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ninePatchMaker;
 
@@ -15,8 +16,10 @@ namespace apcurium.MK.Booking.ConfigTool
         public ConfigSplash(AppConfig parent, string filePathToPatch, string outputFolder, string filename)
             : base(parent)
         {
-            _filePathToPatch = filePathToPatch;
-            _outputFolder = outputFolder;
+
+            _filePathToPatch = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(filePathToPatch));
+            _outputFolder = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(outputFolder));
+
             _filename = filename;
         }
 
