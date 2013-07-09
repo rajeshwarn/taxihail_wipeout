@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));
 			SetContentView(webView);
 			webView.Settings.JavaScriptEnabled = true;
+
 			webView.LoadUrl(ViewModel.Url);
 		}
 	}
@@ -67,6 +68,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return true;
 			}
 			return base.ShouldOverrideUrlLoading (view, url);
+		}
+
+		public override void OnReceivedSslError (WebView view, SslErrorHandler handler, Android.Net.Http.SslError error)
+		{
+			handler.Proceed ();
 		}
 	}
 }
