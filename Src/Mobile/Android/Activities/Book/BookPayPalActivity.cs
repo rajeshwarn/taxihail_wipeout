@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var webView = new WebView(this);
 			webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));
 			SetContentView(webView);
+			webView.Settings.JavaScriptEnabled = true;
 			webView.LoadUrl(ViewModel.Url);
 		}
 	}
