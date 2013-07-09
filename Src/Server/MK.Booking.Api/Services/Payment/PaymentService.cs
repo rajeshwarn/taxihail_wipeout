@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public void Post(UpdateServerPaymentSettingsRequest request)
         {
-
             var settings = _configurationDao.GetPaymentSettings();
             request.ServerPaymentSettings.CompanyId = settings.CompanyId;
             request.ServerPaymentSettings.PayPalServerSettings.Id = settings.PayPalServerSettings.Id;
