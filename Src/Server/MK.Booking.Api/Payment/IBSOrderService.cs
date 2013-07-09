@@ -16,5 +16,10 @@ namespace apcurium.MK.Booking.Api.Payment
         {
             _client.ConfirmExternalPayment(orderId, amount, transactionId);
         }
+
+        public void SendMessageToDriver(string message, string vehicleNumber)
+        {
+            _client.SendMessageToDriver(message, vehicleNumber);
+        }
     }
 }
