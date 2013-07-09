@@ -1,9 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -36,9 +34,38 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.Load();		
 
 			var webView = new WebView(this);
-			webView.SetWebViewClient(new WebViewClient());
+			webView.SetWebViewClient(new PayPalWebViewClient(ViewModel));
 			SetContentView(webView);
 			webView.LoadUrl(ViewModel.Url);
+		}
+	}
+
+	public class PayPalWebViewClient: WebViewClient
+	{
+		readonly PayPalViewModel _viewModel;
+		public PayPalWebViewClient (PayPalViewModel viewModel)
+		{
+			_viewModel = viewModel;
+			
+		}
+		public override void OnPageFinished (WebView view, string url)
+		{
+			base.OnPageFinished (view, url);
+			_viewModel.WebViewLoadFinished ();
+		}
+
+		public override bool ShouldOverrideUrlLoading (WebView view, string url)
+		{
+			if(url.StartsWith("taxihail"))
+			{
+				if (url.EndsWith("success")) {
+					_viewModel.Finish.Execute (true);
+				} else {
+					_viewModel.Finish.Execute (false);
+				}
+				return true;
+			}
+			return base.ShouldOverrideUrlLoading (view, url);
 		}
 	}
 }
