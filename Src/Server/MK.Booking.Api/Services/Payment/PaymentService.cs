@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -44,7 +45,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public void Post(UpdateServerPaymentSettingsRequest request)
         {
             var settings = _configurationDao.GetPaymentSettings();
-            request.ServerPaymentSettings.CompanyId = settings.CompanyId;
             request.ServerPaymentSettings.PayPalServerSettings.Id = settings.PayPalServerSettings.Id;
 
             _commandBus.Send(new UpdatePaymentSettings()
