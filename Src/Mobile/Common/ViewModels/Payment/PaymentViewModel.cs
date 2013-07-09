@@ -40,9 +40,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
 
         }
+
+		public override void Start (bool firstStart)
+		{
+			base.Start (firstStart);
+		}
 		
 		public bool IsPayPalEnabled{ get{
-				return ConfigurationManager.GetPaymentSettings ().PayPalClientSettings.IsEnabled;
+				var payPalSettings = ConfigurationManager.GetPaymentSettings ().PayPalClientSettings;
+				return payPalSettings.IsEnabled;
 			}}
 
 		Order Order { get; set; }

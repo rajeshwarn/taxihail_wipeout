@@ -24,6 +24,7 @@ using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -111,6 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<PhoneType>();
             JsConfig.RegisterTypeForAot<Contact>();
 			JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
+			JsConfig.RegisterTypeForAot<PaymentMethod> ();
 
 
 

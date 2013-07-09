@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using MK.Common.Android.Configuration;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 

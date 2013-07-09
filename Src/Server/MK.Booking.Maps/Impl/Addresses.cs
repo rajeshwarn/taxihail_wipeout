@@ -1,5 +1,4 @@
-﻿using MK.Common.Android.Configuration;
-using apcurium.MK.Booking.Google;
+﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;

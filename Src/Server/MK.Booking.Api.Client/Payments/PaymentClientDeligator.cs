@@ -1,9 +1,9 @@
 ﻿using System;
-using MK.Common.Android.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Client.Payments
 {

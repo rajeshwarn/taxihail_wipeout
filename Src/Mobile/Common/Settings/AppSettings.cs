@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.Reflection;

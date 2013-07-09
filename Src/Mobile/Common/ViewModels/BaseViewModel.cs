@@ -4,7 +4,6 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
-using MK.Common.Android.Configuration;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
