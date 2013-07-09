@@ -148,7 +148,7 @@ namespace MK.DeploymentService
             if (!string.IsNullOrEmpty(revision))
             {
                 _logger.DebugFormat("Update to revision {0}", revision);
-                var hgUpdate = GetProcess("hg.exe", string.Format("update --repository {0} -r {1}", sourceDirectory, revision));
+                var hgUpdate = GetProcess("hg.exe", string.Format("update --repository {0} {1}", sourceDirectory, revision));
                 using (var exeProcess = Process.Start(hgUpdate))
                 {
                     exeProcess.WaitForExit();

@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Domain
         private bool _cancelled;
         private bool _completed;
         private Guid _orderId;
+        private string _token;
+        private decimal _amount;
 
         protected PayPalPayment(Guid id)
             : base(id)
@@ -50,6 +52,8 @@ namespace apcurium.MK.Booking.Domain
             {
                 PayPalPayerId = payerId,
                 OrderId = _orderId,
+                Token = _token,
+                Amount = _amount,
             });
         }
 
@@ -66,6 +70,8 @@ namespace apcurium.MK.Booking.Domain
         private void OnPayPalExpressCheckoutPaymentInitiated(PayPalExpressCheckoutPaymentInitiated obj)
         {
             _orderId = obj.OrderId;
+            _token = obj.Token;
+            _amount = obj.Amount;
         }
     }
 }

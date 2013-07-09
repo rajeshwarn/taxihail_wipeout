@@ -21,5 +21,6 @@ namespace apcurium.MK.Booking.IBS
         
         IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count);
 
+        void ConfirmExternalPayment(int orderId, decimal amount, string transactionId);
     }
 }
