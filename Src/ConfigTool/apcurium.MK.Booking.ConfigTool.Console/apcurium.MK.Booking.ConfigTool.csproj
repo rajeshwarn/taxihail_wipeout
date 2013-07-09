@@ -61,6 +61,7 @@
     <Compile Include="AppConfigFile.cs" />
     <Compile Include="ConfigMultiXML.cs" />
     <Compile Include="ConfigCropImage.cs" />
+    <Compile Include="ConfigSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
