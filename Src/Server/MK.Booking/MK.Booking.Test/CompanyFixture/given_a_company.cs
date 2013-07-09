@@ -157,61 +157,6 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         }
 
         [Test]
-        public void when_paymentsettings_updated_successfully()
-        {
-            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
-                {
-                    CompanyId = _companyId,
-                };
-
-            var key = Guid.NewGuid().ToString();
-
-            newSettings.BraintreeClientSettings.ClientKey = key;
-
-
-            sut.Given(new PaymentSettingUpdated()
-                {
-                    SourceId = _companyId,
-                    ServerPaymentSettings = newSettings
-                });
-
-            sut.When(new UpdatePaymentSettings()
-                {
-                    ServerPaymentSettings = newSettings
-                });
-
-            
-            var evt = sut.ThenHasSingle<PaymentSettingUpdated>();
-            sut.ThenHasNo<PaymentModeChanged>();//dont delete cc if payment mode doesnt change
-
-            Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual(key,evt.ServerPaymentSettings.BraintreeClientSettings.ClientKey);
-            
-            Assert.AreSame(newSettings,evt.ServerPaymentSettings);
-        }
-
-        [Test]
-        public void when_paymentmode_changed()
-        {
-            var newSettings = new ServerPaymentSettings(Guid.NewGuid())
-            {
-                CompanyId = _companyId,
-            };
-
-            sut.When(new UpdatePaymentSettings()
-            {
-                ServerPaymentSettings = newSettings
-            });
-
-
-            Assert.AreEqual(2, sut.Events.Count);
-            var evt = sut.ThenHas<PaymentSettingUpdated>();
-            var evt2 = sut.ThenHas<PaymentModeChanged>().First();
-
-            Assert.AreEqual(_companyId, evt2.SourceId);
-        }
-
-        [Test]
         public void when_adding_an_company_default_address_successfully()
         {
             var addressId = Guid.NewGuid();

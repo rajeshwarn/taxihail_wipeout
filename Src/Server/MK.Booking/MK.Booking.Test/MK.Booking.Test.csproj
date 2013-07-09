@@ -80,6 +80,7 @@
     <Compile Include="CompanyFixture\given_a_company_with_a_popular_address.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_a_compnay_with_a_rating_type.cs" />
+    <Compile Include="CompanyFixture\given_a_compnay_with_payment_settings.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
