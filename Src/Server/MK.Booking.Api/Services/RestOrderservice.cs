@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Net;
 using Infrastructure.Messaging;
 using MK.Booking.Api.Client;
@@ -39,9 +40,17 @@ namespace apcurium.MK.Booking.Api.Services
 
             _bookingWebServiceClient.SendMessageToDriver("The passenger has payed " + request.Amount.ToString("C"), request.CarNumber);
 
-
-            if (!_bookingWebServiceClient.SendAuthCode(request.IbsOrderNumber, request.Amount,
-                                                       request.TransactionId.ToString(CultureInfo.InvariantCulture)))
+            bool isIbsInFailure;
+            try
+            {
+               isIbsInFailure = !_bookingWebServiceClient.SendAuthCode(request.IbsOrderNumber, request.Amount,
+                                                       request.TransactionId.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception)
+            {
+                isIbsInFailure = true;
+            }
+            if (isIbsInFailure) 
             {
                 //TODO not sure what to do here
             }
