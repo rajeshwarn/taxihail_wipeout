@@ -13,47 +13,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-
         protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null) where T : class
         {
-            return this.UseServiceClient<T>(null, action, errorHandler);
+			var service = TinyIoCContainer.Current.Resolve<T>();
+            return this.UseServiceClient<T>(service, action, errorHandler);
         }
 
         protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null ) where T : class
         {
-            try
-            {
+			var service = TinyIoCContainer.Current.Resolve<T>(name);
+			return this.UseServiceClient<T>(service, action, errorHandler);
+        }
 
-                var method =  TinyIoCContainer.Current.Resolve<ILogger>().GetStack(2);
-                TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("*************************************   UseServiceClient : " + method);                
-				T service;
-				if( name == null )
+		private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler) where T : class
+		{
+			try
+			{
+				var method =  TinyIoCContainer.Current.Resolve<ILogger>().GetStack(3);
+				TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("*************************************   UseServiceClient : " + method);                
+				action(service);
+				TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("*************************************   UseServiceClient : " + method);
+				return "";
+			}
+			catch (Exception ex)
+			{                    
+				TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+				if (errorHandler == null)
 				{
-					service = TinyIoCContainer.Current.Resolve<T>();
+					TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
 				}
 				else
 				{
-					service = TinyIoCContainer.Current.Resolve<T>(name);
+					errorHandler(ex);
 				}
-                action(service);
-                TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("*************************************   UseServiceClient : " + method);
-                return "";
-            }
-            catch (Exception ex)
-            {                    
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                if (errorHandler == null)
-                {
-                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
-                }
-                else
-                {
-                    errorHandler(ex);
-                }
-                return ex.Message;
-            
-            }
-        }
+				return ex.Message;
+
+			}
+		}
 
         protected void QueueCommand<T>(Action<T> action) where T : class
         {

@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public string GetStack(int position)
         {
-         return   Logger.GetStack (position);
+         	return Logger.GetStack (position+1);
         }
 
     }
