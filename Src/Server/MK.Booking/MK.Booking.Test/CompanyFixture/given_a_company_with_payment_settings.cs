@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MK.Common.Android.Configuration.Impl;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -11,7 +6,6 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Test.CompanyFixture

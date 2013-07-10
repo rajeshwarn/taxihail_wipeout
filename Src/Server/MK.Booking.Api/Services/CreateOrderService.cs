@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using Infrastructure.Messaging;
-using Infrastructure.Serialization;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
