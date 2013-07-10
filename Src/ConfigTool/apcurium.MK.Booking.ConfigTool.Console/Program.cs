@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.ConfigTool
         [STAThread]
         static int Main(string[] args)
         {
+			Console.WriteLine("Starting");
             try
             {
 
@@ -82,6 +83,7 @@ namespace apcurium.MK.Booking.ConfigTool
 			  //Console.ReadKey();
 	          return 1;
           }
+			Console.WriteLine("Finished");
           return 0;
 
         }

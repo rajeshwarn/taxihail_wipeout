@@ -334,10 +334,12 @@ namespace MK.DeploymentService.Mobile
 			using (var exeProcess = Process.Start(configToolRun))
 			{
 				var output = GetOutput (exeProcess);
-				exeProcess.WaitForExit();
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during customization, "+output);
+				}
+				else{
+					UpdateJob ("\nCustomize Successful");
 				}
 			}
 
