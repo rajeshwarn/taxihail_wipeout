@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     },
 
 
-				//},             
+				},             
 
            };
         }
