@@ -81,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtAprtment.Ended += HandleTouchDown;
             txtEntryCode.Ended += HandleTouchDown;
 
-            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId.HasValue ? ViewModel.Order.Settings.VehicleTypeId.Value : ListItem.NullId, x=> { ViewModel.SetVehicleTypeId ( x.Id );});
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId.HasValue ? ViewModel.Order.Settings.ChargeTypeId.Value : ListItem.NullId, x=> { ViewModel.SetChargeTypeId( x.Id ); });
+            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> { ViewModel.SetVehicleTypeId ( x.Id );});
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId, x=> { ViewModel.SetChargeTypeId( x.Id ); });
 
 
             this.AddBindings(new Dictionary<object, string>() {

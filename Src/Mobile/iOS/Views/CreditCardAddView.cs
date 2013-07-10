@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtNameOnCard.ShouldReturn += GoToNext;           
 
             ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
-                ViewModel.CreditCardCategory =  x.Id; });
+                ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); });
 
             ViewModel.CreditCardCompanies[0].Image = "Assets/CreditCard/visa.png";
             ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
             ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
-                ViewModel.CreditCardType =  x.Id; });
+                ViewModel.CreditCardType =  x.Id.GetValueOrDefault(); });
 
             ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear.Value, x=> {
                 ViewModel.ExpirationYear = x.Id;

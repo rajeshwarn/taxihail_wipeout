@@ -71,12 +71,11 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? VehicleTypeId {
 			get {
-				return _bookingSettings.VehicleTypeId ?? ListItem.NullId;
+				return _bookingSettings.VehicleTypeId;
 			}
 			set {
-				var id = value == ListItem.NullId ? default(int?) : value;
-				if(id != _bookingSettings.VehicleTypeId){
-					_bookingSettings.VehicleTypeId = id;
+				if(value != _bookingSettings.VehicleTypeId) {
+					_bookingSettings.VehicleTypeId = value;
                     FirePropertyChanged("VehicleTypeId");
                     FirePropertyChanged("VehicleTypeName");
 				}
@@ -86,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile
         public string VehicleTypeName {
             get {
 
-				if(VehicleTypeId == ListItem.NullId)
+				if(!VehicleTypeId.HasValue)
 				{
 					return base.Resources.GetString("NoPreference");
 				}
@@ -99,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public int? ChargeTypeId {
             get {
-                return _bookingSettings.ChargeTypeId ?? ListItem.NullId;
+                return _bookingSettings.ChargeTypeId;
             }
 			set {
 				if(value != _bookingSettings.ChargeTypeId){
@@ -112,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public string ChargeTypeName {
             get {
-                if(ChargeTypeId == ListItem.NullId)
+                if(!ChargeTypeId.HasValue)
                 {
                     return base.Resources.GetString("NoPreference");
                 }
@@ -151,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand SetVehiculeType {
             get {
-                return GetCommand<int>(id =>
+                return GetCommand<int?>(id =>
                 {
 
                     VehicleTypeId = id;
@@ -173,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile
         public IMvxCommand SetChargeType
         {
             get{
-                return GetCommand<int>(id =>
+                return GetCommand<int?>(id =>
                 {
 
                     ChargeTypeId = id;
@@ -183,13 +182,16 @@ namespace apcurium.MK.Booking.Mobile
         }
 
         public int? ProviderId {
-            get{ return _bookingSettings.ProviderId ?? ListItem.NullId;}
+            get
+			{ 
+				return _bookingSettings.ProviderId;
+			}
         }
 
         public IMvxCommand SetCompany
         {
             get{
-                return GetCommand<int>(id =>
+                return GetCommand<int?>(id =>
                 {
 
                     _bookingSettings.ProviderId = id;

@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void Configure<T>(string title, ListItem<T>[] values, T selectedId, Action<ListItem<T>> onItemSelected) where T: struct
+        public void Configure<T>(string title, ListItem<T>[] values, Nullable<T> selectedId, Action<ListItem<T>> onItemSelected) where T: struct
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
                 var display = value.Display;
-                if(Convert.ToInt32(value.Id) == ListItem.NullId)
+                if(!value.Id.HasValue)
                 {
                     display = resources.GetString("NoPreference");
                 }

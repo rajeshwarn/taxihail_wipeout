@@ -119,11 +119,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 _isExecuting = true;
                 OnCanExecuteChanged();
-                    Task.Factory.StartNew(() => _execute((T)parameter)).HandleErrors().ContinueWith(_ =>
-                                                                                                        {
-                                                                                                            _isExecuting = false;
-                                                                                                            OnCanExecuteChanged();
-                                                                                                        });
+                    Task.Factory.StartNew(() => _execute((T)parameter))
+					.HandleErrors()
+					.ContinueWith(_ =>
+                    {
+                        _isExecuting = false;
+                        OnCanExecuteChanged();
+                    });
             }
         }
 

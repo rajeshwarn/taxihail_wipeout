@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (PaymentList.Any())
                 {
-                    return PaymentList[0].Id;
+                    return PaymentList[0].Id.GetValueOrDefault();
                 }
                 return 0;
             }
