@@ -11,6 +11,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using PetaPoco;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -40,13 +41,34 @@ namespace MK.DeploymentService.Mobile
 				CheckAndRunJobWithBuild ();
 			}
 		}
-		
+
+		void UpdateJob (string details = null, JobStatus? jobStatus = null)
+		{
+			if(jobStatus.HasValue)
+			{
+				job.Status = jobStatus.Value;
+			}
+			if(details != null)
+			{
+				job.Details += details + "\n";
+			}
+
+			db.Update ("[MkConfig].[DeploymentJob]", "Id", new {
+				status = job.Status,
+				details = job.Details
+			}, job.Id);
+		}
+
+		Database db;
+		DeploymentJob job;
+
 		private void CheckAndRunJobWithBuild ()
 		{
 			try {
-				var db = new PetaPoco.Database ("MKConfig");
-				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS_AdHoc=1 OR iOS_AppStore=1 OR CallBox=1)");
+				db = new PetaPoco.Database ("MKConfig");
+				job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS_AdHoc=1 OR iOS_AppStore=1 OR CallBox=1)");
 				try {
+
 
 					if (job != null) {
 						var company = db.First<Company> ("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
@@ -60,7 +82,8 @@ namespace MK.DeploymentService.Mobile
 						}
 
 						logger.Debug ("Begin work on " + company.Name);
-						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
+
+						UpdateJob("Starting",JobStatus.INPROGRESS);
 
 						var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSource");
 						var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
@@ -79,21 +102,25 @@ namespace MK.DeploymentService.Mobile
 						if (Directory.Exists (releaseCallboxAndroidDir))
 							Directory.Delete (releaseCallboxAndroidDir, true);
 
-						FetchSource (job, sourceDirectory, company);
+						UpdateJob("FetchSource");
+						FetchSource (sourceDirectory, company);
 
+						UpdateJob("Customize");
 						Customize (sourceDirectory, company, taxiHailEnv);
 
-						Build (job, sourceDirectory, company);
+						UpdateJob("Build");
+						Build (sourceDirectory, company);
 
-						Deploy (job, sourceDirectory, company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
+						UpdateJob("Deploy");
+						Deploy (sourceDirectory, company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
-						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
+						UpdateJob("Done",JobStatus.SUCCESS);
 
 						logger.Debug("Deployment finished without error");
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
-					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR, details = e.Message }, job.Id);
+					UpdateJob (e.Message,JobStatus.ERROR);
 				}
 			} catch (Exception e) {
 				logger.Error (e.Message);
@@ -105,7 +132,7 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
+		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
 			if (job.Android || job.CallBox || job.iOS_AdHoc || job.iOS_AppStore) {
 				var targetDirWithoutFileName = string.Empty;
@@ -198,7 +225,7 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
+		private void FetchSource (string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
 			string revision = string.Empty;
@@ -214,6 +241,7 @@ namespace MK.DeploymentService.Mobile
 
 			if (!Directory.Exists (sourceDirectory)) {
 				logger.DebugFormat ("Clone Source Code");
+				UpdateJob ("FULL CLONE");
 
 				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
 				var hgClone = GetProcess(HgPath, args);
@@ -226,6 +254,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 			} else {
+				UpdateJob ("HG Revert, Purge and Update Source Code");
 				logger.DebugFormat ("Revert, Purge and Update Source Code");
 				//already clone just do a revert and update the source
 				RevertAndPull (sourceDirectory);
@@ -233,6 +262,7 @@ namespace MK.DeploymentService.Mobile
 			
 			//fetch revision if needed
 			if (!string.IsNullOrEmpty (revision)) {
+				UpdateJob ("HG Update");
 				logger.DebugFormat ("Update to revision {0}", revision);
 
 				var hgUpdate = GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
@@ -280,10 +310,13 @@ namespace MK.DeploymentService.Mobile
 			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
 
 			logger.DebugFormat ("Build Config Tool Customization");
+			UpdateJob ("Customize - Build Config Tool Customization");
 
-			var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/ConfigTool.iOS.sln\"",
-			                              "apcurium.MK.Booking.ConfigTool",
-			                              "Debug|MixedPlatForms",
+			var configurations = 
+				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|MixedPlatforms") + " "+ 
+				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug|MixedPlatforms");
+
+			var buildArgs = string.Format("build "+configurations+"  \"{0}/ConfigTool.iOS.sln\"",
 			                              Path.Combine (sourceDirectory,"Src","ConfigTool"));
 			
 			BuildProject(buildArgs);
@@ -330,7 +363,7 @@ namespace MK.DeploymentService.Mobile
 			logger.DebugFormat ("Run Localization tool for Android Finished");
 		}
 
-		private void Build (DeploymentJob job, string sourceDirectory, Company company)
+		private void Build (string sourceDirectory, Company company)
 		{			
 			//Build
 			logger.DebugFormat ("Launch Customization");
@@ -423,25 +456,17 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			logger.Debug("Build Project : " + buildArgs);
-			var buildiOSproject = new ProcessStartInfo
-			{
-				FileName = "/Applications/Xamarin Studio.app/Contents/MacOS/mdtool",
-				UseShellExecute = false,
-				Arguments = buildArgs
-			};
-			var exeProcess = Process.Start(buildiOSproject);
-			exeProcess.WaitForExit();
+			UpdateJob ("Running Build - " + buildArgs);
 
-//			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
-//			using (var exeProcess = Process.Start(buildiOSproject))
-//			{
-//				var output = GetOutput(exeProcess);
-//				if (exeProcess.ExitCode > 0)
-//				{
-//					throw new Exception("Error during build project step" + output);
-//				}
-//			}
+			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
+			using (var exeProcess = Process.Start(buildiOSproject))
+			{
+				var output = GetOutput(exeProcess,20000).Replace("\r","\n");
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during build project step" + output);
+				}
+			}
 		}
 
 		private void RevertAndPull(string repository)
@@ -455,7 +480,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during revert source code step" + output);
 				}
 			}
-
+#if !DEBUG
 			var hgPurge = GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPurge))
 			{
@@ -465,7 +490,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during purge source code step" + output);
 				}
 			}
-
+#endif
 			var hgPull = GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPull))
 			{
@@ -552,7 +577,7 @@ namespace MK.DeploymentService.Mobile
 			};
 		}
 
-		private string GetOutput(Process exeProcess)
+		private string GetOutput(Process exeProcess, int? timeout = null)
 		{
 			var output = "\n---------------------------------------------\n";
 
@@ -563,11 +588,22 @@ namespace MK.DeploymentService.Mobile
 			exeProcess.ErrorDataReceived += (s, e) =>
 			{
 				output += e.Data + "\n";
+				job.Details += e.Data;
 			};
 
 			exeProcess.BeginOutputReadLine();
 			exeProcess.BeginErrorReadLine();
-			exeProcess.WaitForExit();
+			if (timeout.HasValue) {
+				exeProcess.WaitForExit (timeout.Value);
+			}
+			else{
+				exeProcess.WaitForExit ();
+			}
+
+			if(!exeProcess.HasExited)
+			{
+				var x = 0;
+			}
 
 			return output += "\n---------------------------------------------\n";
 		}
