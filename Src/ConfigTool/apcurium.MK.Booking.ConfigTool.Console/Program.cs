@@ -21,8 +21,8 @@ namespace apcurium.MK.Booking.ConfigTool
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Cannot find the config and src folder in : " + fullPath + Environment.NewLine +
                                       "Press any key to exit...");
-                    Console.ReadKey();
-                    return -1;
+                    //Console.ReadKey();
+                    return 1;
                 }
 
                 var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");
@@ -41,8 +41,8 @@ namespace apcurium.MK.Booking.ConfigTool
                     }else
                     {
                         Console.WriteLine("Invalid config selected. Press any key to exit...");
-                        Console.ReadKey();
-                        return -1;
+                        //Console.ReadKey();
+                        return 1;
                     }
                 }
                 else
@@ -67,8 +67,8 @@ namespace apcurium.MK.Booking.ConfigTool
                     else
                     {
                         Console.WriteLine("Invalid config selected. Press any key to exit...");
-                        Console.ReadKey();
-                        return -1;
+                        //Console.ReadKey();
+                        return 1;
                     }
                 }
 
@@ -79,8 +79,8 @@ namespace apcurium.MK.Booking.ConfigTool
           {
 			  Console.WriteLine("Errors:");
 			  Console.WriteLine(e.Message);
-			  Console.ReadKey();
-	          return -1;
+			  //Console.ReadKey();
+	          return 1;
           }
           return 0;
 
