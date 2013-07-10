@@ -225,17 +225,22 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
+		private string GetRevision()
+		{
+			if(job.Version != null)
+			{
+				return  "-r " + job.Version.Revision;
+
+			}else{
+				return string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
+			}
+		}
+
 		private void FetchSource (string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
-			string revision = string.Empty;
-			if(job.Version != null)
-			{
-				revision = "-r " + job.Version.Revision;
+			string revision = GetRevision ();
 
-			}else{
-				revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
-			}
 			 			
 			logger.DebugFormat("Fetching revision: {0}", revision == string.Empty ? GetLatestRevision(sourceDirectory) : revision);
 
@@ -418,20 +423,20 @@ namespace MK.DeploymentService.Mobile
 					"MK.Booking.Api.Client.Android",
 					"MK.Booking.Mobile.Android"
 				};
-				
+
+				var configs = "";
 				foreach (var projectName in projectLists) {
-					
-					var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                              projectName,
-					                              configAndroid,
-					                              sourceMobileFolder);
-					
-					BuildProject(buildArgs);
+					configs += string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
 				}
 
+				var buildArgs = string.Format("build "+configs+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
+				                              sourceMobileFolder);
+
+				BuildProject(buildArgs);
+
+
 				if (job.Android) {
-					
-					//the client needs a target
+
 					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
 					                                "MK.Booking.Mobile.Client.Android",
 					                                configAndroid,
@@ -456,15 +461,18 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			UpdateJob ("Running Build - " + buildArgs);
+			UpdateJob ("\nRunning Build - " + buildArgs+"\n");
 
 			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
 			using (var exeProcess = Process.Start(buildiOSproject))
 			{
-				var output = GetOutput(exeProcess,20000).Replace("\r","\n");
+				var output = GetOutput(exeProcess,120000);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during build project step" + output);
+					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
+				}
+				else{
+					UpdateJob ("Build Successful");
 				}
 			}
 		}
@@ -501,15 +509,6 @@ namespace MK.DeploymentService.Mobile
 				}
 			}
 
-			var hgUpdate = GetProcess(HgPath, string.Format ("update --repository {0}", repository));
-			using (var exeProcess = Process.Start(hgUpdate))
-			{
-				var output = GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during update source code step" + output);
-				}
-			}
 		}
 
 		private string GetSettingsFilePath(string sourceDirectory, string companyName)
@@ -602,7 +601,7 @@ namespace MK.DeploymentService.Mobile
 
 			if(!exeProcess.HasExited)
 			{
-				var x = 0;
+				throw new Exception ("Build Timeout, " +output);
 			}
 
 			return output += "\n---------------------------------------------\n";
