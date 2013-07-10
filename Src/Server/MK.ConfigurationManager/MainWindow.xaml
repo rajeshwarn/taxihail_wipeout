@@ -128,6 +128,12 @@
                             <DataGridTextColumn Width="100" Header="IBSServer" Binding="{Binding IBSServer.Name}" />
                             <DataGridTextColumn Width="50" Header="Server" Binding="{Binding DeployServer}" />
                             <DataGridTextColumn Width="100" Header="Details" Binding="{Binding Details}" >
+                                <DataGridTextColumn.CellStyle >
+                                    <Style TargetType="DataGridCell">
+                                        <Setter Property="ToolTip" Value="{Binding Details}" />
+                                    </Style>
+                                </DataGridTextColumn.CellStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Width="50" Header="Db" Binding="{Binding DeployDB}" />
                             <DataGridTextColumn Width="65" Header="CreateDb" Binding="{Binding InitDatabase}" />
                             <DataGridTextColumn Width="55" Header="Android" Binding="{Binding Android}" />
@@ -135,12 +141,8 @@
                             <DataGridTextColumn Width="45" Header="AdHoc" Binding="{Binding iOS_AdHoc}" />
                             <DataGridTextColumn Width="60" Header="AppStore" Binding="{Binding iOS_AppStore}" />
                             <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
-                                <DataGridTextColumn.CellStyle >
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="ToolTip" Value="{Binding Details}" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
+
+                            
                             <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />
                             <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />
                         </DataGrid.Columns>
