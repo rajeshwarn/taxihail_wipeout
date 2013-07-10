@@ -80,10 +80,11 @@ namespace ninePatchMaker
 
         private static string BuildFilename(string folder, string folderSuffix, string filename)
         {
-            return folder +
-                   "\\drawable-" + folderSuffix + "\\" +
-                   Path.GetFileNameWithoutExtension(filename) + ".9" +
-                   Path.GetExtension(filename);
+			folder = Path.Combine(folder,"drawable-" + folderSuffix);
+			var file = Path.Combine(folder,Path.GetFileNameWithoutExtension(filename) + ".9" +
+			                        Path.GetExtension(filename));
+
+            return file;
         }
     }
 }
