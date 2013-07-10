@@ -182,7 +182,7 @@ namespace MK.ConfigurationManager
 
         private void AutoRefresh()
         {
-            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
+            Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ =>
                 {
                     Dispatcher.Invoke(() =>
                         {
