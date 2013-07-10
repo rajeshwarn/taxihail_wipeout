@@ -113,40 +113,50 @@
                         <Button Content="Clear deploy history" HorizontalAlignment="Left" Margin="10" Width="125" Click="ClearDeployHistory" />
                     </StackPanel>
 
-                    <DataGrid Name="DeployDataGrid"
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <DataGrid Name="DeployDataGrid"
                                       CanUserAddRows="False" 
                                       CanUserDeleteRows="False" 
                                       Margin="10" 
                                       RowHeight="20"
-                                       Grid.Row="1"
+                                      Grid.Row="0"
                                       AutoGenerateColumns="False"  
+                                      SelectedItem="{Binding SelectedJob, Mode=TwoWay}"
                                       ItemsSource="{Binding DeploymentJobs}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="100" Header="Company" Binding="{Binding Company.Name}" />
-                            <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
-                            <DataGridTextColumn Width="100" Header="Environnement" Binding="{Binding TaxHailEnv.Name}" />
-                            <DataGridTextColumn Width="100" Header="IBSServer" Binding="{Binding IBSServer.Name}" />
-                            <DataGridTextColumn Width="50" Header="Server" Binding="{Binding DeployServer}" />
-                            <DataGridTextColumn Width="100" Header="Details" Binding="{Binding Details}" >
-                                <DataGridTextColumn.CellStyle >
-                                    <Style TargetType="DataGridCell">
-                                        <Setter Property="ToolTip" Value="{Binding Details}" />
-                                    </Style>
-                                </DataGridTextColumn.CellStyle>
-                            </DataGridTextColumn>
-                            <DataGridTextColumn Width="50" Header="Db" Binding="{Binding DeployDB}" />
-                            <DataGridTextColumn Width="65" Header="CreateDb" Binding="{Binding InitDatabase}" />
-                            <DataGridTextColumn Width="55" Header="Android" Binding="{Binding Android}" />
-                            <DataGridTextColumn Width="50" Header="CallBox" Binding="{Binding CallBox}" />
-                            <DataGridTextColumn Width="45" Header="AdHoc" Binding="{Binding iOS_AdHoc}" />
-                            <DataGridTextColumn Width="60" Header="AppStore" Binding="{Binding iOS_AppStore}" />
-                            <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="100" Header="Company" Binding="{Binding Company.Name}" />
+                                <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" />
+                                <DataGridTextColumn Width="100" Header="Environnement" Binding="{Binding TaxHailEnv.Name}" />
+                                <DataGridTextColumn Width="100" Header="IBSServer" Binding="{Binding IBSServer.Name}" />
+                                <DataGridTextColumn Width="50" Header="Server" Binding="{Binding DeployServer}" />
+                                <DataGridTextColumn Width="100" Header="Details" Binding="{Binding Details}" >
+                                    <DataGridTextColumn.CellStyle >
+                                        <Style TargetType="DataGridCell">
+                                            <Setter Property="ToolTip" Value="{Binding Details}" />
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Width="50" Header="Db" Binding="{Binding DeployDB}" />
+                                <DataGridTextColumn Width="65" Header="CreateDb" Binding="{Binding InitDatabase}" />
+                                <DataGridTextColumn Width="55" Header="Android" Binding="{Binding Android}" />
+                                <DataGridTextColumn Width="50" Header="CallBox" Binding="{Binding CallBox}" />
+                                <DataGridTextColumn Width="45" Header="AdHoc" Binding="{Binding iOS_AdHoc}" />
+                                <DataGridTextColumn Width="60" Header="AppStore" Binding="{Binding iOS_AppStore}" />
+                                <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
 
-                            
-                            <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />
-                            <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+
+                                <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />
+                                <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBox IsReadOnly="True" Grid.Row="1" Text="{Binding SelectedJob.Details}"></TextBox>
+                    </Grid>
+                      
 
                     <GroupBox Grid.Row="2" Margin="10,10,26,10" Header="New Deployment">
                         <StackPanel>

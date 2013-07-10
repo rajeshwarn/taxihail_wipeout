@@ -46,7 +46,18 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<MyCustomKeyValuePair> MobileConfigurationProperties { get; set; }
 
-        public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; } 
+        public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; }
+        private DeploymentJob _selectedJob;
+
+        public DeploymentJob SelectedJob
+        {
+            get { return _selectedJob; }
+            set
+            {
+                _selectedJob = value;
+                OnPropertyChanged("SelectedJob");
+            }
+        }
 
         public Company CurrentCompany
         {
