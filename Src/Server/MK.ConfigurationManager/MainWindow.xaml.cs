@@ -101,6 +101,8 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
             AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
             Versions.CollectionChanged += VersionsOnCollectionChanged;
+
+            TabControl.SelectedIndex = 4;
         }
 
         private void FetchRepoTags()
