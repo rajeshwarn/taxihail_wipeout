@@ -13,10 +13,17 @@ namespace ninePatchMaker
         {
             TopRanges = new List<NinePatchRange>();
             LeftRanges = new List<NinePatchRange>();
+            RightRanges = new List<NinePatchRange>();
+            BottomRanges = new List<NinePatchRange>();
         }
 
         public List<NinePatchRange> TopRanges { get; set; }
         public List<NinePatchRange> LeftRanges { get; set; }
+
+
+        public List<NinePatchRange> BottomRanges { get; set; }
+        public List<NinePatchRange> RightRanges { get; set; }
+
 
         public void DrawOn(Bitmap bitmap)
         {
@@ -40,6 +47,12 @@ namespace ninePatchMaker
             {
                 var x = i;
                 var color = Color.Transparent;
+
+                if (BottomRanges.Any(range => range.Contains(i, bitmap.Width)))
+                {
+                    color = Color.Black;
+                }
+
                 bitmap.SetPixel(x, y, color);
             }
         }
@@ -52,6 +65,12 @@ namespace ninePatchMaker
             {
                 var y = i;
                 var color = Color.Transparent;
+
+                if (RightRanges.Any(range => range.Contains(i, bitmap.Height)))
+                {
+                    color = Color.Black;
+                }
+
 
                 bitmap.SetPixel(x, y, color);
             }

@@ -583,7 +583,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
