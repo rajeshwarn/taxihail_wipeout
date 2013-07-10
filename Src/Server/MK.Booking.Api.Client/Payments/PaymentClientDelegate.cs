@@ -2,18 +2,17 @@
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Client.Payments
 {
-    public class PaymentClientDeligate : IPaymentServiceClient
+    public class PaymentClientDelegate : IPaymentServiceClient
     {
 		private readonly PaymentMethod _paymentMethod;
         private readonly BraintreeServiceClient _braintreeServiceClient;
 		private readonly CmtPaymentClient _cmtServiceClient;
 
-		public PaymentClientDeligate(PaymentMethod paymentMethod, BraintreeServiceClient braintreeServiceClient, CmtPaymentClient cmtServiceClient)
+		public PaymentClientDelegate(PaymentMethod paymentMethod, BraintreeServiceClient braintreeServiceClient, CmtPaymentClient cmtServiceClient)
         {
 			_paymentMethod = paymentMethod;
             _braintreeServiceClient = braintreeServiceClient;
