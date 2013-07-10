@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             sut.Given(new PaymentSettingUpdated()
             {
                 SourceId = _companyId,
-                ServerPaymentSettings = new ServerPaymentSettings(_companyId)
+                ServerPaymentSettings = new ServerPaymentSettings()
                 {
                     PaymentMode = PaymentMethod.Cmt
                 }
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_paymentmode_changed()
         {
-            var newSettings = new ServerPaymentSettings(_companyId)
+            var newSettings = new ServerPaymentSettings()
             {
                 PaymentMode = PaymentMethod.Braintree
             };
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_paymentsettings_updated_successfully()
         {
             var key = Guid.NewGuid().ToString();
-            var newSettings = new ServerPaymentSettings(_companyId)
+            var newSettings = new ServerPaymentSettings()
                                   {
                                       PaymentMode = PaymentMethod.Cmt,
                                       BraintreeClientSettings =

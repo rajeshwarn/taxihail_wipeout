@@ -15,24 +15,32 @@ namespace apcurium.MK.Common.Configuration.Impl
         }
 
         public DbSet<ServerPaymentSettings> ServerPaymentSettings { get; set; }
-        public DbSet<PayPalServerSettings> PayPalSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
-            
+            modelBuilder.ComplexType<PayPalServerSettings>();
             modelBuilder.Entity<ServerPaymentSettings>()
-                .HasRequired(e => e.PayPalServerSettings)
-                .WithRequiredDependent()
-                
-                .WillCascadeOnDelete(true);
+                        .Map(m =>
+                                 {
+                                     m.Properties(x => new
+                                                           {
+                                                               x.PayPalServerSettings
+                                                           });
+                                     m.ToTable("PayPalServerSettings", SchemaName);
+                                 })
+                        .Map(m =>
+                                 {
+                                     m.Properties(x => new
+                                     {
+                                         x.BraintreeServerSettings,
+                                     });
+                                     m.ToTable("ServerPaymentSettings", SchemaName);
+                                 });
+               
             
-            modelBuilder.CreateTable<ServerPaymentSettings>(SchemaName);
-            modelBuilder.CreateTable<PayPalServerSettings>(SchemaName);
             base.OnModelCreating(modelBuilder);
-            
-            
         }
 
         public T Find<T>(Guid id) where T : class

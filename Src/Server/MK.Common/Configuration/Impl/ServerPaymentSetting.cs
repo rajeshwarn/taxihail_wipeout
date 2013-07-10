@@ -7,21 +7,14 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public ServerPaymentSettings() //for serialization
         {
-        }
-
-        public ServerPaymentSettings(Guid id)
-        {
-            Id = id;
+            Id = AppConstants.CompanyId;
             BraintreeServerSettings = new BraintreeServerSettings();
-            PayPalServerSettings = new PayPalServerSettings(Guid.NewGuid());
+            PayPalServerSettings = new PayPalServerSettings();
         }
 
         [Key]
         public Guid Id { get; set; }
-
-        
         public BraintreeServerSettings BraintreeServerSettings { get; set; }
-
         public PayPalServerSettings PayPalServerSettings { get; set; }
     }
 }

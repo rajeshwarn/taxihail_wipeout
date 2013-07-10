@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "Payment settings not found");
             
             var payPalSettings = paymentSettings.PayPalServerSettings;
-            if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
+            if (payPalSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
 
             return payPalSettings;
         }
