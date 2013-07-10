@@ -317,19 +317,20 @@ namespace MK.DeploymentService.Mobile
 			logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
-			var configurations = 
-				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|MixedPlatforms") + " "+ 
-				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug|MixedPlatforms");
+			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
 
-			var buildArgs = string.Format("build "+configurations+"  \"{0}/ConfigTool.iOS.sln\"",
-			                              Path.Combine (sourceDirectory,"Src","ConfigTool"));
+			BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+
+			var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
 			
-			BuildProject(buildArgs);
+			BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+
+
 
 			logger.DebugFormat ("Run Config Tool Customization");
 
-
-			var configToolRun = GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"));
+			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
+			var configToolRun = GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);
 
 			using (var exeProcess = Process.Start(configToolRun))
 			{
@@ -607,7 +608,7 @@ namespace MK.DeploymentService.Mobile
 				throw new Exception ("Build Timeout, " +output);
 			}
 
-			return output += "\n---------------------------------------------\n";
+			return output += "\n---------------------------------------------Code:"+exeProcess.ExitCode+"\n";
 		}
 	}
 }
