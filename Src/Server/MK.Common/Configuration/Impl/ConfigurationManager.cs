@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using MK.Common.Android.Configuration;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
