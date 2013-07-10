@@ -328,20 +328,16 @@ namespace MK.DeploymentService.Mobile
 
 			logger.DebugFormat ("Run Config Tool Customization");
 
-			var configToolRun = new ProcessStartInfo
-			{
-				FileName = "mono",
-				UseShellExecute = false,
-				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"),
-				Arguments = string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name)
-			};
-			
+
+			var configToolRun = GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"));
+
 			using (var exeProcess = Process.Start(configToolRun))
 			{
+				var output = GetOutput (exeProcess);
 				exeProcess.WaitForExit();
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during customization");
+					throw new Exception("Error during customization, "+output);
 				}
 			}
 
@@ -563,10 +559,10 @@ namespace MK.DeploymentService.Mobile
 			return revision;
 		}
 
-		private ProcessStartInfo GetProcess(string filename, string args)
+		private ProcessStartInfo GetProcess(string filename, string args, string workingDirectory = null)
 		{
 			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
-			return new ProcessStartInfo
+			var p = new ProcessStartInfo
 			{
 				FileName = filename,
 				UseShellExecute = false,
@@ -574,6 +570,11 @@ namespace MK.DeploymentService.Mobile
 				RedirectStandardError = true,
 				Arguments = args
 			};
+			if(workingDirectory != null)
+			{
+				p.WorkingDirectory = workingDirectory;
+			}
+			return p;
 		}
 
 		private string GetOutput(Process exeProcess, int? timeout = null)
