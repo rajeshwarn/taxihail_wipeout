@@ -423,15 +423,13 @@ namespace MK.DeploymentService.Mobile
 					"MK.Booking.Mobile.Android"
 				};
 
-				var configs = "";
 				foreach (var projectName in projectLists) {
-					configs += string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
+					var config = string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
+					var buildArgs = string.Format("build "+config+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                              sourceMobileFolder);
+
+					BuildProject(buildArgs);
 				}
-
-				var buildArgs = string.Format("build "+configs+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
-				                              sourceMobileFolder);
-
-				BuildProject(buildArgs);
 
 
 				if (job.Android) {
