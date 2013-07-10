@@ -56,6 +56,7 @@ namespace MK.ConfigurationManager
             {
                 _selectedJob = value;
                 OnPropertyChanged("SelectedJob");
+                OutputTextBox.ScrollToEnd();
             }
         }
 
@@ -242,6 +243,7 @@ namespace MK.ConfigurationManager
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
+            SelectedJob = DeploymentJobs.FirstOrDefault();
 
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
             DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;

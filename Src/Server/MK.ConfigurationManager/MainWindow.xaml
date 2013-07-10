@@ -154,7 +154,7 @@
                                 <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />
                             </DataGrid.Columns>
                         </DataGrid>
-                        <TextBox IsReadOnly="True" Grid.Row="1" Text="{Binding SelectedJob.Details}"></TextBox>
+                        <TextBox IsReadOnly="True" Grid.Row="1" Text="{Binding SelectedJob.Details}" x:Name="OutputTextBox"></TextBox>
                     </Grid>
                       
 
