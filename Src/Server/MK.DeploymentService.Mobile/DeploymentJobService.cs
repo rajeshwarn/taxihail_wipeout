@@ -472,7 +472,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
 				}
 				else{
-					UpdateJob ("Build Successful");
+					UpdateJob ("\nBuild Successful");
 				}
 			}
 		}
