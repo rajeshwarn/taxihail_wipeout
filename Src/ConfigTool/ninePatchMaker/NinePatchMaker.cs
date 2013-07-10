@@ -55,7 +55,8 @@ namespace ninePatchMaker
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
             g.PixelOffsetMode = PixelOffsetMode.HighQuality;
             g.FillRectangle(Brushes.White,rectf);
-            g.DrawString(text, new Font("Thaoma", 12), Brushes.Black, rectf);
+
+			g.DrawString(text, new Font("Comic Sans MS", 12), Brushes.Black, rectf);
 
             g.Flush();
         }
@@ -65,8 +66,8 @@ namespace ninePatchMaker
         {
             var newFilename = BuildFilename(folder, suffix, filename);
 #if DEBUG
-
-            TagImage(bitmap, suffix);
+			//Todo Fonts dont work on Mac
+            //TagImage(bitmap, suffix);
 #endif
             Directory.CreateDirectory(Path.GetDirectoryName(newFilename));
 
