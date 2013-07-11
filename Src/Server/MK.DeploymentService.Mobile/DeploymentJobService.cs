@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
+using DeploymentServiceTools;
 using log4net;
 using MK.ConfigurationManager.Entities;
 using System.IO;
@@ -249,10 +250,10 @@ namespace MK.DeploymentService.Mobile
 				UpdateJob ("FULL CLONE");
 
 				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
-				var hgClone = GetProcess(HgPath, args);
+				var hgClone = ProcessEx.GetProcess(HgPath, args);
 				using (var exeProcess = Process.Start(hgClone))
 				{
-					var output = GetOutput(exeProcess);
+					var output = ProcessEx.GetOutput(exeProcess);
 					if (exeProcess.ExitCode > 0)
 					{
 						throw new Exception("Error during clone source code step" + output);
@@ -270,10 +271,10 @@ namespace MK.DeploymentService.Mobile
 				UpdateJob ("HG Update");
 				logger.DebugFormat ("Update to revision {0}", revision);
 
-				var hgUpdate = GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
+				var hgUpdate = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
 				using (var exeProcess = Process.Start(hgUpdate))
 				{
-					var output = GetOutput(exeProcess);
+					var output = ProcessEx.GetOutput(exeProcess);
 					if (exeProcess.ExitCode > 0)
 					{
 						throw new Exception("Error during updating to revision step" + output);
@@ -330,11 +331,11 @@ namespace MK.DeploymentService.Mobile
 			logger.DebugFormat ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
-			var configToolRun = GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);
+			var configToolRun = ProcessEx.GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);
 
 			using (var exeProcess = Process.Start(configToolRun))
 			{
-				var output = GetOutput (exeProcess);
+				var output = ProcessEx.GetOutput (exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during customization, "+output);
@@ -467,47 +468,45 @@ namespace MK.DeploymentService.Mobile
 		{
 			UpdateJob ("Running Build - " + buildArgs);
 
-			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
+			var buildiOSproject = ProcessEx.GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
 			using (var exeProcess = Process.Start(buildiOSproject))
 			{
 
-				var output = GetOutput(exeProcess,40000);
+				var output = ProcessEx.GetOutput(exeProcess,40000);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
 				}
-				else{
-					UpdateJob ("Build Successful");
-				}
+			    UpdateJob ("Build Successful");
 			}
 		}
 
 		private void RevertAndPull(string repository)
 		{
-			var hgRevert = GetProcess(HgPath, string.Format("update --repository {0} -C", repository));
+            var hgRevert = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} -C", repository));
 			using (var exeProcess = Process.Start(hgRevert))
 			{
-				var output = GetOutput(exeProcess);
+				var output =ProcessEx.GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during revert source code step" + output);
 				}
 			}
 
-			var hgPurge = GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
+			var hgPurge = ProcessEx.GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPurge))
 			{
-				var output = GetOutput(exeProcess);
+				var output = ProcessEx.GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during purge source code step" + output);
 				}
 			}
 
-			var hgPull = GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
+			var hgPull = ProcessEx.GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPull))
 			{
-				var output = GetOutput(exeProcess);
+				var output = ProcessEx.GetOutput(exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during pull source code step" + output);
@@ -523,7 +522,7 @@ namespace MK.DeploymentService.Mobile
 
 		private void CopySettingsFileToOutputDir(string jsonSettingsFile, string targetFile)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			var reader = new JsonTextReader(new StreamReader(jsonSettingsFile));
 			while (reader.Read())
 			{
@@ -537,7 +536,7 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 			}
-			using (StreamWriter outfile = new StreamWriter(targetFile, false))
+			using (var outfile = new StreamWriter(targetFile, false))
 			{
 				outfile.Write(sb.ToString());
 			}
@@ -568,57 +567,6 @@ namespace MK.DeploymentService.Mobile
 			return revision;
 		}
 
-		private ProcessStartInfo GetProcess(string filename, string args, string workingDirectory = null)
-		{
-			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
-			var p = new ProcessStartInfo
-			{
-				FileName = filename,
-				UseShellExecute = false,
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				Arguments = args
-			};
-			if(workingDirectory != null)
-			{
-				p.WorkingDirectory = workingDirectory;
-			}
-			return p;
-		}
 
-		private string GetOutput(Process exeProcess, int? timeout = null)
-		{
-			var startTime = DateTime.Now;
-
-			var output = "\n---------------------------------------------\n";
-
-			exeProcess.OutputDataReceived += (s, e) =>
-			{
-				output += e.Data + "\n";
-			};
-			exeProcess.ErrorDataReceived += (s, e) =>
-			{
-				output += e.Data + "\n";
-				job.Details += e.Data+"\n";
-			};
-
-			exeProcess.BeginOutputReadLine();
-			exeProcess.BeginErrorReadLine();
-
-
-			while(!exeProcess.HasExited)
-			{
-				if(timeout.HasValue)
-				{
-					if((DateTime.Now - startTime).TotalSeconds > timeout.Value)
-					{
-						throw new Exception ("Build Timeout, " +output);
-					}
-				}
-				//todo Hack -- Wait for exit seems to lag for project builds
-			}
-
-			return output += "\n-----------------------------------Ran For: "+(DateTime.Now-startTime).TotalSeconds+"s----------Code:"+exeProcess.ExitCode+"\n";
-		}
 	}
 }

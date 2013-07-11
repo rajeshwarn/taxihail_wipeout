@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using DeploymentServiceTools;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
 using Microsoft.Build.Evaluation;
@@ -129,7 +130,7 @@ namespace MK.DeploymentService
                 _logger.DebugFormat("Clone Source Code");
                 Directory.CreateDirectory(sourceDirectory);
 
-                var hgClone = GetProcess("hg.exe", string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision));
+                var hgClone = ProcessEx.GetProcess("hg.exe", string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision));
                 using (var exeProcess = Process.Start(hgClone))
                 {
                     exeProcess.WaitForExit();
@@ -149,7 +150,7 @@ namespace MK.DeploymentService
             if (!string.IsNullOrEmpty(revision))
             {
                 _logger.DebugFormat("Update to revision {0}", revision);
-                var hgUpdate = GetProcess("hg.exe", string.Format("update --repository {0} {1}", sourceDirectory, revision));
+                var hgUpdate = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0} {1}", sourceDirectory, revision));
                 using (var exeProcess = Process.Start(hgUpdate))
                 {
                     exeProcess.WaitForExit();
@@ -252,13 +253,13 @@ namespace MK.DeploymentService
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
-            var deployDB = GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+            var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
                                                    string.Format("{0} {1} {2}", companyName, job.InitDatabase ? "C" : "U",
-                                                   job.TaxHailEnv.SqlServerInstance), true);
+                                                   job.TaxHailEnv.SqlServerInstance), null, true);
 
             using (var exeProcess = Process.Start(deployDB))
             {
-                var output = GetOutput(exeProcess);
+                var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during deploy DB step" + output);
@@ -318,40 +319,40 @@ namespace MK.DeploymentService
 
         private void RevertAndPull(string repository)
         {
-            var hgRevert = GetProcess("hg.exe", string.Format("update --repository {0} -C -r default", repository));
+            var hgRevert = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0} -C -r default", repository));
             using (var exeProcess = Process.Start(hgRevert))
             {
-                var output = GetOutput(exeProcess);
+                var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during revert source code step" + output);
                 }
             }
 
-            var hgPurge = GetProcess("hg.exe", string.Format("purge --all --repository {0}", repository));
+            var hgPurge = ProcessEx.GetProcess("hg.exe", string.Format("purge --all --repository {0}", repository));
             using (var exeProcess = Process.Start(hgPurge))
             {
-                var output = GetOutput(exeProcess);
+                var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during purge source code step" + output);
                 }
             }
 
-            var hgPull = GetProcess("hg.exe", string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
+            var hgPull = ProcessEx.GetProcess("hg.exe", string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
             using (var exeProcess = Process.Start(hgPull))
             {
-                var output = GetOutput(exeProcess);
+                var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during pull source code step" + output);
                 }
             }
 
-            var hgUpdate = GetProcess("hg.exe", string.Format("update --repository {0}", repository));
+            var hgUpdate = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0}", repository));
             using (var exeProcess = Process.Start(hgUpdate))
             {
-                var output = GetOutput(exeProcess);
+                var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during update source code step" + output);
@@ -359,42 +360,7 @@ namespace MK.DeploymentService
             }
         }
 
-        private ProcessStartInfo GetProcess(string filename, string args, bool loadUserProfile = false)
-        {
-            _logger.DebugFormat("Starting process {0} with args {1}", filename, args);
-            return new ProcessStartInfo
-            {
-                FileName = filename,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                UseShellExecute = false,
-                CreateNoWindow = false,
-                LoadUserProfile = loadUserProfile,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                Arguments = args
-            };
-        }
-
-        private string GetOutput(Process exeProcess)
-        {
-            var output = "\n---------------------------------------------\n";
-
-            exeProcess.OutputDataReceived += (s, e) =>
-            {
-                output += e.Data + "\n";
-            };
-            exeProcess.ErrorDataReceived += (s, e) =>
-            {
-                output += e.Data + "\n";
-            };
-
-            exeProcess.BeginOutputReadLine();
-            exeProcess.BeginErrorReadLine();
-            exeProcess.WaitForExit();
-
-            return output += "\n---------------------------------------------\n";
-        }
-
+      
         public void Stop()
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
