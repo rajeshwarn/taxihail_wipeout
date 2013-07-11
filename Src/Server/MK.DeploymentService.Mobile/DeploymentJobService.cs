@@ -409,12 +409,12 @@ namespace MK.DeploymentService.Mobile
 
 
 
-		private string GetSettingsFilePath(string sourceDirectory, string companyName)
+		private static string GetSettingsFilePath(string sourceDirectory, string companyName)
 		{
 			return Path.Combine(sourceDirectory, "Config" , companyName, "Settings.json");
 		}
 
-		private void CopySettingsFileToOutputDir(string jsonSettingsFile, string targetFile)
+		private static void CopySettingsFileToOutputDir(string jsonSettingsFile, string targetFile)
 		{
 			var sb = new StringBuilder();
 			var reader = new JsonTextReader(new StreamReader(jsonSettingsFile));
