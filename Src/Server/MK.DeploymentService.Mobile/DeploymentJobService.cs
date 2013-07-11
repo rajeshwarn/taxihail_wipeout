@@ -18,26 +18,28 @@ namespace MK.DeploymentService.Mobile
 {
 	public class DeploymentJobService
 	{
-		private readonly Timer timer;
-		private System.Object resourceLock = new System.Object();
-		private readonly ILog logger;
+		private readonly Timer _timer;
+		private readonly Object _resourceLock = new System.Object();
+        private readonly ILog _logger;
+        Database _db;
+        DeploymentJob _job;
 
-		const string HgPath = "/usr/local/bin/hg";
+		const string HG_PATH = "/usr/local/bin/hg";
 		
 		public DeploymentJobService()
 		{
-			timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
-			logger = LogManager.GetLogger("DeploymentJobService");
+			_timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
+			_logger = LogManager.GetLogger("DeploymentJobService");
 		}
 		
 		public void Start()
 		{
-			timer.Change(0, 2000);
+			_timer.Change(0, 2000);
 		}
 		
 		private void TimerOnElapsed(object state)
 		{
-			lock (resourceLock)
+			lock (_resourceLock)
 			{
 				CheckAndRunJobWithBuild ();
 			}
@@ -45,44 +47,44 @@ namespace MK.DeploymentService.Mobile
 
 		void UpdateJob (string details = null, JobStatus? jobStatus = null)
 		{
+            _logger.Debug(details);
+
 			if(jobStatus.HasValue)
 			{
-				job.Status = jobStatus.Value;
+				_job.Status = jobStatus.Value;
 			}
 			if(details != null)
 			{
-				job.Details += details + "\n";
+				_job.Details += details + "\n";
 			}
 
-			db.Update ("[MkConfig].[DeploymentJob]", "Id", new {
-				status = job.Status,
-				details = job.Details
-			}, job.Id);
+			_db.Update ("[MkConfig].[DeploymentJob]", "Id", new {
+				status = _job.Status,
+				details = _job.Details
+			}, _job.Id);
 		}
 
-		Database db;
-		DeploymentJob job;
 
 		private void CheckAndRunJobWithBuild ()
 		{
 			try {
-				db = new PetaPoco.Database ("MKConfig");
-				job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS_AdHoc=1 OR iOS_AppStore=1 OR CallBox=1)");
+				_db = new Database ("MKConfig");
+				_job = _db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS_AdHoc=1 OR iOS_AppStore=1 OR CallBox=1)");
 				try {
 
 
-					if (job != null) {
-						var company = db.First<Company> ("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
-						job.Company = company;
-						var taxiHailEnv = db.First<TaxiHailEnvironment> ("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", job.TaxHailEnv_Id);
-						job.TaxHailEnv = taxiHailEnv;
+					if (_job != null) {
+						var company = _db.First<Company> ("Select * from [MkConfig].[Company] where Id=@0", _job.Company_Id);
+						_job.Company = company;
+						var taxiHailEnv = _db.First<TaxiHailEnvironment> ("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", _job.TaxHailEnv_Id);
+						_job.TaxHailEnv = taxiHailEnv;
 
-						if(job.Version_Id != Guid.Empty)
+						if(_job.Version_Id != Guid.Empty)
 						{
-							job.Version = db.First<AppVersion> ("Select * from [MkConfig].[AppVersion] where Id=@0", job.Version_Id);
+							_job.Version = _db.First<AppVersion> ("Select * from [MkConfig].[AppVersion] where Id=@0", _job.Version_Id);
 						}
 
-						logger.Debug ("Begin work on " + company.Name);
+						_logger.Debug ("Begin work on " + company.Name);
 
 						UpdateJob("Starting",JobStatus.INPROGRESS);
 
@@ -103,8 +105,9 @@ namespace MK.DeploymentService.Mobile
 						if (Directory.Exists (releaseCallboxAndroidDir))
 							Directory.Delete (releaseCallboxAndroidDir, true);
 
-						UpdateJob("FetchSource");
-						FetchSource (sourceDirectory, company);
+                        var taxiRepo = new TaxiRepository(HG_PATH, sourceDirectory);
+                        UpdateJob("FetchSource");
+					    taxiRepo.FetchSource(_job.GetRevisionNumber(), str => UpdateJob(str));
 
 						UpdateJob("Customize");
 						Customize (sourceDirectory, company, taxiHailEnv);
@@ -117,42 +120,43 @@ namespace MK.DeploymentService.Mobile
 
 						UpdateJob("Done",JobStatus.SUCCESS);
 
-						logger.Debug("Deployment finished without error");
+						_logger.Debug("Deployment finished without error");
 					}
 				} catch (Exception e) {
-					logger.Error (e.Message);
+					_logger.Error (e.Message);
 					UpdateJob (e.Message,JobStatus.ERROR);
 				}
 			} catch (Exception e) {
-				logger.Error (e.Message);
+				_logger.Error (e.Message);
 			}
 		}
 
 		public void Stop()
 		{
-			timer.Change(Timeout.Infinite, Timeout.Infinite);
+			_timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
-			if (job.Android || job.CallBox || job.iOS_AdHoc || job.iOS_AppStore) {
-				var targetDirWithoutFileName = string.Empty;
-				targetDirWithoutFileName = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], 
-				                                        company.Name, 
-				                                        job.Version != null 
-				                                        	? string.Format("{0}.{1}", job.Version.Display, job.Version.Revision)
-				                                        	: string.Format("Not versioned/{0}", string.IsNullOrEmpty(job.Revision) 
-				                																				? GetLatestRevision(sourceDirectory)
-				                																				: job.Revision
-				                                        ));
+		    var hg = new MecurialTools(HG_PATH, sourceDirectory);
+
+			if (_job.Android || _job.CallBox || _job.iOS_AdHoc || _job.iOS_AppStore) {
+			    string targetDirWithoutFileName = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["DeployDir"], 
+			                                                   company.Name, 
+			                                                   _job.Version != null 
+			                                                       ? string.Format("{0}.{1}", _job.Version.Display, _job.Version.Revision)
+			                                                       : string.Format("Not versioned/{0}", string.IsNullOrEmpty(_job.Revision)
+			                                                                                                ? hg.GetTipRevisionNumber()
+			                                                                                                : _job.Revision
+			                                                             ));
 				if (!Directory.Exists (targetDirWithoutFileName)) {
 					Directory.CreateDirectory(targetDirWithoutFileName);
 				}
 
 				CopySettingsFileToOutputDir(GetSettingsFilePath(sourceDirectory, company.Name), Path.Combine(targetDirWithoutFileName, "Settings.txt"));
 
-				if (job.Android) {
-					logger.DebugFormat("Copying Apk");
+				if (_job.Android) {
+					_logger.DebugFormat("Copying Apk");
 					if (!Directory.Exists (apkPath)) {
 						throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
 					}
@@ -170,9 +174,9 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 				
-				if(job.CallBox)
+				if(_job.CallBox)
 				{
-					logger.DebugFormat("Copying CallBox Apk");
+					_logger.DebugFormat("Copying CallBox Apk");
 					var apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(apkFile != null)
 					{
@@ -187,8 +191,8 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 				
-				if (job.iOS_AdHoc) {
-					logger.DebugFormat ("Uploading and copying IPA AdHoc");
+				if (_job.iOS_AdHoc) {
+					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
 					var ipaFile = Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(ipaFile != null)
 					{
@@ -206,8 +210,8 @@ namespace MK.DeploymentService.Mobile
 					}
 				}
 
-				if (job.iOS_AppStore) {
-					logger.DebugFormat ("Uploading and copying IPA AppStore");
+				if (_job.iOS_AppStore) {
+					_logger.DebugFormat ("Uploading and copying IPA AppStore");
 					var ipaFile = Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 					if(ipaFile != null)
 					{
@@ -226,66 +230,11 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private string GetRevision()
-		{
-			if(job.Version != null)
-			{
-				return  "-r " + job.Version.Revision;
 
-			}else{
-				return string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
-			}
-		}
-
-		private void FetchSource (string sourceDirectory, Company company)
-		{
-			//pull source from bitbucket if not done yet
-			string revision = GetRevision ();
-
-			 			
-			logger.DebugFormat("Fetching revision: {0}", revision == string.Empty ? GetLatestRevision(sourceDirectory) : revision);
-
-			if (!Directory.Exists (sourceDirectory)) {
-				logger.DebugFormat ("Clone Source Code");
-				UpdateJob ("FULL CLONE");
-
-				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
-				var hgClone = ProcessEx.GetProcess(HgPath, args);
-				using (var exeProcess = Process.Start(hgClone))
-				{
-					var output = ProcessEx.GetOutput(exeProcess);
-					if (exeProcess.ExitCode > 0)
-					{
-						throw new Exception("Error during clone source code step" + output);
-					}
-				}
-			} else {
-				UpdateJob ("HG Revert, Purge and Update Source Code");
-				logger.DebugFormat ("Revert, Purge and Update Source Code");
-				//already clone just do a revert and update the source
-				RevertAndPull (sourceDirectory);
-			}
-			
-			//fetch revision if needed
-			if (!string.IsNullOrEmpty (revision)) {
-				UpdateJob ("HG Update");
-				logger.DebugFormat ("Update to revision {0}", revision);
-
-				var hgUpdate = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} {1}", sourceDirectory, revision));
-				using (var exeProcess = Process.Start(hgUpdate))
-				{
-					var output = ProcessEx.GetOutput(exeProcess);
-					if (exeProcess.ExitCode > 0)
-					{
-						throw new Exception("Error during updating to revision step" + output);
-					}
-				}
-			}
-		}
 
 		void Customize (string sourceDirectory, Company company, TaxiHailEnvironment taxiHailEnv)
 		{
-			logger.DebugFormat ("Generate Settings");
+			_logger.DebugFormat ("Generate Settings");
 
 			var jsonSettings = new JObject ();
 			foreach (var setting in company.MobileConfigurationProperties) {
@@ -315,7 +264,7 @@ namespace MK.DeploymentService.Mobile
 			jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
 			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
 
-			logger.DebugFormat ("Build Config Tool Customization");
+			_logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
 			
@@ -328,7 +277,7 @@ namespace MK.DeploymentService.Mobile
 
 
 
-			logger.DebugFormat ("Run Config Tool Customization");
+			_logger.DebugFormat ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
 			var configToolRun = ProcessEx.GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);
@@ -340,13 +289,11 @@ namespace MK.DeploymentService.Mobile
 				{
 					throw new Exception("Error during customization, "+output);
 				}
-				else{
-					UpdateJob ("\nCustomize Successful");
-				}
+			    UpdateJob ("Customize Successful");
 			}
 
-			logger.DebugFormat ("Customization Finished");
-			logger.DebugFormat ("Run Localization tool for Android");
+			_logger.DebugFormat ("Customization Finished");
+			_logger.DebugFormat ("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo
 			{
@@ -365,20 +312,20 @@ namespace MK.DeploymentService.Mobile
 				}
 			}
 
-			logger.DebugFormat ("Run Localization tool for Android Finished");
+			_logger.DebugFormat ("Run Localization tool for Android Finished");
 		}
 
 		private void Build (string sourceDirectory, Company company)
 		{			
 			//Build
-			logger.DebugFormat ("Launch Customization");
+			_logger.DebugFormat ("Launch Customization");
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 			
-			logger.DebugFormat ("Build Solution");
+			_logger.DebugFormat ("Build Solution");
 
-			if (job.iOS_AdHoc) {			
+			if (_job.iOS_AdHoc) {			
 				
-				logger.DebugFormat ("Build iOS AdHoc");
+				_logger.DebugFormat ("Build iOS AdHoc");
 				UpdateJob("Build iOS AdHoc");
 				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",
 				                              "AdHoc|iPhone",
@@ -387,12 +334,12 @@ namespace MK.DeploymentService.Mobile
 				BuildProject(buildArgs);
 				
 				
-				logger.Debug("Build iOS AdHoc done");
+				_logger.Debug("Build iOS AdHoc done");
 			}
 			
-			if (job.iOS_AppStore) {	
+			if (_job.iOS_AppStore) {	
 
-				logger.DebugFormat ("Build iOS AppStore");
+				_logger.DebugFormat ("Build iOS AppStore");
 				UpdateJob("Build iOS AppStore");
 				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",				                             
 				                              "AppStore|iPhone",
@@ -401,10 +348,10 @@ namespace MK.DeploymentService.Mobile
 				BuildProject(buildArgs);
 				
 				
-				logger.Debug("Build iOS AppStore done");
+				_logger.Debug("Build iOS AppStore done");
 			}
 
-			if (job.Android || job.CallBox) {
+			if (_job.Android || _job.CallBox) {
 
 				var configAndroid = "Release";
 				var projectLists = new List<string>{
@@ -438,7 +385,7 @@ namespace MK.DeploymentService.Mobile
 				}
 				UpdateJob("Step "+i+"/"+projectLists.Count);
 
-				if (job.Android) {
+				if (_job.Android) {
 
 
 
@@ -448,10 +395,10 @@ namespace MK.DeploymentService.Mobile
 					                                sourceMobileFolder);
 					BuildProject(buildClient);
 					
-					logger.Debug("Build Android done");
+					_logger.Debug("Build Android done");
 				}
 				
-				if(job.CallBox)
+				if(_job.CallBox)
 				{
 					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
 					                                "MK.Callbox.Mobile.Client.Android",
@@ -459,7 +406,7 @@ namespace MK.DeploymentService.Mobile
 					                                sourceMobileFolder);
 					BuildProject(buildClient);
 					
-					logger.Debug("Build Android CallBox done");
+					_logger.Debug("Build Android CallBox done");
 				}
 			}
 		}
@@ -481,39 +428,6 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private void RevertAndPull(string repository)
-		{
-            var hgRevert = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} -C", repository));
-			using (var exeProcess = Process.Start(hgRevert))
-			{
-				var output =ProcessEx.GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during revert source code step" + output);
-				}
-			}
-
-			var hgPurge = ProcessEx.GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
-			using (var exeProcess = Process.Start(hgPurge))
-			{
-				var output = ProcessEx.GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during purge source code step" + output);
-				}
-			}
-
-			var hgPull = ProcessEx.GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
-			using (var exeProcess = Process.Start(hgPull))
-			{
-				var output = ProcessEx.GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during pull source code step" + output);
-				}
-			}
-
-		}
 
 		private string GetSettingsFilePath(string sourceDirectory, string companyName)
 		{
@@ -542,30 +456,7 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private string GetLatestRevision(string repository)
-		{
-			var revision = string.Empty;
-			var hgRevert = new ProcessStartInfo
-			{
-				FileName = HgPath,
-				UseShellExecute = false,
-				Arguments = string.Format("identify --repository \"{0}\"", repository),
-				RedirectStandardOutput = true,
 
-			};
-			
-			using (var exeProcess = Process.Start(hgRevert))
-			{
-				exeProcess.WaitForExit();
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during get of latest revision name");
-				}
-				revision = exeProcess.StandardOutput.ReadLine();
-			}
-
-			return revision;
-		}
 
 
 	}

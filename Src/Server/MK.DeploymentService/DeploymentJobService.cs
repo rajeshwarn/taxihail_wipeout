@@ -58,108 +58,78 @@ namespace MK.DeploymentService
             }
         }
 
+        private DeploymentJob job;
+        private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
-            var dbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
-            var job = dbContext.Set<DeploymentJob>()
+            dbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
+            job = dbContext.Set<DeploymentJob>()
                 .Include(x => x.Company)
                 .Include(x => x.IBSServer)
                 .Include(x => x.TaxHailEnv)
                 .Include(x => x.Version)
                 .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && (x.DeployServer || x.DeployDB));
 
-            if (job != null)
+            if (job == null) return;
+
+            try
             {
-                try
+                _logger.DebugFormat("New Job for {0}", job.Company.Name);
+                UpdateJob("Starting",JobStatus.INPROGRESS);
+
+                var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
+                var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
+                if (Properties.Settings.Default.Mode == "Build")
                 {
-                    _logger.DebugFormat("New Job for {0}", job.Company.Name);
-                    job.Status = JobStatus.INPROGRESS;
-                    dbContext.SaveChanges();
-
-                    var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
-                    if (Properties.Settings.Default.Mode == "Build")
-                    {
-                        FetchSourceAndBuild(job, sourceDirectory);
-                    }
-
-                    //build server and deploy
-                    if (job.DeployServer || job.DeployDB)
-                    {
-                        var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
-                        if (Properties.Settings.Default.Mode != "Build")
-                        {
-                            packagesDirectory = Properties.Settings.Default.DeployFolder;
-                        }
-                        DeployTaxiHail(job, packagesDirectory);
-                        _logger.DebugFormat("Job Done");
-                    }
-
-                    job.Details = string.Empty;
-                    job.Status = JobStatus.SUCCESS;
-                    dbContext.SaveChanges();
-
+                    taxiRepo.FetchSource(job.GetRevisionNumber(),str=>_logger.Debug(str));
+                    Build(sourceDirectory);
                 }
-                catch (Exception e)
+
+                //build server and deploy
+                if (job.DeployServer || job.DeployDB)
                 {
-                    _logger.Error(e.Message, e);
-                    job.Status = JobStatus.ERROR;
-                    job.Details = e.Message;
-                    dbContext.SaveChanges();
+                    var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
+                    if (Properties.Settings.Default.Mode != "Build")
+                    {
+                        packagesDirectory = Properties.Settings.Default.DeployFolder;
+                    }
+                    DeployTaxiHail(packagesDirectory);
+                    _logger.DebugFormat("Job Done");
                 }
+
+                job.Details = string.Empty;
+                job.Status = JobStatus.SUCCESS;
+                dbContext.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.Message, e);
+                job.Status = JobStatus.ERROR;
+                job.Details = e.Message;
+                dbContext.SaveChanges();
             }
         }
 
-        private string GetRevisionNumber(DeploymentJob job)
-        {
-            if (job.Version != null)
-            {
-                return job.Version.Revision;
-            }
 
-            return string.IsNullOrEmpty(job.Revision) ? string.Empty : job.Revision;
+        private void UpdateJob(string details, JobStatus? status=null)
+        {
+            if (status.HasValue)
+            {
+                job.Status = status.Value;
+            }
+            job.Details += details + "\n";
+
+            dbContext.SaveChanges();
         }
 
-        private void FetchSourceAndBuild(DeploymentJob job, string sourceDirectory)
+ 
+
+
+        private void Build(string sourceDirectory)
         {
-            //pull source from bitbucket if not done yet
-            var revisionNumber = GetRevisionNumber(job);
-            var revision = string.IsNullOrEmpty(revisionNumber) ? string.Empty : "-r " + revisionNumber;
 
-            if (!Directory.Exists(sourceDirectory))
-            {
-                _logger.DebugFormat("Clone Source Code");
-                Directory.CreateDirectory(sourceDirectory);
 
-                var hgClone = ProcessEx.GetProcess("hg.exe", string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision));
-                using (var exeProcess = Process.Start(hgClone))
-                {
-                    exeProcess.WaitForExit();
-                    if (exeProcess.ExitCode > 0)
-                    {
-                        throw new Exception("Error during clone source code step");
-                    }
-                }
-            }
-            else
-            {
-                _logger.DebugFormat("Revert, Purge and Update Source Code");
-                //already clone just do a revert and update the source
-                RevertAndPull(sourceDirectory);
-            }
-
-            if (!string.IsNullOrEmpty(revision))
-            {
-                _logger.DebugFormat("Update to revision {0}", revision);
-                var hgUpdate = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0} {1}", sourceDirectory, revision));
-                using (var exeProcess = Process.Start(hgUpdate))
-                {
-                    exeProcess.WaitForExit();
-                    if (exeProcess.ExitCode > 0)
-                    {
-                        throw new Exception("Error during revert source code step");
-                    }
-                }
-            }
 
             _logger.DebugFormat("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
@@ -207,7 +177,7 @@ namespace MK.DeploymentService
                 File.Copy(newPath, newPath.Replace(source, target));
         }
 
-        private void DeployTaxiHail(DeploymentJob job, string packagesDirectory)
+        private void DeployTaxiHail(string packagesDirectory)
         {
             _logger.DebugFormat("Deploying");
             var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
@@ -225,17 +195,17 @@ namespace MK.DeploymentService
 
             if (job.DeployDB)
             {
-                DeployDataBase(job, packagesDirectory, companyName);
+                DeployDataBase(packagesDirectory, companyName);
             }
 
             if (job.DeployServer)
             {
-                DeployServer(job, companyName, packagesDirectory, iisManager);
+                DeployServer(companyName, packagesDirectory, iisManager);
             }
             appPool.Start();
         }
 
-        private void DeployDataBase(DeploymentJob job, string packagesDirectory, string companyName)
+        private void DeployDataBase( string packagesDirectory, string companyName)
         {
             _logger.DebugFormat("Deploying DB");
             var jsonSettings = new JObject();
@@ -267,11 +237,11 @@ namespace MK.DeploymentService
             }
         }
 
-        private void DeployServer(DeploymentJob job, string companyName, string packagesDirectory, ServerManager iisManager)
+        private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
         {
             _logger.DebugFormat("Deploying IIS");
 
-            var revision = GetRevisionNumber(job);
+            var revision = job.GetRevisionNumber();
 
             var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + revision + "." + DateTime.Now.Ticks + "\\";
             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
