@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Guid orderId = Guid.NewGuid();
             Guid paymentId = Guid.NewGuid();
             decimal amount = 12.34m;
-            sut.When(new InitiateCreditCardPaymentPayment
+            sut.When(new InitiateCreditCardPayment
             {
                 PaymentId = paymentId,
                 TransactionId = transactionId,

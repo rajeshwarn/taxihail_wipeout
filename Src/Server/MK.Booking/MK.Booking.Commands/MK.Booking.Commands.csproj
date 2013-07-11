@@ -61,7 +61,7 @@
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
-    <Compile Include="InitiateCreditCardPaymentPayment.cs" />
+    <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />

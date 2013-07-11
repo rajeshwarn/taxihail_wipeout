@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Domain;
 namespace apcurium.MK.Booking.CommandHandlers
 {
     public class CreditCardPaymentCommandHandler :
-        ICommandHandler<InitiateCreditCardPaymentPayment>,
+        ICommandHandler<InitiateCreditCardPayment>,
         ICommandHandler<CaptureCreditCardPayment>
     {
         readonly IEventSourcedRepository<CreditCardPayment> _repository;
@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository = repository;
         }
 
-        public void Handle(InitiateCreditCardPaymentPayment command)
+        public void Handle(InitiateCreditCardPayment command)
         {
             var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId, command.Amount);
             _repository.Save(payment, command.Id.ToString());

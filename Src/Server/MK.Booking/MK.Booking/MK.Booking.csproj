@@ -160,7 +160,9 @@
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\ICreditCardPaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IPayPalExpressCheckoutPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\CreditCardPaymentDao.cs" />
     <Compile Include="ReadModel\Query\PayPalExpressCheckoutPaymentDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
