@@ -82,7 +82,7 @@ namespace MK.DeploymentService
                 if (Properties.Settings.Default.Mode == "Build")
                 {
                     taxiRepo.FetchSource(job.GetRevisionNumber(),str=>_logger.Debug(str));
-                    Build(sourceDirectory);
+                    BuildDataBaseInitializer(sourceDirectory);
                 }
 
                 //build server and deploy
@@ -122,15 +122,9 @@ namespace MK.DeploymentService
 
             dbContext.SaveChanges();
         }
-
- 
-
-
-        private void Build(string sourceDirectory)
+        
+        private void BuildDataBaseInitializer(string sourceDirectory)
         {
-
-
-
             _logger.DebugFormat("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();

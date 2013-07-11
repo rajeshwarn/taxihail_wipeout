@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MecurialTools.cs" />
+    <Compile Include="MonoBuilder.cs" />
     <Compile Include="ProcessEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiRepository.cs" />

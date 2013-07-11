@@ -23,6 +23,7 @@ namespace MK.DeploymentService.Mobile
         private readonly ILog _logger;
         Database _db;
         DeploymentJob _job;
+	    private MonoBuilder _builder;
 
 		const string HG_PATH = "/usr/local/bin/hg";
 		
@@ -30,6 +31,7 @@ namespace MK.DeploymentService.Mobile
 		{
 			_timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
 			_logger = LogManager.GetLogger("DeploymentJobService");
+            _builder = new MonoBuilder(str=>UpdateJob(str));
 		}
 		
 		public void Start()
@@ -113,7 +115,7 @@ namespace MK.DeploymentService.Mobile
 						Customize (sourceDirectory, company, taxiHailEnv);
 
 						UpdateJob("Build");
-						Build (sourceDirectory, company);
+						BuildMobile (sourceDirectory);
 
 						UpdateJob("Deploy");
 						Deploy (sourceDirectory, company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
@@ -269,10 +271,10 @@ namespace MK.DeploymentService.Mobile
 
 			
 			var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
-			BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+			_builder.BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
 
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
-			BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+			_builder.BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
 
 
 
@@ -315,7 +317,7 @@ namespace MK.DeploymentService.Mobile
 			_logger.DebugFormat ("Run Localization tool for Android Finished");
 		}
 
-		private void Build (string sourceDirectory, Company company)
+		private void BuildMobile (string sourceDirectory)
 		{			
 			//Build
 			_logger.DebugFormat ("Launch Customization");
@@ -331,7 +333,7 @@ namespace MK.DeploymentService.Mobile
 				                              "AdHoc|iPhone",
 				                              sourceMobileFolder);
 				
-				BuildProject(buildArgs);
+				_builder.BuildProject(buildArgs);
 				
 				
 				_logger.Debug("Build iOS AdHoc done");
@@ -345,88 +347,66 @@ namespace MK.DeploymentService.Mobile
 				                              "AppStore|iPhone",
 				                              sourceMobileFolder);
 				
-				BuildProject(buildArgs);
+				_builder.BuildProject(buildArgs);
 				
 				
 				_logger.Debug("Build iOS AppStore done");
 			}
 
-			if (_job.Android || _job.CallBox) {
-
-				var configAndroid = "Release";
-				var projectLists = new List<string>{
-					"Android_System.Reactive.Interfaces", 
-					"Android_System.Reactive.Core", 
-					"Android_System.Reactive.PlatformServices", 
-					"Android_System.Reactive.Linq",
-					"PushSharp.Client.MonoForAndroid.Gcm",
-					"Newtonsoft.Json.MonoDroid", 
-					"Cirrious.MvvmCross.Android", 
-					"Cirrious.MvvmCross.Binding.Android", 
-					"Cirrious.MvvmCross.Android.Maps",
-					"BraintreeEncryption.Library.Android",
-					"MK.Common.Android",
-					"MK.Booking.Google.Android", 
-					"MK.Booking.Maps.Android", 
-					"MK.Booking.Api.Contract.Android", 
-					"MK.Booking.Api.Client.Android",
-					"MK.Booking.Mobile.Android"
-				};
-
-				UpdateJob("Build android");
-				int i = 1;
-				foreach (var projectName in projectLists) {
-					var config = string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
-					var buildArgs = string.Format("build "+config+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                              sourceMobileFolder);
-
-					UpdateJob ("Step " + (i++) + "/" + projectLists.Count);
-					BuildProject(buildArgs);
-				}
-				UpdateJob("Step "+i+"/"+projectLists.Count);
-
-				if (_job.Android) {
+		    if (!_job.Android && !_job.CallBox) return;
 
 
 
-					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                                "MK.Booking.Mobile.Client.Android",
-					                                configAndroid,
-					                                sourceMobileFolder);
-					BuildProject(buildClient);
+		    const string configAndroid = "Release";
+		    var projectLists = new List<string>{
+		        "Android_System.Reactive.Interfaces", 
+		        "Android_System.Reactive.Core", 
+		        "Android_System.Reactive.PlatformServices", 
+		        "Android_System.Reactive.Linq",
+		        "PushSharp.Client.MonoForAndroid.Gcm",
+		        "Newtonsoft.Json.MonoDroid", 
+		        "Cirrious.MvvmCross.Android", 
+		        "Cirrious.MvvmCross.Binding.Android", 
+		        "Cirrious.MvvmCross.Android.Maps",
+		        "BraintreeEncryption.Library.Android",
+		        "MK.Common.Android",
+		        "MK.Booking.Google.Android", 
+		        "MK.Booking.Maps.Android", 
+		        "MK.Booking.Api.Contract.Android", 
+		        "MK.Booking.Api.Client.Android",
+		        "MK.Booking.Mobile.Android"
+		    };
+
+		    _builder.BuildAndroidProject(projectLists, configAndroid,
+		                                 string.Format("\"{0}/MK.Booking.Mobile.Solution.Android.sln\"", sourceDirectory));
+            
+		    if (_job.Android)
+            {
+                UpdateJob("Building project");
+
+		        var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+		                                        "MK.Booking.Mobile.Client.Android",
+		                                        configAndroid,
+		                                        sourceMobileFolder);
+		        _builder.BuildProject(buildClient);
 					
-					_logger.Debug("Build Android done");
-				}
-				
-				if(_job.CallBox)
-				{
-					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					                                "MK.Callbox.Mobile.Client.Android",
-					                                configAndroid,
-					                                sourceMobileFolder);
-					BuildProject(buildClient);
+		        _logger.Debug("Build Android done");
+		    }
+            
+		    if (!_job.CallBox) return;
+
+            UpdateJob("Callbox project");
+		    var args = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+		                                    "MK.Callbox.Mobile.Client.Android",
+		                                    configAndroid,
+		                                    sourceMobileFolder);
+
+            _builder.BuildProject(args);
 					
-					_logger.Debug("Build Android CallBox done");
-				}
-			}
+		    _logger.Debug("Build Android CallBox done");
 		}
 
-		private void BuildProject (string buildArgs)
-		{
-			UpdateJob ("Running Build - " + buildArgs);
 
-			var buildiOSproject = ProcessEx.GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
-			using (var exeProcess = Process.Start(buildiOSproject))
-			{
-
-				var output = ProcessEx.GetOutput(exeProcess,40000);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
-				}
-			    UpdateJob ("Build Successful");
-			}
-		}
 
 
 		private string GetSettingsFilePath(string sourceDirectory, string companyName)
@@ -440,17 +420,17 @@ namespace MK.DeploymentService.Mobile
 			var reader = new JsonTextReader(new StreamReader(jsonSettingsFile));
 			while (reader.Read())
 			{
-				if (reader.Value != null) {
-					if (reader.TokenType == JsonToken.PropertyName){
-						sb.Append(string.Format("{0}: ", reader.Value));
-					}
-					else
-					{
-						sb.AppendLine(reader.Value.ToString());
-					}
-				}
+			    if (reader.Value == null) continue;
+
+			    if (reader.TokenType == JsonToken.PropertyName){
+			        sb.Append(string.Format("{0}: ", reader.Value));
+			    }
+			    else
+			    {
+			        sb.AppendLine(reader.Value.ToString());
+			    }
 			}
-			using (var outfile = new StreamWriter(targetFile, false))
+		    using (var outfile = new StreamWriter(targetFile, false))
 			{
 				outfile.Write(sb.ToString());
 			}
