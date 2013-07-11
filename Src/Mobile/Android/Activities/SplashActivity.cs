@@ -29,10 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 	//[IntentFilter(new[] { "android.intent.action.VIEW" }, Categories = new[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" }, DataScheme = "TaxiHailDemo")]
 	public class SplashActivity : MvxBaseSplashScreenActivity
     {
-        public SplashActivity()
-        {
-        }
-
         protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
@@ -45,12 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 				});
 			}
 
-        }
-
-        protected override void OnResume()
-        {
-          
-            base.OnResume();
         }
 
         protected override void OnDestroy()

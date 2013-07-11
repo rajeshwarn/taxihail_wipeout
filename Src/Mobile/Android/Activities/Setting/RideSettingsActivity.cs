@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;
 			txtPassword.Text = "my secure password"; /* fake password for display only */
 
-			if (!ViewModel.Settings.PayByCreditCardEnabled) {
+			if (!ViewModel.PayByCreditCardEnabled) {
 				this.FindViewById<TextView> (Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
 				this.FindViewById<CreditCardButton> (Resource.Id.btCC).Visibility = ViewStates.Gone;
 				this.FindViewById<TextView> (Resource.Id.lblCC).Visibility = ViewStates.Gone;

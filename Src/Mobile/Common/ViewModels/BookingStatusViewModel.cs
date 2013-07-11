@@ -26,6 +26,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -302,13 +303,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void UpdatePayCancelButtons (string statusId)
 		{
-			IsPayButtonVisible = statusId == VehicleStatuses.Common.Arrived
-					||statusId == VehicleStatuses.Common.Done
-					||statusId == VehicleStatuses.Common.Loaded;
+			IsPayButtonVisible =  statusId == VehicleStatuses.Common.Arrived
+								||statusId == VehicleStatuses.Common.Done
+								||statusId == VehicleStatuses.Common.Loaded;
 			
 			IsCancelButtonVisible = !IsPayButtonVisible;
+		
+			var setting = ConfigurationManager.GetPaymentSettings ();
+			var isPayEnabled = setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
 
-            if (!Settings.PayByCreditCardEnabled) {
+			if (!isPayEnabled) {
                 IsPayButtonVisible = false;
             }
 		}
