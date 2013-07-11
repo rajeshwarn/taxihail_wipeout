@@ -54,9 +54,23 @@ namespace MK.ConfigurationManager
             get { return _selectedJob; }
             set
             {
+                if (value == null)
+                {
+                    return;
+                }
+
                 _selectedJob = value;
+                
                 OnPropertyChanged("SelectedJob");
                 OutputTextBox.ScrollToEnd();
+
+                DeployCompanyCombobox.SelectedItem = _selectedJob.Company;
+                DeployIbsServerCombobox.SelectedItem = _selectedJob.IBSServer;
+                DeployTaxiHailEnvCombobox.SelectedItem = _selectedJob.TaxHailEnv;
+                
+                DeployRevision = _selectedJob.Revision;
+                DeployVersionCombobox.SelectedItem = _selectedJob.Version;
+
             }
         }
 
@@ -242,7 +256,7 @@ namespace MK.ConfigurationManager
 
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
-            statusBarTb.Text = "Done";
+
             SelectedJob = DeploymentJobs.FirstOrDefault();
 
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
@@ -383,7 +397,14 @@ namespace MK.ConfigurationManager
         public bool DeployAndroid { get; set; }
         public bool DeployCallBox { get; set; }
         public bool DeployDB { get; set; }
-        public string DeployRevision { get; set; }
+        public string _deployRevision;
+        public string DeployRevision
+        {
+            get { return _deployRevision; }
+            set { _deployRevision = value;
+            OnPropertyChanged("DeployRevision");
+            }
+        }
         
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -430,16 +451,10 @@ namespace MK.ConfigurationManager
                                     FileName = pathToKeyTool,
                                     Arguments = command
                                 };
+
             using (var exeProcess = Process.Start(generateKeyTool))
             {
                 exeProcess.WaitForExit();
-                if (exeProcess.ExitCode > 0)
-                {
-                    statusBarTb.Text = "Error during keystore file";
-                }else
-                {
-                    statusBarTb.Text = "Key store generated on the desktop ... Generating Google Map Key";
-                }
             }
 
             //genete md5 fingerprint for google map key
@@ -463,11 +478,11 @@ namespace MK.ConfigurationManager
                 var result = exeProcess.StandardOutput.ReadToEnd();
                 if (exeProcess.ExitCode > 0)
                 {
-                    statusBarTb.Text = "Error during google map key generation";
+                    OutputTextBox.Text = "Error during google map key generation";
                 }
                 else
                 {
-                    statusBarTb.Text = "Key store generated on the desktop ... Google Map Key Generate, link in clipboard";
+                    OutputTextBox.Text = "Key store generated on the desktop ... Google Map Key Generate, link in clipboard";
                     var index = result.IndexOf("MD5:");
                     var md5 = result.Substring(index + 6, 47 ).Trim();
                     Console.WriteLine("");
