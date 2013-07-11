@@ -496,7 +496,7 @@ namespace MK.ConfigurationManager
 
         private void ClearDeployHistory(object sender, RoutedEventArgs e)
         {
-            var listDeploySelected = DeployDataGrid.SelectedItems;
+            var listDeploySelected = DeployDataGrid.Items;
             foreach (DeploymentJob job in listDeploySelected)
             {
                 DbContext.Set<DeploymentJob>().Remove(job);
