@@ -1,16 +1,9 @@
-﻿using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
-using System;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
+﻿using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
-using apcurium.MK.Booking.Api.Contract.Requests.Orders;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common.Configuration;
-using MK.Booking.Api.Client;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 
 
