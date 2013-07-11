@@ -81,6 +81,10 @@ namespace Infrastructure.EventSourcing
         {
             e.SourceId = this.Id;
             e.Version = this.version + 1;
+            if (!handlers.ContainsKey(e.GetType()))
+            {
+                throw new Exception("No handler registered in domain for " + e.GetType().Name);
+            }
             this.handlers[e.GetType()].Invoke(e);
             this.version = e.Version;
             this.pendingEvents.Add(e);
