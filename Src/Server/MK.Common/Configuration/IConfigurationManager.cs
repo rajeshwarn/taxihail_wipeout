@@ -11,7 +11,7 @@ namespace apcurium.MK.Common.Configuration
         void SetSettings(IDictionary<string, string> appSettings);
 
 
-        ClientPaymentSettings GetPaymentSettings();
+		ClientPaymentSettings GetPaymentSettings(bool cleanCache = false);
 
     }
 

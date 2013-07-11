@@ -60,9 +60,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             throw new NotImplementedException ();
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+		ClientPaymentSettings _cachedSettings = null;
+
+
+        public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
 		{
-			return Client.Get (new PaymentSettingsRequest ()).ClientPaymentSettings;
+			if(_cachedSettings == null || cleanCache)
+			{
+				_cachedSettings = Client.Get (new PaymentSettingsRequest ()).ClientPaymentSettings;
+			}
+			return _cachedSettings;
         }
     }
 }

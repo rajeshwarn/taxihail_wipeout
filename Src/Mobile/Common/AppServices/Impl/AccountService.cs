@@ -8,6 +8,8 @@ using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
 using MK.Booking.Api.Client;
 using ServiceStack.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -534,7 +536,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var refData = GetReferenceData();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             //add credit card on file if not already included and feature enabled
-            if (appSettings.PayByCreditCardEnabled
+
+			var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
+			var paymentsEnabled = settings.PaymentMode != PaymentMethod.None || settings.PayPalClientSettings.IsEnabled;
+
+            if (paymentsEnabled
                 && refData.PaymentsList != null
                 && refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType))
             {
@@ -551,7 +557,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0, new ListItem
-                                            {
+                {
                     Id = null,
                     Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
                 });
