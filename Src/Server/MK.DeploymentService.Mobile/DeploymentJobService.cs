@@ -465,7 +465,7 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			UpdateJob ("\nRunning Build - " + buildArgs);
+			UpdateJob ("Running Build - " + buildArgs);
 
 			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
 			using (var exeProcess = Process.Start(buildiOSproject))
@@ -477,7 +477,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
 				}
 				else{
-					UpdateJob ("\nBuild Successful");
+					UpdateJob ("Build Successful");
 				}
 			}
 		}
@@ -599,7 +599,7 @@ namespace MK.DeploymentService.Mobile
 			exeProcess.ErrorDataReceived += (s, e) =>
 			{
 				output += e.Data + "\n";
-				job.Details += e.Data;
+				job.Details += e.Data+"\n";
 			};
 
 			exeProcess.BeginOutputReadLine();
