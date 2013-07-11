@@ -5,7 +5,6 @@ using System.Text;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
@@ -54,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (PaymentList.Any())
                 {
-                    return PaymentList[0].Id;
+                    return PaymentList[0].Id.GetValueOrDefault();
                 }
                 return 0;
             }

@@ -1,7 +1,6 @@
 using System;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
-using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -14,8 +13,6 @@ using apcurium.MK.Common.Configuration;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
-using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 
 

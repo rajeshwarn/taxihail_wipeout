@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.EventSourcing;
-using MK.Common.Android.Configuration.Impl;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 

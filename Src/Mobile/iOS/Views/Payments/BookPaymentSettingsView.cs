@@ -128,6 +128,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             this.View.ApplyAppFont ();
         }
 
+		public override void ViewWillAppear (bool animated)
+		{
+			this.NavigationController.NavigationBarHidden = false;
+			base.ViewWillAppear (animated);
+		}
+
     }
 }
 

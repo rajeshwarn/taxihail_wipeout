@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MK.Common.Android.Configuration.Impl;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -11,7 +6,6 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Test.CompanyFixture
@@ -31,7 +25,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             sut.Given(new PaymentSettingUpdated()
             {
                 SourceId = _companyId,
-                ServerPaymentSettings = new ServerPaymentSettings(_companyId)
+                ServerPaymentSettings = new ServerPaymentSettings()
                 {
                     PaymentMode = PaymentMethod.Cmt
                 }
@@ -41,7 +35,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_paymentmode_changed()
         {
-            var newSettings = new ServerPaymentSettings(_companyId)
+            var newSettings = new ServerPaymentSettings()
             {
                 PaymentMode = PaymentMethod.Braintree
             };
@@ -63,7 +57,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_paymentsettings_updated_successfully()
         {
             var key = Guid.NewGuid().ToString();
-            var newSettings = new ServerPaymentSettings(_companyId)
+            var newSettings = new ServerPaymentSettings()
                                   {
                                       PaymentMode = PaymentMethod.Cmt,
                                       BraintreeClientSettings =

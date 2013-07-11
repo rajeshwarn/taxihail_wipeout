@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalCredentials

@@ -9,16 +9,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private static ListItemData _nullListItemData;
 		public static ListItemData NullListItemData {
 			get {
-				if(_nullListItemData == null)
-				{
-					var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
-					_nullListItemData = new ListItemData
+				return _nullListItemData ??
+					(_nullListItemData = new ListItemData
 					{
 						Key = int.MinValue,
-						Value = resources.GetString("NoPreference")
-					};
-				}
-				return _nullListItemData;
+						Value = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NoPreference")
+					});
 			}
 		}
 		

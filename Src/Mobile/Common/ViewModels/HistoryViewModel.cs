@@ -7,7 +7,6 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
-using MK.Common.Android.Configuration;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;

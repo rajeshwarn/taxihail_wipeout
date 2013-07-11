@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using MK.Common.Android.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;

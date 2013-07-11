@@ -150,7 +150,7 @@
                                 <DataGridTextColumn Width="130" Header="Date" Binding="{Binding RequestedDate}" />
 
 
-                                <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />
+                                <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Revision}" />                       
                                 <DataGridTextColumn Width="50" Header="Revision" Binding="{Binding Version.Display}" />
                             </DataGrid.Columns>
                         </DataGrid>

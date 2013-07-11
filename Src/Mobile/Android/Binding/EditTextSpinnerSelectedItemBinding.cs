@@ -31,7 +31,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (!newValue.Equals(_currentValue))
 			{
 				_currentValue = newValue;
-				FireValueChanged(newValue);
+				if (item == ListItemData.NullListItemData) {
+					// NullListItemData is selected, so value should be null
+					FireValueChanged (default(int?));
+				}
+				else {
+					FireValueChanged(newValue);
+				}
 			}
 
 		}

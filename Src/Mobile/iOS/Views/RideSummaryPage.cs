@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			base.ViewDidLoad ();
 
 			TitleLabel.Text = Resources.GetValue ("View_BookingStatus_ThankYouTitle");
-			MessageLabel.Text = Resources.GetValue ("View_BookingStatus_ThankYouMessage");
+			MessageLabel.Text = Str.ThankYouMessage;
 
 			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Black);
 			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Black);

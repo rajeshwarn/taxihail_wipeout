@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MK.Common.Android.Configuration.Impl
+namespace apcurium.MK.Common.Configuration.Impl
 {
 
     public enum PaymentMethod

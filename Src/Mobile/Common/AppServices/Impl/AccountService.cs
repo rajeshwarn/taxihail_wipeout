@@ -504,7 +504,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 refData.CompaniesList.Insert(0, new ListItem
                                             {
-                    Id = ListItem.NullId,
+                    Id = null,
                     Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
                 });
             }
@@ -521,7 +521,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 refData.VehiclesList.Insert(0, new ListItem
                                          {
-                                            Id = ListItem.NullId,
+                                            Id = null,
                                             Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
                                          });
             }
@@ -552,7 +552,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 refData.PaymentsList.Insert(0, new ListItem
                                             {
-                    Id = ListItem.NullId,
+                    Id = null,
                     Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
                 });
             }

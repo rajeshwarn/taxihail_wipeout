@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Commands;
-using MK.Common.Android.Configuration;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
