@@ -81,15 +81,16 @@ namespace DeploymentServiceTools
         public void Revert()
         {
 
-            var hgPurge = ProcessEx.GetProcess(HgPath, string.Format("purge --all --repository {0}", _sourceDirectory));
-            using (var exeProcess = Process.Start(hgPurge))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during purge source code step" + output);
-                }
-            }
+			var hgRevert = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} -C", _sourceDirectory));
+			using (var exeProcess = Process.Start(hgRevert))
+			{
+				var output =ProcessEx.GetOutput(exeProcess);
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during revert source code step" + output);
+				}
+			}
+
         }
 
 
