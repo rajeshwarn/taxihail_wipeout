@@ -2,8 +2,7 @@
 <resources>
     <style name="Theme.Splash" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@drawable/splash_resizable</item>
-        <item name="android:scaleType">centerCrop</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
     
     <style name="LinkText">

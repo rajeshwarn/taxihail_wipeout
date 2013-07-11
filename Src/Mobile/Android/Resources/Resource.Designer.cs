@@ -527,85 +527,82 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int splash = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int splash_resizable = 2130837632;
+			public const int StatusBottomBarBackground = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int StatusBottomBarBackground = 2130837633;
+			public const int statusDropShadow = 2130837633;
 			
 			// aapt resource value: 0x7f020082
-			public const int statusDropShadow = 2130837634;
+			public const int target = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int target = 2130837635;
+			public const int target_selected = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int target_selected = 2130837636;
+			public const int target_state = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int target_state = 2130837637;
+			public const int textedit_background = 2130837637;
 			
 			// aapt resource value: 0x7f020086
-			public const int textedit_background = 2130837638;
+			public const int textedit_background_disabled = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int textedit_background_disabled = 2130837639;
+			public const int textedit_background_std = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int textedit_background_std = 2130837640;
+			public const int transparentAllStates = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int transparentAllStates = 2130837641;
+			public const int tutorial_background = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int tutorial_background = 2130837642;
+			public const int tutorial_grey_circle = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int tutorial_grey_circle = 2130837643;
+			public const int tutorial_screen01 = 2130837643;
 			
 			// aapt resource value: 0x7f02008c
-			public const int tutorial_screen01 = 2130837644;
+			public const int tutorial_screen02 = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int tutorial_screen02 = 2130837645;
+			public const int tutorial_screen03 = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int tutorial_screen03 = 2130837646;
+			public const int tutorial_screen04 = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int tutorial_screen04 = 2130837647;
+			public const int tutorial_screen05 = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int tutorial_screen05 = 2130837648;
+			public const int tutorial_screen06 = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int tutorial_screen06 = 2130837649;
+			public const int tutorial_screen07 = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int tutorial_screen07 = 2130837650;
+			public const int tutorial_screen08 = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int tutorial_screen08 = 2130837651;
+			public const int tutorial_yellow_circle = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int tutorial_yellow_circle = 2130837652;
+			public const int twitter_icon = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int twitter_icon = 2130837653;
+			public const int twitter_icon_hit = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int twitter_icon_hit = 2130837654;
+			public const int twitter_icon_state = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int twitter_icon_state = 2130837655;
+			public const int visa = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int visa = 2130837656;
+			public const int visa_electron = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int visa_electron = 2130837657;
-			
-			// aapt resource value: 0x7f02009a
-			public const int WindowDisplay = 2130837658;
+			public const int WindowDisplay = 2130837657;
 			
 			static Drawable()
 			{
