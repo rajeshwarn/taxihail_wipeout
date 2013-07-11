@@ -317,31 +317,30 @@ namespace MK.DeploymentService.Mobile
 			logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
-			var configurations = 
-				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|MixedPlatforms") + " "+ 
-				String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug|MixedPlatforms");
-
-			var buildArgs = string.Format("build "+configurations+"  \"{0}/ConfigTool.iOS.sln\"",
-			                              Path.Combine (sourceDirectory,"Src","ConfigTool"));
 			
-			BuildProject(buildArgs);
+			var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
+			BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+
+			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
+			BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+
+
+
 
 			logger.DebugFormat ("Run Config Tool Customization");
 
-			var configToolRun = new ProcessStartInfo
-			{
-				FileName = "mono",
-				UseShellExecute = false,
-				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"),
-				Arguments = string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name)
-			};
-			
+			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
+			var configToolRun = GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);
+
 			using (var exeProcess = Process.Start(configToolRun))
 			{
-				exeProcess.WaitForExit();
+				var output = GetOutput (exeProcess);
 				if (exeProcess.ExitCode > 0)
 				{
-					throw new Exception("Error during customization");
+					throw new Exception("Error during customization, "+output);
+				}
+				else{
+					UpdateJob ("\nCustomize Successful");
 				}
 			}
 
@@ -379,6 +378,7 @@ namespace MK.DeploymentService.Mobile
 			if (job.iOS_AdHoc) {			
 				
 				logger.DebugFormat ("Build iOS AdHoc");
+				UpdateJob("Build iOS AdHoc");
 				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",
 				                              "AdHoc|iPhone",
 				                              sourceMobileFolder);
@@ -392,6 +392,7 @@ namespace MK.DeploymentService.Mobile
 			if (job.iOS_AppStore) {	
 
 				logger.DebugFormat ("Build iOS AppStore");
+				UpdateJob("Build iOS AppStore");
 				var buildArgs = string.Format("build \"--configuration:{0}\"  \"{1}/MK.Booking.Mobile.Solution.iOS.sln\"",				                             
 				                              "AppStore|iPhone",
 				                              sourceMobileFolder);
@@ -424,18 +425,21 @@ namespace MK.DeploymentService.Mobile
 					"MK.Booking.Mobile.Android"
 				};
 
-				var configs = "";
+				UpdateJob("Build android");
+				int i = 1;
 				foreach (var projectName in projectLists) {
-					configs += string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
+					var config = string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
+					var buildArgs = string.Format("build "+config+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                              sourceMobileFolder);
+
+					UpdateJob ("Step " + (i++) + "/" + projectLists.Count + 1);
+					BuildProject(buildArgs);
 				}
-
-				var buildArgs = string.Format("build "+configs+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
-				                              sourceMobileFolder);
-
-				BuildProject(buildArgs);
-
+				UpdateJob("Step "+i+"/"+projectLists.Count+1);
 
 				if (job.Android) {
+
+
 
 					var buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
 					                                "MK.Booking.Mobile.Client.Android",
@@ -461,12 +465,12 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
-			UpdateJob ("\nRunning Build - " + buildArgs+"\n");
+			UpdateJob ("\nRunning Build - " + buildArgs);
 
 			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
 			using (var exeProcess = Process.Start(buildiOSproject))
 			{
-				var output = GetOutput(exeProcess,120000);
+				var output = GetOutput(exeProcess,40000);
 				if (exeProcess.ExitCode > 0)
 				{
 					throw new Exception("Error during build project step" + output.Replace("\n","\r\n"));
@@ -563,10 +567,10 @@ namespace MK.DeploymentService.Mobile
 			return revision;
 		}
 
-		private ProcessStartInfo GetProcess(string filename, string args)
+		private ProcessStartInfo GetProcess(string filename, string args, string workingDirectory = null)
 		{
 			logger.DebugFormat("Starting process {0} with args {1}", filename, args);
-			return new ProcessStartInfo
+			var p = new ProcessStartInfo
 			{
 				FileName = filename,
 				UseShellExecute = false,
@@ -574,10 +578,17 @@ namespace MK.DeploymentService.Mobile
 				RedirectStandardError = true,
 				Arguments = args
 			};
+			if(workingDirectory != null)
+			{
+				p.WorkingDirectory = workingDirectory;
+			}
+			return p;
 		}
 
 		private string GetOutput(Process exeProcess, int? timeout = null)
 		{
+			var startTime = DateTime.Now;
+
 			var output = "\n---------------------------------------------\n";
 
 			exeProcess.OutputDataReceived += (s, e) =>
@@ -592,6 +603,7 @@ namespace MK.DeploymentService.Mobile
 
 			exeProcess.BeginOutputReadLine();
 			exeProcess.BeginErrorReadLine();
+
 			if (timeout.HasValue) {
 				exeProcess.WaitForExit (timeout.Value);
 			}
@@ -604,7 +616,7 @@ namespace MK.DeploymentService.Mobile
 				throw new Exception ("Build Timeout, " +output);
 			}
 
-			return output += "\n---------------------------------------------\n";
+			return output += "\n-----------------------------------Ran For: "+(DateTime.Now-startTime).TotalSeconds+"s----------Code:"+exeProcess.ExitCode+"\n";
 		}
 	}
 }
