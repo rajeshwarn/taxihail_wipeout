@@ -124,7 +124,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-
 		bool _isPayButtonVisible;
 		public bool IsPayButtonVisible {
 			get{
@@ -159,12 +158,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
         }
+
         public bool IsDriverInfoAvailable
         {
             get { return ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
-
 		
 		public bool IsCallButtonVisible {
 			get { return !bool.Parse (TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.HideCallDispatchButton")); }
@@ -230,13 +229,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-
-
 		#endregion
-
-
-
-
 
         private void AddReminder (OrderStatusDetail status)
         {
@@ -257,8 +250,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-
-        
+		        
 		string vehicleNumber = null;
         private void RefreshStatus ()
         {
@@ -283,7 +275,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
-
 #endif
 
                 if (status != null) {
@@ -330,9 +321,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			});
 
 		}
-        
-
-
 
         private void CenterMap ()
         {            
@@ -351,7 +339,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#region Commands
 
-
         public IMvxCommand NewRide {
             get {
                 return GetCommand (() =>
@@ -361,8 +348,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         BookingService.ClearLastOrder ();
                         RequestNavigate<BookViewModel> (clearTop: true);
                     },
-                    Str.NoButtonText, NoAction);   
-                                        
+                    Str.NoButtonText, NoAction);                    
                 });
             }
         }
@@ -371,10 +357,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
-					
-					GoToSummary();
-
-
 					if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
                         MessageService.ShowMessage (Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
                         return;
@@ -414,7 +396,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return GetCommand (() =>
 					{ 
-
 #if DEBUG
 #else
                         if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
@@ -430,7 +411,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							orderStatus = OrderStatusDetail.ToJson()
 						}, false, MvxRequestedBy.UserAction);
 					});
-				}
+			}
 		}
 
         public IMvxCommand CallCompany {
