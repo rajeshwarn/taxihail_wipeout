@@ -432,10 +432,10 @@ namespace MK.DeploymentService.Mobile
 					var buildArgs = string.Format("build "+config+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
 					                              sourceMobileFolder);
 
-					UpdateJob ("Step " + (i++) + "/" + projectLists.Count + 1);
+					UpdateJob ("Step " + (i++) + "/" + projectLists.Count);
 					BuildProject(buildArgs);
 				}
-				UpdateJob("Step "+i+"/"+projectLists.Count+1);
+				UpdateJob("Step "+i+"/"+projectLists.Count);
 
 				if (job.Android) {
 
@@ -470,6 +470,7 @@ namespace MK.DeploymentService.Mobile
 			var buildiOSproject = GetProcess("/Applications/Xamarin Studio.app/Contents/MacOS/mdtool", buildArgs);
 			using (var exeProcess = Process.Start(buildiOSproject))
 			{
+
 				var output = GetOutput(exeProcess,40000);
 				if (exeProcess.ExitCode > 0)
 				{
@@ -492,7 +493,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during revert source code step" + output);
 				}
 			}
-#if !DEBUG
+
 			var hgPurge = GetProcess(HgPath, string.Format("purge --all --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPurge))
 			{
@@ -502,7 +503,7 @@ namespace MK.DeploymentService.Mobile
 					throw new Exception("Error during purge source code step" + output);
 				}
 			}
-#endif
+
 			var hgPull = GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
 			using (var exeProcess = Process.Start(hgPull))
 			{
@@ -604,16 +605,17 @@ namespace MK.DeploymentService.Mobile
 			exeProcess.BeginOutputReadLine();
 			exeProcess.BeginErrorReadLine();
 
-			if (timeout.HasValue) {
-				exeProcess.WaitForExit (timeout.Value);
-			}
-			else{
-				exeProcess.WaitForExit ();
-			}
 
-			if(!exeProcess.HasExited)
+			while(!exeProcess.HasExited)
 			{
-				throw new Exception ("Build Timeout, " +output);
+				if(timeout.HasValue)
+				{
+					if((DateTime.Now - startTime).TotalSeconds > timeout.Value)
+					{
+						throw new Exception ("Build Timeout, " +output);
+					}
+				}
+				//todo Hack -- Wait for exit seems to lag for project builds
 			}
 
 			return output += "\n-----------------------------------Ran For: "+(DateTime.Now-startTime).TotalSeconds+"s----------Code:"+exeProcess.ExitCode+"\n";
