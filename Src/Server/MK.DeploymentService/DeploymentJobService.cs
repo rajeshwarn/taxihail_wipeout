@@ -281,50 +281,7 @@ namespace MK.DeploymentService
             iisManager.CommitChanges();
         }
 
-        private void RevertAndPull(string repository)
-        {
-            var hgRevert = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0} -C -r default", repository));
-            using (var exeProcess = Process.Start(hgRevert))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during revert source code step" + output);
-                }
-            }
 
-            var hgPurge = ProcessEx.GetProcess("hg.exe", string.Format("purge --all --repository {0}", repository));
-            using (var exeProcess = Process.Start(hgPurge))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during purge source code step" + output);
-                }
-            }
-
-            var hgPull = ProcessEx.GetProcess("hg.exe", string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository));
-            using (var exeProcess = Process.Start(hgPull))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during pull source code step" + output);
-                }
-            }
-
-            var hgUpdate = ProcessEx.GetProcess("hg.exe", string.Format("update --repository {0}", repository));
-            using (var exeProcess = Process.Start(hgUpdate))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during update source code step" + output);
-                }
-            }
-        }
-
-      
         public void Stop()
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
