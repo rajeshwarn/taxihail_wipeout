@@ -243,15 +243,17 @@ namespace MK.DeploymentService.Mobile
 				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
 			}
 
+			var isCMT = false;
 			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.ConfigurationProperties["TaxiHail.ServerCompanyName"]);
 			if (company.MobileConfigurationProperties.ContainsKey ("IsCMT")) 
 			{
-				var isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
-				if(isCMT)
-				{
-					serviceUrl = taxiHailEnv.Url;
-				}
+				isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
 			}
+            if (isCMT) 
+			{
+				serviceUrl = taxiHailEnv.Url;
+			} 
+
 
 			if (company.MobileConfigurationProperties.ContainsKey ("ServiceUrl")) 
 			{
@@ -269,17 +271,15 @@ namespace MK.DeploymentService.Mobile
 			_logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
-			
-			var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
-			_builder.BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
-
+            if (!isCMT) 
+			{
+				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
+				_builder.BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+			}
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
-			_builder.BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+            _builder.BuildProject(string.Format("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine(sourceDirectory, "Src", "ConfigTool")));
 
-
-
-
-			_logger.DebugFormat ("Run Config Tool Customization");
+			UpdateJob ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
 			var configToolRun = ProcessEx.GetProcess ( "mono", string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name),  workingDirectory);

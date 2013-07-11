@@ -9,7 +9,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderService : RestServiceBase<OrderRequest>
+    public class OrderService : Service
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public override object OnGet(OrderRequest request)
+        public object Get(OrderRequest request)
         {
             var orderDetail = Dao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new OrderMapper().ToResource( orderDetail);
         }
 
-        public override object OnDelete(OrderRequest request)
+        public object Delete(OrderRequest request)
         {
             var orderDetail = Dao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));

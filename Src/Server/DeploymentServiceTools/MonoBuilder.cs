@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -38,8 +39,17 @@ namespace DeploymentServiceTools
             var i = 1;
             var count = projectLists.Count;
 
+
+            var slnContent = File.ReadAllText(sln);
+
             foreach (var projectName in projectLists)
             {
+                if (!slnContent.Contains(projectName))
+                {
+                    _logger("Skipping CSPROJ - Not in solution");
+                    continue;
+                }
+
                 var config = string.Format("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid) + " ";
                 var buildArgs = string.Format("build " + config + sln);
 

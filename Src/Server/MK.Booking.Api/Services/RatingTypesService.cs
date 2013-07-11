@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
+﻿using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 
