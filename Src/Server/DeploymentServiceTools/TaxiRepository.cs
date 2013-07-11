@@ -35,10 +35,17 @@ namespace DeploymentServiceTools
             }
             else
             {
+			
                 logger("Hg Revert");
                 hg.Revert();
                 logger("Hg Purge");
-                hg.Purge();
+                try{
+					hg.Purge();
+				}
+				catch(Exception e)
+				{
+					logger ("PurgeFailed: " + e.Message);
+				}
                 logger("Hg Pull");
                 hg.Pull();
             }

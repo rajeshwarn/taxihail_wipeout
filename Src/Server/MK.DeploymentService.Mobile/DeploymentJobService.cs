@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using PetaPoco;
+using DeploymentServiceTools;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -106,6 +107,7 @@ namespace MK.DeploymentService.Mobile
 						var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
 						if (Directory.Exists (releaseCallboxAndroidDir))
 							Directory.Delete (releaseCallboxAndroidDir, true);
+
 
                         var taxiRepo = new TaxiRepository(HG_PATH, sourceDirectory);
                         UpdateJob("FetchSource");
