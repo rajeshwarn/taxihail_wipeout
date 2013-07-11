@@ -55,6 +55,8 @@
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="AllCreditCardsRemoved.cs" />
+    <Compile Include="CreditCardPaymentCaptured.cs" />
+    <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />

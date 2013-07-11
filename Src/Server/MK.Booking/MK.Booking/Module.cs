@@ -104,11 +104,11 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
             container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof(PaymentSettingGenerator).Name);
             container.RegisterType<IEventHandler, PayPalExpressCheckoutPaymentDetailsGenerator>("PayPalExpressCheckoutPaymentDetailsGenerator");
+            container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
             
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
             container.RegisterType<IEventHandler, PaymentSettingsUpdater>(typeof(PaymentSettingsUpdater).Name);
-
             container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
         }
@@ -120,6 +120,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
             container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
+            container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
         }
     }
 }

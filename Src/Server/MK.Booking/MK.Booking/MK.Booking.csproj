@@ -113,12 +113,14 @@
     <Compile Include="Calculator\RuleCalculator.cs" />
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
     <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Company.cs" />
+    <Compile Include="Domain\CreditCardPayment.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Domain\PayPalPayment.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
+    <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\CreditCardPaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalExpressCheckoutPaymentDetail.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
