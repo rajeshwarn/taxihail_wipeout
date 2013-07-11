@@ -155,8 +155,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		                        return;
 							}
 
-		                    try{
-		                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber, preAuthResponse.TransactionId, Order.IBSOrderId.Value);
+		                    try {
+								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId, Order.IBSOrderId.ToString());
 		                    }
 		                    catch(Exception e)
 		                    {
