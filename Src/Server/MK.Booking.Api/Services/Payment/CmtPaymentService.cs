@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, true);
 
-
         }
         
   
