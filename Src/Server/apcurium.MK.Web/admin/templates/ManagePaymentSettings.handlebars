@@ -1,4 +1,6 @@
 ﻿<!-- PAYPAL SETTINGS-->
+<div class="message"></div>
+
 <h4 class="table-title">{{localize "PayPal Settings"}}</h4>
 
 
@@ -47,6 +49,7 @@
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
 
   <select name="paymentMode">
+    <option value="None">{{localize "Disabled"}}</option>
     <option value="Cmt">{{localize "CMT Payments"}}</option>
     <option value="Braintree">{{localize "Braintree Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>

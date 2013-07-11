@@ -13,6 +13,7 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -26,6 +27,14 @@ namespace apcurium.MK.Booking.Mobile
 		{
         
         }
+
+		public bool PayByCreditCardEnabled {
+			get{
+				
+				var setting = ConfigurationManager.GetPaymentSettings ();
+				return setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+			}
+		}
 
         public RideSettingsViewModel(BookingSettings bookingSettings)
         {

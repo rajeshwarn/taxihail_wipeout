@@ -171,9 +171,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.StreetNumberScreenEnabled; }
         }
 
-        public bool PayByCreditCardEnabled {
-            get { return _data.PayByCreditCardEnabled; }
-        }
+
         
         public bool PushNotificationsEnabled {
             get { return _data.PushNotificationsEnabled; }

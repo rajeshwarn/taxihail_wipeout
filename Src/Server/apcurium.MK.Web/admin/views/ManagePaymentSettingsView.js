@@ -34,7 +34,7 @@
 
         save: function(form) {
 
-            var data = $(form).serializeObjectChris();
+            var data = $(form).serializeObject();
             
 
 

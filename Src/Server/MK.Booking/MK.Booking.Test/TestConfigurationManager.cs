@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Common.Tests
             }
         }
 
-        public ClientPaymentSettings GetPaymentSettings()
+        public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
             throw new NotImplementedException();
         }

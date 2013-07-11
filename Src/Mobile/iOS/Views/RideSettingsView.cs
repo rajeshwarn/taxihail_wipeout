@@ -32,8 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             scrollView.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
             View.BackgroundColor = UIColor.Clear; 
-            
-            if (!ViewModel.Settings.PayByCreditCardEnabled) {
+
+
+            if (!ViewModel.PayByCreditCardEnabled) {
                 lblTipAmount.Hidden = true;
                 lblCreditCard.Hidden = true;
                 TipSlider.Hidden = true;              
