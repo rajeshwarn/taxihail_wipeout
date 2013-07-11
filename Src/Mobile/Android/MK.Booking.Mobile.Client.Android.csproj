@@ -321,6 +321,8 @@
     <AndroidResource Include="Resources\Layout\View_Book_RideSummaryPage.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-large-nodpi\splash.9.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -407,7 +409,6 @@
     <AndroidResource Include="Resources\Values\Styles.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\splash.png" />
     <AndroidResource Include="Resources\Drawable\green_button.xml" />
     <AndroidResource Include="Resources\Drawable\black_button.xml" />
     <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
@@ -420,7 +421,6 @@
     <AndroidResource Include="Resources\Drawable\location.png" />
     <AndroidResource Include="Resources\Drawable\pin_grey.png" />
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
     <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
@@ -532,9 +532,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
-    <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\poweredby.png" />
     <AndroidResource Include="Resources\Drawable\poweredby2.png" />
     <AndroidResource Include="Resources\Drawable\rate_unhappy_selected.png" />
@@ -585,6 +582,9 @@
     <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
     <AndroidResource Include="Resources\Drawable\phone.png" />
     <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -596,11 +596,6 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Controls\Slider\" />
-    <Folder Include="Resources\drawable-ldpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

@@ -46,7 +46,19 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<MyCustomKeyValuePair> MobileConfigurationProperties { get; set; }
 
-        public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; } 
+        public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; }
+        private DeploymentJob _selectedJob;
+
+        public DeploymentJob SelectedJob
+        {
+            get { return _selectedJob; }
+            set
+            {
+                _selectedJob = value;
+                OnPropertyChanged("SelectedJob");
+                OutputTextBox.ScrollToEnd();
+            }
+        }
 
         public Company CurrentCompany
         {
@@ -101,6 +113,8 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
             AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
             Versions.CollectionChanged += VersionsOnCollectionChanged;
+
+            TabControl.SelectedIndex = 4;
         }
 
         private void FetchRepoTags()
@@ -168,7 +182,7 @@ namespace MK.ConfigurationManager
 
         private void AutoRefresh()
         {
-            Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(_ =>
+            Observable.Timer(TimeSpan.FromSeconds(5)).Subscribe(_ =>
                 {
                     Dispatcher.Invoke(() =>
                         {
@@ -229,6 +243,7 @@ namespace MK.ConfigurationManager
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
+            SelectedJob = DeploymentJobs.FirstOrDefault();
 
             DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
             DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;
