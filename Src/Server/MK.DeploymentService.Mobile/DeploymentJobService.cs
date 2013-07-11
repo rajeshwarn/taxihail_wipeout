@@ -291,14 +291,21 @@ namespace MK.DeploymentService.Mobile
 				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
 			}
 
+			var isCMT = false;
 			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.ConfigurationProperties["TaxiHail.ServerCompanyName"]);
 			if (company.MobileConfigurationProperties.ContainsKey ("IsCMT")) 
 			{
-				var isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
-				if(isCMT)
-				{
-					serviceUrl = taxiHailEnv.Url;
-				}
+				isCMT = bool.Parse(company.MobileConfigurationProperties["IsCMT"]);
+			}
+
+			if (isCMT) 
+			{
+				serviceUrl = taxiHailEnv.Url;
+			} 
+			else 
+			{
+				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
+				BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
 			}
 
 			if (company.MobileConfigurationProperties.ContainsKey ("ServiceUrl")) 
@@ -317,15 +324,8 @@ namespace MK.DeploymentService.Mobile
 			logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
-			
-			var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
-			BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
-
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
 			BuildProject( string.Format("build "+mainConfig+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
-
-
-
 
 			logger.DebugFormat ("Run Config Tool Customization");
 
@@ -427,7 +427,13 @@ namespace MK.DeploymentService.Mobile
 
 				UpdateJob("Build android");
 				int i = 1;
+				var slnContent = File.ReadAllText(string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 				foreach (var projectName in projectLists) {
+					if(!slnContent.Contains(projectName))
+					{
+						continue;
+					}
+
 					var config = string.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid)+" ";
 					var buildArgs = string.Format("build "+config+"\"{0}/MK.Booking.Mobile.Solution.Android.sln\"",
 					                              sourceMobileFolder);
