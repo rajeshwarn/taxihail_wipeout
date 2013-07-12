@@ -150,6 +150,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DeploymentServiceTools\DeploymentServiceTools.csproj">
+      <Project>{78A8B275-4004-4586-893B-607EC1F98F26}</Project>
+      <Name>DeploymentServiceTools</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
