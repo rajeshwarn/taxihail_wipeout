@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         {
             //registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(TextViewBinding), typeof(TextView), "Text"));
             TipSliderBinding.Register(registry);
+			PaymentSelectorBinding.Register (registry);
         }
     }
 }

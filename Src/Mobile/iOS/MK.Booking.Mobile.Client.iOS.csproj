@@ -431,6 +431,8 @@
     <Compile Include="Views\RideSummaryPage.designer.cs">
       <DependentUpon>RideSummaryPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PaymentSelector.cs" />
+    <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

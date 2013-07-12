@@ -37,6 +37,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _searchingTitle = Resources.GetString("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
 
+//			RequestSubNavigate<PaymentViewModel,object> (
+//				new { 
+//				order = new Order(){
+//
+//				}.ToJson (),
+//				orderStatus = new OrderStatusDetail(){
+//
+//				}.ToJson ()
+//			}.ToStringDictionary (), 
+//			_ => {
+//				RequestClose (this);});
         }
 
         public string AddressLine2
