@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
+using System.Threading;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -154,7 +155,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
 		                        return;
 							}
-
+							// Give the backend some time to proccess the previous command
+							Thread.Sleep(500);
 		                    try {
 								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 		                    }
