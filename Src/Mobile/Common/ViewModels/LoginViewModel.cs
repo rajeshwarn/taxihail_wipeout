@@ -56,7 +56,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
             Email = "john@taxihail.com";
             Password = "password";			
+
 #endif
+
+
         }
 
         private void CheckVersion()

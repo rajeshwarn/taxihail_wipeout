@@ -9,18 +9,43 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: BaseViewModel
 	{
-		public RideSummaryViewModel (string order)
+		public RideSummaryViewModel (string order, string orderStatus)
 		{			
-			Order = JsonSerializer.DeserializeFromString<Order> (order);
+			Order = order.FromJson<Order> ();
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 			IsRatingButtonShown = !AppSettings.RatingEnabled;
 		}
 
+		public string ThankYouTitle {
+			get{
+				return Str.ThankYouTitle;
+			}
+		}
+
+		public string ThankYouMessage {
+			get{
+				return Str.ThankYouMessage;
+			}
+		}
+
+
 		private Order Order {get; set;}
+		OrderStatusDetail OrderStatus{ get; set;}
+		public bool IsPayButtonShown{
+			get{
+				var setting = ConfigurationManager.GetPaymentSettings ();
+				var isPayEnabled = setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+				return isPayEnabled;
+			}
+		}
 
 		public bool IsSendReceiptButtonShown {
 			get{
@@ -48,6 +73,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+			
+		public IMvxCommand BookAnotherTaxiCommand {
+			get {
+				return new AsyncCommand (() =>
+				{
+					RequestClose(this);
+				});
+			}
+		}
 
 		public IMvxCommand NavigateToRatingPage {
 			get {
@@ -61,6 +95,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}.ToStringDictionary(),_=>{
 						IsRatingButtonShown = false;
 					});
+				});
+			}
+		}
+
+		public IMvxCommand PayCommand {
+			get {
+				return new AsyncCommand (() =>
+				{
+					RequestNavigate<ConfirmCarNumberViewModel>(
+					new 
+					{ 
+						order = Order.ToJson(),
+						orderStatus = OrderStatus.ToJson()
+					}, false, MvxRequestedBy.UserAction);
 				});
 			}
 		}
