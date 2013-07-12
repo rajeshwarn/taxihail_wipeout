@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count)
         {
-            var result = default(IBSVehiclePosition[]);
+            var result = new IBSVehiclePosition[0];
             UseService(service =>
             {
                 result = service
