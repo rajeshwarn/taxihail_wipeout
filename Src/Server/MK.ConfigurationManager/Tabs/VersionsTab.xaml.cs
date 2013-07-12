@@ -23,6 +23,7 @@ namespace MK.ConfigurationManager.Tabs
         public VersionsTab()
         {
             InitializeComponent();
+            DataContext = ConfigurationManagerDatabase.Current.Versions;
         }
 
         private void SaveVersion(object sender, RoutedEventArgs e)

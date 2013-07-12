@@ -23,6 +23,7 @@ namespace MK.ConfigurationManager.Tabs
         public EnvironmentsTab()
         {
             InitializeComponent();
+            DataContext = ConfigurationManagerDatabase.Current.TaxiHailEnvironments;
         }
 
         private void SaveTaxiHailEnvironment(object sender, RoutedEventArgs e)
