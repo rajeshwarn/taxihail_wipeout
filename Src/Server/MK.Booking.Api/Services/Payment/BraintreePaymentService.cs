@@ -22,11 +22,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         readonly ICommandBus _commandBus;
         readonly ICreditCardPaymentDao _dao;
+        readonly IOrderDao _orderDao;
         readonly IConfigurationManager _configurationManager;
-        public BraintreePaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IConfigurationManager configurationManager)
+        public BraintreePaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _dao = dao;
+            _orderDao = orderDao;
             _configurationManager = configurationManager;
 
             var settings = ((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeServerSettings;
@@ -93,11 +95,15 @@ namespace apcurium.MK.Booking.Api.Services
 
         public PreAuthorizePaymentResponse Post(PreAuthorizePaymentBraintreeRequest preAuthorizeRequest)
         {
+            var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
+            if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+            if (orderDetail.IBSOrderId == null) throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
             var request = new TransactionRequest
             {
                 Amount = preAuthorizeRequest.Amount,
                 PaymentMethodToken = preAuthorizeRequest.CardToken,
-                OrderId = preAuthorizeRequest.OrderNumber,
+                OrderId = orderDetail.IBSOrderId.ToString(),
 
                 Options = new TransactionOptionsRequest
                 {

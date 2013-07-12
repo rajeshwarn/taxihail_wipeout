@@ -8,10 +8,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Braintree
     public class PreAuthorizePaymentBraintreeRequest : IReturn<PreAuthorizePaymentResponse>
     {
         public decimal Amount { get; set; }
-
         public string CardToken { get; set; }
-
-        public string OrderNumber { get; set; }
         public Guid OrderId { get; set; }
     }
 }

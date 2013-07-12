@@ -21,11 +21,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         readonly ICommandBus _commandBus;
         readonly ICreditCardPaymentDao _dao;
+        readonly IOrderDao _orderDao;
         private CmtPaymentServiceClient Client { get; set; }
-        public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IConfigurationManager configurationManager)
+        public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _dao = dao;
+            _orderDao = orderDao;
 
             Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, true);
         }
@@ -47,6 +49,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         public PreAuthorizePaymentResponse Post(PreAuthorizePaymentCmtRequest preAuthorizeRequest)
         {
+            var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
+            if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+            if (orderDetail.IBSOrderId == null) throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
             var request = new AuthorizationRequest()
             {
                 Amount = (int)(preAuthorizeRequest.Amount * 100),
@@ -55,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services
                 CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
                 L3Data = new LevelThreeData()
                 {
-                    PurchaseOrderNumber = preAuthorizeRequest.OrderNumber
+                    PurchaseOrderNumber = orderDetail.IBSOrderId.ToString()
                 }
             };
             var response = Client.Post(request);
