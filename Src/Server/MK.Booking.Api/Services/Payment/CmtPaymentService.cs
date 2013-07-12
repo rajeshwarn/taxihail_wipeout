@@ -104,8 +104,6 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-
-
                 var payment = _dao.FindByTransactionId(request.TransactionId);
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
 
