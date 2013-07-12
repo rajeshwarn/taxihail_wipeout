@@ -9,12 +9,13 @@
             'change :input': 'onPropertyChanged'
         },
         initialize: function () {
-
             _.bindAll(this, 'book', "renderResults", 'showErrors');
-            
+
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
-            if (pickup && dest) {
+            this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
+            
+            if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
                     dest.latitude,
@@ -63,14 +64,13 @@
             });
 
             this.$el.html(this.renderTemplate(data));
-
-
-            //this.$(':text, select').editInPlace();
-
-            if (this.model.has('dropOffAddress')) {
-                this.showEstimatedFareWarning();
-            } else {
+            
+            if (!this.model.has('dropOffAddress')) {
                 this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
+            }
+            
+            if (this.showEstimate) {
+                this.showEstimatedFareWarning();
             }
             
 
