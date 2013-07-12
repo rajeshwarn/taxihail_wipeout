@@ -207,7 +207,9 @@
     <Content Include="admin\templates\EditTariff.handlebars" />
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
-    <Content Include="admin\templates\ManageCompanySettings.handlebars" />
+    <Content Include="admin\templates\ManageCompanySettings.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
@@ -463,7 +465,9 @@
     <Content Include="themes\Taxiworld\less\style.less" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
     <Content Include="themes\TaxiHail\less\variables.less" />
-    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
+    <Content Include="admin\templates\ManagePopularAddresses.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="themes\BarrieTaxi\less\combined-responsive.less" />
     <Content Include="themes\BarrieTaxi\less\combined.less" />
     <Content Include="themes\BarrieTaxi\less\style.less" />

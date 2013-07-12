@@ -34,14 +34,22 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear; 
 
 
-            if (!ViewModel.PayByCreditCardEnabled) {
-                lblTipAmount.Hidden = true;
-                lblCreditCard.Hidden = true;
-                TipSlider.Hidden = true;              
+			if (!ViewModel.ShouldDisplayCreditCards) {
+                lblCreditCard.Hidden = true;           
                 btnCreditCard.Hidden = true;
-                Container.SetBottom(lblChargeType.Frame.Bottom);
+				lblTipAmount.SetY (364);
+				TipSlider.SetY (393);
             }
+
+			if (!ViewModel.ShouldDisplayTipSlider) {
+				lblTipAmount.Hidden = true;
+				TipSlider.Hidden = true;
+			}
                         
+			if (!ViewModel.ShouldDisplayTipSlider && !ViewModel.ShouldDisplayCreditCards) {
+				Container.SetBottom (lblChargeType.Frame.Bottom);
+			}
+
             scrollView.AutoSize ();
 
 			lblName.Text= Resources.GetValue("RideSettingsName");
@@ -61,11 +69,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.RightBarButtonItem = button;
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
 
-            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId.Value, x=> {
+            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
 
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId.Value, x=> {
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 

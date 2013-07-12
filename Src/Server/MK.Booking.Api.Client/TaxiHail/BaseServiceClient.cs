@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Console.WriteLine ( "-----------------------------------  CreateClient Session ID :" + _sessionId );
             JsConfig.DateHandler = JsonDateHandler.ISO8601;         
             
-			var client = new TaxiHailJsonServiceClient(_url);
+			var client = new JsonServiceClient(_url);
             client.Timeout = new TimeSpan(0, 0, 2,0, 0);
 
             var uri = new Uri(_url);
