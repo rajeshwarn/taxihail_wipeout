@@ -69,11 +69,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 			return base.ShouldOverrideUrlLoading (view, url);
 		}
-
-		public override void OnReceivedSslError (WebView view, SslErrorHandler handler, Android.Net.Http.SslError error)
-		{
-			handler.Proceed ();
-		}
 	}
 }
 
