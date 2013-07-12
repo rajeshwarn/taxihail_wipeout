@@ -2,7 +2,6 @@
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Commands.Orders;
 using apcurium.MK.Booking.Domain;
 
 namespace apcurium.MK.Booking.CommandHandlers
@@ -11,7 +10,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreateOrder>, 
         ICommandHandler<CancelOrder>, 
         ICommandHandler<RemoveOrderFromHistory>,
-        ICommandHandler<CommitPaymentCommand>, 
         ICommandHandler<RateOrder>,
         ICommandHandler<ChangeOrderStatus>
     {
@@ -68,11 +66,5 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(CommitPaymentCommand command)
-        {
-            var order = _repository.Find(command.OrderId);
-            order.SetTransactonId(command.TransactionId);
-            _repository.Save(order, command.Id.ToString());
-        }
     }
 }

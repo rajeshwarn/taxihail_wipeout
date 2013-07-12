@@ -155,23 +155,6 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
 
         [Test]
-        public void when_payment_is_made()
-        {
-            this.sut.Handle(new TransactionIdSet()
-            {
-                SourceId = _orderId,
-                TransactionId = 1234,
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<OrderDetail>(_orderId);
-                Assert.NotNull(dto);
-                Assert.AreEqual(1234, dto.TransactionId);
-            }
-        }
-
-        [Test]
         public void when_payment_information_set()
         {
             var creditCardId = Guid.NewGuid();

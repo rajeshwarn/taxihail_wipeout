@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -67,6 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PaymentId = Guid.NewGuid(),
                     TransactionId = response.TransactionId.ToString(),
                     Amount = request.Amount,
+                    OrderId = preAuthorizeRequest.OrderId,
                 });
             }
 

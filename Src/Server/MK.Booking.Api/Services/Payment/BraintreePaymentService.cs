@@ -114,6 +114,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PaymentId = Guid.NewGuid(),
                     Amount = preAuthorizeRequest.Amount,
                     TransactionId = result.Target.Id,
+                    OrderId = preAuthorizeRequest.OrderId,
                 });
             }
 

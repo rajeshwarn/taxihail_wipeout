@@ -65,7 +65,6 @@
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
-    <Compile Include="Orders\CommitPaymentCommand.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="EnableAccountbyAdmin.cs" />
     <Compile Include="ActivateRule.cs" />

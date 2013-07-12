@@ -1,4 +1,5 @@
-﻿using ServiceStack.ServiceHost;
+﻿using System;
+using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
@@ -11,5 +12,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
         public string CardToken { get; set; }
 
         public string OrderNumber { get; set; }
+        public Guid OrderId { get; set; }
     }
 }
