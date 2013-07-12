@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						using(MessageService.ShowProgress ())
 						{
 		                
-		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
+		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
 		                    
 		                    if (!preAuthResponse.IsSuccessfull)
 							{
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}
 
 		                    try {
-								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId, Order.IBSOrderId.ToString());
+								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 		                    }
 		                    catch(Exception e)
 		                    {

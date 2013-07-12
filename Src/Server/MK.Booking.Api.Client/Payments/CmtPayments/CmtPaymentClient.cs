@@ -52,23 +52,22 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
         {
             return Client.Post(new PreAuthorizePaymentCmtRequest()
                 {
                     Amount = amount,
                     CardToken = cardToken,
-                    OrderNumber = orderNumber
+                    OrderId = orderId
                 });
 
         }
 
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
             return Client.Post(new CommitPreauthorizedPaymentCmtRequest()
                 {
-                    OrderNumber = orderNumber,
                     TransactionId = transactionId
                 });
         }
