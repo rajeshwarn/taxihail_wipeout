@@ -74,14 +74,13 @@ namespace MK.DeploymentService
 
             try
             {
-                _logger.DebugFormat("New Job for {0}", job.Company.Name);
-                UpdateJob("Starting",JobStatus.INPROGRESS);
+                Log("Starting",JobStatus.INPROGRESS);
 
                 var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
                 if (Properties.Settings.Default.Mode == "Build")
                 {
-                    taxiRepo.FetchSource(job.GetRevisionNumber(),str=>_logger.Debug(str));
+                    taxiRepo.FetchSource(job.GetRevisionNumber(),str=>Log(str));
                     BuildDataBaseInitializer(sourceDirectory);
                 }
 
@@ -94,26 +93,24 @@ namespace MK.DeploymentService
                         packagesDirectory = Properties.Settings.Default.DeployFolder;
                     }
                     DeployTaxiHail(packagesDirectory);
-                    _logger.DebugFormat("Job Done");
                 }
 
-                job.Details = string.Empty;
-                job.Status = JobStatus.SUCCESS;
-                dbContext.SaveChanges();
+                Log("Job Complete", JobStatus.SUCCESS);
+                
 
             }
             catch (Exception e)
             {
                 _logger.Error(e.Message, e);
-                job.Status = JobStatus.ERROR;
-                job.Details = e.Message;
-                dbContext.SaveChanges();
+                Log(e.Message, JobStatus.ERROR);
             }
         }
 
 
-        private void UpdateJob(string details, JobStatus? status=null)
+        private void Log(string details, JobStatus? status=null)
         {
+
+            _logger.Debug(details);
             if (status.HasValue)
             {
                 job.Status = status.Value;
@@ -125,12 +122,14 @@ namespace MK.DeploymentService
         
         private void BuildDataBaseInitializer(string sourceDirectory)
         {
-            _logger.DebugFormat("Build Databse Initializer");
+            Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
             var globalProperty = new Dictionary<string, string> { { "Configuration", "Release" } };
             var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Build" }, null);
             var buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
+
+            Log("Build Finished");
 
             if (buildResult.Exception != null)
             {
@@ -141,7 +140,7 @@ namespace MK.DeploymentService
             var sourcePath = Path.Combine(sourceDirectory, @"Src\Server\DatabaseInitializer\bin\Release");
             CopyFiles(sourcePath, targetDir);
 
-            _logger.DebugFormat("Build Web Site");
+            Log(String.Format("Build Web Site"));
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
             buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Package" }, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
@@ -158,6 +157,7 @@ namespace MK.DeploymentService
 
         private void CopyFiles(string source, string target)
         {
+            Log("CopyFiles "+source+" => "+target);
             if (Directory.Exists(target))
             {
                 Directory.Delete(target, true);
@@ -173,12 +173,13 @@ namespace MK.DeploymentService
 
         private void DeployTaxiHail(string packagesDirectory)
         {
-            _logger.DebugFormat("Deploying");
+            Log(String.Format("Deploying"));
             var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
             if (appPool == null)
             {
+                Log("Creating a new app pool");
                 //create a new one
                 appPool = iisManager.ApplicationPools.Add(companyName);
                 appPool.ManagedRuntimeVersion = "v4.0";
@@ -189,11 +190,13 @@ namespace MK.DeploymentService
 
             if (job.DeployDB)
             {
+                Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName);
             }
 
             if (job.DeployServer)
             {
+                Log("Deploying Server");
                 DeployServer(companyName, packagesDirectory, iisManager);
             }
             appPool.Start();
@@ -201,7 +204,7 @@ namespace MK.DeploymentService
 
         private void DeployDataBase( string packagesDirectory, string companyName)
         {
-            _logger.DebugFormat("Deploying DB");
+            Log("Deploying DB");
             var jsonSettings = new JObject();
             foreach (var setting in job.Company.ConfigurationProperties)
             {
@@ -228,12 +231,14 @@ namespace MK.DeploymentService
                 {
                     throw new Exception("Error during deploy DB step" + output);
                 }
+
+                Log("Deploying Database finished");
             }
         }
 
         private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
         {
-            _logger.DebugFormat("Deploying IIS");
+            Log("Deploying IIS");
 
             var revision = job.GetRevisionNumber();
 
@@ -241,6 +246,7 @@ namespace MK.DeploymentService
             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
+     
             CopyFiles(sourcePath, targetWeDirectory);
 
             var website = iisManager.Sites["Default Web Site"];
@@ -279,6 +285,8 @@ namespace MK.DeploymentService
             document.Save(targetWeDirectory + "log4net.xml");
 
             iisManager.CommitChanges();
+
+            Log("Deploying IIS Finished");
         }
 
 
