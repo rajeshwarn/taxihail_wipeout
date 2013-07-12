@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var resource = string.Format(CultureInfo.InvariantCulture, "/searchlocation?Name={0}&Lat={1}&Lng={2}", name, latitude, longitude);
 
             Console.WriteLine(resource);
-            var result = Client.Get<Address[]>(resource);
+            var result = Client.Post<Address[]>(resource, null);
             return result;
         }
     }

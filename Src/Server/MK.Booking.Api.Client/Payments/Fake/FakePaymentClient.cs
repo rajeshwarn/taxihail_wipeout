@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Client
                 };
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
         {
             return new PreAuthorizePaymentResponse
                 {
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Client
                 };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
             return new CommitPreauthorizedPaymentResponse()
                 {

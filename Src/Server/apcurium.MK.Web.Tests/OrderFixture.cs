@@ -115,14 +115,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void order_was_payed()
-        {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
-            sut.FinailizePayment(90,"1234","1234",_orderId,1234);
-
-        }
-
-        [Test]
         public void can_not_get_order_another_account()
         {
             CreateAndAuthenticateTestAccount();

@@ -112,7 +112,6 @@
     <Compile Include="Requests\PushNotificationRegistration.cs" />
     <Compile Include="Requests\ValidateOrderRequest.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
-    <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\Messages\SendMessageToDriverRequest.cs" />

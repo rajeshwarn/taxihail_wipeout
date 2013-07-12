@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
-        IEventHandler<TransactionIdSet>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderVehiclePositionChanged>
     {
@@ -180,17 +179,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
         
-        public void Handle(TransactionIdSet @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.TransactionId = @event.TransactionId;
-
-                context.Save(order);
-            }
-        }
-
         public void Handle(OrderVehiclePositionChanged @event)
         {
             using (var context = _contextFactory.Invoke())

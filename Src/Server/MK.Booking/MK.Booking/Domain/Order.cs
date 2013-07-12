@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PaymentInformationSet>(NoAction);
             base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
             base.Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
-            Handles<TransactionIdSet>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -143,14 +142,6 @@ namespace apcurium.MK.Booking.Domain
                     Longitude = status.VehicleLongitude,
                 });
             }
-        }
-
-        public void SetTransactonId(long transactionId)
-        {
-            Update(new TransactionIdSet
-            {
-                TransactionId = transactionId,
-            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

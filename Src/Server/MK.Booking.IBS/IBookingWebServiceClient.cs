@@ -17,8 +17,6 @@ namespace apcurium.MK.Booking.IBS
 
         bool SendMessageToDriver(string message, string carId);
 
-        bool SendAuthCode(int ibsOrderId, double amount, string authNum);
-        
         IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count);
 
         void ConfirmExternalPayment(int orderId, decimal amount, string transactionId);

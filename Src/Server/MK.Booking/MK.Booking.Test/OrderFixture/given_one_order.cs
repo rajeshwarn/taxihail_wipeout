@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Commands.Orders;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
@@ -75,20 +73,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             this.sut.When(new RemoveOrderFromHistory() { OrderId = _orderId });
 
             sut.ThenHasSingle<OrderRemovedFromHistory>();
-        }
-
-        [Test]
-        public void when_paying_for_an_order()
-        {
-            this.sut.When(new CommitPaymentCommand
-                {
-                    OrderId = _orderId,
-                    TransactionId = 12345
-                });
-
-            var @event = sut.ThenHasSingle<TransactionIdSet>();
-            Assert.AreEqual(_orderId, @event.SourceId);
-            Assert.AreEqual(12345, @event.TransactionId);
         }
         
         [Test]
