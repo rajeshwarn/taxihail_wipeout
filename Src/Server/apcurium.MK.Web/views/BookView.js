@@ -20,14 +20,20 @@
             }, this);
 
            this.model.on('change:pickupAddress', function(model, value) {
-                this.actualizeEstimate();
                 this._pickupAddressView.model.set(value);
             }, this);
 
             this.model.on('change:dropOffAddress', function(model, value) {
-                this.actualizeEstimate();
                 this._dropOffAddressView.model.set(value);
             }, this);
+            
+            // ===== Ride Estimate =====
+
+            // Only show ride estimate if enabled
+            TaxiHail.parameters.isEstimateEnabled &&
+                this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
+                    this.actualizeEstimate();
+                }, this);
             
             this.model.on('change:estimate', function(model, value){
                 if (value.formattedPrice && value.formattedDistance) {

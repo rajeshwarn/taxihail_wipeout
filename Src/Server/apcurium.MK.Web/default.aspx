@@ -53,7 +53,7 @@
             TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
             TaxiHail.parameters.HideDispatchButton = <%: this.HideDispatchButton%>;
             TaxiHail.parameters.GeolocPopularRange = <%: this.GeolocPopularRange%>;
-            TaxiHail.parameters.estimateEnabled = <%: this.EstimateEnabled %>;
+            TaxiHail.parameters.isEstimateEnabled = <%: this.EstimateEnabled %>;
             TaxiHail.parameters.apiRoot = "api";
         </script>
 
