@@ -81,8 +81,6 @@ namespace MK.ConfigurationManager
             get { return _instance ?? (_instance = new ConfigurationManagerDatabase()); }
         }
 
-
-
         private void VersionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)

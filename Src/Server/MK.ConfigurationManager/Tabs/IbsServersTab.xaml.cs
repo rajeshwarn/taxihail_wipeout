@@ -23,6 +23,7 @@ namespace MK.ConfigurationManager.Tabs
         public IbsServersTab()
         {
             InitializeComponent();
+            DataContext = ConfigurationManagerDatabase.Current.IBSServers;
         }
 
         private void SaveIBSServer(object sender, RoutedEventArgs e)
