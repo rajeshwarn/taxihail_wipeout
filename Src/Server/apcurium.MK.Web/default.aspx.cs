@@ -26,6 +26,7 @@ namespace apcurium.MK.Web
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
+        protected string EstimateEnabled { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,7 +42,8 @@ namespace apcurium.MK.Web
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
             GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
-            
+            EstimateEnabled = config.GetSetting("Client.ShowEstimate");
+
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
             GeolocSearchFilter = filters.Length > 0 
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
