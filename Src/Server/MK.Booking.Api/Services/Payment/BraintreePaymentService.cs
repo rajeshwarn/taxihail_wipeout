@@ -95,67 +95,93 @@ namespace apcurium.MK.Booking.Api.Services
 
         public PreAuthorizePaymentResponse Post(PreAuthorizePaymentBraintreeRequest preAuthorizeRequest)
         {
-            var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
-            if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-            if (orderDetail.IBSOrderId == null) throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
-
-            var request = new TransactionRequest
+            try
             {
-                Amount = preAuthorizeRequest.Amount,
-                PaymentMethodToken = preAuthorizeRequest.CardToken,
-                OrderId = orderDetail.IBSOrderId.ToString(),
 
-                Options = new TransactionOptionsRequest
+
+                var orderDetail = _orderDao.FindById(preAuthorizeRequest.OrderId);
+                if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
+                if (orderDetail.IBSOrderId == null)
+                    throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
+
+                var request = new TransactionRequest
+                    {
+                        Amount = preAuthorizeRequest.Amount,
+                        PaymentMethodToken = preAuthorizeRequest.CardToken,
+                        OrderId = orderDetail.IBSOrderId.ToString(),
+
+                        Options = new TransactionOptionsRequest
+                            {
+                                SubmitForSettlement = false
+                            }
+                    };
+
+                var result = Client.Transaction.Sale(request);
+                bool isSuccessful = result.IsSuccess();
+                if (isSuccessful)
                 {
-                    SubmitForSettlement = false
+                    _commandBus.Send(new InitiateCreditCardPayment
+                        {
+                            PaymentId = Guid.NewGuid(),
+                            Amount = preAuthorizeRequest.Amount,
+                            TransactionId = result.Target.Id,
+                            OrderId = preAuthorizeRequest.OrderId,
+                        });
                 }
-            };
 
-            var result = Client.Transaction.Sale(request);
-            bool isSuccessful = result.IsSuccess();
-            if (isSuccessful)
-            {
-                _commandBus.Send(new InitiateCreditCardPayment
-                {
-                    PaymentId = Guid.NewGuid(),
-                    Amount = preAuthorizeRequest.Amount,
-                    TransactionId = result.Target.Id,
-                    OrderId = preAuthorizeRequest.OrderId,
-                });
+                return new PreAuthorizePaymentResponse()
+                    {
+                        TransactionId = result.Target.Id,
+                        IsSuccessfull = isSuccessful,
+                        Message = "Success",
+                    };
             }
-
-            return new PreAuthorizePaymentResponse()
+            catch (Exception e)
             {
-                TransactionId = result.Target.Id,
-                IsSuccessfull = isSuccessful,
-                Message = "Success",
-            };
+                return new PreAuthorizePaymentResponse()
+                    {
+                        IsSuccessfull = false,
+                        Message = e.Message,
+                        TransactionId = null
+                    };
+            }
 
         }
 
 
         public CommitPreauthorizedPaymentResponse Post(CommitPreauthorizedPaymentBraintreeRequest request)
         {
-            var payment = _dao.FindByTransactionId(request.TransactionId);
-            if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
-
-
-            var result = Client.Transaction.SubmitForSettlement(request.TransactionId);
-
-            bool isSuccessful = result.IsSuccess();
-            if (isSuccessful)
+            try
             {
-                _commandBus.Send(new CaptureCreditCardPayment
+                var payment = _dao.FindByTransactionId(request.TransactionId);
+                if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
+
+
+                var result = Client.Transaction.SubmitForSettlement(request.TransactionId);
+
+                var isSuccessful = result.IsSuccess();
+                if (isSuccessful)
                 {
-                    PaymentId = payment.PaymentId,
-                });
-            }
+                    _commandBus.Send(new CaptureCreditCardPayment
+                    {
+                        PaymentId = payment.PaymentId,
+                    });
+                }
 
-            return new CommitPreauthorizedPaymentResponse()
+                return new CommitPreauthorizedPaymentResponse()
+                {
+                    IsSuccessfull = isSuccessful,
+                    Message = "Success"
+                };
+            }
+            catch (Exception e)
             {
-                IsSuccessfull = isSuccessful,
-                Message = "Success"
-            };
+                return new CommitPreauthorizedPaymentResponse()
+                    {
+                        IsSuccessfull = false,
+                        Message = e.Message,
+                    };
+            }
         }
 
     }
