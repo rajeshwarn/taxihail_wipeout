@@ -22,21 +22,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			TitleLabel.Text = Resources.GetValue ("View_BookingStatus_ThankYouTitle");
-			MessageLabel.Text = Str.ThankYouMessage;
-
-			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Black);
-			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Black);
+			TitleLabel.TextColor = AppStyle.GreyText;
+			TitleLabel.Font = AppStyle.GetBoldFont(TitleLabel.Font.PointSize);
+			MessageLabel.TextColor = AppStyle.GreyText;
+			MessageLabel.Font = AppStyle.GetNormalFont (MessageLabel.Font.PointSize);
 
 
+			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton ((GradientButton)PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
 
 			this.AddBindings(new Dictionary<object, string>(){
+				{ TitleLabel, new B("Text","ThankYouTitle")},
+				{ MessageLabel, new B("Text","ThankYouMessage")},
 				{ SendRecieptButton, new B("TouchUpInside","SendReceiptCommand")
-									.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },
+					.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },
 				{ RateButton, new B("TouchUpInside","NavigateToRatingPage")
-									.Add("Hidden", "IsRatingButtonShown", "BoolInverter")  },
+					.Add("Hidden", "IsRatingButtonShown", "BoolInverter")  },
+				{ PayButton, new B("TouchUpInside","PayCommand")
+					.Add("Hidden", "IsPayButtonShown", "BoolInverter")  },
 			});
+
+			ButtonHolderView.BackgroundColor = UIColor.Clear;
+
+			ViewModel.PropertyChanged += (sender, e) => ButtonHolderView.StackSubViews (0, 6);
 
 		}
 

@@ -318,12 +318,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public void GoToSummary(){
-			
-			Close ();
-			RequestNavigate<RideSummaryViewModel> (new {
-				order = Order
-			});
 
+			RequestNavigate<RideSummaryViewModel> (new {
+				order = Order,
+				orderStatus = OrderStatusDetail.ToJson()
+			}.ToStringDictionary());
+			RequestClose (this);
 		}
 
         private void CenterMap ()

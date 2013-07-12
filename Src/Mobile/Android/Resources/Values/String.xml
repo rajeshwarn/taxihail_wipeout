@@ -221,7 +221,7 @@
   <string name="LocationDetailRingCodePlaceholder">Entry code</string>
   <string name="BookViewInvalidDate">The pickup date and pickup time are invalid.</string>
   <string name="DoneButton">Done</string>
-  <string name="RateBtn">Rate your drive</string>
+  <string name="RateBtn">Rate my ride</string>
   <string name="Version">v{0}</string>
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_RefineAddress">Pickup Details</string>

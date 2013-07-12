@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _id = Guid.NewGuid().ToString();
             _searchingTitle = Resources.GetString("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
+
         }
 
         public string AddressLine2

@@ -252,6 +252,7 @@
     <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
     <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
+    <Compile Include="ViewModels\IHaveViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

@@ -11,11 +11,21 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public abstract class BaseViewController<TViewModel> : MvxBindingTouchViewController<TViewModel> where TViewModel: BaseViewModel, IMvxViewModel
+    public abstract class BaseViewController<TViewModel> : MvxBindingTouchViewController<TViewModel>, IHaveViewModel where TViewModel: BaseViewModel, IMvxViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
+
+		#region IHaveViewModel implementation
+
+		public BaseViewModel MyViewModel {
+			get {
+				return ViewModel;
+			}
+		}
+
+		#endregion
 
         #region Constructors
 

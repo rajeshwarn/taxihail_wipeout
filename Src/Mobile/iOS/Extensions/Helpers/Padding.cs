@@ -4,40 +4,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 {
     public class Padding
     {
-        float _left;
-        float _right;
-        float _bottom;
-        float _top;
+		public float Left { get; set; }
+		public float Right { get; set; }
+		public float Bottom { get; set; }
+		public float Top { get; set; }
         
         public Padding (float value =0)
         {
-            _left = value;
-            _right = value;
-            _top = value;
-            _bottom = value;
+            Left = value;
+            Right = value;
+            Top = value;
+            Bottom = value;
         }
         public Padding (float horizontal, float vertical)
         {
-            _left = horizontal;
-            _right = horizontal;
-            _top = vertical;
-            _bottom = vertical;
+            Left = horizontal;
+            Right = horizontal;
+            Top = vertical;
+            Bottom = vertical;
         }
         public Padding (float left, float right,float top,float bottom)
         {
-            _left = left;
-            _right = right;
-            _top = top;
-            _bottom = bottom;
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
         }
         
         public System.Drawing.RectangleF ShrinkRectangle (System.Drawing.RectangleF rect)
         {
-            rect.X = rect.X + _left;
-            rect.Y = rect.Y + _top;
+            rect.X = rect.X + Left;
+            rect.Y = rect.Y + Top;
             
-            rect.Width = rect.Width - _left - _right;
-            rect.Height = rect.Height - _top - _bottom;
+            rect.Width = rect.Width - Left - Right;
+            rect.Height = rect.Height - Top - Bottom;
             return rect;
         }
     }
