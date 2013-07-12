@@ -77,6 +77,9 @@ namespace MK.DeploymentService
                 Log("Starting",JobStatus.INPROGRESS);
 
                 var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
+
+                Log("Source Folder = " + sourceDirectory);
+                
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
                 if (Properties.Settings.Default.Mode == "Build")
                 {
