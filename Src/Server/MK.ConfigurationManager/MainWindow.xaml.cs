@@ -529,7 +529,10 @@ namespace MK.ConfigurationManager
             var listDeploySelected = DeployDataGrid.Items;
             foreach (DeploymentJob job in listDeploySelected)
             {
-                DbContext.Set<DeploymentJob>().Remove(job);
+                if (job.Status == JobStatus.ERROR || job.Status == JobStatus.SUCCESS)
+                {
+                    DbContext.Set<DeploymentJob>().Remove(job);
+                }
             }
             DbContext.SaveChanges();
             this.RefreshData();
