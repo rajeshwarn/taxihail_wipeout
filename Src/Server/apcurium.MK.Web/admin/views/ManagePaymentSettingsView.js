@@ -35,13 +35,14 @@
         save: function(form) {
 
             var data = $(form).serializeObject();
-            
+            this.$("#warning").hide();
 
 
             this.model.batchSave(data)
                  .always(_.bind(function() {
 
                      this.$(':submit').button('reset');
+                     
 
                  }, this))
                  .done(_.bind(function(){
@@ -52,6 +53,7 @@
                      });
                      alert.on('ok', alert.remove, alert);
                      this.$('.message').html(alert.render().el);
+                     this.model.fetch();
 
                  }, this))
                  .fail(_.bind(function(){
@@ -67,11 +69,8 @@
         },
         
         onAcceptPaymentModeChange: function () {
-
-            
             
             if (this.$("[name = acceptChange]").prop("checked")) {
-
                 this.saveButton.removeAttr('disabled');
             } else {
                 this.saveButton.attr('disabled', 'disabled');
@@ -80,6 +79,8 @@
                 
         onPaymentModeChanged: function () {
             
+            this.$("[name = acceptChange]").removeAttr("checked");
+
             var method = this.$("[name=paymentMode]").val();
 
             var btDiv = this.$("#braintreeSettingsDiv");
