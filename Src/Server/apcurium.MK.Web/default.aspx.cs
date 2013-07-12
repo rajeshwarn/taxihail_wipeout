@@ -23,7 +23,6 @@ namespace apcurium.MK.Web
         protected string FacebookAppId { get; private set; }
         protected string FacebookEnabled { get; private set; }
         protected string HideDispatchButton { get; private set; }
-        protected string GeolocPopularRange { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
@@ -43,7 +42,6 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
-            GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
             ApplicationVersion = config.GetSetting("TaxiHail.Version");
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
 
