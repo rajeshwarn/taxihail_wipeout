@@ -82,6 +82,9 @@
     <Compile Include="CompanyFixture\given_a_company_with_a_rating_type.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_payment_settings.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
+    <Compile Include="CreditCardPaymentFixture\given_a_capured_payment.cs" />
+    <Compile Include="CreditCardPaymentFixture\given_a_payment.cs" />
+    <Compile Include="CreditCardPaymentFixture\given_no_payment.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
@@ -94,6 +97,9 @@
     <Compile Include="Integration\CreditCardFixture\given_a_view_model_generator.cs" />
     <Compile Include="Integration\CreditCardFixture\given_a_credit_card.cs" />
     <Compile Include="Integration\CreditCardFixture\given_no_account.cs" />
+    <Compile Include="Integration\CreditCardPaymentFixture\given_a_payment.cs" />
+    <Compile Include="Integration\CreditCardPaymentFixture\given_a_view_model_generator.cs" />
+    <Compile Include="Integration\CreditCardPaymentFixture\given_no_payment.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="Integration\OrderFixture\OrderGeneratorTest.cs" />

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MK.Booking.Api.Client;
+using System.Data.Entity;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.Tests;
 
 namespace apcurium.CMT.Web.Tests
@@ -31,7 +29,11 @@ namespace apcurium.CMT.Web.Tests
         protected BasePaymentClientFixture(TestCreditCards.TestCreditCardSetting settings)
         {
             TestCreditCards = new TestCreditCards(settings);
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString;
+            ContextFactory = () => new BookingDbContext(connectionString);
         }
+
+        protected Func<DbContext> ContextFactory { get; set; }
 
         TestCreditCards TestCreditCards { get; set; }
 
@@ -87,12 +89,24 @@ namespace apcurium.CMT.Web.Tests
         [Test]
         public void when_preauthorizing_a_credit_card_payment()
         {
+            var orderId = Guid.NewGuid();
+            using (var context = ContextFactory.Invoke())
+            {
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    IBSOrderId = 1234,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = DateTime.Now
+                });
+                context.SaveChanges();
+            }
             var client = GetPaymentClient();
 
             var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 21.56;
-            var response = client.PreAuthorize(token, amount, "orderNumber");
+            var response = client.PreAuthorize(token, amount, orderId);
 
             Assert.AreNotEqual("-1", response);
 
@@ -101,17 +115,35 @@ namespace apcurium.CMT.Web.Tests
         [Test]
         public void when_capturing_a_preauthorized_a_credit_card_payment()
         {
+            var orderId = Guid.NewGuid();
+            using (var context = ContextFactory.Invoke())
+            {
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    IBSOrderId = 1234,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = DateTime.Now
+                });
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    VehicleNumber = "vehicle",
+                    PickupDate = DateTime.Now,
+                });
+                context.SaveChanges();
+            }
+
             var client = GetPaymentClient();
 
             var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 99.50;
-            const string orderNumber = "12345";
-            var authorization = client.PreAuthorize(token, amount, orderNumber);
+            var authorization = client.PreAuthorize(token, amount, orderId);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);
 
-            var response = client.CommitPreAuthorized(authorization.TransactionId, orderNumber);
+            var response = client.CommitPreAuthorized(authorization.TransactionId);
 
             Assert.True(response.IsSuccessfull, response.Message);
         }

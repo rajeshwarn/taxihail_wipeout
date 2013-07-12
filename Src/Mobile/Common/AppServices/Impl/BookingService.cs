@@ -273,15 +273,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderRate;
         }
 
-        
-        public void FinalizePayment (Guid orderId, double amount, string carNumber, string transactionId, int ibsOrderNumber)
-        {               
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                service.FinailizePayment (amount,carNumber,transactionId,orderId,ibsOrderNumber);
-            });
-        }
-
         public void SendRatingReview (Common.Entity.OrderRatings orderRatings)
         {
             var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };

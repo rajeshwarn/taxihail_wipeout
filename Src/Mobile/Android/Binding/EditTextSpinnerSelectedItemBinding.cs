@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public override void SetValue(object value)
 		{
-			if (!value.Equals(_currentValue))
+			if (value != _currentValue)
 			{
 				_currentValue = value;
 				_control.SetSelection((int)value);

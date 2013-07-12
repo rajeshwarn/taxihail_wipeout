@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
+using System.Threading;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -146,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						using(MessageService.ShowProgress ())
 						{
 		                
-		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.IBSOrderId.Value + "");
+		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
 		                    
 		                    if (!preAuthResponse.IsSuccessfull)
 							{
@@ -154,9 +155,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
 		                        return;
 							}
-
-		                    try{
-		                        BookingService.FinalizePayment(Order.Id, Amount, OrderStatus.VehicleNumber, preAuthResponse.TransactionId, Order.IBSOrderId.Value);
+							// Give the backend some time to proccess the previous command
+							Thread.Sleep(500);
+		                    try {
+								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 		                    }
 		                    catch(Exception e)
 		                    {

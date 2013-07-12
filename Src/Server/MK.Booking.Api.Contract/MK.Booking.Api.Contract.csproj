@@ -116,7 +116,6 @@
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
-    <Compile Include="Requests\Orders\CapturePaymentRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\ServerPaymentSettingsRequest.cs" />

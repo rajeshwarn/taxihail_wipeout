@@ -49,14 +49,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             return GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, string orderNumber)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
         {
-            return GetClient().PreAuthorize(cardToken, amount, orderNumber);
+			return GetClient().PreAuthorize(cardToken, amount, orderId);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId, string orderNumber)
+        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
-            return GetClient().CommitPreAuthorized(transactionId, orderNumber);
+            return GetClient().CommitPreAuthorized(transactionId);
         }
     }
 }

@@ -28,11 +28,17 @@ namespace apcurium.MK.Booking.Mobile
         
         }
 
-		public bool PayByCreditCardEnabled {
+		public bool ShouldDisplayTipSlider {
 			get{
-				
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				return setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+			}
+		}
+
+		public bool ShouldDisplayCreditCards {
+			get{
+				var setting = ConfigurationManager.GetPaymentSettings ();
+				return setting.PaymentMode != PaymentMethod.None;
 			}
 		}
 
