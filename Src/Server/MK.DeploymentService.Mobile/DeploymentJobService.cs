@@ -11,10 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Linq;
 using PetaPoco;
-using DeploymentServiceTools;
-using DeploymentServiceTools;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -276,9 +273,16 @@ namespace MK.DeploymentService.Mobile
 
             if (!isCMT) 
 			{
-				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "NinePatchMaker", "Debug");
-				_builder.BuildProject( string.Format("build "+ninePatchProjectConfi+"  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory,"Src","ConfigTool")));
+				var sln = string.Format("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory,"Src","ConfigTool"));
+				var projectName = "NinePatchMaker";
+				if (_builder.ProjectIsInSolution (sln, projectName)) {
+					var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
+					_builder.BuildProject (string.Format("build "+ninePatchProjectConfi+"  \"{0}\"", sln));
+				} else {
+					_logger.Debug ("Skipping NinePatch because it does not exist on this version");
+				}
 			}
+
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
             _builder.BuildProject(string.Format("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine(sourceDirectory, "Src", "ConfigTool")));
 
@@ -380,8 +384,7 @@ namespace MK.DeploymentService.Mobile
 		        "MK.Booking.Mobile.Android"
 		    };
 
-		    _builder.BuildAndroidProject(projectLists, configAndroid,
-			                             string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
+		    _builder.BuildAndroidProject(projectLists, configAndroid, string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
             
 		    if (_job.Android)
             {

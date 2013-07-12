@@ -16,6 +16,12 @@ namespace DeploymentServiceTools
             _logger = logger;
         }
 
+		public bool ProjectIsInSolution(string slnPath, string projectName)
+		{
+			var slnContent = File.ReadAllText (slnPath);
+			return slnContent.Contains (projectName);
+		}
+
         public void BuildProject(string buildArgs)
         {
             _logger("Running Build - " + buildArgs);
@@ -39,13 +45,10 @@ namespace DeploymentServiceTools
             var i = 1;
             var count = projectLists.Count;
 
-
-            var slnContent = File.ReadAllText(sln);
-
             foreach (var projectName in projectLists)
 			{
-				_logger("Step " + (i++) + "/" + count);;
-                if (!slnContent.Contains(projectName))
+				_logger("Step " + (i++) + "/" + count);
+				if (!ProjectIsInSolution(sln, projectName))
                 {
 					_logger("Skipping CSPROJ ("+projectName+") - Not in solution");
                     continue;
