@@ -2,6 +2,11 @@ using System;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Platform.Diagnostics;
+using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
+using Cirrious.MvvmCross.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -90,7 +95,49 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _modal = null;
             }
             else{
-            base.Close (toClose);
+				var topViewController = _masterNavigationController.TopViewController;
+
+				if (topViewController == null) {
+					MvxTrace.Trace (MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
+					return;
+				}
+
+				var topView = topViewController as IMvxTouchView;
+				if (topView == null) {
+					MvxTrace.Trace (MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
+					return;
+				}
+
+				var viewModel = topView.ReflectionGetViewModel ();
+				if (viewModel != toClose) {
+					var viewControllers = _masterNavigationController.ViewControllers.ToList ();
+					var toCloseController = (UIViewController)viewControllers.OfType<IHaveViewModel>().FirstOrDefault (vc=>vc.MyViewModel == toClose);
+
+
+					if(toCloseController == null)
+					{
+						//todo should throw
+						MvxTrace.Trace (MvxTraceLevel.Warning,
+						                "Don't know how to close this viewmodel - topmost view does not present this viewmodel - try inheriting from IHaveViewModel");
+					}
+					else{
+						viewControllers.Remove (toCloseController);
+						_masterNavigationController.ViewControllers = viewControllers.ToArray ();
+					}
+					return;
+				}
+
+				if (_masterNavigationController.ViewControllers.Length >= 2) {
+
+					var typeController = _masterNavigationController.ViewControllers[1].GetType();
+					if(typeController.IsDefined(typeof(NoHistoryAttribute), false))
+					{
+						var newStack = _masterNavigationController.ViewControllers.ToList();
+						newStack.RemoveAt(1);
+						_masterNavigationController.SetViewControllers(newStack.ToArray(), true);
+					}
+				}
+				_masterNavigationController.PopViewControllerAnimatedPause(true);
             }
         }
 

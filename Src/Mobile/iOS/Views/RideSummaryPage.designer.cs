@@ -12,7 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSummaryPage
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView ButtonHolderView { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel MessageLabel { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton PayButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton RateButton { get; set; }
@@ -25,9 +31,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ButtonHolderView != null) {
+				ButtonHolderView.Dispose ();
+				ButtonHolderView = null;
+			}
+
 			if (MessageLabel != null) {
 				MessageLabel.Dispose ();
 				MessageLabel = null;
+			}
+
+			if (PayButton != null) {
+				PayButton.Dispose ();
+				PayButton = null;
+			}
+
+			if (RateButton != null) {
+				RateButton.Dispose ();
+				RateButton = null;
 			}
 
 			if (SendRecieptButton != null) {
@@ -38,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (TitleLabel != null) {
 				TitleLabel.Dispose ();
 				TitleLabel = null;
-			}
-
-			if (RateButton != null) {
-				RateButton.Dispose ();
-				RateButton = null;
 			}
 		}
 	}

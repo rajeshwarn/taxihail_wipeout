@@ -73,16 +73,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-			
-		public IMvxCommand BookAnotherTaxiCommand {
-			get {
-				return new AsyncCommand (() =>
-				{
-					RequestClose(this);
-				});
-			}
-		}
-
 		public IMvxCommand NavigateToRatingPage {
 			get {
 				return new AsyncCommand (() =>

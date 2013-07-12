@@ -68,6 +68,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             UIViewHelper.StackSubViews (thisView.Subviews);
         }
+		public static void StackSubViews (this UIView thisView, float topPadding, float spaceBetweenElements)
+		{
+			UIViewHelper.StackSubViews (thisView, topPadding, spaceBetweenElements);
+		}
+
         public static void ResignFirstResponderOnSubviews (this UIView thisView)
         {
             thisView.ResignFirstResponder();                

@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _searchingTitle = Resources.GetString("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
 
-
         }
 
         public string AddressLine2
