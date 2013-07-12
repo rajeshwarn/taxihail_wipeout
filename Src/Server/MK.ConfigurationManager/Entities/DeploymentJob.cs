@@ -29,7 +29,8 @@ namespace MK.ConfigurationManager.Entities
 
         public TaxiHailEnvironment TaxHailEnv { get; set; }
 
-		/**use by peca poco on mono */
+
+        /**use by peca poco on mono */
 		[NotMapped]
 		public Guid Company_Id { get; set; }
 		[NotMapped]
@@ -42,6 +43,16 @@ namespace MK.ConfigurationManager.Entities
         public DateTime? RequestedDate { get; set; }
 
         public AppVersion Version { get; set; }
+
+        public string GetRevisionNumber()
+        {
+            if (Version != null)
+            {
+                return Version.Revision;
+            }
+
+            return string.IsNullOrEmpty(Revision) ? string.Empty : Revision;
+        }
     }
 
     public enum JobStatus   
