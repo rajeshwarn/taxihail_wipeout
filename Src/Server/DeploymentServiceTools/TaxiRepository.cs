@@ -49,7 +49,8 @@ namespace DeploymentServiceTools
                 logger("Hg Pull");
                 hg.Pull();
             }
-
+			
+			logger("Hg Update to rev "+ revisionNumber);;
             hg.Update(revisionNumber);
 
         }

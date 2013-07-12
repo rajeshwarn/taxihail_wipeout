@@ -43,17 +43,17 @@ namespace DeploymentServiceTools
             var slnContent = File.ReadAllText(sln);
 
             foreach (var projectName in projectLists)
-            {
+			{
+				_logger("Step " + (i++) + "/" + count);;
                 if (!slnContent.Contains(projectName))
                 {
-                    _logger("Skipping CSPROJ - Not in solution");
+					_logger("Skipping CSPROJ ("+projectName+") - Not in solution");
                     continue;
                 }
 
                 var config = string.Format("\"--project:{0}\" \"--configuration:{1}\"", projectName, configAndroid) + " ";
-                var buildArgs = string.Format("build " + config + sln);
+				var buildArgs = string.Format("build " + config +"\""+ sln+"\"");
 
-                _logger("Step " + (i++) + "/" + count);
                 BuildProject(buildArgs);
             }
         }

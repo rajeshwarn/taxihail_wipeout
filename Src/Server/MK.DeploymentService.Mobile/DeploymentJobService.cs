@@ -381,7 +381,7 @@ namespace MK.DeploymentService.Mobile
 		    };
 
 		    _builder.BuildAndroidProject(projectLists, configAndroid,
-		                                 string.Format("\"{0}/MK.Booking.Mobile.Solution.Android.sln\"", sourceDirectory));
+			                             string.Format("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
             
 		    if (_job.Android)
             {
