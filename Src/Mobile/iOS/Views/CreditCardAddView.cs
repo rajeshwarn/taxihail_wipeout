@@ -69,11 +69,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
                 ViewModel.CreditCardType =  x.Id.GetValueOrDefault(); });
 
-            ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear.Value, x=> {
+            ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
                 ViewModel.ExpirationYear = x.Id;
             });
 
-            ((ModalTextField)pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth.Value, x=> {
+            ((ModalTextField)pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
                 ViewModel.ExpirationMonth = x.Id;
             });
 
