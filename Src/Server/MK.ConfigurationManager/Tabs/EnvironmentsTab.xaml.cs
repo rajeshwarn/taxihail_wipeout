@@ -23,12 +23,12 @@ namespace MK.ConfigurationManager.Tabs
         public EnvironmentsTab()
         {
             InitializeComponent();
-            DataContext = ConfigurationManagerDatabase.Current.TaxiHailEnvironments;
+            DataContext = ConfigurationDatabase.Current.TaxiHailEnvironments;
         }
 
         private void SaveTaxiHailEnvironment(object sender, RoutedEventArgs e)
         {
-            ConfigurationManagerDatabase.Current.DbContext.SaveChanges();
+            ConfigurationDatabase.Current.DbContext.SaveChanges();
         }
     }
 }

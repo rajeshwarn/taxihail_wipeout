@@ -13,7 +13,7 @@ namespace MK.ConfigurationManager
     class RepositoryHelper
     {
 
-        static ConfigurationManagerDbContext DbContext { get { return ConfigurationManagerDatabase.Current.DbContext; } }
+        static ConfigurationManagerDbContext DbContext { get { return ConfigurationDatabase.Current.DbContext; } }
 
         public static void FetchRepoTags()
         {

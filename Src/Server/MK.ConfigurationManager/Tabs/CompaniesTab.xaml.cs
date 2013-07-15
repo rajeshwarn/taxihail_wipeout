@@ -33,7 +33,7 @@ namespace MK.ConfigurationManager.Tabs
         public CompaniesTab()
         {
             InitializeComponent();
-            DataContext = ConfigurationManagerDatabase.Current.Companies;
+            DataContext = ConfigurationDatabase.Current.Companies;
         }
 
         CompaniesTabViewModel ViewModel { get { return (CompaniesTabViewModel)DataContext; } }

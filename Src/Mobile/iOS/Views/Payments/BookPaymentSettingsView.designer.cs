@@ -36,6 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel MeterAmountStringLabel { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIImageView payPalLogo { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.PaymentSelector payPalToggle { get; set; }
 
 		[Outlet]
@@ -58,9 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (payPalToggle != null) {
-				payPalToggle.Dispose ();
-				payPalToggle = null;
+			if (payPalLogo != null) {
+				payPalLogo.Dispose ();
+				payPalLogo = null;
 			}
 
 			if (btConfirm != null) {
@@ -101,6 +104,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (MeterAmountStringLabel != null) {
 				MeterAmountStringLabel.Dispose ();
 				MeterAmountStringLabel = null;
+			}
+
+			if (payPalToggle != null) {
+				payPalToggle.Dispose ();
+				payPalToggle = null;
 			}
 
 			if (ScrollViewer != null) {

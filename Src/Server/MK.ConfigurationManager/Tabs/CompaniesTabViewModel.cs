@@ -28,7 +28,7 @@ namespace MK.ConfigurationManager.Tabs
 
         public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; }
         public ObservableCollection<MyCustomKeyValuePair> MobileConfigurationProperties { get; set; }
-        public ObservableCollection<Company> Companies { get { return ConfigurationManagerDatabase.Current.Companies; } }
+        public ObservableCollection<Company> Companies { get { return ConfigurationDatabase.Current.Companies; } }
 
             
         private Company _currentCompany;
@@ -52,7 +52,7 @@ namespace MK.ConfigurationManager.Tabs
         {
             CurrentCompany.ConfigurationProperties = ConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
             CurrentCompany.MobileConfigurationProperties = MobileConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
-            ConfigurationManagerDatabase.Current.DbContext.SaveChanges();
+            ConfigurationDatabase.Current.DbContext.SaveChanges();
         }
 
         static public string AssemblyDirectory
@@ -84,7 +84,7 @@ namespace MK.ConfigurationManager.Tabs
             {
                 newCompany.MobileConfigurationProperties.Add(token.Key, token.Value.ToString());
             }
-            ConfigurationManagerDatabase.Current.AddCompany(newCompany);
+            ConfigurationDatabase.Current.AddCompany(newCompany);
 
             ConfigurationProperties.Clear();
             MobileConfigurationProperties.Clear();
@@ -209,7 +209,7 @@ namespace MK.ConfigurationManager.Tabs
 
         public void Refresh()
         {
-            ConfigurationManagerDatabase.Current.ReloadDeployments();
+            ConfigurationDatabase.Current.ReloadDeployments();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

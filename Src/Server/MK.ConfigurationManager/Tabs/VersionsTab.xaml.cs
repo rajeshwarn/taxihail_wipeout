@@ -23,12 +23,12 @@ namespace MK.ConfigurationManager.Tabs
         public VersionsTab()
         {
             InitializeComponent();
-            DataContext = ConfigurationManagerDatabase.Current.Versions;
+            DataContext = ConfigurationDatabase.Current.Versions;
         }
 
         private void SaveVersion(object sender, RoutedEventArgs e)
         {
-            ConfigurationManagerDatabase.Current.DbContext.SaveChanges();
+            ConfigurationDatabase.Current.DbContext.SaveChanges();
         }
     }
 }

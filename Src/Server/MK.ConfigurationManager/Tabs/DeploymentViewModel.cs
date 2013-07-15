@@ -15,16 +15,22 @@ namespace MK.ConfigurationManager.Tabs
     {
         public DeploymentViewModel()
         {
-            SelectedJob = ConfigurationManagerDatabase.Current.DeploymentJobs.FirstOrDefault();
+            SelectedJob = ConfigurationDatabase.Current.DeploymentJobs.FirstOrDefault();
+
+            ConfigurationDatabase.Current.Versions.CollectionChanged += (s, e) => OnPropertyChanged("VersionsNotHidden");
         }
 
-        public ObservableCollection<IBSServer> IBSServers { get { return ConfigurationManagerDatabase.Current.IBSServers; } }
-        public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get { return ConfigurationManagerDatabase.Current.TaxiHailEnvironments; } }
-        public ObservableCollection<AppVersion> Versions { get { return ConfigurationManagerDatabase.Current.Versions; } }
-        public ObservableCollection<AppVersion> VersionsNotHidden { get { return ConfigurationManagerDatabase.Current.VersionsNotHidden; } }
-        public ObservableCollection<DeploymentJob> DeploymentJobs { get { return ConfigurationManagerDatabase.Current.DeploymentJobs; } }
-        public ObservableCollection<Company> Companies { get { return ConfigurationManagerDatabase.Current.Companies; } }
+        public ObservableCollection<IBSServer> IBSServers { get { return ConfigurationDatabase.Current.IBSServers; } }
+        public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get { return ConfigurationDatabase.Current.TaxiHailEnvironments; } }
 
+        
+        public ObservableCollection<DeploymentJob> DeploymentJobs { get { return ConfigurationDatabase.Current.DeploymentJobs; } }
+        public ObservableCollection<Company> Companies { get { return ConfigurationDatabase.Current.Companies; } }
+
+        public IEnumerable<AppVersion> VersionsNotHidden
+        {
+            get { return ConfigurationDatabase.Current.Versions.Where(x => !x.Hidden).Concat(new[] { new AppVersion() }); }
+        }
 
 
         public Company DeployCompany { get; set; }
@@ -171,7 +177,7 @@ namespace MK.ConfigurationManager.Tabs
             job.iOS_AdHoc = DeployIosAdHoc;
             job.iOS_AppStore = DeployIosAppStore;
             job.Status = JobStatus.REQUESTED;
-            ConfigurationManagerDatabase.Current.AddJob(job);
+            ConfigurationDatabase.Current.AddJob(job);
  
         }
     }
