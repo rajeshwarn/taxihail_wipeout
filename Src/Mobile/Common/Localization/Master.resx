@@ -1347,4 +1347,7 @@
   <data name="VehicleNumberErrorMessage" xml:space="preserve">
     <value>Unable to retrieve vehicle number. Please pay in car.</value>
   </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
 </root>
