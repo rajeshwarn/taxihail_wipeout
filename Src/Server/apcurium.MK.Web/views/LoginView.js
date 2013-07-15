@@ -49,7 +49,7 @@
         
         showConfirmationMessage: function () {
             var $confirmationMessage = this.localize('signup.confirmation');
-            if (TaxiHail.parameters.AccountActivationDisabled) {
+            if (TaxiHail.parameters.accountActivationDisabled) {
                 $confirmationMessage = this.localize('signup.confirmationWithoutActivation');
             }
 
