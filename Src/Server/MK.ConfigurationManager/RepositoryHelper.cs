@@ -13,7 +13,6 @@ namespace MK.ConfigurationManager
     class RepositoryHelper
     {
 
-        static ConfigurationManagerDbContext DbContext { get { return ConfigurationDatabase.Current.DbContext; } }
 
         public static void FetchRepoTags()
         {
@@ -23,7 +22,7 @@ namespace MK.ConfigurationManager
                 Revision = x.Value.node
             }).ToList();
 
-            var dbVersions = DbContext.Set<AppVersion>().ToList();
+            var dbVersions = ConfigurationDatabase.Current.Versions.ToList();
 
             foreach (var tag in bitbucketTags)
             {
@@ -34,16 +33,15 @@ namespace MK.ConfigurationManager
                 }
                 else
                 {
-                    DbContext.Set<AppVersion>().Add(new AppVersion
-                    {
-                        Id = Guid.NewGuid(),
-                        Display = tag.Display,
-                        Revision = tag.Revision
-                    });
+                    ConfigurationDatabase.Current.AddVersion(new AppVersion
+                        {
+                            Id = Guid.NewGuid(),
+                            Display = tag.Display,
+                            Revision = tag.Revision
+                        });
                 }
             }
 
-            DbContext.SaveChanges();
         }
 
         static Dictionary<string, BitbucketTagsResponse> GetTags()

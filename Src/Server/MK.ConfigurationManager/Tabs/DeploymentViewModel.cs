@@ -33,10 +33,7 @@ namespace MK.ConfigurationManager.Tabs
         }
 
 
-        public Company DeployCompany { get; set; }
-        public IBSServer DeployIBSServer { get; set; }
-        public TaxiHailEnvironment DeployTaxiHailEnv { get; set; }
-        public AppVersion DeployVersion { get; set; }
+
 
         private DeploymentJob _selectedJob;
         public DeploymentJob SelectedJob
@@ -62,6 +59,14 @@ namespace MK.ConfigurationManager.Tabs
                 DeployIosAppStore = _selectedJob.iOS_AppStore;
                 DeployCallBox = _selectedJob.CallBox;
                 DeployInitDatabse = _selectedJob.InitDatabase;
+                SelectedCompany = Companies.First(c => c.Id == _selectedJob.Company.Id);
+                SelectedIBSServer = IBSServers.First(i => i.Id == _selectedJob.IBSServer.Id);
+                SelectedEnvironment = TaxiHailEnvironments.First(e =>e.Id == _selectedJob.TaxHailEnv.Id);
+
+                if (_selectedJob.Version != null)
+                {
+                    SelectedVersion = VersionsNotHidden.FirstOrDefault(v => v.Id == _selectedJob.Version.Id);
+                }
 
             }
         }
@@ -147,7 +152,50 @@ namespace MK.ConfigurationManager.Tabs
                 OnPropertyChanged();
             }
         }
-        
+
+        Company _selectedCompany;
+        public Company SelectedCompany
+        {
+            get { return _selectedCompany; }
+            set
+            {
+                _selectedCompany = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        IBSServer _selectedIBSServer;
+        public IBSServer SelectedIBSServer
+        {
+            get { return _selectedIBSServer; }
+            set
+            {
+                _selectedIBSServer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        TaxiHailEnvironment _selectedEnvironment;
+        public TaxiHailEnvironment SelectedEnvironment
+        {
+            get { return _selectedEnvironment; }
+            set
+            {
+                _selectedEnvironment = value;
+                OnPropertyChanged();
+            }
+        }
+        AppVersion _selectedVersion;
+        public AppVersion SelectedVersion
+        {
+            get { return _selectedVersion; }
+            set
+            {
+                _selectedVersion = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -161,22 +209,24 @@ namespace MK.ConfigurationManager.Tabs
 
         public void StartJob()
         {
-            var job = new DeploymentJob();
-            job.RequestedDate = DateTime.Now;
-            job.Id = Guid.NewGuid();
-            job.Company = DeployCompany;
-            job.IBSServer = DeployIBSServer;
-            job.Revision = DeployRevision;
-            job.Version = DeployVersion;
-            job.TaxHailEnv = DeployTaxiHailEnv;
-            job.DeployDB = DeployDB;
-            job.InitDatabase = DeployInitDatabse;
-            job.Android = DeployAndroid;
-            job.CallBox = DeployCallBox;
-            job.DeployServer = DeployServer;
-            job.iOS_AdHoc = DeployIosAdHoc;
-            job.iOS_AppStore = DeployIosAppStore;
-            job.Status = JobStatus.REQUESTED;
+            var job = new DeploymentJob
+                {
+                    RequestedDate = DateTime.Now,
+                    Id = Guid.NewGuid(),
+                    Company = SelectedCompany,
+                    IBSServer = SelectedIBSServer,
+                    Revision = DeployRevision,
+                    Version = SelectedVersion,
+                    TaxHailEnv = SelectedEnvironment,
+                    DeployDB = DeployDB,
+                    InitDatabase = DeployInitDatabse,
+                    Android = DeployAndroid,
+                    CallBox = DeployCallBox,
+                    DeployServer = DeployServer,
+                    iOS_AdHoc = DeployIosAdHoc,
+                    iOS_AppStore = DeployIosAppStore,
+                    Status = JobStatus.REQUESTED
+                };
             ConfigurationDatabase.Current.AddJob(job);
  
         }

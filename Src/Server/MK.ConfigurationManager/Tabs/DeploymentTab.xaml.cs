@@ -28,8 +28,8 @@ namespace MK.ConfigurationManager.Tabs
             AutoRefreshCheckbox.Checked += AutoRefreshCheckbox_Checked;
 
 
+
             OutputTextBox.ScrollToEnd();
-            Loaded += DeploymentTab_Loaded;
  
 
             DeployVersionCombobox.DropDownClosed +=(s, e) =>
@@ -43,18 +43,6 @@ namespace MK.ConfigurationManager.Tabs
 
         }
 
-        void DeploymentTab_Loaded(object sender, RoutedEventArgs evt)
-        {
-            ViewModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName != "SelectedJob") return;
-
-                DeployCompanyCombobox.SelectedItem = ViewModel.SelectedJob.Company;
-                DeployIbsServerCombobox.SelectedItem = ViewModel.SelectedJob.IBSServer;
-                DeployTaxiHailEnvCombobox.SelectedItem = ViewModel.SelectedJob.TaxHailEnv;
-                DeployVersionCombobox.SelectedItem = ViewModel.SelectedJob.Version;
-            };
-        }
 
         private DeploymentViewModel ViewModel
         {
@@ -80,6 +68,9 @@ namespace MK.ConfigurationManager.Tabs
                 Dispatcher.Invoke(() =>
                     {
                         ConfigurationDatabase.Current.ReloadDeployments();
+                        OutputTextBox.ScrollToEnd();
+                        DeployDataGrid.SelectedIndex = 0;
+
                         if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
                         {
                             AutoRefresh();

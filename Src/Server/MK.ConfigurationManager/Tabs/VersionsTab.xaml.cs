@@ -28,7 +28,8 @@ namespace MK.ConfigurationManager.Tabs
 
         private void SaveVersion(object sender, RoutedEventArgs e)
         {
-            ConfigurationDatabase.Current.DbContext.SaveChanges();
+
+            ConfigurationDatabase.Current.SaveVersions();
         }
     }
 }

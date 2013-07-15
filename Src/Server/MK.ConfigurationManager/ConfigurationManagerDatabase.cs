@@ -13,27 +13,17 @@ namespace MK.ConfigurationManager
 {
     class ConfigurationDatabase
     {
+
         private ConfigurationDatabase()
         {
-            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
-
-            DbContext = new ConfigurationManagerDbContext(connectionString);
-            DbContext.Database.CreateIfNotExists();
+            
+            UseDbContext(context => context.Database.CreateIfNotExists());
 
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
-
             IBSServers = new ObservableCollection<IBSServer>();
-            IBSServers.CollectionChanged += IBSServersCollectionChanged;
-            
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
-            TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
-
             Companies = new ObservableCollection<Company>();
-            Companies.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
-
             Versions = new ObservableCollection<AppVersion>();
-            Versions.CollectionChanged += VersionsOnCollectionChanged;
-
 
             Load();
         }
@@ -47,14 +37,10 @@ namespace MK.ConfigurationManager
 
         private void Load()
         {
-            IBSServers.Clear();
-            DbContext.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add);
+            ReloadEnvironments();
 
-            TaxiHailEnvironments.Clear();
-            DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
+            ReloadIbsServers();
 
-            Versions.Clear();
-            DbContext.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add);
             ReloadVersions();
             ReloadCompanies();
 
@@ -65,103 +51,153 @@ namespace MK.ConfigurationManager
         private void ReloadCompanies()
         {
             Companies.Clear();
-            DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
+            UseDbContext(context => context.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add));
+            
         }
+        
+        public void UseDbContext(Action<ConfigurationManagerDbContext> dbOperation)
+        {
+            using (var context = GetDbContext())
+            {
+                dbOperation(context);
+            }
+        } 
 
-        public  ConfigurationManagerDbContext DbContext { get; set; }
+        public Func<ConfigurationManagerDbContext> GetDbContext
+        {
+            get
+            {
+                var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
+                return () => new ConfigurationManagerDbContext(connectionString);
+            }
+        }
 
         private static ConfigurationDatabase _instance;
         public static ConfigurationDatabase Current
         {
             get { return _instance ?? (_instance = new ConfigurationDatabase()); }
         }
-
-        private void VersionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                e.NewItems.OfType<AppVersion>().ToList().ForEach(x =>
-                {
-                    if (x.Id != Guid.Empty) return;
-
-                    x.Id = Guid.NewGuid();
-                    DbContext.Set<AppVersion>().Add(x);
-                });
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                e.OldItems.OfType<AppVersion>().ToList().ForEach(x => DbContext.Set<AppVersion>().Remove(x));
-            }
-        }
-
-        private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                e.NewItems.OfType<TaxiHailEnvironment>().ToList().ForEach(x =>
-                {
-                    if (x.Id != Guid.Empty) return;
-                    x.Id = Guid.NewGuid();
-                    DbContext.Set<TaxiHailEnvironment>().Add(x);
-                });
-            }
-        }
-
-        void IBSServersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
-                {
-                    if (x.Id != Guid.Empty) return;
-                    x.Id = Guid.NewGuid();
-                    DbContext.Set<IBSServer>().Add(x);
-                });
-            }
-        }
-
         
         public void ReloadDeployments()
         {
+            UseDbContext(context =>
+                {
+                    DeploymentJobs.Clear();
 
-            DeploymentJobs.Clear();
-            DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
+                    context.DeploymentJobs
+                           .OrderByDescending(x => x.RequestedDate)
+                           .ToList()
+                           .ForEach(job => DeploymentJobs.Add(job));
+                });
+
         }
 
         public void ClearDeployHistory()
         {
-
-            DeploymentJobs.Clear();
-            foreach (var job in DbContext.Set<DeploymentJob>())
-            {
-                if (job.Status == JobStatus.ERROR || job.Status == JobStatus.SUCCESS)
+            UseDbContext(context =>
                 {
-                    DbContext.Set<DeploymentJob>().Remove(job);
-                }
-            }
-            DbContext.SaveChanges();
+                    DeploymentJobs.Clear();
+                    foreach (var job in context.Set<DeploymentJob>())
+                    {
+                        if (job.Status == JobStatus.ERROR || job.Status == JobStatus.SUCCESS)
+                        {
+                            context.Set<DeploymentJob>().Remove(job);
+                        }
+                    }
+                    context.SaveChanges();
+                });
         }
 
         internal void AddJob(DeploymentJob job)
         {
-            DbContext.Set<DeploymentJob>().Add(job);
-            DbContext.SaveChanges();
+            UseDbContext(context =>
+                {
+                    job.Company = context.Set<Company>().Find(job.Company.Id);
+                    job.IBSServer = context.Set<IBSServer>().Find(job.IBSServer.Id);
+                    job.TaxHailEnv = context.Set<TaxiHailEnvironment>().Find(job.TaxHailEnv.Id);
+                    if (job.Version != null)
+                    {
+                        job.Version = context.Set<AppVersion>().Find(job.Version.Id);
+                    }
+                    context.Set<DeploymentJob>().Add(job);
+                    context.SaveChanges();
+                });
+
             DeploymentJobs.Add(job);
         }
 
-  
+
 
         internal void AddCompany(Company newCompany)
         {
+            UseDbContext(context =>
+                {
+                    context.Set<Company>().Add(newCompany);
+                    context.SaveChanges();
+                });
+            Companies.Add(newCompany);
 
-            DbContext.Set<Company>().Add(newCompany);
-            Companies.Add(newCompany); ;
         }
 
         public void ReloadVersions()
         {
             Versions.Clear();
-            DbContext.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add);
+            UseDbContext(context => context.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add));
+        }
+
+       
+        public void AddVersion(AppVersion appVersion)
+        {
+            UseDbContext(context =>
+            {
+                context.Set<AppVersion>().Add(appVersion);
+                context.SaveChanges();
+            });
+            Versions.Add(appVersion);
+        }
+
+        public void SaveVersions()
+        {
+            SaveAll(Versions);
+
+            ReloadVersions();
+        }
+        void SaveAll<T>(IEnumerable<T> entities) where T : class
+        {
+            UseDbContext(context =>
+            {
+                foreach (var entity in entities)
+                {
+                    context.Set<T>().Attach(entity);
+                    context.Entry(entity).State = EntityState.Modified;
+                }
+                context.SaveChanges();
+            });
+        }
+        internal void SaveIbsServers()
+        {
+            SaveAll(IBSServers);
+
+            ReloadIbsServers();
+        }
+
+        public void ReloadIbsServers()
+        {
+            IBSServers.Clear();
+            UseDbContext(context => context.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add));
+        }
+
+        public void SaveEnvironments()
+        {
+            SaveAll(TaxiHailEnvironments);
+            ReloadEnvironments();
+
+        }
+
+        private void ReloadEnvironments()
+        {
+            TaxiHailEnvironments.Clear();
+            UseDbContext(context => context.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add));
         }
     }
 }

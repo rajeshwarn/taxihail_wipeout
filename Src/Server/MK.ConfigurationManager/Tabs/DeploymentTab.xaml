@@ -81,33 +81,33 @@
                 <StackPanel Grid.Column="0">
 
                     <TextBlock VerticalAlignment="Center">Company</TextBlock>
-                    <ComboBox Name="DeployCompanyCombobox"
+                    <ComboBox
                              
                               MinWidth="200"
                               HorizontalAlignment="Left"
                               DisplayMemberPath="Name"
                               ItemsSource="{Binding Companies}"
-                              SelectedItem="{Binding DeployCompany,
+                              SelectedItem="{Binding SelectedCompany,
                                                      Mode=TwoWay}" />
 
                     <TextBlock Grid.Row="1" VerticalAlignment="Center">IBSServer</TextBlock>
-                    <ComboBox Name="DeployIbsServerCombobox"
+                    <ComboBox
                               
                               MinWidth="200"
                               HorizontalAlignment="Left"
                               DisplayMemberPath="Name"
                               ItemsSource="{Binding IBSServers}"
-                              SelectedItem="{Binding DeployIBSServer,
+                              SelectedItem="{Binding SelectedIBSServer,
                                                      Mode=TwoWay}" />
 
                     <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
-                    <ComboBox Name="DeployTaxiHailEnvCombobox"
+                    <ComboBox
                               
                               MinWidth="200"
                               HorizontalAlignment="Left"
                               DisplayMemberPath="Name"
                               ItemsSource="{Binding TaxiHailEnvironments}"
-                              SelectedItem="{Binding DeployTaxiHailEnv,
+                              SelectedItem="{Binding SelectedEnvironment,
                                                      Mode=TwoWay}" />
 
                     <TextBlock Grid.Row="3" VerticalAlignment="Center">Version-Rev.</TextBlock>
@@ -118,7 +118,7 @@
                               DisplayMemberPath="Display"
                               IsEditable="False"
                               ItemsSource="{Binding VersionsNotHidden}"
-                              SelectedItem="{Binding DeployVersion,
+                              SelectedItem="{Binding SelectedVersion,
                                                      Mode=TwoWay}" >
                     </ComboBox>
 

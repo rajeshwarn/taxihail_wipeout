@@ -28,7 +28,7 @@ namespace MK.ConfigurationManager.Tabs
 
         private void SaveIBSServer(object sender, RoutedEventArgs e)
         {
-            ConfigurationDatabase.Current.DbContext.SaveChanges();
+            ConfigurationDatabase.Current.SaveIbsServers();
         }
     }
 }

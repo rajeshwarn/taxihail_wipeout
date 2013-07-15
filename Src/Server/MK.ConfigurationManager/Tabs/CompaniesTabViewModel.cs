@@ -52,7 +52,7 @@ namespace MK.ConfigurationManager.Tabs
         {
             CurrentCompany.ConfigurationProperties = ConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
             CurrentCompany.MobileConfigurationProperties = MobileConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
-            ConfigurationDatabase.Current.DbContext.SaveChanges();
+            //ConfigurationDatabase.Current.SaveChanges();
         }
 
         static public string AssemblyDirectory
@@ -77,7 +77,7 @@ namespace MK.ConfigurationManager.Tabs
                 newCompany.ConfigurationProperties.Add(token.Key, token.Value.ToString());
             }
 
-            jsonSettings = File.ReadAllText(System.IO.Path.Combine(AssemblyDirectory, "Entities\\CompanyMobileTemplate.json"));
+            jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\CompanyMobileTemplate.json"));
             objectSettings = JObject.Parse(jsonSettings);
 
             foreach (var token in objectSettings)

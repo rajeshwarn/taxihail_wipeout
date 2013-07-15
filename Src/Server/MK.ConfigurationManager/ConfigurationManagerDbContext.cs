@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using MK.ConfigurationManager.Entities;
 
 namespace MK.ConfigurationManager
@@ -15,6 +16,19 @@ namespace MK.ConfigurationManager
         public ConfigurationManagerDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
+        }
+
+        public IQueryable<DeploymentJob> DeploymentJobs
+        {
+            get
+            {
+                var x=  Set<DeploymentJob>()
+                    .Include(j => j.Company)
+                    .Include(j => j.Version)
+                    .Include(j => j.IBSServer)
+                    .Include(j => j.TaxHailEnv);
+                return x;
+            } 
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
