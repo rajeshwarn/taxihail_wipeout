@@ -163,13 +163,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 					// Give the backend some time to proccess the previous command
 					Thread.Sleep(500);
-					try {
-						PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
-					}
-					catch(Exception e)
+
+					var response = PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
+					if(!response.IsSuccessfull)
 					{
 						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
-						return;
 					}
 
 					ShowConfirmation(preAuthResponse.TransactionId);					          
