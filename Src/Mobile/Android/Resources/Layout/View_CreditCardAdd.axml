@@ -97,47 +97,17 @@
                     android:singleLine="true"
                     local:MvxBind="{'Text':{'Path':'ExpirationYear'}, 'Data': {'Path': 'ExpirationYears'}, 'SelectedItem': {'Path': 'ExpirationYear'}}" />
             </LinearLayout>
-            <LinearLayout
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip"
-                    android:text="@string/CreditCardCCV"
-                    style="@style/FormLabelText" />
-                <TextView
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/CreditCardZipCode"
-                    style="@style/FormLabelText" />
-            </LinearLayout>
-            <LinearLayout
+                android:text="@string/CreditCardCCV"
+                style="@style/FormLabelText" />
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <EditText
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    local:MvxBind="{'Text':{'Path':'Data.CCV'}}" />
-                <EditText
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    local:MvxBind="{'Text':{'Path':'Data.ZipCode'}}" />
-            </LinearLayout>
+                android:inputType="number"
+                android:singleLine="true"
+                local:MvxBind="{'Text':{'Path':'Data.CCV'}}" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
                 local:ButtonStyle="Green"
                 android:id="@+id/SaveSettingsButton"

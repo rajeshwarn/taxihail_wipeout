@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtZipCode.Frame.Bottom + 200);
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtSecurityCode.Frame.Bottom + 200);
 			
             NavigationItem.Title = Resources.GetValue("CreditCardsAddTitle");
 
@@ -53,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblExpMonth.Text = Resources.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Resources.GetValue("CreditCardExpYear");
             lblSecurityCode.Text = Resources.GetValue("CreditCardCCV");
-            lblZipCode.Text = Resources.GetValue("CreditCardZipCode");
 
             txtNameOnCard.ShouldReturn += GoToNext;           
 
@@ -84,8 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { pickerCreditCardType, "{'Text': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }, 'LeftImagePath' : {'Path': 'CreditCardImagePath'}}" }, 
                 { pickerExpirationMonth, "{'Text': {'Path': 'ExpirationMonthDisplay'}}" }, 
                 { pickerExpirationYear, "{'Text': {'Path': 'ExpirationYear' }}" }, 
-                { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }, 
-                { txtZipCode, "{'Text': {'Path': 'Data.ZipCode', 'Mode': 'TwoWay' }}" }, 
+                { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }
             });
          
             this.View.ApplyAppFont();     

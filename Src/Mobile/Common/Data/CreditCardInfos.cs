@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Data
         public string ExpirationMonth { get; set; }        
         public string ExpirationYear { get; set; }        
         public string CCV { get; set; }        
-        public string ZipCode { get; set; }
     }
 }
 

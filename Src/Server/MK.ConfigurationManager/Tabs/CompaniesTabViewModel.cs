@@ -52,7 +52,7 @@ namespace MK.ConfigurationManager.Tabs
         {
             CurrentCompany.ConfigurationProperties = ConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
             CurrentCompany.MobileConfigurationProperties = MobileConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
-            //ConfigurationDatabase.Current.SaveChanges();
+            ConfigurationDatabase.Current.SaveCompanies();
         }
 
         static public string AssemblyDirectory
