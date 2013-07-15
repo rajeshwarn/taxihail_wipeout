@@ -55,12 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtSecurityCode { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblZipCode { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtZipCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -137,16 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtSecurityCode != null) {
 				txtSecurityCode.Dispose ();
 				txtSecurityCode = null;
-			}
-
-			if (lblZipCode != null) {
-				lblZipCode.Dispose ();
-				lblZipCode = null;
-			}
-
-			if (txtZipCode != null) {
-				txtZipCode.Dispose ();
-				txtZipCode = null;
 			}
 		}
 	}

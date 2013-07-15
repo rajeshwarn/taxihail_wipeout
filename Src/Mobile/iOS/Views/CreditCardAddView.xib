@@ -357,7 +357,7 @@
 								<string key="NSFrame">{{20, 370}, {125, 21}}</string>
 								<reference key="NSSuperview" ref="824056997"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="962753691"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -375,58 +375,7 @@
 							<object class="IBUITextField" id="201149661">
 								<reference key="NSNextResponder" ref="824056997"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 399}, {125, 30}}</string>
-								<reference key="NSSuperview" ref="824056997"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="126569716"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUIText"/>
-								<int key="IBUIBorderStyle">3</int>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MAA</bytes>
-									<reference key="NSCustomColorSpace" ref="711156009"/>
-								</object>
-								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
-								<float key="IBUIMinimumFontSize">17</float>
-								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
-									<int key="IBUIKeyboardType">4</int>
-									<int key="IBUIReturnKeyType">4</int>
-									<bool key="IBUIEnablesReturnKeyAutomatically">YES</bool>
-									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								</object>
-								<reference key="IBUIFontDescription" ref="779631482"/>
-								<reference key="IBUIFont" ref="100925312"/>
-							</object>
-							<object class="IBUILabel" id="962753691">
-								<reference key="NSNextResponder" ref="824056997"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{171, 370}, {263, 21}}</string>
-								<reference key="NSSuperview" ref="824056997"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="201149661"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<int key="IBUIContentMode">7</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Zip Code</string>
-								<reference key="IBUITextColor" ref="865872838"/>
-								<nil key="IBUIHighlightedColor"/>
-								<int key="IBUIBaselineAdjustment">0</int>
-								<reference key="IBUIFontDescription" ref="159822992"/>
-								<reference key="IBUIFont" ref="339078466"/>
-								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-							</object>
-							<object class="IBUITextField" id="126569716">
-								<reference key="NSNextResponder" ref="824056997"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{171, 399}, {125, 30}}</string>
+								<string key="NSFrame">{{20, 399}, {274, 30}}</string>
 								<reference key="NSSuperview" ref="824056997"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -445,6 +394,8 @@
 								<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 								<float key="IBUIMinimumFontSize">17</float>
 								<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+									<int key="IBUIKeyboardType">4</int>
+									<int key="IBUIReturnKeyType">4</int>
 									<bool key="IBUIEnablesReturnKeyAutomatically">YES</bool>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
@@ -579,22 +530,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">lblZipCode</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="962753691"/>
-					</object>
-					<int key="connectionID">38</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">txtZipCode</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="126569716"/>
-					</object>
-					<int key="connectionID">39</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">pickerCreditCardType</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="640549971"/>
@@ -662,8 +597,6 @@
 							<reference ref="791271715"/>
 							<reference ref="718198820"/>
 							<reference ref="201149661"/>
-							<reference ref="962753691"/>
-							<reference ref="126569716"/>
 							<reference ref="609317246"/>
 							<reference ref="493190789"/>
 							<reference ref="846537669"/>
@@ -727,16 +660,6 @@
 						<reference key="parent" ref="824056997"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="962753691"/>
-						<reference key="parent" ref="824056997"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">20</int>
-						<reference key="object" ref="126569716"/>
-						<reference key="parent" ref="824056997"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">45</int>
 						<reference key="object" ref="846537669"/>
 						<reference key="parent" ref="824056997"/>
@@ -774,10 +697,6 @@
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="18.CustomClassName">TextField</string>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="19.CustomClassName">FormLabel</string>
-				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="20.CustomClassName">TextField</string>
-				<string key="20.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="45.CustomClassName">ModalTextField</string>
 				<string key="45.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
