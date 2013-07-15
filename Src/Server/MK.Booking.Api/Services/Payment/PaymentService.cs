@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
@@ -18,11 +19,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
+        private readonly IConfigurationManager _configurationManager;
 
-        public PaymentService(ICommandBus commandBus, IConfigurationDao configurationDao)
+        public PaymentService(ICommandBus commandBus, IConfigurationDao configurationDao,IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _configurationDao = configurationDao;
+            _configurationManager = configurationManager;
         }
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
@@ -51,53 +54,70 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         }
         public TestServerPaymentSettingsResponse Post(TestServerPaymentSettingsRequest request)
         {
-            var fail = false;
+            var response = new TestServerPaymentSettingsResponse()
+                {
+                    IsSuccessful = false,
+                    Message = ""
+                };
+
+            try
+            {
+                if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.SandboxCredentials, true))
+                 {
+                     response.IsSuccessful = false;
+                     response.Message += "Paypal Sandbox Credentials are invalid\n"; 
+                 }
+                if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.Credentials, false))
+                 {
+                     response.IsSuccessful = false;
+                     response.Message += "Paypal Production Credentials are invalid\n";
+                 }
+            }
+            catch (Exception)
+            {
+                response.IsSuccessful = false;
+                response.Message += "Paypal Credentials are invalid\n";
+            }
+
             switch (request.ServerPaymentSettings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
                     try
                     {
-                        fail = !BraintreePaymentService.TestClient(request.ServerPaymentSettings.BraintreeServerSettings);
+                        if (!BraintreePaymentService.TestClient(request.ServerPaymentSettings.BraintreeServerSettings))
+                        {
+                            response.IsSuccessful = false;
+                            response.Message += "Brain Tree Settings are Invalid\n";
+                        }
                     }
                     catch (Exception)
                     {
-                        fail = true;
-                    }
-                    if (fail)
-                    {
-                        return new TestServerPaymentSettingsResponse()
-                            {
-                                IsSuccessful = false,
-                                Message = "Brain Tree Settings are Invalid"
-                            };
+                        response.IsSuccessful = false;
+                        response.Message += "Brain Tree Settings are Invalid\n";
                     }
                     break;
                 case PaymentMethod.Cmt:
                                
                     try
                     {
-                        fail =!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings);
+                        if (!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings))
+                        {
+                            response.IsSuccessful = false;
+                            response.Message += "CMT Settings are Invalid\n";
+                        }
                     }
                     catch (Exception)
                     {
-                        fail = true;
-                    }
-                    if (fail)
-                    {
-                        return new TestServerPaymentSettingsResponse()
-                            {
-                                IsSuccessful = false,
-                                Message = "CMT Settings are Invalid"
-                            };
+                        response.IsSuccessful = false;
+                        response.Message += "CMT Settings are Invalid\n";
                     }
                     break;
             }
-
-            return new TestServerPaymentSettingsResponse()
-                {
-                    Message = "Settings are vaild",
-                    IsSuccessful = true
-                };
+            if (response.IsSuccessful)
+            {
+                response.Message = "Settings are Vaild";
+            }
+            return response;
         }
     }
 }
