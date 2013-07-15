@@ -11,9 +11,9 @@ using MK.ConfigurationManager.Entities;
 
 namespace MK.ConfigurationManager
 {
-    class ConfigurationManagerDatabase
+    class ConfigurationDatabase
     {
-        private ConfigurationManagerDatabase()
+        private ConfigurationDatabase()
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
 
@@ -21,7 +21,6 @@ namespace MK.ConfigurationManager
             DbContext.Database.CreateIfNotExists();
 
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
-            VersionsNotHidden = new ObservableCollection<AppVersion>();
 
             IBSServers = new ObservableCollection<IBSServer>();
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
@@ -42,7 +41,6 @@ namespace MK.ConfigurationManager
         public ObservableCollection<IBSServer> IBSServers { get; set; }
         public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get; set; }
         public ObservableCollection<AppVersion> Versions { get; set; }
-        public ObservableCollection<AppVersion> VersionsNotHidden { get; set; }
         public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; }
 
         public ObservableCollection<Company> Companies { get; set; }
@@ -57,10 +55,7 @@ namespace MK.ConfigurationManager
 
             Versions.Clear();
             DbContext.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add);
-
-            VersionsNotHidden.Clear();
-            DbContext.Set<AppVersion>().Where(v => v.Display != null).Where(x => !x.Hidden).OrderBy(x => x.Display).ToList().ForEach(VersionsNotHidden.Add);
-
+            ReloadVersions();
             ReloadCompanies();
 
             ReloadDeployments();
@@ -75,10 +70,10 @@ namespace MK.ConfigurationManager
 
         public  ConfigurationManagerDbContext DbContext { get; set; }
 
-        private static ConfigurationManagerDatabase _instance;
-        public static ConfigurationManagerDatabase Current
+        private static ConfigurationDatabase _instance;
+        public static ConfigurationDatabase Current
         {
-            get { return _instance ?? (_instance = new ConfigurationManagerDatabase()); }
+            get { return _instance ?? (_instance = new ConfigurationDatabase()); }
         }
 
         private void VersionsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -87,11 +82,10 @@ namespace MK.ConfigurationManager
             {
                 e.NewItems.OfType<AppVersion>().ToList().ForEach(x =>
                 {
-                    if (x.Id == Guid.Empty)
-                    {
-                        x.Id = Guid.NewGuid();
-                        DbContext.Set<AppVersion>().Add(x);
-                    }
+                    if (x.Id != Guid.Empty) return;
+
+                    x.Id = Guid.NewGuid();
+                    DbContext.Set<AppVersion>().Add(x);
                 });
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
@@ -106,11 +100,9 @@ namespace MK.ConfigurationManager
             {
                 e.NewItems.OfType<TaxiHailEnvironment>().ToList().ForEach(x =>
                 {
-                    if (x.Id == Guid.Empty)
-                    {
-                        x.Id = Guid.NewGuid();
-                        DbContext.Set<TaxiHailEnvironment>().Add(x);
-                    }
+                    if (x.Id != Guid.Empty) return;
+                    x.Id = Guid.NewGuid();
+                    DbContext.Set<TaxiHailEnvironment>().Add(x);
                 });
             }
         }
@@ -121,11 +113,9 @@ namespace MK.ConfigurationManager
             {
                 e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
                 {
-                    if (x.Id == Guid.Empty)
-                    {
-                        x.Id = Guid.NewGuid();
-                        DbContext.Set<IBSServer>().Add(x);
-                    }
+                    if (x.Id != Guid.Empty) return;
+                    x.Id = Guid.NewGuid();
+                    DbContext.Set<IBSServer>().Add(x);
                 });
             }
         }
@@ -166,6 +156,12 @@ namespace MK.ConfigurationManager
 
             DbContext.Set<Company>().Add(newCompany);
             Companies.Add(newCompany); ;
+        }
+
+        public void ReloadVersions()
+        {
+            Versions.Clear();
+            DbContext.Set<AppVersion>().OrderBy(x => x.Display).ToList().ForEach(Versions.Add);
         }
     }
 }

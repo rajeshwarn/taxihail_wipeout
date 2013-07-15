@@ -32,19 +32,27 @@ namespace MK.ConfigurationManager.Tabs
             Loaded += DeploymentTab_Loaded;
  
 
+            DeployVersionCombobox.DropDownClosed +=(s, e) =>
+                {
+                    RevisionTextBox.IsEnabled = string.IsNullOrWhiteSpace(DeployVersionCombobox.Text);
+                    if (RevisionTextBox.IsEnabled)
+                    {
+                        RevisionTextBox.Text = "";
+                    }
+                };
+
         }
 
         void DeploymentTab_Loaded(object sender, RoutedEventArgs evt)
         {
             ViewModel.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == "SelectedJob")
-                {
-                    DeployCompanyCombobox.SelectedItem = ViewModel.SelectedJob.Company;
-                    DeployIbsServerCombobox.SelectedItem = ViewModel.SelectedJob.IBSServer;
-                    DeployTaxiHailEnvCombobox.SelectedItem = ViewModel.SelectedJob.TaxHailEnv;
-                    DeployVersionCombobox.SelectedItem = ViewModel.SelectedJob.Version;
-                }
+                if (e.PropertyName != "SelectedJob") return;
+
+                DeployCompanyCombobox.SelectedItem = ViewModel.SelectedJob.Company;
+                DeployIbsServerCombobox.SelectedItem = ViewModel.SelectedJob.IBSServer;
+                DeployTaxiHailEnvCombobox.SelectedItem = ViewModel.SelectedJob.TaxHailEnv;
+                DeployVersionCombobox.SelectedItem = ViewModel.SelectedJob.Version;
             };
         }
 
@@ -71,7 +79,7 @@ namespace MK.ConfigurationManager.Tabs
                 });
                 Dispatcher.Invoke(() =>
                     {
-                        ConfigurationManagerDatabase.Current.ReloadDeployments();
+                        ConfigurationDatabase.Current.ReloadDeployments();
                         if (AutoRefreshCheckbox.IsChecked.HasValue && AutoRefreshCheckbox.IsChecked.Value)
                         {
                             AutoRefresh();
@@ -86,12 +94,12 @@ namespace MK.ConfigurationManager.Tabs
 
         private void RefreshDeployments(object sender, RoutedEventArgs e)
         {
-           ConfigurationManagerDatabase.Current.ReloadDeployments();
+           ConfigurationDatabase.Current.ReloadDeployments();
         }
 
         private void ClearDeployHistory(object sender, RoutedEventArgs e)
         {
-            ConfigurationManagerDatabase.Current.ClearDeployHistory();
+            ConfigurationDatabase.Current.ClearDeployHistory();
         }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {

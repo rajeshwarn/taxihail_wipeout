@@ -13,6 +13,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -38,7 +39,14 @@ namespace MK.ConfigurationManager
         {
             InitializeComponent();
 
-            RepositoryHelper.FetchRepoTags();
+
+            Task.Factory.StartNew(() =>
+                {
+                    RepositoryHelper.FetchRepoTags();
+                    Dispatcher.Invoke(() => ConfigurationDatabase.Current.ReloadVersions());
+                });
+                
+
             CompaniesTabViewModel = new CompaniesTabViewModel();
             DeploymentViewModel= new DeploymentViewModel();
 

@@ -23,12 +23,12 @@ namespace MK.ConfigurationManager.Tabs
         public IbsServersTab()
         {
             InitializeComponent();
-            DataContext = ConfigurationManagerDatabase.Current.IBSServers;
+            DataContext = ConfigurationDatabase.Current.IBSServers;
         }
 
         private void SaveIBSServer(object sender, RoutedEventArgs e)
         {
-            ConfigurationManagerDatabase.Current.DbContext.SaveChanges();
+            ConfigurationDatabase.Current.DbContext.SaveChanges();
         }
     }
 }
