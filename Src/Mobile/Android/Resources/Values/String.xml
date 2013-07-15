@@ -428,4 +428,5 @@
   <string name="PayPalExpressCheckoutSuccessTitle">Payment successful</string>
   <string name="PayPalExpressCheckoutSuccessMessage">PayPal payment was successful. Confirmation sent to the driver.</string>
   <string name="PayPalExpressCheckoutCancelTitle">Payment cancelled</string>
+  <string name="CreditCard">Credit Card</string>
 </resources>

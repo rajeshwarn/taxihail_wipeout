@@ -323,6 +323,8 @@
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-large-nodpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
+    <AndroidResource Include="Resources\Drawable\paypal.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\paypal.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

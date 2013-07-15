@@ -101,6 +101,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
+		public IMvxCommand UsePayPal
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				{
+					PayPalSelected = true;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
+
+		public IMvxCommand UseCreditCard
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				                                                {
+					PayPalSelected = false;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
+
         public IMvxCommand ConfirmOrderCommand
         {
             get
