@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public class DummyVisa
         {
             public static string Number = "4012 0000 3333 0026".Replace(" ", "");
-            public static string ZipCode = "00000";
             public static int AvcCvvCvv2 = 135;
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
@@ -71,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Data.CardNumber = DummyVisa.Number;
 			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
-			Data.ZipCode = DummyVisa.ZipCode;
 			Data.NameOnCard = "Chris";
 #endif            
         }
@@ -189,8 +187,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                    Data.CreditCardCompany, Data.FriendlyName, 
                                    Data.ExpirationMonth, 
                                    Data.ExpirationYear, 
-                                   Data.CCV, 
-                                   Data.ZipCode).Any (x => x.IsNullOrEmpty ())) 
+                                   Data.CCV).Any (x => x.IsNullOrEmpty ())) 
             {
 				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardRequiredFields"));
 				return;
