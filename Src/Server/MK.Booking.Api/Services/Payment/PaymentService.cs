@@ -1,13 +1,16 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Net;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -45,6 +48,56 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     ServerPaymentSettings = request.ServerPaymentSettings,
                 });
+        }
+        public TestServerPaymentSettingsResponse Post(TestServerPaymentSettingsRequest request)
+        {
+            var fail = false;
+            switch (request.ServerPaymentSettings.PaymentMode)
+            {
+                case PaymentMethod.Braintree:
+                    try
+                    {
+                        fail = !BraintreePaymentService.TestClient(request.ServerPaymentSettings.BraintreeServerSettings);
+                    }
+                    catch (Exception)
+                    {
+                        fail = true;
+                    }
+                    if (fail)
+                    {
+                        return new TestServerPaymentSettingsResponse()
+                            {
+                                IsSuccessful = false,
+                                Message = "Brain Tree Settings are Invalid"
+                            };
+                    }
+                    break;
+                case PaymentMethod.Cmt:
+                               
+                    try
+                    {
+                        fail =!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings);
+                    }
+                    catch (Exception)
+                    {
+                        fail = true;
+                    }
+                    if (fail)
+                    {
+                        return new TestServerPaymentSettingsResponse()
+                            {
+                                IsSuccessful = false,
+                                Message = "CMT Settings are Invalid"
+                            };
+                    }
+                    break;
+            }
+
+            return new TestServerPaymentSettingsResponse()
+                {
+                    Message = "Settings are vaild",
+                    IsSuccessful = true
+                };
         }
     }
 }
