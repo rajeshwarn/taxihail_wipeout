@@ -20,13 +20,12 @@ namespace MK.Booking.IBS.Test.OrderFixture
         }
 
         [Test]
-        [Ignore("Test fails. MK is lokking into it.")]
         public void when_creating_an_order()
         {
             var order = new TBookOrder_7();
 
             order.ServiceProviderID = MobileKnowledgeProviderId;
-            order.AccountID = 59;
+            order.AccountID = 49502;
             var pickupDateTime = DateTime.Now;
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
