@@ -117,6 +117,7 @@
     <Compile Include="WebServices\WebOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Impl\GenerateWSDL.bat" />
     <None Include="MK.Booking.IBS.psproj">
       <SubType>Designer</SubType>
     </None>
