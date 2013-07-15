@@ -7,6 +7,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -92,24 +93,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(command);
             
                 // Determine the root path to the app 
-                var httpRequest = RequestContext.Get<IHttpRequest>();
-                string root = new Uri(RequestContext.AbsoluteUri).GetLeftPart(UriPartial.Authority);;
-                var aspNetRequest = httpRequest.OriginalRequest as HttpRequest;
-                if (aspNetRequest != null)
-                {
-                    // We are in IIS
-                    //The ApplicationVirtualPath property always returns "/" as the first character of the returned value.
-                    //If the application is located in the root of the Web site, the return value is just "/".
-                    if (HostingEnvironment.ApplicationVirtualPath.Length > 1)
-                    {
-                        root += HostingEnvironment.ApplicationVirtualPath;
-                    }
-                }
-                else
-                {
-                    // We are probably in a test environment, using HttpListener
-                    // We Assume there is no virtual path
-                }
+                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
 
                 if (!accountActivationDisabled)
                 {
