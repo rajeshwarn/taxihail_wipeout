@@ -63,15 +63,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            ScrollViewer.AutoSize();
+			ScrollViewer.ContentSize = new SizeF(ScrollViewer.ContentSize.Width, btConfirm.Frame.Bottom + 20);
+
+			payPalLogo.Image = UIImage.FromFile("Assets/CreditCard/paypal.png");
 
             Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
             NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
 
             AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
-
-            AppButtons.FormatStandardButton((GradientButton)btPayPal, Resources.GetValue("PayPalButton"), AppStyle.ButtonColor.Green);
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
@@ -110,19 +110,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TipSlider.Enabled = false;
             };
 
+			payPalToggle.ValueChanged+= (sender, e) => {   
+				btCreditCard.Hidden = ((PaymentSelector)sender).PayPalSelected;
+				lblCreditCardOnFile.Hidden = ((PaymentSelector)sender).PayPalSelected;
+				payPalLogo.Hidden = !((PaymentSelector)sender).PayPalSelected;
+			};
+		
             this.AddBindings(new Dictionary<object, string>() {         
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
-				{ btPayPal, new B("TouchUpInside","ProceedToPayPalCommand")
-								.Add("Hidden","IsPayPalEnabled", "BoolInverter") },
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
                 { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },
                 { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
+				{ payPalToggle, new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay) },
                 { btCreditCard, 
                     new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
                         .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
                         .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
-                        .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") }
+                        .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList")
+				}
             });
 			   
             this.View.ApplyAppFont ();

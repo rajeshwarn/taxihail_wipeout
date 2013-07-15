@@ -52,9 +52,9 @@
             TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
             TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
             TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
-            TaxiHail.parameters.HideDispatchButton = <%: this.HideDispatchButton%>;
-            TaxiHail.parameters.GeolocPopularRange = <%: this.GeolocPopularRange%>;
-            TaxiHail.parameters.AccountActivationDisabled = <%: this.AccountActivationDisabled%>;
+            TaxiHail.parameters.hideDispatchButton = <%: this.HideDispatchButton%>;
+            TaxiHail.parameters.accountActivationDisabled = <%: this.AccountActivationDisabled%>;
+            TaxiHail.parameters.isEstimateEnabled = <%: this.EstimateEnabled %>;
             TaxiHail.parameters.apiRoot = "api";
         </script>
 

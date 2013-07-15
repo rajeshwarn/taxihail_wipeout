@@ -12,60 +12,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class BookPaymentSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIView Container { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btConfirm { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCreditCardOnFile { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btCreditCard { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btPayPal { get; set; }
+		MonoTouch.UIKit.UIButton ClearKeyboardButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Views.Payments.TipSliderControl TipSlider { get; set; }
+		MonoTouch.UIKit.UIView Container { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblCreditCardOnFile { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField MeterAmountLabel { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel MeterAmountStringLabel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView payPalLogo { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.PaymentSelector payPalToggle { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIScrollView ScrollViewer { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField TipAmountLabel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel TotalAmountLabel { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel MeterAmountStringLabel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Views.Payments.TipSliderControl TipSlider { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel TipStringLabel { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel TotalAmountLabel { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel TotalStringLabel { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton ClearKeyboardButton { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIScrollView ScrollViewer { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (Container != null) {
-				Container.Dispose ();
-				Container = null;
-			}
-
-			if (lblTipAmount != null) {
-				lblTipAmount.Dispose ();
-				lblTipAmount = null;
+			if (payPalLogo != null) {
+				payPalLogo.Dispose ();
+				payPalLogo = null;
 			}
 
 			if (btConfirm != null) {
@@ -73,54 +71,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btConfirm = null;
 			}
 
-			if (lblCreditCardOnFile != null) {
-				lblCreditCardOnFile.Dispose ();
-				lblCreditCardOnFile = null;
-			}
-
 			if (btCreditCard != null) {
 				btCreditCard.Dispose ();
 				btCreditCard = null;
-			}
-
-			if (btPayPal != null) {
-				btPayPal.Dispose ();
-				btPayPal = null;
-			}
-
-			if (TipSlider != null) {
-				TipSlider.Dispose ();
-				TipSlider = null;
-			}
-
-			if (MeterAmountLabel != null) {
-				MeterAmountLabel.Dispose ();
-				MeterAmountLabel = null;
-			}
-
-			if (TipAmountLabel != null) {
-				TipAmountLabel.Dispose ();
-				TipAmountLabel = null;
-			}
-
-			if (TotalAmountLabel != null) {
-				TotalAmountLabel.Dispose ();
-				TotalAmountLabel = null;
-			}
-
-			if (MeterAmountStringLabel != null) {
-				MeterAmountStringLabel.Dispose ();
-				MeterAmountStringLabel = null;
-			}
-
-			if (TipStringLabel != null) {
-				TipStringLabel.Dispose ();
-				TipStringLabel = null;
-			}
-
-			if (TotalStringLabel != null) {
-				TotalStringLabel.Dispose ();
-				TotalStringLabel = null;
 			}
 
 			if (ClearKeyboardButton != null) {
@@ -128,9 +81,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				ClearKeyboardButton = null;
 			}
 
+			if (Container != null) {
+				Container.Dispose ();
+				Container = null;
+			}
+
+			if (lblCreditCardOnFile != null) {
+				lblCreditCardOnFile.Dispose ();
+				lblCreditCardOnFile = null;
+			}
+
+			if (lblTipAmount != null) {
+				lblTipAmount.Dispose ();
+				lblTipAmount = null;
+			}
+
+			if (MeterAmountLabel != null) {
+				MeterAmountLabel.Dispose ();
+				MeterAmountLabel = null;
+			}
+
+			if (MeterAmountStringLabel != null) {
+				MeterAmountStringLabel.Dispose ();
+				MeterAmountStringLabel = null;
+			}
+
+			if (payPalToggle != null) {
+				payPalToggle.Dispose ();
+				payPalToggle = null;
+			}
+
 			if (ScrollViewer != null) {
 				ScrollViewer.Dispose ();
 				ScrollViewer = null;
+			}
+
+			if (TipAmountLabel != null) {
+				TipAmountLabel.Dispose ();
+				TipAmountLabel = null;
+			}
+
+			if (TipSlider != null) {
+				TipSlider.Dispose ();
+				TipSlider = null;
+			}
+
+			if (TipStringLabel != null) {
+				TipStringLabel.Dispose ();
+				TipStringLabel = null;
+			}
+
+			if (TotalAmountLabel != null) {
+				TotalAmountLabel.Dispose ();
+				TotalAmountLabel = null;
+			}
+
+			if (TotalStringLabel != null) {
+				TotalStringLabel.Dispose ();
+				TotalStringLabel = null;
 			}
 		}
 	}

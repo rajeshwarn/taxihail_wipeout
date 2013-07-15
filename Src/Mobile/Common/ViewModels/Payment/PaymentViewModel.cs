@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-
+			PayPalSelected = false;
         }
 
 		public override void Start (bool firstStart)
@@ -53,7 +53,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}}
 
 		Order Order { get; set; }
-		OrderStatusDetail OrderStatus {get; set;}
+
+		OrderStatusDetail OrderStatus { get; set; }
+
+		public bool PayPalSelected { get; set; }
 
 		public string PlaceholderAmount
 		{
@@ -98,82 +101,81 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
-        public IMvxCommand ProceedToPayPalCommand
-        {
-            get
-            {
-                return GetCommand(() => 
-                {
-					if(CanProceedToPayment(requireCreditCard: false))
-					{
-						MessageService.ShowProgress(true);
-	                    var paypal = this.GetService<IPayPalExpressCheckoutService>();
-	                    paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount))
-	                        .ToObservable()
-							// Always Hide progress indicator
-						    .Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))
-	                        .Subscribe(checkoutUrl => {
-
-									var @params = new Dictionary<string, string>() {
-										{"url", checkoutUrl},
-									};
-									this.RequestSubNavigate<PayPalViewModel, bool>(@params, success => {
-										if(success)
-										{
-											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"), Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
-										                           Str.CmtTransactionResendConfirmationButtonText, ()=> ConfirmPaymentForDriver(), Str.OkButtonText, ()=> ReturnResult(""));
-										} else {
-											MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
-										}
-									});
-								}, error => {
-
-								});
-					}
-                });
-            }
-        }
-
         public IMvxCommand ConfirmOrderCommand
         {
             get
             {
-                
                 return GetCommand(() => 
                 {                    
-
-					if(CanProceedToPayment())
-					{
-						using(MessageService.ShowProgress ())
-						{
-		                
-		                    var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
-		                    
-		                    if (!preAuthResponse.IsSuccessfull)
-							{
-								MessageService.ShowProgress(false);
-								MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
-		                        return;
-							}
-							// Give the backend some time to proccess the previous command
-							Thread.Sleep(500);
-		                    try {
-								PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
-		                    }
-		                    catch(Exception e)
-		                    {
-		                        MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
-		                        return;
-		                    }
-
-							ShowConfirmation(preAuthResponse.TransactionId);					          
-						}
+					if(PayPalSelected){
+						PayPalFlow();
 					}
-
+					else {
+						CreditCardFlow();
+					}
                 }); 
-                
             }
         }
+
+		private void PayPalFlow()
+		{
+			if(CanProceedToPayment(requireCreditCard: false))
+			{
+				MessageService.ShowProgress(true);
+				var paypal = this.GetService<IPayPalExpressCheckoutService>();
+				paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount))
+					.ToObservable()
+						// Always Hide progress indicator
+						.Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))
+						.Subscribe(checkoutUrl => {
+
+							var @params = new Dictionary<string, string>() {
+								{"url", checkoutUrl},
+							};
+							this.RequestSubNavigate<PayPalViewModel, bool>(@params, success => {
+								if(success)
+								{
+									MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"), Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+									                           Str.CmtTransactionResendConfirmationButtonText, ()=> ConfirmPaymentForDriver(), Str.OkButtonText, ()=> ReturnResult(""));
+								} else {
+									MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
+								}
+							});
+						}, error => {
+
+						});
+			}
+		}
+
+		private void CreditCardFlow()
+		{
+			if(CanProceedToPayment())
+			{
+				using(MessageService.ShowProgress ())
+				{
+					var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
+
+					if (!preAuthResponse.IsSuccessfull)
+					{
+						MessageService.ShowProgress(false);
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+						return;
+					}
+					// Give the backend some time to proccess the previous command
+					Thread.Sleep(500);
+					try {
+						PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
+					}
+					catch(Exception e)
+					{
+						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+						return;
+					}
+
+					ShowConfirmation(preAuthResponse.TransactionId);					          
+				}
+			}
+		}
 
 		private bool CanProceedToPayment(bool requireCreditCard = true)
 		{

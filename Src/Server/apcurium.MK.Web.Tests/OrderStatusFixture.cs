@@ -12,7 +12,8 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class OrderStatusFixture : BaseTest
     {
-
+        private const int TheChauffeurGroupProviderId = 17;
+        private const int MobileKnowledgeProviderId = 18;
         private Guid _orderId;
        
         [TestFixtureSetUp]
@@ -30,7 +31,16 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 DropOffAddress = TestAddresses.GetAddress2(),
                 PickupDate = DateTime.Now,
-                Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 1,
+                    ProviderId = TheChauffeurGroupProviderId,
+                    Phone = "514-555-1212",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith"
+                }
             };
 
             sut.CreateOrder(order);
