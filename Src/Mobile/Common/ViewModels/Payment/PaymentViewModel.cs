@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-			UsePayPal = false;
+			PayPalSelected = false;
         }
 
 		public override void Start (bool firstStart)
@@ -54,9 +54,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		Order Order { get; set; }
 
-		OrderStatusDetail OrderStatus {get; set;}
+		OrderStatusDetail OrderStatus { get; set; }
 
-		public bool UsePayPal { get; set; }
+		public bool PayPalSelected { get; set; }
 
 		public string PlaceholderAmount
 		{
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() => 
                 {                    
-					if(UsePayPal){
+					if(PayPalSelected){
 						PayPalFlow();
 					}
 					else {
