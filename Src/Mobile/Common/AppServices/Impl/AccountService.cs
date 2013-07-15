@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
-        private const string _creditCardsCacheKey = "Account.CreditCards";
         private const string _refDataCacheKey = "Account.ReferenceData";
 
         public ReferenceData GetReferenceData()
@@ -78,7 +77,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("AuthenticationData");
             TinyIoCContainer.Current.Resolve<ICacheService> ().ClearAll ();
             TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
@@ -568,27 +566,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<CreditCardDetails> GetCreditCards ()
         {
-            var cache = TinyIoCContainer.Current.Resolve<ICacheService> ();
-            var cached = cache.Get<CreditCardDetails[]> (_creditCardsCacheKey);
+
+            IEnumerable<CreditCardDetails> result = new CreditCardDetails[0];
+            UseServiceClient<IAccountServiceClient> (service =>
+            {
+                result = service.GetCreditCards ();
+            });
+        
+            return result;
             
-            if (cached != null) {
-                return cached;
-            } else {
-                IEnumerable<CreditCardDetails> result = new CreditCardDetails[0];
-                UseServiceClient<IAccountServiceClient> (service =>
-                {
-                    result = service.GetCreditCards ();
-                });
-                cache.Set (_creditCardsCacheKey, result.ToArray ());
-                return result;
-            }
         }
 
         public void RemoveCreditCard (Guid creditCardId)
         {
             UseServiceClient<IAccountServiceClient>(client => client.RemoveCreditCard(creditCardId,""), ex => { throw ex; });
             
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
         }
 
         public void AddCreditCard (CreditCardInfos creditCard)
@@ -623,7 +615,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             UseServiceClient<IAccountServiceClient> (client => {               
                 client.AddCreditCard (request); 
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
             }, ex => {
                 throw ex; });  
         }

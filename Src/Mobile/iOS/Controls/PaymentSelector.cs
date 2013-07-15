@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			_creditCardButton = new UIButton(new RectangleF (Bounds.X, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_creditCardButton.ClipsToBounds = true;
-			_creditCardButton.SetTitle("Credit Card", UIControlState.Normal);
+			_creditCardButton.SetTitle(Resources.GetValue("CreditCard"), UIControlState.Normal);
 			_creditCardButton.Font = font;
 			_creditCardButton.TouchUpInside += (s,e) => { PayPalSelected = false; };
 			_creditCardButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			_payPalButton = new UIButton (new RectangleF (Bounds.Width / 2, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_payPalButton.ClipsToBounds = true;
-			_payPalButton.SetTitle("PayPal" , UIControlState.Normal);
+			_payPalButton.SetTitle(Resources.GetValue("View_PayPal"), UIControlState.Normal);
 			_payPalButton.Font = font;
 			_payPalButton.TouchUpInside += (s,e) => { PayPalSelected = true; };
 			_payPalButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
