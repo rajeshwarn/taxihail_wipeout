@@ -26,10 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 			set {
 				_payPalSelected = value;
-				_payPalButton.Highlighted = value;
-				_creditCardButton.Highlighted = !value;
+
 				_payPalButton.Selected = value;
 				_creditCardButton.Selected = !value;
+
 				_payPalButton.BackgroundColor = value ? SelectedBackground : NotSelectedBackground;
 				_creditCardButton.BackgroundColor = !value ? SelectedBackground : NotSelectedBackground;
 
@@ -60,20 +60,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			_creditCardButton = new UIButton(new RectangleF (Bounds.X, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_creditCardButton.ClipsToBounds = true;
 			_creditCardButton.SetTitle("Credit Card", UIControlState.Normal);
-			_creditCardButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
-			_creditCardButton.SetTitleColor(SelectedFont, UIControlState.Highlighted);
-			_creditCardButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 			_creditCardButton.Font = font;
 			_creditCardButton.TouchUpInside += (s,e) => { PayPalSelected = false; };
+			_creditCardButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
+			_creditCardButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 
 			_payPalButton = new UIButton (new RectangleF (Bounds.Width / 2, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_payPalButton.ClipsToBounds = true;
 			_payPalButton.SetTitle("PayPal" , UIControlState.Normal);
-			_payPalButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
-			_payPalButton.SetTitleColor(SelectedFont, UIControlState.Highlighted);
-			_payPalButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 			_payPalButton.Font = font;
 			_payPalButton.TouchUpInside += (s,e) => { PayPalSelected = true; };
+			_payPalButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
+			_payPalButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 
 			var creditCardMaskPath = UIBezierPath.FromRoundedRect (_creditCardButton.Bounds, UIRectCorner.TopLeft | UIRectCorner.BottomLeft, new SizeF (borderRadius, borderRadius));
 			var creditCardMaskLayer = new CAShapeLayer ();

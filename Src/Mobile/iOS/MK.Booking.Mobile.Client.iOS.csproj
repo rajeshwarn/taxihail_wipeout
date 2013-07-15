@@ -744,5 +744,7 @@
     <BundleResource Include="Assets\sliderGrayBarBody%402x.png" />
     <BundleResource Include="Assets\sliderYellowBarBody.png" />
     <BundleResource Include="Assets\sliderYellowBarBody%402x.png" />
+    <BundleResource Include="Assets\CreditCard\paypal.png" />
+    <BundleResource Include="Assets\CreditCard\paypal%402x.png" />
   </ItemGroup>
 </Project>
