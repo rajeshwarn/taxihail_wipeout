@@ -12,8 +12,6 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class OrderStatusFixture : BaseTest
     {
-        private const int TheChauffeurGroupProviderId = 17;
-        private const int MobileKnowledgeProviderId = 18;
         private Guid _orderId;
        
         [TestFixtureSetUp]
@@ -35,7 +33,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = 99,
                     VehicleTypeId = 1,
-                    ProviderId = TheChauffeurGroupProviderId,
+                    ProviderId = Provider.MobileKnowledgeProviderId,
                     Phone = "514-555-1212",
                     Passengers = 6,
                     NumberOfTaxi = 1,
