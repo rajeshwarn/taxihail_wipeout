@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (!preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
 						return;
 					}
 					// Give the backend some time to proccess the previous command
@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var response = PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 					if(!response.IsSuccessfull)
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
 					}
 
 					ShowConfirmation(preAuthResponse.TransactionId);					          
@@ -204,21 +204,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if(requireCreditCard && PaymentPreferences.SelectedCreditCard == null)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
 				return false;
 			}
 
 			if(Amount <= 0)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoAmountSelectedMessage);
 				return false;
 			}
 
 			if(!Order.IBSOrderId.HasValue)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);
 				return false;
 			}			
 

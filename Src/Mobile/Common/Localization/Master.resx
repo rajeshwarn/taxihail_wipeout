@@ -1350,4 +1350,7 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Credit Card</value>
   </data>
+  <data name="PaymentErrorTitle" xml:space="preserve">
+    <value>Payment cannot be completed</value>
+  </data>
 </root>
