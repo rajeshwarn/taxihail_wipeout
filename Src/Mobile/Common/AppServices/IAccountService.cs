@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void SignOut();
         
-        void AddCreditCard(CreditCardInfos creditCard);
+        bool AddCreditCard(CreditCardInfos creditCard);
 
         
     }
