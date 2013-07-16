@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -117,7 +118,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                
                     try
                     {
-                        if (!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings))
+
+                        var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
+
+                        if (!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings,cc.Number,cc.ExpirationDate))
                         {
                             response.IsSuccessful = false;
                             response.Message += "*CMT Settings are Invalid\n";
