@@ -26,6 +26,11 @@ namespace apcurium.MK.Booking.Common.Tests
         public void Reset()
         { }
 
+        public T GetSetting<T>(string key, T defaultValue) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
         public IDictionary<string, string> GetSettings()
         {
 

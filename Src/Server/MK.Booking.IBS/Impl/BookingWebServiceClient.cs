@@ -42,11 +42,14 @@ namespace apcurium.MK.Booking.IBS.Impl
         public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude)
         {
             var result = new IBSVehiclePosition[0];
-            
+
+            var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
+            var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+
             UseService(service =>
             {
                 result = service
-                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, _availableVehiclesRadius, _availableVehiclesCount)
+                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
                     .Select(Mapper.Map<IBSVehiclePosition>)
                     .ToArray();
             });

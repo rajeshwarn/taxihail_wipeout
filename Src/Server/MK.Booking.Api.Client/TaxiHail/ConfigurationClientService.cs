@@ -34,6 +34,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return _settings [key];
         }
 
+        public T GetSetting<T>(string key, T defaultValue) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
         private void Load ()
         {            
             var settings = Client.Get<Dictionary<string,string>> ("/settings");
