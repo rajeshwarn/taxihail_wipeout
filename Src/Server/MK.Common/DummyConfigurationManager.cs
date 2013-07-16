@@ -13,7 +13,7 @@ namespace apcurium.MK.Common
                 dictionary = new Dictionary<string, string>();
             }
 
-            SetSettings(dictionary);
+            AppSettings = dictionary;
         }
 
         public void Reset()
@@ -34,11 +34,6 @@ namespace apcurium.MK.Common
         public IDictionary<string, string> GetSettings()
         {
             return AppSettings;
-        }
-
-        public void SetSettings(IDictionary<string, string> appSettings)
-        {
-            AppSettings = appSettings;
         }
 
         public ClientPaymentSettings GetPaymentSettings(bool force=true)

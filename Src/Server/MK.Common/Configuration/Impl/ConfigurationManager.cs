@@ -50,11 +50,6 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public void SetSettings(IDictionary<string, string> appSettings)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Reset()
         {
             throw new NotImplementedException();

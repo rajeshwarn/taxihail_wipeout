@@ -30,6 +30,7 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -78,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile
             
             container.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-            container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+            container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<ILogger>()));
 
             container.Register<IAccountService, AccountService>();
             container.Register<IBookingService, BookingService>();

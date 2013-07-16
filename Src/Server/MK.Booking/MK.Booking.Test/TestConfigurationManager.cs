@@ -38,14 +38,6 @@ namespace apcurium.MK.Booking.Common.Tests
 
         }
 
-        public void SetSettings(IDictionary<string, string> appSettings)
-        {
-            foreach (var appSetting in appSettings)
-            {
-                SetSetting(appSetting.Key, appSetting.Value);
-            }
-        }
-
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
             throw new NotImplementedException();
@@ -54,11 +46,6 @@ namespace apcurium.MK.Booking.Common.Tests
         public string GetSetting(string key)
         {
             return _config[key];
-        }
-
-        public void SetSetting(string key, string value)
-        {
-            _config[key] = value;
         }
 
         static public string AssemblyDirectory
