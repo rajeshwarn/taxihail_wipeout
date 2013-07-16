@@ -32,7 +32,6 @@ namespace DatabaseInitializer
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            container.RegisterType(typeof(IEventsMigrator), typeof(AddressEventsMigrator), "AdresseEventsMigrator", null);
             
         }
 
