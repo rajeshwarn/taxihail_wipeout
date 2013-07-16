@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_7();
 
-            order.ServiceProviderID = providerId ?? 0;
+            order.ServiceProviderID = providerId.GetValueOrDefault();
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
@@ -183,14 +183,14 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private bool ValidateZoneAddresses(TBookOrder_7 order)
         {
-            if (!ValidateZone(order.PickupAddress, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
+            if (!ValidateZone(order.PickupAddress, order.ServiceProviderID, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
             {
                 return false;
             }
 
             if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) && (order.DropoffAddress.Latitude != 0))
             {
-                if (!ValidateZone(order.DropoffAddress, "IBS.ValidateDestinationZone", "IBS.DestinationZoneToExclude"))
+                if (!ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone", "IBS.DestinationZoneToExclude"))
                 {
                     return false;
                 }
@@ -199,15 +199,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return true;
         }
 
-        private bool ValidateZone(TWEBAddress tWEBAddress, string enableValidationKey, string excludedZoneKey)
+        private bool ValidateZone(TWEBAddress tWEBAddress, int? providerId, string enableValidationKey, string excludedZoneKey)
         {
             var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
             if (isValidationEnabled)
             {
-
                 Logger.LogMessage("Validating Zone " + JsonSerializer.SerializeToString(tWEBAddress, typeof(TWEBAddress)));
+                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(providerId, tWEBAddress.Latitude, tWEBAddress.Longitude);
                 
-                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
 
                 Logger.LogMessage("Zone returned : " + zone.ToSafeString() );
 

@@ -39,15 +39,12 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
             throw new NotImplementedException();
         }
-
-
+        
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
-        {
             using (var context = _contextFactory.Invoke())
             {
                 var settings = context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
                 return settings ?? new ServerPaymentSettings();
             }
-        }
     }
 }

@@ -48,6 +48,9 @@
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="FakeConfigurationManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaticDataWebServiceClientFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -64,6 +67,10 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
   <Target Name="AfterBuild">
   </Target>
   -->

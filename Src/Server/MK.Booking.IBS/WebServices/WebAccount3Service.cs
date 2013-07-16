@@ -850,31 +850,6 @@ public partial class TPromptField {
 }
 
 /// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")]
-[Serializable()]
-[DebuggerStepThrough()]
-[DesignerCategory("code")]
-[SoapType(Namespace = "urn:TypeOrder")]
-public partial class TWEBFavotiteAddress : TWEBAddress
-{
-
-    private string addressAliasField;
-
-    /// <remarks/>
-    public string AddressAlias
-    {
-        get
-        {
-            return this.addressAliasField;
-        }
-        set
-        {
-            this.addressAliasField = value;
-        }
-    }
-}
-
-/// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookAccount3))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
 [System.SerializableAttribute()]

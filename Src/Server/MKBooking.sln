@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentServiceTools", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.Test", "MK.Booking.IBS.Test\MK.Booking.IBS.Test.csproj", "{3628E58A-24B1-4BFB-B606-87B2EA78C600}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.Test", "MK.Booking.IBS.Test\MK.Booking.IBS.Test.csproj", "{9A106D96-38CF-42CE-B686-84FE44B11852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
