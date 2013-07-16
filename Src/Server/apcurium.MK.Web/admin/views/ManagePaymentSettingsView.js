@@ -7,6 +7,7 @@
         events: {
             'change [name=paymentMode]': 'onPaymentModeChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
+            'click #testConfigButton': 'testConfig',
         },
         
         saveButton: {},
@@ -26,45 +27,56 @@
             this.onPaymentModeChanged();
 
             this.validate({
-                submitHandler: this.save
+                submitHandler: this.save,
             });
 
             return this;
         },
 
+        testConfig: function ()
+        {
+            var data = this.$el.serializeObject();
+
+            this.model.test(data)
+                .done(_.bind(function(response) {
+                    if (response.isSuccessful === true) {
+                        this.alert(response.message, 'success');
+                    } else {
+                        this.alert(response.message, 'error');
+                    }
+                }, this));
+
+
+        },
+        
+        alert: function(message, type) {
+            var alert = new TaxiHail.AlertView({
+                message: this.localize(message),
+                type: type
+                });
+            alert.on('ok', alert.remove, alert);
+            this.$('.message').html(alert.render().el);
+            this.model.fetch();
+        },
+        
         save: function(form) {
 
             var data = $(form).serializeObject();
             this.$("#warning").hide();
-
-
-            this.model.batchSave(data)
+            
+            this.model.save(data)
                  .always(_.bind(function() {
-
                      this.$(':submit').button('reset');
-                     
-
                  }, this))
-                 .done(_.bind(function(){
+                 .done(_.bind(function() {
 
-                     var alert = new TaxiHail.AlertView({
-                         message: this.localize('Settings Saved'),
-                         type: 'success'
-                     });
-                     alert.on('ok', alert.remove, alert);
-                     this.$('.message').html(alert.render().el);
-                     this.model.fetch();
+                     this.alert('Settings Saved', 'success');
 
                  }, this))
                  .fail(_.bind(function(){
 
-                     var alert = new TaxiHail.AlertView({
-                         message: this.localize('Error Saving Settings'),
-                         type: 'error'
-                     });
-                     alert.on('ok', alert.remove, alert);
-                     this.$('.message').html(alert.render().el);
-
+                     this.alert('Error Saving Settings', 'error');
+                     
                  }, this));
         },
         

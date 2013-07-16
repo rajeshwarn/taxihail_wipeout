@@ -63,15 +63,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
+			if (!ViewModel.PaymentSelectorToggleIsVisible) {
+				ScrollViewer.Frame = new RectangleF (ScrollViewer.Frame.X, ScrollViewer.Frame.Y - payPalToggle.Frame.Height, ScrollViewer.Frame.Width, ScrollViewer.Frame.Height);
+			}
+
 			ScrollViewer.ContentSize = new SizeF(ScrollViewer.ContentSize.Width, btConfirm.Frame.Bottom + 20);
 
 			payPalLogo.Image = UIImage.FromFile("Assets/CreditCard/paypal.png");
 
             Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
+			NavigationItem.Title = Resources.GetValue("View_PaymentCreditCardsOnFile");
 
-            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
+            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.GetValue("PayNow"), AppStyle.ButtonColor.Green );  
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
@@ -122,7 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
                 { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },
                 { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
-				{ payPalToggle, new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay) },
+				{ payPalToggle, 
+					new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay)
+						.Add("Hidden", "PaymentSelectorToggleIsVisible", "BoolInverter")
+				},
                 { btCreditCard, 
                     new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
                         .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")

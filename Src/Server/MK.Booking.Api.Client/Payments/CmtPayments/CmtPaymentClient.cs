@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 
 
@@ -27,11 +28,16 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            var response = CmtClient.Post(new TokenizeRequest
-            {
-                AccountNumber = accountNumber,
-                ExpiryDateYYMM = expiryDate.ToString("yyMM")
-            });
+            return Tokenize(CmtClient, accountNumber, expiryDate);
+        }
+
+        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtClient,string accountNumber, DateTime expiryDate)
+        {
+            var response = cmtClient.Post(new TokenizeRequest
+                {
+                    AccountNumber = accountNumber,
+                    ExpiryDateYYMM = expiryDate.ToString("yyMM")
+                });
 
             return new TokenizedCreditCardResponse()
                 {
@@ -41,7 +47,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                     CardType = response.CardType,
                     LastFour = response.LastFour,
                 };
-
         }
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
@@ -72,9 +77,14 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
         }
 
-        
 
-
-
+        public static bool TestClient(CmtPaymentSettings serverPaymentSettings)
+        {
+			throw new Exception("Does not compile on mobile");
+			/*
+            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,true);
+            var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
+            return Tokenize(cmtClient, cc.Number, cc.ExpirationDate).IsSuccessfull;*/
+        }
     }
 }

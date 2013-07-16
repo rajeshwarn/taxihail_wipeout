@@ -2158,6 +2158,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700ee
 			public const int PasswordLabel = 2131165422;
 			
+			// aapt resource value: 0x7f0701ae
+			public const int PayNow = 2131165614;
+			
 			// aapt resource value: 0x7f0701a4
 			public const int PayPalButton = 2131165604;
 			
@@ -2190,6 +2193,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070169
 			public const int PaymentDetails_TipAmountLabel = 2131165545;
+			
+			// aapt resource value: 0x7f0701ad
+			public const int PaymentErrorTitle = 2131165613;
+			
+			// aapt resource value: 0x7f0701af
+			public const int PaymentScreenTitle = 2131165615;
 			
 			// aapt resource value: 0x7f070092
 			public const int PickupDateDisplay = 2131165330;
