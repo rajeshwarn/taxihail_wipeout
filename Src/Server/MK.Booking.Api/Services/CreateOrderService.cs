@@ -148,7 +148,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                return noteTemplate.Replace("{{userNote}}", note ?? string.Empty).Replace("{{buildingName}}", buildingName ?? string.Empty);
+                return noteTemplate
+                    .Replace("\\r", "\r")
+                    .Replace("\\n", "\n")
+                    .Replace("\\t", "\t")
+                    .Replace("{{userNote}}", note ?? string.Empty)
+                    .Replace("{{buildingName}}", buildingName ?? string.Empty)
+                    .Trim();
             }
 
             // Building Name is not handled by IBS
