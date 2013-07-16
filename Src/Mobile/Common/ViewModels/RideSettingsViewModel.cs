@@ -31,14 +31,14 @@ namespace apcurium.MK.Booking.Mobile
 		public bool ShouldDisplayTipSlider {
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
-				return setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+				return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 			}
 		}
 
 		public bool ShouldDisplayCreditCards {
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
-				return setting.PaymentMode != PaymentMethod.None;
+				return setting.IsPayInTaxiEnabled;
 			}
 		}
 

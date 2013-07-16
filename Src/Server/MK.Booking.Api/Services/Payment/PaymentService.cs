@@ -47,6 +47,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public void Post(UpdateServerPaymentSettingsRequest request)
         {
+            if (request.ServerPaymentSettings.IsPayInTaxiEnabled &&
+                request.ServerPaymentSettings.PaymentMode == PaymentMethod.None)
+            {
+                throw new ArgumentException("Please Select a payment setting");
+            }
             _commandBus.Send(new UpdatePaymentSettings()
                 {
                     ServerPaymentSettings = request.ServerPaymentSettings,
@@ -65,18 +70,26 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.SandboxCredentials, true))
                  {
                      response.IsSuccessful = false;
-                     response.Message += "Paypal Sandbox Credentials are invalid\n"; 
+                     response.Message += "*Paypal Sandbox Credentials are invalid\n"; 
                  }
+                else
+                {
+                    response.Message += "Paypal Sandbox Credentials are Valid\n"; 
+                }
                 if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.Credentials, false))
-                 {
+                {
                      response.IsSuccessful = false;
-                     response.Message += "Paypal Production Credentials are invalid\n";
-                 }
+                     response.Message += "*Paypal Production Credentials are invalid\n";
+                }
+                else
+                {
+                    response.Message += "Paypal Production Credentials are Valid\n"; 
+                }
             }
             catch (Exception)
             {
                 response.IsSuccessful = false;
-                response.Message += "Paypal Credentials are invalid\n";
+                response.Message += "Paypal Failure - Unspecified\n";
             }
 
             switch (request.ServerPaymentSettings.PaymentMode)
@@ -87,13 +100,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         if (!BraintreePaymentService.TestClient(request.ServerPaymentSettings.BraintreeServerSettings))
                         {
                             response.IsSuccessful = false;
-                            response.Message += "Brain Tree Settings are Invalid\n";
+                            response.Message += "*Brain Tree Settings are Invalid\n";
+                        }
+                        else
+                        {
+                            response.Message += "Brain Tree Settings are Valid\n";
                         }
                     }
                     catch (Exception)
                     {
                         response.IsSuccessful = false;
-                        response.Message += "Brain Tree Settings are Invalid\n";
+                        response.Message += "*Brain Tree Settings are Invalid\n";
                     }
                     break;
                 case PaymentMethod.Cmt:
@@ -103,19 +120,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         if (!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings))
                         {
                             response.IsSuccessful = false;
-                            response.Message += "CMT Settings are Invalid\n";
+                            response.Message += "*CMT Settings are Invalid\n";
+                        }
+                        else
+                        {
+                            response.Message += "CMT Settings are Valid\n";
                         }
                     }
                     catch (Exception)
                     {
                         response.IsSuccessful = false;
-                        response.Message += "CMT Settings are Invalid\n";
+                        response.Message += "*CMT Settings are Invalid\n";
                     }
                     break;
             }
             if (response.IsSuccessful)
             {
-                response.Message = "Settings are Vaild";
+                response.Message += "All Settings are Vaild";
             }
             return response;
         }

@@ -10,10 +10,13 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public BraintreeServerSettings()
         {
+            
+#if DEBUG
             MerchantId = "v3kjnzjzhv8z37pq";
             PublicKey = "d268b7by244xnvw9";
             PrivateKey = "92780e4aa457e9269b1910d88ac79d17";
             IsSandbox = true;
+#endif
         }
 
         public bool IsSandbox { get; set; }

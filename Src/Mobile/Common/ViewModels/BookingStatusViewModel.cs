@@ -310,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsCancelButtonVisible = !IsPayButtonVisible;
 		
 			var setting = ConfigurationManager.GetPaymentSettings ();
-			var isPayEnabled = setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+			var isPayEnabled = setting.IsPayInTaxiEnabled|| setting.PayPalClientSettings.IsEnabled;
 
 			if (!isPayEnabled) {
                 IsPayButtonVisible = false;
