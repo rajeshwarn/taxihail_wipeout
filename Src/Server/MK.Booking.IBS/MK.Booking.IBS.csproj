@@ -101,12 +101,10 @@
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
     <Compile Include="IBSOrderStatus.cs" />
-    <Compile Include="IDriverWebServiceClient.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
     <Compile Include="IAccountWebServiceClient.cs" />
     <Compile Include="Impl\BookingWebServiceClient.cs" />
-    <Compile Include="Impl\DriverWebServiceClient.cs" />
     <Compile Include="WebServices\WebOrder7Service.cs" />
     <Compile Include="IStaticDataWebServiceClient.cs" />
     <Compile Include="Module.cs" />

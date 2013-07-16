@@ -16,13 +16,11 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private const int _invalidZoneErrorCode = -1002;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private IDriverWebServiceClient _driverService;
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, IDriverWebServiceClient driverService)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
-            _driverService = driverService;
 
         }
 
