@@ -46,10 +46,12 @@
                     }
                 }, this));
 
-
         },
         
-        alert: function(message, type) {
+        alert: function (message, type) {
+            
+            message = replaceAll("\n", "<br/>", message);
+            
             var alert = new TaxiHail.AlertView({
                 message: this.localize(message),
                 type: type
@@ -125,5 +127,9 @@
     });
 
     _.extend(View.prototype, TaxiHail.ValidatedView);
+
+    function replaceAll(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
 
 }());
