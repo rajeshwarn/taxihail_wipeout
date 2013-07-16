@@ -81,8 +81,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-                    //version would be updated from information in the Configuraton Manager DB
-                    settingsInDb.Remove("TaxiHail.Version");
+
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 

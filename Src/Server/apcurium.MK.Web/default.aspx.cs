@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
@@ -42,7 +43,9 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
-            ApplicationVersion = config.GetSetting("TaxiHail.Version");
+
+            ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
+
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
 
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
