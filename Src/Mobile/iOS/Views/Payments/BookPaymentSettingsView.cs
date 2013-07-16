@@ -69,9 +69,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
+			NavigationItem.Title = Resources.GetValue("View_PaymentCreditCardsOnFile");
 
-            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
+            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.GetValue("PayNow"), AppStyle.ButtonColor.Green );  
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);

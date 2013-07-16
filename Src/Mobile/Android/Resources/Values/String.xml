@@ -430,4 +430,6 @@
   <string name="PayPalExpressCheckoutCancelTitle">Payment cancelled</string>
   <string name="CreditCard">Credit Card</string>
   <string name="PaymentErrorTitle">Payment cannot be completed</string>
+  <string name="PayNow">Pay now</string>
+  <string name="PaymentScreenTitle">Payment</string>
 </resources>

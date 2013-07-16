@@ -171,7 +171,7 @@
                     android:background="@drawable/green_button"
                     android:layout_width="fill_parent"
                     android:layout_height="35dip"
-                    android:text="@string/CreateAccountPasswordConfrimation"
+                    android:text="@string/PayNow"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="5dp"
                     local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />

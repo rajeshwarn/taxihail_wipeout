@@ -428,3 +428,4 @@
 "PayPalExpressCheckoutSuccessMessage"="PayPal payment was successful. Confirmation sent to the driver.";
 "CreditCard"="Credit Card";
 "PaymentErrorTitle"="Payment cannot be completed";
+"PayNow"="Pay now";
