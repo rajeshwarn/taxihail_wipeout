@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Get(AvailableVehicles request)
         {
-            var vehicles = _bookingWebServiceClient.GetAvailableVehicles(request.Latitude, request.Longitude, 2000, 10);
+            var vehicles = _bookingWebServiceClient.GetAvailableVehicles(request.Latitude, request.Longitude);
             return new AvailableVehiclesResponse(vehicles.Select(Mapper.Map<AvailableVehicle>));
         }
 
