@@ -35,5 +35,10 @@ namespace MK.Booking.IBS.Test
         {
             throw new NotImplementedException();
         }
+
+        public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

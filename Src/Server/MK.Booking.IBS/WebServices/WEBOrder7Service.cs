@@ -121,7 +121,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     /// <remarks/>
     public WebOrder7Service()
     {
-        this.Url = "http://localhost:6929/IBS/XDS_IASPI.dll/soap/IWEBOrder_7";
+        this.Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder_7";
     }
     
     /// <remarks/>
@@ -4643,6 +4643,27 @@ public partial class TWEBAddress {
         }
         set {
             this.stopPassField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
+public partial class TWEBFavotiteAddress : TWEBAddress {
+    
+    private string addressAliasField;
+    
+    /// <remarks/>
+    public string AddressAlias {
+        get {
+            return this.addressAliasField;
+        }
+        set {
+            this.addressAliasField = value;
         }
     }
 }

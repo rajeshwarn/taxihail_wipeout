@@ -1,10 +1,9 @@
 ﻿using NUnit.Framework;
 using apcurium.MK.Booking.IBS.Impl;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 
-namespace MK.Booking.IBS.Test
+namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
 {
     [TestFixture]
     public class given_a_service_provider

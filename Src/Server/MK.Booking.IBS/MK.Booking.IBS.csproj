@@ -107,6 +107,7 @@
     <Compile Include="IAccountWebServiceClient.cs" />
     <Compile Include="Impl\BookingWebServiceClient.cs" />
     <Compile Include="Impl\DriverWebServiceClient.cs" />
+    <Compile Include="WebServices\WebOrder7Service.cs" />
     <Compile Include="IStaticDataWebServiceClient.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,7 +115,6 @@
     <Compile Include="WebServices\StaticDataservice.cs" />
     <Compile Include="WebServices\WebAccount3Service.cs" />
     <Compile Include="WebServices\WebDriverService.cs" />
-    <Compile Include="WebServices\WebOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Impl\GenerateWSDL.bat" />
@@ -122,7 +122,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="WebServices\GenerateWSDL.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
