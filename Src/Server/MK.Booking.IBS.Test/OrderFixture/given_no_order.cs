@@ -11,21 +11,25 @@ namespace MK.Booking.IBS.Test.OrderFixture
         private const int MobileKnowledgeProviderId = 18;
 
         protected WebOrder7Service Sut;
+        private int _accountId;
 
         [SetUp]
         public void Setup()
         {
             Sut = new WebOrder7Service {Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
+            _accountId = CreateIBSAccount();
+
 
         }
 
         [Test]
+        [Ignore("MK is working on a fix for this")]
         public void when_creating_an_order()
         {
             var order = new TBookOrder_7();
 
             order.ServiceProviderID = MobileKnowledgeProviderId;
-            order.AccountID = 49502;
+            order.AccountID = _accountId;
             var pickupDateTime = DateTime.Now;
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
@@ -44,6 +48,30 @@ namespace MK.Booking.IBS.Test.OrderFixture
 
             Assert.Greater(orderId, 0);
             Trace.TraceInformation(orderId.ToString());
+        }
+
+        private int CreateIBSAccount()
+        {
+            var service = new WebAccount3Service
+            {
+                Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebAccount3"
+            };
+
+            var account = new TBookAccount3
+            {
+                WEBID = Guid.NewGuid().ToString().Substring(0, 5),
+                Address = new TWEBAddress() { },
+                Email2 = "vincent.costel@apcurium.com",
+                Title = "",
+                FirstName = "Apcurium",
+                LastName = "Test",
+                Phone = "5141234569",
+                MobilePhone = "5141234569",
+                WEBPassword = "123456"
+            };
+
+            var ibsAcccountId = service.SaveAccount3("taxi", "test", account);
+            return ibsAcccountId;
         }
     }
 }

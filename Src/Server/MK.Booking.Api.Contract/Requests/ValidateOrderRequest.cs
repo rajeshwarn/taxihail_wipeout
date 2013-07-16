@@ -10,8 +10,8 @@ using System.Text;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders/validate", "POST")]
-    [RestService("/account/orders/validate/{TestZone}", "POST")]
+    [Route("/account/orders/validate", "POST")]
+    [Route("/account/orders/validate/{TestZone}", "POST")]
     public class ValidateOrderRequest : BaseDTO
     {
 
@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             PickupAddress = new Address();
             DropOffAddress = new Address();
             Payment = new PaymentSettings();
+            Settings = new BookingSettings();
         }
 
         //For testing purpose, when the TestZone is set, it will be used instead of calling IBS
