@@ -21,7 +21,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                local:MvxBind="{'Visibility': {'Path': 'PaymentSelectorToggleIsVisible', 'Converter': 'Visibility'}}">
                 <Button
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/segmented_button_left"

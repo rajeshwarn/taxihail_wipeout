@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
 using System.Threading;
+using apcurium.MK.Common.Configuration.Impl;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -39,7 +40,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-			PayPalSelected = false;
+
+			PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
+			PayPalSelected = !IsCreditCardEnabled;
         }
 
 		public override void Start (bool firstStart)
@@ -47,16 +50,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start (firstStart);
 		}
 		
-		public bool IsPayPalEnabled{ get{
-				var payPalSettings = ConfigurationManager.GetPaymentSettings ().PayPalClientSettings;
+		public bool IsPayPalEnabled
+		{ 
+			get {
+				var payPalSettings = ConfigurationManager.GetPaymentSettings().PayPalClientSettings;
 				return payPalSettings.IsEnabled;
-			}}
+			}
+		}
+
+		public bool IsCreditCardEnabled
+		{ 
+			get{
+				var setting = ConfigurationManager.GetPaymentSettings ();
+				return setting.PaymentMode != PaymentMethod.None;
+			}
+		}
 
 		Order Order { get; set; }
-
 		OrderStatusDetail OrderStatus { get; set; }
-
 		public bool PayPalSelected { get; set; }
+		public bool PaymentSelectorToggleIsVisible { get; set; }
+
+		public IMvxCommand UsePayPal
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				{
+					PayPalSelected = true;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
+
+		public IMvxCommand UseCreditCard
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				{
+					PayPalSelected = false;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
 
 		public string PlaceholderAmount
 		{
@@ -99,30 +136,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 ShowConfirmation(transactionId);
 			},
 			Str.OkButtonText, ()=> ReturnResult(""));
-		}
-
-		public IMvxCommand UsePayPal
-		{
-			get
-			{
-				return GetCommand(() => this.InvokeOnMainThread(delegate
-				{
-					PayPalSelected = true;
-					FirePropertyChanged(() => PayPalSelected);
-				}));
-			}
-		}
-
-		public IMvxCommand UseCreditCard
-		{
-			get
-			{
-				return GetCommand(() => this.InvokeOnMainThread(delegate
-				                                                {
-					PayPalSelected = false;
-					FirePropertyChanged(() => PayPalSelected);
-				}));
-			}
 		}
 
         public IMvxCommand ConfirmOrderCommand

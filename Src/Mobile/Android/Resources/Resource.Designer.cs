@@ -2191,6 +2191,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070169
 			public const int PaymentDetails_TipAmountLabel = 2131165545;
 			
+			// aapt resource value: 0x7f0701ad
+			public const int PaymentErrorTitle = 2131165613;
+			
 			// aapt resource value: 0x7f070092
 			public const int PickupDateDisplay = 2131165330;
 			

@@ -122,7 +122,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
                 { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },
                 { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
-				{ payPalToggle, new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay) },
+				{ payPalToggle, 
+					new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay)
+						.Add("Hidden", "PaymentSelectorToggleIsVisible", "BoolInverter")
+				},
                 { btCreditCard, 
                     new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
                         .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
