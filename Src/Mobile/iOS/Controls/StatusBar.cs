@@ -206,6 +206,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.TouchesMoved (touches, evt);
         }
         
+		public void SetMaxHeight(float height)
+		{
+			_maxHeight = height;
+		}
+
         void SetHeight (float height, bool animate)
         {
             Action changeSize = () => 
