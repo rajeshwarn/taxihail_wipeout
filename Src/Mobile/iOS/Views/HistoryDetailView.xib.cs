@@ -58,7 +58,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
             lblAuthorization.Text =Resources.HistoryDetailAuthorizationLabel;
            
-
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
 			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
@@ -73,15 +72,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 			btnRateTrip.Hidden = true;
 			btnViewRating.Hidden = true;
             
+			var btn3Visible = !ViewModel.IsCompleted || ViewModel.ShowRateButton || ViewModel.HasRated;
+			var btn4Visible = ViewModel.SendReceiptAvailable;
+
+			if (!btn3Visible && btn4Visible) {
+				btnSendReceipt.Frame = btnCancel.Frame;
+			}
+
 			this.AddBindings(new Dictionary<object, string>()                            
             {
+				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
+
+				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
 				{ btnStatus, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'NavigateToOrderStatus'}}"},
+
+				{ btnCancel, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'CancelOrder'}}"},
 				{ btnRateTrip, "{'Hidden':{'Path': 'ShowRateButton', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
 				{ btnViewRating, "{'Hidden':{'Path': 'HasRated', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
-				{ btnCancel, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'CancelOrder'}}"},
+
 				{ btnSendReceipt, "{'Hidden':{'Path': 'SendReceiptAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
-				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
-				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
+
                 { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
 				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
