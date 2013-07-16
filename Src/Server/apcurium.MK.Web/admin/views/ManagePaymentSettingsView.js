@@ -63,8 +63,17 @@
         
         save: function(form) {
 
+            
+
             var data = $(form).serializeObject();
             this.$("#warning").hide();
+            
+            if (data.paymentMode == "None" && data.isPayInTaxiEnabled) {
+                this.alert("Please select a payment method or disable Pay In Taxi");
+
+                this.$(':submit').button('reset');
+                return;
+            }
             
             this.model.save(data)
                  .always(_.bind(function() {

@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{ 
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
-				return setting.PaymentMode != PaymentMethod.None;
+				return setting.IsPayInTaxiEnabled;
 			}
 		}
 

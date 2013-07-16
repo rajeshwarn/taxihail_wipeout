@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool IsPayButtonShown{
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
-				var isPayEnabled = setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled;
 			}
 		}

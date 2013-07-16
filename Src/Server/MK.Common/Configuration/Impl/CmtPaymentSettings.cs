@@ -10,6 +10,7 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public CmtPaymentSettings()
         {
+#if DEBUG
             MerchantToken = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
             CustomerKey = "vmAoqWEY3zIvUCM4";
             ConsumerSecretKey = "DUWzh0jAldPc7C5I";
@@ -17,6 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             BaseUrl = "https://payment.cmtapi.com/"; // for now will will not use production
             IsSandbox = true;
             CurrencyCode = CurrencyCodes.Main.UnitedStatesDollar;
+#endif
         }
 
         public bool IsSandbox { get; set; }
