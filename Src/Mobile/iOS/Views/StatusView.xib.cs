@@ -70,20 +70,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 View.BringSubviewToFront (statusBar);
 
-
-
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
                 lblConfirmation.Text = Resources.LoadingMessage;
                 txtDriver.Text = Resources.DriverInfoDriver;
                 txtDriver.TextColor = AppStyle.GreyText;
                 txtLicence.Text = Resources.DriverInfoLicence;
                 txtLicence.TextColor = AppStyle.GreyText;
-                txtMake.Text = Resources.DriverInfoMake;
-                txtMake.TextColor = AppStyle.GreyText;
-                txtModel.Text = Resources.DriverInfoModel;
-                txtModel.TextColor = AppStyle.GreyText;
                 txtTaxiType.Text = Resources.DriverInfoTaxiType;
                 txtTaxiType.TextColor = AppStyle.GreyText;
+				txtMake.Text = Resources.DriverInfoMake;
+				txtMake.TextColor = AppStyle.GreyText;
+				txtModel.Text = Resources.DriverInfoModel;
+				txtModel.TextColor = AppStyle.GreyText;
                 txtColor.Text = Resources.DriverInfoColor;
                 txtColor.TextColor = AppStyle.GreyText;
 
@@ -105,6 +103,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 View.BringSubviewToFront (bottomBar);
 
+				ViewModel.PropertyChanged+= (sender, e) => {
+					InvokeOnMainThread(()=>
+					{
+						UpdateTopSlidingStatus(e.PropertyName);
+					});
+				};
+
                 if ( ViewModel.IsCallButtonVisible )
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
@@ -119,8 +124,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                             UpdateCallButtonSize (callFrame);
                         });
                     };
-
-
                 }
 
                 lblDriver.TextColor = AppStyle.DarkText;
@@ -183,6 +186,65 @@ namespace apcurium.MK.Booking.Mobile.Client
                 btnCall.SetFrame (callFrame);
             }
         }
+
+		void UpdateTopSlidingStatus(string propertyName)
+		{
+			if (propertyName == "OrderStatusDetail") 
+			{
+				var numberOfItemsHidden = 0;
+
+				if (ViewModel.VehicleMakeEmpty){ 
+					txtMake.Hidden = true;
+					lblMake.Hidden = true;
+					numberOfItemsHidden++;
+				}
+
+				if (ViewModel.VehicleModelEmpty){ 
+					txtModel.Hidden = true;
+					lblModel.Hidden = true;
+					numberOfItemsHidden++;
+				}
+
+				if (ViewModel.VehicleColorEmpty){ 
+					txtColor.Hidden = true;
+					lblColor.Hidden = true;
+					numberOfItemsHidden++;
+				}
+
+				switch (numberOfItemsHidden)
+				{
+					case 1:
+						if(ViewModel.VehicleMakeEmpty){
+							txtColor.Frame = txtModel.Frame;
+							lblColor.Frame = lblModel.Frame;
+							txtModel.Frame = txtMake.Frame;
+							lblModel.Frame = lblMake.Frame;
+						}
+						if(ViewModel.VehicleModelEmpty){
+							txtColor.Frame = txtModel.Frame;
+							lblColor.Frame = lblModel.Frame;
+						}
+						statusBar.SetMaxHeight (110 + topVisibleStatus.Frame.Height);
+						break;
+					case 2:
+						if(!ViewModel.VehicleModelEmpty){
+							txtModel.Frame = txtMake.Frame;
+							lblModel.Frame = lblMake.Frame;
+						}
+						if(!ViewModel.VehicleColorEmpty){
+							txtColor.Frame = txtMake.Frame;
+							lblColor.Frame = lblMake.Frame;
+						}
+						statusBar.SetMaxHeight (90 + topVisibleStatus.Frame.Height);
+						break;
+					case 3:
+						statusBar.SetMaxHeight (70 + topVisibleStatus.Frame.Height);
+						break;
+					default:
+						break;
+				}
+			}
+		}
     }
 }
 
