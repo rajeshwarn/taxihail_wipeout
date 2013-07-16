@@ -80,9 +80,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings)
         {
+			throw new Exception("Does not compile on mobile");
+			/*
             var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,true);
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
-            return Tokenize(cmtClient, cc.Number, cc.ExpirationDate).IsSuccessfull;
+            return Tokenize(cmtClient, cc.Number, cc.ExpirationDate).IsSuccessfull;*/
         }
     }
 }

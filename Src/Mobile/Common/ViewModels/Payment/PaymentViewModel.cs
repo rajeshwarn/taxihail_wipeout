@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
 using System.Threading;
+using apcurium.MK.Common.Configuration.Impl;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -39,7 +40,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TipPercent = account.DefaultTipPercent,
             };
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-			PayPalSelected = false;
+
+			PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
+			PayPalSelected = !IsCreditCardEnabled;
         }
 
 		public override void Start (bool firstStart)
@@ -47,16 +50,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start (firstStart);
 		}
 		
-		public bool IsPayPalEnabled{ get{
-				var payPalSettings = ConfigurationManager.GetPaymentSettings ().PayPalClientSettings;
+		public bool IsPayPalEnabled
+		{ 
+			get {
+				var payPalSettings = ConfigurationManager.GetPaymentSettings().PayPalClientSettings;
 				return payPalSettings.IsEnabled;
-			}}
+			}
+		}
+
+		public bool IsCreditCardEnabled
+		{ 
+			get{
+				var setting = ConfigurationManager.GetPaymentSettings ();
+				return setting.PaymentMode != PaymentMethod.None;
+			}
+		}
 
 		Order Order { get; set; }
-
 		OrderStatusDetail OrderStatus { get; set; }
-
 		public bool PayPalSelected { get; set; }
+		public bool PaymentSelectorToggleIsVisible { get; set; }
+
+		public IMvxCommand UsePayPal
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				{
+					PayPalSelected = true;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
+
+		public IMvxCommand UseCreditCard
+		{
+			get
+			{
+				return GetCommand(() => this.InvokeOnMainThread(delegate
+				{
+					PayPalSelected = false;
+					FirePropertyChanged(() => PayPalSelected);
+				}));
+			}
+		}
 
 		public string PlaceholderAmount
 		{
@@ -99,30 +136,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 ShowConfirmation(transactionId);
 			},
 			Str.OkButtonText, ()=> ReturnResult(""));
-		}
-
-		public IMvxCommand UsePayPal
-		{
-			get
-			{
-				return GetCommand(() => this.InvokeOnMainThread(delegate
-				{
-					PayPalSelected = true;
-					FirePropertyChanged(() => PayPalSelected);
-				}));
-			}
-		}
-
-		public IMvxCommand UseCreditCard
-		{
-			get
-			{
-				return GetCommand(() => this.InvokeOnMainThread(delegate
-				                                                {
-					PayPalSelected = false;
-					FirePropertyChanged(() => PayPalSelected);
-				}));
-			}
 		}
 
         public IMvxCommand ConfirmOrderCommand
@@ -182,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (!preAuthResponse.IsSuccessfull)
 					{
 						MessageService.ShowProgress(false);
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.CmtTransactionErrorMessage);
+						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
 						return;
 					}
 					// Give the backend some time to proccess the previous command
@@ -191,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var response = PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 					if(!response.IsSuccessfull)
 					{
-						MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.TaxiServerDownMessage);
+						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
 					}
 
 					ShowConfirmation(preAuthResponse.TransactionId);					          
@@ -204,21 +217,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if(requireCreditCard && PaymentPreferences.SelectedCreditCard == null)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoCreditCardSelectedMessage);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
 				return false;
 			}
 
 			if(Amount <= 0)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoAmountSelectedMessage);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoAmountSelectedMessage);
 				return false;
 			}
 
 			if(!Order.IBSOrderId.HasValue)
 			{
 				MessageService.ShowProgress(false);
-				MessageService.ShowMessage (Str.ErrorCreatingOrderTitle, Str.NoOrderId);
+				MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);
 				return false;
 			}			
 
