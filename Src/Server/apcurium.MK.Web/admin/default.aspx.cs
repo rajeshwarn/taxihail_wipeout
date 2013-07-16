@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
@@ -26,7 +27,8 @@ namespace apcurium.MK.Web.admin
 
             ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
             ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
-            ApplicationVersion = config.GetSetting("TaxiHail.Version");
+
+            ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
             if(!base.UserSession.HasPermission(Permissions.Admin))

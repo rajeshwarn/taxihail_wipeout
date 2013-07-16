@@ -94,7 +94,7 @@
   <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
-  <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
+  <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
   <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="View_Book_Menu_AboutUs">About Us</string>

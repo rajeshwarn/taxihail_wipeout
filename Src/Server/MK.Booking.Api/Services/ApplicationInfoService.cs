@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -22,7 +23,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ApplicationInfoRequest request)
         {
-            var info = new ApplicationInfo { Version = _configManager.GetSetting("TaxiHail.Version"), SiteName =  _configManager.GetSetting("TaxiHail.SiteName") };
+            var info = new ApplicationInfo
+                {
+                    Version = Assembly.GetAssembly(typeof(ApplicationInfoService)).GetName().Version.ToString(),
+                    SiteName =  _configManager.GetSetting("TaxiHail.SiteName")
+                };
             return info;
         }
 

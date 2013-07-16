@@ -767,7 +767,7 @@
     <value>Confirmation Required</value>
   </data>
   <data name="AccountActivationMessage" xml:space="preserve">
-    <value>You will receive an email shortly with a link you need to click on to confirm your registration.</value>
+    <value>An email has been sent. Please follow the link in the email to confirm your address.</value>
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Message</value>

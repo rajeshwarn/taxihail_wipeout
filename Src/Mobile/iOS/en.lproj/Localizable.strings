@@ -90,7 +90,7 @@
 "View_SignIn"="";
 "HistoryDetailBuildingNameLabel"="Building Name:";
 "PickupTimeTextPlaceholder"="Time: Now";
-"AccountActivationMessage"="You will receive an email shortly with a link you need to click on to confirm your registration.";
+"AccountActivationMessage"="An email has been sent. Please follow the link in the email to confirm your address.";
 "EstimatedFareNotAvailable"="Estimated fare not available";
 "CreateAccountTitleMr"="Mr";
 "View_Book_Menu_AboutUs"="About Us";
