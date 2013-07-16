@@ -127,13 +127,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		public void ShowConfirmation(string transactionId)
+		private void ShowPayPalPaymentConfirmation()
+		{
+			MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
+			                           Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+			                           Str.CmtTransactionResendConfirmationButtonText,
+			                           ()=> {
+												ConfirmPaymentForDriver();
+												ShowPayPalPaymentConfirmation();
+											},
+			                           Str.OkButtonText,
+			                           ()=> ReturnResult(""));
+		}
+
+		private void ShowCreditCardPaymentConfirmation(string transactionId)
 		{
             MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, transactionId),
 			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
 			{				
 				ConfirmPaymentForDriver();
-                ShowConfirmation(transactionId);
+                ShowCreditCardPaymentConfirmation(transactionId);
 			},
 			Str.OkButtonText, ()=> ReturnResult(""));
 		}
@@ -172,8 +185,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.RequestSubNavigate<PayPalViewModel, bool>(@params, success => {
 								if(success)
 								{
-									MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"), Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
-									                           Str.CmtTransactionResendConfirmationButtonText, ()=> ConfirmPaymentForDriver(), Str.OkButtonText, ()=> ReturnResult(""));
+									ShowPayPalPaymentConfirmation();
+
 								} else {
 									MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
 								}
@@ -207,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
 					}
 
-					ShowConfirmation(preAuthResponse.TransactionId);					          
+					ShowCreditCardPaymentConfirmation(preAuthResponse.TransactionId);					          
 				}
 			}
 		}
