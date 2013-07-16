@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using apcurium.MK.Common.Configuration;
@@ -13,15 +14,24 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-
         private const int _invalidZoneErrorCode = -1002;
-        private IStaticDataWebServiceClient _staticDataWebServiceClient;
+        readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        readonly int _availableVehiclesRadius;
+        readonly int _availableVehiclesCount;
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
 
+            var radiusConfig = ConfigManager.GetSetting("AvailableVehicles.Radius");
+            var countConfig = ConfigManager.GetSetting("AvailableVehicles.Count");
+            _availableVehiclesRadius = radiusConfig == null
+                ? 2000 
+                : Convert.ToInt32(radiusConfig, CultureInfo.InvariantCulture);
+            _availableVehiclesCount = countConfig == null
+                ? 10
+                : Convert.ToInt32(countConfig, CultureInfo.InvariantCulture);
         }
 
         protected override string GetUrl()
@@ -29,13 +39,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count)
+        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude)
         {
             var result = new IBSVehiclePosition[0];
+            
             UseService(service =>
             {
                 result = service
-                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, _availableVehiclesRadius, _availableVehiclesCount)
                     .Select(Mapper.Map<IBSVehiclePosition>)
                     .ToArray();
             });
