@@ -22,7 +22,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public class DummyVisa
         {
-            public static string Number = "4012 0000 3333 0026".Replace(" ", "");
+			public static string BraintreeNumber = "4009 3488 8888 1881".Replace(" ", "");
+
+            public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
             public static int AvcCvvCvv2 = 135;
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
@@ -66,8 +68,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ExpirationMonths.Add (new ListItem { Display = Resources.GetString("December"), Id = 12 });
 
 #if DEBUG
+			if(ConfigurationManager.GetPaymentSettings().PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.Braintree)
+			{
+				Data.CardNumber = DummyVisa.BraintreeNumber;
+			}
+			else{
+				Data.CardNumber = DummyVisa.CmtNumber;
+			}
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
-			Data.CardNumber = DummyVisa.Number;
+
 			Data.ExpirationMonth = DummyVisa.ExpirationDate.Month+"";
 			Data.ExpirationYear = DummyVisa.ExpirationDate.Year + "";
 			Data.NameOnCard = "Chris";
@@ -203,12 +212,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 MessageService.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
                 Data.CreditCardId = Guid.NewGuid();
-                _accountService.AddCreditCard(Data);
+                if(_accountService.AddCreditCard(Data))
+				{		
 
-                Data.CardNumber = null;
-                Data.CCV = null;
+					Data.CardNumber = null;
+					Data.CCV = null;
 
-                ReturnResult(Data);
+					ReturnResult(Data);
+				}
+				else{					
+					MessageService.ShowMessage ( "Validation", "Cannot validate the credit card.");
+				}
+
             }
             finally {
                 TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.CreditCards");
