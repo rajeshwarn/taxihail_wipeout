@@ -59,9 +59,10 @@ namespace apcurium.MK.Booking.IBS.Impl
         public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
             string zone = "";
+            bool useProvider = providerId.HasValue && providerId > 0;
             UseService(service =>
                            {
-                               zone = providerId.HasValue 
+                               zone = useProvider
                                    ? service.GetCompanyZoneByGPS(UserNameApp, PasswordApp, providerId.Value, latitude, longitude)
                                    : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
                            });
