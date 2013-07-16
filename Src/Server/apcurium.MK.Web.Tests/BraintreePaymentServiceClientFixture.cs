@@ -17,6 +17,7 @@ namespace apcurium.MK.Web.Tests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
+
             return new BraintreeServiceClient(BaseUrl,null, new BraintreeClientSettings().ClientKey);
         }
     }

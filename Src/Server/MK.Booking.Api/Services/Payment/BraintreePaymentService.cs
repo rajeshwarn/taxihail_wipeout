@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _configurationManager = configurationManager;
 
-            Client = GetClient(((ServerPaymentSettings) _configurationManager.GetPaymentSettings()).BraintreeServerSettings);
+            BraintreeGateway = GetBraintreeGateway(((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeServerSettings);
         }
 
-        public static BraintreeGateway GetClient(BraintreeServerSettings settings)
+        public static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
         {
             var env = Braintree.Environment.SANDBOX;
             if (!settings.IsSandbox)
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Api.Services
         public static bool TestClient(BraintreeServerSettings settings)
         {
             settings.IsSandbox = true;
-            var client = GetClient(settings);
+            var client = GetBraintreeGateway(settings);
 
             var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
             
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        public BraintreeGateway Client { get; set; }
+        private BraintreeGateway BraintreeGateway { get; set; }
 
         /*
          * Braintree Creds:
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services
         
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
-            return TokenizedCreditCard(Client, tokenizeRequest);
+            return TokenizedCreditCard(BraintreeGateway, tokenizeRequest);
         }
 
         private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, TokenizeCreditCardBraintreeRequest tokenizeRequest)
@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardBraintreeRequest request)
         {
-            Client.CreditCard.Delete(request.CardToken);
+            BraintreeGateway.CreditCard.Delete(request.CardToken);
             return new DeleteTokenizedCreditcardResponse()
                 {
                     IsSuccessfull = true,
@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services
                             }
                     };
 
-                var result = Client.Transaction.Sale(request);
+                var result = BraintreeGateway.Transaction.Sale(request);
                 bool isSuccessful = result.IsSuccess();
                 if (isSuccessful)
                 {
@@ -183,7 +183,7 @@ namespace apcurium.MK.Booking.Api.Services
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
 
 
-                var result = Client.Transaction.SubmitForSettlement(request.TransactionId);
+                var result = BraintreeGateway.Transaction.SubmitForSettlement(request.TransactionId);
 
                 var isSuccessful = result.IsSuccess();
                 if (isSuccessful)
