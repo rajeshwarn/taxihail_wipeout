@@ -50,7 +50,7 @@
         
         alert: function (message, type) {
             
-            message = message.replace("\n", "<br>");
+            message = replaceAll("\n", "<br/>", message);
             
             var alert = new TaxiHail.AlertView({
                 message: this.localize(message),
@@ -127,5 +127,9 @@
     });
 
     _.extend(View.prototype, TaxiHail.ValidatedView);
+
+    function replaceAll(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
 
 }());
