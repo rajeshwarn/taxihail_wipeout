@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Common.Tests
 {
@@ -27,6 +26,11 @@ namespace apcurium.MK.Booking.Common.Tests
         public void Reset()
         { }
 
+        public T GetSetting<T>(string key, T defaultValue) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
         public IDictionary<string, string> GetSettings()
         {
 
@@ -34,12 +38,9 @@ namespace apcurium.MK.Booking.Common.Tests
 
         }
 
-        public void SetSettings(IDictionary<string, string> appSettings)
+        public void SetSetting(string key, string value)
         {
-            foreach (var appSetting in appSettings)
-            {
-                SetSetting(appSetting.Key, appSetting.Value);
-            }
+            _config[key] = value;
         }
 
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
@@ -50,11 +51,6 @@ namespace apcurium.MK.Booking.Common.Tests
         public string GetSetting(string key)
         {
             return _config[key];
-        }
-
-        public void SetSetting(string key, string value)
-        {
-            _config[key] = value;
         }
 
         static public string AssemblyDirectory

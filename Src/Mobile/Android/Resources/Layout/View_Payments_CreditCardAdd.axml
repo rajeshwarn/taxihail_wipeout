@@ -27,7 +27,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.NameOnCard&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'Data.NameOnCard'}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="number"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.CardNumber&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'Data.CardNumber'}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;CreditCardCategoryName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;CardCategories&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;CreditCardCategory&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'CreditCardCategoryName'}, 'Data': {'Path': 'CardCategories'}, 'SelectedItem': {'Path': 'CreditCardCategory'}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;CreditCardTypeName&apos;}, &apos;LeftImage&apos;: {&apos;Path&apos;: &apos;CreditCardTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;CreditCardCompanies&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;CreditCardType&apos;}}" />
+                local:MvxBind="{'Text':{'Path':'CreditCardTypeName'}, 'LeftImage': {'Path': 'CreditCardTypeName'}, 'Data': {'Path': 'CreditCardCompanies'}, 'SelectedItem': {'Path': 'CreditCardType'}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:singleLine="true"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ExpirationMonth&apos;}}" />
+                    local:MvxBind="{'Text':{'Path':'Data.ExpirationMonth'}}" />
                 <EditText
                     android:gravity="left"
                     android:layout_width="135dip"
@@ -97,49 +97,19 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:singleLine="true"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ExpirationYear&apos;}}" />
+                    local:MvxBind="{'Text':{'Path':'Data.ExpirationYear'}}" />
             </LinearLayout>
-            <LinearLayout
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip"
-                    android:text="@string/CreditCardCCV"
-                    style="@style/FormLabelText" />
-                <TextView
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/CreditCardZipCode"
-                    style="@style/FormLabelText" />
-            </LinearLayout>
-            <LinearLayout
+                android:text="@string/CreditCardCCV"
+                style="@style/FormLabelText" />
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <EditText
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dip"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.CCV&apos;}}" />
-                <EditText
-                    android:gravity="left"
-                    android:layout_width="135dip"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ZipCode&apos;}}" />
-            </LinearLayout>
+                android:inputType="number"
+                android:singleLine="true"
+                local:MvxBind="{'Text':{'Path':'Data.CCV'}}" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
                 local:ButtonStyle="Green"
                 android:id="@+id/SaveSettingsButton"
@@ -150,7 +120,7 @@
                 android:singleLine="true"
                 android:lines="1"
                 android:text="@string/SaveButton"
-                local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;AddCreditCardCommand&apos;}}" />
+                local:MvxBind="{'Click': {'Path': 'AddCreditCardCommand'}}" />
         </LinearLayout>
     </ScrollView>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

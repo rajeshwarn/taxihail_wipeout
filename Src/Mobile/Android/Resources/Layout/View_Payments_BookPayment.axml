@@ -17,15 +17,55 @@
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
-            <TextView
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/PaymentDetails.CreditCardLabel"
-                style="@style/FormLabelText" />
-            <apcurium.mk.booking.mobile.client.controls.CreditCardButton
+                android:gravity="center"
+                android:orientation="horizontal"
+                local:MvxBind="{'Visibility': {'Path': 'PaymentSelectorToggleIsVisible', 'Converter': 'Visibility'}}">
+                <Button
+                    style="@style/BigTitleTextBlack"
+                    android:background="@drawable/segmented_button_left"
+                    android:textColor="@drawable/segmented_button_text_color"
+                    android:layout_width="120dip"
+                    android:layout_height="40dip"
+                    android:text="@string/CreditCard"
+                    android:gravity="center"
+                    local:MvxBind="{'Click': {'Path': 'UseCreditCard'}, 'Selected': {'Path': 'PayPalSelected', 'Converter': 'BoolInverter'}}" />
+                <Button
+                    style="@style/BigTitleTextBlack"
+                    android:background="@drawable/segmented_button_right"
+                    android:textColor="@drawable/segmented_button_text_color"
+                    android:layout_width="120dip"
+                    android:layout_height="40dip"
+                    android:text="@string/View_PayPal"
+                    android:gravity="center"
+                    local:MvxBind="{'Click': {'Path': 'UsePayPal'}, 'Selected': {'Path': 'PayPalSelected'}}" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                local:MvxBind="{'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}, 'Text':{'Path':'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}}" />
+                android:orientation="vertical"
+                local:MvxBind="{'Visibility': {'Path': 'PayPalSelected', 'Converter': 'InvertedVisibility'}}">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/PaymentDetails.CreditCardLabel"
+                    style="@style/FormLabelText" />
+                <apcurium.mk.booking.mobile.client.controls.CreditCardButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    local:MvxBind="{'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'},'Text':{'Path':'PaymentPreferences.SelectedCreditCard.FriendlyName'},'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'},'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}}" />
+            </LinearLayout>
+            <ImageView
+                android:paddingTop="10dp"
+                android:layout_gravity="left"
+                android:scaleType="center"
+                android:src="@drawable/paypal"
+                android:layout_width="115dip"
+                android:layout_height="50dip"
+                local:MvxBind="{'Visibility': {'Path': 'PayPalSelected', 'Converter': 'Visibility'}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -126,23 +166,12 @@
                 android:orientation="vertical">
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Green"
-                    android:id="@+id/PayPalBtn"
-                    style="@style/ButtonText"
-                    android:background="@drawable/green_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="35dip"
-                    android:text="@string/PayPalButton"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginRight="5dp"
-                    local:MvxBind="{'Click': {'Path': 'ProceedToPayPalCommand'}}" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
                     android:id="@+id/ConfirmBtn"
                     style="@style/ButtonText"
                     android:background="@drawable/green_button"
                     android:layout_width="fill_parent"
                     android:layout_height="35dip"
-                    android:text="@string/CreateAccountPasswordConfrimation"
+                    android:text="@string/PayNow"
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="5dp"
                     local:MvxBind="{'Click': {'Path': 'ConfirmOrderCommand'}}" />

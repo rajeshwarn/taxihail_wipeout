@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -141,5 +142,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
+    
     }
 }

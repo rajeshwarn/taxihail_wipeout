@@ -106,6 +106,7 @@
     <Compile Include="CmtPaymentServiceClientFixture.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="PaymentSettingsClientFixture.cs" />
     <Compile Include="CreditCardFixture.cs" />
     <Compile Include="PushNotificationRegistrationFixture.cs" />

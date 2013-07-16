@@ -2,6 +2,7 @@
 using System.Net;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Payment;
@@ -27,6 +28,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _factory = factory;
             _configurationManager = configurationManager;
         }
+
+
 
         public PayPalExpressCheckoutPaymentResponse Post(
             InitiatePayPalExpressCheckoutPaymentRequest request)
@@ -107,6 +110,24 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             if (payPalSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
 
             return payPalSettings;
+        }
+
+
+        public static bool TestClient(IConfigurationManager configurationManager, IRequestContext requestContext, PayPalCredentials payPalServerSettings, bool isSandbox)
+        {
+            try
+            {
+                var service = new ExpressCheckoutServiceFactory(configurationManager)
+                .CreateService(requestContext, payPalServerSettings, isSandbox);
+                service.SetExpressCheckout(2);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+
         }
     }
 }

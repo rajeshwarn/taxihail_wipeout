@@ -199,5 +199,11 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.Clear();
             UseDbContext(context => context.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add));
         }
+
+        public void SaveCompanies()
+        {
+            SaveAll(Companies);
+            ReloadCompanies();
+        }
     }
 }

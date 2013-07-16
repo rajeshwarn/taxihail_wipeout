@@ -48,8 +48,16 @@
 <!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
 
-  <select name="paymentMode">
-    <option value="None">{{localize "Disabled"}}</option>
+  <label class="control-label settingsLabel" >{{{localize "Pay In Taxi Enabled"}}}</label>
+  <select  name="isPayInTaxiEnabled" class="settingsBox">
+    <option value="{{isPayInTaxiEnabled}}" selected="" >{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
+    <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>
+  </select>
+
+
+  <label class="control-label settingsLabel" >{{{localize "Payment Method"}}}</label>
+  <select name="paymentMode"  class="settingsBox">
+    <option value="None">{{localize "None"}}</option>
     <option value="Cmt">{{localize "CMT Payments"}}</option>
     <option value="Braintree">{{localize "Braintree Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
@@ -124,5 +132,6 @@
   <div id="warning" class="alert">
     <input type="checkbox" name="acceptChange"> {{localize "I understand that changing the payment mode will DELETE all stored credit card information for ALL users."}}</input>
   </div>
+  <button type='button' id="testConfigButton" class='btn btn-primary' >{{localize "Test Configuration"}}</button>
   <button type='submit' id="saveButton" class='btn btn-primary' >{{localize "Save"}}</button>
 </div>

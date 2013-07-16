@@ -536,7 +536,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             //add credit card on file if not already included and feature enabled
 
 			var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
-			var paymentsEnabled = settings.PaymentMode != PaymentMethod.None || settings.PayPalClientSettings.IsEnabled;
+			var paymentsEnabled = settings.IsPayInTaxiEnabled || settings.PayPalClientSettings.IsEnabled;
 
             if (paymentsEnabled
                 && refData.PaymentsList != null

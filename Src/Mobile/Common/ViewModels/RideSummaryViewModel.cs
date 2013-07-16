@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{			
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
-			IsRatingButtonShown = !AppSettings.RatingEnabled;
+			IsRatingButtonShown = AppSettings.RatingEnabled;
 		}
 
 		public string ThankYouTitle {
@@ -42,14 +42,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool IsPayButtonShown{
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
-				var isPayEnabled = setting.PaymentMode != PaymentMethod.None || setting.PayPalClientSettings.IsEnabled;
+				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled;
 			}
 		}
 
 		public bool IsSendReceiptButtonShown {
 			get{
-				return !ConfigurationManager.GetSetting("Client.SendReceiptAvailable").TryToParse(false);
+				var sendReceiptAvailable =  !ConfigurationManager.GetSetting("Client.SendReceiptAvailable").TryToParse(false);
+				return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
 			}
 		}
 

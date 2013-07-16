@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using apcurium.MK.Common.Configuration;
@@ -13,17 +14,24 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-
         private const int _invalidZoneErrorCode = -1002;
-        private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private IDriverWebServiceClient _driverService;
+        readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        readonly int _availableVehiclesRadius;
+        readonly int _availableVehiclesCount;
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, IDriverWebServiceClient driverService)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
-            _driverService = driverService;
 
+            var radiusConfig = ConfigManager.GetSetting("AvailableVehicles.Radius");
+            var countConfig = ConfigManager.GetSetting("AvailableVehicles.Count");
+            _availableVehiclesRadius = radiusConfig == null
+                ? 2000 
+                : Convert.ToInt32(radiusConfig, CultureInfo.InvariantCulture);
+            _availableVehiclesCount = countConfig == null
+                ? 10
+                : Convert.ToInt32(countConfig, CultureInfo.InvariantCulture);
         }
 
         protected override string GetUrl()
@@ -31,9 +39,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int radius, int count)
+        public IBSVehiclePosition[] GetAvailableVehicles(double latitude, double longitude)
         {
             var result = new IBSVehiclePosition[0];
+
+            var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
+            var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+
             UseService(service =>
             {
                 result = service
@@ -134,7 +146,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_7();
 
-            order.ServiceProviderID = providerId ?? 0;
+            order.ServiceProviderID = providerId.GetValueOrDefault();
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
@@ -183,14 +195,14 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private bool ValidateZoneAddresses(TBookOrder_7 order)
         {
-            if (!ValidateZone(order.PickupAddress, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
+            if (!ValidateZone(order.PickupAddress, order.ServiceProviderID, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
             {
                 return false;
             }
 
             if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) && (order.DropoffAddress.Latitude != 0))
             {
-                if (!ValidateZone(order.DropoffAddress, "IBS.ValidateDestinationZone", "IBS.DestinationZoneToExclude"))
+                if (!ValidateZone(order.DropoffAddress, order.ServiceProviderID, "IBS.ValidateDestinationZone", "IBS.DestinationZoneToExclude"))
                 {
                     return false;
                 }
@@ -199,15 +211,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return true;
         }
 
-        private bool ValidateZone(TWEBAddress tWEBAddress, string enableValidationKey, string excludedZoneKey)
+        private bool ValidateZone(TWEBAddress tWEBAddress, int? providerId, string enableValidationKey, string excludedZoneKey)
         {
             var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
             if (isValidationEnabled)
             {
-
                 Logger.LogMessage("Validating Zone " + JsonSerializer.SerializeToString(tWEBAddress, typeof(TWEBAddress)));
+                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(providerId, tWEBAddress.Latitude, tWEBAddress.Longitude);
                 
-                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
 
                 Logger.LogMessage("Zone returned : " + zone.ToSafeString() );
 

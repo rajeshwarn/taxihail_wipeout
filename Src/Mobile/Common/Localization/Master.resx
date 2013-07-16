@@ -767,7 +767,7 @@
     <value>Confirmation Required</value>
   </data>
   <data name="AccountActivationMessage" xml:space="preserve">
-    <value>You will receive an email shortly with a link you need to click on to confirm your registration.</value>
+    <value>An email has been sent. Please follow the link in the email to confirm your address.</value>
   </data>
   <data name="ServiceErrorCallTitle" xml:space="preserve">
     <value>Message</value>
@@ -1346,5 +1346,14 @@
   </data>
   <data name="VehicleNumberErrorMessage" xml:space="preserve">
     <value>Unable to retrieve vehicle number. Please pay in car.</value>
+  </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="PaymentErrorTitle" xml:space="preserve">
+    <value>Payment cannot be completed</value>
+  </data>
+  <data name="PayNow" xml:space="preserve">
+    <value>Pay now</value>
   </data>
 </root>

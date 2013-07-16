@@ -94,14 +94,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
-    <Compile Include="Services\AddressEventsMigrator.cs" />
     <Compile Include="Services\IEventsMigrator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EventsPlayBackService.cs" />
     <Compile Include="Services\IEventsPlayBackService.cs" />
-    <Compile Include="Services\OrderStatusEventsMigrator.cs" />
     <Compile Include="Sql\DatabaseCreator.cs" />
     <Compile Include="Sql\DatabaseHelper.cs" />
   </ItemGroup>
