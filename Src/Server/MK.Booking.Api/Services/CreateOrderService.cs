@@ -144,6 +144,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         private string BuildNote(string note, string buildingName)
         {
+            // Building Name is not handled by IBS
+            // Put Building Name in note, if specified
+
+            // Get NoteTemplate from app settings, if it exists
             var noteTemplate = _configManager.GetSetting("IBS.NoteTemplate");
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
@@ -157,8 +161,8 @@ namespace apcurium.MK.Booking.Api.Services
                     .Trim();
             }
 
-            // Building Name is not handled by IBS
-            // Put Building Name in note, if specified
+            // In versions prior to 1.4, there was no note template
+            // So if the IBS.NoteTemplate setting does not exist, use the old way 
             var formattedNote = string.Format("{0}{1}", Environment.NewLine, note);
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
