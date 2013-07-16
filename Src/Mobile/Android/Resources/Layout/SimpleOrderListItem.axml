@@ -8,4 +8,4 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="{&apos;TextLine1&apos;:{&apos;Path&apos;:&apos;Title&apos;}, &apos;TextLine2&apos;:{&apos;Path&apos;:&apos;PickupAddress.BookAddress&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowRightArrow&apos;:{&apos;Path&apos;:&apos;ShowRightArrow&apos;}}" />
+    local:MvxBind="{'TextLine1':{'Path':'Title'}, 'TextLine2':{'Path':'PickupAddress.BookAddress'}, 'IsTop':{'Path':'IsFirst'}, 'IsBottom':{'Path':'IsLast'}, 'ShowRightArrow':{'Path':'ShowRightArrow'}}" />

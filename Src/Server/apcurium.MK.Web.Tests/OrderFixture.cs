@@ -219,7 +219,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress.FullAddress);
             Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffAddress.Latitude);
             Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffAddress.Longitude);
-            Assert.AreEqual(false, orders.IsCompleted);
+            Assert.AreNotEqual(OrderStatus.Completed,orders.Status);
             Assert.IsNull(orders.Fare);
             Assert.IsNull(orders.Toll);
             Assert.IsNull(orders.Tip);

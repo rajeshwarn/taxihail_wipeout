@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
@@ -47,8 +48,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        private OrderStatusDetail _status = new OrderStatusDetail{ IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage") };
-		public OrderStatusDetail Status {
+        private OrderStatusDetail _status = new OrderStatusDetail
+            {
+                IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage")
+            };
+
+		public OrderStatusDetail Status 
+        {
 			get{ return _status; }
 		    set
 		    {
@@ -58,14 +64,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 
 		}
-
         
 
         public bool SendReceiptAvailable 
         {
             get
             {
-                var sendReceiptAvailable = !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.SendReceiptAvailable").TryToParse( false);
+                var sendReceiptAvailable = !ConfigurationManager.GetSetting("Client.SendReceiptAvailable").TryToParse(false);
                 return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
             }
         }
@@ -107,17 +112,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _hasRated;
         public bool HasRated
         {
-            get
-            {
-                if (!TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled)
-                {
-                    return false;
-                }
-                else
-                {
-                    return _hasRated;
-                }
-                
+            get {
+                return TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled && _hasRated;
             }
             set { _hasRated = value; FirePropertyChanged(()=>HasRated); FirePropertyChanged(()=>ShowRateButton); }
 
@@ -132,12 +128,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return false;
                 }
-                else
-                {
-                    return IsDone && !HasRated;
-                }
+                return IsDone && !HasRated;
             }
-            set { _showRateButton = value; FirePropertyChanged(()=>ShowRateButton); }
+            set
+            {
+                _showRateButton = value; 
+                FirePropertyChanged(()=>ShowRateButton);
+            }
 
         }
 
@@ -161,16 +158,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString() : "Error";
+                    return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
                     
                 }
-                else
-                {
-                    return null;
-                }
+                return null;
             }
         }
-        public string _authorizationNumber;
+
+        private string _authorizationNumber;
         public string AuthorizationNumber {
             get {
                 return _authorizationNumber;
@@ -183,46 +178,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string RequestedTxt
         {
-            get
-            {
-                if (Order != null)
-                {
-                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
-                }
-                else
-                {
-                    return null;
-                }
+            get {
+                return Order != null ? FormatDateTime(Order.PickupDate, Order.PickupDate) : null;
             }
         }
 
         public string OriginTxt
         {
-            get
-            {
-                if (Order != null)
-                {
-                    return Order.PickupAddress.BookAddress;
-                }
-                else
-                {
-                    return null;
-                }
+            get {
+                return Order != null ? Order.PickupAddress.BookAddress : null;
             }
         }
 
         public string AptRingTxt
         {
-            get
-            {
-                if (Order != null)
-                {
-                    return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
-                }
-                else
-                {
-                    return null;
-                }
+            get {
+                return Order != null 
+                    ? 
+                    FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode) 
+                    : null;
             }
         }
 
@@ -230,38 +204,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if (Order != null)
-                {
-                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
-                    return Order.DropOffAddress.FullAddress.HasValue()
-                               ? Order.DropOffAddress.FullAddress
-                               : resources.GetString("ConfirmDestinationNotSpecified");
-                }
-                else
+                if (Order == null)
                 {
                     return null;
                 }
+
+                var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+                return Order.DropOffAddress.FullAddress.HasValue()
+                           ? Order.DropOffAddress.FullAddress
+                           : resources.GetString("ConfirmDestinationNotSpecified");
             }
         }
 
         public string PickUpDateTxt
         {
-            get
-            {
-                if (Order != null)
-                {
-                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
-                }
-                else
-                {
-                    return null;
-                }
+            get {
+                return Order != null 
+                    ? FormatDateTime(Order.PickupDate, Order.PickupDate) 
+                    : null;
             }
         }
 
         public HistoryDetailViewModel(string orderId)
         {
-            
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {
 				OrderId = id;
@@ -289,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadOrder() 
 		{
 			return Task.Factory.StartNew(() => {
-				this.Order = AccountService.GetHistoryOrder(this.OrderId);
+				Order = AccountService.GetHistoryOrder(OrderId);
 			});
 
 		}
@@ -303,9 +268,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Status = BookingService.GetOrderStatus(OrderId);
                 IsCompleted = BookingService.IsStatusCompleted (Status.IBSStatusId);
                 IsDone = BookingService.IsStatusDone(Status.IBSStatusId);
-
-                //AuthorizationNumber = BookingService.GetAuthorizationNumber(Status.IBSOrderId);
-
+                
                 var isCompleted = BookingService.IsStatusCompleted(Status.IBSStatusId);
 
 			    CanCancel = !isCompleted;

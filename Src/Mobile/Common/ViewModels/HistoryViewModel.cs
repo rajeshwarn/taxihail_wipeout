@@ -25,12 +25,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 
         private ObservableCollection<OrderViewModel> _orders;
-        private TinyMessageSubscriptionToken orderDeletedToken = null;
+        private readonly TinyMessageSubscriptionToken _orderDeletedToken;
 
         public HistoryViewModel()
         {
             HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
-            orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
             LoadOrders ();
         }
         public ObservableCollection<OrderViewModel> Orders
@@ -54,10 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return "en-US";
                 }
-                else
-                {
-                    return culture;                
-                }
+                return culture;
             }
         }
         private bool _hasOrders;
@@ -86,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CreatedDate = x.CreatedDate,
                     PickupAddress = x.PickupAddress,
                     PickupDate = x.PickupDate,
-                    IsCompleted = x.IsCompleted,
+                    Status = x.Status,
                     Title = FormatDateTime( x.PickupDate ), // piString.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
                     IsFirst = x.Equals(Orders.First()),
                     IsLast = x.Equals(Orders.Last()),
@@ -100,16 +97,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			return Task.Factory.StartNew (() => {
 
-				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ().ToArray();
+				var orders =AccountService.GetHistoryOrders ().ToArray();
+                
 				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
 					{
 						IBSOrderId = x.IBSOrderId,
 						Id = x.Id,
 						CreatedDate = x.CreatedDate,
 						PickupAddress = x.PickupAddress,
-						PickupDate = x.PickupDate, 
-						IsCompleted = x.IsCompleted,
-						//Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+						PickupDate = x.PickupDate,
+                        Status = x.Status,
                         Title = FormatDateTime( x.PickupDate ),
 						IsFirst = x.Equals(orders.First()),
 						IsLast = x.Equals(orders.Last()),
@@ -132,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Unload ()
         {
             base.Unload ();
-            MessengerHub.Unsubscribe<OrderDeleted>(orderDeletedToken);
+            MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
         }
 
     }

@@ -35,7 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         public string TextLine1 { get; set; }
         public string TextLine2 { get; set; }
-        
+
+
+        public Color TextColor { get; set; }
+
         private bool _isTop;
         
         public bool IsTop { 
@@ -65,46 +68,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         
         
-        protected override void OnDraw(Android.Graphics.Canvas canvas)
+        protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            var textX =  ShowPlusSign ? DrawHelper.GetPixels(65) : DrawHelper.GetPixels(8);
+
+            var gray = new Color(86, 86, 86, 255);
+            var darkGray = new Color(50, 50, 50, 255);
+
+            var textX =  ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
             
             if ( !ShowPlusSign &&( Icon.HasValue() ))
             {
-                textX =   DrawHelper.GetPixels(40) ;
+                textX =   40.ToPixels() ;
             }
             
             if( !TextLine1.IsNullOrEmpty() )
             {
-                DrawText(canvas, TextLine1 ?? "", textX, DrawHelper.GetPixels( 21 ), DrawHelper.GetPixels( 16 ), AppFonts.Bold,new Color( 50,50,50,255 ));
-                DrawText(canvas, TextLine2 ?? "", textX,  DrawHelper.GetPixels( 41 ),  DrawHelper.GetPixels( 15 ), AppFonts.Regular,new Color( 86,86,86,255 ) );
+                DrawText(canvas, TextLine1 ?? "", textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold,darkGray);
+                DrawText(canvas, TextLine2 ?? "", textX,  41.ToPixels(),15.ToPixels(), AppFonts.Regular,gray );
             }
             else
             {
-                DrawText(canvas, TextLine2 ?? "", textX, DrawHelper.GetPixels( 32 ), DrawHelper.GetPixels(16), AppFonts.Regular,new Color( 86,86,86,255 ) );
+                DrawText(canvas, TextLine2 ?? "", textX,  32.ToPixels(), 16.ToPixels(), AppFonts.Regular,gray );
             }
             
             if (ShowRightArrow)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow), this.Width-DrawHelper.GetPixels(20), DrawHelper.GetPixels(16), null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow), Width-(20.ToPixels()), 16.ToPixels(), null);
             }
             
             if (ShowPlusSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), DrawHelper.GetPixels(6), DrawHelper.GetPixels(10), null);
+
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 6.ToPixels(),10.ToPixels(), null);
             }
             else if ( Icon.HasValue() )
             {
                 var identifier = Context.Resources.GetIdentifier(  Icon, "drawable", Context.PackageName);
-                //return _context.Resources.GetString(identifier);
+
                 
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier ), DrawHelper.GetPixels(6), DrawHelper.GetPixels(10), null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier ), 6.ToPixels(), 10.ToPixels(), null);
             }
             
             
             
-            var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.cell_bottom_state : IsTop && IsBottom ? Resource.Drawable.cell_full_state : Resource.Drawable.cell_middle_state;
+            var d = IsTop && !IsBottom 
+                ? Resource.Drawable.cell_top_state 
+                : IsBottom && !IsTop 
+                    ? Resource.Drawable.cell_bottom_state 
+                    : IsTop && IsBottom 
+                        ? Resource.Drawable.cell_full_state 
+                        : Resource.Drawable.cell_middle_state;
+
             SetBackgroundDrawable( Resources.GetDrawable( d ) );
             
             
@@ -114,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeface, Color color )
         {
-            TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
+            var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
             var rect = new Rect();
             paintText.TextSize = textSize;
             paintText.GetTextBounds(text, 0, text.Length, rect);
@@ -124,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             p.SetTypeface(typeface);
             
             p.TextSize = textSize;
-            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - DrawHelper.GetPixels(75), TextUtils.TruncateAt.End);
+            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - 75.ToPixels(), TextUtils.TruncateAt.End);
             if (ellipsizedText.IsNullOrEmpty())
             {
                 ellipsizedText = text;
