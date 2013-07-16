@@ -5,16 +5,19 @@ using System.Diagnostics;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient, IConfigurationManager
     {
         private static Dictionary<string, string> _settings = null;
+		readonly ILogger _logger;
 
-        public ConfigurationClientService (string url, string sessionId)
+		public ConfigurationClientService (string url, string sessionId, ILogger logger)
             : base(url, sessionId)
         {
+			this._logger = logger;
         }
 
         public void Reset ()
@@ -47,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
             catch
             {
-                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
+                _logger.LogMessage("Could not convert setting " + key + " to " + typeof(T).Name);
             }
             return defaultValue;
         }
