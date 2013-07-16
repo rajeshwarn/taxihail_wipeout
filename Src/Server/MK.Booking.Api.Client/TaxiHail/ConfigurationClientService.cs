@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
-using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -34,17 +35,29 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return _settings [key];
         }
 
+        public T GetSetting<T>(string key, T defaultValue) where T : struct
+        {
+            var value = GetSetting(key);
+            if (string.IsNullOrWhiteSpace(value)) return defaultValue;
+            var converter = TypeDescriptor.GetConverter(defaultValue);
+            if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+            try
+            {
+                return (T)converter.ConvertFromInvariantString(value);
+            }
+            catch
+            {
+                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
+            }
+            return defaultValue;
+        }
+
         private void Load ()
         {            
             var settings = Client.Get<Dictionary<string,string>> ("/settings");
             var dict = new Dictionary<string, string> ();
             settings.ForEach (s => dict.Add (s.Key, s.Value));
             _settings = dict;
-        }
-
-        public void SetSetting (string key, string value)
-        {
-            throw new NotImplementedException ();
         }
 
         public IDictionary<string, string> GetSettings ()
@@ -55,14 +68,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return _settings;            
         }
 
-        public void SetSettings (IDictionary<string, string> appSettings)
-        {
-            throw new NotImplementedException ();
-        }
-
 		ClientPaymentSettings _cachedSettings = null;
-
-
         public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
 		{
 			if(_cachedSettings == null || cleanCache)

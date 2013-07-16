@@ -26,14 +26,14 @@ namespace MK.Booking.IBS.Test
             return _settings[key];
         }
 
+        public T GetSetting<T>(string key, T defaultValue) where T : struct
+        {
+            throw new NotImplementedException();
+        }
+
         public IDictionary<string, string> GetSettings()
         {
             return _settings;
-        }
-
-        public void SetSettings(IDictionary<string, string> appSettings)
-        {
-            throw new NotImplementedException();
         }
 
         public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
