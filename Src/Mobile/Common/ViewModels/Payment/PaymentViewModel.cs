@@ -127,29 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return false;
 		}
 
-		private void ShowPayPalPaymentConfirmation()
-		{
-			MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
-			                           Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
-			                           Str.CmtTransactionResendConfirmationButtonText,
-			                           ()=> {
-												ConfirmPaymentForDriver();
-												ShowPayPalPaymentConfirmation();
-											},
-			                           Str.OkButtonText,
-			                           ()=> ReturnResult(""));
-		}
 
-		private void ShowCreditCardPaymentConfirmation(string transactionId)
-		{
-            MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, transactionId),
-			                            Str.CmtTransactionResendConfirmationButtonText, ()=>
-			{				
-				ConfirmPaymentForDriver();
-                ShowCreditCardPaymentConfirmation(transactionId);
-			},
-			Str.OkButtonText, ()=> ReturnResult(""));
-		}
 
         public IMvxCommand ConfirmOrderCommand
         {
@@ -249,6 +227,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}			
 
 			return true;
+		}
+
+		private void ShowPayPalPaymentConfirmation()
+		{
+			MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
+			                           Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+			                           Str.CmtTransactionResendConfirmationButtonText,
+			                           ()=> {
+				ConfirmPaymentForDriver();
+				ShowPayPalPaymentConfirmation();
+			},
+			Str.OkButtonText,
+			()=> ReturnResult(""));
+		}
+
+		private void ShowCreditCardPaymentConfirmation(string transactionId)
+		{
+			MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, transactionId),
+			                           Str.CmtTransactionResendConfirmationButtonText, ()=>
+			                           {				
+				ConfirmPaymentForDriver();
+				ShowCreditCardPaymentConfirmation(transactionId);
+			},
+			Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
     }
