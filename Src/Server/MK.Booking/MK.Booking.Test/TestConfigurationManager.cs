@@ -38,6 +38,11 @@ namespace apcurium.MK.Booking.Common.Tests
 
         }
 
+        public void SetSetting(string key, string value)
+        {
+            _config[key] = value;
+        }
+
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
             throw new NotImplementedException();
