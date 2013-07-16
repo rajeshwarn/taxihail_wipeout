@@ -36,11 +36,6 @@ namespace MK.Booking.IBS.Test
             return _settings;
         }
 
-        public void SetSettings(IDictionary<string, string> appSettings)
-        {
-            throw new NotImplementedException();
-        }
-
         public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
         {
             throw new NotImplementedException();

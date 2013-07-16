@@ -7,10 +7,7 @@ namespace apcurium.MK.Common.Configuration
         void Reset();
         string GetSetting( string key );
         T GetSetting<T>(string key, T defaultValue) where T : struct; 
-        
         IDictionary<string, string> GetSettings();
-        void SetSettings(IDictionary<string, string> appSettings);
-
 
 		ClientPaymentSettings GetPaymentSettings(bool cleanCache = false);
 
