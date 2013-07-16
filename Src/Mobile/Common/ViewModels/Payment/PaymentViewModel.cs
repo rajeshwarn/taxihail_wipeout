@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					// Give the backend some time to proccess the previous command
-					Thread.Sleep(500);
+					Thread.Sleep(500); //todo <- waiting needlessly
 
 					var response = PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
 					if(!response.IsSuccessfull)
