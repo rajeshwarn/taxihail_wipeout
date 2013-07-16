@@ -111,7 +111,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             
             
-            
             var d = IsTop && !IsBottom 
                 ? Resource.Drawable.cell_top_state 
                 : IsBottom && !IsTop 
@@ -127,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
         }
         
-        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeface, Color color )
+        private void DrawText(Canvas canvas, string text, float x, float y, float textSize, Typeface typeface, Color color )
         {
             var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
             var rect = new Rect();
