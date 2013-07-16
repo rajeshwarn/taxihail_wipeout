@@ -66,17 +66,41 @@ namespace apcurium.MK.Booking.Mobile.Client
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusActionCancelButton, AppStyle.ButtonColor.Red );
 
+			btnRebook.Hidden = true;
+			btnHide.Hidden = true;
             btnCancel.Hidden = true;
             btnStatus.Hidden = true;
 			btnSendReceipt.Hidden = true;
 			btnRateTrip.Hidden = true;
 			btnViewRating.Hidden = true;
             
+			var btn2Frame = btnHide.Frame;
+			var btn3Frame = btnCancel.Frame;
+			var btn4Frame = btnSendReceipt.Frame;
+
 			var btn3Visible = !ViewModel.IsCompleted || ViewModel.ShowRateButton || ViewModel.HasRated;
 			var btn4Visible = ViewModel.SendReceiptAvailable;
 
 			if (!btn3Visible && btn4Visible) {
-				btnSendReceipt.Frame = btnCancel.Frame;
+				btnSendReceipt.Frame = btn3Frame;
+			}
+
+			// put red button at the bottom
+			if (ViewModel.IsCompleted && (btn3Visible || btn4Visible)) {
+				if (btn3Visible && btn4Visible) {
+					btnRateTrip.Frame = btn2Frame;
+					btnViewRating.Frame = btn2Frame;
+					btnSendReceipt.Frame = btn3Frame;
+					btnHide.Frame = btn4Frame;
+				} else {
+					if (btn3Visible) {
+						btnSendReceipt.Frame = btn2Frame;
+						btnHide.Frame = btn3Frame;
+					} else {
+						btnHide.Frame = btn3Frame;
+						btnSendReceipt.Frame = btn2Frame;
+					}
+				}
 			}
 
 			this.AddBindings(new Dictionary<object, string>()                            
