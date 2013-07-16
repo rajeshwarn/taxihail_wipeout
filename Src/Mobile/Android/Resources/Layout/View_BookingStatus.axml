@@ -158,11 +158,12 @@
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/taxiTypeLabel"
-                            android:layout_marginTop="2dip" />
+                            android:layout_marginTop="2dip"
+                            local:MvxBind="{'Visibility':{'Path':'VehicleMakeEmpty','Converter':'InvertedVisibility'}}" />
                         <TextView
                             android:id="@+id/makeValue"
                             style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleMake'}}"
+                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleMake'}, 'Visibility':{'Path':'VehicleMakeEmpty','Converter':'InvertedVisibility'}}"
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
@@ -178,11 +179,12 @@
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/makeLabel"
-                            android:layout_marginTop="2dip" />
+                            android:layout_marginTop="2dip"
+                            local:MvxBind="{'Visibility':{'Path':'VehicleModelEmpty','Converter':'InvertedVisibility'}}" />
                         <TextView
                             android:id="@+id/modelValue"
                             style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleModel'}}"
+                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleModel'}, 'Visibility':{'Path':'VehicleModelEmpty','Converter':'InvertedVisibility'}}"
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
@@ -198,11 +200,12 @@
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/modelLabel"
-                            android:layout_marginTop="2dip" />
+                            android:layout_marginTop="2dip"
+                            local:MvxBind="{'Visibility':{'Path':'VehicleColorEmpty','Converter':'InvertedVisibility'}}" />
                         <TextView
                             android:id="@+id/ColorValue"
                             style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleColor'}}"
+                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleColor'}, 'Visibility':{'Path':'VehicleColorEmpty','Converter':'InvertedVisibility'}}"
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"

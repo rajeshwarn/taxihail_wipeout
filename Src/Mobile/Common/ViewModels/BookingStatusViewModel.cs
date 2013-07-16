@@ -171,6 +171,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			private set{}
 		}
 
+		public bool VehicleMakeEmpty
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake); }
+		}
+		public bool VehicleModelEmpty
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel); }
+		}
+		public bool VehicleColorEmpty
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor); }
+		}
+
 		private string _statusInfoText { get; set; }
 		public string StatusInfoText {
 			get { return _statusInfoText; }
@@ -203,6 +216,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				FirePropertyChanged (() => OrderStatusDetail);
+				FirePropertyChanged (() => VehicleMakeEmpty);
+				FirePropertyChanged (() => VehicleModelEmpty);
+				FirePropertyChanged (() => VehicleColorEmpty);
                 FirePropertyChanged (() => IsDriverInfoAvailable);
                 FirePropertyChanged (() => IsCallTaxiVisible);
 			}

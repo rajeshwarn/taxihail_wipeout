@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName=null)
+        public Address ConvertToAddress(GeoObj geoCodeResult, bool allowRange, string placeName=null)
         {
             var address = new Address
             {
@@ -29,7 +29,8 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
             address.AddressType = "postal";
 
-            if (address.StreetNumber.HasValue() &&
+            if (!allowRange &&
+                address.StreetNumber.HasValue() &&
                 address.StreetNumber.Contains("-"))
             {
                 address.StreetNumber = address.StreetNumber.Split('-')[0].Trim();

@@ -11,7 +11,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         
         public BraintreeServiceClient(string url, string sessionId, string clientKey):base(url, sessionId)
         {
-            //todo client side get
 			ClientKey =clientKey;
 
         }

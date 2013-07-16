@@ -583,7 +583,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
         }
 
-        public void AddCreditCard (CreditCardInfos creditCard)
+        public bool AddCreditCard (CreditCardInfos creditCard)
         {
             var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
             
@@ -597,10 +597,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			    creditCard.Token = response.CardOnFileToken;       
 			
 			}
-			catch
+			catch(Exception e)
 			{
-                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage ( "Validation", "Cannot validate the credit card.");
-                return;
+                return false;
 			}
             
             
@@ -617,6 +616,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 client.AddCreditCard (request); 
             }, ex => {
                 throw ex; });  
+
+			return true;
+
         }
 
 
