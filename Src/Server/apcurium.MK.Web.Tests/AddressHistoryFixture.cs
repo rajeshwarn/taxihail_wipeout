@@ -8,6 +8,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
+    [Ignore("Waiting for MK to fix IBS")]
     internal class AddressHistoryFixture : BaseTest
     {
         private Guid _knownAddressId = Guid.NewGuid();

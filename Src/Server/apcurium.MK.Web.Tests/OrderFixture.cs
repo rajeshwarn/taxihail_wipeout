@@ -12,6 +12,8 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
+    [TestFixture]
+    [Ignore("Waiting for MK to fix IBS")]
     public class given_no_order : BaseTest
     {
 
@@ -82,6 +84,7 @@ namespace apcurium.MK.Web.Tests
         }
 
     }
+    [Ignore("Waiting for MK to fix IBS")]
     public class given_an_existing_order : BaseTest
     {
         private readonly Guid _orderId = Guid.NewGuid();
