@@ -78,13 +78,13 @@
             </FrameLayout>
             <apcurium.mk.booking.mobile.client.controls.SlidingPanel
                 android:layout_width="fill_parent"
-                android:layout_height="200dip"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 local:MvxBind="{'IsEnabled': {'Path': 'IsDriverInfoAvailable'}}">
                 <LinearLayout
                     android:id="@+id/hiddenTopContent"
                     android:layout_width="match_parent"
-                    android:layout_height="140dip"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/driverInfosBackGreyRepeat">
                     <RelativeLayout
                         android:layout_width="match_parent"

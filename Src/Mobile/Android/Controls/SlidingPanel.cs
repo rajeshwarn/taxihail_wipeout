@@ -22,8 +22,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private float _initialHeight;
         private int _slideOutHeight
         {
-            get { return this.LayoutParameters.Height - _visibleView.LayoutParameters.Height; }
+			get { return GetHeight() - _visibleView.LayoutParameters.Height; }
         }
+
+		int GetHeight()
+		{
+			this.Measure (MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified), MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
+			return this.MeasuredHeight;
+		}
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public SlidingPanel(Context context)
