@@ -10,6 +10,7 @@ using MK.Booking.Api.Client;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using ServiceStack.ServiceClient.Web;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -317,10 +318,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var authResponse = auth.Authenticate (email, password);
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
-            } catch (WebException ex) {
-                TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
-                
-                return null;
+            } catch (Exception ex) {
+				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == 404)) {
+					TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+					return null;
+				}
+				throw;
             }
         }
 

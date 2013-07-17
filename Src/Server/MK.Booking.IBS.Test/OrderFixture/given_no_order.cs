@@ -27,7 +27,6 @@ namespace MK.Booking.IBS.Test.OrderFixture
         public void when_creating_an_order()
         {
             var order = new TBookOrder_7();
-
             order.ServiceProviderID = MobileKnowledgeProviderId;
             order.AccountID = _accountId;
             var pickupDateTime = DateTime.Now;
@@ -71,6 +70,8 @@ namespace MK.Booking.IBS.Test.OrderFixture
             };
 
             var ibsAcccountId = service.SaveAccount3("taxi", "test", account);
+            Trace.WriteLine("IBS account created: " + ibsAcccountId);
+
             return ibsAcccountId;
         }
     }
