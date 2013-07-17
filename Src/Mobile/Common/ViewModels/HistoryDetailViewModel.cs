@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.PickupAddress.BookAddress;
+                    return Order.PickupAddress.DisplayAddress;
                 }
                 else
                 {
