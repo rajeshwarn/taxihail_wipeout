@@ -142,7 +142,7 @@
 "CreateAccoutCreate"="Create";
 "StatusActionBookButton"="Book another taxi";
 "StatusCallButton"="Call";
-"StatusPayButton"="Pay for this order";
+"StatusPayButton"="Pay now";
 "PickupDateDisplay"="Reservation for {0:ddd, MMM d} at {0:h:mm tt}";
 "TabSettings"="Settings";
 "ResetPasswordConfirmationMessage"="A new password was send by email.";
@@ -428,4 +428,3 @@
 "PayPalExpressCheckoutSuccessMessage"="PayPal payment was successful. Confirmation sent to the driver.";
 "CreditCard"="Credit Card";
 "PaymentErrorTitle"="Payment cannot be completed";
-"PayNow"="Pay now";
