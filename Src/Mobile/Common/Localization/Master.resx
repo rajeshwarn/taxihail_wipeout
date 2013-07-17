@@ -1249,7 +1249,7 @@
     <value>Phone</value>
   </data>
   <data name="StatusPayButton" xml:space="preserve">
-    <value>Pay for this order</value>
+    <value>Pay now</value>
   </data>
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
     <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
@@ -1352,8 +1352,5 @@
   </data>
   <data name="PaymentErrorTitle" xml:space="preserve">
     <value>Payment cannot be completed</value>
-  </data>
-  <data name="PayNow" xml:space="preserve">
-    <value>Pay now</value>
   </data>
 </root>
