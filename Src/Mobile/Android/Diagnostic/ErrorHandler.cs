@@ -50,8 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 						TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);
 					}
 				}
-			} else {
-				throw ex;
 			}
         }
 	}
