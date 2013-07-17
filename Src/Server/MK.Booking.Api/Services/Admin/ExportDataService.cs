@@ -67,8 +67,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                                       CreateDate = x.CreatedDate.Add(offset).ToString("d", CultureInfo.InvariantCulture),
                                                       CreateTime = x.CreatedDate.Add(offset).ToString("t", CultureInfo.InvariantCulture),
                                                       Status = (OrderStatus)x.Status,
-                                                      PickupAddress = x.PickupAddress.BookAddress,
-                                                      DropOffAddress = x.DropOffAddress.BookAddress,
+                                                      PickupAddress = x.PickupAddress.DisplayAddress,
+                                                      DropOffAddress = x.DropOffAddress.DisplayAddress,
                                                       x.Tip,
                                                       x.Toll,
                                                       x.Fare
