@@ -317,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var authResponse = auth.Authenticate (email, password);
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
-            } catch (WebException ex) {
+            } catch (Exception ex) {
                 TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 
                 return null;
