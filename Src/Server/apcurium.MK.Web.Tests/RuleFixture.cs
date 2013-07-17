@@ -227,6 +227,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore("Waiting for MK to fix IBS problem")]
         public void TestDefaultRule_Warning_NoZone()
         {
             var rule = CreateRule(r =>
