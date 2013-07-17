@@ -43,14 +43,6 @@
                 android:hint="@string/LocationDetailStreetAddressPlaceholder"
                 android:inputType="text"
                 local:MvxBind="{'Text': {'Path': 'BookAddress'}}" />
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="42dp"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:hint="@string/ApartmentLabel"
-                android:inputType="text"
-                local:MvxBind="{'Text': {'Path': 'Apartment'},'Visibility':{'Path':'IsFutureBooking', 'Converter':'Visibility'}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
