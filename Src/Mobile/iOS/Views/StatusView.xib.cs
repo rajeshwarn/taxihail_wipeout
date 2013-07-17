@@ -192,6 +192,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (propertyName == "OrderStatusDetail") 
 			{
 				var numberOfItemsHidden = 0;
+				var defaultHeightOfSlidingView = 130f;
+
+				var tupleList = new List<Tuple<UILabel, UILabel>> ();
+				tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType));
+				tupleList.Add (Tuple.Create (lblMake, txtMake));
+				tupleList.Add (Tuple.Create (lblModel, txtModel));
+				tupleList.Add (Tuple.Create (lblColor, txtColor));
+
+				if (ViewModel.VehicleTypeEmpty){ 
+					txtTaxiType.Hidden = true;
+					lblTaxiType.Hidden = true;
+					numberOfItemsHidden++;
+				}
 
 				if (ViewModel.VehicleMakeEmpty){ 
 					txtMake.Hidden = true;
@@ -210,38 +223,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 					lblColor.Hidden = true;
 					numberOfItemsHidden++;
 				}
+			
+				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + topVisibleStatus.Frame.Height);
 
-				switch (numberOfItemsHidden)
-				{
-					case 1:
-						if(ViewModel.VehicleMakeEmpty){
-							txtColor.Frame = txtModel.Frame;
-							lblColor.Frame = lblModel.Frame;
-							txtModel.Frame = txtMake.Frame;
-							lblModel.Frame = lblMake.Frame;
-						}
-						if(ViewModel.VehicleModelEmpty){
-							txtColor.Frame = txtModel.Frame;
-							lblColor.Frame = lblModel.Frame;
-						}
-						statusBar.SetMaxHeight (110 + topVisibleStatus.Frame.Height);
-						break;
-					case 2:
-						if(!ViewModel.VehicleModelEmpty){
-							txtModel.Frame = txtMake.Frame;
-							lblModel.Frame = lblMake.Frame;
-						}
-						if(!ViewModel.VehicleColorEmpty){
-							txtColor.Frame = txtMake.Frame;
-							lblColor.Frame = lblMake.Frame;
-						}
-						statusBar.SetMaxHeight (90 + topVisibleStatus.Frame.Height);
-						break;
-					case 3:
-						statusBar.SetMaxHeight (70 + topVisibleStatus.Frame.Height);
-						break;
-					default:
-						break;
+				var i = 0;
+				foreach (var item in tupleList) {
+					if (!item.Item1.Hidden) {
+						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 44 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 44 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+						i++;
+					}
 				}
 			}
 		}
