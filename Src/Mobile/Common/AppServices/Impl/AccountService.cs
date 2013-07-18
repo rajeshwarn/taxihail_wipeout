@@ -542,17 +542,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
 			var paymentsEnabled = settings.IsPayInTaxiEnabled || settings.PayPalClientSettings.IsEnabled;
-
-			//remove credit card on file if not already removed
-
-            if (paymentsEnabled
-                && refData.PaymentsList != null
-                && refData.PaymentsList.Any(x => x.Id == ReferenceData.CreditCardOnFileType))
-            {
-				var itemToRemove = refData.PaymentsList.First(x => x.Id == ReferenceData.CreditCardOnFileType);
-				refData.PaymentsList.Remove(itemToRemove);
-            }
-            
+			           
             if (!appSettings.HideNoPreference
                 && refData.PaymentsList != null)
             {

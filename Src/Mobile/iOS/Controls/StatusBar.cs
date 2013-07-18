@@ -209,6 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void SetMaxHeight(float height)
 		{
 			_maxHeight = height;
+			SetHeight (_maxHeight, false);
 		}
 
         void SetHeight (float height, bool animate)
