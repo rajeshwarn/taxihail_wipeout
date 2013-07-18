@@ -19,6 +19,9 @@ using System.Threading.Tasks;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.BindingConverter;
+using System.Drawing;
+using System.Threading;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -66,43 +69,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusActionCancelButton, AppStyle.ButtonColor.Red );
 
-			btnRebook.Hidden = true;
-			btnHide.Hidden = true;
-            btnCancel.Hidden = true;
-            btnStatus.Hidden = true;
-			btnSendReceipt.Hidden = true;
-			btnRateTrip.Hidden = true;
-			btnViewRating.Hidden = true;
-            
-			var btn2Frame = btnHide.Frame;
-			var btn3Frame = btnCancel.Frame;
-			var btn4Frame = btnSendReceipt.Frame;
-
-			var btn3Visible = !ViewModel.IsCompleted || ViewModel.ShowRateButton || ViewModel.HasRated;
-			var btn4Visible = ViewModel.SendReceiptAvailable;
-
-			if (!btn3Visible && btn4Visible) {
-				btnSendReceipt.Frame = btn3Frame;
-			}
-
-			// put red button at the bottom
-			if (ViewModel.IsCompleted && (btn3Visible || btn4Visible)) {
-				if (btn3Visible && btn4Visible) {
-					btnRateTrip.Frame = btn2Frame;
-					btnViewRating.Frame = btn2Frame;
-					btnSendReceipt.Frame = btn3Frame;
-					btnHide.Frame = btn4Frame;
-				} else {
-					if (btn3Visible) {
-						btnSendReceipt.Frame = btn2Frame;
-						btnHide.Frame = btn3Frame;
-					} else {
-						btnHide.Frame = btn3Frame;
-						btnSendReceipt.Frame = btn2Frame;
-					}
-				}
-			}
-
 			this.AddBindings(new Dictionary<object, string>()                            
             {
 				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
@@ -128,11 +94,40 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"}
 			});
 
+			ViewModel.Loaded+= (sender, e) => {
+				InvokeOnMainThread(()=>{
+					ReorderButtons();
+				});
+			};
+
             ViewModel.Load();
 
             this.View.ApplyAppFont ();
-
         }
+
+		void ReorderButtons()
+		{
+			var yPositionOfFirstButton = btnRebook.Frame.Y;
+			var deltaYBetweenButtons = btnHide.Frame.Y - yPositionOfFirstButton;
+
+			var buttonList = new List<UIButton> ();
+			buttonList.Add (btnRebook);
+			buttonList.Add (btnStatus);
+			buttonList.Add (btnRateTrip);
+			buttonList.Add (btnViewRating);
+			buttonList.Add (btnSendReceipt);
+			buttonList.Add (btnHide);
+			buttonList.Add (btnCancel);
+
+			var i = 0;
+			foreach (var item in buttonList) {
+				if (!item.Hidden) {
+					var test = item.Title(UIControlState.Normal);
+					item.Frame = new RectangleF(item.Frame.X, yPositionOfFirstButton + (deltaYBetweenButtons * i), item.Frame.Width, item.Frame.Height);
+					i++;
+				}
+			}
+		}
     }
 }
 

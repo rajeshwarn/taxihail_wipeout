@@ -171,21 +171,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			private set{}
 		}
 
-		public bool VehicleTypeEmpty
+		public bool VehicleDriverHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType); }
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
 		}
-		public bool VehicleMakeEmpty
+		public bool VehicleLicenceHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake); }
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) || !IsDriverInfoAvailable; }
 		}
-		public bool VehicleModelEmpty
+		public bool VehicleTypeHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel); }
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType) || !IsDriverInfoAvailable; }
 		}
-		public bool VehicleColorEmpty
+		public bool VehicleMakeHidden
 		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor); }
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake) || !IsDriverInfoAvailable; }
+		}
+		public bool VehicleModelHidden
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel) || !IsDriverInfoAvailable; }
+		}
+		public bool VehicleColorHidden
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
 
 		private string _statusInfoText { get; set; }
@@ -220,10 +228,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				FirePropertyChanged (() => OrderStatusDetail);
-				FirePropertyChanged (() => VehicleTypeEmpty);
-				FirePropertyChanged (() => VehicleMakeEmpty);
-				FirePropertyChanged (() => VehicleModelEmpty);
-				FirePropertyChanged (() => VehicleColorEmpty);
+				FirePropertyChanged (() => VehicleDriverHidden);
+				FirePropertyChanged (() => VehicleLicenceHidden);
+				FirePropertyChanged (() => VehicleTypeHidden);
+				FirePropertyChanged (() => VehicleMakeHidden);
+				FirePropertyChanged (() => VehicleModelHidden);
+				FirePropertyChanged (() => VehicleColorHidden);
                 FirePropertyChanged (() => IsDriverInfoAvailable);
                 FirePropertyChanged (() => IsCallTaxiVisible);
 			}
