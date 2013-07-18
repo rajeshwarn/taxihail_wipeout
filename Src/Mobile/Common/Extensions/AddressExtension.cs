@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
     {
         public static string Display( this Address instance )
         {
-            return Params.Get( instance.FriendlyName ,instance.BookAddress ).Where( s=>s.HasValue() ).JoinBy( " - " );             
+            return Params.Get( instance.FriendlyName ,instance.DisplayAddress ).Where( s=>s.HasValue() ).JoinBy( " - " );             
         }
 
         public static bool HasValidCoordinate(this Address instance)

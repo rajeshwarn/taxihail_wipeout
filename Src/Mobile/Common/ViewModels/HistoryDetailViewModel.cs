@@ -27,14 +27,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return _orderId;
             }
-            set { _orderId = value; FirePropertyChanged(()=>OrderId); }
-
+            set { 
+				_orderId = value; 
+				FirePropertyChanged(()=>OrderId); 
+			}
         }
 
 		private Order _order;
 		public Order Order {
 			get{ return _order; }
-            set { _order = value; 
+            set { 
+				_order = value; 
                 if (_order.TransactionId != default(long)) {
                     AuthorizationNumber = _order.TransactionId + "";
                 }
@@ -62,10 +65,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		        FirePropertyChanged("Status");
 		        FirePropertyChanged("SendReceiptAvailable");
 		    }
-
 		}
         
-
+        
         public bool SendReceiptAvailable 
         {
             get
@@ -75,8 +77,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
-
         private bool _isDone;
         public bool IsDone
         {
@@ -84,8 +84,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return _isDone;
             }
-            set { _isDone = value; FirePropertyChanged(()=>IsDone); FirePropertyChanged(()=>ShowRateButton); }
-
+            set { 
+				_isDone = value; 
+				FirePropertyChanged(()=>IsDone); 
+				FirePropertyChanged(()=>ShowRateButton); 
+			}
         }
 
         private bool _isCompleted = true;
@@ -115,8 +118,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled && _hasRated;
             }
-            set { _hasRated = value; FirePropertyChanged(()=>HasRated); FirePropertyChanged(()=>ShowRateButton); }
-
+            set { 
+				_hasRated = value; 
+				FirePropertyChanged(()=>HasRated); 
+				FirePropertyChanged(()=>ShowRateButton);  
+			}
         }
 
         private bool _showRateButton;
@@ -159,7 +165,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (Order != null)
                 {
                     return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
-                    
                 }
                 return null;
             }
@@ -186,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string OriginTxt
         {
             get {
-                return Order != null ? Order.PickupAddress.BookAddress : null;
+                return Order != null ? Order.PickupAddress.DisplayAddress : null;
             }
         }
 
@@ -256,24 +261,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return Task.Factory.StartNew(() => {
 				Order = AccountService.GetHistoryOrder(OrderId);
 			});
-
 		}
+
+		public event EventHandler Loaded;
 
 		public Task LoadStatus ()
 		{
 			return Task.Factory.StartNew(()=> {
-
-
                 HasRated = BookingService.GetOrderRating(OrderId).RatingScores.Any();
                 Status = BookingService.GetOrderStatus(OrderId);
                 IsCompleted = BookingService.IsStatusCompleted (Status.IBSStatusId);
                 IsDone = BookingService.IsStatusDone(Status.IBSStatusId);
                 
-                var isCompleted = BookingService.IsStatusCompleted(Status.IBSStatusId);
+				CanCancel = !IsCompleted;
 
-			    CanCancel = !isCompleted;
+				if(Loaded!=null){
+					Loaded(this, null);
+				}
 			});
-
 		}
 
         public IMvxCommand NavigateToRatingPage

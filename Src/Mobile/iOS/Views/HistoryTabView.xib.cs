@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		static string CellBindingText =
 			   new B("FirstLine","Title")
 				.Add("FirstLineTextColor","Status","OrderStatusToTextColorConverter")
-				.Add("SecondLine","PickupAddress.BookAddress")
+				.Add("SecondLine","PickupAddress.DisplayAddress")
 				.Add("ShowRightArrow","ShowRightArrow")
 				.Add("ShowPlusSign","ShowPlusSign")
 				.Add("IsFirst","IsFirst")
