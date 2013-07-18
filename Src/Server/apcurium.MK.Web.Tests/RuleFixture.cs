@@ -227,6 +227,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore("Waiting for MK to fix IBS problem")]
         public void TestDefaultRule_Warning_NoZone()
         {
             var rule = CreateRule(r =>
@@ -650,7 +651,16 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
             };
 
-            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings
+                                 {
+                                     ChargeTypeId = 99,
+                                     VehicleTypeId = 1,
+                                     ProviderId = Provider.MobileKnowledgeProviderId,
+                                     Phone = "514-555-12129",
+                                     Passengers = 6,
+                                     NumberOfTaxi = 1,
+                                     Name = "Joe Smith"
+                                 };
 
             if (update != null)
             {

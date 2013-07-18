@@ -11,6 +11,7 @@ using MK.Booking.Api.Client;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using ServiceStack.ServiceClient.Web;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -321,10 +322,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var authResponse = auth.Authenticate (email, password);
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
-            } catch (WebException ex) {
-                TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
-                
-                return null;
+            } catch (Exception ex) {
+				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == 404)) {
+					TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+					return null;
+				}
+				throw;
             }
         }
 
@@ -537,23 +540,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var refData = GetReferenceData();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            //add credit card on file if not already included and feature enabled
-
-			var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
+            var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
 			var paymentsEnabled = settings.IsPayInTaxiEnabled || settings.PayPalClientSettings.IsEnabled;
+
+			//remove credit card on file if not already removed
 
             if (paymentsEnabled
                 && refData.PaymentsList != null
-                && refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType))
+                && refData.PaymentsList.Any(x => x.Id == ReferenceData.CreditCardOnFileType))
             {
-
-                refData.PaymentsList.Add(new ListItem
-                          { 
-                            Id = ReferenceData.CreditCardOnFileType, 
-                            Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
-                          });
+				var itemToRemove = refData.PaymentsList.First(x => x.Id == ReferenceData.CreditCardOnFileType);
+				refData.PaymentsList.Remove(itemToRemove);
             }
-
             
             if (!appSettings.HideNoPreference
                 && refData.PaymentsList != null)

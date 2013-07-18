@@ -78,13 +78,13 @@
             </FrameLayout>
             <apcurium.mk.booking.mobile.client.controls.SlidingPanel
                 android:layout_width="fill_parent"
-                android:layout_height="200dip"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 local:MvxBind="{'IsEnabled': {'Path': 'IsDriverInfoAvailable'}}">
                 <LinearLayout
                     android:id="@+id/hiddenTopContent"
                     android:layout_width="match_parent"
-                    android:layout_height="140dip"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/driverInfosBackGreyRepeat">
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -138,11 +138,12 @@
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/licenceLabel"
-                            android:layout_marginTop="2dip" />
+                            android:layout_marginTop="2dip"
+                            local:MvxBind="{'Visibility':{'Path':'VehicleTypeEmpty','Converter':'InvertedVisibility'}}" />
                         <TextView
                             android:id="@+id/taxiTypeValue"
                             style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleType'}}"
+                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleType'}, 'Visibility':{'Path':'VehicleTypeEmpty','Converter':'InvertedVisibility'}}"
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"

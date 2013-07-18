@@ -7,7 +7,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders", "POST")]    
+    [Route("/account/orders", "POST")]    
     public class CreateOrder : BaseDTO
     {
 
@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         {
             PickupAddress = new Address();
             DropOffAddress = new Address();
-            Settings = new BookingSettings();
             Payment = new PaymentSettings();
         }
 

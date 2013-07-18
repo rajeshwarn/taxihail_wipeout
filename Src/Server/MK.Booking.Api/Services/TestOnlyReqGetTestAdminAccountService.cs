@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Password = TestUserPassword,
                 Name = "Test",
                 Phone = "123456",
-                IbsAccountId = 999,
+                IbsAccountId = 49502,
                 ConfimationToken = Guid.NewGuid().ToString("N"),
                 Language = "en",
                 IsAdmin = true
