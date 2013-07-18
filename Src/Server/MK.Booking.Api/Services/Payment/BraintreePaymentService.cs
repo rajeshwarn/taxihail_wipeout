@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
             _orderDao = orderDao;
             _configurationManager = configurationManager;
-
+            
             BraintreeGateway = GetBraintreeGateway(((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeServerSettings);
         }
 

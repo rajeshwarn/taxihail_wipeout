@@ -103,18 +103,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private void CallCompany (string name, string number)
         {
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask> ().MakePhoneCall (name, number);
         }
- 
+
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
-            OrderStatusDetail r = new OrderStatusDetail ();
+            var r = new OrderStatusDetail ();
 
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                r = service.GetOrderStatus (orderId);
-            }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+
+            UseServiceClient<OrderServiceClient>(service =>
+                {
+                    r = service.GetOrderStatus(orderId);
+                }, ex => Logger.LogError(ex));
 
             return r;
         }
@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var task = Task.Factory.StartNew (() =>
             {
-                OrderStatusDetail result = new OrderStatusDetail ();
+                var result = new OrderStatusDetail ();
 
                 if (!HasLastOrder) {
                     throw new InvalidOperationException ();

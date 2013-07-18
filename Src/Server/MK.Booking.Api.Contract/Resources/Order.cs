@@ -32,11 +32,11 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? Toll { get; set; }
 
         public double? Tip { get; set; }
-
-        public bool IsCompleted { get; set; }
-
+        
         public bool IsRated { get; set; }
 
         public long TransactionId { get; set; }
+
+        public OrderStatus Status{ get; set; }
     }
 }

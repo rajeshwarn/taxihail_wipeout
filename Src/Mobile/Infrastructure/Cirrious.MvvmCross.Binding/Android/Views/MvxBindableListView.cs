@@ -73,21 +73,21 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
         private void SetupItemClickListener()
         {
             base.ItemClick += (sender, args) =>
-                                  {
-                                      if (this.ItemClick == null)
-                                          return;
-                                      var item = Adapter.GetItem(args.Position) as MvxJavaContainer;
-                                      if (item == null)
-                                          return;
+            {
+                if (ItemClick == null)
+                    return;
+                var item = Adapter.GetItem(args.Position) as MvxJavaContainer;
+                if (item == null)
+                    return;
 
-                                      if (item.Object == null)
-                                          return;
+                if (item.Object == null)
+                    return;
 
-                                      if (!this.ItemClick.CanExecute(item.Object))
-                                          return;
+                if (!ItemClick.CanExecute(item.Object))
+                    return;
 
-                                      this.ItemClick.Execute(item.Object);
-                                  };
+                ItemClick.Execute(item.Object);
+            };
         }
     }
 }

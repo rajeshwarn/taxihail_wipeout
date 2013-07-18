@@ -5,7 +5,7 @@ namespace System.Reactive.Linq
 {
 	internal class SimpleDisposableObservable<T> : IObservable<T>
 	{
-		Func<IObserver<T>, IDisposable> subscribe;
+	    readonly Func<IObserver<T>, IDisposable> subscribe;
 
 		public SimpleDisposableObservable (Func<IObserver<T>, IDisposable> subscribe)
 		{

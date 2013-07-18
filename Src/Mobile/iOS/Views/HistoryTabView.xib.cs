@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,15 +27,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private const string CELLID = "HistoryCell";
 		
-		const string CellBindingText = @"
-                {
-                   'FirstLine':{'Path':'Title'},
-                   'SecondLine':{'Path':'PickupAddress.DisplayAddress'},
-                   'ShowRightArrow':{'Path':'ShowRightArrow'},
-                   'ShowPlusSign':{'Path':'ShowPlusSign'},
-                   'IsFirst':{'Path':'IsFirst'},
-                   'IsLast':{'Path':'IsLast'}
-				}";
+		static string CellBindingText =
+			   new B("FirstLine","Title")
+				.Add("FirstLineTextColor","Status","OrderStatusToTextColorConverter")
+				.Add("SecondLine","PickupAddress.DisplayAddress")
+				.Add("ShowRightArrow","ShowRightArrow")
+				.Add("ShowPlusSign","ShowPlusSign")
+				.Add("IsFirst","IsFirst")
+				.Add("IsLast","IsLast");
 
 		#region Constructors
 

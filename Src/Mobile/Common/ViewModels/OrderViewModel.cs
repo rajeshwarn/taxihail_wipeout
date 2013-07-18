@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             public double? Tip { get; set; }
 
-            public bool IsCompleted { get; set; }
 
             public string Title { get; set; }
 
@@ -38,5 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             public bool ShowPlusSign { get; set; }
             public bool IsFirst { get; set; }
             public bool IsLast { get; set; }
+
+        public OrderStatus Status { get; set; }
     }
 }

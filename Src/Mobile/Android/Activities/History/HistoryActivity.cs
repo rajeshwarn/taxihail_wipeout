@@ -25,11 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             _listView.DividerHeight = 0;
             _listView.SetPadding(10, 0, 10, 0);
         }
-        
-        protected override void OnRestart()
-        {
-            base.OnRestart();
-        }
 
         protected override void OnViewModelSet()
         {
