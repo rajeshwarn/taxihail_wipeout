@@ -35,6 +35,6 @@
             android:layout_marginTop="10dip"
             android:layout_below="@id/HistoricListViewTitle"
             local:MvxItemTemplate="@layout/simpleorderlistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;Orders&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToHistoryDetailPage&apos;}}" />
+            local:MvxBind="{'ItemsSource':{'Path':'Orders'},'ItemClick':{'Path':'NavigateToHistoryDetailPage'}}" />
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

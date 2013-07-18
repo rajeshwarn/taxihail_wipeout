@@ -203,27 +203,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
-                return GetCommand(() =>
-                {
+                return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>() {
+                    {"apt", Order.PickupAddress.Apartment},
+                    {"ringCode", Order.PickupAddress.RingCode},
+                    {"buildingName", Order.PickupAddress.BuildingName},
+                }, result =>{
+                    if (result == null) return;
 
-					RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>() {
-						{"apt", Order.PickupAddress.Apartment},
-						{"ringCode", Order.PickupAddress.RingCode},
-						{"buildingName", Order.PickupAddress.BuildingName},
-					}, result =>{
-						if(result != null)
-						{
-							Order.PickupAddress.Apartment = result.AptNumber;
-							Order.PickupAddress.RingCode = result.RingCode;
-							Order.PickupAddress.BuildingName = result.BuildingName;
-							InvokeOnMainThread(() => {
-								FirePropertyChanged(()=>AptRingCode);
-								FirePropertyChanged(()=>BuildingName);
-							});
-						}
-					});
-
-				});
+                    Order.PickupAddress.Apartment = result.AptNumber;
+                    Order.PickupAddress.RingCode = result.RingCode;
+                    Order.PickupAddress.BuildingName = result.BuildingName;
+                    InvokeOnMainThread(() => 
+                    {
+                        FirePropertyChanged(()=>AptRingCode);
+                        FirePropertyChanged(()=>BuildingName);
+                    });
+                }));
 			}
         }
         public IMvxCommand NavigateToEditInformations
@@ -235,29 +230,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             order = Order.ToJson()
                         }.ToSimplePropertyDictionary(), result =>
                                                             {
-                                                                if (result != null)
+                                                                if (result == null) return;
+
+                                                                Order.PickupAddress.Apartment = result.PickupAddress.Apartment;
+                                                                Order.PickupAddress.RingCode = result.PickupAddress.RingCode;
+                                                                Order.PickupAddress.BuildingName = result.PickupAddress.BuildingName;
+                                                                Order.Settings.Name = result.Settings.Name;
+                                                                Order.Settings.VehicleTypeId = result.Settings.VehicleTypeId;
+                                                                Order.Settings.ChargeTypeId = result.Settings.ChargeTypeId;
+                                                                Order.Settings.Phone = result.Settings.Phone;
+                                                                Order.Settings.Passengers = result.Settings.Passengers;
+                                                                InvokeOnMainThread(() =>
                                                                 {
-                                                                    Order.PickupAddress.Apartment = result.PickupAddress.Apartment;
-                                                                    Order.PickupAddress.RingCode = result.PickupAddress.RingCode;
-                                                                    Order.PickupAddress.BuildingName = result.PickupAddress.BuildingName;
-                                                                    Order.Settings.Name = result.Settings.Name;
-                                                                    Order.Settings.VehicleTypeId = result.Settings.VehicleTypeId;
-                                                                    Order.Settings.ChargeTypeId = result.Settings.ChargeTypeId;
-                                                                    Order.Settings.Phone = result.Settings.Phone;
-                                                                    Order.Settings.Passengers = result.Settings.Passengers;
-                                                                    InvokeOnMainThread(() =>
-                                                                                           {
-                                                                                               FirePropertyChanged(()=>AptRingCode);
-                                                                                               FirePropertyChanged(()=>BuildingName);
-                                                                                               FirePropertyChanged(() => OrderPassengerNumber);
-                                                                                               FirePropertyChanged(() => OrderPhone);
-                                                                                               FirePropertyChanged(() => OrderName);
-                                                                                               FirePropertyChanged(() => OrderApt);
-                                                                                               FirePropertyChanged(() => OrderRingCode);
-                                                                                               FirePropertyChanged(() => VehicleName);
-                                                                                               FirePropertyChanged(() => ChargeType);
-                                                                                           });
-                                                                }
+                                                                    FirePropertyChanged(()=>AptRingCode);
+                                                                    FirePropertyChanged(()=>BuildingName);
+                                                                    FirePropertyChanged(() => OrderPassengerNumber);
+                                                                    FirePropertyChanged(() => OrderPhone);
+                                                                    FirePropertyChanged(() => OrderName);
+                                                                    FirePropertyChanged(() => OrderApt);
+                                                                    FirePropertyChanged(() => OrderRingCode);
+                                                                    FirePropertyChanged(() => VehicleName);
+                                                                    FirePropertyChanged(() => ChargeType);
+                                                                });
                                                             }));
             }
         }
@@ -278,38 +272,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 	    					MessageService.ShowProgress (true);
 	    					var orderInfo = _bookingService.CreateOrder (Order);
-    					
-    						if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0) 
-							{
-	    						var orderCreated = new Order 
-	                            {
-	                                CreatedDate = DateTime.Now, 
-	                                DropOffAddress = Order.DropOffAddress, 
-	                                IBSOrderId = orderInfo.IBSOrderId, 
-	                                Id = Order.Id, PickupAddress = Order.PickupAddress,
-	                                Note = Order.Note, 
-                                    PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
-	                                Settings = Order.Settings,
-	                            };
+
+						    if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0)) return;
+
+						    var orderCreated = new Order 
+						        {
+						            CreatedDate = DateTime.Now, 
+						            DropOffAddress = Order.DropOffAddress, 
+						            IBSOrderId = orderInfo.IBSOrderId, 
+						            Id = Order.Id, PickupAddress = Order.PickupAddress,
+						            Note = Order.Note, 
+						            PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+						            Settings = Order.Settings,
+						        };
 	    						
-	    						RequestNavigate<BookingStatusViewModel>(new
-	    						{
-	    							order = orderCreated.ToJson(),
-	    							orderStatus = orderInfo.ToJson()
-	    						});	
-	    						Close();
-	    						MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
-    						}		
-    					
-        				} 
+						    RequestNavigate<BookingStatusViewModel>(new
+						        {
+						            order = orderCreated.ToJson(),
+						            orderStatus = orderInfo.ToJson()
+						        });	
+						    Close();
+						    MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+						} 
 						catch (Exception ex) 
 						{
-            					InvokeOnMainThread (() =>
-            					{
-            						var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            						string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
-            						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
-            					});
+            				InvokeOnMainThread (() =>
+            				{
+            					var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            					var err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+            					MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
+            				});
             			}
 						finally {
             					MessageService.ShowProgress(false);

@@ -20,9 +20,10 @@ namespace apcurium.MK.Booking.Api.Services
             resource.Fare = order.Fare;
             resource.Tip = order.Tip;
             resource.Toll = order.Toll;
-            resource.IsCompleted = order.Status == (int) OrderStatus.Completed;
+            resource.Status = (OrderStatus)order.Status;
             resource.IsRated = order.IsRated;
             resource.TransactionId = order.TransactionId;
+
             return resource;
         }
     }
