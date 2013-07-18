@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile
             if (name == "Completed") return navyBlue;
             if (name == "Removed") return darkRed;
 
-            return darkGray; 
+			throw new ArgumentException ("Unknown Enum member - please update this converter");
 		}
 	}
 }

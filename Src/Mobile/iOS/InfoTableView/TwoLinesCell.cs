@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             set { TextLabel.Text = value; }
         }
         
+		public UIColor FirstLineTextColor { get { return TextLabel.TextColor; } set { TextLabel.TextColor = value; } }
+
         public string SecondLine { get { return DetailTextLabel.Text; }
             set { DetailTextLabel.Text = value;}
         }

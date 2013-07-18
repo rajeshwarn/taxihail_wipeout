@@ -97,8 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void LoadOrders ()
 		{
 			AccountService.GetHistoryOrders ().Subscribe(orders =>
-			    {
-			        var y = orders.Select(o => o.Status).Take(10).ToArray();
+			{
 
                 Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel()
                 {

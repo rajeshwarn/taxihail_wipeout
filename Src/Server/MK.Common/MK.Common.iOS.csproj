@@ -106,6 +106,7 @@
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <ProjectExtensions>

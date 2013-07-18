@@ -90,7 +90,6 @@
     <Compile Include="Framework\Extensions\Calendar\Int64TimeSpanExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\SingleTimeSpanExtensions.cs" />
     <Compile Include="Framework\Extensions\CollectionExtensions.cs" />
-    <Compile Include="Framework\Extensions\TaskExtensions.cs" />
     <Compile Include="Framework\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Framework\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Framework\Extensions\DoubleExtension.cs" />
