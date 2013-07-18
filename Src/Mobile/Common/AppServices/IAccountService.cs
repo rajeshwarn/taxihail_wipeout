@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void DeleteHistoryAddress(Guid addressId);
         
-		IEnumerable<Order> GetHistoryOrders();
+		Task<Order[]> GetHistoryOrders();
 		OrderStatusDetail[] GetActiveOrdersStatus();
         
         Order GetHistoryOrder(Guid id);

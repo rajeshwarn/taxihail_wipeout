@@ -14,6 +14,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Converters
         public readonly BoolInverter BoolInverter = new BoolInverter();
 		public readonly EmptyToResourceConverter EmptyToResource = new EmptyToResourceConverter();
 		public readonly EnumToBoolConverter EnumToBool = new EnumToBoolConverter();
+        public readonly OrderStatusToTextColorConverter OrderStatusToTextColorConverter = new OrderStatusToTextColorConverter();
         public readonly ColorEnumToAndroidColorConverter ColorEnumToAndroidColor = new ColorEnumToAndroidColorConverter();
 
     }

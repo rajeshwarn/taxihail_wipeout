@@ -12,6 +12,7 @@ using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
@@ -93,27 +94,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public Task LoadOrders ()
+        public void LoadOrders ()
 		{
-			return Task.Factory.StartNew (() => {
+			AccountService.GetHistoryOrders ().Subscribe(orders =>
+			    {
+			        var y = orders.Select(o => o.Status).Take(10).ToArray();
 
-				var orders =AccountService.GetHistoryOrders ().ToArray();
-                
-				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
-					{
-						IBSOrderId = x.IBSOrderId,
-						Id = x.Id,
-						CreatedDate = x.CreatedDate,
-						PickupAddress = x.PickupAddress,
-						PickupDate = x.PickupDate,
-                        Status = x.Status,
-                        Title = FormatDateTime( x.PickupDate ),
-						IsFirst = x.Equals(orders.First()),
-						IsLast = x.Equals(orders.Last()),
-						ShowRightArrow = true
-					}));
+                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel()
+                {
+                    IBSOrderId = x.IBSOrderId,
+                    Id = x.Id,
+                    CreatedDate = x.CreatedDate,
+                    PickupAddress = x.PickupAddress,
+                    PickupDate = x.PickupDate,
+                    Status = x.Status,
+                    Title = FormatDateTime(x.PickupDate),
+                    IsFirst = x.Equals(orders.First()),
+                    IsLast = x.Equals(orders.Last()),
+                    ShowRightArrow = true
+                }));
                 HasOrders = orders.Any();
+
 			});
+
+
+           
 		}
 
 

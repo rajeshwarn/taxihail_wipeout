@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
@@ -133,16 +134,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public IEnumerable<Order> GetHistoryOrders ()
+        public Task<Order[]> GetHistoryOrders ()
         {
-            IEnumerable<Order> result = new Order[0];
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                result = service.GetOrders ();
-            }
-            );
+            return Task.Factory.StartNew(() =>
+                {
 
-            return result;
+                    var result = new Order[0];
+                    UseServiceClient<OrderServiceClient>(service =>
+                        {
+                            result = service.GetOrders().ToArray();
+                        }
+                        );
+                    return result;
+                });
         }
 
         public Order GetHistoryOrder (Guid id)

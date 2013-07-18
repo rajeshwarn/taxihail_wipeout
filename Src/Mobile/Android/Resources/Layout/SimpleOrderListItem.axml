@@ -8,4 +8,4 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="{'TextLine1':{'Path':'Title'}, 'TextLine2':{'Path':'PickupAddress.BookAddress'}, 'IsTop':{'Path':'IsFirst'}, 'IsBottom':{'Path':'IsLast'}, 'ShowRightArrow':{'Path':'ShowRightArrow'}}" />
+    local:MvxBind="{'TextLine1':{'Path':'Title'}, 'TextColorLine1':{'Path':'Status', 'Converter':'OrderStatusToTextColorConverter'},  'TextLine2':{'Path':'PickupAddress.BookAddress'}, 'IsTop':{'Path':'IsFirst'}, 'IsBottom':{'Path':'IsLast'}, 'ShowRightArrow':{'Path':'ShowRightArrow'}}" />

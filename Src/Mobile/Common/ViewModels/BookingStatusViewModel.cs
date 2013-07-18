@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
-		private IBookingService _bookingService;
+		private readonly IBookingService _bookingService;
 
 		private int _refreshPeriod = 5; //in seconds
 

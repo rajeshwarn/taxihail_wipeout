@@ -21,28 +21,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public ListViewCell2(Context context)
             : base(context)
         {
+            Ctor();
         }
         
         public ListViewCell2(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
+            Ctor();
         }
         
-        public ListViewCell2(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
+        public ListViewCell2(IntPtr ptr, JniHandleOwnership handle)
             : base(ptr, handle)
         {
+            Ctor();
         }
         
+        public void Ctor()
+        {
+            TextColorLine1 = new Color(50, 50, 50, 255);
+        }
+
         public string TextLine1 { get; set; }
         public string TextLine2 { get; set; }
 
 
-        public Color TextColor { get; set; }
+        public Color TextColorLine1 { get; set; }
 
         private bool _isTop;
-        
         public bool IsTop { 
-            get{ return _isTop;} 
+            get
+            {
+                return _isTop;
+            } 
             set
             { 
                 _isTop = value; 
@@ -52,12 +62,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         private bool _isBottom;
-        public bool IsBottom { get{ return _isBottom;} 
+        public bool IsBottom { 
+            get
+            {
+                return _isBottom;
+            } 
             set
             { 
                 _isBottom = value; 
                 Invalidate();
-
             } 
         }
         
@@ -66,26 +79,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         public string Icon { get; set; }
         
-        
-        
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
 
             var gray = new Color(86, 86, 86, 255);
-            var darkGray = new Color(50, 50, 50, 255);
 
             var textX =  ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
             
-            if ( !ShowPlusSign &&( Icon.HasValue() ))
+            if ( !ShowPlusSign && Icon.HasValue() )
             {
                 textX =   40.ToPixels() ;
             }
             
             if( !TextLine1.IsNullOrEmpty() )
             {
-                DrawText(canvas, TextLine1 ?? "", textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold,darkGray);
-                DrawText(canvas, TextLine2 ?? "", textX,  41.ToPixels(),15.ToPixels(), AppFonts.Regular,gray );
+                DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold, TextColorLine1);
+                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, gray);
             }
             else
             {
@@ -128,12 +138,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void DrawText(Canvas canvas, string text, float x, float y, float textSize, Typeface typeface, Color color )
         {
-            var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
-            var rect = new Rect();
-            paintText.TextSize = textSize;
-            paintText.GetTextBounds(text, 0, text.Length, rect);
+            var paintText = new TextPaint( PaintFlags.LinearText | PaintFlags.AntiAlias)
+                {
+                    TextSize = textSize
+                };
+
+            paintText.GetTextBounds(text, 0, text.Length, new Rect());
             paintText.SetARGB(color.A, color.R  , color.G , color.B );
             paintText.SetTypeface(typeface);
+
             var p = new TextPaint();
             p.SetTypeface(typeface);
             

@@ -278,30 +278,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 	    					MessageService.ShowProgress (true);
 	    					var orderInfo = _bookingService.CreateOrder (Order);
-    					
-    						if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0) 
-							{
-	    						var orderCreated = new Order 
-	                            {
-	                                CreatedDate = DateTime.Now, 
-	                                DropOffAddress = Order.DropOffAddress, 
-	                                IBSOrderId = orderInfo.IBSOrderId, 
-	                                Id = Order.Id, PickupAddress = Order.PickupAddress,
-	                                Note = Order.Note, 
-                                    PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
-	                                Settings = Order.Settings,
-	                            };
+
+						    if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0)) return;
+
+						    var orderCreated = new Order 
+						        {
+						            CreatedDate = DateTime.Now, 
+						            DropOffAddress = Order.DropOffAddress, 
+						            IBSOrderId = orderInfo.IBSOrderId, 
+						            Id = Order.Id, PickupAddress = Order.PickupAddress,
+						            Note = Order.Note, 
+						            PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+						            Settings = Order.Settings,
+						        };
 	    						
-	    						RequestNavigate<BookingStatusViewModel>(new
-	    						{
-	    							order = orderCreated.ToJson(),
-	    							orderStatus = orderInfo.ToJson()
-	    						});	
-	    						Close();
-	    						MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
-    						}		
-    					
-        				} 
+						    RequestNavigate<BookingStatusViewModel>(new
+						        {
+						            order = orderCreated.ToJson(),
+						            orderStatus = orderInfo.ToJson()
+						        });	
+						    Close();
+						    MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+						} 
 						catch (Exception ex) 
 						{
             					InvokeOnMainThread (() =>
