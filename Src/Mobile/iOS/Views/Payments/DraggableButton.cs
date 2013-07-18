@@ -8,6 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
     {
         public DraggableButton (RectangleF frame) : base(frame)
         {
+			ClipsToBounds = false;
         }
 
         private PointF StartLocation;

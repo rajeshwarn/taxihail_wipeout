@@ -14,9 +14,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         {
          
             BackgroundColor = UIColor.Clear;
+			BackgroundColor = UIColor.Yellow;
+
+			this.SetX (Frame.X - DeltaX)
+				.SetWidth (Frame.Width + (2 * DeltaX));
 
             InitUiElements ();
             
+			this.SetBottom(Frame.Top + _handle.Frame.Bottom);
+
             _handle.Dragged += (sender, e) =>  {
                 Position += ((DraggedEventArgs)e).X;
                 SetValue ();
@@ -51,17 +57,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         ProgressBar _yellowBar;
 
         void InitUiElements ()
-           {
+        {
             var barTop =((Frame.Height-HandleHeight)/2) +15;
 
-            var grayBar= new ProgressBar(GrayBarEndImage,GrayBarBodyImage, new RectangleF(0,barTop,Frame.Width, HandleHeight));
+			var grayBar= new ProgressBar(GrayBarEndImage,GrayBarBodyImage, new RectangleF(DeltaX,barTop,Width, HandleHeight));
             Add(grayBar);
 
-            _yellowBar= new ProgressBar(YellowBarEndImage,YellowBarBodyImage, new RectangleF(0,barTop,Width/2, HandleHeight),true);            
+			_yellowBar= new ProgressBar(YellowBarEndImage,YellowBarBodyImage, new RectangleF(DeltaX, barTop, Width/2, HandleHeight),true);            
             Add(_yellowBar);
 
-            var barCenter = ((grayBar.Frame.Bottom - barTop)/2) + barTop;
-            var handleTop = barCenter- (HandleTouchHeight/2);
+            var barVertCenter = ((grayBar.Frame.Bottom - barTop)/2) + barTop;
+            var handleTop = barVertCenter- (HandleTouchHeight/2);
 
 
             var count = 0;
@@ -69,15 +75,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             foreach(var str in strings)
             {
-                var width = Frame.Width-25;
-                var x = ((width)/(strings.Length-1))*count;
+				var width = Width-25;
+                var x = DeltaX+( ((width)/(strings.Length-1))*count);
+
                 var label = new UILabel(new RectangleF(x,0,120,20));
                 label.BackgroundColor = UIColor.Clear;
                 label.TextColor = UIColor.Gray;
                 label.Text = str;
                 Add(label);
 
-                x = (Width/(strings.Length-1))*count;
+				x = DeltaX + ((WidthMinusHandle/(strings.Length-1))*count);
                 var line = new UIView(new RectangleF(x+(HandleWidth/2),grayBar.Frame.Top+5f,1,+7));
                 line.BackgroundColor = UIColor.Gray;
                 Add (line);
@@ -88,9 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
                 count++;
             }
-
-
-          
+			          
             _handle = new DraggableButton (new RectangleF (0,handleTop, HandleTouchWidth, HandleTouchHeight));
             _handle.SetImage (HandleImage, UIControlState.Normal);
             Add (_handle);
@@ -101,9 +106,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         public float MaxValue { get; set; }
         public float StepSize { get; set; }
 
-        private float Width {
+		private float Width {
+			get{
+				return Frame.Width-(2*DeltaX);
+			}
+		}
+
+        private float WidthMinusHandle {
             get{
-                return Frame.Width - (HandleWidth);
+				return Width - HandleWidth;
             }
         }
 
@@ -149,9 +160,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
         void LimitPosition()
         {
-            if(Position < 0)
+			if(Position < DeltaX)
             {
-                Position = 0;
+                Position = DeltaX;
             }
             if(Position > Width) {
                 Position = Width;
@@ -161,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         void SetPosition ()
         {
             var percent = (Value - MinValue)/MaxValue;
-            Position = percent *Width;
+            Position = (percent *WidthMinusHandle)+DeltaX;
 
             LimitPosition();
         }
