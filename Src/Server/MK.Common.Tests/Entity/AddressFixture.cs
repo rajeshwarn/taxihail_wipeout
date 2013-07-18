@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using apcurium.MK.Common.Entity;
 
@@ -48,7 +49,7 @@ namespace apcurium.MK.Common.Tests.Entity
             var expected = "13A Street, City, State Zip";
             Assert.AreEqual(expected, address.BookAddress);
         }
-
+        
         [Test]
         public void DisplayAddress_concatenation_test()
         {
@@ -64,6 +65,21 @@ namespace apcurium.MK.Common.Tests.Entity
 
             var expected = "BuildingName - 13A Street, City, State Zip";
             Assert.AreEqual(expected, address.DisplayAddress);
+        }
+
+        [Test]
+        public void remove_place_category_from_building_name()
+        {
+            var buildingName = "Gibeau (Orange) Julep (restaurant)";
+
+            var pattern = @"
+\(         # Look for an opening parenthesis
+[^\)]+     # Take all characters that are not a closing parenthesis
+\)$        # Look for a closing parenthesis at the end of the string";
+            var result = new Regex(pattern, RegexOptions.IgnorePatternWhitespace).Replace(buildingName, string.Empty).Trim();
+
+            Assert.AreEqual("Gibeau (Orange) Julep", result);
+
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -149,6 +150,22 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Get NoteTemplate from app settings, if it exists
             var noteTemplate = _configManager.GetSetting("IBS.NoteTemplate");
+
+            if (!string.IsNullOrWhiteSpace(buildingName))
+            {
+                // Quickfix: If the address comes from our Google Places service
+                // the building name will be formatted like this: "Building Name (Place Type)"
+                // We need to remove the text in parenthesis
+
+                var pattern = @"
+\(         # Look for an opening parenthesis
+[^\)]+     # Take all characters that are not a closing parenthesis
+\)$        # Look for a closing parenthesis at the end of the string";
+
+                buildingName = new Regex(pattern, RegexOptions.IgnorePatternWhitespace)
+                    .Replace(buildingName, string.Empty).Trim();
+
+            }
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
