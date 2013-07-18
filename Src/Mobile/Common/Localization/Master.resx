@@ -1303,43 +1303,43 @@
     <value>Pay with PayPal</value>
   </data>
   <data name="January" xml:space="preserve">
-    <value>January</value>
+    <value>Jan (01)</value>
   </data>
   <data name="View_PayPal" xml:space="preserve">
     <value>PayPal</value>
   </data>
   <data name="February" xml:space="preserve">
-    <value>February</value>
+    <value>Feb (02)</value>
   </data>
   <data name="March" xml:space="preserve">
-    <value>March</value>
+    <value>Mar (03)</value>
   </data>
   <data name="April" xml:space="preserve">
-    <value>April</value>
+    <value>Apr (04)</value>
   </data>
   <data name="May" xml:space="preserve">
-    <value>May</value>
+    <value>May (05)</value>
   </data>
   <data name="June" xml:space="preserve">
-    <value>June</value>
+    <value>Jun (06)</value>
   </data>
   <data name="July" xml:space="preserve">
-    <value>July</value>
+    <value>Jul (07)</value>
   </data>
   <data name="August" xml:space="preserve">
-    <value>August</value>
+    <value>Aug (08)</value>
   </data>
   <data name="September" xml:space="preserve">
-    <value>September</value>
+    <value>Sep (09)</value>
   </data>
   <data name="October" xml:space="preserve">
-    <value>October</value>
+    <value>Oct (10)</value>
   </data>
   <data name="November" xml:space="preserve">
-    <value>November</value>
+    <value>Nov (11)</value>
   </data>
   <data name="December" xml:space="preserve">
-    <value>December</value>
+    <value>Dec (12)</value>
   </data>
   <data name="VehicleNumberErrorTitle" xml:space="preserve">
     <value>Error</value>
