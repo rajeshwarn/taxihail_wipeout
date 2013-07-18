@@ -323,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
             } catch (Exception ex) {
-				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == 404)) {
+				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
 					TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
 					return null;
 				}
