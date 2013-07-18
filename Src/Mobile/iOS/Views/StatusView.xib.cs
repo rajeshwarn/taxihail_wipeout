@@ -65,6 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             try {
                 ViewModel.Load();
+
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
@@ -139,12 +140,18 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     { lblStatus, "{'Text':{'Path':'StatusInfoText'}}" },
                     { lblConfirmation, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
-                    { lblDriver, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.FullName'}}" },
-                    { lblLicence, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleRegistration'}}" },
-                    { lblTaxiType, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleType'}}" },
-                    { lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}}" },
-                    { lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}}" },
-                    { lblColor, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleColor'}}" },
+					{ lblDriver, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.FullName'}, 'Hidden':{'Path':'VehicleDriverHidden'}}" },
+					{ lblLicence, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleRegistration'}, 'Hidden':{'Path':'VehicleLicenceHidden'}}" },
+					{ lblTaxiType, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleType'}, 'Hidden':{'Path':'VehicleTypeHidden'}}" },
+					{ lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}, 'Hidden':{'Path':'VehicleMakeHidden'}}" },
+					{ lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}, 'Hidden':{'Path':'VehicleModelHidden'}}" },
+					{ lblColor, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleColor'}, 'Hidden':{'Path':'VehicleColorHidden'}}" },
+					{ txtDriver, "{'Hidden':{'Path':'VehicleDriverHidden'}}" },
+					{ txtLicence, "{'Hidden':{'Path':'VehicleLicenceHidden'}}" },
+					{ txtTaxiType, "{'Hidden':{'Path':'VehicleTypeHidden'}}" },
+					{ txtMake, "{'Hidden':{'Path':'VehicleMakeHidden'}}" },
+					{ txtModel, "{'Hidden':{'Path':'VehicleModelHidden'}}" },
+					{ txtColor, "{'Hidden':{'Path':'VehicleColorHidden'}}" },
                     { statusBar, "{'IsEnabled':{'Path':'IsDriverInfoAvailable'}}" },
                     { imgGrip, "{'Hidden':{'Path':'IsDriverInfoAvailable', 'Converter':'BoolInverter'}}" },
                     { btnCallDriver, "{'TouchUpInside': {'Path': 'CallTaxi'}, 'Hidden':{'Path':'IsCallTaxiVisible', 'Converter':'BoolInverter'}}" },
@@ -168,6 +175,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;
+
+				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
             
             } catch (Exception ex) {
                 Logger.LogError (ex);
@@ -200,30 +209,30 @@ namespace apcurium.MK.Booking.Mobile.Client
 				tupleList.Add (Tuple.Create (lblModel, txtModel));
 				tupleList.Add (Tuple.Create (lblColor, txtColor));
 
-				if (ViewModel.VehicleTypeEmpty){ 
-					txtTaxiType.Hidden = true;
-					lblTaxiType.Hidden = true;
+				if (ViewModel.VehicleDriverHidden){ 
 					numberOfItemsHidden++;
+				}
+				if (ViewModel.VehicleLicenceHidden){ 
+					numberOfItemsHidden++;
+				}
+				if (ViewModel.VehicleTypeHidden){ 
+					numberOfItemsHidden++;
+				}
+				if (ViewModel.VehicleMakeHidden){ 
+					numberOfItemsHidden++;
+				}
+				if (ViewModel.VehicleModelHidden){ 
+					numberOfItemsHidden++;
+				}
+				if (ViewModel.VehicleColorHidden){ 
+					numberOfItemsHidden++;
+				}
+	
+				if (numberOfItemsHidden == 6) {
+					statusBar.SetMaxHeight (topVisibleStatus.Frame.Height);
+					return;
 				}
 
-				if (ViewModel.VehicleMakeEmpty){ 
-					txtMake.Hidden = true;
-					lblMake.Hidden = true;
-					numberOfItemsHidden++;
-				}
-
-				if (ViewModel.VehicleModelEmpty){ 
-					txtModel.Hidden = true;
-					lblModel.Hidden = true;
-					numberOfItemsHidden++;
-				}
-
-				if (ViewModel.VehicleColorEmpty){ 
-					txtColor.Hidden = true;
-					lblColor.Hidden = true;
-					numberOfItemsHidden++;
-				}
-			
 				statusBar.SetMaxHeight (defaultHeightOfSlidingView - (20 * numberOfItemsHidden) + topVisibleStatus.Frame.Height);
 
 				var i = 0;
