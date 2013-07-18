@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 buildingName = new Regex(pattern, RegexOptions.IgnorePatternWhitespace)
                     .Replace(buildingName, string.Empty).Trim();
-
+                buildingName = "Building name: " + buildingName;
             }
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
