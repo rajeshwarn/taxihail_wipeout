@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string OriginTxt
         {
             get {
-                return Order != null ? Order.PickupAddress.BookAddress : null;
+                return Order != null ? Order.PickupAddress.DisplayAddress : null;
             }
         }
 

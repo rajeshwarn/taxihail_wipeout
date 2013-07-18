@@ -84,8 +84,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 IBSOrderId = command.IBSOrderId,
                 PickupDate = command.PickupDate.ToString("dddd, MMMM d"),
                 PickupTime = command.PickupDate.ToString("t" /* Short time pattern */),
-                PickupAddress = command.PickupAddress.BookAddress,
-                DropOffAddress = hasDropOffAddress ? command.DropOffAddress.BookAddress : "-",
+                PickupAddress = command.PickupAddress.DisplayAddress,
+                DropOffAddress = hasDropOffAddress ? command.DropOffAddress.DisplayAddress : "-",
                 /* Mandatory settings */
                 Name = command.Settings.Name,
                 Phone = command.Settings.Phone,

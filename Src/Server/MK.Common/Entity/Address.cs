@@ -40,6 +40,11 @@ namespace apcurium.MK.Common.Entity
 
         public string AddressType { get; set; }
 
+        /// <summary>
+        /// This represents the address sent to the dispatch system.
+        /// The dispatch system has length constraints for addresses. The address must be short and
+        /// the most important information must appear first in the address (StreetNumber, Street and City) 
+        /// </summary>
         public string BookAddress
         {
             get
@@ -48,16 +53,35 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
-        string ConcatAddressComponents ()
+        /// <summary>
+        /// This represents the address displayed to the user in the application
+        /// </summary>
+        public string DisplayAddress
         {
-            var prefixAddress = StreetNumber;
-
-            if (BuildingName.HasValue ()) {
-                prefixAddress = BuildingName + " - " + StreetNumber;
+            get
+            {
+                return ConcatAddressComponents(useBuildingName:true);
             }
-            var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
-            if (components.Count > 1) {
-                return components.First () + " " + components.Skip (1).JoinBy(", " );
+        }
+
+        string ConcatAddressComponents (bool useBuildingName = false)
+        {
+            var components = new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            if (components.Length > 1)
+            {
+                // StreetNumber Street, City, State ZipCode
+                var address = string.Join(", ", new[]
+                {
+                    string.Join(" ", new[] {StreetNumber, Street}),
+                    City,
+                    string.Join(" ", new[] {State, ZipCode}),
+                });
+
+                if (useBuildingName && !string.IsNullOrWhiteSpace(BuildingName))
+                {
+                    address = BuildingName + " - " + address;
+                }
+                return address;
             }
              else {
                 return FullAddress;

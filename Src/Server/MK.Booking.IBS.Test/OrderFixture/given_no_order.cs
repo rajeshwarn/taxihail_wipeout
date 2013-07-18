@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace MK.Booking.IBS.Test.OrderFixture
