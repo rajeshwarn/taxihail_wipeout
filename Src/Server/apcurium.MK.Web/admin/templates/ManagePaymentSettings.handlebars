@@ -1,5 +1,5 @@
 ﻿<!-- PAYPAL SETTINGS-->
-<div class="message"></div>
+
 
 <h4 class="table-title">{{localize "PayPal Settings"}}</h4>
 
@@ -27,6 +27,10 @@
 <label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
 <input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.signature" value="{{payPalServerSettings.sandboxCredentials.signature}}" />
 
+<div id="payPalSandboxSettingsMessageZone"></div>
+<button type='button' id="testPayPalSandboxSettingsButton" class='btn' >{{localize "Test"}}</button>
+
+
 <h5  >{{{localize "Production Credentials"}}}</h5>
 
 <label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
@@ -38,6 +42,8 @@
 <label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
 <input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.signature" value="{{payPalServerSettings.credentials.signature}}" />
 
+<div id="payPalProductionSettingsMessageZone"></div>
+<button type='button' id="payPalProductionSettingsButton" class='btn' >{{localize "Test"}}</button>
 
 
 <br />
@@ -97,6 +103,10 @@
 
     <label class="control-label settingsLabel" >{{{localize "Public Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.publicKey" value="{{braintreeServerSettings.publicKey}}" />
+
+    <div id="brainTreeSettingsMessageZone"></div>
+    <button type='button' id="brainTreeSettingsButton" class='btn' >{{localize "Test"}}</button>  
+
   </div>
 
 <!-- CMT SETTINGS-->
@@ -126,12 +136,16 @@
     <label class="control-label settingsLabel" >{{{localize "Merchant Token"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.merchantToken" value="{{cmtPaymentSettings.merchantToken}}" />
 
+    <div id="cmtSettingsMessageZone"></div>
+    <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>    
+
   </div>
 
 <div>
   <div id="warning" class="alert">
     <input type="checkbox" name="acceptChange"> {{localize "I understand that changing the payment mode will DELETE all stored credit card information for ALL users."}}</input>
   </div>
-  <button type='button' id="testConfigButton" class='btn btn-primary' >{{localize "Test Configuration"}}</button>
-  <button type='submit' id="saveButton" class='btn btn-primary' >{{localize "Save"}}</button>
+
+  <button type='submit' id="saveButton" class='btn-primary' >{{localize "Save"}}</button>
+  <div class="message"></div>
 </div>

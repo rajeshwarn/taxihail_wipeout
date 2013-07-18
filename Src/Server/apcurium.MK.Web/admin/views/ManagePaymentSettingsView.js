@@ -1,20 +1,24 @@
 ﻿(function () {
 
-    var View = TaxiHail.ManagePaymentSettingsView = TaxiHail.TemplatedView.extend({
+    var view = TaxiHail.ManagePaymentSettingsView = TaxiHail.TemplatedView.extend({
         tagName: 'form',
         className: 'well clearfix form-horizontal',
 
         events: {
             'change [name=paymentMode]': 'onPaymentModeChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
-            'click #testConfigButton': 'testConfig',
+            'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
+            'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
+            'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
+            'click #cmtSettingsButton': 'cmtSettingsButtonClick',
         },
+        
         
         saveButton: {},
         warningDiv:{},
         
         render: function () {
-            
+
             var data = this.model.toJSON();
             
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
@@ -33,23 +37,51 @@
             return this;
         },
 
-        testConfig: function ()
-        {
-            var data = this.$el.serializeObject();
+        testConfig: function (serviceCall, messageZoneSelector) {
 
-            this.model.test(data)
-                .done(_.bind(function(response) {
+            serviceCall
+                .fail(_.bind(function(response) {
+                    this.alert(response.status + ' - ' + response.statusText, 'error');
+                }, this))
+                .done(_.bind(function (response) {
                     if (response.isSuccessful === true) {
-                        this.alert(response.message, 'success');
+                        this.alert(response.message, 'success', messageZoneSelector);
                     } else {
-                        this.alert(response.message, 'error');
+                        this.alert(response.message, 'error', messageZoneSelector);
                     }
                 }, this));
-
         },
         
-        alert: function (message, type) {
+        cmtSettingsButtonClick: function () {
+
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testCmt(data), this.$("#cmtSettingsMessageZone"));
+        },
+
+        brainTreeSettingsButtonClick: function () {
             
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testBraintree(data), this.$("#brainTreeSettingsMessageZone"));
+        },
+
+        payPalProductionSettingsButtonClick: function () {
+            
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testPayPalProduction(data), this.$("#payPalProductionSettingsMessageZone"));
+        },
+        
+        testPayPalSandboxSettingsButtonClick:function() {
+
+            var data = this.$el.serializeObject();
+            this.testConfig(this.model.testPayPalSandbox(data), this.$("#payPalSandboxSettingsMessageZone"));
+        },
+       
+        alert: function (message, type, selector) {
+            
+            if (!selector) {
+                selector = this.$('.message');
+            }
+
             message = replaceAll("\n", "<br/>", message);
             
             var alert = new TaxiHail.AlertView({
@@ -57,13 +89,11 @@
                 type: type
                 });
             alert.on('ok', alert.remove, alert);
-            this.$('.message').html(alert.render().el);
+            selector.html(alert.render().el);
             this.model.fetch();
         },
         
         save: function(form) {
-
-            
 
             var data = $(form).serializeObject();
             this.$("#warning").hide();
@@ -135,7 +165,7 @@
         },
     });
 
-    _.extend(View.prototype, TaxiHail.ValidatedView);
+    _.extend(view.prototype, TaxiHail.ValidatedView);
 
     function replaceAll(find, replace, str) {
         return str.replace(new RegExp(find, 'g'), replace);

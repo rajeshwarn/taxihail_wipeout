@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Braintree;
+using BraintreeEncryption.Library;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -52,18 +53,21 @@ namespace apcurium.MK.Booking.Api.Services
                 PrivateKey = settings.PrivateKey,
             };
         }
-        public static bool TestClient(BraintreeServerSettings settings)
+        public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
         {
             settings.IsSandbox = true;
             var client = GetBraintreeGateway(settings);
 
             var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
-            
+
+            var braintree = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
+ 
+
             return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest()
                 {
-                    EncryptedCreditCardNumber = dummyCreditCard.Number,
-                    EncryptedCvv = dummyCreditCard.AvcCvvCvv2+"",
-                    EncryptedExpirationDate = dummyCreditCard.ExpirationDate.ToString("MM/yyyy"),
+                    EncryptedCreditCardNumber = braintree.Encrypt(dummyCreditCard.Number),
+                    EncryptedCvv = braintree.Encrypt(dummyCreditCard.AvcCvvCvv2+""),
+                    EncryptedExpirationDate = braintree.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy")),
                 }).IsSuccessfull;
 
         }

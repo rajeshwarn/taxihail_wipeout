@@ -58,90 +58,117 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     ServerPaymentSettings = request.ServerPaymentSettings,
                 });
         }
-        public TestServerPaymentSettingsResponse Post(TestServerPaymentSettingsRequest request)
+
+
+        public TestServerPaymentSettingsResponse Post(TestPayPalProductionSettingsRequest request)
+        {
+            var response = new TestServerPaymentSettingsResponse()
+            {
+                IsSuccessful = false,
+                Message = "Paypal Production Credentials are invalid\n"
+            };
+
+            try
+            {
+                if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, false))
+                {
+                    return new TestServerPaymentSettingsResponse()
+                        {
+                            IsSuccessful = true,
+                            Message = "Paypal Production Credentials are Valid\n"
+                        };
+                }
+            
+            }
+            catch (Exception e)
+            {
+                response.Message += e.Message + "\n";
+            }
+            return response;
+        }
+
+        public TestServerPaymentSettingsResponse Post(TestPayPalSandboxSettingsRequest request)
+        {
+            var response = new TestServerPaymentSettingsResponse()
+            {
+                IsSuccessful = false,
+                Message = "Paypal Sandbox Credentials are invalid\n"
+            };
+
+            try
+            {
+                if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, true))
+                {
+                    return new TestServerPaymentSettingsResponse()
+                    {
+                        IsSuccessful = true,
+                        Message = "Paypal Sandbox Credentials are Valid\n"
+                    };
+                }
+
+            }
+            catch (Exception e)
+            {
+                response.Message += e.Message + "\n";
+            }
+            return response;
+        }
+
+        public TestServerPaymentSettingsResponse Post(TestBraintreeSettingsRequest request)
         {
             var response = new TestServerPaymentSettingsResponse()
                 {
                     IsSuccessful = false,
-                    Message = ""
+                    Message = "Braintree Settings are Invalid\n"
                 };
+            
+            try
+            {
+                if (BraintreePaymentService.TestClient(request.BraintreeServerSettings, request.BraintreeClientSettings))
+                {
+                 return new TestServerPaymentSettingsResponse()
+                     {
+                         IsSuccessful = true,
+                         Message = "Braintree Settings are Valid\n"
+                     };   
+                }
+            }
+            catch (Exception e)
+            {
+                response.Message += e.Message + "\n";
+            }
+
+            return response;
+        }
+
+        public TestServerPaymentSettingsResponse Post(TestCmtSettingsRequest request)
+        {
+            var response = new TestServerPaymentSettingsResponse()
+            {
+                IsSuccessful = false,
+                Message = "CMT Settings are Invalid\n"
+            };
 
             try
             {
-                if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.SandboxCredentials, true))
-                 {
-                     response.IsSuccessful = false;
-                     response.Message += "*Paypal Sandbox Credentials are invalid\n"; 
-                 }
-                else
+
+                var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
+
+                if (CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate))
                 {
-                    response.Message += "Paypal Sandbox Credentials are Valid\n"; 
-                }
-                if (!PayPalService.TestClient(_configurationManager, RequestContext, request.ServerPaymentSettings.PayPalServerSettings.Credentials, false))
-                {
-                     response.IsSuccessful = false;
-                     response.Message += "*Paypal Production Credentials are invalid\n";
-                }
-                else
-                {
-                    response.Message += "Paypal Production Credentials are Valid\n"; 
+                    return new TestServerPaymentSettingsResponse()
+                        {
+                            IsSuccessful = true,
+                            Message = "CMT Settings are Valid\n"
+
+                        };
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                response.IsSuccessful = false;
-                response.Message += "Paypal Failure - Unspecified\n";
+                response.Message += e.Message+"\n";
             }
-
-            switch (request.ServerPaymentSettings.PaymentMode)
-            {
-                case PaymentMethod.Braintree:
-                    try
-                    {
-                        if (!BraintreePaymentService.TestClient(request.ServerPaymentSettings.BraintreeServerSettings))
-                        {
-                            response.IsSuccessful = false;
-                            response.Message += "*Brain Tree Settings are Invalid\n";
-                        }
-                        else
-                        {
-                            response.Message += "Brain Tree Settings are Valid\n";
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        response.IsSuccessful = false;
-                        response.Message += "*Brain Tree Settings are Invalid\n";
-                    }
-                    break;
-                case PaymentMethod.Cmt:
-                               
-                    try
-                    {
-
-                        var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
-
-                        if (!CmtPaymentClient.TestClient(request.ServerPaymentSettings.CmtPaymentSettings,cc.Number,cc.ExpirationDate))
-                        {
-                            response.IsSuccessful = false;
-                            response.Message += "*CMT Settings are Invalid\n";
-                        }
-                        else
-                        {
-                            response.Message += "CMT Settings are Valid\n";
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        response.IsSuccessful = false;
-                        response.Message += "*CMT Settings are Invalid\n";
-                    }
-                    break;
-            }
-            if (response.IsSuccessful)
-            {
-                response.Message += "All Settings are Vaild";
-            }
+           
             return response;
         }
     }

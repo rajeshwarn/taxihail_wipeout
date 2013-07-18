@@ -7,11 +7,11 @@ using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    [Route("/settings/payments/server/test", "POST")]
+    [Route("/settings/payments/server/test/payPal/production", "POST")]
     [Authenticate(ApplyTo.All)]
     [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
-    public class TestServerPaymentSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
+    public class TestPayPalProductionSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
-        public ServerPaymentSettings ServerPaymentSettings { get; set; }
+        public PayPalCredentials Credentials { get; set; }
     }
 }

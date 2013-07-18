@@ -104,7 +104,7 @@ namespace MK.Booking.Api.Client
 			}
 
 			LocalHttpWebRequestFilter(webRequest);
-            using (Stream webRequestStream = webRequest.GetRequestStream())
+            using (var webRequestStream = webRequest.GetRequestStream())
             {
                 requestStream.WriteTo(webRequestStream);
             }
