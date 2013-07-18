@@ -24,33 +24,27 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void HandleError (Exception ex)
         {
-            if (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
+			if (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
             {
-                MessageHelper.Show (Resources.ServiceErrorCallTitle, Resources.ServiceErrorUnauthorized, () => {
-                    UIApplication.SharedApplication.InvokeOnMainThread (() => {
-                        var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
-                        dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
-                    });
+				_lastConnectError=DateTime.Now;
+				MessageHelper.Show (Resources.ServiceErrorCallTitle, Resources.ServiceErrorUnauthorized, () => {
+					UIApplication.SharedApplication.InvokeOnMainThread (() => {
+						var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
+						dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
+					});
 
-                    TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
-
-                    
-                });
-            } 
-            else if (ex is WebException) 
-            {
-                if (((WebException)ex).Status == WebExceptionStatus.ConnectFailure) 
-                {
-                    if (_lastConnectError.Subtract (DateTime.Now).TotalSeconds < -2) 
-                    {
-                        _lastConnectError=DateTime.Now;
-                        var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");
-                        var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionMessage");
-                        var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
-                        mService.ShowMessage (title, msg);
-                    }
-                }
-            }
+					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
+				});
+			}
+			else if ((ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound) 
+			         || (ex is WebException && ((WebException)ex).Status == WebExceptionStatus.ConnectFailure))
+			{
+				_lastConnectError=DateTime.Now;
+				var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");
+				var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionMessage");
+				var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
+				mService.ShowMessage (title, msg);
+			}
         }
     }
 }
