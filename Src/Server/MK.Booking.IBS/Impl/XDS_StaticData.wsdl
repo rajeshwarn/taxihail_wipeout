@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="IStaticDataservice" targetNamespace="http://tempuri.org/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns1="urn:StaticDataIntf">
+  <types>
+    <xs:schema targetNamespace="urn:StaticDataIntf" xmlns="urn:StaticDataIntf">
+      <xs:complexType name="TVehicleTypeArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TVehicleTypeItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TVehicleTypeItem">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string"/>
+          <xs:element name="Capacity" type="xs:int"/>
+          <xs:element name="ID" type="xs:int"/>
+          <xs:element name="isDefault" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TAccountItem">
+        <xs:sequence>
+          <xs:element name="AccountID" type="xs:int"/>
+          <xs:element name="Name" type="xs:string"/>
+          <xs:element name="AccountLogin" type="xs:string"/>
+          <xs:element name="AccountPassword" type="xs:string"/>
+          <xs:element name="WebReservation" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TCityArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TCityItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TCityItem">
+        <xs:sequence>
+          <xs:element name="CityID" type="xs:int"/>
+          <xs:element name="Name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TFlatRatePlaceArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TFlatRatePlaceItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TFlatRatePlaceItem">
+        <xs:sequence>
+          <xs:element name="Index" type="xs:int"/>
+          <xs:element name="Name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TFlatRateValue">
+        <xs:sequence>
+          <xs:element name="ID" type="xs:int"/>
+          <xs:element name="Price" type="xs:double"/>
+          <xs:element name="Tolls" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TExceptionArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TExceptionItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TExceptionItem">
+        <xs:sequence>
+          <xs:element name="ID" type="xs:int"/>
+          <xs:element name="Name" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TSetupIBS">
+        <xs:sequence>
+          <xs:element name="Setup_IBS_ID" type="xs:int"/>
+          <xs:element name="CompanyID" type="xs:int"/>
+          <xs:element name="ReservationLeadMin" type="xs:int"/>
+          <xs:element name="CancellationLeadMin" type="xs:int"/>
+          <xs:element name="MaxPassengersPerOrder" type="xs:int"/>
+          <xs:element name="CCTimeoutMin" type="xs:int"/>
+          <xs:element name="MinLenLoginID" type="xs:int"/>
+          <xs:element name="MinLenPass" type="xs:int"/>
+          <xs:element name="InvoicePATH" type="xs:string"/>
+          <xs:element name="ReportPATH" type="xs:string"/>
+          <xs:element name="ReportDays" type="xs:int"/>
+          <xs:element name="ReportType" type="xs:string"/>
+          <xs:element name="CreateAccountWeb" type="xs:boolean"/>
+          <xs:element name="EditAccountWeb" type="xs:boolean"/>
+          <xs:element name="OneTimeWebBooking" type="xs:boolean"/>
+          <xs:element name="CancelTripWeb" type="xs:boolean"/>
+          <xs:element name="EditTripWeb" type="xs:boolean"/>
+          <xs:element name="UseAccountPromptsWeb" type="xs:boolean"/>
+          <xs:element name="TripHistory" type="xs:boolean"/>
+          <xs:element name="Mapping" type="xs:boolean"/>
+          <xs:element name="DisplayQuote" type="xs:boolean"/>
+          <xs:element name="EMailFlags" type="xs:boolean"/>
+          <xs:element name="TxtBackFlags" type="xs:boolean"/>
+          <xs:element name="CallOutFlags" type="xs:boolean"/>
+          <xs:element name="MultiCar" type="xs:boolean"/>
+          <xs:element name="MaxCarsPerOrder" type="xs:int"/>
+          <xs:element name="CheckDupl" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TAirlineArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TAirlineItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TAirlineItem">
+        <xs:sequence>
+          <xs:element name="AirID" type="xs:string"/>
+          <xs:element name="AirName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TAirportArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TAirportItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TAirportItem">
+        <xs:sequence>
+          <xs:element name="AirportAddress" type="xs:string"/>
+          <xs:element name="City" type="xs:string"/>
+          <xs:element name="Region" type="xs:string"/>
+          <xs:element name="AirportCode" type="xs:string"/>
+          <xs:element name="Lon" type="xs:double"/>
+          <xs:element name="Lat" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TProviderArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TProviderItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TProviderItem">
+        <xs:sequence>
+          <xs:element name="ProviderName" type="xs:string"/>
+          <xs:element name="ProviderID" type="xs:string"/>
+          <xs:element name="ProviderNum" type="xs:int"/>
+          <xs:element name="isDefault" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TChargeTypeArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TChargeTypeItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TChargeTypeItem">
+        <xs:sequence>
+          <xs:element name="ChargeTypeID" type="xs:int"/>
+          <xs:element name="ChargeTypeName" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="GetVehicleTypes0Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetVehicleTypes0Response">
+    <part name="return" type="ns1:TVehicleTypeArray"/>
+  </message>
+  <message name="GetAccount1Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+    <part name="WebAccountPassword" type="xs:string"/>
+    <part name="WebAccountLoginID" type="xs:string"/>
+  </message>
+  <message name="GetAccount1Response">
+    <part name="return" type="ns1:TAccountItem"/>
+  </message>
+  <message name="GetPickupCityList2Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetPickupCityList2Response">
+    <part name="return" type="ns1:TCityArray"/>
+  </message>
+  <message name="GetDropoffCityList3Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetDropoffCityList3Response">
+    <part name="return" type="ns1:TCityArray"/>
+  </message>
+  <message name="GetFlatRatePlaceList4Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetFlatRatePlaceList4Response">
+    <part name="return" type="ns1:TFlatRatePlaceArray"/>
+  </message>
+  <message name="GetFlatRateValue5Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+    <part name="VehicleTypeID" type="xs:int"/>
+    <part name="AccountID" type="xs:int"/>
+    <part name="FrPlaceIndex" type="xs:int"/>
+    <part name="ToPlaceIndex" type="xs:int"/>
+  </message>
+  <message name="GetFlatRateValue5Response">
+    <part name="return" type="ns1:TFlatRateValue"/>
+  </message>
+  <message name="GetExceptions6Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetExceptions6Response">
+    <part name="return" type="ns1:TExceptionArray"/>
+  </message>
+  <message name="GetSetupIBS7Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetSetupIBS7Response">
+    <part name="return" type="ns1:TSetupIBS"/>
+  </message>
+  <message name="GetAirlines8Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetAirlines8Response">
+    <part name="return" type="ns1:TAirlineArray"/>
+  </message>
+  <message name="GetAirPorts9Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetAirPorts9Response">
+    <part name="return" type="ns1:TAirportArray"/>
+  </message>
+  <message name="GetCompanyPhoneLength10Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetCompanyPhoneLength10Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetProviders11Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+  </message>
+  <message name="GetProviders11Response">
+    <part name="return" type="ns1:TProviderArray"/>
+  </message>
+  <message name="GetChargeTypes12Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+  </message>
+  <message name="GetChargeTypes12Response">
+    <part name="return" type="ns1:TChargeTypeArray"/>
+  </message>
+  <message name="GetCompanyZoneByGPS13Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="ACompanyID" type="xs:int"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="Lon" type="xs:double"/>
+  </message>
+  <message name="GetCompanyZoneByGPS13Response">
+    <part name="return" type="xs:string"/>
+  </message>
+  <message name="GetZoneByGPS14Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Lat" type="xs:double"/>
+    <part name="Lon" type="xs:double"/>
+  </message>
+  <message name="GetZoneByGPS14Response">
+    <part name="return" type="xs:string"/>
+  </message>
+  <portType name="IStaticData">
+    <operation name="GetVehicleTypes">
+      <input message="tns:GetVehicleTypes0Request"/>
+      <output message="tns:GetVehicleTypes0Response"/>
+    </operation>
+    <operation name="GetAccount">
+      <input message="tns:GetAccount1Request"/>
+      <output message="tns:GetAccount1Response"/>
+    </operation>
+    <operation name="GetPickupCityList">
+      <input message="tns:GetPickupCityList2Request"/>
+      <output message="tns:GetPickupCityList2Response"/>
+    </operation>
+    <operation name="GetDropoffCityList">
+      <input message="tns:GetDropoffCityList3Request"/>
+      <output message="tns:GetDropoffCityList3Response"/>
+    </operation>
+    <operation name="GetFlatRatePlaceList">
+      <input message="tns:GetFlatRatePlaceList4Request"/>
+      <output message="tns:GetFlatRatePlaceList4Response"/>
+    </operation>
+    <operation name="GetFlatRateValue">
+      <input message="tns:GetFlatRateValue5Request"/>
+      <output message="tns:GetFlatRateValue5Response"/>
+    </operation>
+    <operation name="GetExceptions">
+      <input message="tns:GetExceptions6Request"/>
+      <output message="tns:GetExceptions6Response"/>
+    </operation>
+    <operation name="GetSetupIBS">
+      <input message="tns:GetSetupIBS7Request"/>
+      <output message="tns:GetSetupIBS7Response"/>
+    </operation>
+    <operation name="GetAirlines">
+      <input message="tns:GetAirlines8Request"/>
+      <output message="tns:GetAirlines8Response"/>
+    </operation>
+    <operation name="GetAirPorts">
+      <input message="tns:GetAirPorts9Request"/>
+      <output message="tns:GetAirPorts9Response"/>
+    </operation>
+    <operation name="GetCompanyPhoneLength">
+      <input message="tns:GetCompanyPhoneLength10Request"/>
+      <output message="tns:GetCompanyPhoneLength10Response"/>
+    </operation>
+    <operation name="GetProviders">
+      <input message="tns:GetProviders11Request"/>
+      <output message="tns:GetProviders11Response"/>
+    </operation>
+    <operation name="GetChargeTypes">
+      <input message="tns:GetChargeTypes12Request"/>
+      <output message="tns:GetChargeTypes12Response"/>
+    </operation>
+    <operation name="GetCompanyZoneByGPS">
+      <input message="tns:GetCompanyZoneByGPS13Request"/>
+      <output message="tns:GetCompanyZoneByGPS13Response"/>
+    </operation>
+    <operation name="GetZoneByGPS">
+      <input message="tns:GetZoneByGPS14Request"/>
+      <output message="tns:GetZoneByGPS14Response"/>
+    </operation>
+  </portType>
+  <binding name="IStaticDatabinding" type="tns:IStaticData">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetVehicleTypes">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetVehicleTypes" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetAccount">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetAccount" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetPickupCityList">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetPickupCityList" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetDropoffCityList">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetDropoffCityList" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetFlatRatePlaceList">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetFlatRatePlaceList" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetFlatRateValue">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetFlatRateValue" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetExceptions">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetExceptions" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetSetupIBS">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetSetupIBS" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetAirlines">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetAirlines" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetAirPorts">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetAirPorts" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetCompanyPhoneLength">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetCompanyPhoneLength" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetProviders">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetProviders" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetChargeTypes">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetChargeTypes" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetCompanyZoneByGPS">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetCompanyZoneByGPS" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+    <operation name="GetZoneByGPS">
+      <soap:operation soapAction="urn:StaticDataIntf-IStaticData#GetZoneByGPS" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:StaticDataIntf-IStaticData"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="IStaticDataservice">
+    <port name="IStaticDataPort" binding="tns:IStaticDatabinding">
+      <soap:address location="http://localhost:6929/IBS/XDS_IASPI.dll/soap/IStaticData"/>
+    </port>
+  </service>
+</definitions>
+
