@@ -61,18 +61,6 @@
                     android:layout_marginBottom="20dip" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Grey"
-                    local:MvxBind="{'Click':{'Path':'BookAnotherTaxiCommand'} }"
-                    android:background="@drawable/green_button"
-                    android:text="@string/StatusActionBookButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dip"
-                    android:gravity="center"
-                    android:paddingBottom="5dip"
-                    android:paddingTop="5dip"
-                    android:width="10dip"
-                    android:layout_marginBottom="10dip" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Grey"
                     local:MvxBind="{'Click':{'Path':'SendReceiptCommand'}, 'Visibility':{'Path':'IsSendReceiptButtonShown','Converter':'Visibility'} }"
                     android:background="@drawable/green_button"
                     android:text="@string/HistoryDetailSendReceiptButton"
