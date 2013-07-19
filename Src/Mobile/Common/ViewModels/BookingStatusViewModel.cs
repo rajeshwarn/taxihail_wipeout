@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _refreshPeriod = periodInSettingsValue;
             }
-
+            RefreshStatus();
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 #else
