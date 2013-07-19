@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Binding.Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace Activities.Book
 {
@@ -24,12 +25,18 @@ namespace Activities.Book
 
 		protected override void OnViewModelSet ()
 		{
-			
 			SetContentView(Resource.Layout.View_Book_RideSummaryPage);
+
+            ViewModel.PropertyChanged += (sender, e) => 
+            {
+                if(ViewModel.ReceiptSent)
+                {
+                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
+                    sendReceiptBtn.SetText("Receipt sent", Android.Widget.TextView.BufferType.Normal);
+                    sendReceiptBtn.Enabled = false;
+                }
+            };
 		}
-
-
-
 	}
 }
 
