@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-                return isPayEnabled && !PaymentService.GetIsOrderPayed(Order.Id);
+                return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 			}
 		}
 
@@ -95,6 +95,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+        
+
+        public IMvxCommand ResendConfirmationCommand {
+            get {
+                return new AsyncCommand (() =>
+                {
+                    var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
+                    VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
+                });
+            }
+        }
 
 		public IMvxCommand PayCommand {
 			get {

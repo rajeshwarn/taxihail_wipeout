@@ -1251,6 +1251,9 @@
   <data name="StatusPayButton" xml:space="preserve">
     <value>Pay now</value>
   </data>
+  <data name="ReSendConfirmationButton" xml:space="preserve">
+    <value>Notify Driver Of Payment</value>
+  </data>
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
     <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
   </data>

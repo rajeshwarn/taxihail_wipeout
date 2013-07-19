@@ -52,13 +52,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         
-        public bool GetIsOrderPayed(Guid orderId)
+        public double? GetPaymentFromCache(Guid orderId)
         {
-            return _cache.Get<string>(orderId + PayedCacheSuffix) != null;
+            var result = _cache.Get<string>(orderId + PayedCacheSuffix);
+            double amount;
+
+            if(double.TryParse(result,out amount))
+            {
+                return amount;
+            }
+            return null;
         }
-        public void SetIsOrderPayed(Guid orderId)
+        public void SetPaymentFromCache(Guid orderId, double amount)
         {
-            _cache.Set(orderId+PayedCacheSuffix, "");            
+            _cache.Set(orderId+PayedCacheSuffix, amount.ToString());            
         }
 
         public IPaymentServiceClient GetClient()

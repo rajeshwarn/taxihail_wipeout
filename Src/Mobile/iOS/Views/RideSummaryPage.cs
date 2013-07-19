@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton ((GradientButton)PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
+            AppButtons.FormatStandardButton ((GradientButton)ReSendConfirmationButton, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
 			this.AddBindings(new Dictionary<object, string>(){
 				{ TitleLabel, new B("Text","ThankYouTitle")},
@@ -39,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },
 				{ RateButton, new B("TouchUpInside","NavigateToRatingPage")
 					.Add("Hidden", "IsRatingButtonShown", "BoolInverter")  },
+
+                { ReSendConfirmationButton, new B("TouchUpInside","ResendConfirmationCommand")
+                    .Add("Hidden", "IsPayButtonShown") },
+
 				{ PayButton, new B("TouchUpInside","PayCommand")
 					.Add("Hidden", "IsPayButtonShown", "BoolInverter")  },
 			});
