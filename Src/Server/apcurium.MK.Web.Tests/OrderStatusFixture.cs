@@ -10,7 +10,6 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    [Ignore("Waiting for MK to fix IBS")]
     public class OrderStatusFixture : BaseTest
     {
         private Guid _orderId;
