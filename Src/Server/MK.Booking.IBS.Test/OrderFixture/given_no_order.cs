@@ -44,7 +44,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
 
 
             var orderService = new WebOrder7Service { Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder7" };
-            var orderId = orderService.SaveBookOrder_4("taxi", "test", order);
+            var orderId = orderService.SaveBookOrder_7("taxi", "test", order);
 
             Assert.Greater(orderId, 0);
             Trace.TraceInformation(orderId.ToString());
@@ -67,7 +67,9 @@ namespace MK.Booking.IBS.Test.OrderFixture
                 LastName = "Test",
                 Phone = "5141234569",
                 MobilePhone = "5141234569",
-                WEBPassword = "123456"
+                WEBPassword = "123456",
+                AccType =  TAccountType.actWebAccount,
+                
             };
 
             var ibsAcccountId = service.SaveAccount3("taxi", "test", account);

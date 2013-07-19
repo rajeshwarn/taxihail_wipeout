@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema" name="IWebAccount3service" targetNamespace="http://tempuri.org/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:ns1="urn:TypeAccount" xmlns:ns2="urn:TypeWEB" xmlns:ns3="urn:TypeOrder" xmlns:ns4="urn:StaticDataIntf">
+  <types>
+    <xs:schema targetNamespace="urn:TypeAccount" xmlns="urn:TypeAccount">
+      <xs:complexType name="TBookAccount">
+        <xs:sequence>
+          <xs:element name="ServiceProviderID" type="xs:int"/>
+          <xs:element name="AccountID" type="xs:int"/>
+          <xs:element name="AccType" type="ns2:TAccountType"/>
+          <xs:element name="WEBStatus" type="ns2:TWEBAccountStatus"/>
+          <xs:element name="WEBID" type="xs:string"/>
+          <xs:element name="WEBPassword" type="xs:string"/>
+          <xs:element name="AccountName" type="xs:string"/>
+          <xs:element name="Title" type="xs:string"/>
+          <xs:element name="LastName" type="xs:string"/>
+          <xs:element name="FirstName" type="xs:string"/>
+          <xs:element name="Phone" type="xs:string"/>
+          <xs:element name="Fax" type="xs:string"/>
+          <xs:element name="eMail" type="xs:string"/>
+          <xs:element name="Address" type="ns3:TWEBAddress"/>
+          <xs:element name="CCNumber" type="xs:string"/>
+          <xs:element name="CCHolder" type="xs:string"/>
+          <xs:element name="CCStartMonth" type="xs:string"/>
+          <xs:element name="CCStartYear" type="xs:string"/>
+          <xs:element name="CCEndMonth" type="xs:string"/>
+          <xs:element name="CCEndYear" type="xs:string"/>
+          <xs:element name="CCSecurityCode" type="xs:string"/>
+          <xs:element name="CCIssueNumber" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TBookAccount2">
+        <xs:complexContent>
+          <xs:extension base="ns1:TBookAccount">
+            <xs:sequence>
+              <xs:element name="OwnerID" type="xs:int"/>
+              <xs:element name="OwnerType" type="xs:int"/>
+              <xs:element name="TextBack" type="xs:boolean"/>
+              <xs:element name="EmailBack" type="xs:boolean"/>
+              <xs:element name="CallBack" type="xs:boolean"/>
+              <xs:element name="AccountAdmin" type="xs:boolean"/>
+              <xs:element name="Priority" type="xs:boolean"/>
+              <xs:element name="Email2" type="xs:string"/>
+              <xs:element name="MobilePhone" type="xs:string"/>
+              <xs:element name="BusinessType" type="xs:string"/>
+              <xs:element name="UserPosition" type="xs:string"/>
+              <xs:element name="TripRemark" type="xs:string"/>
+              <xs:element name="AdminNotes" type="xs:string"/>
+              <xs:element name="LPoints" type="xs:string"/>
+              <xs:element name="BarCode" type="xs:string"/>
+              <xs:element name="DeptName" type="xs:string"/>
+              <xs:element name="DriverRating" type="xs:int"/>
+              <xs:element name="CallbackPhone" type="xs:int"/>
+              <xs:element name="EMailbackAddress" type="xs:int"/>
+              <xs:element name="Prompt1" type="ns1:TPromptField"/>
+              <xs:element name="Prompt2" type="ns1:TPromptField"/>
+              <xs:element name="Prompt3" type="ns1:TPromptField"/>
+              <xs:element name="Prompt4" type="ns1:TPromptField"/>
+              <xs:element name="Prompt5" type="ns1:TPromptField"/>
+              <xs:element name="Prompt6" type="ns1:TPromptField"/>
+              <xs:element name="Prompt7" type="ns1:TPromptField"/>
+              <xs:element name="Prompt8" type="ns1:TPromptField"/>
+              <xs:element name="FavoriteAddresses" type="ns1:TFavoriteAddressesArray"/>
+              <xs:element name="Exceptions" type="ns3:TExceptionsArray"/>
+              <xs:element name="VehicleTypes" type="ns4:TVehicleTypeArray"/>
+              <xs:element name="WebReservation" type="xs:boolean"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TPromptField">
+        <xs:sequence>
+          <xs:element name="FieldID" type="xs:int"/>
+          <xs:element name="Caption" type="xs:string"/>
+          <xs:element name="Required" type="xs:boolean"/>
+          <xs:element name="Search" type="xs:boolean"/>
+          <xs:element name="HasPassword" type="xs:boolean"/>
+          <xs:element name="DefaultValue" type="xs:string"/>
+          <xs:element name="ValueList" type="ns1:TPromptValueArray"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TPromptValueArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="xs:string[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TFavoriteAddressesArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns3:TWEBFavotiteAddress[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TBookAccount3">
+        <xs:complexContent>
+          <xs:extension base="ns1:TBookAccount2">
+            <xs:sequence>
+              <xs:element name="UserCustomerID" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TVehicleTypeItem">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string"/>
+          <xs:element name="Capacity" type="xs:int"/>
+          <xs:element name="ID" type="xs:int"/>
+          <xs:element name="isDefault" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema targetNamespace="urn:TypeWEB" xmlns="urn:TypeWEB">
+      <xs:simpleType name="TAccountType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="actNone"/>
+          <xs:enumeration value="actWebAccount"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="TWEBAccountStatus">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="wasNone"/>
+          <xs:enumeration value="wasCreate"/>
+          <xs:enumeration value="wasUpdate"/>
+          <xs:enumeration value="wasNotUnique"/>
+          <xs:enumeration value="wasMoved"/>
+          <xs:enumeration value="wasValid"/>
+          <xs:enumeration value="wasSuspended"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+    <xs:schema targetNamespace="urn:TypeOrder" xmlns="urn:TypeOrder">
+      <xs:complexType name="TWEBAddress">
+        <xs:sequence>
+          <xs:element name="StreetPlace" type="xs:string"/>
+          <xs:element name="AptBaz" type="xs:string"/>
+          <xs:element name="Postal" type="xs:string"/>
+          <xs:element name="CityID" type="xs:int"/>
+          <xs:element name="RegionID" type="xs:int"/>
+          <xs:element name="CountryID" type="xs:int"/>
+          <xs:element name="Longitude" type="xs:double"/>
+          <xs:element name="Latitude" type="xs:double"/>
+          <xs:element name="AddressID" type="xs:int"/>
+          <xs:element name="StopTime" type="ns3:TWEBTimeStamp"/>
+          <xs:element name="StopOrder" type="xs:int"/>
+          <xs:element name="RunOrder" type="xs:int"/>
+          <xs:element name="StopPass" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TWEBTimeStamp">
+        <xs:sequence>
+          <xs:element name="Year" type="xs:int"/>
+          <xs:element name="Month" type="xs:int"/>
+          <xs:element name="Day" type="xs:int"/>
+          <xs:element name="Hour" type="xs:int"/>
+          <xs:element name="Minute" type="xs:int"/>
+          <xs:element name="Second" type="xs:int"/>
+          <xs:element name="Fractions" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TWEBFavotiteAddress">
+        <xs:complexContent>
+          <xs:extension base="ns3:TWEBAddress">
+            <xs:sequence>
+              <xs:element name="AddressAlias" type="xs:string"/>
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TExceptionsArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns3:TException[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="TException">
+        <xs:sequence>
+          <xs:element name="ExID" type="xs:int"/>
+          <xs:element name="ExName" type="xs:string"/>
+          <xs:element name="ExValue" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema targetNamespace="urn:StaticDataIntf" xmlns="urn:StaticDataIntf">
+      <xs:complexType name="TVehicleTypeArray">
+        <xs:complexContent>
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence/>
+            <xs:attribute ref="soapenc:arrayType" n1:arrayType="ns1:TVehicleTypeItem[]" xmlns:n1="http://schemas.xmlsoap.org/wsdl/"/>
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="SaveAccount0Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Account" type="ns1:TBookAccount"/>
+  </message>
+  <message name="SaveAccount0Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetWEBAccount1Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+    <part name="WEBAccountID" type="xs:string"/>
+    <part name="WEBPassword" type="xs:string"/>
+  </message>
+  <message name="GetWEBAccount1Response">
+    <part name="return" type="ns1:TBookAccount"/>
+  </message>
+  <message name="SaveAccount22Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Account" type="ns1:TBookAccount2"/>
+  </message>
+  <message name="SaveAccount22Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetWEBAccount23Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+    <part name="WEBAccountID" type="xs:string"/>
+    <part name="WEBPassword" type="xs:string"/>
+  </message>
+  <message name="GetWEBAccount23Response">
+    <part name="return" type="ns1:TBookAccount2"/>
+  </message>
+  <message name="ChangeAccountLogin4Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="OldUserLogin" type="xs:string"/>
+    <part name="OldUserPassword" type="xs:string"/>
+    <part name="NewUserLogin" type="xs:string"/>
+    <part name="NewUserPassword" type="xs:string"/>
+  </message>
+  <message name="ChangeAccountLogin4Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="SaveAccount35Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="Account" type="ns1:TBookAccount3"/>
+  </message>
+  <message name="SaveAccount35Response">
+    <part name="return" type="xs:int"/>
+  </message>
+  <message name="GetWEBAccount36Request">
+    <part name="Login" type="xs:string"/>
+    <part name="Password" type="xs:string"/>
+    <part name="CompanyID" type="xs:int"/>
+    <part name="WEBAccountID" type="xs:string"/>
+    <part name="WEBPassword" type="xs:string"/>
+  </message>
+  <message name="GetWEBAccount36Response">
+    <part name="return" type="ns1:TBookAccount3"/>
+  </message>
+  <portType name="IWebAccount3">
+    <operation name="SaveAccount">
+      <input message="tns:SaveAccount0Request"/>
+      <output message="tns:SaveAccount0Response"/>
+    </operation>
+    <operation name="GetWEBAccount">
+      <input message="tns:GetWEBAccount1Request"/>
+      <output message="tns:GetWEBAccount1Response"/>
+    </operation>
+    <operation name="SaveAccount2">
+      <input message="tns:SaveAccount22Request"/>
+      <output message="tns:SaveAccount22Response"/>
+    </operation>
+    <operation name="GetWEBAccount2">
+      <input message="tns:GetWEBAccount23Request"/>
+      <output message="tns:GetWEBAccount23Response"/>
+    </operation>
+    <operation name="ChangeAccountLogin">
+      <input message="tns:ChangeAccountLogin4Request"/>
+      <output message="tns:ChangeAccountLogin4Response"/>
+    </operation>
+    <operation name="SaveAccount3">
+      <input message="tns:SaveAccount35Request"/>
+      <output message="tns:SaveAccount35Response"/>
+    </operation>
+    <operation name="GetWEBAccount3">
+      <input message="tns:GetWEBAccount36Request"/>
+      <output message="tns:GetWEBAccount36Response"/>
+    </operation>
+  </portType>
+  <binding name="IWebAccount3binding" type="tns:IWebAccount3">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="SaveAccount">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#SaveAccount" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="GetWEBAccount">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#GetWEBAccount" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="SaveAccount2">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#SaveAccount2" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="GetWEBAccount2">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#GetWEBAccount2" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="ChangeAccountLogin">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#ChangeAccountLogin" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="SaveAccount3">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#SaveAccount3" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+    <operation name="GetWEBAccount3">
+      <soap:operation soapAction="urn:WebAccount3Intf-IWebAccount3#GetWEBAccount3" style="rpc"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="urn:WebAccount3Intf-IWebAccount3"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="IWebAccount3service">
+    <port name="IWebAccount3Port" binding="tns:IWebAccount3binding">
+      <soap:address location="http://localhost/IBS/XDS_IASPI.dll/soap/IWebAccount3"/>
+    </port>
+  </service>
+</definitions>
+

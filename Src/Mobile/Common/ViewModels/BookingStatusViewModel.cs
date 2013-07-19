@@ -76,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _refreshPeriod = periodInSettingsValue;
             }
-
             RefreshStatus();
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
@@ -339,14 +338,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								||statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded;
 			
-
-
-            IsCancelButtonVisible = !IsPayButtonVisible;
-
+			IsCancelButtonVisible = !IsPayButtonVisible;
+		
 			var setting = ConfigurationManager.GetPaymentSettings ();
 			var isPayEnabled = setting.IsPayInTaxiEnabled|| setting.PayPalClientSettings.IsEnabled;
 
-            if (!isPayEnabled || PaymentService.GetPaymentFromCache(Order.Id).HasValue) {
+			if (!isPayEnabled) {
                 IsPayButtonVisible = false;
             }
 		}
@@ -354,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void GoToSummary(){
 
 			RequestNavigate<RideSummaryViewModel> (new {
-                order = Order.ToJson(),
+				order = Order,
 				orderStatus = OrderStatusDetail.ToJson()
 			}.ToStringDictionary());
 			RequestClose (this);
