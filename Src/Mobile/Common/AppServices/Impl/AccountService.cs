@@ -580,7 +580,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentService> ();
             
 			try
 			{
