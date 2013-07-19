@@ -24,7 +24,6 @@ namespace MK.Booking.IBS.Test.OrderFixture
         }
 
         [Test]
-        [Ignore("MK is working on a fix for this")]
         public void when_creating_an_order()
         {
             var order = new TBookOrder_7();
