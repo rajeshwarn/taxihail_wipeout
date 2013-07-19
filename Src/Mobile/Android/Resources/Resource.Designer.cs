@@ -2233,6 +2233,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700dd
 			public const int RateBtn = 2131165405;
 			
+			// aapt resource value: 0x7f0701b0
+			public const int ReSendConfirmationButton = 2131165616;
+			
 			// aapt resource value: 0x7f07002a
 			public const int RefineAddressTitle = 2131165226;
 			
