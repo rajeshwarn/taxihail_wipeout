@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void GoToSummary(){
 
 			RequestNavigate<RideSummaryViewModel> (new {
-				order = Order,
+				order = Order.ToJson(),
 				orderStatus = OrderStatusDetail.ToJson()
 			}.ToStringDictionary());
 			RequestClose (this);
