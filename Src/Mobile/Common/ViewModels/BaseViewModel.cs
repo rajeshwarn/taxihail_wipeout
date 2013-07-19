@@ -98,18 +98,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
         
-		private IPaymentServiceClient _paymentClient;
-		protected IPaymentServiceClient PaymentClient{
+		private IPaymentService _paymentService;
+		protected IPaymentService PaymentService{
             get{
-				if(_paymentClient==null)
+				if(_paymentService==null)
 				{
-					_paymentClient = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
+					_paymentService = TinyIoCContainer.Current.Resolve<IPaymentService> ();
 				}
 
-				return _paymentClient;
+				return _paymentService;
             }
 			set{
-				_paymentClient = value;
+				_paymentService = value;
 			}
         }
         

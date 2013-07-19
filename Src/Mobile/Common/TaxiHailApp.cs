@@ -59,14 +59,14 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<ITinyMessengerHub, TinyMessengerHub>();
 
             container.Register<IAccountServiceClient>((c, p) => 
-                                                                     new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentServiceClient>()),
+                                                                     new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null, c.Resolve<IPaymentService>()),
                                                                      "NotAuthenticated");
             
             container.Register<IAccountServiceClient>((c, p) =>
-			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentServiceClient>()),
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPaymentService>()),
                                                                      "Authenticate");
             
-            container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentServiceClient>()));
+            container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),c.Resolve<IPaymentService>()));
 
             container.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             container.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
@@ -104,17 +104,12 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
             container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-
-
-			container.Register<IPaymentServiceClient>((c, p) =>
+            container.Register<IPaymentService>((c, p) =>
 			{
-				var settings = c.Resolve<IConfigurationManager>().GetPaymentSettings();
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
-				return new PaymentClientDelegate(settings.PaymentMode,
-				                                 new BraintreeServiceClient(baseUrl,sessionId,settings.BraintreeClientSettings.ClientKey), 
-				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
+                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
 			});
             
 

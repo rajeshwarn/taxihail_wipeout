@@ -171,7 +171,7 @@
 								<string key="NSFrame">{{0, 102}, {280, 44}}</string>
 								<reference key="NSSuperview" ref="646313553"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="167731950"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -188,11 +188,34 @@
 								<reference key="IBUIFontDescription" ref="940963026"/>
 								<reference key="IBUIFont" ref="678803560"/>
 							</object>
+							<object class="IBUIButton" id="167731950">
+								<reference key="NSNextResponder" ref="646313553"/>
+								<int key="NSvFlags">292</int>
+								<string key="NSFrame">{{0, 153}, {280, 44}}</string>
+								<reference key="NSSuperview" ref="646313553"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIContentHorizontalAlignment">0</int>
+								<int key="IBUIContentVerticalAlignment">0</int>
+								<int key="IBUIButtonType">1</int>
+								<string key="IBUINormalTitle">Resend</string>
+								<reference key="IBUIHighlightedTitleColor" ref="316921913"/>
+								<object class="NSColor" key="IBUINormalTitleColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+								</object>
+								<reference key="IBUINormalTitleShadowColor" ref="220330337"/>
+								<reference key="IBUIFontDescription" ref="940963026"/>
+								<reference key="IBUIFont" ref="678803560"/>
+							</object>
 						</array>
-						<string key="NSFrame">{{20, 251}, {280, 145}}</string>
+						<string key="NSFrame">{{20, 200}, {280, 196}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="947300269"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -278,6 +301,14 @@
 					</object>
 					<int key="connectionID">17</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">ReSendConfirmationButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="167731950"/>
+					</object>
+					<int key="connectionID">19</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -325,6 +356,7 @@
 							<reference ref="947300269"/>
 							<reference ref="839605750"/>
 							<reference ref="188376512"/>
+							<reference ref="167731950"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -343,6 +375,11 @@
 						<reference key="object" ref="188376512"/>
 						<reference key="parent" ref="646313553"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">18</int>
+						<reference key="object" ref="167731950"/>
+						<reference key="parent" ref="646313553"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -356,6 +393,8 @@
 				<string key="13.CustomClassName">GradientButton</string>
 				<string key="13.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="18.CustomClassName">GradientButton</string>
+				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.CustomClassName">GradientButton</string>
@@ -365,7 +404,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">17</int>
+			<int key="maxID">19</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -381,19 +420,15 @@
 					<string key="className">RideSummaryPage</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="BookNewRideButton">GradientButton</string>
 						<string key="ButtonHolderView">UIView</string>
 						<string key="MessageLabel">UILabel</string>
 						<string key="PayButton">GradientButton</string>
 						<string key="RateButton">UIButton</string>
+						<string key="ReSendConfirmationButton">GradientButton</string>
 						<string key="SendRecieptButton">UIButton</string>
 						<string key="TitleLabel">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="BookNewRideButton">
-							<string key="name">BookNewRideButton</string>
-							<string key="candidateClassName">GradientButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="ButtonHolderView">
 							<string key="name">ButtonHolderView</string>
 							<string key="candidateClassName">UIView</string>
@@ -409,6 +444,10 @@
 						<object class="IBToOneOutletInfo" key="RateButton">
 							<string key="name">RateButton</string>
 							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ReSendConfirmationButton">
+							<string key="name">ReSendConfirmationButton</string>
+							<string key="candidateClassName">GradientButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="SendRecieptButton">
 							<string key="name">SendRecieptButton</string>
