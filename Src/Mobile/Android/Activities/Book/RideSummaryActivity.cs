@@ -27,15 +27,15 @@ namespace Activities.Book
 		{
 			SetContentView(Resource.Layout.View_Book_RideSummaryPage);
 
-            ViewModel.PropertyChanged += (sender, e) => 
-            {
-                if(ViewModel.ReceiptSent)
-                {
-                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
-                    sendReceiptBtn.SetText("Receipt sent", Android.Widget.TextView.BufferType.Normal);
-                    sendReceiptBtn.Enabled = false;
-                }
-            };
+//            ViewModel.PropertyChanged += (sender, e) => 
+//            {
+//                if(ViewModel.ReceiptSent)
+//                {
+//                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
+//                    sendReceiptBtn.SetText("Receipt sent", Android.Widget.TextView.BufferType.Normal);
+//                    sendReceiptBtn.Enabled = false;
+//                }
+//            };
 		}
 	}
 }
