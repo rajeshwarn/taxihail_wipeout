@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
         {
 			ConfigurationManager.GetPaymentSettings (true);
-			PaymentClient = null;//ensure that the payment settings are reloaded at least once
 
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -181,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				using(MessageService.ShowProgress ())
 				{
-					var preAuthResponse = PaymentClient.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
+					var preAuthResponse = PaymentService.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
 
 					if (!preAuthResponse.IsSuccessfull)
 					{
@@ -192,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					// Give the backend some time to proccess the previous command
 					Thread.Sleep(500); //todo <- waiting needlessly
 
-					var response = PaymentClient.CommitPreAuthorized(preAuthResponse.TransactionId);
+					var response = PaymentService.CommitPreAuthorized(preAuthResponse.TransactionId);
 					if(!response.IsSuccessfull)
 					{
 						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);

@@ -104,17 +104,12 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
             container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
-
-
-			container.Register<IPaymentServiceClient>((c, p) =>
+            container.Register<IPaymentService>((c, p) =>
 			{
-				var settings = c.Resolve<IConfigurationManager>().GetPaymentSettings();
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
-				return new PaymentClientDelegate(settings.PaymentMode,
-				                                 new BraintreeServiceClient(baseUrl,sessionId,settings.BraintreeClientSettings.ClientKey), 
-				                                 new CmtPaymentClient(baseUrl,sessionId, settings.CmtPaymentSettings) );
+                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>());
 			});
             
 
