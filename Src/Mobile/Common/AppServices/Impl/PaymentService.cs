@@ -40,19 +40,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         IConfigurationManager _configurationManager;
         string _baseUrl; 
         string _sessionId;
+        ICacheService _cache;
+        private const string PayedCacheSuffix = "_Payed";
 
-
-        public PaymentService(string url, string sessionId,  IConfigurationManager configurationManager)
+        public PaymentService(string url, string sessionId,  IConfigurationManager configurationManager, ICacheService cache)
         {
             _baseUrl = url;
             _sessionId = sessionId;
+            _cache = cache;
             _configurationManager = configurationManager;
         }
 
         
-        public bool IsOrderPayed(Guid orderId)
+        public bool GetIsOrderPayed(Guid orderId)
         {
-            throw new NotImplementedException();
+            return _cache.Get<string>(orderId + PayedCacheSuffix) != null;
+        }
+        public void SetIsOrderPayed(Guid orderId)
+        {
+            _cache.Set(orderId+PayedCacheSuffix, "");            
         }
 
         public IPaymentServiceClient GetClient()
@@ -99,6 +105,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
             return GetClient().CommitPreAuthorized(transactionId);
+
+
         }   
 
 

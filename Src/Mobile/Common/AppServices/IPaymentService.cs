@@ -14,7 +14,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface IPaymentService :IPaymentServiceClient
     {        
-        bool IsOrderPayed(Guid orderId);
+        bool GetIsOrderPayed(Guid orderId);
+        
+        void SetIsOrderPayed(Guid orderId);
+
     }
 }
 

@@ -197,6 +197,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
 					}
 
+                    PaymentService.SetIsOrderPayed(Order.Id);
+
 					ShowCreditCardPaymentConfirmation(preAuthResponse.TransactionId);					          
 				}
 			}

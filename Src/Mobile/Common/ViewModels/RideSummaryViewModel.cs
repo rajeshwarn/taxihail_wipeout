@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 			IsRatingButtonShown = AppSettings.RatingEnabled;
 		}
+        public override void Start(bool firstStart)
+        {
+            base.Start(firstStart);
+            FirePropertyChanged(() => IsPayButtonShown);
+        }
 
 		public string ThankYouTitle {
 			get{
@@ -43,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-				return isPayEnabled;
+
+                return isPayEnabled && !PaymentService.GetIsOrderPayed(Order.Id);
 			}
 		}
 
