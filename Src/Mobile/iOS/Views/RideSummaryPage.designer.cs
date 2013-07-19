@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIButton RateButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton SendRecieptButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.GradientButton SendRecieptButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TitleLabel { get; set; }
