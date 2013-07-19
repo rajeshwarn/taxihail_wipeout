@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         {
          
             BackgroundColor = UIColor.Clear;
-			BackgroundColor = UIColor.Yellow;
 
 			this.SetX (Frame.X - DeltaX)
 				.SetWidth (Frame.Width + (2 * DeltaX));
