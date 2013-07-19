@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse()
                         {
                             IsSuccessful = true,
-                            Message = "Paypal Production Credentials are Valid\n"
+                            Message = "Paypal Production Credentials are valid\n"
                         };
                 }
             
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse()
                     {
                         IsSuccessful = true,
-                        Message = "Paypal Sandbox Credentials are Valid\n"
+                        Message = "Paypal Sandbox Credentials are valid\n"
                     };
                 }
 
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse()
                 {
                     IsSuccessful = false,
-                    Message = "Braintree Settings are Invalid\n"
+                    Message = "Braintree Settings are invalid\n"
                 };
             
             try
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                  return new TestServerPaymentSettingsResponse()
                      {
                          IsSuccessful = true,
-                         Message = "Braintree Settings are Valid\n"
+                         Message = "Braintree Settings are valid\n"
                      };   
                 }
             }
@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse()
             {
                 IsSuccessful = false,
-                Message = "CMT Settings are Invalid\n"
+                Message = "CMT Settings are invalid\n"
             };
 
             try
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse()
                         {
                             IsSuccessful = true,
-                            Message = "CMT Settings are Valid\n"
+                            Message = "CMT Settings are valid\n"
 
                         };
                 }
