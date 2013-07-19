@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.GradientButton ReSendConfirmationButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton SendRecieptButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.GradientButton SendRecieptButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TitleLabel { get; set; }
@@ -49,14 +49,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				PayButton = null;
 			}
 
-			if (ReSendConfirmationButton != null) {
-				ReSendConfirmationButton.Dispose ();
-				ReSendConfirmationButton = null;
-			}
-
 			if (RateButton != null) {
 				RateButton.Dispose ();
 				RateButton = null;
+			}
+
+			if (ReSendConfirmationButton != null) {
+				ReSendConfirmationButton.Dispose ();
+				ReSendConfirmationButton = null;
 			}
 
 			if (SendRecieptButton != null) {

@@ -485,6 +485,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.StrokePath ();
             context.RestoreState ();
         }
+
+        public override bool Enabled
+        {
+            get
+            {
+                return base.Enabled;
+            }
+            set
+            {
+                base.Enabled = value;
+                base.UserInteractionEnabled = value;
+                base.Alpha = value ? 1f : 0.6f;
+            }
+        }
     }
 }
 
