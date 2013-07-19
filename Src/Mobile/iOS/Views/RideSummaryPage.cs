@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton ((GradientButton)PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
 
+
 			this.AddBindings(new Dictionary<object, string>(){
 				{ TitleLabel, new B("Text","ThankYouTitle")},
 				{ MessageLabel, new B("Text","ThankYouMessage")},
@@ -45,14 +46,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			ButtonHolderView.BackgroundColor = UIColor.Clear;
 
-			ViewModel.PropertyChanged += (sender, e) => ButtonHolderView.StackSubViews (0, 6);
+            ViewModel.PropertyChanged += (sender, e) => 
+            {
+                if(ViewModel.ReceiptSent)
+                {
+                    AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, "Receipt sent", AppStyle.ButtonColor.Grey);
+                    SendRecieptButton.UserInteractionEnabled = false;
+                    SendRecieptButton.Enabled = false;
+                }
 
+                ButtonHolderView.StackSubViews(0, 6);
+            };
 		}
-
-
-		
-		
-
 	}
 }
 

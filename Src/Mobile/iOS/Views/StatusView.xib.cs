@@ -46,19 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #endregion
 
-        public override void ViewWillAppear (bool animated)
-        {
-            base.ViewWillAppear (animated);
-            NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.HidesBackButton = false;  
-
-            if ( NavigationController.ViewControllers.Any ( vc=>vc is ConfirmationView ) )
-            {
-                var newNavStack = NavigationController.ViewControllers.Where (  vc=>!(vc is ConfirmationView ));
-                NavigationController.SetViewControllers ( newNavStack.ToArray () , false );
-            }
-        }
-
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();

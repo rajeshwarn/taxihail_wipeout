@@ -36,6 +36,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        private bool _receiptSent { get; set; }
+        public bool ReceiptSent 
+        {
+            get { return _receiptSent; }
+            set {
+                _receiptSent = value;
+                FirePropertyChanged(() => ReceiptSent);
+            }
+        }
 
 		private Order Order {get; set;}
 		OrderStatusDetail OrderStatus{ get; set;}
@@ -70,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return new AsyncCommand (() =>
 				{
 					BookingService.SendReceipt (Order.Id);
+                    ReceiptSent = true;
 				});
 			}
 		}
@@ -103,11 +113,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-
-
-
-
 	}
-
 }
 
