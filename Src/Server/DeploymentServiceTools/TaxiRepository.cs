@@ -21,13 +21,6 @@ namespace DeploymentServiceTools
         {
             var hg = new MecurialTools(_hgPath, _sourceDirectory);
 
-            
-            if (string.IsNullOrEmpty(revisionNumber))
-            {
-                logger("No revision or version specified - Using tip");
-                revisionNumber = hg.GetTipRevisionNumber();
-            }
-
             if (!Directory.Exists(_sourceDirectory))
             {
                 logger("Full Clone");
@@ -35,7 +28,6 @@ namespace DeploymentServiceTools
             }
             else
             {
-			
                 logger("Hg Revert");
                 hg.Revert();
                 logger("Hg Purge");
@@ -50,9 +42,8 @@ namespace DeploymentServiceTools
                 hg.Pull();
             }
 			
-			logger("Hg Update to rev "+ revisionNumber);;
+			logger("Hg Update to rev "+ revisionNumber);
             hg.Update(revisionNumber);
-
         }
     }
 }
