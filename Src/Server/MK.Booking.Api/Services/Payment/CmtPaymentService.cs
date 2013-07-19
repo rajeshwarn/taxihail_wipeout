@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(new InitiateCreditCardPayment
                         {
                             PaymentId = Guid.NewGuid(),
-                            TransactionId = response.TransactionId.ToString(),
+                            TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
                             Amount = request.Amount,
                             OrderId = preAuthorizeRequest.OrderId,
                         });
@@ -107,17 +108,13 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var payment = _dao.FindByTransactionId(request.TransactionId);
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
-
+                
                 var response = Client.Post(new CaptureRequest
                     {
                         TransactionId = request.TransactionId.ToLong(),
-                        L3Data = new LevelThreeData()
-                            {
-                                PurchaseOrderNumber = request.OrderNumber
-                            }
                     });
 
-                bool isSuccessful = response.ResponseCode == 1;
+                var isSuccessful = response.ResponseCode == 1;
 
                 if (isSuccessful)
                 {

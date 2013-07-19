@@ -23,7 +23,7 @@ namespace MK.Booking.Api.Client
         public TimeSpan Timeout;
         public Action<WebRequest> LocalHttpWebRequestFilter;
 
-        readonly XmlWriterSettings XmlWriterSettings = new XmlWriterSettings
+        readonly XmlWriterSettings _xmlWriterSettings = new XmlWriterSettings
         {
             Encoding = Encoding.ASCII,
             Indent = true,
@@ -43,6 +43,7 @@ namespace MK.Booking.Api.Client
             }
             if (proxy != null)
             {
+                proxy = new WebProxy("http:\\localhost:8888");
                 Proxy = proxy;
             }
         }
@@ -87,7 +88,7 @@ namespace MK.Booking.Api.Client
 		private TResponse DoWebRequest<TResponse>(IReturn<TResponse> request, string method="GET")
 		{			
 			var requestStream = new MemoryStream();
-		    var xmlWriter = XmlWriter.Create(requestStream, XmlWriterSettings);
+		    var xmlWriter = XmlWriter.Create(requestStream, _xmlWriterSettings);
 			var serializer = GetOrCreate(request.GetType());
 
             serializer.Serialize(xmlWriter, request);

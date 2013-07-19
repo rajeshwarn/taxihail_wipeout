@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         {
             return Client.Post(new CommitPreauthorizedPaymentCmtRequest()
                 {
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
                 });
         }
 

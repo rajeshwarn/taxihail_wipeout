@@ -24,14 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         protected ServiceClientBase Client
         {
-            get
-            {				
-                if (_client == null)
-                {
-                    _client = CreateClient();
-                }
-                return _client;
-            }
+            get { return _client ?? (_client = CreateClient()); }
         }
 
         private ServiceClientBase CreateClient()
@@ -40,13 +33,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Console.WriteLine ( "-----------------------------------  CreateClient Session ID :" + _sessionId );
             JsConfig.DateHandler = JsonDateHandler.ISO8601;         
             
-			var client = new JsonServiceClient(_url);
-            client.Timeout = new TimeSpan(0, 0, 2,0, 0);
+			var client = new JsonServiceClient(_url) {Timeout = new TimeSpan(0, 0, 2, 0, 0)};
 
             var uri = new Uri(_url);
             if (!string.IsNullOrEmpty(_sessionId))
             {
-                client.CookieContainer = new System.Net.CookieContainer();
+                client.CookieContainer = new CookieContainer();
                 client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
                 client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
             }

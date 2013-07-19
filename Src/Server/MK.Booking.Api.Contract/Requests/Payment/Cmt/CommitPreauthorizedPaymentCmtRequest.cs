@@ -9,11 +9,10 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
 {
 
-    [Route("/payments/cmt/preAuthorizePayment", "POST")]
+    [Route("/payments/cmt/commitPreAuthorizePayment", "POST")]
     public class CommitPreauthorizedPaymentCmtRequest : IReturn<CommitPreauthorizedPaymentResponse>
     {
         public string TransactionId { get; set; }
 
-        public string OrderNumber { get; set; }
     }
 }

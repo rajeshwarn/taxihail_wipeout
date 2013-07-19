@@ -142,7 +142,7 @@ namespace apcurium.CMT.Web.Tests
             var authorization = client.PreAuthorize(token, amount, orderId);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);
-
+            
             var response = client.CommitPreAuthorized(authorization.TransactionId);
 
             Assert.True(response.IsSuccessfull, response.Message);
