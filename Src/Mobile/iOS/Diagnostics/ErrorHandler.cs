@@ -36,8 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
 				});
 			}
-			else if ((ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound) 
-			         || (ex is WebException && ((WebException)ex).Status == WebExceptionStatus.ConnectFailure))
+			else if (ex is WebException && ((WebException)ex).Status == WebExceptionStatus.ConnectFailure)
 			{
 				_lastConnectError=DateTime.Now;
 				var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");

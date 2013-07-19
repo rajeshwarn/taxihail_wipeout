@@ -37,7 +37,8 @@ namespace apcurium.MK.Booking.Api.Client
         {
             return new PreAuthorizePaymentResponse
                 {
-                    TransactionId = 100000000 + _random.Next(999) + ""
+                    TransactionId = 100000000 + _random.Next(999) + "",
+                    IsSuccessfull = true
                 };
         }
 

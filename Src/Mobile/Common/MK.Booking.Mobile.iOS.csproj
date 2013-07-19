@@ -254,6 +254,8 @@
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="ViewModels\IHaveViewModel.cs" />
     <Compile Include="BindingConverter\OrderStatusToTextColorConverter_IOS.cs" />
+    <Compile Include="AppServices\Impl\PaymentService.cs" />
+    <Compile Include="AppServices\IPaymentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

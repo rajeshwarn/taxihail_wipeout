@@ -324,7 +324,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return GetAccount (true);
             } catch (Exception ex) {
 				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
-					TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+                    var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");
+                    var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionMessage");
+                    var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
+                    mService.ShowMessage (title, msg);
 					return null;
 				}
 				throw;
@@ -577,7 +580,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentServiceClient> ();
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentService> ();
             
 			try
 			{

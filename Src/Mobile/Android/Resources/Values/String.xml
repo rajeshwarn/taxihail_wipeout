@@ -432,4 +432,5 @@
   <string name="PaymentErrorTitle">Payment cannot be completed</string>
   <string name="PayNow">Pay now</string>
   <string name="PaymentScreenTitle">Payment</string>
+  <string name="ReSendConfirmationButton">Notify Driver Of Payment</string>
 </resources>

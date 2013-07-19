@@ -24,9 +24,6 @@ namespace apcurium.MK.Common.Entity
         public DateTime? Eta { get; set; }
         public string Name { get; set; }
 
-
-
-
         public override string ToString()
         {
             return Status + " " + Name;

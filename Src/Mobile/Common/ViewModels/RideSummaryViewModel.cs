@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 			IsRatingButtonShown = AppSettings.RatingEnabled;
 		}
+        public override void Start(bool firstStart)
+        {
+            base.Start(firstStart);
+            FirePropertyChanged(() => IsPayButtonShown);
+        }
 
 		public string ThankYouTitle {
 			get{
@@ -36,6 +41,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        private bool _receiptSent { get; set; }
+        public bool ReceiptSent 
+        {
+            get { return _receiptSent; }
+            set {
+                _receiptSent = value;
+                FirePropertyChanged(() => ReceiptSent);
+            }
+        }
 
 		private Order Order {get; set;}
 		OrderStatusDetail OrderStatus{ get; set;}
@@ -43,7 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-				return isPayEnabled;
+
+                return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 			}
 		}
 
@@ -70,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return new AsyncCommand (() =>
 				{
 					BookingService.SendReceipt (Order.Id);
+                    ReceiptSent = true;
 				});
 			}
 		}
@@ -89,6 +105,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+        
+
+        public IMvxCommand ResendConfirmationCommand {
+            get {
+                return new AsyncCommand (() =>
+                {
+                    var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
+                    VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
+                });
+            }
+        }
 
 		public IMvxCommand PayCommand {
 			get {
@@ -103,11 +130,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-
-
-
-
 	}
-
 }
 

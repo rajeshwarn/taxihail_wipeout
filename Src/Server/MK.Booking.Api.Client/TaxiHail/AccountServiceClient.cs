@@ -10,12 +10,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
-		private IPaymentServiceClient _paymentServiceClient;
+        private IPaymentServiceClient _paymentService;
 
-		public AccountServiceClient(string url, string sessionId, IPaymentServiceClient tokenizationService =null)
+        public AccountServiceClient(string url, string sessionId, IPaymentServiceClient tokenizationService =null)
             : base(url, sessionId)
         {
-            _paymentServiceClient = tokenizationService;
+            _paymentService = tokenizationService;
         }
 
 
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Delete<string>(req);
 			if(!string.IsNullOrWhiteSpace(cardOnFileToken))
 			{
-            	_paymentServiceClient.ForgetTokenizedCard(cardOnFileToken);
+            	_paymentService.ForgetTokenizedCard(cardOnFileToken);
 			}
         }
 

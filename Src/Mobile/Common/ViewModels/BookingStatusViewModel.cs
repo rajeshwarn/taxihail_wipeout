@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _refreshPeriod = periodInSettingsValue;
             }
-
+            RefreshStatus();
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 #else
@@ -360,7 +360,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void CenterMap ()
         {            
 			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
-            if (OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+            if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
                 MapCenter = new CoordinateViewModel[] 
 				{ 

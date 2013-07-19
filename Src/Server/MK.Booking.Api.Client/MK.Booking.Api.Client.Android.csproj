@@ -99,7 +99,6 @@
     <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
-    <Compile Include="Payments\PaymentClientDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
