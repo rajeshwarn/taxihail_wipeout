@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -76,7 +77,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _refreshPeriod = periodInSettingsValue;
             }
-            RefreshStatus();
+
+            Task.Factory.StartNew (() =>
+            {
+                Thread.Sleep( 1000 );     
+                InvokeOnMainThread(() => RefreshStatus());
+            });
+
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 #else

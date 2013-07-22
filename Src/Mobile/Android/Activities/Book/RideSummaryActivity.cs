@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using Android.Graphics;
 
 namespace Activities.Book
 {
@@ -27,15 +28,15 @@ namespace Activities.Book
 		{
 			SetContentView(Resource.Layout.View_Book_RideSummaryPage);
 
-//            ViewModel.PropertyChanged += (sender, e) => 
-//            {
-//                if(ViewModel.ReceiptSent)
-//                {
-//                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
-//                    sendReceiptBtn.SetText("Receipt sent", Android.Widget.TextView.BufferType.Normal);
-//                    sendReceiptBtn.Enabled = false;
-//                }
-//            };
+            ViewModel.PropertyChanged += (sender, e) => 
+            {
+                if(ViewModel.ReceiptSent)
+                {
+                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
+                    sendReceiptBtn.SetText(Resource.String.HistoryViewSendReceiptSuccess, Android.Widget.TextView.BufferType.Normal);
+                    sendReceiptBtn.Enabled = false;
+                }
+            };
 		}
 	}
 }
