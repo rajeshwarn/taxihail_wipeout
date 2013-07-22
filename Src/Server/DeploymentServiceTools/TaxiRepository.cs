@@ -28,18 +28,36 @@ namespace DeploymentServiceTools
             }
             else
             {
-                logger("Hg Revert");
-                hg.Revert();
-                logger("Hg Purge");
-                try{
-					hg.Purge();
-				}
-				catch(Exception e)
-				{
-					logger ("PurgeFailed: " + e.Message);
-				}
-                logger("Hg Pull");
-                hg.Pull();
+                try
+                {
+                    logger("Hg Revert");
+                    hg.Revert();
+                    logger("Hg Purge");
+                    try
+                    {
+                        hg.Purge();
+                    }
+                    catch (Exception e)
+                    {
+                        logger("PurgeFailed: " + e.Message);
+                    }
+                    logger("Hg Pull");
+                    hg.Pull();
+                }
+                catch (Exception e)
+                {
+                    logger("Revert Failed - Deleting all files");
+
+                    foreach (var file in Directory.EnumerateFiles(_sourceDirectory,"*.*", SearchOption.AllDirectories))
+                    {
+                        File.Delete(file);
+                    }
+                    logger("Deleting source dir "+_sourceDirectory);
+                    Directory.Delete(_sourceDirectory);
+
+                    logger("Full Clone");
+                    hg.Clone(revisionNumber);
+                }
             }
 			
 			logger("Hg Update to rev "+ revisionNumber);

@@ -350,7 +350,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var setting = ConfigurationManager.GetPaymentSettings ();
 			var isPayEnabled = setting.IsPayInTaxiEnabled|| setting.PayPalClientSettings.IsEnabled;
 
-			if (!isPayEnabled) {
+            if (!isPayEnabled || PaymentService.GetPaymentFromCache(Order.Id).HasValue)
+            {
                 IsPayButtonVisible = false;
             }
 		}

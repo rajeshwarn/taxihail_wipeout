@@ -153,7 +153,6 @@ namespace MK.ConfigurationManager
                 context.Set<AppVersion>().Add(appVersion);
                 context.SaveChanges();
             });
-            Versions.Add(appVersion);
         }
 
         public void SaveVersions()
