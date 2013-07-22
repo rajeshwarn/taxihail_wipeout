@@ -60,6 +60,7 @@
                     android:textColor="@color/darkgray"
                     android:layout_marginBottom="20dip" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    android:id="@+id/SendReceiptBtn"
                     local:ButtonStyle="Grey"
                     local:MvxBind="{'Click':{'Path':'SendReceiptCommand'}, 'Visibility':{'Path':'IsSendReceiptButtonShown','Converter':'Visibility'} }"
                     android:background="@drawable/green_button"

@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if(ViewModel.ReceiptSent)
                 {
-                    AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, "Receipt sent", AppStyle.ButtonColor.Grey);
+					AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue("HistoryViewSendReceiptSuccess"), AppStyle.ButtonColor.Grey);
                     SendRecieptButton.Enabled = false;
                 }
 
