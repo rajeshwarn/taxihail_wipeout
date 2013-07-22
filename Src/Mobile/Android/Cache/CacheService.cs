@@ -1,33 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
-    public class AppCacheService : CacheService ,  IAppCacheService
-    {
-
-
-        protected override string CacheKey
-        {
-            get
-            {
-                return "MK.Booking.Application.Cache";
-            }
-        }
-    }
-
     public class CacheService : ICacheService
     {
         private const string _cacheKey = "MK.Booking.Cache";
@@ -53,25 +32,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         {
 
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-                var serialized = pref.GetString(key, null);
+            var serialized = pref.GetString(key, null);
 
-                if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            {
+                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+                if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
                 {
-                    var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
-                    if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
-                    {
-                        return cacheItem.Value;
-                    }
+                    return cacheItem.Value;
                 }
-                else if (serialized.HasValue()) //Support for older cached item
+            }
+            else if (serialized.HasValue()) //Support for older cached item
+            {
+                var item = JsonSerializer.DeserializeFromString<T>(serialized);
+                if (item != null)
                 {
-                    var item = JsonSerializer.DeserializeFromString<T>(serialized);
-                    if (item != null)
-                    {
-                        Set(key, item);
-                        return item;
-                    }
+                    Set(key, item);
+                    return item;
                 }
+            }
 
        
 
@@ -119,22 +98,4 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         }
 
     }
-
-
-    public class CacheItem<T> where T : class
-    {
-        public CacheItem(T value)
-        {
-            this.Value = value;
-        }
-        public CacheItem(T value, DateTime expireAt)
-        {
-            this.Value = value;
-            this.ExpiresAt = expireAt;
-        }
-
-        public DateTime ExpiresAt { get; set; }
-        public T Value { get; set; }
-    }
-
 }
