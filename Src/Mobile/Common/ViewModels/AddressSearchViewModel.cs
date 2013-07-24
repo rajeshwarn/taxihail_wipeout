@@ -123,10 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
      
         protected IEnumerable<AddressViewModel> SearchPlaces ()
         {
-         //   Func<Address, bool> predicate = c => true;
-//            if (Criteria.HasValue ()) {
-//                predicate = x => (x.FriendlyName != null && x.FriendlyName.ToLowerInvariant ().Contains (Criteria)) || (x.FullAddress != null && x.FullAddress.ToLowerInvariant ().Contains (Criteria));
-//            }            
+         
             var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
             if (position == null) {
                 var cancellationToken = new CancellationTokenSource ();

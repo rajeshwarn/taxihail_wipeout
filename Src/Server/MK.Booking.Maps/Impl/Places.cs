@@ -56,9 +56,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                     where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.ToUpper().Contains(w.ToUpper()))
                     select a;
-                popularAddresses =popularAddresses.ForEach ( p=> p.AddressType = "popular" );
-               // popularAddresses = _popularAddressProvider.GetPopularAddresses().Where(c => c.FullAddress.ToLower().Contains(words.ToLower()));
-
+                popularAddresses =popularAddresses.ForEach ( p=> p.AddressType = "popular" );               
             }
 
             var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(15);
