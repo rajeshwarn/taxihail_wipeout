@@ -48,11 +48,6 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "types", pipedTypeList},
             };
 
-            if ( name != null )
-            {
-                @params.Add ( "rankby", "distance");
-            }
-
             if (latitude != null
                 && longitude != null)
             {

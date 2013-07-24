@@ -29,12 +29,20 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
             address.AddressType = "postal";
 
-            if (!allowRange &&
-                address.StreetNumber.HasValue() &&
-                address.StreetNumber.Contains("-"))
-            {
-                address.StreetNumber = address.StreetNumber.Split('-')[0].Trim();
+            if (!allowRange &&              
+                address.StreetNumber.HasValue () &&
+                address.StreetNumber.Contains ("-")) {
+
+                address.StreetNumber = address.StreetNumber.Split ('-') [0].Trim ();
             }
+            else if (allowRange &&                 
+                     address.StreetNumber.HasValue () &&
+                address.StreetNumber.Contains ("-")) 
+            {
+                address.StreetNumber = address.StreetNumber.Replace ("-", "");
+            }
+
+
 
             if ( address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
             {
