@@ -109,7 +109,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 		
 		public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "TaxiHail"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 		
-		public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log.txt");
+		public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log_callbox.txt");
 		
 		private static void Write(string message)
 		{
