@@ -87,6 +87,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     var title = Resources.GetString("InvalidLoginMessageTitle");
                     var message = Resources.GetString("InvalidLoginMessage");
 
+                    Logger.LogError( e );
+
                     MessageService.ShowMessage(title, message);
                 }
 

@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             //var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
             Orders = new ObservableCollection<CallboxOrderViewModel>();
 			_orderIdOnError = Guid.Empty;
-             refreshStatusToken = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20))
+             refreshStatusToken = Observable.Timer(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(20))
                       .Subscribe(a =>
                                      {
                                          RefreshOrderStatus();
@@ -92,32 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
             catch (WebServiceException e)
             {
-                InvokeOnMainThread(() =>
-                                       {
-                                           var settings =
-                                               TinyIoCContainer.Current
-                                                               .Resolve
-                                                   <IAppSettings>();
-                                           string err =
-                                               string.Format(
-                                                   Resources.GetString(
-                                                       "ServiceError_ErrorRefreshingOrderMessage"),
-                                                   settings.ApplicationName,
-                                                   settings.PhoneNumberDisplay
-                                                       (
-                                                           Order.Settings
-                                                                .ProviderId
-                                                                .HasValue
-                                                               ? Order
-                                                                     .Settings
-                                                                     .ProviderId
-                                                                     .Value
-                                                               : 1));
-                                           MessageService.ShowMessage(
-                                               Resources.GetString(
-                                                   "ErrorRefreshingOrderTitle"),
-                                               err);
-                                       });
+                Logger.LogError(e);
             }
              
            

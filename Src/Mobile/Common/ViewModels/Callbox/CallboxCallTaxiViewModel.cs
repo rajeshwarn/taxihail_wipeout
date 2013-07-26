@@ -1,5 +1,6 @@
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -9,12 +10,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return this.GetCommand(() => this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), Resources.GetString("BookTaxiPassengerName"), Resources.GetString("Ok"), s
-                                                                                                                                                                                                   =>
-                                                                                                                                                                                                       {
-                                                                                                                                                                                                           RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);
-                                                                                                                                                                                                           Close();
-                                                                                                                                                                                                       }));
+                return this.GetCommand(() => 
+                                       InvokeOnMainThread ( ()=>
+                                        {
+                                            this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
+                                            Resources.GetString("BookTaxiPassengerName"), Resources.GetString("Ok"), 
+                                            s =>
+                                            { 
+                                                  try
+                                                    {   
+                                                        RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);
+                                                        Close();
+                                                    }
+                                                   catch( Exception e )
+                                                    {
+                            Logger.LogError( e );
+                                                    }
+                                            });
+                                        }));
             }
         }
     }
