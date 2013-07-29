@@ -49,6 +49,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             
             Observable.FromEventPattern<View.TouchEventArgs>(orderListLayout, "Touch")
                      .Subscribe(e => DisposeBlinkScreen());
+
+            ViewModel.Load();
         }
 
         private void ViewModelOnOrderCompleted(object sender, EventArgs args)

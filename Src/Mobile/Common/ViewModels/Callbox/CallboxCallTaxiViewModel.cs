@@ -6,6 +6,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxCallTaxiViewModel : BaseCallboxViewModel
     {
+        public override void Load()
+        {
+            base.Load();
+        }
+
         public IMvxCommand CallTaxi
         {
             get
@@ -18,13 +23,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                             s =>
                                             { 
                                                   try
-                                                    {   
-                                                        RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);
-                                                        Close();
+                                                    {
+                            RequestClose( this );
+                                                        RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);                                                        
                                                     }
                                                    catch( Exception e )
                                                     {
-                            Logger.LogError( e );
+                                                        Logger.LogError( e );
                                                     }
                                             });
                                         }));

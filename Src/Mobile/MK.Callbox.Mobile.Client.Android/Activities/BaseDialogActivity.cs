@@ -12,6 +12,8 @@ using Android.Widget;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Callbox.Mobile.Client.Messages;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
@@ -46,8 +48,14 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
         protected void SendMessage(string buttonTitle)
         {
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new ActivityCompleted(this, buttonTitle, _ownerId));
             Finish();
+
+            Task.Factory.StartNew(() =>
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new ActivityCompleted(this, buttonTitle, _ownerId));
+            });
+
+         
         }
 
         protected abstract void Display();
