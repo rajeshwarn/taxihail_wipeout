@@ -135,9 +135,12 @@
         },
 
         onkeyup: function(e) {
-            if(!jQuery.hotkeys.specialKeys[ e.which ]) {
+            //if(!jQuery.hotkeys.specialKeys[ e.which ]) {
+
+            if ($(e.currentTarget).val()!="") {
                 this._selector && this._selector.search($(e.currentTarget).val());
             }
+            //}
         },
 
         ondocumentclick: function(e) {
