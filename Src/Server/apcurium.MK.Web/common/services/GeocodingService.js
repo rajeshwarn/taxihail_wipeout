@@ -47,21 +47,41 @@
                 });
             }
 
-            return TaxiHail.geolocation.getCurrentPosition()
-                .pipe(function (coords) {
-                    return geoResult.pipe(function(geoResult) {
-                        return search(address, coords, geoResult);
-                    });
-                    
-                }, function () {
-                    return geoResult.pipe(function (geoResult) {
-                        return search(address, {
-                            latitude: defaultLatitude,
-                            longitude: defaultLongitude
-                        }, geoResult);
-                    });
-                    
+
+            if (TaxiHail.geolocation.isActive) {
+            
+                return TaxiHail.geolocation.getCurrentPosition()
+               .pipe(function (coords) {
+                   return geoResult.pipe(function (geoResult) {
+                       return search(address, coords, geoResult);
+                   });
+
+               }, function () {
+                   return geoResult.pipe(function (geoResult) {
+                       return search(address, {
+                           latitude: defaultLatitude,
+                           longitude: defaultLongitude
+                       }, geoResult);
+                   });
+
+               });
+
+            }
+            else {
+
+                return geoResult.pipe(function (geoResult) {
+                    return search(address, {
+                        latitude: defaultLatitude,
+                        longitude: defaultLongitude
+                    }, geoResult);
                 });
+                
+            }
+
+
+            
+
+           
         }
     };
 
