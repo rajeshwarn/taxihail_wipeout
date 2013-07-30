@@ -6,6 +6,10 @@
 
     TaxiHail.geolocation = {
 
+        initialize: function () {            
+            navigator.geolocation.watchPosition( _.bind( function (pos) { this.isActive = true; }, this),_.bind( function (error) { this.isActive = false; }, this) );
+        },
+
         getCurrentAddress: function () {
             
             // Try W3C Geolocation (Preferred)

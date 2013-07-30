@@ -77,6 +77,7 @@
                 this.tab.search.call(this);
             }
             
+            
             TaxiHail.geocoder.search(query).done(_.bind(function(result) {
                 this._searchResults && this._searchResults.reset(result);
             }, this));
@@ -182,14 +183,21 @@
                
                 var spinner = new Spinner(this.spinnerOptions).spin();
                 this.$('.tab-content').html(spinner.el);
-                
-               TaxiHail.geolocation.getCurrentPosition()
-                .done(TaxiHail.postpone(_.bind(function (coords) {
-                    this.fetchPlaces(coords.latitude, coords.longitude);
-                }, this)))
-                .fail(_.bind(function () {
-                    this.fetchPlaces(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
-                }, this));
+               
+                if (TaxiHail.geolocation.isActive) {
+                    TaxiHail.geolocation.getCurrentPosition()
+                     .done(TaxiHail.postpone(_.bind(function (coords) {
+                         this.fetchPlaces(coords.latitude, coords.longitude);
+                     }, this)))
+                     .fail(_.bind(function () {
+                         this.fetchPlaces(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
+                     }, this));
+                }
+                else {
+                    
+                        this.fetchPlaces(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
+                    
+                }
             }
         },
         
