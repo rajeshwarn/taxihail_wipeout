@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">MK.Callbox.Mobile.Client.Android</string>
+    <string name="ApplicationName">MK Callbox</string>
   <string name="EmailLabel">Email</string>
   <string name="PasswordLabel">Password</string>
   <string name="SignInButton">Sign In</string>

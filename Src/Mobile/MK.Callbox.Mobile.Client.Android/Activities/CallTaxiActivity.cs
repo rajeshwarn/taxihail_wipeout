@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
-    [Activity(Label = "Call Taxi", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
+    [Activity(Label = "Call Taxi", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape,LaunchMode = Android.Content.PM.LaunchMode.SingleInstance )]
     public class CallTaxiActivity : MvxBindingActivityView<CallboxCallTaxiViewModel>
     {
         private const int NbClick = 5;
@@ -24,6 +24,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                       .Buffer(TimeOut,NbClick)
                       .Where(s => s.Count == 5)
                       .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute(null)));
+
+            ViewModel.Load();
         }
     }
 }

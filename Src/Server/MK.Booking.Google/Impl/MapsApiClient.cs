@@ -48,10 +48,7 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "types", pipedTypeList},
             };
 
-            if ( name != null )
-            {
-                // @params.Add ( "rankby", "distance"); //bug ? see https://code.google.com/p/gmaps-api-issues/issues/detail?id=4056#c13
-            }
+  
 
             if (latitude != null
                 && longitude != null)
