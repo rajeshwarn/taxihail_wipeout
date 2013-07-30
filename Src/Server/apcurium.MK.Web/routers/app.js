@@ -139,10 +139,16 @@
         
         book: function () {
 
+            
             var model = new TaxiHail.Order();
+
+            TaxiHail.geolocation.initialize();
+            
+
             TaxiHail.geolocation.getCurrentAddress()
-                // By default, set pickup address to current user location
-                .done(TaxiHail.postpone(function(address) {
+            //    // By default, set pickup address to current user location
+                .done(TaxiHail.postpone(function (address) {
+                
                     model.set('pickupAddress', address);
                 }));
             
