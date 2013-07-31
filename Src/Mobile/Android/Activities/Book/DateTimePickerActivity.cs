@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private static int TIME_PICKER_INTERVAL = 5;
 
+		private int _lastMinutes;
         private bool _ignoreEvent = false;
 
         protected override void OnCreate(Bundle bundle)
@@ -32,7 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             timePicker.CurrentHour = new Integer(selected.Hour);
             timePicker.CurrentMinute = new Integer(selected.Minute);
             timePicker.SetIs24HourView(Java.Lang.Boolean.False);  
-            FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
+            
+			_lastMinutes = selected.Minute == 0 ? 60 : selected.Minute;
+
+			FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
             FindViewById<DatePicker>(Resource.Id.datePickerCtl).UpdateDate(selected.Year, selected.Month - 1, selected.Day);
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
             //FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
@@ -45,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 timePicker.SetIs24HourView(Java.Lang.Boolean.True);                                       
                 timePicker.CurrentHour = new Integer(h);
             }
+
 
         }
 
@@ -96,12 +101,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (_ignoreEvent)
                 return;
             
+
+
+			bool goingUp =  e.Minute > _lastMinutes;
+
             int i = GetNextIntervalMinutes(e.Minute);
-            
+
+			_lastMinutes = i == 0 ? 60 : i;
+
             _ignoreEvent = true;
-            if (i < e.Minute)
+            
+			if ( goingUp && (i < e.Minute) )
             {
-                
+
                 var h = FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentHour.IntValue();
                 h ++;
                 if (h > 23)

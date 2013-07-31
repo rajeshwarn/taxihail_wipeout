@@ -146,12 +146,12 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook">
-      <HintPath>..\Libraries\Monotouch\Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="MonoTouch.Dialog-1" />
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
