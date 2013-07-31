@@ -163,14 +163,15 @@ namespace apcurium.MK.Booking.Mobile
                             return;
                         }
                     
-                        InvokeOnMainThread (() => BookAddress = location.FullAddress);
-
-						location.FriendlyName = _address.FriendlyName;
-						location.Apartment = _address.Apartment;
-						location.RingCode = _address.RingCode;
-						location.Id = _address.Id;
-                        location.IsHistoric = _address.IsHistoric;
-						_accountService.UpdateAddress(location);
+                        FirePropertyChanged (() => BookAddress ); 
+                        //InvokeOnMainThread (() => BookAddress = location.FullAddress);
+//
+//						location.FriendlyName = _address.FriendlyName;
+//						location.Apartment = _address.Apartment;
+//						location.RingCode = _address.RingCode;
+//						location.Id = _address.Id;
+//                        location.IsHistoric = _address.IsHistoric;
+                        _accountService.UpdateAddress(_address);
 						// Must hide Progress indicator or otherwise the view won't close in iOS
 						MessageService.ShowProgress(false);
 						progressShowing = false;

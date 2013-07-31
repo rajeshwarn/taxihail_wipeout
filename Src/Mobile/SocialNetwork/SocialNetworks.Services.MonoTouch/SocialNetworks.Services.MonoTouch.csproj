@@ -53,8 +53,8 @@
     <Reference Include="System.Json" />
     <Reference Include="MonoTouch.Dialog-1" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="Facebook">
-      <HintPath>..\..\Libraries\Monotouch\Facebook.dll</HintPath>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
