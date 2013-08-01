@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountFixture\given_no_account.cs" />
+    <Compile Include="BookingWebServiceClientFixture\given_a_service_provider.cs" />
     <Compile Include="FakeConfigurationManager.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
