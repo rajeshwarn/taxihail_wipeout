@@ -1356,4 +1356,10 @@
   <data name="PaymentErrorTitle" xml:space="preserve">
     <value>Payment cannot be completed</value>
   </data>
+  <data name="VehicleNumberInfo" xml:space="preserve">
+    <value>Please confirm your car number with the driver</value>
+  </data>
+  <data name="VehicleNumberNotice" xml:space="preserve">
+    <value>Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</value>
+  </data>
 </root>

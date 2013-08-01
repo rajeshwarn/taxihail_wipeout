@@ -18,15 +18,9 @@
             android:layout_height="30dp"
             android:layout_weight="1" />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Please confirm your car"
-            style="@style/FormLabelText"
-            android:gravity="center" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="number with the driver"
+            android:text="@string/VehicleNumberInfo"
             style="@style/FormLabelText"
             android:gravity="center" />
         <View
