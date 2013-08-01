@@ -112,7 +112,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-        
 
         public IMvxCommand ResendConfirmationCommand {
             get {
