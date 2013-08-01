@@ -41,10 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },
 				{ RateButton, new B("TouchUpInside","NavigateToRatingPage")
 					.Add("Hidden", "IsRatingButtonShown", "BoolInverter")  },
-
                 { ReSendConfirmationButton, new B("TouchUpInside","ResendConfirmationCommand")
-                    .Add("Hidden", "IsPayButtonShown") },
-
+                    .Add("Hidden", "IsResendConfirmationButtonShown", "BoolInverter") },
 				{ PayButton, new B("TouchUpInside","PayCommand")
 					.Add("Hidden", "IsPayButtonShown", "BoolInverter")  },
 			});

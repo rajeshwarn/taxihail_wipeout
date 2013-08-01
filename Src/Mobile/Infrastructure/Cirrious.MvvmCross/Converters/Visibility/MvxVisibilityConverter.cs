@@ -18,10 +18,6 @@ namespace Cirrious.MvvmCross.Converters.Visibility
         public override MvxVisibility ConvertToMvxVisibility(object value, object parameter, CultureInfo culture)
         {
             var visibility = (bool) value;
-            if (parameter != null)
-            {
-                return visibility ? MvxVisibility.Collapsed : MvxVisibility.Visible;    
-            }
             return visibility ? MvxVisibility.Visible : MvxVisibility.Collapsed;
         }
     }

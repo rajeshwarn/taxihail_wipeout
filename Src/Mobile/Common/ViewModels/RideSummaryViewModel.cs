@@ -1,15 +1,10 @@
-using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Messages;
-using TinyMessenger;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Common.Entity;
 
@@ -27,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.Start(firstStart);
             FirePropertyChanged(() => IsPayButtonShown);
+            FirePropertyChanged(() => IsResendConfirmationButtonShown);
+            FirePropertyChanged(() => IsSendReceiptButtonShown);
         }
 
 		public string ThankYouTitle {
@@ -53,14 +50,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private Order Order {get; set;}
 		OrderStatusDetail OrderStatus{ get; set;}
+
 		public bool IsPayButtonShown{
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-			    var x = PaymentService.GetPaymentFromCache(Order.Id);
                 return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 			}
 		}
+
+	    public bool IsResendConfirmationButtonShown
+	    {
+	        get
+	        {
+                var setting = ConfigurationManager.GetPaymentSettings();
+                var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+                return isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+	        }
+	    }
 
 		public bool IsSendReceiptButtonShown {
 			get{
