@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
     public class TaxiOverlay : ItemizedOverlay
     {
         private OverlayItem _item;
-        private string _title;
         private MapView _owner;
 
         private int _markerHeight;
@@ -27,19 +26,15 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         {
             _owner = owner;
             _item = new OverlayItem(point, title, null);
-            _title = title;
             BoundCenterBottom(taxiImage);
             
             _markerHeight = taxiImage.Bounds.Height();
 
             Populate();
-
-
         }
 
-        public override void Draw(Android.Graphics.Canvas canvas, MapView mapView, bool shadow)
+        public override void Draw(Canvas canvas, MapView mapView, bool shadow)
         {
-
             if (shadow)
             {
                 return;
@@ -47,15 +42,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             base.Draw(canvas, mapView, shadow);
 
-
-
             foreach (var overlay in _owner.Overlays)
             {
                 if (overlay is TaxiOverlay)
                 {
                     var item = ((TaxiOverlay)overlay)._item;
-
-                    
 
                     GeoPoint point = item.Point;
 
@@ -63,12 +54,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     _owner.Projection.ToPixels(point, markerBottomCenterCoords);
 
                     /* Find the width and height of the title*/
-                    TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
+                    TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
                     Paint paintRect = new Paint();
 
                     Rect rect = new Rect();
                     paintText.TextSize = 18;
-                    paintText.GetTextBounds(_title, 0, item.Title.Length, rect);
+                    paintText.GetTextBounds(item.Title, 0, item.Title.Length, rect);
 
                     rect.Inset(-3, -3);
                     rect.OffsetTo(markerBottomCenterCoords.X - rect.Width() / 2, markerBottomCenterCoords.Y - _markerHeight + 2);
@@ -80,14 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     
                     paintText.SetTypeface( AppFonts.Bold );
                     canvas.DrawRoundRect(new RectF(rect), 2, 2, paintRect);
-                    canvas.DrawText(_title, rect.Left + rect.Width() / 2, rect.Bottom - 3, paintText);
-
+                    canvas.DrawText(item.Title, rect.Left + rect.Width() / 2, rect.Bottom - 3, paintText);
                 }
             }
         }
-
-
-
 
         public string Title { get { return _item.Title; } }
 
@@ -128,7 +115,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             return result;
         }
-
 
         private void RemoveAllBalloons(MapView mapView)
         {

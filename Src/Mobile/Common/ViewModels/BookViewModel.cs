@@ -600,9 +600,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _getAvailableVehicles.Dispose ();
             _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
                 .Subscribe (result => InvokeOnMainThread(() =>{
-                                                                  AvailableVehicles = result;
+                    AvailableVehicles = result;
                 }));
-
         }
     }
 }

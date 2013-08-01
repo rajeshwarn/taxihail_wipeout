@@ -31,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		private ImageView _pickupCenterPin;
 		private ImageView _dropoffCenterPin;
 
-        
-
         protected TouchMap(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
@@ -184,11 +182,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-
-        private OrderStatusDetail _taxiLocation { get; set; }
-
         private TaxiOverlay _taxiLocationPin;
 
+        private OrderStatusDetail _taxiLocation { get; set; }
         public OrderStatusDetail TaxiLocation
         {
             get { return _taxiLocation; }
@@ -201,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin = null;
                 }
 
-                if ((value != null) && (value.VehicleLatitude.HasValue) && (value.VehicleLongitude.HasValue))
+                if ((value != null) && (value.VehicleLatitude.HasValue) && (value.VehicleLongitude.HasValue) && (!string.IsNullOrEmpty(value.VehicleNumber)))
                 {
                     var point = new GeoPoint(CoordinatesHelper.ConvertToE6(value.VehicleLatitude.Value), CoordinatesHelper.ConvertToE6(value.VehicleLongitude.Value));
                     _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.pin_cab), value.VehicleNumber, point);
@@ -232,7 +228,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				ShowAvailableVehicles (value);
 			}
 		}
-		
 
 		private AddressSelectionMode _addressSelectionMode;
 		public AddressSelectionMode AddressSelectionMode {
@@ -284,7 +279,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return;
             }
 
-
             int minLat = int.MaxValue;
             int maxLat = int.MinValue;
             int minLon = int.MaxValue;
@@ -313,11 +307,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
             }
             PostInvalidateDelayed(100);
-        }
-
-        public override bool OnTouchEvent(Android.Views.MotionEvent e)
-        {
-            return base.OnTouchEvent(e);
         }
 
 		private void ShowDropoffPin (Address address)
@@ -352,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
-				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
+				_pickupPin = MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
 			}
 			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
 		}

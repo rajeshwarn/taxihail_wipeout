@@ -16,22 +16,11 @@ namespace apcurium.MK.Booking.IBS.Impl
     {
         private const int _invalidZoneErrorCode = -1002;
         readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
-        readonly int _availableVehiclesRadius;
-        readonly int _availableVehiclesCount;
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
-
-            var radiusConfig = ConfigManager.GetSetting("AvailableVehicles.Radius");
-            var countConfig = ConfigManager.GetSetting("AvailableVehicles.Count");
-            _availableVehiclesRadius = radiusConfig == null
-                ? 2000 
-                : Convert.ToInt32(radiusConfig, CultureInfo.InvariantCulture);
-            _availableVehiclesCount = countConfig == null
-                ? 10
-                : Convert.ToInt32(countConfig, CultureInfo.InvariantCulture);
         }
 
         protected override string GetUrl()
@@ -108,7 +97,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             });
             return result;
         }
-
         
         public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
@@ -157,7 +145,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             var priority = ConfigManager.GetSetting("IBS.OrderPriority").SelectOrDefault(setting => bool.Parse(setting), true);
             order.Priority = priority ? 1 : 0;
                        
-
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
@@ -232,10 +219,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     return false;
                 }
-
             }
             return true;
-
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
