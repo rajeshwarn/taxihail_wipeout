@@ -1,8 +1,4 @@
 
-using System;
-using System.Drawing;
-
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
@@ -23,6 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             base.ViewDidLoad ();
 
             Container.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+
+            lblConfirmDriverInfo.Text = Resources.GetValue("VehicleNumberInfo");
+            lblConfirmDriverNotice.Text = Resources.GetValue("VehicleNumberNotice");
+            lblConfirmDriverNotice.Font = AppStyle.GetNormalFont (13);
 
             HideKeyboardButton.TouchDown += (sender, e) => {
                 View.ResignFirstResponderOnSubviews();
