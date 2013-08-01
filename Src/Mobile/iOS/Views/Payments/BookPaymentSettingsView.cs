@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				ScrollViewer.Frame = new RectangleF (ScrollViewer.Frame.X, ScrollViewer.Frame.Y - payPalToggle.Frame.Height, ScrollViewer.Frame.Width, ScrollViewer.Frame.Height);
 			}
 
-			ScrollViewer.ContentSize = new SizeF(ScrollViewer.ContentSize.Width, btConfirm.Frame.Bottom + 20);
+			ScrollViewer.ContentSize = new SizeF(ScrollViewer.ContentSize.Width, btConfirm.Frame.Bottom + 50);
 
 			payPalLogo.Image = UIImage.FromFile("Assets/CreditCard/paypal.png");
 
