@@ -293,7 +293,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		string vehicleNumber = null;
         private void RefreshStatus ()
         {
-
             try {
                 var status = BookingService.GetOrderStatus (Order.Id);
 				if(status.VehicleNumber != null)
@@ -341,14 +340,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void UpdatePayCancelButtons (string statusId)
 		{
-			IsPayButtonVisible =  statusId == VehicleStatuses.Common.Arrived
-								||statusId == VehicleStatuses.Common.Done
+			IsPayButtonVisible =  statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded;
 			
 			IsCancelButtonVisible = !IsPayButtonVisible;
 		
 			var setting = ConfigurationManager.GetPaymentSettings ();
-			var isPayEnabled = setting.IsPayInTaxiEnabled|| setting.PayPalClientSettings.IsEnabled;
+			var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
             if (!isPayEnabled || PaymentService.GetPaymentFromCache(Order.Id).HasValue)
             {
