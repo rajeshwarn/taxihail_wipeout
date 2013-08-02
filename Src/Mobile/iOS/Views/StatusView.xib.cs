@@ -190,28 +190,36 @@ namespace apcurium.MK.Booking.Mobile.Client
 				var numberOfItemsHidden = 0;
 				var defaultHeightOfSlidingView = 130f;
 
-				var tupleList = new List<Tuple<UILabel, UILabel>> ();
-				tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType));
-				tupleList.Add (Tuple.Create (lblMake, txtMake));
-				tupleList.Add (Tuple.Create (lblModel, txtModel));
-				tupleList.Add (Tuple.Create (lblColor, txtColor));
+				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
+                tupleList.Add (Tuple.Create (lblDriver, txtDriver, false));
+                tupleList.Add (Tuple.Create (lblLicence, txtLicence, false));
+                tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType, false));
+                tupleList.Add (Tuple.Create (lblMake, txtMake, false));
+                tupleList.Add (Tuple.Create (lblModel, txtModel, false));
+                tupleList.Add (Tuple.Create (lblColor, txtColor, false));
 
 				if (ViewModel.VehicleDriverHidden){ 
+                    tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleLicenceHidden){ 
+                    tupleList[1] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleTypeHidden){ 
+                    tupleList[2] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleMakeHidden){ 
+                    tupleList[3] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleModelHidden){ 
+                    tupleList[4] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleColorHidden){ 
+                    tupleList[5] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
 					numberOfItemsHidden++;
 				}
 	
@@ -224,9 +232,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 				var i = 0;
 				foreach (var item in tupleList) {
-					if (!item.Item1.Hidden) {
-						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 44 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 44 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+					if (!item.Item3) {
+						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
 						i++;
 					}
 				}
