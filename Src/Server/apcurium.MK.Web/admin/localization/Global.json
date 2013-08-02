@@ -77,6 +77,9 @@
 	"IBS.OrderPriority" : "Create order with priority high",
 	"IBS.NoteTemplate" : "Template for note sent to driver",
 	"AccountActivationDisabled" : "Disable need for account confirmation",
+	"AvailableVehicles.Enabled" : "Show available vehicles nearby",
+	"AvailableVehicles.Radius" : "Radius for available vehicles",
+	"AvailableVehicles.Count" : "Number of avail. vehicles displayed",
 	
 	"IBS.ValidatePickupZone" : "IBS validate pickup zone",
 	"Receipt.Note" : "Receipt note",

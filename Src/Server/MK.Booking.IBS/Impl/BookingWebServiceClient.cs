@@ -32,16 +32,22 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var result = new IBSVehiclePosition[0];
 
-            var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
-            var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+            var optionEnabled = ConfigManager.GetSetting("AvailableVehicles.Enabled", true);
 
-            UseService(service =>
+            if (optionEnabled)
             {
-                result = service
-                    .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
-                    .Select(Mapper.Map<IBSVehiclePosition>)
-                    .ToArray();
-            });
+                var radius = ConfigManager.GetSetting("AvailableVehicles.Radius", 2000);
+                var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
+
+                UseService(service =>
+                {
+                    result = service
+                        .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
+                        .Select(Mapper.Map<IBSVehiclePosition>)
+                        .ToArray();
+                });
+            }
+            
             return result;
         }
 
