@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 DefaultTipPercent = tipPercent
             };
             
-            QueueCommand<IAccountServiceClient> (service =>
+            UseServiceClient<IAccountServiceClient> (service =>
                                                  {                     
                 service.UpdateBookingSettings (bsr);
                 
@@ -453,7 +453,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 
                 RemoveFromCacheArray<Address> (_favoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
-                QueueCommand<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
+                UseServiceClient<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
             }
         }
 
@@ -464,7 +464,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 RemoveFromCacheArray<Address> (_historyAddressesCacheKey, toDelete, (id, a) => a.Id == id);
 
-                QueueCommand<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
+                UseServiceClient<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
         }
 
@@ -483,7 +483,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UpdateCacheArray (_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
 
-            QueueCommand<IAccountServiceClient> (service =>
+            UseServiceClient<IAccountServiceClient> (service =>
             {
                 var toSave = new SaveAddress
                     {
