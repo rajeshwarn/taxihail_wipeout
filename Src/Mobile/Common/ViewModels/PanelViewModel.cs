@@ -80,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private string _version;
-
         public string Version {
             get {
                 return _version;                         
@@ -127,31 +126,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get{
                 return !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideCallDispatchButton").TryToParse( true );
             }
-        
         }
-
 
         public bool CanReportProblem 
         {
             get{
                 return !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideReportProblem").TryToParse( true );
             }
-            
         }
-
 
         public IMvxCommand Call {
             get {
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    Action call = () => {
-                        PhoneService.Call (Settings.PhoneNumber (_accountService.CurrentAccount.Settings.ProviderId.Value)); };
+                    Action call = () => { PhoneService.Call (Settings.PhoneNumber (_accountService.CurrentAccount.Settings.ProviderId)); };
                     MessageService.ShowMessage (string.Empty, 
-                                               Settings.PhoneNumberDisplay (_accountService.CurrentAccount.Settings.ProviderId.Value), 
+                                               Settings.PhoneNumberDisplay (_accountService.CurrentAccount.Settings.ProviderId), 
                                                Resources.GetString ("CallButton"), 
                                                call, Resources.GetString ("CancelBoutton"), 
-                                               () => {});                    
+                                               () => {});
                 });
             }
         }
@@ -165,8 +159,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-
-
     }
 }
 

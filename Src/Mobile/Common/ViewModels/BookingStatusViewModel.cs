@@ -175,7 +175,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		
 		public bool IsCallButtonVisible {
 			get { return !bool.Parse (TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.HideCallDispatchButton")); }
-			private set{}
 		}
 
 		public bool VehicleDriverHidden
