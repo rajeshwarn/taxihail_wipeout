@@ -39,27 +39,6 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
 
         }
-
-        //public string GetSetting(string key)
-        //{
-        //    using (var context = _contextFactory.Invoke())
-        //    {
-        //        return context.Query<AppSetting>().Where(x => x.Key.Equals(key)).Select(x=>x.Value).FirstOrDefault();
-        //    }
-        //}
-
-        //public void SetSetting(string key, string value)
-        //{
-        //}
-
-        private void Save(string key, string value)
-        {
-
-        }
-
-        private void Load()
-        {
-
-        }
+        
     }
 }
