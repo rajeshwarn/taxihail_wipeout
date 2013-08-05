@@ -63,7 +63,19 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Android.Maps">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json.MonoDroid">
+      <HintPath>..\Infrastructure\Newtonsoft.Json.MonoDroid.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -624,18 +636,6 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
-      <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
-      <Name>Cirrious.MvvmCross.Binding.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
-      <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
-      <Name>Cirrious.MvvmCross.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj">
-      <Project>{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}</Project>
-      <Name>Cirrious.MvvmCross.Android.Maps</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
       <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>
@@ -651,10 +651,6 @@
     <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
       <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
       <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

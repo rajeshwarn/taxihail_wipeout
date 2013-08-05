@@ -36,7 +36,19 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Android.Maps">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="Newtonsoft.Json.MonoDroid">
+      <HintPath>..\Infrastructure\Newtonsoft.Json.MonoDroid.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -287,14 +299,6 @@
     <ProjectReference Include="..\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
       <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
       <Name>BraintreeEncryption.Library.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
-      <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
-      <Name>Cirrious.MvvmCross.Binding.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
-      <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
-      <Name>Cirrious.MvvmCross.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

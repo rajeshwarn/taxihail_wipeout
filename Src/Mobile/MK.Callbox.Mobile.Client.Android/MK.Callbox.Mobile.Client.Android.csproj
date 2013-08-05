@@ -53,8 +53,20 @@
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Android.Maps">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json.MonoDroid">
+      <HintPath>..\Infrastructure\Newtonsoft.Json.MonoDroid.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=2.1.20814.0, Culture=neutral, processorArchitecture=MSIL">
@@ -211,14 +223,6 @@
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
-      <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
-      <Name>Cirrious.MvvmCross.Binding.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
-      <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
-      <Name>Cirrious.MvvmCross.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

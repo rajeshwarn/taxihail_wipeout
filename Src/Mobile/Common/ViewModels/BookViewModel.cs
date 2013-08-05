@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             { 
 				_availableVehicles = value;
-				FirePropertyChanged("AvailableVehicles");
+				FirePropertyChanged(()=>AvailableVehicles);
             }
         }
 
