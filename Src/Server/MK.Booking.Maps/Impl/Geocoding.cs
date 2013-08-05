@@ -32,13 +32,20 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             geoResult = geoResult ?? SearchUsingName(addressName, true);
 
-            if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
+            var popularPlaces = new Address[0];
+
+            if (addressName.HasValue())
             {
-                return ConvertGeoResultToAddresses(geoResult,null, true);
+                popularPlaces = SearchPopularAddresses(addressName);
             }
 
-			// No result
-            return new Address[0];
+          
+            if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
+            {
+                return popularPlaces.Concat(  ConvertGeoResultToAddresses(geoResult,null, true)).ToArray();
+            }
+
+            return popularPlaces;
 
         }
 
@@ -80,7 +87,19 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
         }
 
-      
+
+        private Address[] SearchPopularAddresses(string name)
+        {
+
+            var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
+                               where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.ToUpper().Contains(w.ToUpper()))
+                               select a;
+
+
+            return popularAddresses.ToArray();
+        }
+
 
         private Address[] GetPopularAddressesInRange(Position position)
         {

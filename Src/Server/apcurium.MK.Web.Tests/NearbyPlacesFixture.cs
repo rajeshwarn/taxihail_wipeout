@@ -97,5 +97,44 @@ namespace apcurium.MK.Web.Tests
             Assert.NotNull(order);
             Assert.AreEqual(address.FullAddress, order.PickupAddress.FullAddress);
         }
+
+
+        //[Test]
+        //public void when_popular_addresses_nearby()
+        //{
+
+        //    CreatePopularPlaces("1234 fake street", "FakePlace" , Latitude, Longitude );
+
+        //    var sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
+
+        //    var sut = new NearbyPlacesClient(BaseUrl, SessionId);
+        //    var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 1000);
+
+        //    Assert.IsTrue( greatRadius.First().FriendlyName == "FakePlace");
+            
+        //    //greatRadius.Any();
+        //}
+
+        //private void CreatePopularPlaces(string fullAddress, string friendlyName, double latitude, double longitude)
+        //{
+
+        //    var account = CreateAndAuthenticateTestAdminAccount();
+        //    var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
+
+
+        //    var service = new PopularAddressesServiceClient(BaseUrl, SessionId);
+        //    service.Add(new PopularAddress { Id = Guid.NewGuid(), Address = new Address { FriendlyName = friendlyName, FullAddress = fullAddress, Latitude = latitude, Longitude = longitude } });
+
+
+        //}
+
+        //private void CreatePopularPlaces()
+        //{
+            
+        //    //
+                        
+        //}
+
+
     }
 }

@@ -50,18 +50,36 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
             var popularAddresses = Enumerable.Empty<Address>();
-            if(name != null && latitude.HasValue && longitude.HasValue)
+            if(latitude.HasValue && longitude.HasValue)
             {
-                var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
-                    where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.ToUpper().Contains(w.ToUpper()))
-                    select a;
+                if (string.IsNullOrEmpty(name))
+                {
+                    popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()                                       
+                                       select a;
+                }
+                else
+                {
+                    var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
+                                       where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.ToUpper().Contains(w.ToUpper()))
+                                       select a;
+                }
+
                 popularAddresses =popularAddresses.ForEach ( p=> p.AddressType = "popular" );               
             }
 
             var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(15);
 
-            return popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
+            if (latitude.HasValue && longitude.HasValue)
+            {
+                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).OrderBy(p => Position.CalculateDistance(p.Latitude, p.Longitude, latitude.Value, longitude.Value)).ToArray();
+                return places;
+            }
+            else
+            {
+                var places = popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
+                return places;
+            }
         }
 
         private Address ConvertToAddress(Place place)
