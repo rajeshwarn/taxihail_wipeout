@@ -416,7 +416,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
                
-        private void CenterMap(bool changeZoom)
+        public void CenterMap(bool changeZoom)
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection && Dropoff.Model.HasValidCoordinate())
             {

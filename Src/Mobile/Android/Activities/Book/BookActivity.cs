@@ -37,8 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
-
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Book);
@@ -47,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
-
 
             var headerLayoutMenu = FindViewById<HeaderedLayout>(Resource.Id.HeaderLayoutMenu);
             var titleText = headerLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
@@ -69,10 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			ViewModel.Load();
 
-            
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
-
-
         }
 
         void HandleSignOutButtonClick (object sender, EventArgs e)
@@ -94,32 +88,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void BookUsingAddress(Address address)
         {
-
             ViewModel.InitializeOrder();
             ViewModel.Pickup.SetAddress(address, true);
             ViewModel.Dropoff.ClearAddress();
-
             ViewModel.ConfirmOrder.Execute();
         }
-
 
         protected override void OnResume()
         {
             base.OnResume();
-            
 
             ViewModel.ShowTutorial.Execute();
 
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
+            ViewModel.CenterMap(true);
 
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.Invalidate();
 
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
-
-
         }
-
 
         protected override void OnPause()
         {
@@ -132,9 +120,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
         }
-
-
-		       
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
         {
@@ -201,7 +186,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			else
             {
                 base.OnBackPressed();
-
             }
         }
 
@@ -213,6 +197,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			}
 		}
-
     }
 }
