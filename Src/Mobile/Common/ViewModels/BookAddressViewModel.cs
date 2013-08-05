@@ -134,19 +134,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }, token);
 
                     task.ContinueWith(t => InvokeOnMainThread(() => {
-                                                                        if (t.Result != null && t.Result.Any())
-                                                                        {
-                                                                            var address = t.Result[0];                                
-                                                                            // Replace result coordinates  by search coordinates (= user position)
-                                                                            address.Latitude = coordinate.Latitude;
-                                                                            address.Longitude = coordinate.Longitude;
-                                                                            SetAddress(address, true);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
-                                                                            ClearAddress();
-                                                                        }
+                    if (t.Result != null && t.Result.Any())
+                    {
+                        var address = t.Result[0];                                
+                        // Replace result coordinates  by search coordinates (= user position)
+                        address.Latitude = coordinate.Latitude;
+                        address.Longitude = coordinate.Longitude;
+                        SetAddress(address, true);
+                    }
+                    else
+                    {
+                        Logger.LogMessage("No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude, coordinate.Longitude);
+                        ClearAddress();
+                    }
                     }), TaskContinuationOptions.OnlyOnRanToCompletion);
 
                 });
@@ -163,11 +163,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Settings.StreetNumberScreenEnabled 
                         && Model.BookAddress.HasValue())
                     {
-                        RequestNavigate<BookStreetNumberViewModel>(new { address = JsonSerializer.SerializeToString(Model), ownerId = _id });
+                        RequestNavigate<BookStreetNumberViewModel>(new
+                            {
+                                address = JsonSerializer.SerializeToString(Model),
+                                ownerId = _id
+                            });
                     }
                     else
                     {
-                        RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id, places = "false" });
+                        RequestNavigate<AddressSearchViewModel>(new
+                            {
+                                search = Model.FullAddress,
+                                ownerId = _id, 
+                                places = "false"
+                            });
                     }
 
                 });
@@ -291,7 +300,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if ( !LocationService.IsLocationServicesEnabled )
                     {
-                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
+                        MessageService.ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
                     }
 
@@ -313,8 +322,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     ()=>
                     {  
 						positionSet = false;
-
-
+                        
                         if(!positionSet)
                         {
                             InvokeOnMainThread(() =>

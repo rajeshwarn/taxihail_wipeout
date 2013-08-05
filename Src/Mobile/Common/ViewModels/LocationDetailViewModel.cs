@@ -1,21 +1,15 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
@@ -215,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile
                  var account = AccountService.CurrentAccount;
                  order.Settings = account.Settings;
                  var serialized = JsonSerializer.SerializeToString(order);
-				 RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
+				 RequestNavigate<BookViewModel>(new { order = serialized }, true, MvxRequestedBy.UserAction);
 				});
 			}
 		}
