@@ -24,10 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             lblConfirmDriverNotice.Text = Resources.GetValue("VehicleNumberNotice");
             lblConfirmDriverNotice.Font = AppStyle.GetNormalFont (13);
 
-            HideKeyboardButton.TouchDown += (sender, e) => {
-                View.ResignFirstResponderOnSubviews();
-            };
-
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Resources.ConfirmButton, AppStyle.ButtonColor.Green ); 
 
             this.AddBindings(new Dictionary<object, string>{

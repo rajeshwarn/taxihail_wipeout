@@ -21,9 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UIView Container { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton HideKeyboardButton { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblConfirmDriverInfo { get; set; }
 
 		[Outlet]
@@ -36,19 +33,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				CarNumber = null;
 			}
 
-			if (ConfirmButton != null) {
-				ConfirmButton.Dispose ();
-				ConfirmButton = null;
-			}
-
 			if (Container != null) {
 				Container.Dispose ();
 				Container = null;
 			}
 
-			if (HideKeyboardButton != null) {
-				HideKeyboardButton.Dispose ();
-				HideKeyboardButton = null;
+			if (ConfirmButton != null) {
+				ConfirmButton.Dispose ();
+				ConfirmButton = null;
 			}
 
 			if (lblConfirmDriverInfo != null) {
