@@ -17,14 +17,9 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class LocationDetailViewModel: BaseViewModel,
-        IMvxServiceConsumer<IGeolocService>,
-        IMvxServiceConsumer<IAccountService>
+	public class LocationDetailViewModel: BaseViewModel
 	{
-        IAccountService _accountService;
-
-        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
-
+        
 		public LocationDetailViewModel (string address)
 		{
             _address = address.FromJson<Address>();
@@ -37,20 +32,14 @@ namespace apcurium.MK.Booking.Mobile
             IsNew = true;
         }
 
-        protected override void Initialize ()
-        {
-            base.Initialize ();
-            _accountService = this.GetService<IAccountService>();
-        }
-
         public bool ShowRingCodeField {
             get
             {
-                return TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.ShowRingCodeField" ) != "false" ;
+                return ConfigurationManager.GetSetting( "Client.ShowRingCodeField" ) != "false" ;
             }
             
         }
-		private Address _address;
+		private readonly Address _address;
 		
         public string BookAddress {
             get {
@@ -131,13 +120,9 @@ namespace apcurium.MK.Booking.Mobile
                 return GetCommand(() =>
                 {
                     MessageService.ShowProgress(true);
-                    var task = Task.Factory.StartNew(()=>{
-						return this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
-                    }, _validateAddressCancellationTokenSource.Token)
+                    var task = Task.Factory.StartNew(()=> GeolocService.ValidateAddress (_address.FullAddress))
                         .HandleErrors();
-                    task.ContinueWith(t=> {
-                                MessageService.ShowProgress(false);
-                    });
+                    task.ContinueWith(t=> MessageService.ShowProgress(false));
                     task.ContinueWith(t=>{
                         var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
@@ -146,10 +131,9 @@ namespace apcurium.MK.Booking.Mobile
                         }
 
                         InvokeOnMainThread (() =>
-                                            {
+                        {
 							location.CopyTo(_address);
-							FirePropertyChanged("BookAddress");
-                            
+							FirePropertyChanged(()=>BookAddress);
                         });
                         
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
@@ -158,10 +142,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public void StopValidatingAddresses ()
-        {
-            _validateAddressCancellationTokenSource.Cancel();
-        }
+
 
         public IMvxCommand SaveAddress {
             get {
@@ -173,22 +154,16 @@ namespace apcurium.MK.Booking.Mobile
                     var progressShowing = true;
                     MessageService.ShowProgress(true);
                     try {
-						var location = this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
+						var location = GeolocService.ValidateAddress (_address.FullAddress);
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
                     
                         FirePropertyChanged (() => BookAddress ); 
-                        //InvokeOnMainThread (() => BookAddress = location.FullAddress);
-//
-//						location.FriendlyName = _address.FriendlyName;
-//						location.Apartment = _address.Apartment;
-//						location.RingCode = _address.RingCode;
-//						location.Id = _address.Id;
-//                        location.IsHistoric = _address.IsHistoric;
-                        _accountService.UpdateAddress(_address);
-						// Must hide Progress indicator or otherwise the view won't close in iOS
+
+                        AccountService.UpdateAddress(_address);
+
 						MessageService.ShowProgress(false);
 						progressShowing = false;
 						Close();
@@ -196,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-                        // Only call ShowProgress(false) if it was not already called in the try{} body
+
                         if(progressShowing) MessageService.ShowProgress(false);
                     }
                 });
@@ -235,9 +210,9 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() =>
 				                                 {
-                 var order = new Order();
-                 order.PickupAddress = _address;
-                 var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+                 var order = new Order {PickupAddress = _address};
+    
+                 var account = AccountService.CurrentAccount;
                  order.Settings = account.Settings;
                  var serialized = JsonSerializer.SerializeToString(order);
 				 RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
