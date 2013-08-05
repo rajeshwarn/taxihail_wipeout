@@ -76,6 +76,18 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
+      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
+      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
+      <HintPath>..\iOS\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.MonoTouch">
+      <HintPath>..\iOS\Newtonsoft.Json.MonoTouch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -273,10 +285,6 @@
     <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
       <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
       <Name>SocialNetworks.Services.MonoTouch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Touch.csproj">
-      <Project>{E042EDD9-E89D-4928-BF4D-27F0FC29CEDA}</Project>
-      <Name>Cirrious.MvvmCross.Touch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
