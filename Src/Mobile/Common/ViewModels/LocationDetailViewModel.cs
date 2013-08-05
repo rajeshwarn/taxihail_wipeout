@@ -8,12 +8,14 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
-        
+        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
+
 		public LocationDetailViewModel (string address)
 		{
             _address = address.FromJson<Address>();
@@ -136,7 +138,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
+        public void StopValidatingAddresses ()
+        {
+            _validateAddressCancellationTokenSource.Cancel();
+        }
 
         public IMvxCommand SaveAddress {
             get {
