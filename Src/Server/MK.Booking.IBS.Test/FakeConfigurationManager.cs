@@ -9,7 +9,7 @@ namespace MK.Booking.IBS.Test
 {
     public class FakeConfigurationManager: IConfigurationManager
     {
-        readonly IDictionary<string, string> _settings = new Dictionary<string, string>()
+        readonly Dictionary<string, string> _settings = new Dictionary<string, string>()
         {
             {"IBS.WebServicesPassword", "test"},
             {"IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/"},
@@ -23,7 +23,21 @@ namespace MK.Booking.IBS.Test
 
         public string GetSetting(string key)
         {
-            return _settings[key];
+            string val = null;
+            if (_settings.TryGetValue(key, out val))
+            {
+                return val;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        public void AddKey(string key, string val)
+        {
+            _settings.Add(key, val);
         }
 
         public IDictionary<string, string> GetSettings()
