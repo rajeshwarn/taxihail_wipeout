@@ -23,14 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Android.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushSharp.Client.MonoForAndroid.Gcm", "Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj", "{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android_System.Reactive.Core", "Infrastructure\rx-android-master\android\Android_System.Reactive.Core\Android_System.Reactive.Core.csproj", "{0565924B-A569-4ED4-B538-FEF130AEBA5A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android_System.Reactive.Interfaces", "Infrastructure\rx-android-master\android\Android_System.Reactive.Interfaces\Android_System.Reactive.Interfaces.csproj", "{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android_System.Reactive.Linq", "Infrastructure\rx-android-master\android\Android_System.Reactive.Linq\Android_System.Reactive.Linq.csproj", "{3D915092-7092-4A12-BF9A-463AE4522E4C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android_System.Reactive.PlatformServices", "Infrastructure\rx-android-master\android\Android_System.Reactive.PlatformServices\Android_System.Reactive.PlatformServices.csproj", "{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BraintreeEncryption.Library.Android", "Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj", "{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Android", "..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj", "{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}"
@@ -40,6 +32,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF46E3C4-F5C7-4107-BDFF-7001DB516F0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Callbox.Mobile.Client.Android", "MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", "{DE9A07FE-A2EE-4669-934E-FF6D1805D858}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reactive", "Reactive", "{33A2F3D9-5614-447D-82A8-77E67D7CBAE8}"
+	ProjectSection(SolutionItems) = preProject
+		Infrastructure\rx-android-master\System.Reactive.Core.dll = Infrastructure\rx-android-master\System.Reactive.Core.dll
+		Infrastructure\rx-android-master\System.Reactive.Interfaces.dll = Infrastructure\rx-android-master\System.Reactive.Interfaces.dll
+		Infrastructure\rx-android-master\System.Reactive.Linq.dll = Infrastructure\rx-android-master\System.Reactive.Linq.dll
+		Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll = Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,46 +152,6 @@ Global
 		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Mac|Any CPU.Build.0 = Debug|Any CPU
 		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Android|Any CPU.ActiveCfg = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.iOS|Any CPU.ActiveCfg = iOS|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.iOS|Any CPU.Build.0 = iOS|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Mac|Any CPU.Build.0 = Debug|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Android|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.iOS|Any CPU.ActiveCfg = iOS|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.iOS|Any CPU.Build.0 = iOS|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Mac|Any CPU.Build.0 = Debug|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Android|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.iOS|Any CPU.ActiveCfg = iOS|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.iOS|Any CPU.Build.0 = iOS|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Mac|Any CPU.Build.0 = Debug|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D915092-7092-4A12-BF9A-463AE4522E4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Android|Any CPU.ActiveCfg = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.iOS|Any CPU.ActiveCfg = iOS|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.iOS|Any CPU.Build.0 = iOS|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Mac|Any CPU.Build.0 = Debug|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Android|Any CPU.ActiveCfg = Release|Any CPU
 		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Android|Any CPU.Build.0 = Release|Any CPU
 		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -244,11 +204,8 @@ Global
 		{E6C3413C-919B-486D-8B6C-225CBD921B98} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{0565924B-A569-4ED4-B538-FEF130AEBA5A} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{0FD37494-B8FD-46DB-8356-B23D2C9D34C8} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{3D915092-7092-4A12-BF9A-463AE4522E4C} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{43E855FE-431F-4B3E-8C7F-A6553FAF14B8} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F} = {0B2090C8-7575-4992-9765-04354EEB73A5}
+		{33A2F3D9-5614-447D-82A8-77E67D7CBAE8} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj
