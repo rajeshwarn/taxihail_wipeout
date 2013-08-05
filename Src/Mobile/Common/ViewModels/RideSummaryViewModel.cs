@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool IsSendReceiptButtonShown {
 			get{
 				var sendReceiptAvailable =  !ConfigurationManager.GetSetting("Client.SendReceiptAvailable").TryToParse(false);
-				return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
+                return (OrderStatus != null) && OrderStatus.FareAvailable && Order.Fare > 0.1 && sendReceiptAvailable;
 			}
 		}
 

@@ -169,6 +169,21 @@
     <Reference Include="MonoTouch.FacebookConnect">
       <HintPath>..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
+      <HintPath>Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
+      <HintPath>Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.MonoTouch">
+      <HintPath>Newtonsoft.Json.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.TaxiHail.Ios">
+      <HintPath>MvvmCross.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
+      <HintPath>Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -714,18 +729,6 @@
     <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
       <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
       <Name>SocialNetworks.Services.MonoTouch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Touch.csproj">
-      <Project>{913B13B5-7B2C-4DDA-BECB-DADC827ED895}</Project>
-      <Name>Cirrious.MvvmCross.Binding.Touch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Dialog\Cirrious.MvvmCross.Dialog.Touch.csproj">
-      <Project>{F073E4F8-E0B6-43E7-84C1-B71AE4BEA0E0}</Project>
-      <Name>Cirrious.MvvmCross.Dialog.Touch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Touch.csproj">
-      <Project>{E042EDD9-E89D-4928-BF4D-27F0FC29CEDA}</Project>
-      <Name>Cirrious.MvvmCross.Touch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>

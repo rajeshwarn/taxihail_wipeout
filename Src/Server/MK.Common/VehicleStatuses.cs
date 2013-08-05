@@ -9,6 +9,7 @@ namespace apcurium.MK.Common
     {
 
         public static string[] DoneStatuses = new[] { Common.Done, Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
+        public static string[] ShowOnMapStatuses = new[] { Common.Assigned, Common.Arrived, Common.Loaded };
 
         public class Common
         {
