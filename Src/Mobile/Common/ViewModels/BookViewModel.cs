@@ -48,8 +48,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.PickupDate = null;
 
             _useExistingOrder = true;
-         
-
         }
 
         protected override void Initialize()
@@ -114,7 +112,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Dropoff.IsExecuting = false;
             }
 
-
             CalculateEstimate ();
 
             _useExistingOrder = false;
@@ -163,7 +160,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
                 }
             });
-
         }
 
         void AddressChanged(object sender, EventArgs e)
@@ -182,7 +178,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice", "NoFareText", true, "EstimatedFareNotAvailable");
             
             InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
-
         }
 
         public void InitializeOrder()
@@ -199,10 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 return new CultureInfo(CultureInfo).DateTimeFormat.LongTimePattern.ToLower().Contains("tt");
-
-
             }
         }
 
@@ -231,7 +223,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 Pickup.RequestCurrentLocationCommand.Execute();
             });
-
         }
 
         public void Reset()
@@ -240,7 +231,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ForceRefresh();
         }
 
- 
         private void ForceRefresh()
         {
             FirePropertyChanged(() => Order);
@@ -298,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             { 
 				_availableVehicles = value;
-				FirePropertyChanged("AvailableVehicles");
+				FirePropertyChanged(() => AvailableVehicles);
             }
         }
 
@@ -400,7 +390,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         CenterMap(false);
                     }));
             }
-
         }
         
         public IMvxCommand ActivateDropoff
@@ -444,7 +433,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.DontChange }
                 };
             }
-
         }
 
         private void UpdateServerInfo()
@@ -486,7 +474,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (date.HasValue)
                         {
                             BookTaxi.Execute();
-                            
                         }
                     }
                     PickupDateSelected();
@@ -552,8 +539,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                        }
 
 	                        var serialized = Order.ToJson();
-	                        RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false,
-	                                                                   MvxRequestedBy.UserAction);
+	                        RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
 	                    });
 					}
                 });
@@ -566,11 +552,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() => RequestNavigate<BookRatingViewModel>(
                     new KeyValuePair<string, bool>("canRate", true)));
-               
             }
         }
 		       
-
         private void CompleteOrder()
         {   
             NewOrder();
