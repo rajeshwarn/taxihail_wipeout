@@ -49,12 +49,10 @@ namespace apcurium.MK.Common.Configuration.Impl
                 return context.Query<AppSetting>().ToArray().ToDictionary(kv => kv.Key, kv => kv.Value);
             }
         }
-
+        
         public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
+{
+}
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
             using (var context = _contextFactory.Invoke())

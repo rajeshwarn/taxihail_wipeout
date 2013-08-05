@@ -35,7 +35,8 @@ namespace apcurium.MK.Web.Tests
              var client = new ApplicationInfoServiceClient(BaseUrl, null);
              var appInfo = client.GetAppInfo();
 
-             Assert.AreEqual("1.4.1.0", appInfo.Version );
+
+             Assert.AreEqual(this.GetType().Assembly.GetName().Version.ToString(), appInfo.Version);
              Assert.AreEqual("Dev", appInfo.SiteName);
              
 

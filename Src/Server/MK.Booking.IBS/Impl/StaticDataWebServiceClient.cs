@@ -3,6 +3,7 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -12,6 +13,8 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             return base.GetUrl() + "IStaticData";
         }
+
+        
 
         public StaticDataWebServiceClient(IConfigurationManager configManager, ILogger logger) : base(configManager, logger)
         {
@@ -28,43 +31,20 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
-        public ListItem[] GetPickupCity(ListItem company)
-        {
-            if (company == null) throw new ArgumentNullException("company");
-            if (company.Id == null) throw new ArgumentException("company Id should not be null");
-            
-            var items = new ListItem[] { };
-            UseService(service =>
-            {
-                var cities = service.GetPickupCityList(UserNameApp, PasswordApp, company.Id.GetValueOrDefault());
-                items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
-            });
-            return items;
-        }
-        public ListItem[] GetDropoffCity(ListItem company)
-        {
-            if (company == null) throw new ArgumentNullException("company");
-            if (company.Id == null) throw new ArgumentException("company Id should not be null");
-            
-            var items = new ListItem[] { };
-            UseService(service =>
-            {
-                var cities = service.GetDropoffCityList(UserNameApp, PasswordApp, company.Id.GetValueOrDefault());                
-                items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
-            });
-            return items;
-        }
+       
 
 
         public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
             string zone = "";
             bool useProvider = providerId.HasValue && providerId > 0;
+            var zoneByCompanyEnabled = ConfigManager.GetSetting("IBS.ZoneByCompanyEnabled").SelectOrDefault(setting => bool.Parse(setting), false);
+
             UseService(service =>
                            {
-                               zone = useProvider
+                               zone = useProvider && zoneByCompanyEnabled 
                                    ? service.GetCompanyZoneByGPS(UserNameApp, PasswordApp, providerId.Value, latitude, longitude)
-                                   : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
+                                   : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);                                   
                            });
             return zone;
         }

@@ -16,6 +16,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using ServiceStack.Common.Web;
 using System.Net;
+using apcurium.MK.Common;
 
 
 namespace apcurium.MK.Booking.Api.Services
@@ -57,6 +58,11 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var err = new HttpError(  HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);                
                 throw err;
+            }
+
+            if (Params.Get(request.Settings.Name, request.Settings.Phone).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString() );
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));

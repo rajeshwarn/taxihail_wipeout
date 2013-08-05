@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         {
             PickupAddress = new Address();
             DropOffAddress = new Address();
+            Settings = new BookingSettings();
             Payment = new PaymentSettings();
         }
 

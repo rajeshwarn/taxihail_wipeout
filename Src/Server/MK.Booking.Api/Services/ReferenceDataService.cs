@@ -51,15 +51,12 @@ namespace apcurium.MK.Booking.Api.Services
             var companies = _staticDataWebServiceClient.GetCompaniesList();
             IList<ListItem> payments = new List<ListItem>();
             IList<ListItem> vehicles = new List<ListItem>();
-            IList<ListItem> dropCities = new List<ListItem>();
-            IList<ListItem> pickCities = new List<ListItem>();
+            
 
             foreach (var company in companies)
             {
                 payments.AddRange(_staticDataWebServiceClient.GetPaymentsList(company));
-                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
-                dropCities.AddRange(_staticDataWebServiceClient.GetDropoffCity(company));
-                pickCities.AddRange(_staticDataWebServiceClient.GetPickupCity(company));
+                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));            
             }
 
             var equalityComparer = new ListItemEqualityComparer();
@@ -67,9 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 CompaniesList = companies.Distinct(equalityComparer).ToArray(),
                 PaymentsList = payments.Distinct(equalityComparer).ToArray(),
-                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),
-                DropoffCityList = dropCities.Distinct(equalityComparer).ToArray(),
-                PickupCityList = pickCities.Distinct(equalityComparer).ToArray(),
+                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),                
             };
 
             return result;

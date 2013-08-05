@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using System.Threading;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -149,7 +150,24 @@ namespace apcurium.MK.Web.Tests
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             sut.CancelOrder(_orderId);
 
-            var status = sut.GetOrderStatus(_orderId);
+
+
+            OrderStatusDetail status = null;
+            for (int i = 0; i < 10; i++)
+            {
+                status = sut.GetOrderStatus(_orderId);
+                if (string.IsNullOrEmpty(status.IBSStatusId))
+                {
+                    Thread.Sleep(1000);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            
+            
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
             Assert.AreEqual("wosCANCELLED_DONE", status.IBSStatusId);

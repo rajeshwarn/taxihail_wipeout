@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Api.Helpers
 
         public virtual OrderStatusDetail GetOrderStatus(Guid orderId, IAuthSession session)
         {
+            
             var order = _orderDao.FindById(orderId);
 
             if (order == null)
@@ -37,12 +38,10 @@ namespace apcurium.MK.Booking.Api.Helpers
 
             ThrowIfUnauthorized(order, session);
 
-            if (!order.IBSOrderId.HasValue)
-            {
-                return new OrderStatusDetail {IBSStatusDescription = "Can't contact dispatch company"};
-            }
 
-            return _orderDao.FindOrderStatusById(orderId);
+            var o = _orderDao.FindOrderStatusById(orderId);
+            
+            return o;
         }
 
         public void ThrowIfUnauthorized(OrderDetail order, IAuthSession session)

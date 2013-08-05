@@ -17,8 +17,10 @@ namespace apcurium.MK.Web.Tests
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            
 
+            base.TestFixtureSetup();
+            
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
 
             _orderId = Guid.NewGuid();
@@ -46,7 +48,7 @@ namespace apcurium.MK.Web.Tests
 
         [TestFixtureTearDown]
         public override void TestFixtureTearDown()
-        {
+        {            
             base.TestFixtureTearDown();
         }
 
@@ -61,7 +63,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var data = sut.GetOrderStatus( _orderId);
-            Assert.AreEqual(null, data.IBSStatusId);
+         
             Assert.AreEqual(OrderStatus.Created, data.Status);
             Assert.AreEqual("Joe Smith", data.Name);
         }
@@ -87,7 +89,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.AreEqual(true, data.Any());
             Assert.AreEqual(true, data.Any(x => x.OrderId == _orderId));
-            Assert.AreEqual(null, data.First(x => x.OrderId == _orderId).IBSStatusId);
+            //Assert.AreEqual(null, data.First(x => x.OrderId == _orderId).IBSStatusId);
             Assert.AreEqual(OrderStatus.Created, data.First(x => x.OrderId == _orderId).Status);
             
         }

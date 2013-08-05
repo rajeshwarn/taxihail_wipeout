@@ -77,7 +77,7 @@ namespace apcurium.MK.Web.Tests
         public void RangeCoordinateSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search(45.5227967351675, -73.6242310144007);
+            var addresses = sut.Search(45.5364, -73.6103);
             Assert.True(addresses.Count() >= 1);
 
             Assert.False(addresses.First().StreetNumber.Contains("-"));
@@ -88,7 +88,7 @@ namespace apcurium.MK.Web.Tests
         public void SearchMiddleField()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search(45.5227967351675, -73.6242310144007);                     
+            var addresses = sut.Search(45.5364, -73.6103);                     
                         
 
             Assert.True(addresses.Count() >= 1);

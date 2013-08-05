@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
 using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 
-namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
+namespace MK.Booking.IBS.Test
 {
     [TestFixture]
     public class given_a_service_provider
@@ -25,10 +26,9 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
         public void when_zone_exists_for_coordinates()
         {
             var config = new FakeConfigurationManager();
-
             config.AddKey("IBS.ZoneByCompanyEnabled", true.ToString());
 
-            var sut = new StaticDataWebServiceClient(config , new Logger());
+            var sut = new StaticDataWebServiceClient(config, new Logger());
 
             var zone = sut.GetZoneByCoordinate(MobileKnowledgeProviderId, 43.566900, -79.574300);
 
@@ -41,10 +41,20 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
             var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
 
             var vehicles = sut.GetVehiclesList(new ListItem { Id = TheChauffeurGroupProviderId });
-            Assert.Greater(vehicles.Length, 0);
+
+            Assert.Inconclusive();
         }
         
-   
+        [Test]
+        public void get_pickup_cities_test()
+        {
+            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
+
+            var cities = sut.GetPickupCity(new ListItem { Id = MobileKnowledgeProviderId });
+
+            Assert.Inconclusive();
+        }
+
         [Test]
         public void get_payments_test()
         {
@@ -52,14 +62,29 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
 
             var payments = sut.GetPaymentsList(new ListItem { Id = MobileKnowledgeProviderId });
 
-            Assert.Greater(payments.Length, 0);
-            
-            
+            Assert.Inconclusive();
         }
 
-        
+        [Test]
+        public void StaticDataservice_test()
+        {
+            var service = new StaticDataservice();
+            service.Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IStaticData";
 
-     
+            var cities = service.GetDropoffCityList("taxi", "test", 17);
+
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void get_dropoff_cities_test()
+        {
+            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
+
+            var cities = sut.GetDropoffCity(new ListItem { Id = MobileKnowledgeProviderId });
+
+            Assert.Inconclusive();
+        }
        
     }
 }

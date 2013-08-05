@@ -34,13 +34,9 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotEmpty(data.CompaniesList);
             Assert.IsNotEmpty(data.VehiclesList);
             Assert.IsNotEmpty(data.PaymentsList);
-            Assert.IsNotEmpty(data.PickupCityList);
-            Assert.IsNotEmpty(data.DropoffCityList);
 
             data.VehiclesList.All(v => data.CompaniesList.Any(c => v.Parent == c));
             data.PaymentsList.All(v => data.CompaniesList.Any(c => v.Parent == c));
-            data.PickupCityList.All(v => data.CompaniesList.Any(c => v.Parent == c));
-            data.DropoffCityList.All(v => data.CompaniesList.Any(c => v.Parent == c));            
             
 
         }

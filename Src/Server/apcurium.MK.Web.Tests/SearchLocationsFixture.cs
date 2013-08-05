@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
         public void when_name_then_places()
         {
             var sut = new SearchLocationsServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search("museum", 45.5227967351675, -73.6242310144007);
+            var addresses = sut.Search("restaurant", 45.4983, -73.6586);
 
             if (!addresses.Any())
             {
