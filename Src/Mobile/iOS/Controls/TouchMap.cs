@@ -19,6 +19,7 @@ using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -278,8 +279,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     CLLocationCoordinate2D coord = new CLLocationCoordinate2D(0,0);            
                     if (value.VehicleLatitude.HasValue
                         && value.VehicleLongitude.HasValue
-                        && value.VehicleLongitude.Value!=0 
-                        && value.VehicleLatitude.Value !=0)
+                        && value.VehicleLongitude.Value !=0 
+                        && value.VehicleLatitude.Value !=0
+                        && !string.IsNullOrEmpty(value.VehicleNumber) 
+                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
                     {
                         coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
                     }   
