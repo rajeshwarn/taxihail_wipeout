@@ -1,8 +1,6 @@
 using System;
 using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -42,14 +40,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel(string order)
         {
-            Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
+            Order = order.FromJson<CreateOrder>();
              
             Order.Id = Guid.Empty;
             Order.PickupDate = null;
 
             _useExistingOrder = true;
-         
-
         }
 
         protected override void Initialize()
@@ -77,12 +73,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
             {
                 IsExecuting = true,
-                //Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
             Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address)
             {
-                //Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
             
@@ -98,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (tutorialWasDisplayed.IsNullOrEmpty())
                 {
                     Task.Factory.SafeStartNew( () =>
-                                              {
+                    {
                         Thread.Sleep( 4000 );
                         Pickup.RequestCurrentLocationCommand.Execute();            
                     });
@@ -168,9 +162,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         void AddressChanged(object sender, EventArgs e)
         {
-            InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
-            InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
+            InvokeOnMainThread(() =>
+                {
+                    FirePropertyChanged(() => Pickup);
+                    FirePropertyChanged(() => Dropoff);
+                });
+
             CenterMap(sender is bool && !(bool)sender);
+
             LoadAvailableVehicles (Pickup.Model.Latitude, Pickup.Model.Longitude);
 
             Task.Factory.SafeStartNew(CalculateEstimate);
