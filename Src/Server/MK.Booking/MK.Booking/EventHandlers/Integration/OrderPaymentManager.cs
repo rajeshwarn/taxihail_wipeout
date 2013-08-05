@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
             if (orderStatusDetail == null) throw new InvalidOperationException("Order Status not found");
 
-            _ibs.SendMessageToDriver("The passenger has payed " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
+            _ibs.SendMessageToDriver("The passenger has paid " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
 
             // Confirm to IBS that order was payed
             var orderDetail = _dao.FindById(@event.OrderId);
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
             if (orderStatusDetail == null) throw new InvalidOperationException("Order Status not found");
 
-            _ibs.SendMessageToDriver("The passenger has payed " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
+            _ibs.SendMessageToDriver("The passenger has paid " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
 
             // Confirm to IBS that order was payed
             var orderDetail = _dao.FindById(@event.OrderId);
