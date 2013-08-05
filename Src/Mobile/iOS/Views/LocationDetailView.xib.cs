@@ -16,6 +16,7 @@ using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -98,7 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnSave.Hidden = true;
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(  Resources.SaveButton , UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute () );
-
 
             this.View.ApplyAppFont ();
         }
