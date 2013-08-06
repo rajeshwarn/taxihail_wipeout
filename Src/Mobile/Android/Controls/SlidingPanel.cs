@@ -11,21 +11,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class SlidingPanel : LinearLayout, View.IOnTouchListener
     {
-        private View _visibleView;
         private View _slideoutView;
         private SlideDownAnimation _animation;
         private float _startY;
         private float _lastY;
         private bool _goingDown;
         private float _initialHeight;
-        public int SlideOutHeight
+        private int SlideOutHeight
         {
             get { return MeasureSlideOutHeight(); }
         }
 
         int MeasureSlideOutHeight()
         {
-            _slideoutView.Measure (MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified), MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
+            _slideoutView.Measure(MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified), MeasureSpec.MakeMeasureSpec(0, MeasureSpecMode.Unspecified));
             return _slideoutView.MeasuredHeight;
         }
 
@@ -55,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
 
                 _slideoutView = this.GetChildAt(0);
-                _visibleView = this.GetChildAt(1);
 
                 OpenClose(false, false);
             }
@@ -82,25 +80,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var p = (RelativeLayout.LayoutParams)LayoutParameters;
                 _initialHeight = p.TopMargin;
                 _startY = e.RawY;
-                _lastY = _startY;            
+                _lastY = _startY;
             }
             else if (e.Action == MotionEventActions.Move)
             {
                 var y = e.RawY;
-                var newHeight = _initialHeight + y - _startY; 
-                var openMargin = -1 * SlideOutHeight;              
+                var newHeight = _initialHeight + y - _startY;
+                var openMargin = -1 * SlideOutHeight;
                 if ((newHeight >= openMargin) && (newHeight <= 0))
                 {
                     _goingDown = y > _lastY;
                     _lastY = y;
-                    SetTopMargin(Convert.ToInt32(newHeight));                  
+                    SetTopMargin(Convert.ToInt32(newHeight));
                 }
             }
             else if (e.Action == MotionEventActions.Up)
             {
                 var y = e.RawY;
-                var newHeight = _initialHeight + y - _startY;     
-                var openMargin = -1 * SlideOutHeight;                
+                var newHeight = _initialHeight + y - _startY;
+                var openMargin = -1 * SlideOutHeight;
                 if ((newHeight >= openMargin) && (newHeight <= 0))
                 {
                     OpenClose(_goingDown, true, Convert.ToInt32(newHeight));
@@ -114,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         void OpenClose(bool open, bool animate, int? startMargin = null)
-        {   
+        {
             if (animate)
             {
                 this.ClearAnimation();
@@ -124,10 +122,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     startMargin = open ? -1 * SlideOutHeight : 0;
                 }
                 _animation = new SlideDownAnimation(this, startMargin.Value, open ? 0 : -1 * SlideOutHeight, new DecelerateInterpolator());
-                _animation.Duration = 600;    
+                _animation.Duration = 600;
                 _animation.AnimationEnd += delegate
                 {
-                    OpenClose(open, false );
+                    OpenClose(open, false);
                 };
                 this.StartAnimation(_animation);
             }
@@ -147,45 +145,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             PostInvalidate();
         }
 
-        private void RefreshAllParents(View v)
-        {
-            v.PostInvalidate();
-        }
-
         public void Close()
         {
             OpenClose(false, true);
         }
-
 
         public void Open()
         {
             OpenClose(true, true);
         }
 
-        public void Toggle()
-        {
-            bool isClosed = (( RelativeLayout.LayoutParams ) this.LayoutParameters).TopMargin < -1;
-
-            if ( isClosed )
-            {
-                Open();
-            }
-            else{
-                Close();
-            }
-        }
-
         private bool _isEnabled { get; set; }
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set 
-            { 
-                if ( _isEnabled != value )
+            set
+            {
+                if (_isEnabled != value)
                 {
                     _isEnabled = value;
-                    if ( IsEnabled )
+                    if (IsEnabled)
                     {
                         Open();
                     }
