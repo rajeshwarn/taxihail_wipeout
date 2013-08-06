@@ -7,12 +7,10 @@ using Android.Views.Animations;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 
-
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class SlidingPanel : LinearLayout, Android.Views.View.IOnTouchListener
+    public class SlidingPanel : LinearLayout, View.IOnTouchListener
     {
-
         private View _visibleView;
         private View _slideoutView;
         private SlideDownAnimation _animation;
@@ -20,35 +18,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private float _lastY;
         private bool _goingDown;
         private float _initialHeight;
-
-        private int _viewHeight;
-        private int SlideOutHeight
+        public int SlideOutHeight
         {
-            get { return _viewHeight == 0 
-                    ? GetViewHeight() - _visibleView.LayoutParameters.Height
-                    : _viewHeight - _visibleView.LayoutParameters.Height; }
+            get { return MeasureSlideOutHeight(); }
         }
 
-        private int GetViewHeight()
+        int MeasureSlideOutHeight()
         {
-            this.Measure (MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified), MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
-            _viewHeight =  this.MeasuredHeight;
-            return _viewHeight;
+            _slideoutView.Measure (MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified), MeasureSpec.MakeMeasureSpec (0, MeasureSpecMode.Unspecified));
+            return _slideoutView.MeasuredHeight;
         }
 
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
-        public SlidingPanel(Context context)
-            : base(context)
+        public SlidingPanel(Context context) : base(context)
         {
             SetOnTouchListener(this);
         }
 
         [Register(".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
-        public SlidingPanel(Context context, IAttributeSet attrs)
-            : base(context, attrs)
+        public SlidingPanel(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             SetOnTouchListener(this);
-
         }
 
         private bool _isInitialized = false;
@@ -65,10 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
 
                 _slideoutView = this.GetChildAt(0);
-                _visibleView = this.GetChildAt(1);                
+                _visibleView = this.GetChildAt(1);
 
                 OpenClose(false, false);
-
             }
         }
 
@@ -88,9 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return true;
             }
 
-            var p = (RelativeLayout.LayoutParams)this.LayoutParameters;
             if (e.Action == MotionEventActions.Down)
             {
+                var p = (RelativeLayout.LayoutParams)LayoutParameters;
                 _initialHeight = p.TopMargin;
                 _startY = e.RawY;
                 _lastY = _startY;            
@@ -99,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 var y = e.RawY;
                 var newHeight = _initialHeight + y - _startY; 
-                //   var openMargin = -1 * _slideoutView.LayoutParameters.Height;    
                 var openMargin = -1 * SlideOutHeight;              
                 if ((newHeight >= openMargin) && (newHeight <= 0))
                 {
@@ -111,8 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             else if (e.Action == MotionEventActions.Up)
             {
                 var y = e.RawY;
-                var newHeight = _initialHeight + y - _startY; 
-                //  var openMargin = -1 * _slideoutView.LayoutParameters.Height;       
+                var newHeight = _initialHeight + y - _startY;     
                 var openMargin = -1 * SlideOutHeight;                
                 if ((newHeight >= openMargin) && (newHeight <= 0))
                 {
@@ -134,10 +121,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 this.DrawingCacheEnabled = true;
                 if (!startMargin.HasValue)
                 {
-                    //  startMargin = open ? -1 * _slideoutView.LayoutParameters.Height : 0;
                     startMargin = open ? -1 * SlideOutHeight : 0;
                 }
-                //_animation = new SlideDownAnimation(this, startMargin.Value, open ? 0 : -1 * _slideoutView.LayoutParameters.Height, new DecelerateInterpolator());
                 _animation = new SlideDownAnimation(this, startMargin.Value, open ? 0 : -1 * SlideOutHeight, new DecelerateInterpolator());
                 _animation.Duration = 600;    
                 _animation.AnimationEnd += delegate
@@ -148,12 +133,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
-                // SetTopMargin(open ? 0 : -1 * _slideoutView.LayoutParameters.Height);
                 SetTopMargin(open ? 0 : -1 * SlideOutHeight);
             }
-
-
-
         }
 
         private void SetTopMargin(int m)
@@ -164,25 +145,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.LayoutParameters = p;
 
             PostInvalidate();
-            // RefreshAllParents(this);
-
-
         }
 
         private void RefreshAllParents(View v)
         {
             v.PostInvalidate();
-            //            v.RequestLayout();
-            //            if (v is ViewGroup)
-            //            {
-            //                ((ViewGroup)v).ForceLayout();
-            //            }
-            //
-            //            if (v.Parent is View)
-            //            {
-            //                RefreshAllParents((View)v.Parent);
-            //            }
-
         }
 
         public void Close()
@@ -207,13 +174,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             else{
                 Close();
             }
-
         }
 
         private bool _isEnabled { get; set; }
         public bool IsEnabled
         {
-            get {return _isEnabled;}
+            get { return _isEnabled; }
             set 
             { 
                 if ( _isEnabled != value )
@@ -230,8 +196,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
         }
-
-
     }
 }
 
