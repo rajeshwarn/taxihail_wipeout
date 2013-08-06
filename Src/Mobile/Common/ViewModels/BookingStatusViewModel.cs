@@ -305,7 +305,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
 
 
-				if(status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+                if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
 					AddReminder(status);
 				}

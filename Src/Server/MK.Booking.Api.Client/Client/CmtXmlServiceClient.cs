@@ -297,9 +297,119 @@ namespace MK.Booking.Api.Client
             throw new NotImplementedException();
         }
 
+        #region IReplyClient implementation
+        TResponse IReplyClient.Send<TResponse>(object request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IReplyClient.Send<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IReplyClient.PostFile<TResponse>(string relativeOrAbsoluteUrl, FileInfo fileToUpload, string mimeType)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IReplyClient.PostFile<TResponse>(string relativeOrAbsoluteUrl, Stream fileToUpload, string fileName, string mimeType)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IReplyClient.PostFileWithRequest<TResponse>(string relativeOrAbsoluteUrl, FileInfo fileToUpload, object request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IReplyClient.PostFileWithRequest<TResponse>(string relativeOrAbsoluteUrl, Stream fileToUpload, string fileName, object request)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region IRestClientAsync implementation
+        public void GetAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess, Action<TResponse, Exception> onError)
+        {
+            throw new NotImplementedException();
+        }
+        public void DeleteAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess, Action<TResponse, Exception> onError)
+        {
+            throw new NotImplementedException();
+        }
+        public void PostAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess, Action<TResponse, Exception> onError)
+        {
+            throw new NotImplementedException();
+        }
+        public void PutAsync<TResponse>(IReturn<TResponse> request, Action<TResponse> onSuccess, Action<TResponse, Exception> onError)
+        {
+            throw new NotImplementedException();
+        }
+        public void CustomMethodAsync<TResponse>(string httpVerb, IReturn<TResponse> request, Action<TResponse> onSuccess, Action<TResponse, Exception> onError)
+        {
+            throw new NotImplementedException();
+        }
+        public void CancelAsync()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
    
             
 
+        #region IRestClient implementation
+        TResponse IRestClient.Get<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Get<TResponse>(string relativeOrAbsoluteUrl)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Delete<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Delete<TResponse>(string relativeOrAbsoluteUrl)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Post<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Post<TResponse>(string relativeOrAbsoluteUrl, object request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Put<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Put<TResponse>(string relativeOrAbsoluteUrl, object request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Patch<TResponse>(IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.Patch<TResponse>(string relativeOrAbsoluteUrl, object request)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.PostFile<TResponse>(string relativeOrAbsoluteUrl, FileInfo fileToUpload, string mimeType)
+        {
+            throw new NotImplementedException();
+        }
+        TResponse IRestClient.CustomMethod<TResponse>(string httpVerb, IReturn<TResponse> request)
+        {
+            throw new NotImplementedException();
+        }
+        public HttpWebResponse Head(IReturn request)
+        {
+            throw new NotImplementedException();
+        }
+        public HttpWebResponse Head(string relativeOrAbsoluteUrl)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

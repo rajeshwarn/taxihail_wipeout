@@ -59,7 +59,7 @@
         <Command type="BeforeBuild" />
       </CustomCommands>
     </CustomCommands>
-    <AndroidStoreUncompressedFileExtensions />
+    <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.MvvmCross.Android">
@@ -108,6 +108,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -211,7 +212,6 @@
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\DropShadow.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
-    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Controls\ListViewCell2.cs" />
     <Compile Include="Controls\SpinningSearch.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
@@ -352,6 +352,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <AndroidResource Include="Resources\drawable-hdpi\paypal.png" />
+    <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
