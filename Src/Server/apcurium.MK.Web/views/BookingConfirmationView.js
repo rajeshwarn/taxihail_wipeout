@@ -23,7 +23,6 @@
                     this.model.get('pickupDate')
                     ).done(this.renderResults);
             }
-            
 
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
@@ -38,16 +37,20 @@
 
                 }, this));
 
-            
-            $.validator.addMethod(
-                "regex",
+            $.validator.addMethod("regex",
                 function (value, element, regexp) {
                     var re = new RegExp(regexp);
                     return this.optional(element) || re.test(value);
                 }
-
             );
-
+            $.validator.addMethod("tenOrMoreDigits",
+                function (value, element) {
+                    var match = value.match(/\d/g);
+                    if (match == null) return false;
+                    var count = match.length;
+                    return count >= 10;
+                }
+            );
         },
 
         render: function (param) {
@@ -84,8 +87,8 @@
                 rules: {
                     'settings.name': "required",
                     'settings.phone': {
-                        required: true,
-                        regex: /^\(?([0-9]{3})\)?[\-. ]?([0-9]{3})[\-. ]?([0-9]{4})$/
+                        tenOrMoreDigits: true,
+                        minlength: 10
                     },
                     'settings.passengers': {
                         required: true,
@@ -98,7 +101,7 @@
                     },
                     'settings.phone': {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     'settings.passengers': {
                         required: TaxiHail.localize('error.PassengersRequired'),
