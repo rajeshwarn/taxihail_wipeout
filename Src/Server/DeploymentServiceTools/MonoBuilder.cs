@@ -48,7 +48,7 @@ namespace DeploymentServiceTools
             foreach (var projectName in projectLists)
 			{
 				_logger("Step " + (i++) + "/" + count);
-				if (!ProjectIsInSolution(sln, projectName))
+				if (!ProjectIsInSolution(sln, projectName   + ".csproj" ))
                 {
 					_logger("Skipping CSPROJ ("+projectName+") - Not in solution");
                     continue;
