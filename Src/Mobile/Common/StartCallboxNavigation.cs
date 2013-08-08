@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
