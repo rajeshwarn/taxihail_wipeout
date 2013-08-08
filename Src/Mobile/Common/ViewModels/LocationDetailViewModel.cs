@@ -159,6 +159,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             return;
                         }
                     
+                        location.CopyTo( _address );
+
                         FirePropertyChanged (() => BookAddress ); 
 
                         AccountService.UpdateAddress(_address);
