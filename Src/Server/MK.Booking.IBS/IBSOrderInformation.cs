@@ -98,5 +98,10 @@ namespace apcurium.MK.Booking.IBS
         {
             get { return VehicleStatuses.DoneStatuses.Any(s => s.SoftEqual(Status)); }
         }
+
+        public bool IsCanceled
+        {
+            get { return VehicleStatuses.CancelStatuses.Any(s => s.SoftEqual(Status)); }
+        }
     }
 }

@@ -8,7 +8,8 @@ namespace apcurium.MK.Common
     public class VehicleStatuses
     {
 
-        public static string[] DoneStatuses = new[] { Common.Done, Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
+        public static string[] DoneStatuses = new[] { Common.Done };
+        public static string[] CancelStatuses = new[] { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
         public static string[] ShowOnMapStatuses = new[] { Common.Assigned, Common.Arrived, Common.Loaded };
 
         public class Common

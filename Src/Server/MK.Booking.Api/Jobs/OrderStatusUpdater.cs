@@ -61,6 +61,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                                                  ibsStatus.Eta.Value.ToString("t"));
                 }
             }
+            else if (ibsStatus.IsCanceled)
+            {
+                order.Status = OrderStatus.Canceled;
+                description = _configurationManager.GetSetting("OrderStatus." + ibsStatus.Status);
+            }
             else if (ibsStatus.IsComplete)
             {
                 order.Status = OrderStatus.Completed;
@@ -74,8 +79,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                               .Select(amount => amount)
                               .Sum();
 
-                    description = string.Format(_configurationManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
-                    order.FareAvailable = true;
+                    if (total > 0)
+                    {
+                        description = string.Format(_configurationManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
+                        order.FareAvailable = true;
+                    }
+                    else
+                    {
+                        description = _configurationManager.GetSetting("OrderStatus.wosDONE");
+                        order.FareAvailable = false;
+                    }
+
                 }
             }
 
