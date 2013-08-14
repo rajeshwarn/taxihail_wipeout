@@ -30,6 +30,9 @@ namespace apcurium.MK.Web
         protected string AccountActivationDisabled { get; private set; }
         protected string EstimateEnabled { get; private set; }
 
+        protected string EstimateWarningEnabled { get; private set; }        
+        protected string DestinationIsRequired { get; private set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
@@ -47,6 +50,8 @@ namespace apcurium.MK.Web
             ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
 
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
+            EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
+            DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
 
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled) ? bool.FalseString.ToLower() : accountActivationDisabled;

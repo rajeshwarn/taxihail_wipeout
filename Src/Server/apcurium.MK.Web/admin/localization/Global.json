@@ -52,6 +52,7 @@
 	"/******* Begin settings Aliases *******/":"",
 
 	"Client.ShowEstimate" : "Show estimate",
+	"Client.ShowEstimateWarning" : "Show estimate warning",
 	"Booking.ConfirmationEmail" : "Send confirmation email",
 	"Client.HideCallDispatchButton" : "Hide call dispatch button",
 	"Client.HideReportProblem": "Hide report problem button",

@@ -14,7 +14,7 @@
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
-            
+            this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
@@ -72,7 +72,7 @@
                 this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
-            if (this.showEstimate) {
+            if ( (this.showEstimate) && ( this.showEstimateWarning )) {
                 this.showEstimatedFareWarning();
             }
             

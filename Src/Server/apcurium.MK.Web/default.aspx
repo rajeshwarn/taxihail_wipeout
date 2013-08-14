@@ -55,6 +55,9 @@
             TaxiHail.parameters.hideDispatchButton = <%: this.HideDispatchButton%>;
             TaxiHail.parameters.accountActivationDisabled = <%: this.AccountActivationDisabled%>;
             TaxiHail.parameters.isEstimateEnabled = <%: this.EstimateEnabled %>;
+            TaxiHail.parameters.isEstimateWarningEnabled = <%: this.EstimateWarningEnabled %>;
+            TaxiHail.parameters.isDestinationRequired = <%: this.DestinationIsRequired %>;
+
             TaxiHail.parameters.apiRoot = "api";
         </script>
 

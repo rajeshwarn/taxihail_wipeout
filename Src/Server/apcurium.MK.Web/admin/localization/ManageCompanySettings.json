@@ -3,5 +3,6 @@
     "Settings Saved": "Settings were saved successfully",
     "Error Saving Settings": "An error occured when saving settings",
 	"Client.ShowEstimate" : "Show estimate",
+	"Client.ShowEstimateWarning" : "Show estimate warning",
 	"Booking.ConfirmationEmail" : "Confirmation Email"	
 }

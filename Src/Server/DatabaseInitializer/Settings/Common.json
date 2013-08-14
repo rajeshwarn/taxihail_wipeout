@@ -12,6 +12,7 @@
    "IBS.ValidatePickupZone" : "true",
    "IBS.FakeOrderStatusUpdate": "false",
    "IBS.NoteTemplate" : "{{userNote}}\\r\\n{{buildingName}}",
+   "IBS.ZoneByCompanyEnabled": "false",   
    "AccountActivationDisabled" : "false",
    "Email.NoReply" : "dotnotreply@taxihail.com",    
    "Map.PlacesApiKey" : "AIzaSyAAgAGS4SjtSwqni_wpgCo2XnY30m0rhLs",
@@ -48,12 +49,13 @@
    "Client.NumberOfCharInRefineAddress" : "10",
    "Client.HideSendReceipt" : "false",   
    "Client.ShowEstimate" : "true",   
+   "Client.ShowEstimateWarning" : "true",   
    "Client.ShowRingCodeField" : "true",   
    "Client.ShowPassengerName" : "true",   
    "Client.ShowPassengerPhone" : "true",   
    "Client.ShowPassengerNumber" : "true",   
-   "Client.ShowRingCodeField" : "true",
-   "Client.ShowEstimate" : "true",   
+   "Client.ShowRingCodeField" : "true", 
+   "Client.DestinationIsRequired" : "false", 
    "GeoLoc.PopularAddress.Range" : "500",
    "GeoLoc.PlacesTypes" : "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,musem,night_club,park,parking,pharmacy,police,physiotherapist,p",
    "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem,OrderStatus.ServerPollingInterval,IBS.NoteTemplate,AccountActivationDisabled,AvailableVehicles.Enabled,AvailableVehicles.Radius,AvailableVehicles.Count",
@@ -63,5 +65,6 @@
    "AvailableVehicles.Enabled" : "true",
    "AvailableVehicles.Radius" : "2000",
    "AvailableVehicles.Count" : "10"
+    
 }
 
