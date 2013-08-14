@@ -355,8 +355,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             if (_showEstimate)
             {
-                if (this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty()
-               && Order.DropOffAddress.HasValidCoordinate())
+                var estimateEnabled = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.ShowEstimateWarning", true);
+
+                if (estimateEnabled &&
+                    this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
+                    Order.DropOffAddress.HasValidCoordinate())
                 {
                     MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
                         "Ok", delegate { },

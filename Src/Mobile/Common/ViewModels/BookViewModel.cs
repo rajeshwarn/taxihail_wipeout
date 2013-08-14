@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => CanClearAddress);
         }
 
-        private void CalculateEstimate()
+        private void CalculateEstimate() 
         {
             _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice", "NoFareText", true, "EstimatedFareNotAvailable");
             
@@ -502,7 +502,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                    if (!isValid)
 	                    {
 	                        Order.PickupDate = null;
-	                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
+                            var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
+                            if ( destinationIsRequired )
+                            {
+                                InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfoWhenDestinationIsRequired")));
+                            }
+                            else
+                            {
+                                InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
+                            }
 	                        return;
 	                    }
 

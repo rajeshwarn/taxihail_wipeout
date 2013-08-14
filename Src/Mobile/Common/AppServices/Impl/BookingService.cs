@@ -18,19 +18,28 @@ using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
 
-        public bool IsValid (CreateOrder info)
+        public bool IsValid (CreateOrder info)        
         {
+            //InvalidBookinInfoWhenDestinationIsRequired
+
+
+            var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
 
             return info.PickupAddress.BookAddress.HasValue () 
-                && info.PickupAddress.HasValidCoordinate ();
+                && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
+                                                                                           && info.DropOffAddress.HasValidCoordinate () ) ) ;
 
         }
+
+
+
 
         protected ILogger Logger {
             get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
