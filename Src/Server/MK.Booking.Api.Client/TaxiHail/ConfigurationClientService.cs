@@ -7,12 +7,15 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Diagnostic;
 
+
+
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient, IConfigurationManager
     {
         private static Dictionary<string, string> _settings = null;
 		readonly ILogger _logger;
+        private static object lockObject = new object ();
 
 		public ConfigurationClientService (string url, string sessionId, ILogger logger)
             : base(url, sessionId)
@@ -38,11 +41,27 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return _settings [key];
         }
 
+        private TypeConverter GetConverter<T>()
+        {
+            //TypeDescriptor.GetConverter(defaultValue); doesn't work on the mobile device because the constructor is removed 
+            //The actual type is not referenced so the linker removes it 
+
+        var t = typeof(T);
+            if (t.Equals(typeof(bool)))
+            {
+                return new BooleanConverter();
+            }
+            _logger.LogMessage("Could not convert setting to " + typeof(T).Name);
+            throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+        }
+
         public T GetSetting<T>(string key, T defaultValue) where T : struct
         {
             var value = GetSetting(key);
             if (string.IsNullOrWhiteSpace(value)) return defaultValue;
-            var converter = TypeDescriptor.GetConverter(defaultValue);
+
+            TypeConverter converter = GetConverter<T>();
+
             if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
             try
             {
@@ -57,10 +76,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         private void Load ()
         {            
-            var settings = Client.Get<Dictionary<string,string>> ("/settings");
-            var dict = new Dictionary<string, string> ();
-            settings.ForEach (s => dict.Add (s.Key, s.Value));
-            _settings = dict;
+            lock (lockObject) {
+                if (_settings == null) {
+                    var settings = Client.Get<Dictionary<string,string>> ("/settings");
+                    _settings = new Dictionary<string, string> ();
+                    settings.ForEach (s => _settings.Add (s.Key, s.Value));
+                    _settings.ToString ();
+                }
+            }
+
+
         }
 
         public IDictionary<string, string> GetSettings ()
@@ -70,6 +95,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
             return _settings;            
         }
+
+
+
 
 		ClientPaymentSettings _cachedSettings = null;
         public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)

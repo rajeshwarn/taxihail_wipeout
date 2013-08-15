@@ -255,8 +255,12 @@
   <data name="InvalidBookinInfoTitle" xml:space="preserve">
     <value>Invalid booking info</value>
   </data>
+  
   <data name="InvalidBookinInfo" xml:space="preserve">
     <value>To book a ride, you need to enter a valid pickup address.</value>
+  </data>
+  <data name="InvalidBookinInfoWhenDestinationIsRequired" xml:space="preserve">
+    <value>To book a ride, you need to enter a valid pickup address and destination address.</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Please enter a valid pickup address.</value>
