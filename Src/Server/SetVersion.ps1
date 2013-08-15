@@ -55,6 +55,44 @@ function Update-AllAssemblyInfoFiles ( $version )
 }
 
 
+function UpdateAndroidVersion ( $versionVal )
+{
+    # Load the bootstrap file
+    [xml] $xam = Get-Content -Path ($ProjectPath + "..\Mobile\Android\Properties\AndroidManifest.xml")
+    
+    # Get the version from Android Manifest
+    $version = Select-Xml -xml $xam  -Xpath "/manifest/@android:versionName" -namespace @{android="http://schemas.android.com/apk/res/android"}
+        
+    $version.Node.Value = $versionVal
+
+    $versionCode = Select-Xml -xml $xam  -Xpath "/manifest/@android:versionCode" -namespace @{android="http://schemas.android.com/apk/res/android"}
+    
+    [int] $iVer  = $versionCode.Node.Value
+
+    $versionCode.Node.Value = ($iVer + 1)
+ 
+    # Save the file
+    $xam.Save($ProjectPath + "..\Mobile\Android\Properties\AndroidManifest.xml")
+}
+
+
+function UpdateIosVersion ( $versionVal )
+{
+    # Load the bootstrap file
+    [xml] $xam = Get-Content -Path ($ProjectPath + "..\Mobile\iOS\Info.plist")
+    
+    # Get the version from Android Manifest
+    $version = Select-Xml -xml $xam  -Xpath "//key[text() = 'CFBundleVersion']/following-sibling::string[1]" 
+        #//key[text() = 'CFBundleVersion']/following-sibling::string
+        #//key[ CFBundleVersion( following-sibling::*[1] ) != 'key' ]
+    #$a = $version.Node."#text";
+    $version.Node."#text" = $versionVal 
+    
+    
+    # Save the file
+    $xam.Save($ProjectPath + "..\Mobile\iOS\Info.plist")
+}
+
 # validate arguments 
 #$r= [System.Text.RegularExpressions.Regex]::Match($args[0], "^[0-9]+(\.[0-9]+){1,3}$");
   
@@ -62,6 +100,8 @@ function Update-AllAssemblyInfoFiles ( $version )
 #if ($r.Success)
 #{
   Update-AllAssemblyInfoFiles $args[0];
+  UpdateAndroidVersion $args[0];
+  UpdateIosVersion $args[0];
 #}
 #else
 #{
