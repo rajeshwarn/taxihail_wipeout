@@ -41,11 +41,27 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return _settings [key];
         }
 
+        private TypeConverter GetConverter<T>()
+        {
+            //TypeDescriptor.GetConverter(defaultValue); doesn't work on the mobile device because the constructor is removed 
+            //The actual type is not referenced so the linker removes it 
+
+        var t = typeof(T);
+            if (t.Equals(typeof(bool)))
+            {
+                return new BooleanConverter();
+            }
+            _logger.LogMessage("Could not convert setting to " + typeof(T).Name);
+            throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+        }
+
         public T GetSetting<T>(string key, T defaultValue) where T : struct
         {
             var value = GetSetting(key);
             if (string.IsNullOrWhiteSpace(value)) return defaultValue;
-            var converter = TypeDescriptor.GetConverter(defaultValue);
+
+            TypeConverter converter = GetConverter<T>();
+
             if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
             try
             {
