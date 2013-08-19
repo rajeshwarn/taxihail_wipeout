@@ -1948,6 +1948,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700fb
 			public const int InvalidBookinInfoTitle = 2131165435;
 			
+			// aapt resource value: 0x7f0701b3
+			public const int InvalidBookinInfoWhenDestinationIsRequired = 2131165619;
+			
 			// aapt resource value: 0x7f070108
 			public const int InvalidChoiceTitle = 2131165448;
 			

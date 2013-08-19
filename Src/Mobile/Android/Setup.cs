@@ -29,6 +29,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Android.Platform;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Android.Util;
+using apcurium.MK.Common.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-			TinyIoCContainer.Current.Register<IPushNotificationService>(new PushNotificationService(this.ApplicationContext));
+			TinyIoCContainer.Current.Register<IPushNotificationService>( c=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()) );
 
 
             InitializeSocialNetwork();
