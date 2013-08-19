@@ -38,8 +38,8 @@ function Update-SourceVersion
     Write-output $o.FullName
     $TmpFile = $o.FullName + ".tmp"
      get-content $o.FullName | 
-        %{$_ -replace 'AssemblyVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)', $NewVersion } |
-        %{$_ -replace 'AssemblyFileVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)', $NewFileVersion } |  Out-File $TmpFile -encoding "UTF8";
+        %{$_ -replace 'AssemblyVersion\(".*"\)', $NewVersion } |
+        %{$_ -replace 'AssemblyFileVersion\(".*"\)', $NewFileVersion } |  Out-File $TmpFile -encoding "UTF8";
 
      move-item $TmpFile $o.FullName -force
   }
