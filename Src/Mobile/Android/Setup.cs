@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-			TinyIoCContainer.Current.Register<IPushNotificationService>( c=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()) );
+			TinyIoCContainer.Current.Register<IPushNotificationService>( (c,p)=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()));
 
 
             InitializeSocialNetwork();
