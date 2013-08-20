@@ -2,6 +2,7 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -11,6 +12,8 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             return base.GetUrl() + "IStaticData";
         }
+
+        
 
         public StaticDataWebServiceClient(IConfigurationManager configManager, ILogger logger) : base(configManager, logger)
         {
@@ -52,9 +55,13 @@ namespace apcurium.MK.Booking.IBS.Impl
         public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
             string zone = "";
+
+            var zoneByCompanyEnabled = ConfigManager.GetSetting("IBS.ZoneByCompanyEnabled").SelectOrDefault(setting => bool.Parse(setting), false);
+
             UseService(service =>
                            {
-                               zone = providerId.HasValue 
+                               
+                               zone = providerId.HasValue && zoneByCompanyEnabled
                                    ? service.GetCompanyZoneByGPS(UserNameApp, PasswordApp, providerId.Value, latitude, longitude)
                                    : service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
                            });

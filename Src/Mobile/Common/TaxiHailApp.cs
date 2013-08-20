@@ -90,24 +90,16 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
-            TaxiHailApp_LifetimeChanged (null, new MvxLifetimeEventArgs( MvxLifetimeEvent.ActivatedFromDisk));
+            //TaxiHailApp_LifetimeChanged (null, new MvxLifetimeEventArgs( MvxLifetimeEvent.ActivatedFromDisk));
         }
 
 
         void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
-            if ( e.LifetimeEvent == MvxLifetimeEvent.Deactivated )
-            {
-                ClearAppCache();
-            }
-            else if ( ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk ) || ( e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory )  )
-            {
-                Task.Factory.StartNew(() =>
-                    {
-                        ClearAppCache();
-                        LoadAppCache();
-                    });
-
+            if (e.LifetimeEvent == MvxLifetimeEvent.Deactivated) {
+                ClearAppCache ();
+            } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)) {
+                RefreshAppData ();
             }
         }
 

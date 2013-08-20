@@ -25,7 +25,10 @@ namespace MK.Booking.IBS.Test
         [Test]
         public void when_zone_exists_for_coordinates()
         {
-            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
+            var config = new FakeConfigurationManager();
+            config.AddKey("IBS.ZoneByCompanyEnabled", true.ToString());
+
+            var sut = new StaticDataWebServiceClient(config, new Logger());
 
             var zone = sut.GetZoneByCoordinate(MobileKnowledgeProviderId, 43.566900, -79.574300);
 

@@ -39,15 +39,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return "";
             }
             catch (Exception ex)
-            {                    
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                if (errorHandler == null)
-                {
-                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
-                }
-                else
-                {
-                    errorHandler(ex);
+            {   
+                ILogger logger = null;
+                if (TinyIoCContainer.Current.TryResolve<ILogger> ( out logger)) {
+                    TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
+                    if (errorHandler == null) {
+                        TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+                    } else {
+                        errorHandler (ex);
+                    }                 
                 }
                 return ex.Message;
             
