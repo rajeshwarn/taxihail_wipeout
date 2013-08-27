@@ -216,28 +216,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
                 if (directionInfo != null) {
                     if (directionInfo.Price.HasValue) {
-                        if (directionInfo.Price.Value > 100) {
-                            fareEstimate = appResource.GetString ("EstimatePriceOver100");
+                        if (formatString.HasValue() || (directionInfo.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue())) 
+                        {
+                            fareEstimate = String.Format(appResource.GetString(directionInfo.Price.Value > 100 
+                                                                                   ? appResource.GetString("EstimatePriceOver100") 
+                                                                                   : formatString), 
+                                                         directionInfo.FormattedPrice);
                         } else {
-                            if (formatString.HasValue ()) {
-                                fareEstimate = String.Format (appResource.GetString (formatString), directionInfo.FormattedPrice);
-                            } else {
-                                fareEstimate = directionInfo.FormattedPrice;
-                            }
-                            
+                            fareEstimate = directionInfo.FormattedPrice;
                         }
 
                         if (includeDistance && directionInfo.Distance.HasValue) {
-                            fareEstimate += " " + String.Format (appResource.GetString ("EstimateDistance"), directionInfo.FormattedDistance);
-
+                            var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
+                            if (!string.IsNullOrWhiteSpace(destinationString))
+                            {
+                                fareEstimate += destinationString;
+                            }
                         }
                     } else {
                         fareEstimate = String.Format (appResource.GetString (cannotGetFareText));
                     }
-
-
                 }
-
             }
 
             return fareEstimate;
