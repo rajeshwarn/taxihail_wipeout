@@ -1366,4 +1366,7 @@
   <data name="VehicleNumberNotice" xml:space="preserve">
     <value>Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</value>
   </data>
+  <data name="EmptyString" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
