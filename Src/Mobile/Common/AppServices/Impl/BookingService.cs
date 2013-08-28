@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         if (formatString.HasValue() || (directionInfo.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue())) 
                         {
                             fareEstimate = String.Format(appResource.GetString(directionInfo.Price.Value > 100 
-                                                                                   ? appResource.GetString("EstimatePriceOver100") 
+                                                                                   ? "EstimatePriceOver100"
                                                                                    : formatString), 
                                                          directionInfo.FormattedPrice);
                         } else {
