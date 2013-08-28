@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
@@ -28,7 +30,19 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public T GetSetting<T>(string key, T defaultValue) where T : struct
         {
-            throw new NotImplementedException();
+            var value = GetSetting(key);
+            if (string.IsNullOrWhiteSpace(value)) return defaultValue;
+            var converter = TypeDescriptor.GetConverter(defaultValue);
+            if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+            try
+            {
+                return (T)converter.ConvertFromInvariantString(value);
+            }
+            catch
+            {
+                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
+            }
+            return defaultValue;
         }
 
         public IDictionary<string, string> GetSettings()
