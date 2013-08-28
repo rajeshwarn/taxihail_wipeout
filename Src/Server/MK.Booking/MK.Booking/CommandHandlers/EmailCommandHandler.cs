@@ -11,21 +11,25 @@ using apcurium.MK.Common.Configuration;
 namespace apcurium.MK.Booking.CommandHandlers
 {
     public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, 
-        ICommandHandler<SendAccountConfirmationEmail>, 
+        ICommandHandler<SendAccountConfirmationEmail>,
         ICommandHandler<SendBookingConfirmationEmail>,
-        ICommandHandler<SendReceipt>
+        ICommandHandler<SendReceipt> 
     {
         const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         const string AccentColorSetting = "TaxiHail.AccentColor";
+        const string VATEnabledSetting = "VATIsEnabled";
+        const string VATPercentageSetting = "VATPercentage";
+        const string VATRegistrationNumberSetting = "VATRegistrationNumber";
 
-        const string PasswordResetTemplateName = "PasswordReset";
+        const string PasswordResetTemplateName = "PasswordReset"; 
         const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
-
-        const string AccountConfirmationTemplateName = "AccountConfirmation";
-        const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}";
+        
+        const string AccountConfirmationTemplateName = "AccountConfirmation"; 
+        const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}"; 
         
         const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
         const string ReceiptTemplateName = "Receipt";
+        const string ReceiptWithVATTemplateName = "ReceiptWithVAT";
 
         const string BookingConfirmationTemplateName = "BookingConfirmation";
         const string BookingConfirmationEmailSubject = "{{ ApplicationName }} - Booking confirmation";
@@ -103,10 +107,23 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendReceipt command)
         {
-            var template = _templateService.Find(ReceiptTemplateName);
-            if(template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
+            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
+            var templateName = vatEnabled 
+                                    ? ReceiptWithVATTemplateName 
+                                    : ReceiptTemplateName;
+
+            var template = _templateService.Find(templateName);
+            if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
+
+            var vatAmount = 0d;
+            var fareAmountWithoutVAT = command.Fare;
+            if (vatEnabled)
+            {
+                fareAmountWithoutVAT = command.Fare / (1 + _configurationManager.GetSetting<double>(VATPercentageSetting, 0)/100);
+                vatAmount = command.Fare - fareAmountWithoutVAT;
+            }
 
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -114,11 +131,13 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        IBSOrderId = command.IBSOrderId,
                                        VehicleNumber = command.VehicleNumber,
                                        Date = command.TransactionDate.ToString("dddd, MMMM d, yyyy"),
-                                       Fare = command.Fare.ToString("C", priceFormat),
+                                       Fare = fareAmountWithoutVAT.ToString("C", priceFormat),
                                        Toll = command.Toll.ToString("C", priceFormat),
                                        Tip = command.Tip.ToString("C", priceFormat),
                                        TotalFare = command.TotalFare.ToString("C", priceFormat),
-                                       Note = _configurationManager.GetSetting("Receipt.Note")
+                                       Note = _configurationManager.GetSetting("Receipt.Note"),
+                                       VATAmount = vatAmount.ToString("C", priceFormat),
+                                       VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting)
                                    };
 
             SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);
