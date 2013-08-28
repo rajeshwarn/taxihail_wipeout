@@ -91,6 +91,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
 				.DisposeWith (Subscriptions);
+
+            GoToSummary();
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
