@@ -547,6 +547,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                            Order.Settings.Passengers = 1;
 	                        }
 
+                            Order.EstimatedFare = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimate(Order);
+
 	                        var serialized = Order.ToJson();
 	                        RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
 	                    });

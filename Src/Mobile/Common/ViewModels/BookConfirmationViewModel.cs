@@ -283,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						            Id = Order.Id, PickupAddress = Order.PickupAddress,
 						            Note = Order.Note, 
 						            PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
-						            Settings = Order.Settings,
+						            Settings = Order.Settings
 						        };
 	    						
 						    RequestNavigate<BookingStatusViewModel>(new
