@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string Note { get; set; }
 
+        public decimal? EstimatedFare { get; set; }
+
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
