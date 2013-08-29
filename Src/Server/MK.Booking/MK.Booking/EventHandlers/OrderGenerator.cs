@@ -41,7 +41,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     DropOffAddress = @event.DropOffAddress,
                     Settings = @event.Settings,
                     Status = (int)OrderStatus.Created,
-                    IsRated = false
+                    IsRated = false,
+                    EstimatedFare = @event.EstimatedFare,
                 });
 
                 // Create an empty OrderStatusDetail row

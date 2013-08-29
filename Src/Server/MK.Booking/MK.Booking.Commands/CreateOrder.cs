@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Commands
 
         public PaymentInformation Payment { get; set; }
 
-        public decimal? EstimatedFare { get; set; }
+        public double? EstimatedFare { get; set; }
     
         public class PaymentInformation
         {
