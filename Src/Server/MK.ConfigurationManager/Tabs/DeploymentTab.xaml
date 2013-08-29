@@ -64,7 +64,7 @@
 
 
                 <DataGridTextColumn Binding="{Binding Revision}" Header="Revision" />
-                <DataGridTextColumn Binding="{Binding Version.Display}" Header="Revision" />
+                <DataGridTextColumn Binding="{Binding Version.Display}" Header="Version" />
             </DataGrid.Columns>
         </DataGrid>
 
