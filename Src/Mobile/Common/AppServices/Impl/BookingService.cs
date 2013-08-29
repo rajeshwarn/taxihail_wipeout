@@ -232,6 +232,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var estimatedFare = GetFareEstimate(order);
 
             if (estimatedFare.HasValue) {
+                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
                 if (formatString.HasValue() || (directionInfo.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue())) 
                 {
                     fareEstimate = String.Format(appResource.GetString(directionInfo.Price.Value > 100 
