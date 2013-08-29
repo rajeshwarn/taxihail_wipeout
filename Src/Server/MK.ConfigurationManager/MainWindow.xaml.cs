@@ -43,7 +43,7 @@ namespace MK.ConfigurationManager
             Task.Factory.StartNew(() =>
                 {
                     RepositoryHelper.FetchRepoTags();
-                    Dispatcher.Invoke(() => ConfigurationDatabase.Current.ReloadVersions());
+                    Dispatcher.Invoke(() => ConfigurationDatabase.Current.SaveVersions());
                 });
                 
 
