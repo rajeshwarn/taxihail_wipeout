@@ -307,6 +307,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
+    <None Include="Localization\Thriev.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
