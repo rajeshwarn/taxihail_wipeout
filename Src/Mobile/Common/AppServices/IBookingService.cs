@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-	    
+        double? GetFareEstimate(CreateOrder order);
        
         string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 
