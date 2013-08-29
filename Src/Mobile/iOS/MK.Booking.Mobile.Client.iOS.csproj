@@ -121,6 +121,11 @@
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -142,6 +147,11 @@
     <BuildIpa>True</BuildIpa>
     <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
