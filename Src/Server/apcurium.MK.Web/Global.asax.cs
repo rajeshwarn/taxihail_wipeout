@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Reactive.Linq;
 using System.Web;
-using System.Web.Caching;
 using System.Web.Optimization;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
@@ -13,7 +11,6 @@ using ServiceStack.Text;
 using ServiceStack.Text.Common;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
@@ -27,7 +24,6 @@ using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Common.IoC;
 using log4net.Config;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
-using System.Threading;
 
 namespace apcurium.MK.Web
 {
@@ -113,9 +109,12 @@ namespace apcurium.MK.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
             XmlConfigurator.Configure();
             new MKWebAppHost().Init();
+
+            var config = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+            BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
+
             
             StatusJobService = UnityServiceLocator.Instance.Resolve<IUpdateOrderStatusJob>();
 

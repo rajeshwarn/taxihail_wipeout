@@ -36,19 +36,27 @@
                     this.actualizeEstimate();
                 }, this);
             
-            this.model.on('change:estimate', function(model, value){
+            this.model.on('change:estimate', function (model, value) {
+                var $estimate = this.$('.estimate');
                 if (value.formattedPrice && value.formattedDistance) {
-                    this.$('.estimate').removeClass('hidden') ;
+                    $estimate.removeClass('hidden')
+                        .find('.distance')
+                        .text('(' + value.formattedDistance + ')');
                      
                     if (value.callForPrice) {
-                        this.$('.estimate')
+                        $estimate
                             .find('.fare')
-                            .text(TaxiHail.localize('CallForPrice') + ' (' + value.formattedDistance + ')');
-                        this.$('.estimate')
-                            .find('.label').hide();
+                            .text(TaxiHail.localize('CallForPrice'));
+                        $estimate
+                            .find('.label')
+                            .hide();
                     } else {
-                        this.$('.estimate').find('.fare').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
-                        this.$('.estimate').find('.label').show();
+                        $estimate
+                            .find('.fare')
+                            .text(value.formattedPrice);
+                        $estimate
+                            .find('.label')
+                            .show();
                     }
                     
                 } else {

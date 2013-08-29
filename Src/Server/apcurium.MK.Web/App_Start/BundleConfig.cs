@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Optimization;
 using apcurium.MK.Web.Optimization;
 
@@ -9,7 +11,7 @@ namespace apcurium.MK.Web
 {
     public class BundleConfig
     {
-        public static void RegisterBundles(BundleCollection bundles)
+        public static void RegisterBundles(BundleCollection bundles, string applicationKey)
         {
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
                 "~/assets/js/localstorage-polyfill.js",
@@ -86,6 +88,11 @@ namespace apcurium.MK.Web
 
             var resourcesBundle = new Bundle("~/bundles/resources")
                 .IncludeDirectory("~/localization", "*.json");
+            var themeLocalizationDirectory = "~/themes/" + applicationKey + "/localization";
+            if (Directory.Exists(HostingEnvironment.MapPath(themeLocalizationDirectory)))
+            {
+                resourcesBundle.IncludeDirectory(themeLocalizationDirectory, "*.json");
+            }
 
             resourcesBundle.Transforms.Add(new ResourcesTransform());
             resourcesBundle.Transforms.Add(new JsMinify());
