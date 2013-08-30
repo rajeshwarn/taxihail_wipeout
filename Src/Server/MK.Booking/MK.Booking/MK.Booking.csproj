@@ -140,7 +140,7 @@
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
-    <Compile Include="EventHandlers\Integration\ReceiptSender.cs" />
+    <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
@@ -219,6 +219,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\ReceiptWithVAT.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssigned.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssignedWithVAT.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="MK.Booking.psproj">
