@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             //TypeDescriptor.GetConverter(defaultValue); doesn't work on the mobile device because the constructor is removed 
             //The actual type is not referenced so the linker removes it 
 
-        var t = typeof(T);
+            var t = typeof(T);
             if (t.Equals(typeof(bool)))
             {
                 return new BooleanConverter();
@@ -62,7 +62,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             TypeConverter converter = GetConverter<T>();
 
-            if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
             try
             {
                 return (T)converter.ConvertFromInvariantString(value);
