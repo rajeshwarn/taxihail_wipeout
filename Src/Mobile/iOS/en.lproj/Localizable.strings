@@ -1,4 +1,4 @@
-"EstimateDistance"=" ({0})";
+"EstimateDistance"=" ";
 "CreateAccoutCancel"="Cancel";
 "SignUpButton"="Create a free account";
 "ResetPasswordPlaceholder"="Enter your email here";
@@ -175,7 +175,7 @@
 "TaxiMapTitle"="Your Taxi";
 "DateToday"="Today";
 "CreateAccoutPasswordLabel"="Password:";
-"EstimatePriceOver100"="Call for price";
+"EstimatePriceOver100"="Total Price : {0}";
 "View_BookingDetail_TitleRideSettings"="Ride Settings";
 "HistoryViewSendReceiptButton"="Send Receipt";
 "View_UpdatePassword"="Update Password";
@@ -222,7 +222,7 @@
 "View_Book_Menu_ReportProblem"="Report A Problem";
 "View_RefineAddress"="Pickup Details";
 "InvalidPickupAddress"="Please enter a valid pickup address.";
-"EstimatePrice"="Estimated Fare : {0}";
+"EstimatePrice"="Total Price : {0}";
 "ServiceErrorCallTitle"="Message";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
 "SettingsViewTitle"="Settings";
@@ -432,3 +432,4 @@
 "VehicleNumberNotice"="Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.";
 "VehicleNumberInfo"="Please confirm your car number with the driver";
 "InvalidBookinInfoWhenDestinationIsRequired"="To book a ride, you need to enter a valid pickup address and destination address.";
+"EmptyString"="";
