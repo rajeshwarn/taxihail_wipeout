@@ -700,10 +700,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("CreateAccountErrorNotSpecified"); }
 		}
 		
-		public static string RideSettingsNumberOfTaxi {
-			get { return GetValue ("RideSettingsNumberOfTaxi"); }
-		}
-		
 		public static string WarningEstimate {
 			get { return GetValue ("WarningEstimate"); }
 		}
