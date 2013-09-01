@@ -488,7 +488,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() => {
 
-                    // Always ensure PickupDate is null (= now). It will be set to DateTime.Now later
+                    // Ensure PickupDate is null (= now). It will be set to DateTime.Now later
                     Order.PickupDate = null;
                     ProcessOrder();
 
