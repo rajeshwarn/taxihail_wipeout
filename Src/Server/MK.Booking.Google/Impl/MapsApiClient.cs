@@ -7,6 +7,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Google.Impl
 {
@@ -14,7 +15,7 @@ namespace apcurium.MK.Booking.Google.Impl
     {
         private const string PlaceDetailsServiceUrl = "https://maps.googleapis.com/maps/api/place/details/";
         private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
-        private const string PlacesTextServiceUrl = "https://maps.googleapis.com/maps/api/place/textsearch/";
+        private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
 
         private IConfigurationManager _conifManager;
@@ -33,10 +34,10 @@ namespace apcurium.MK.Booking.Google.Impl
             }
         }
 
-        public Place[] GetNearbyPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+        public Place[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
         {
             pipedTypeList = pipedTypeList == null ? new PlaceTypes(_conifManager).GetPipedTypeList() : pipedTypeList;
-            var url = name != null ? PlacesTextServiceUrl : PlacesServiceUrl;
+            var url = PlacesServiceUrl;
             var client = new JsonServiceClient(url);
 
             var @params = new Dictionary<string, string>
@@ -55,18 +56,88 @@ namespace apcurium.MK.Booking.Google.Impl
             {
                 @params.Add("location", string.Join(",", latitude.Value.ToString(CultureInfo.InvariantCulture), longitude.Value.ToString(CultureInfo.InvariantCulture)));
             }
+            
+
+            var r = "json" + BuildQueryString(@params);
+
+
+            _logger.LogMessage ("Nearby Places API : " + url + r );
+
+            return client.Get<PlacesResponse>(r).Results.ToArray();
+        }
+
+        private IEnumerable<Place> ConvertPredictionToPlaces(IEnumerable<Prediction> result)
+        {
+             var g = new Geometry{ Location = new Location{ Lat = 0, Lng = 0 } };
+             return result.Select(p => new Place { Id = p.Id, Name = GetNameFromDescription( p.Description ), Reference = p.Reference, Formatted_Address = GetAddressFromDescription( p.Description), Geometry = g, Vicinity = "n\a", Types = p.Types });
+        }
+
+        private string GetNameFromDescription(string description)
+        {            
+            if ( string.IsNullOrWhiteSpace( description ) || !description.Contains(",")  )
+            {
+                return description;
+            }
+            string[] components = description.Split(',');
+            return components.First().Trim();
+        }
+
+        private string GetAddressFromDescription(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description) || !description.Contains(","))
+            {
+                return description;
+            }
+            string[] components = description.Split(',');
+            if (components.Count() > 1)
+            {
+                return components.Skip(1).Select(c => c.Trim()).JoinBy(", ");
+            }
+            else
+            {
+                return components.First().Trim();
+            }
+        }
+
+        public Place[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
+        {
+            var url = PlacesAutoCompleteServiceUrl;
+            var client = new JsonServiceClient(url);
+
+            var @params = new Dictionary<string, string>
+            {
+                { "sensor", sensor.ToString(CultureInfo.InvariantCulture).ToLowerInvariant() },
+                { "key",  PlacesApiKey },                
+                { "radius", radius.ToString(CultureInfo.InvariantCulture)  },
+                { "language", languageCode  },
+                { "types", "establishment"},
+                { "components", "country:" + countryCode },            
+            };
+
+
+            
+
+            if (latitude != null
+                && longitude != null)
+            {
+                @params.Add("location", string.Join(",", latitude.Value.ToString(CultureInfo.InvariantCulture), longitude.Value.ToString(CultureInfo.InvariantCulture)));
+            }
 
             if (name != null)
             {
-                @params.Add("query", name);
+                @params.Add("input", name);
             }
 
             var r = "json" + BuildQueryString(@params);
 
 
-            _logger.LogMessage ("Places API : " + url + r );
+            _logger.LogMessage("Search Places API : " + url + r);
 
-            return client.Get<PlacesResponse>(r).Results.ToArray();
+
+            var result = client.Get<PredictionResponse>(r).predictions;
+
+            return ConvertPredictionToPlaces(result).ToArray();
+            
 
         }
 
