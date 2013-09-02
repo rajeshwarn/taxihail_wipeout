@@ -582,6 +582,7 @@
     <Content Include="themes\YellowCabOrlando\less\style.less" />
     <Content Include="themes\YellowCabOrlando\less\variables.less" />
     <Content Include="themes\Thriev\localization\Book.json" />
+    <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
