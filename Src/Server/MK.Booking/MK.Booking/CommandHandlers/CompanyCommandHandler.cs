@@ -62,6 +62,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.KilometricRate,
                     timeAdustmentFactor: command.MarginOfError,
+                    kilometerIncluded: command.KilometerIncluded,
                     pricePerPassenger: command.PassengerRate);
             }
             else if (command.Type == TariffType.Recurring)
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     timeAdustmentFactor: command.MarginOfError,
                     pricePerPassenger: command.PassengerRate,
                     daysOfTheWeek: command.DaysOfTheWeek,
+                    kilometerIncluded: command.KilometerIncluded,
                     startTime: command.StartTime,
                     endTime: command.EndTime);
             }
@@ -83,6 +85,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.KilometricRate,
                     timeAdustmentFactor: command.MarginOfError,
+                    kilometerIncluded: command.KilometerIncluded,
                     pricePerPassenger: command.PassengerRate,
                     startTime: command.StartTime,
                     endTime: command.EndTime);
@@ -101,6 +104,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     distanceMultiplicator: command.KilometricRate,
                     timeAdustmentFactor: command.MarginOfError,
                     pricePerPassenger: command.PassengerRate,
+                    kilometerIncluded: command.KilometerIncluded,
                     daysOfTheWeek: command.DaysOfTheWeek,
                     startTime: command.StartTime,
                     endTime: command.EndTime);

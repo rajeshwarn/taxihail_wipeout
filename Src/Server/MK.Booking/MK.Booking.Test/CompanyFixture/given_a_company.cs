@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                                   FlatRate = 3.50m,
                                   KilometricRate = 1.1,
                                   MarginOfError = 1.2,
+                                  KilometerIncluded = 1.6,
                                   PassengerRate = 1.3m,
                                   DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                                   StartTime = DateTime.Today.AddHours(12).AddMinutes(30),
@@ -55,6 +56,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(3.50, evt.FlatRate);
             Assert.AreEqual(1.1, evt.KilometricRate);
             Assert.AreEqual(1.2, evt.MarginOfError);
+            Assert.AreEqual(1.6, evt.KilometerIncluded);
             Assert.AreEqual(1.3m, evt.PassengerRate);
             Assert.AreEqual(DayOfTheWeek.Saturday, evt.DaysOfTheWeek & DayOfTheWeek.Saturday);
             Assert.AreEqual(DayOfTheWeek.Sunday, evt.DaysOfTheWeek & DayOfTheWeek.Sunday);

@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
         public double KilometricRate { get; set; }
         public double MarginOfError { get; set; }
         public decimal PassengerRate { get; set; }
+        public double KilometerIncluded { get; set; }
         public int DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
