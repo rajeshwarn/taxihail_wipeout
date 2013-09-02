@@ -19,11 +19,15 @@
         },
 
         render: function() {
+            var status = this.model.getStatus(),
+                data = _.extend(status.toJSON(), {
+                    isActive: status.isActive()
+                });
 
             // Close popover if it is open
             // Otherwise it will stay there forever
             this.$('[data-action=call]').popover('hide');
-            var data = this.model.getStatus().toJSON();
+            
             if(!data.ibsStatusDescription)
             {
                 data.ibsStatusDescription = this.localize('Processing');
@@ -81,7 +85,7 @@
             
         },
 
-        onStatusChanged: function(model, status) {
+        onStatusChanged: function (model, status) {
             if(model.isCompleted()){
 
                 // Prevent further updated
