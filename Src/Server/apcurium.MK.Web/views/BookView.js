@@ -164,7 +164,7 @@
             }
            
         },
-                    
+        
         book: function (e) {
             e.preventDefault();
             if(this.model.isValidAddress('pickupAddress')) {
