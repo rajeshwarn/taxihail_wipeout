@@ -10,8 +10,8 @@
                 .done(cleanupResult);
         },
 
-        getPlaceDetails: function(reference) {
-            return $.get(TaxiHail.parameters.apiRoot + '/places/' + reference, {}, function () {}, 'json')
+        getPlaceDetails: function(reference, placeName) {
+            return $.get(TaxiHail.parameters.apiRoot + '/places/detail', { referenceId: reference, PlaceName: placeName }, function () { }, 'json')
                 .done(cleanupResult);
         }
     };

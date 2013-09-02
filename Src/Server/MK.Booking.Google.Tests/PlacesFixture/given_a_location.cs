@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places()
         {
-            var places = sut.GetNearbyPlaces(Latitude, Longitude, null, "en", false, 100);
+            var places = sut.GetNearbyPlaces(Latitude, Longitude,  "en", false, 100);
 
             if (!places.Any())
             {
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places_with_name()
         {
-            var places = sut.GetNearbyPlaces(Latitude, Longitude, "museum", "en", false, 100);
+            var places = sut.SearchPlaces(Latitude, Longitude, "museum", "en", false, 100, "en-US");
 
 
             if (!places.Any())
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places_it_does_not_include_neighborhoods()
         {
-            var places = sut.GetNearbyPlaces(Latitude, Longitude, null, "en", false, 100);
+            var places = sut.GetNearbyPlaces(Latitude, Longitude,  "en", false, 100);
 
             var neighborhoods = places.Where(x => x.Types.Contains("neighborhood"));
 

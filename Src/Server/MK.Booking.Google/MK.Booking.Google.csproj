@@ -83,12 +83,14 @@
     <Compile Include="Resources\Leg.cs" />
     <Compile Include="Resources\Location.cs" />
     <Compile Include="Resources\OverviewPolyline.cs" />
+    <Compile Include="Resources\Prediction.cs" />
     <Compile Include="Resources\Place.cs" />
     <Compile Include="Resources\PlaceDetail.cs" />
     <Compile Include="Resources\PlaceDetailResponse.cs" />
     <Compile Include="Resources\PlacesResponse.cs" />
     <Compile Include="Resources\PlaceTypes.cs" />
     <Compile Include="Resources\Polyline.cs" />
+    <Compile Include="Resources\PredictionResponse.cs" />
     <Compile Include="Resources\ResultStatus.cs" />
     <Compile Include="Resources\Route.cs" />
     <Compile Include="Resources\Step.cs" />
