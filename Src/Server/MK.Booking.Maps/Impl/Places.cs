@@ -68,7 +68,19 @@ namespace apcurium.MK.Booking.Maps.Impl
                 popularAddresses =popularAddresses.ForEach ( p=> p.AddressType = "popular" );               
             }
 
-            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(15);
+            IEnumerable<Place> googlePlaces = new Place[0];
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                googlePlaces = _client.GetNearbyPlaces(latitude, longitude,  "en", false, radius.HasValue ? radius.Value : defaultRadius).Take(15);
+            }
+            else
+            {
+
+                var priceFormat = new RegionInfo(_configurationManager.GetSetting("PriceFormat"));
+                
+                googlePlaces = _client.SearchPlaces(latitude, longitude, name, "en", false, radius.HasValue ? radius.Value : defaultRadius, priceFormat.TwoLetterISORegionName.ToLower()).Take(15);
+            }
 
             if (latitude.HasValue && longitude.HasValue)
             {
@@ -86,12 +98,21 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             var txtInfo = new CultureInfo("en-US", false).TextInfo;
             
+            var typesToHide = new[] { "establishment", "geocode" };
+            var placeType = place.Types.FirstOrDefault().ToSafeString();
+            bool hidePlaceType = ( string.IsNullOrWhiteSpace( placeType ) || typesToHide.Contains( placeType ) );
+            var displayPlaceType = hidePlaceType ? "" : " (" + txtInfo.ToTitleCase(placeType.Replace("_", " ")) + ")";
+
+            
+
+            //string diplay = placeType//
+
             var address = new Address
             {
                 
                 Id = Guid.NewGuid(),
                 PlaceReference = place.Reference,
-                FriendlyName = place.Name + " (" + txtInfo.ToTitleCase(  place.Types.FirstOrDefault().ToSafeString().Replace("_", " ")) + ")",
+                FriendlyName = place.Name + displayPlaceType,
                 FullAddress = place.Formatted_Address.IsNullOrEmpty ()? place.Vicinity : place.Formatted_Address,
                 Latitude = place.Geometry.Location.Lat,
                 Longitude = place.Geometry.Location.Lng,

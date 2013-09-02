@@ -226,8 +226,9 @@
 
         fetchPlaceDetails: function(model) {
             var placeReference = model && model.get('placeReference');
+            var placeName = model && model.get('friendlyName');
             if(placeReference) {
-                return TaxiHail.places.getPlaceDetails(placeReference)
+                return TaxiHail.places.getPlaceDetails(placeReference, placeName)
                         .done(function(result){
                             model.set(result);
                         });
