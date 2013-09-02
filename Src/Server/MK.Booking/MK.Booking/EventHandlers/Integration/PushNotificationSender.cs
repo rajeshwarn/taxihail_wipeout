@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -14,15 +15,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         : IIntegrationEventHandler,
           IEventHandler<OrderStatusChanged>
     {
-        private const string wosASSIGNED = "Taxi #{0} has been assigned to you";
-        private const string wosARRIVED = "Your Taxi (#{0}) has arrived";
         readonly Func<BookingDbContext> _contextFactory;
         readonly IPushNotificationService _pushNotificationService;
+        readonly dynamic _resources;
 
-        public PushNotificationSender(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService)
+        public PushNotificationSender(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new DynamicResources(applicationKey);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -36,10 +39,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 switch (@event.Status.IBSStatusId)
                 {
                     case "wosASSIGNED":
-                        alert = string.Format(wosASSIGNED, @event.Status.VehicleNumber);
+                        alert = string.Format((string)_resources.PushNotification_wosASSIGNED, @event.Status.VehicleNumber);
                         break;
                     case "wosARRIVED":
-                        alert = string.Format(wosARRIVED, @event.Status.VehicleNumber);
+                        alert = string.Format((string)_resources.PushNotification_wosARRIVED, @event.Status.VehicleNumber);
                         break;
                     default:
                         throw new InvalidOperationException("No push notification for this order status");
