@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places_with_name()
         {
-            var places = sut.SearchPlaces(Latitude, Longitude, "museum", "en", false, 100);
+            var places = sut.SearchPlaces(Latitude, Longitude, "museum", "en", false, 100, "en-US");
 
 
             if (!places.Any())
