@@ -57,7 +57,7 @@
             TaxiHail.parameters.isEstimateEnabled = <%: this.EstimateEnabled %>;
             TaxiHail.parameters.isEstimateWarningEnabled = <%: this.EstimateWarningEnabled %>;
             TaxiHail.parameters.isDestinationRequired = <%: this.DestinationIsRequired %>;
-
+            TaxiHail.parameters.showPassengerNumber = <%: this.ShowPassengerNumber ? "true" : "false"  %>;
             TaxiHail.parameters.apiRoot = "api";
         </script>
 
