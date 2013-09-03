@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 FlatRate = 3.50m,
                 KilometricRate = 1.1,
                 MarginOfError = 1.2,
+                KilometerIncluded = 1.6,
                 PassengerRate = 2.0m,
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                 StartTime = DateTime.Today.AddHours(12).AddMinutes(55),
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(3.50m, dto.FlatRate);
                 Assert.AreEqual(1.1, dto.KilometricRate);
                 Assert.AreEqual(1.2, dto.MarginOfError);
+                Assert.AreEqual(1.6, dto.KilometerIncluded);
                 Assert.AreEqual(2.0m, dto.PassengerRate);
                 Assert.AreEqual((int)(DayOfTheWeek.Saturday | DayOfTheWeek.Sunday), dto.DaysOfTheWeek);
                 Assert.AreEqual(12, dto.StartTime.Hour);
@@ -107,6 +109,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 FlatRate = 20,
                 PassengerRate = 21,
                 MarginOfError = 22,
+                KilometerIncluded = 26,
                 StartTime = DateTime.Today.AddHours(23),
                 EndTime = DateTime.Today.AddHours(24),
                 Name = "Updated Rate",
@@ -122,6 +125,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(20, dto.FlatRate);
                 Assert.AreEqual(19, dto.KilometricRate);
                 Assert.AreEqual(22, dto.MarginOfError);
+                Assert.AreEqual(26, dto.KilometerIncluded);
                 Assert.AreEqual(21, dto.PassengerRate);
                 Assert.AreEqual((int)(DayOfTheWeek.Tuesday), dto.DaysOfTheWeek);
                 Assert.AreEqual(23, dto.StartTime.Hour);

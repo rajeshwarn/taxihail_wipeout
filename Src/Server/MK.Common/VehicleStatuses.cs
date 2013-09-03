@@ -24,6 +24,8 @@ namespace apcurium.MK.Common
 
             public const string Cancelled = "wosCANCELLED";
             public const string CancelledDone = "wosCANCELLED_DONE";
+
+            public const string Timeout = "wosTIMEOUT";
         }
 
         public class Addresses

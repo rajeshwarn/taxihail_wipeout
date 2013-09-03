@@ -61,6 +61,51 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Car #{0} is assigned to you.
+        /// </summary>
+        internal static string OrderStatus_CabDriverNumberAssigned {
+            get {
+                return ResourceManager.GetString("OrderStatus_CabDriverNumberAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Car is at pickup location.
+        /// </summary>
+        internal static string OrderStatus_wosARRIVED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosARRIVED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passengers are in the car.
+        /// </summary>
+        internal static string OrderStatus_wosLOADED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry no Thriev cars are available for the next hour due to high demand, please try later. Thank you for trying Thriev..
+        /// </summary>
+        internal static string OrderStatus_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver will confirm within 2 minutes.
+        /// </summary>
+        internal static string OrderStatus_wosWAITING {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosWAITING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your car (#{0}) has arrived.
         /// </summary>
         internal static string PushNotification_wosARRIVED {
@@ -75,6 +120,15 @@ namespace apcurium.MK.Booking.Resources {
         internal static string PushNotification_wosASSIGNED {
             get {
                 return ResourceManager.GetString("PushNotification_wosASSIGNED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry no Thriev cars are available for the next hour due to high demand, please try later..
+        /// </summary>
+        internal static string PushNotification_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
             }
         }
     }

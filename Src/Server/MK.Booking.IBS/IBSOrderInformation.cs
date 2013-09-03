@@ -88,10 +88,7 @@ namespace apcurium.MK.Booking.IBS
 
         public bool IsAssigned 
         { 
-            get
-            {
-                return Status.SoftEqual(VehicleStatuses.Common.Assigned);
-            } 
+            get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); } 
         }
 
         public bool IsComplete
@@ -102,6 +99,11 @@ namespace apcurium.MK.Booking.IBS
         public bool IsCanceled
         {
             get { return VehicleStatuses.CancelStatuses.Any(s => s.SoftEqual(Status)); }
+        }
+
+        public bool IsTimedOut
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Timeout); }
         }
     }
 }

@@ -28,6 +28,19 @@ namespace apcurium.MK.Booking.Resources
             }
         }
 
+        public string GetString(string key)
+        {
+            if (_missingResourceFile)
+            {
+                return Global.ResourceManager.GetString(key);
+            }
+            else
+            {
+                return _resources.GetString(key)
+                    ?? Global.ResourceManager.GetString(key);
+            }
+        }
+
         public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
         {
             if (_missingResourceFile)

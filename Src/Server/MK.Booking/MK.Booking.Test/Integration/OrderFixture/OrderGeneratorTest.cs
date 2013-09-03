@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 
 
@@ -149,7 +150,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dtoDetails = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(dtoDetails);
                 Assert.AreEqual(OrderStatus.Canceled, dtoDetails.Status);
-                Assert.AreEqual("wosCANCELLED_DONE", dtoDetails.IBSStatusId);
+                Assert.AreEqual(VehicleStatuses.Common.CancelledDone, dtoDetails.IBSStatusId);
             }
         }
 
