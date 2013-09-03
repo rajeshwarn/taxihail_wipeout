@@ -7,6 +7,7 @@ namespace apcurium.MK.Common.Entity
         Created = 2,
         Canceled = 3,
         Completed = 4,
-        Removed = 5
+        Removed = 5,
+        TimedOut = 6
     }
 }

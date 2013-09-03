@@ -19,6 +19,7 @@ using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -178,33 +179,39 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return IsStatusCompleted (status.IBSStatusId);
         }
 
+        public bool IsStatusTimedOut(string statusId)
+        {
+            return statusId.IsNullOrEmpty() ||
+                statusId.SoftEqual(VehicleStatuses.Common.Timeout);
+        }
+
         public bool IsStatusCompleted (string statusId)
         {
             return statusId.IsNullOrEmpty () ||
-                statusId.SoftEqual ("wosCANCELLED") ||
-                statusId.SoftEqual ("wosDONE") ||
-                statusId.SoftEqual ("wosNOSHOW") ||
-                statusId.SoftEqual ("wosCANCELLED_DONE");
+                statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
+                statusId.SoftEqual (VehicleStatuses.Common.Done) ||
+                statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
+                statusId.SoftEqual (VehicleStatuses.Common.CancelledDone);
         }
 
         public bool IsCallboxStatusActive(string statusId)
         {
             return statusId.IsNullOrEmpty() ||
-                statusId.SoftEqual("wosSCHEDULED") ||
-                statusId.SoftEqual("wosWAITING") ||
-                statusId.SoftEqual("wosASSIGNED") ||
-                statusId.SoftEqual("wosARRIVED");
+                statusId.SoftEqual(VehicleStatuses.Common.Scheduled) ||
+                statusId.SoftEqual(VehicleStatuses.Common.Waiting) ||
+                statusId.SoftEqual(VehicleStatuses.Common.Assigned) ||
+                statusId.SoftEqual(VehicleStatuses.Common.Arrived);
         }
 
         public bool IsCallboxStatusCompleted(string statusId)
         {
             return
-                statusId.SoftEqual("wosARRIVED") ;
+                statusId.SoftEqual(VehicleStatuses.Common.Arrived) ;
         }
 
         public bool IsStatusDone (string statusId)
         {
-            return statusId.SoftEqual ("wosDONE");
+            return statusId.SoftEqual (VehicleStatuses.Common.Done);
         }
 
         public double? GetFareEstimate(CreateOrder order)

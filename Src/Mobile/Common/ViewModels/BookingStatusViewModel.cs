@@ -34,10 +34,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
 		private readonly IBookingService _bookingService;
-
-		private int _refreshPeriod = 5; //in seconds
-
+        private int _refreshPeriod = 5; //in seconds
         private bool _hasSeenReminder = false;
+        private bool _waitingToNavigateAfterTimeOut = false;
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
@@ -45,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;
 			_hasSeenReminder = false;
+            _waitingToNavigateAfterTimeOut = false;
 			_bookingService = this.GetService<IBookingService>();
 		}
 	
@@ -305,7 +305,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
 
-
                 if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
 					AddReminder(status);
@@ -331,7 +330,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						GoToSummary();
                     }
-                    
+
+                    if (BookingService.IsStatusTimedOut (status.IBSStatusId))
+                    {
+                        GoToBookingScreen();
+                    }
                 }
             } catch (Exception ex) {
                 Logger.LogError (ex);
@@ -362,6 +365,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}.ToStringDictionary());
 			RequestClose (this);
 		}
+
+        public void GoToBookingScreen(){
+            if (!_waitingToNavigateAfterTimeOut)
+            {
+#if MONOTOUCH
+                Observable.IntervalSafe(TimeSpan.FromSeconds(10))
+#else
+                Observable.Interval( TimeSpan.FromSeconds (10))
+#endif
+                    .Subscribe(unit => InvokeOnMainThread(() => {
+                        _bookingService.ClearLastOrder();
+                        _waitingToNavigateAfterTimeOut = true;
+                        RequestNavigate<BookViewModel>(clearTop: true);
+                        RequestClose(this);
+                    }));
+            }
+        }
 
         private void CenterMap ()
         {            

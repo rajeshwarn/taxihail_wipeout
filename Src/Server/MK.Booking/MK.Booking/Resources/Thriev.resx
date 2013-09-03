@@ -138,4 +138,7 @@
   <data name="PushNotification_wosASSIGNED" xml:space="preserve">
     <value>Car #{0} has been assigned to you</value>
   </data>
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry no Thriev cars are available for the next hour due to high demand, please try later.</value>
+  </data>
 </root>

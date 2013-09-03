@@ -168,4 +168,7 @@
   <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
+  <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry no cars are available due to high demand, please try later.</value>
+  </data>
 </root>

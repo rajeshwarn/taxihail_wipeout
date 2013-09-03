@@ -67,6 +67,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                 order.Status = OrderStatus.Canceled;
                 description = (string) _resources.GetString("OrderStatus_" + ibsStatus.Status);
             }
+            else if (ibsStatus.IsTimedOut)
+            {
+                order.Status = OrderStatus.TimedOut;
+            }
             else if (ibsStatus.IsComplete)
             {
                 order.Status = OrderStatus.Completed;
@@ -90,7 +94,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                         description = (string)_resources.OrderStatus_wosDONE;
                         order.FareAvailable = false;
                     }
-
                 }
             }
 

@@ -122,5 +122,14 @@ namespace apcurium.MK.Booking.Resources {
                 return ResourceManager.GetString("PushNotification_wosASSIGNED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry no Thriev cars are available for the next hour due to high demand, please try later..
+        /// </summary>
+        internal static string PushNotification_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
     }
 }
