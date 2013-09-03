@@ -178,6 +178,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
+        /// </summary>
+        public static string OrderStatus_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Waiting for driver to be assigned.
         /// </summary>
         public static string OrderStatus_wosWAITING {

@@ -88,6 +88,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry no Thriev cars are available for the next hour due to high demand, please try later. Thank you for trying Thriev..
+        /// </summary>
+        internal static string OrderStatus_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Driver will confirm within 2 minutes.
         /// </summary>
         internal static string OrderStatus_wosWAITING {

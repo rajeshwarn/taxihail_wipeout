@@ -165,4 +165,7 @@
   <data name="PushNotification_wosASSIGNED" xml:space="preserve">
     <value>Taxi #{0} has been assigned to you</value>
   </data>
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry no cars are available due to high demand, please try later.</value>
+  </data>
 </root>

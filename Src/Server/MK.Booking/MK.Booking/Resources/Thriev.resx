@@ -126,6 +126,9 @@
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
     <value>Passengers are in the car</value>
   </data>
+  <data name="OrderStatus_wosTIMEOUT" xml:space="preserve">
+    <value>Sorry no Thriev cars are available for the next hour due to high demand, please try later. Thank you for trying Thriev.</value>
+  </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>Driver will confirm within 2 minutes</value>
   </data>
