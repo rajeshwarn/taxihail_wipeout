@@ -101,6 +101,8 @@
     <Compile Include="Resources\Route.cs" />
     <Compile Include="Resources\Step.cs" />
     <Compile Include="Resources\Viewport.cs" />
+    <Compile Include="Resources\Prediction.cs" />
+    <Compile Include="Resources\PredictionResponse.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
