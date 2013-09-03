@@ -8,6 +8,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (orderStatus != null)
                 {
-                     if (orderStatus.IBSStatusId == "wosDONE" && @event.Fare.GetValueOrDefault() > 0)
+                     if (orderStatus.IBSStatusId == VehicleStatuses.Common.Done && @event.Fare.GetValueOrDefault() > 0)
                      {
                          var account = context.Find<AccountDetail>(orderStatus.AccountId);
                          var command = new Commands.SendReceipt

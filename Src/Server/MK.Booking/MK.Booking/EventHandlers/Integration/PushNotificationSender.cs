@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -30,18 +31,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            var shouldSendPushNotification = @event.Status.IBSStatusId == "wosASSIGNED"
-                                                || @event.Status.IBSStatusId == "wosARRIVED";
+            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned
+                                                || @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived;
 
             if (shouldSendPushNotification)
             {
                 var alert = string.Empty;
                 switch (@event.Status.IBSStatusId)
                 {
-                    case "wosASSIGNED":
+                    case VehicleStatuses.Common.Assigned:
                         alert = string.Format((string)_resources.PushNotification_wosASSIGNED, @event.Status.VehicleNumber);
                         break;
-                    case "wosARRIVED":
+                    case VehicleStatuses.Common.Arrived:
                         alert = string.Format((string)_resources.PushNotification_wosARRIVED, @event.Status.VehicleNumber);
                         break;
                     default:
