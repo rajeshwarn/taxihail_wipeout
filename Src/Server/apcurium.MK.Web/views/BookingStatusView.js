@@ -14,8 +14,15 @@
             this.interval = window.setInterval(_.bind(function() {
                 this.fetch();
             }, status), 5000);
+            
+            // Variable use to store the reference to window.timeout
+            // after an order has timed out
+            this.redirectTimeout = null;
+
+
             status.on('change:ibsStatusId', this.render, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
+            status.on('ibs:timeout', this.ontimeout, this);
         },
 
         render: function() {
@@ -65,6 +72,8 @@
 
             // Stop polling for Order Status updates
             window.clearInterval(this.interval);
+
+            window.clearTimeout(this.redirectTimeout);
 
         },
 
@@ -133,8 +142,13 @@
 
                     }, this);
             }
-        }
+        },
 
+        ontimeout: function(model, status) {
+            this.redirectTimeout = window.timeout(10 * 1000, function() {
+                TaxiHail.app.navigate('', { trigger: true });
+            });
+        }
 
     });
 }());
