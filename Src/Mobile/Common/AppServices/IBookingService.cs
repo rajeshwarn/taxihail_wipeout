@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool IsStatusCompleted(string statusId);
 
+        bool IsStatusTimedOut(string statusId);
+
         bool IsStatusDone(string statusId);
 
         bool IsCallboxStatusActive(string statusId);
