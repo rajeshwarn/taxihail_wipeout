@@ -61,6 +61,141 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ETA: {0}.
+        /// </summary>
+        public static string OrderStatus_CabDriverETA {
+            get {
+                return ResourceManager.GetString("OrderStatus_CabDriverETA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cab #{0} is assigned to you.
+        /// </summary>
+        public static string OrderStatus_CabDriverNumberAssigned {
+            get {
+                return ResourceManager.GetString("OrderStatus_CabDriverNumberAssigned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed (Total cost : {0}).
+        /// </summary>
+        public static string OrderStatus_OrderDoneFareAvailable {
+            get {
+                return ResourceManager.GetString("OrderStatus_OrderDoneFareAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The address is not valid.
+        /// </summary>
+        public static string OrderStatus_wosAddrNotValid {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosAddrNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi is at pickup location.
+        /// </summary>
+        public static string OrderStatus_wosARRIVED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosARRIVED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Driver assigned.
+        /// </summary>
+        public static string OrderStatus_wosASSIGNED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosASSIGNED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelled.
+        /// </summary>
+        public static string OrderStatus_wosCANCELLED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosCANCELLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelled.
+        /// </summary>
+        public static string OrderStatus_wosCANCELLED_DONE {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosCANCELLED_DONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string OrderStatus_wosDONE {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosDONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passengers are in the taxi.
+        /// </summary>
+        public static string OrderStatus_wosLOADED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosLOADED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid order, please call dispatch center.
+        /// </summary>
+        public static string OrderStatus_wosNone {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduled.
+        /// </summary>
+        public static string OrderStatus_wosNOSHOW {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosNOSHOW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No show.
+        /// </summary>
+        public static string OrderStatus_wosSCHED {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosSCHED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
+        /// </summary>
+        public static string OrderStatus_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting for driver to be assigned.
+        /// </summary>
+        public static string OrderStatus_wosWAITING {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosWAITING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Taxi (#{0}) has arrived.
         /// </summary>
         public static string PushNotification_wosARRIVED {
