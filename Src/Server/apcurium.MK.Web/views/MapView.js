@@ -52,6 +52,7 @@
 
             this.updatePickup();
             this.updateDropOff();
+            this.updateVehiclePosition();
             this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             
         },
@@ -160,12 +161,15 @@
             this._map.setCenter(projection.fromDivPixelToLatLng(center));
         },
 
-        updateVehiclePosition: function(orderStatus){
+        updateVehiclePosition: function(orderStatus) {
 
-            this._vehicleMarker.setPosition(new google.maps.LatLng(orderStatus.get('vehicleLatitude'), orderStatus.get('vehicleLongitude')));
-            this._vehicleMarker.setVisible(true);
-            this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
-
+            if (!orderStatus) {
+                this._vehicleMarker.setVisible(false);
+            } else {
+                this._vehicleMarker.setPosition(new google.maps.LatLng(orderStatus.get('vehicleLatitude'), orderStatus.get('vehicleLongitude')));
+                this._vehicleMarker.setVisible(true);
+                this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
+            }
         },
 
         updatePickup: function() {
