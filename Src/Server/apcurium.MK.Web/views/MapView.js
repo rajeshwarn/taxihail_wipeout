@@ -162,8 +162,8 @@
         },
 
         updateVehiclePosition: function(orderStatus) {
-
-            if (!orderStatus) {
+            var hasVehicle = orderStatus && orderStatus.hasVehicle();
+            if (!hasVehicle) {
                 this._vehicleMarker.setVisible(false);
             } else {
                 this._vehicleMarker.setPosition(new google.maps.LatLng(orderStatus.get('vehicleLatitude'), orderStatus.get('vehicleLongitude')));
