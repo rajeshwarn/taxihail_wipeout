@@ -212,5 +212,14 @@ namespace apcurium.MK.Booking.Resources {
                 return ResourceManager.GetString("PushNotification_wosASSIGNED", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry no cars are available due to high demand, please try later..
+        /// </summary>
+        public static string PushNotification_wosTIMEOUT {
+            get {
+                return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
     }
 }

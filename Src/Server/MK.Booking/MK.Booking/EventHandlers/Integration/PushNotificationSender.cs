@@ -31,8 +31,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned
-                                                || @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived;
+            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
 
             if (shouldSendPushNotification)
             {
@@ -45,6 +46,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     case VehicleStatuses.Common.Arrived:
                         alert = string.Format((string)_resources.PushNotification_wosARRIVED, @event.Status.VehicleNumber);
                         break;
+                    case VehicleStatuses.Common.Timeout:
+                        alert = (string)_resources.PushNotification_wosTIMEOUT;
+                        break;
                     default:
                         throw new InvalidOperationException("No push notification for this order status");
                 }
@@ -53,10 +57,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
                     var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
-                    var data = new Dictionary<string, object>
-                                   {
-                                       {"orderId", order.Id},
-                                   };
+                    var data = new Dictionary<string, object>();
+                    if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                        @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived)
+                    {
+                        data.Add("orderId", order.Id);
+                    }
 
                     foreach (var device in devices)
                     {
