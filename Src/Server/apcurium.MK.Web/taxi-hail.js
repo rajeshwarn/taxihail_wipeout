@@ -8,8 +8,8 @@ TaxiHail.loader = {
     load: function (callback) {
 
         Modernizr.load([{
-            test: window.JSON,
-            nope: 'assets/js/json2.js',
+            test: window.JSON && Modernizr.localstorage,
+            nope: ['assets/js/json2.js', 'assets/js/storage-polyfill.js'],
             complete: callback
         },
         {
