@@ -145,9 +145,9 @@
         },
 
         ontimeout: function(model, status) {
-            this.redirectTimeout = window.setTimeout(10 * 1000, function() {
+            this.redirectTimeout = window.setTimeout(function() {
                 TaxiHail.app.navigate('', { trigger: true });
-            });
+            }, 10 * 1000);
         }
 
     });
