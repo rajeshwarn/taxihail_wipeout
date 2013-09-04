@@ -3079,6 +3079,9 @@ public enum TWEBOrderStatusValue {
     
     /// <remarks/>
     wosCCEncryptCCInfoDone,
+
+    /// <remarks/>
+    wosTIMEOUT,
 }
 
 /// <remarks/>

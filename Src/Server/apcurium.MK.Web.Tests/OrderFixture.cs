@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using System.Threading;
 
@@ -170,7 +171,7 @@ namespace apcurium.MK.Web.Tests
             
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
-            Assert.AreEqual("wosCANCELLED_DONE", status.IBSStatusId);
+            Assert.AreEqual(VehicleStatuses.Common.CancelledDone, status.IBSStatusId);
         }
 
         [Test]

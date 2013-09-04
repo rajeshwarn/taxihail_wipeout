@@ -32,13 +32,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 if (distance.HasValue && (distance.Value > 0))
                 {
-                    double km = ((double)distance.Value / 1000);
+                    double km = ((double)distance.Value / 1000)- tariff.KilometerIncluded;
+                    km = km < 0 ? 0 : km;
 
                     if (km < maxDistance)
                     {
                         decimal d = 1;
-                        
-                        price = ((double)tariff.FlatRate + (km*tariff.KilometricRate))*(1 + tariff.MarginOfError/100);
+                                                
+                        price = ((double)tariff.FlatRate + ( km * tariff.KilometricRate))*(1 + tariff.MarginOfError/100);
                     }
                     else
                     {

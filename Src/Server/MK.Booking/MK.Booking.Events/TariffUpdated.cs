@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Events
         public decimal FlatRate { get; set; }
         public double KilometricRate { get; set; }
         public double MarginOfError { get; set; }
+        public double KilometerIncluded { get; set; }
         public decimal PassengerRate { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }

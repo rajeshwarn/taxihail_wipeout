@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where order.Status != OrderStatus.Canceled 
                                         && order.Status != OrderStatus.Completed
+                                        && order.Status != OrderStatus.TimedOut
                                      select order).ToList();
                 return currentOrders;
             }

@@ -474,7 +474,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (date.HasValue)
                         {
-                            BookTaxi.Execute();
+                            ProcessOrder();
                         }
                     }
                     PickupDateSelected();
@@ -482,79 +482,79 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand BookTaxi
+        public IMvxCommand BookNow
         {
             get
             {
-                return ConfirmOrder;
+                return GetCommand(() => {
+
+                    // Ensure PickupDate is null (= now). It will be set to DateTime.Now later
+                    Order.PickupDate = null;
+                    ProcessOrder();
+
+                });
             }
         }
 
-        public IMvxCommand ConfirmOrder
+        public void ProcessOrder()
         {
-            get
-            {
-                return GetCommand(() =>
+            using(MessageService.ShowProgress())
+			{
+                bool isValid = BookingService.IsValid(Order);
+                if (!isValid)
                 {
-                    using(MessageService.ShowProgress())
-					{
-	                    bool isValid = BookingService.IsValid(Order);
-	                    if (!isValid)
-	                    {
-	                        Order.PickupDate = null;
-                            var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
-                            if ( destinationIsRequired )
-                            {
-                                InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfoWhenDestinationIsRequired")));
-                            }
-                            else
-                            {
-                                InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
-                            }
-	                        return;
-	                    }
+                    Order.PickupDate = null;
+                    var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
+                    if ( destinationIsRequired )
+                    {
+                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfoWhenDestinationIsRequired")));
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
+                    }
+                    return;
+                }
 
-	                    if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
-	                    {
-	                        Order.PickupDate = null;
-	                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
-	                        return;
-	                    }
+                if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
+                {
+                    Order.PickupDate = null;
+                    InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
+                    return;
+                }
 
-	                    TinyMessageSubscriptionToken token = null;
-	                    token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
-	                    {
-	                        if (token != null)
-	                        {
-	                            MessengerHub.Unsubscribe<OrderConfirmed>(token);
-	                        }
-	                        if (msg.IsCancelled)
-	                        {
-	                            //User cancelled
-	                            Order.PickupDate = null;
-	                        }
-	                        else
-	                        {
-	                            Task.Factory.StartNew(CompleteOrder);
-	                        }
-	                    });
-
-	                    InvokeOnMainThread(() =>
-	                    {
-	                        Order.Settings = AccountService.CurrentAccount.Settings;                        
-	                        if ( Order.Settings.Passengers <= 0 )
-	                        {
-	                            Order.Settings.Passengers = 1;
-	                        }
-
-                            Order.EstimatedFare = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimate(Order);
-
-	                        var serialized = Order.ToJson();
-	                        RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
-	                    });
-					}
+                TinyMessageSubscriptionToken token = null;
+                token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
+                {
+                    if (token != null)
+                    {
+                        MessengerHub.Unsubscribe<OrderConfirmed>(token);
+                    }
+                    if (msg.IsCancelled)
+                    {
+                        //User cancelled
+                        Order.PickupDate = null;
+                    }
+                    else
+                    {
+                        Task.Factory.StartNew(CompleteOrder);
+                    }
                 });
-            }
+
+                InvokeOnMainThread(() =>
+                {
+                    Order.Settings = AccountService.CurrentAccount.Settings;                        
+                    if ( Order.Settings.Passengers <= 0 )
+                    {
+                        Order.Settings.Passengers = 1;
+                    }
+
+                    Order.Estimate.Price = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimate(Order);
+
+                    var serialized = Order.ToJson();
+                    RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
+                });
+			}
         }
 
         public IMvxCommand NavigateToRateOrder
