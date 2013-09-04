@@ -22,10 +22,14 @@ $.extend($.fn, {
 			return validator;
 		}
 
-		// Add novalidate tag if HTML5.
-		this.attr('novalidate', 'novalidate');
+	    try {
+	        // Add novalidate tag if HTML5.
+	        this.attr('novalidate', 'novalidate');
+	    } catch(e) {
+	        // Ignore this exception that occur in IE10 with IE7 Compatibility mode...
+	    }
 
-		validator = new $.validator( options, this[0] );
+	    validator = new $.validator( options, this[0] );
 		$.data(this[0], 'validator', validator);
 
 		if ( validator.settings.onsubmit ) {
