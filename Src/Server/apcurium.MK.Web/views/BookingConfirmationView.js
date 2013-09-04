@@ -64,7 +64,7 @@
             _.extend(data, {
                 vehiclesList: this.referenceData.attributes.vehiclesList,
                 paymentsList: this.referenceData.attributes.paymentsList,
-                showPassengerNumber: TaxiHail.parameters.showPassengerNumber,
+                showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 
             this.$el.html(this.renderTemplate(data));

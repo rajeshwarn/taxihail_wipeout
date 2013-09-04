@@ -47,7 +47,7 @@
                 url: this.urlRoot + "/test/braintree",
                 data: JSON.stringify({
                     braintreeServerSettings: settings.braintreeServerSettings,
-                    braintreeClientSettings: settings.braintreeClientSettings,
+                    braintreeClientSettings: settings.braintreeClientSettings
                 }),
                 contentType: 'application/json'
             });
@@ -63,7 +63,7 @@
                 }),
                 contentType: 'application/json'
             });
-        },
+        }
 
     });
 
