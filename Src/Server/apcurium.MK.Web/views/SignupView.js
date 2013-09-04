@@ -29,16 +29,16 @@
 
         render: function () {
             this.$el.html(this.renderTemplate());
-            var itemfb = window.localStorage.getItem('fbinfos');
-            var itemtw = window.localStorage.getItem('twinfos');
+            var itemfb = TaxiHail.localStorage.getItem('fbinfos');
+            var itemtw = TaxiHail.localStorage.getItem('twinfos');
             var infos;
             if (itemfb) {
                 infos = JSON.parse(itemfb);
-                window.localStorage.removeItem('fbinfos');
+                TaxiHail.localStorage.removeItem('fbinfos');
             } else {
                 if (itemtw) {
                     infos = JSON.parse(itemtw);
-                    window.localStorage.removeItem('twinfos');
+                    TaxiHail.localStorage.removeItem('twinfos');
                 }
             }
             if (infos) {
