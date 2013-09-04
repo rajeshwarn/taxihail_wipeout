@@ -1,14 +1,5 @@
 ﻿// localStorage and sessionStorage polyfill
 
-// Assign window.locaStorage to TaxiHail.localStorage
-// In IE7 Browser Mode (IE Developer Tools) window.localStorage is available but throws errors
-// It can be disabled in Internet Options by disabling DOM Storage.
-// However, when DOM Storage is disabled, window.locaStorage is null and cannot be assigned
-// That's why we use TaxiHail.localStorage instead.
-
-TaxiHail.localStorage = window.localStorage;
-TaxiHail.sessionStorage = window.sessionStorage;
-
 if (window.localStorage == null || window.sessionStorage == null) (function () {
 
 var Storage = function (type) {
