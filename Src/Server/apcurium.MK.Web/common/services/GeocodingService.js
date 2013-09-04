@@ -1,29 +1,34 @@
 // Geocoding service
 
-(function () {
-    var url = "https://maps.googleapis.com/maps/api/geocode/json";
+(function (maps) {
     TaxiHail.geocoder = {
         
         initialize: function (lat, lng) {
             this.latitude = lat;
             this.longitude = lng;
+            this.geocoder = new maps.Geocoder();
         },
 
         geocode: function (lat, lng) {
+            var defer = $.Deferred();
+            
+            this.geocoder.geocode({ latLng: new maps.LatLng(lat, lng) }, function (results, status) {
+                if (status == maps.GeocoderStatus.OK) {
 
-            return $.get(url, {
-                latlng: lat + ',' + lng,
-                sensor: true
-            }, function () { }, 'json')
-                .pipe(function (geoResult) {
-                    return $.ajax({
-                        url:TaxiHail.parameters.apiRoot + '/geocode',
-                        type:"POST",
-                        data:JSON.stringify({ lat: lat, lng: lng, geoResult: geoResult }),
-                        contentType:"application/json; charset=utf-8",
-                        dataType:"json"
-                    }).then(cleanupResult);
-                });
+                    $.ajax({
+                        url: TaxiHail.parameters.apiRoot + '/geocode',
+                        type: "POST",
+                        data: JSON.stringify({ lat: lat, lng: lng, geoResult: results }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    }).then(defer.resolve, defer.reject);
+                    
+                } else {
+                    defer.reject();
+                }
+            });
+
+            return defer.then(cleanupResult).promise();
 
         },
 
@@ -104,4 +109,4 @@
             });
         }
     }
-}());
+}(google.maps));
