@@ -3,6 +3,9 @@ var TaxiHail = {
     parameters: {}
 };
 
+TaxiHail.localStorage = window.localStorage;
+TaxiHail.sessionStorage = window.sessionStorage;
+
 TaxiHail.loader = {
 
     load: function (callback) {
