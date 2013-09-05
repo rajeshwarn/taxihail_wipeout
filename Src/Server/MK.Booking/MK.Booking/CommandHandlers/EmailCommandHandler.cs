@@ -101,6 +101,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 Note = string.IsNullOrWhiteSpace(command.Note) ? "-" : command.Note,
                 Apartment = string.IsNullOrWhiteSpace(command.PickupAddress.Apartment) ? "-" : command.PickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(command.PickupAddress.RingCode) ? "-" : command.PickupAddress.RingCode,
+                /* Mandatory visibility settings */
+                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || command.Settings.LargeBags > 0 ? "inline" : "none"
             };
 
             SendEmail(command.EmailAddress, template, BookingConfirmationEmailSubject, templateData);
