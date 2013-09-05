@@ -69,7 +69,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                    NumberOfTaxi = 96,
                                    Passengers = 95,
                                    Phone = "94",
-                                   Name = "93"
+                                   Name = "93",
+                                   LargeBags = 92
                                },
                 CreatedDate = createdDate
             });
@@ -98,6 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(95, dto.Settings.Passengers);
                 Assert.AreEqual("94", dto.Settings.Phone);
                 Assert.AreEqual("93", dto.Settings.Name);
+                Assert.AreEqual(92, dto.Settings.LargeBags);
             }
         }
     }
