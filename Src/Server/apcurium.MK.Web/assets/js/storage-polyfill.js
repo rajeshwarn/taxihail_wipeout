@@ -1,4 +1,6 @@
-﻿if (typeof window.localStorage == 'undefined' || typeof window.sessionStorage == 'undefined') (function () {
+﻿// localStorage and sessionStorage polyfill
+
+if (window.localStorage == null || window.sessionStorage == null) (function () {
 
 var Storage = function (type) {
   function createCookie(name, value, days) {
@@ -90,7 +92,7 @@ var Storage = function (type) {
   };
 };
 
-if (typeof window.localStorage == 'undefined') window.localStorage = new Storage('local');
-if (typeof window.sessionStorage == 'undefined') window.sessionStorage = new Storage('session');
+if (window.localStorage == null) TaxiHail.localStorage = new Storage('local');
+if (window.sessionStorage == null) TaxiHail.sessionStorage = new Storage('session');
 
 })();

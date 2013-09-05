@@ -21,7 +21,7 @@
 
         logout: function () {
             isLogged = false;
-            window.localStorage.removeItem('fbId');
+            TaxiHail.localStorage.removeItem('fbId');
             return $.post('api/auth/logout', _.bind(function () {
                 isLoggedIn = false;
                 this.trigger('change', isLoggedIn);
@@ -47,8 +47,8 @@
                                         }, this))
                                         .error(function (e) {
                                             if (e.status == 401) {
-                                                window.localStorage.setItem('fbinfos', JSON.stringify(me));
-                                                window.localStorage.setItem('fbId', me.id);
+                                                TaxiHail.localStorage.setItem('fbinfos', JSON.stringify(me));
+                                                TaxiHail.localStorage.setItem('fbId', me.id);
                                                 if (url) {
                                                     TaxiHail.app.navigate('signup/'+url, { trigger: true });
                                                 } else {
@@ -76,8 +76,8 @@
                         }, this))
                         .error(function (e) {
                             if (e.status == 401) {
-                                window.localStorage.setItem('twinfos', JSON.stringify(me));
-                                window.localStorage.setItem('twId', me.id);
+                                TaxiHail.localStorage.setItem('twinfos', JSON.stringify(me));
+                                TaxiHail.localStorage.setItem('twId', me.id);
                                 if (url) {
                                     TaxiHail.app.navigate('signup/' + url, { trigger: true });
                                 } else {

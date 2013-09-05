@@ -9,10 +9,6 @@
 
             _.bindAll(this, 'savechanges');
 
-            this.referenceData = new TaxiHail.ReferenceData();
-            this.referenceData.fetch();
-            this.referenceData.on('change', this.render, this);
-
             $.validator.addMethod(
                 "regex",
                 function(value, element, regexp) {
@@ -22,14 +18,16 @@
                 
             );
 
+            this.render();
+
         },
 
         render: function () {
             var data = this.model.toJSON();
 
             _.extend(data, {
-                vehiclesList: this.referenceData.attributes.vehiclesList,
-                paymentsList: this.referenceData.attributes.paymentsList
+                vehiclesList: TaxiHail.referenceData.vehiclesList,
+                paymentsList: TaxiHail.referenceData.paymentsList
             });
 
             this.$el.html(this.renderTemplate(data));
