@@ -24,10 +24,6 @@
                     ).done(this.renderResults);
             }
 
-            this.referenceData = new TaxiHail.ReferenceData();
-            this.referenceData.fetch();
-            this.referenceData.on('change', this.render, this);
-
             this.model.validateOrder()
                 .done(_.bind(function (result) {
 
@@ -51,6 +47,8 @@
                     return count >= 10;
                 }
             );
+
+            this.render();
         },
 
         render: function (param) {
@@ -62,8 +60,8 @@
             var data = this.model.toJSON();
 
             _.extend(data, {
-                vehiclesList: this.referenceData.attributes.vehiclesList,
-                paymentsList: this.referenceData.attributes.paymentsList,
+                vehiclesList: TaxiHail.referenceData.vehiclesList,
+                paymentsList: TaxiHail.referenceData.paymentsList,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 

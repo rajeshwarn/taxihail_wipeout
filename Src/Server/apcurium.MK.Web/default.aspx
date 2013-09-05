@@ -59,6 +59,8 @@
             TaxiHail.parameters.isDestinationRequired = <%: this.DestinationIsRequired %>;
             TaxiHail.parameters.showPassengerNumber = <%: this.ShowPassengerNumber ? "true" : "false"  %>;
             TaxiHail.parameters.apiRoot = "api";
+
+            TaxiHail.referenceData = <%= ReferenceData %>;
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>
