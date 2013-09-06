@@ -15,10 +15,10 @@ namespace apcurium.MK.Booking.IBS
         public string Status { get; set; }
         public double? VehicleLatitude { get; set; }
         public double? VehicleLongitude { get; set; }
-        public double? Toll { get; set; }
-        public double? Fare { get; set; }
-        public double? Tip { get; set; }
-        public double? VAT { get; set; }
+        public double Toll { get; set; }
+        public double Fare { get; set; }
+        public double Tip { get; set; }
+        public double VAT { get; set; }
         public string VehicleNumber { get; set; }
         /*DriversInfos*/
         public string VehicleType;

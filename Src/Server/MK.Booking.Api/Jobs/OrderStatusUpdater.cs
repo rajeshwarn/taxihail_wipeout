@@ -75,25 +75,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 order.Status = OrderStatus.Completed;
 
-                if (ibsStatus.Fare.HasValue || ibsStatus.Tip.HasValue || ibsStatus.Toll.HasValue)
-                {
-                    //FormatPrice
-                    var total =
-                        Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip)
-                              .Where(amount => amount.HasValue)
-                              .Select(amount => amount)
-                              .Sum();
+                //FormatPrice
+                var total =
+                    Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip)
+                            .Select(amount => amount)
+                            .Sum();
 
-                    if (total > 0)
-                    {
-                        description = string.Format((string)_resources.OrderStatus_OrderDoneFareAvailable, FormatPrice(total));
-                        order.FareAvailable = true;
-                    }
-                    else
-                    {
-                        description = (string)_resources.OrderStatus_wosDONE;
-                        order.FareAvailable = false;
-                    }
+                if (total > 0)
+                {
+                    description = string.Format((string)_resources.OrderStatus_OrderDoneFareAvailable, FormatPrice(total));
+                    order.FareAvailable = true;
+                }
+                else
+                {
+                    description = (string)_resources.OrderStatus_wosDONE;
+                    order.FareAvailable = false;
                 }
             }
 
