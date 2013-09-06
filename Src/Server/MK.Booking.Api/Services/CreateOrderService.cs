@@ -97,6 +97,8 @@ namespace apcurium.MK.Booking.Api.Services
             var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
             var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
 
+            command.Settings.ChargeType = chargeType;
+            command.Settings.VehicleType = vehicleType;
             emailCommand.Settings.ChargeType = chargeType;
             emailCommand.Settings.VehicleType = vehicleType;
 
