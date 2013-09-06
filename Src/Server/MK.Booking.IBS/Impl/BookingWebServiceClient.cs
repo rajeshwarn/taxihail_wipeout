@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
         
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_7();
@@ -144,6 +144,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
+            order.Fare = (double)fare.AmountExclTax;
+            order.VAT = (double)fare.TaxAmount;
 
             var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
             order.DispByAuto = autoDispatch;
