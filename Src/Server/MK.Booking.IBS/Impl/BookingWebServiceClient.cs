@@ -98,6 +98,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
                     result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
+                    result.VAT = order.VAT == 0 ? (double?) null : order.VAT;
                     result.CallNumber = order.CallNumber;
                 }
             });

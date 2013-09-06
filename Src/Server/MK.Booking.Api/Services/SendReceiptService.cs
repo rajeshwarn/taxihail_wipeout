@@ -69,6 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Fare = ibsOrder.Fare.GetValueOrDefault(),
                 Toll = ibsOrder.Toll.GetValueOrDefault(),
                 Tip = ibsOrder.Tip.GetValueOrDefault(),
+                Tax = ibsOrder.VAT.GetValueOrDefault(),
             };
 
             _commandBus.Send(command);

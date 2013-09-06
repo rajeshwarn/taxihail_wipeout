@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 VehicleNumber = "Cab555",
                 Fare = 26.32,
                 Toll = 3.68,
-                Tip = 5.25
+                Tip = 5.25,
+                Tax = 2.21
             });
 
             emailSenderMock.Verify(s => s

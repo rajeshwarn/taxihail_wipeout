@@ -170,26 +170,18 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
-            var vatAmount = 0d;
-            var fareAmountWithoutVAT = command.Fare;
-            if (vatEnabled)
-            {
-                fareAmountWithoutVAT = GetAmountWithoutVAT(command.Fare);
-                vatAmount = command.Fare - fareAmountWithoutVAT;
-            }
-
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                                        AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                                        IBSOrderId = command.IBSOrderId,
                                        VehicleNumber = command.VehicleNumber,
                                        Date = command.TransactionDate.ToString("dddd, MMMM d, yyyy"),
-                                       Fare = fareAmountWithoutVAT.ToString("C", priceFormat),
+                                       Fare = command.Fare.ToString("C", priceFormat),
                                        Toll = command.Toll.ToString("C", priceFormat),
                                        Tip = command.Tip.ToString("C", priceFormat),
                                        TotalFare = command.TotalFare.ToString("C", priceFormat),
                                        Note = _configurationManager.GetSetting("Receipt.Note"),
-                                       VATAmount = vatAmount.ToString("C", priceFormat),
+                                       VATAmount = command.Tax.ToString("C", priceFormat),
                                        VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting)
                                    };
 
