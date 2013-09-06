@@ -126,4 +126,25 @@
   <data name="EstimateDistance" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="TaxiMapTitle" xml:space="preserve">
+    <value>Your car</value>
+  </data>
+  <data name="StatusActionBookButton" xml:space="preserve">
+    <value>Book another car</value>
+  </data>
+  <data name="StatusConfirmNewBooking" xml:space="preserve">
+    <value>Booking a new car will keep this order active, do you want to continue ?</value>
+  </data>
+  <data name="CarAssigned" xml:space="preserve">
+    <value>Your car #{0}</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Reminder: A car will pick you up from {0} at {1} on {2}.</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Car Type:</value>
+  </data>
+  <data name="TaxiServerDownMessage" xml:space="preserve">
+    <value>Can't send message to driver</value>
+  </data>
 </root>

@@ -130,6 +130,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return Order.Settings.Passengers.ToString(); }
         }
 
+        public string OrderLargeBagsNumber
+        {
+            get { return Order.Settings.LargeBags.ToString(); }
+        }
+
         public string OrderName
         {
             get { return Order.Settings.Name; }
@@ -240,11 +245,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                 Order.Settings.ChargeTypeId = result.Settings.ChargeTypeId;
                                                                 Order.Settings.Phone = result.Settings.Phone;
                                                                 Order.Settings.Passengers = result.Settings.Passengers;
+                                                                Order.Settings.LargeBags = result.Settings.LargeBags;
                                                                 InvokeOnMainThread(() =>
                                                                 {
-                                                                    FirePropertyChanged(()=>AptRingCode);
-                                                                    FirePropertyChanged(()=>BuildingName);
+                                                                    FirePropertyChanged(() => AptRingCode);
+                                                                    FirePropertyChanged(() => BuildingName);
                                                                     FirePropertyChanged(() => OrderPassengerNumber);
+                                                                    FirePropertyChanged(() => OrderLargeBagsNumber);
                                                                     FirePropertyChanged(() => OrderPhone);
                                                                     FirePropertyChanged(() => OrderName);
                                                                     FirePropertyChanged(() => OrderApt);

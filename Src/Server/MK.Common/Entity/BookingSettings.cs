@@ -10,5 +10,6 @@ namespace apcurium.MK.Common.Entity
         public int? VehicleTypeId { get; set; }
         public int? ChargeTypeId { get; set; }
         public int NumberOfTaxi { get; set; }
+        public int LargeBags { get; set; }
     }
 }

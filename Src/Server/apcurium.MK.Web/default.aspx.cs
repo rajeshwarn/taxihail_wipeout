@@ -8,6 +8,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web
@@ -29,9 +32,10 @@ namespace apcurium.MK.Web
         protected string GeolocSearchBounds { get; private set; }
         protected string AccountActivationDisabled { get; private set; }
         protected string EstimateEnabled { get; private set; }
-
         protected string EstimateWarningEnabled { get; private set; }        
         protected string DestinationIsRequired { get; private set; }
+        protected bool ShowPassengerNumber { get; private set; }
+        protected string ReferenceData { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,12 +60,18 @@ namespace apcurium.MK.Web
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
             AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled) ? bool.FalseString.ToLower() : accountActivationDisabled;
 
+            ShowPassengerNumber = config.GetSetting("Client.ShowPassengerNumber", true);
+
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
             GeolocSearchFilter = filters.Length > 0 
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
                 : "{0}";
             GeolocSearchRegion = FindParam(filters, "region");
             GeolocSearchBounds = FindParam(filters, "bounds");
+
+            var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
+            var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
+            ReferenceData = referenceData.ToString();
 
         }
 

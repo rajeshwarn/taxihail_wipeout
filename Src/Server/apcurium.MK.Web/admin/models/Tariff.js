@@ -9,6 +9,7 @@
                 passengerRate: 0,
                 kilometricRate: 0,
                 marginOfError: 20,
+                kilometerIncluded :0,
                 startTime: TaxiHail.date.toISO8601(new Date(today.getYear(), today.getMonth(), today.getDate())),
                 endTime: TaxiHail.date.toISO8601(new Date(today.getYear(), today.getMonth(), today.getDate() + 1)),
                 daysOfTheWeek: 0

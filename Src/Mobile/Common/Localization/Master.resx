@@ -701,9 +701,6 @@
   <data name="CreateAccountErrorNotSpecified" xml:space="preserve">
     <value>The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.</value>
   </data>
-  <data name="RideSettingsNumberOfTaxi" xml:space="preserve">
-    <value>Nb. Taxi</value>
-  </data>
   <data name="WarningEstimate" xml:space="preserve">
     <value>Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</value>
   </data>

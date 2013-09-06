@@ -14,16 +14,27 @@
             this.interval = window.setInterval(_.bind(function() {
                 this.fetch();
             }, status), 5000);
+            
+            // Variable use to store the reference to window.timeout
+            // after an order has timed out
+            this.redirectTimeout = null;
+
+
             status.on('change:ibsStatusId', this.render, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
+            status.on('ibs:timeout', this.ontimeout, this);
         },
 
         render: function() {
+            var status = this.model.getStatus(),
+                data = _.extend(status.toJSON(), {
+                    isActive: status.isActive()
+                });
 
             // Close popover if it is open
             // Otherwise it will stay there forever
             this.$('[data-action=call]').popover('hide');
-            var data = this.model.getStatus().toJSON();
+            
             if(!data.ibsStatusDescription)
             {
                 data.ibsStatusDescription = this.localize('Processing');
@@ -62,6 +73,8 @@
             // Stop polling for Order Status updates
             window.clearInterval(this.interval);
 
+            window.clearTimeout(this.redirectTimeout);
+
         },
 
         cancel: function(e) {
@@ -81,7 +94,7 @@
             
         },
 
-        onStatusChanged: function(model, status) {
+        onStatusChanged: function (model, status) {
             if(model.isCompleted()){
 
                 // Prevent further updated
@@ -129,8 +142,13 @@
 
                     }, this);
             }
-        }
+        },
 
+        ontimeout: function(model, status) {
+            this.redirectTimeout = window.setTimeout(function() {
+                TaxiHail.app.navigate('', { trigger: true });
+            }, 10 * 1000);
+        }
 
     });
 }());

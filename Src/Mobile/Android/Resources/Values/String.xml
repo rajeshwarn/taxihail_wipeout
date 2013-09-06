@@ -109,7 +109,6 @@
   <string name="StatusConfirmCancelRide">This action will cancel your order, do you want to continue ?</string>
   <string name="Locating">Finding your position...</string>
   <string name="LanguageCode">en</string>
-  <string name="RideSettingsNumberOfTaxi">Nb. Taxi</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / Entry code:</string>
   <string name="ParameterButton">Parameters</string>
   <string name="TabContacts">Contacts</string>

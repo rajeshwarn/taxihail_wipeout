@@ -10,7 +10,7 @@
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
             'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
-            'click #cmtSettingsButton': 'cmtSettingsButtonClick',
+            'click #cmtSettingsButton': 'cmtSettingsButtonClick'
         },
         
         
@@ -31,7 +31,7 @@
             this.onPaymentModeChanged();
 
             this.validate({
-                submitHandler: this.save,
+                submitHandler: this.save
             });
 
             return this;
@@ -162,7 +162,7 @@
             }
             
 
-        },
+        }
     });
 
     _.extend(view.prototype, TaxiHail.ValidatedView);

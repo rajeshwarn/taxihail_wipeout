@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     FlatRate = @event.FlatRate,
                     KilometricRate = @event.KilometricRate,
                     MarginOfError = @event.MarginOfError,
+                    KilometerIncluded = @event.KilometerIncluded,
                     PassengerRate = @event.PassengerRate,
                     DaysOfTheWeek = (int)@event.DaysOfTheWeek,
                     StartTime =  @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue:  @event.StartTime,
@@ -49,6 +50,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 tariff.FlatRate = @event.FlatRate;
                 tariff.KilometricRate = @event.KilometricRate;
                 tariff.MarginOfError = @event.MarginOfError;
+                tariff.KilometerIncluded = @event.KilometerIncluded;
                 tariff.PassengerRate = @event.PassengerRate;
                 tariff.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
                 tariff.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue

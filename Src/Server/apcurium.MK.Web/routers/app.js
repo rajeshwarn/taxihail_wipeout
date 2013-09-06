@@ -104,8 +104,8 @@
         },
         
         signupconfirmation: function (url) {
-            var fbId = window.localStorage.getItem('fbId');
-            var twId = window.localStorage.getItem('twId');
+            var fbId = TaxiHail.localStorage.getItem('fbId');
+            var twId = TaxiHail.localStorage.getItem('twId');
             var accountActivationDisabled = TaxiHail.parameters.accountActivationDisabled;
             
             var $email = $('[name=email]').val(),

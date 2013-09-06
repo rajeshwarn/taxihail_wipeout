@@ -15,8 +15,8 @@
                 // Enable the buttons if model is valid
                 if (this.model.isValidAddress('pickupAddress') && (!TaxiHail.parameters.isDestinationRequired || (  TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))))
                 {                
-                    this.$('.buttons .btn').removeClass('disabled');
-                } else this.$('.buttons .btn').addClass('disabled');
+                    this.$('.buttons .btn').prop('disabled', false).removeClass('disabled');
+                } else this.$('.buttons .btn').prop('disabled', true).addClass('disabled');
 
             }, this);
 
@@ -164,7 +164,7 @@
             }
            
         },
-                    
+        
         book: function (e) {
             e.preventDefault();
             if(this.model.isValidAddress('pickupAddress')) {

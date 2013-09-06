@@ -71,6 +71,10 @@
                         required: true,
                         min:0
                     },
+                    kilometerIncluded: {
+                        required: true,
+                        min: 0
+                    },
                     passengerRate: {
                         required: true,
                         min: 0

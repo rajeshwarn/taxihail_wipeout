@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using System.Threading;
 
@@ -55,7 +56,8 @@ namespace apcurium.MK.Web.Tests
                                      Phone = "514-555-12129",
                                      Passengers = 6,
                                      NumberOfTaxi = 1,
-                                     Name = "Joe Smith"
+                                     Name = "Joe Smith",
+                                     LargeBags = 1
                                  };
 
             var details = sut.CreateOrder(order);
@@ -66,6 +68,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
+            Assert.AreEqual(1, orderDetails.Settings.LargeBags);
         }
         
         [Test]
@@ -114,7 +117,8 @@ namespace apcurium.MK.Web.Tests
                                      Phone = "514-555-1212",
                                      Passengers = 6,
                                      NumberOfTaxi = 1,
-                                     Name = "Joe Smith"
+                                     Name = "Joe Smith",
+                                     LargeBags = 1
                                  };
             sut.CreateOrder(order);
         }
@@ -170,7 +174,7 @@ namespace apcurium.MK.Web.Tests
             
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
-            Assert.AreEqual("wosCANCELLED_DONE", status.IBSStatusId);
+            Assert.AreEqual(VehicleStatuses.Common.CancelledDone, status.IBSStatusId);
         }
 
         [Test]

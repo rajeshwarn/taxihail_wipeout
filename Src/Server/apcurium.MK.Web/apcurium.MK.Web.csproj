@@ -233,6 +233,7 @@
     <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
+    <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -268,7 +269,6 @@
     <Content Include="assets\img\jreject\browser_safari.gif" />
     <Content Include="assets\js\jquery.jreject.min.js" />
     <Content Include="assets\js\json2.js" />
-    <Content Include="assets\js\localstorage-polyfill.js" />
     <Content Include="assets\js\modernizr.min.js" />
     <Content Include="assets\bootstrap\less\tests\css-tests.css" />
     <Content Include="assets\bootstrap\less\tests\css-tests.html" />
@@ -582,6 +582,7 @@
     <Content Include="themes\YellowCabOrlando\less\style.less" />
     <Content Include="themes\YellowCabOrlando\less\variables.less" />
     <Content Include="themes\Thriev\localization\Book.json" />
+    <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
