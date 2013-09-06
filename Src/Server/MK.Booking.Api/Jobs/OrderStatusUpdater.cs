@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                                   Status = order,
                                   Fare = ibsStatus.Fare,
                                   Toll = ibsStatus.Toll,
-                                  Tip = ibsStatus.Tip
+                                  Tip = ibsStatus.Tip,
+                                  Tax = ibsStatus.VAT,
                               };
 
             ibsStatus.Update(order);
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 //FormatPrice
                 var total =
-                    Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip)
+                    Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip, ibsStatus.VAT)
                             .Select(amount => amount)
                             .Sum();
 

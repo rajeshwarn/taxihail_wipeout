@@ -90,16 +90,16 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new OrderCancelled());
         }
 
-        public void Complete(double? fare, double? tip, double? toll)
+        public void Complete(double? fare, double? tip, double? toll, double? tax)
         {
             if(_status != OrderStatus.Completed)
             {
-                
                 this.Update(new OrderCompleted
                                 {
                                     Fare = fare,
                                     Toll = toll,
-                                    Tip = tip
+                                    Tip = tip,
+                                    Tax = tax
                                 });
             }
         }
