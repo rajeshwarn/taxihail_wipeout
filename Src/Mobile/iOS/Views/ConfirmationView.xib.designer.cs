@@ -26,6 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
 
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBagsValue { get; set; }
+
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
 
@@ -97,6 +103,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassengersValue.Dispose ();
 				lblPassengersValue = null;
 			}
+
+            if (lblLargeBags != null) {
+                lblLargeBags.Dispose ();
+                lblLargeBags = null;
+            }
+
+            if (lblLargeBagsValue != null) {
+                lblLargeBagsValue.Dispose ();
+                lblLargeBagsValue = null;
+            }
 
 			if (lblName != null) {
 				lblName.Dispose ();

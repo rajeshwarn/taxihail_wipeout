@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = appSettings.ApplicationName == "Thriev";
+            bool isThriev = true;//appSettings.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);
@@ -88,10 +88,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerPhone);
             lblPhoneValue.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerPhone);
             
-            
-            var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
-            
-            topStack.Offset = topStack.Offset + countHidden ;
+            topStack.Maybe(x => {
+                var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
+                x.Offset = x.Offset + countHidden ;
+            });
+
             
             
             
