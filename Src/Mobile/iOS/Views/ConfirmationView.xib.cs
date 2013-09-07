@@ -130,6 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 Tuple.Create<object,string>(lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}"),
                 Tuple.Create<object,string>(lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}"),
                 Tuple.Create<object,string>(lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}"),
+                Tuple.Create<object,string>(lblLargeBagsValue, "{'Text': {'Path': 'OrderLargeBagsNumber'}}"),
             }
                 .Where(x=> x.Item1 != null )
                 .ToDictionary(x=>x.Item1, x=>x.Item2);
