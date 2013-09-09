@@ -74,36 +74,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         });
                     });
 
-
-            Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
-                .HandleErrors()
-                .ContinueWith(t => InvokeOnMainThread(() =>
-                        {
-                            FareEstimate = t.Result;
-                            ShowFareEstimateAlertDialogIfNecessary();
-                        }));
-
-
-
+            ShowFareEstimateAlertDialogIfNecessary();
 
             Console.WriteLine("Done opening confirmation view....");
 
         }
-        private string _fareEstimate;
+
         public string FareEstimate
         {
             get
             {
-                return _fareEstimate;
+                return FormatPrice(Order.Estimate.Price);
             }
-            set
-            {
-                if (value != _fareEstimate)
-                {
-                    _fareEstimate = value;
-                    FirePropertyChanged("FareEstimate");
-                }
-            }
+
         }
 
         public RideSettingsViewModel RideSettings {get;set;}
@@ -438,6 +421,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
             return result;
         }
+
+        private string FormatPrice(double? price)
+        {
+            if (price.HasValue)
+            {
+                var culture = ConfigurationManager.GetSetting("PriceFormat");
+                return string.Format(new CultureInfo(culture), "{0:C}", price);
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
         public string CultureInfoString
         {
             get

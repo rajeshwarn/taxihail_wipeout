@@ -541,19 +541,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                 });
 
-                InvokeOnMainThread(() =>
+                Order.Settings = AccountService.CurrentAccount.Settings;                        
+                if ( Order.Settings.Passengers <= 0 )
                 {
-                    Order.Settings = AccountService.CurrentAccount.Settings;                        
-                    if ( Order.Settings.Passengers <= 0 )
-                    {
-                        Order.Settings.Passengers = 1;
-                    }
+                    Order.Settings.Passengers = 1;
+                }
 
-                    Order.Estimate.Price = BookingService.GetFareEstimate(Order);
+                var estimate = BookingService.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
+                Order.Estimate.Price = estimate.Price;
 
-                    var serialized = Order.ToJson();
-                    RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
-                });
+                var serialized = Order.ToJson();
+                RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
 			}
         }
 
