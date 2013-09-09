@@ -96,20 +96,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             
             
-            lblVehiculeType.Maybe(x=>x.Text = Resources.ConfirmVehiculeTypeLabel + ": "); 
+            lblVehiculeType.Maybe(x=>x.Text = Resources.ConfirmVehiculeTypeLabel + ":"); 
             lblChargeType.Maybe(x=>x.Text = Resources.ChargeTypeLabel + ": ");                      
-            lblEntryCode.Maybe(x=>x.Text = Resources.GetValue ( "EntryCodeLabel" )+ ": ");
-            lblApartment.Maybe(x=>x.Text = Resources.GetValue ( "ApartmentLabel" )+ ": ");
-            lblNoteDriver.Maybe(x=>x.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ": ");
+            lblEntryCode.Maybe(x=>x.Text = Resources.GetValue ( "EntryCodeLabel" )+ ":");
+            lblApartment.Maybe(x=>x.Text = Resources.GetValue ( "ApartmentLabel" )+ ":");
+            lblNoteDriver.Maybe(x=>x.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ":");
             
-            lblName.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNameLabel" )+ ": ");
-            lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ": ");
-            lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ": ");
-            lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ": ");
+            lblName.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNameLabel" )+ ":");
+            lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ":");
+            lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ":");
+            lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ":");
 
-            lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ": ");
-            lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ": ");
-            lblFare.Maybe(x => x.Text = Resources.GetValue("EstimateFare") + ": ");
+            lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ":");
+            lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ":");
+            lblFare.Maybe(x => x.Text = Resources.GetValue("EstimatePrice") + ":");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
             

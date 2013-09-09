@@ -389,7 +389,7 @@
 "DeleteAddressBt"="Clear Address";
 "PassengerNameLabel"="Name";
 "PassengerNumberLabel"="Passengers";
-"EditDetails"="Edit Details";
+"EditDetails"="Edit";
 "PassengerPhoneLabel"="Phone";
 "NoAmountSelectedMessage"="Please enter the amount";
 "CmtTransactionErrorMessage"="Transaction Denied";

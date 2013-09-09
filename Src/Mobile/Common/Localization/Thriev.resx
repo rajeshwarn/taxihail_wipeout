@@ -150,4 +150,7 @@
   <data name="TaxiServerDownMessage" xml:space="preserve">
     <value>Can't send message to driver</value>
   </data>
+  <data name="EditDetails" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>
