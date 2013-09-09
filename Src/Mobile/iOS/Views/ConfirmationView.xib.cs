@@ -106,6 +106,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ": ");
             lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ": ");
             lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ": ");
+
+            lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ": ");
+            lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ": ");
+            lblFare.Maybe(x => x.Text = Resources.GetValue("EstimateFare") + ": ");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
             
@@ -114,7 +118,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtNotes.Changed += (sender, e) => ViewModel.Order.Note = txtNotes.Text;
 
             // Apply Font style to values
-            new [] { lblNameValue, lblPhoneValue, lblPassengersValue, lblLargeBagsValue, lblApartmentValue, lblEntryCodeValue, lblVehicleTypeValue, lblChargeTypeValue }
+            new [] { 
+                lblNameValue,
+                lblPhoneValue,
+                lblPassengersValue,
+                lblLargeBagsValue,
+                lblApartmentValue,
+                lblEntryCodeValue,
+                lblVehicleTypeValue,
+                lblChargeTypeValue,
+                lblPickupValue,
+                lblDestinationValue,
+                lblFareValue
+            }
                 .Where(x => x != null)
                 .ForEach(x => x.TextColor = AppStyle.DarkText)
                 .ForEach(x => x.Font = AppStyle.GetBoldFont(x.Font.PointSize));
@@ -132,6 +148,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 Tuple.Create<object,string>(lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}"),
                 Tuple.Create<object,string>(lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}"),
                 Tuple.Create<object,string>(lblLargeBagsValue, "{'Text': {'Path': 'OrderLargeBagsNumber'}}"),
+                Tuple.Create<object,string>(lblPickupValue, "{'Text': {'Path': 'Order.PickupAddress.DisplayAddress'}}"),
+                Tuple.Create<object,string>(lblDestinationValue, "{'Text': {'Path': 'Order.DropOffAddress.DisplayAddress'}}"),
+                Tuple.Create<object,string>(lblFareValue, "{'Text': {'Path': 'FareEstimate'}}"),
             }
                 .Where(x=> x.Item1 != null )
                 .ToDictionary(x=>x.Item1, x=>x.Item2);

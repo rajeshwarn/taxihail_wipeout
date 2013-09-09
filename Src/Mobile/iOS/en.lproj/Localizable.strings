@@ -174,7 +174,7 @@
 "TaxiMapTitle"="Your car";
 "DateToday"="Today";
 "CreateAccoutPasswordLabel"="Password:";
-"EstimatePriceOver100"="Total Price : {0}";
+"EstimatePriceOver100"="Cost: {0}";
 "View_BookingDetail_TitleRideSettings"="Ride Settings";
 "HistoryViewSendReceiptButton"="Send Receipt";
 "View_UpdatePassword"="Update Password";
@@ -221,7 +221,7 @@
 "View_Book_Menu_ReportProblem"="Report A Problem";
 "View_RefineAddress"="Pickup Details";
 "InvalidPickupAddress"="Please enter a valid pickup address.";
-"EstimatePrice"="Total Price : {0}";
+"EstimatePrice"="Cost";
 "ServiceErrorCallTitle"="Message";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
 "SettingsViewTitle"="Settings";
@@ -433,3 +433,4 @@
 "InvalidBookinInfoWhenDestinationIsRequired"="To book a ride, you need to enter a valid pickup address and destination address.";
 "EmptyString"="";
 "LargeBagsLabel"="Large Bags";
+"EstimatePriceFormat"="Cost: {0}";
