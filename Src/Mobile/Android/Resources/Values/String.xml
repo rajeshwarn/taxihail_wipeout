@@ -178,7 +178,7 @@
   <string name="TaxiMapTitle">Your car</string>
   <string name="DateToday">Today</string>
   <string name="CreateAccoutPasswordLabel">Password:</string>
-  <string name="EstimatePriceOver100">Total Price : {0}</string>
+  <string name="EstimatePriceOver100">Cost: {0}</string>
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
   <string name="View_UpdatePassword">Update Password</string>
@@ -225,7 +225,7 @@
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="InvalidPickupAddress">Please enter a valid pickup address.</string>
-  <string name="EstimatePrice">Total Price : {0}</string>
+  <string name="EstimatePrice">Cost</string>
   <string name="ServiceErrorCallTitle">Message</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="SettingsViewTitle">Settings</string>
@@ -437,4 +437,5 @@
   <string name="InvalidBookinInfoWhenDestinationIsRequired">To book a ride, you need to enter a valid pickup address and destination address.</string>
   <string name="EmptyString"></string>
   <string name="LargeBagsLabel">Large Bags</string>
+  <string name="EstimatePriceFormat">Cost: {0}</string>
 </resources>

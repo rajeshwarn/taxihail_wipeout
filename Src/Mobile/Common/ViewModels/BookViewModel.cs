@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate() 
         {
-            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice", "NoFareText", true, "EstimatedFareNotAvailable");
+            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
             
             InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
         }
@@ -549,7 +549,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Order.Settings.Passengers = 1;
                     }
 
-                    Order.Estimate.Price = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimate(Order);
+                    Order.Estimate.Price = BookingService.GetFareEstimate(Order);
 
                     var serialized = Order.ToJson();
                     RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);

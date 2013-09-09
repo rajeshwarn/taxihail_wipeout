@@ -1858,6 +1858,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700e1
 			public const int EstimatePrice = 2131165409;
 			
+			// aapt resource value: 0x7f0701b5
+			public const int EstimatePriceFormat = 2131165621;
+			
 			// aapt resource value: 0x7f0700b2
 			public const int EstimatePriceOver100 = 2131165362;
 			
