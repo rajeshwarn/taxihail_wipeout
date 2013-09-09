@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtNotes.Changed += (sender, e) => ViewModel.Order.Note = txtNotes.Text;
 
             // Apply Font style to values
-            new [] { lblNameValue, lblPhoneValue, lblPassengersValue, lblApartmentValue, lblEntryCodeValue, lblVehicleTypeValue, lblChargeTypeValue }
+            new [] { lblNameValue, lblPhoneValue, lblPassengersValue, lblLargeBagsValue, lblApartmentValue, lblEntryCodeValue, lblVehicleTypeValue, lblChargeTypeValue }
                 .Where(x => x != null)
                 .ForEach(x => x.TextColor = AppStyle.DarkText)
                 .ForEach(x => x.Font = AppStyle.GetBoldFont(x.Font.PointSize));

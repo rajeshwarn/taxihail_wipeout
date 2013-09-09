@@ -38,6 +38,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             : base(request, nibName, bundle)
         {
         }
+
+        public override void LoadView()
+        {
+            base.LoadView();
+            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            bool isThriev = true;//appSettings.ApplicationName == "Thriev";
+            if (isThriev)
+            {
+                NSBundle.MainBundle.LoadNib ("BookEditInformation_Thriev", this, null);
+            } else {
+                NSBundle.MainBundle.LoadNib ("BookEditInformation", this, null);
+            }
+        }
         
         public override void ViewWillAppear (bool animated)
         {
@@ -54,56 +67,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = false;           
                         
 
-            lblName.Hidden = !ViewModel.ShowPassengerName;
-            txtName.Hidden = !ViewModel.ShowPassengerName;
+            lblName.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
+            txtName.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
             
-            lblPassengers.Hidden = !ViewModel.ShowPassengerNumber;
-            txtNbPassengers.Hidden = !ViewModel.ShowPassengerNumber;
+            lblPassengers.Maybe( x=> x.Hidden = !ViewModel.ShowPassengerNumber);
+            txtNbPassengers.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerNumber);
             
-            lblPhone.Hidden = !ViewModel.ShowPassengerPhone;
-            txtPhone.Hidden = !ViewModel.ShowPassengerPhone;
+            lblPhone.Maybe(x => x.Hidden = !ViewModel.ShowPassengerPhone);
+            txtPhone.Maybe(x => x.Hidden = !ViewModel.ShowPassengerPhone);
 
-            contentStack.VerticalAlignement = StackPanelAlignement.Top;
-            contentStack.TopOffset = 10;
+            contentStack.Maybe(x => x.VerticalAlignement = StackPanelAlignement.Top);
+            contentStack.Maybe(x => x.TopOffset = 10);
 
 
-            lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
-            lblChargeType.Text = Resources.ChargeTypeLabel;                     
-            lblEntryCode.Text = Resources.GetValue ( "EntryCodeLabel" );
-            lblApartment.Text = Resources.GetValue ( "ApartmentLabel" );
-            lblName.Text = Resources.GetValue ( "PassengerNameLabel" );
-            lblPassengers.Text = Resources.GetValue ( "PassengerNumberLabel" );
-            lblPhone.Text = Resources.GetValue ( "PassengerPhoneLabel" );
+            lblVehiculeType.Maybe(x => x.Text = Resources.ConfirmVehiculeTypeLabel);
+            lblChargeType.Maybe(x => x.Text = Resources.ChargeTypeLabel);                     
+            lblEntryCode.Maybe(x => x.Text = Resources.GetValue ( "EntryCodeLabel" ));
+            lblApartment.Maybe(x => x.Text = Resources.GetValue ( "ApartmentLabel" ));
+            lblName.Maybe(x => x.Text = Resources.GetValue ( "PassengerNameLabel" ));
+            lblPassengers.Maybe(x => x.Text = Resources.GetValue ( "PassengerNumberLabel" ));
+            lblPhone.Maybe(x => x.Text = Resources.GetValue ( "PassengerPhoneLabel" ));
 
 
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
 
-            txtAprtment.Ended += HandleTouchDown;
-            txtEntryCode.Ended += HandleTouchDown;
+            txtAprtment.Maybe(x => x.Ended += HandleTouchDown);
+            txtEntryCode.Maybe(x => x.Ended += HandleTouchDown);
 
-            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> { ViewModel.SetVehicleTypeId ( x.Id );});
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId, x=> { ViewModel.SetChargeTypeId( x.Id ); });
+            pickerVehicleType.Maybe(x=> x.Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, y=> { ViewModel.SetVehicleTypeId ( y.Id );}));
+            pickerChargeType.Maybe(x => x.Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId, y=> { ViewModel.SetChargeTypeId( y.Id ); }));
 
+            var bindings = new [] {
+                Tuple.Create<object,string>(txtName, "{'Text':{'Path':'Order.Settings.Name'}}"),
+                Tuple.Create<object,string>(txtPhone, "{'Text':{'Path':'Order.Settings.Name'}}"),
+                Tuple.Create<object,string>(txtNbPassengers, "{'Text':{'Path':'Order.Settings.Passengers'}}"),
+                Tuple.Create<object,string>(txtLargeBags, "{'Text':{'Path':'Order.Settings.LargeBags'}}"),
+                Tuple.Create<object,string>(txtAprtment, "{'Text':{'Path':'Order.PickupAddress.Apartment'}}"),
+                Tuple.Create<object,string>(txtEntryCode, "{'Text':{'Path':'Order.PickupAddress.RingCode'}}"),
+                Tuple.Create<object,string>(pickerVehicleType, "{'Text':{'Path':'VehicleName'}}"),
+                Tuple.Create<object,string>(pickerChargeType, "{'Text':{'Path':'ChargeType'}}"),
+            }
+            .Where(x=> x.Item1 != null )
+            .ToDictionary(x=>x.Item1, x=>x.Item2);
 
-            this.AddBindings(new Dictionary<object, string>() {
-                { txtName, "{'Text': {'Path': 'Order.Settings.Name'}}" },
-                { txtPhone, "{'Text': {'Path': 'Order.Settings.Phone'}}" },
-                { txtNbPassengers, "{'Text': {'Path': 'Order.Settings.Passengers'}}" },
-
-                { txtAprtment, "{'Text': {'Path': 'Order.PickupAddress.Apartment'}}" },
-                { txtEntryCode, "{'Text': {'Path': 'Order.PickupAddress.RingCode'}}" },            
-                { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
-                { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
-            });
-
+            this.AddBindings(bindings);
               
             this.View.ApplyAppFont ();
         }
 
         void HandleTouchDown (object sender, EventArgs e)
         {
-            txtAprtment.ResignFirstResponder ();
-            txtEntryCode.ResignFirstResponder ();
+            txtAprtment.Maybe(x => x.ResignFirstResponder ());
+            txtEntryCode.Maybe(x => x.ResignFirstResponder ());
          
         }
         
