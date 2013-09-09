@@ -393,7 +393,7 @@
   <string name="PassengerNameLabel">Name</string>
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="PassengerPhoneLabel">Phone</string>
-  <string name="EditDetails">Edit Details</string>
+  <string name="EditDetails">Edit</string>
   <string name="OkButtonText">Ok</string>
   <string name="OrderNumber">Order #</string>
   <string name="NoAmountSelectedMessage">Please enter the amount</string>

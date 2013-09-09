@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = true;//appSettings.ApplicationName == "Thriev";
+            bool isThriev = appSettings.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);

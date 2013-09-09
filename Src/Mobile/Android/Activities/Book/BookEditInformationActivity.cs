@@ -12,6 +12,8 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.Framework.Extensions;
+using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -28,9 +30,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_BookEditInformation);
 
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = true;//appSettings.ApplicationName == "Thriev";
+            bool isThriev = appSettings.ApplicationName == "Thriev";
 
             SetContentView(isThriev ? Resource.Layout.View_BookEditInformation_Thriev : Resource.Layout.View_BookEditInformation);
+
+            FindViewById<EditText>(Resource.Id.largeBagsEditText).Maybe(x => x.InputType = InputTypes.ClassNumber);
 
             ViewModel.Load();
         }

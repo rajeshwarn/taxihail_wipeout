@@ -21,7 +21,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp" >
+                android:paddingRight="5dp">
                 <TextView
                     android:layout_width="120dip"
                     android:layout_height="wrap_content"
@@ -29,12 +29,12 @@
                     style="@style/FormLabelText" />
                 <EditText
                     local:MvxBind="{'Text':{'Path':'Order.Settings.LargeBags'}}"
+                    android:id="@+id/largeBagsEditText"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:layout_width="fill_parent" />
             </LinearLayout>
-            
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
