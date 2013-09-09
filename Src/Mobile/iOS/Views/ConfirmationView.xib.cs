@@ -104,6 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             lblName.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNameLabel" )+ ": ");
             lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ": ");
+            lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ": ");
             lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ": ");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );

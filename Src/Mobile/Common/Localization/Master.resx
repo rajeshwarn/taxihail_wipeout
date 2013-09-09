@@ -1249,6 +1249,9 @@
   <data name="PassengerPhoneLabel" xml:space="preserve">
     <value>Phone</value>
   </data>
+  <data name="LargeBagsLabel" xml:space="preserve">
+    <value>Large Bags</value>
+  </data>
   <data name="StatusPayButton" xml:space="preserve">
     <value>Pay now</value>
   </data>

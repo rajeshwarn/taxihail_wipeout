@@ -86,6 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblApartment.Maybe(x => x.Text = Resources.GetValue ( "ApartmentLabel" ));
             lblName.Maybe(x => x.Text = Resources.GetValue ( "PassengerNameLabel" ));
             lblPassengers.Maybe(x => x.Text = Resources.GetValue ( "PassengerNumberLabel" ));
+            lblLargeBags.Maybe(x => x.Text = Resources.GetValue ( "LargeBagsLabel" ));
             lblPhone.Maybe(x => x.Text = Resources.GetValue ( "PassengerPhoneLabel" ));
 
 

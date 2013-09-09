@@ -432,3 +432,4 @@
 "VehicleNumberInfo"="Please confirm your car number with the driver";
 "InvalidBookinInfoWhenDestinationIsRequired"="To book a ride, you need to enter a valid pickup address and destination address.";
 "EmptyString"="";
+"LargeBagsLabel"="Large Bags";
