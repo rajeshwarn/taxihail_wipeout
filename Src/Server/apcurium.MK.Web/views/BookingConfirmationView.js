@@ -92,6 +92,9 @@
                     'settings.passengers': {
                         required: true,
                         number: true
+                    },
+                    'settings.largeBags': {
+                        number: true
                     }
                 },
                 messages: {
@@ -104,6 +107,9 @@
                     },
                     'settings.passengers': {
                         required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber')
+                    },
+                    'settings.largeBags': {
                         number: TaxiHail.localize('error.NotANumber')
                     }
                 },
@@ -194,5 +200,4 @@
     _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
-
 

@@ -82,6 +82,12 @@ namespace apcurium.MK.Web
             var templateBundle = new Bundle("~/bundles/templates")
                 .IncludeDirectory("~/templates", "*.handlebars");
 
+            var themeTemplatesDirectory = "~/themes/" + applicationKey + "/templates";
+            if (Directory.Exists(HostingEnvironment.MapPath(themeTemplatesDirectory)))
+            {
+                templateBundle.IncludeDirectory(themeTemplatesDirectory, "*.handlebars");
+            }
+
             templateBundle.Transforms.Add(new HandlebarsTransform());
             templateBundle.Transforms.Add(new JsMinify());
             bundles.Add(templateBundle);

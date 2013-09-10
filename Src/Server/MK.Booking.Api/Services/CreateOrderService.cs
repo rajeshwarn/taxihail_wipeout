@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Infrastructure.Messaging;
@@ -188,12 +189,8 @@ namespace apcurium.MK.Booking.Api.Services
                                             .Replace("\\t", "\t")
                                             .Replace("{{userNote}}", note ?? string.Empty)
                                             .Replace("{{buildingName}}", buildingName ?? string.Empty)
+                                            .Replace("{{largeBags}}", largeBagsString)
                                             .Trim();
-
-                if (!string.IsNullOrWhiteSpace(largeBagsString))
-                {
-                    transformedTemplate += (Environment.NewLine + largeBagsString).Trim();
-                }
 
                 return transformedTemplate;
             }
@@ -205,10 +202,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();
             }
-            if (!string.IsNullOrWhiteSpace(largeBagsString))
-            {
-                formattedNote += (Environment.NewLine + largeBagsString).Trim();
-            }
+            // "Large bags" appeared in 1.4, no need to concat it here
             return formattedNote;
         }
     
