@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.ChangeStatus(command.Status);
             if (command.Status.Status == Common.Entity.OrderStatus.Completed)
             {
-                order.Complete(command.Fare, command.Tip, command.Toll);
+                order.Complete(command.Fare, command.Tip, command.Toll, command.Tax);
             }
             _repository.Save(order, command.Id.ToString());
         }

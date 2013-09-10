@@ -304,9 +304,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\drawable-hdpi\visa_electron.png" />
-    <Compile Include="Resources\Layout\BookEditInformationActivity.cs">
-      <DependentUpon>View_CreditCardsList.axml</DependentUpon>
-    </Compile>
     <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
     <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
@@ -353,6 +350,13 @@
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <AndroidResource Include="Resources\drawable-hdpi\paypal.png" />
     <Compile Include="Resources\Resource.Designer.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

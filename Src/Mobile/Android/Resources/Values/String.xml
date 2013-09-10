@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="EstimateDistance"> ({0})</string>
+  <string name="EstimateDistance"> </string>
   <string name="CreateAccoutCancel">Cancel</string>
   <string name="SignUpButton">Create a free account</string>
   <string name="ResetPasswordPlaceholder">Enter your email here</string>
@@ -20,7 +20,7 @@
   <string name="OrderNote">Booked on mobile</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="TechSupportEmailTitle">Support Application Mobile</string>
-  <string name="StatusConfirmNewBooking">Booking a new taxi will keep this order active, do you want to continue ?</string>
+  <string name="StatusConfirmNewBooking">Booking a new car will keep this order active, do you want to continue ?</string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
@@ -143,7 +143,7 @@
   <string name="View_Book_Menu_SignOut">Sign Out</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="CreateAccoutCreate">Create</string>
-  <string name="StatusActionBookButton">Book another taxi</string>
+  <string name="StatusActionBookButton">Book another car</string>
   <string name="StatusCallButton">Call</string>
   <string name="PickupDateDisplay">Reservation for {0:ddd, MMM d} at {0:h:mm tt}</string>
   <string name="TabSettings">Settings</string>
@@ -163,7 +163,7 @@
   <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
   <string name="ResetPasswordLabel">Email</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
-  <string name="CarAssigned">Your taxi #{0}</string>
+  <string name="CarAssigned">Your car #{0}</string>
   <string name="RideSettingsChargeType">Charge type</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="View_RideSettings">Profile</string>
@@ -175,10 +175,10 @@
   <string name="LocalContactCannotBeResolverTitle">Invalid Contact</string>
   <string name="ServerInfo">({0} v{1})</string>
   <string name="CreateAccoutTitleLabel">Title:</string>
-  <string name="TaxiMapTitle">Your Taxi</string>
+  <string name="TaxiMapTitle">Your car</string>
   <string name="DateToday">Today</string>
   <string name="CreateAccoutPasswordLabel">Password:</string>
-  <string name="EstimatePriceOver100">Call for price</string>
+  <string name="EstimatePriceOver100">Cost: {0}</string>
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
   <string name="View_UpdatePassword">Update Password</string>
@@ -225,7 +225,7 @@
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="InvalidPickupAddress">Please enter a valid pickup address.</string>
-  <string name="EstimatePrice">Estimated Fare : {0}</string>
+  <string name="EstimatePrice">Cost</string>
   <string name="ServiceErrorCallTitle">Message</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="SettingsViewTitle">Settings</string>
@@ -359,7 +359,7 @@
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="CreditCardType">Type of Card</string>
-  <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
+  <string name="ReminderDetails">Reminder: A car will pick you up from {0} at {1} on {2}.</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
   <string name="CreditCardCCV">CVV</string>
@@ -379,7 +379,7 @@
   <string name="NoPreference">No preference</string>
   <string name="DriverInfoDriver">Driver:</string>
   <string name="DriverInfoLicence">Licence #:</string>
-  <string name="DriverInfoTaxiType">Taxi Type:</string>
+  <string name="DriverInfoTaxiType">Car Type:</string>
   <string name="DriverInfoMake">Make:</string>
   <string name="DriverInfoModel">Model:</string>
   <string name="DriverInfoColor">Color:</string>
@@ -393,7 +393,7 @@
   <string name="PassengerNameLabel">Name</string>
   <string name="PassengerNumberLabel">Passengers</string>
   <string name="PassengerPhoneLabel">Phone</string>
-  <string name="EditDetails">Edit Details</string>
+  <string name="EditDetails">Edit</string>
   <string name="OkButtonText">Ok</string>
   <string name="OrderNumber">Order #</string>
   <string name="NoAmountSelectedMessage">Please enter the amount</string>
@@ -403,7 +403,7 @@
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
-  <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
+  <string name="TaxiServerDownMessage">Can\'t send message to driver</string>
   <string name="NoOrderId">Order Not ready</string>
   <string name="November">Nov (11)</string>
   <string name="January">Jan (01)</string>
@@ -436,4 +436,6 @@
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
   <string name="InvalidBookinInfoWhenDestinationIsRequired">To book a ride, you need to enter a valid pickup address and destination address.</string>
   <string name="EmptyString"></string>
+  <string name="LargeBagsLabel">Large Bags</string>
+  <string name="EstimatePriceFormat">Cost: {0}</string>
 </resources>

@@ -50,15 +50,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
 
-        public OrderValidationResult ValidateOrder (CreateOrder order)
+        public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
-            var validationResut = new OrderValidationResult ();
-            
-            UseServiceClient<OrderServiceClient> (service =>
+            return Task.Run(() =>
             {
-                validationResut = service.ValidateOrder  (order);
-            }, ex => Logger.LogError (ex));
-            return validationResut;
+                var validationResut = new OrderValidationResult();
+                
+                UseServiceClient<OrderServiceClient>(service =>
+                {
+                    validationResut = service.ValidateOrder(order);
+                }, ex => Logger.LogError(ex));
+                return validationResut;
+            });
         }
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
@@ -181,8 +184,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusTimedOut(string statusId)
         {
-            return statusId.IsNullOrEmpty() ||
-                statusId.SoftEqual(VehicleStatuses.Common.Timeout);
+            return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
         }
 
         public bool IsStatusCompleted (string statusId)
@@ -214,21 +216,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual (VehicleStatuses.Common.Done);
         }
 
-        public double? GetFareEstimate(CreateOrder order)
+        public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
-            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
+            if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
-                if (directionInfo != null)
-                {
-                    if (directionInfo.Price.HasValue)
-                    {
-                        return directionInfo.Price.Value;
-                    }
-                }
+
+                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);
+
+                return directionInfo ?? new DirectionInfo();
             }
 
-            return null;
+            return new DirectionInfo();
         }
 
         public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
@@ -236,29 +234,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
 
-            var estimatedFare = GetFareEstimate(order);
+            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
+            {
+                var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
 
-            if (estimatedFare.HasValue) {
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
-                if (formatString.HasValue() || (directionInfo.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue())) 
+                if (estimatedFare.Price.HasValue)
                 {
-                    fareEstimate = String.Format(appResource.GetString(directionInfo.Price.Value > 100 
+                    if (formatString.HasValue() || (estimatedFare.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue()))
+                    {
+                        fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > 100 
                                                                            ? "EstimatePriceOver100"
                                                                            : formatString), 
-                                                 directionInfo.FormattedPrice);
-                } else {
-                    fareEstimate = directionInfo.FormattedPrice;
-                }
-
-                if (includeDistance && directionInfo.Distance.HasValue) {
-                    var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
-                    if (!string.IsNullOrWhiteSpace(destinationString))
+                                                 estimatedFare.FormattedPrice);
+                    }
+                    else
                     {
-                        fareEstimate += destinationString;
+                        fareEstimate = estimatedFare.FormattedPrice;
+                    }
+
+                    if (includeDistance && estimatedFare.Distance.HasValue)
+                    {
+                        var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), estimatedFare.FormattedDistance);
+                        if (!string.IsNullOrWhiteSpace(destinationString))
+                        {
+                            fareEstimate += destinationString;
+                        }
                     }
                 }
-            } else {
-                fareEstimate = String.Format (appResource.GetString (cannotGetFareText));
+                else
+                {
+                    fareEstimate = String.Format(appResource.GetString(cannotGetFareText));
+                }
             }
 
             return fareEstimate;

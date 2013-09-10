@@ -583,6 +583,9 @@
     <Content Include="themes\YellowCabOrlando\less\variables.less" />
     <Content Include="themes\Thriev\localization\Book.json" />
     <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
+    <Content Include="themes\Thriev\templates\BookingConfirmation.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

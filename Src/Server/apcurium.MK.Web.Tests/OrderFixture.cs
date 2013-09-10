@@ -56,7 +56,8 @@ namespace apcurium.MK.Web.Tests
                                      Phone = "514-555-12129",
                                      Passengers = 6,
                                      NumberOfTaxi = 1,
-                                     Name = "Joe Smith"
+                                     Name = "Joe Smith",
+                                     LargeBags = 1
                                  };
 
             var details = sut.CreateOrder(order);
@@ -67,6 +68,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
+            Assert.AreEqual(1, orderDetails.Settings.LargeBags);
         }
         
         [Test]
@@ -115,7 +117,8 @@ namespace apcurium.MK.Web.Tests
                                      Phone = "514-555-1212",
                                      Passengers = 6,
                                      NumberOfTaxi = 1,
-                                     Name = "Joe Smith"
+                                     Name = "Joe Smith",
+                                     LargeBags = 1
                                  };
             sut.CreateOrder(order);
         }

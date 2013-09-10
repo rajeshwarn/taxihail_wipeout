@@ -1,5 +1,4 @@
-﻿using System;
-using Infrastructure.EventSourcing;
+﻿using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
@@ -8,5 +7,6 @@ namespace apcurium.MK.Booking.Events
         public double? Fare { get; set; }
         public double? Toll { get; set; }
         public double? Tip { get; set; }
+        public double? Tax { get; set; }
     }
 }

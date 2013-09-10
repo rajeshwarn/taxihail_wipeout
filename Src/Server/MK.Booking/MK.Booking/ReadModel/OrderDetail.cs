@@ -43,6 +43,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? Tip { get; set; }
 
+        public double? Tax { get; set; }
+
         public bool IsRemovedFromHistory { get; set; }
 
         public long TransactionId { get; set; }
