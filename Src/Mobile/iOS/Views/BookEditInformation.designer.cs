@@ -32,6 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
 
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtAprtment { get; set; }
 
@@ -40,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtNbPassengers { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.TextField txtLargeBags { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
@@ -96,6 +102,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPassengers = null;
 			}
 
+            if (lblLargeBags != null) {
+                lblLargeBags.Dispose ();
+                lblLargeBags = null;
+            }
+
 			if (txtAprtment != null) {
 				txtAprtment.Dispose ();
 				txtAprtment = null;
@@ -110,6 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNbPassengers.Dispose ();
 				txtNbPassengers = null;
 			}
+
+            if (txtLargeBags != null) {
+                txtLargeBags.Dispose ();
+                txtLargeBags = null;
+            }
 
 			if (pickerVehicleType != null) {
 				pickerVehicleType.Dispose ();

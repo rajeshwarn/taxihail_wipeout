@@ -74,36 +74,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         });
                     });
 
-
-            Task.Factory.StartNew<string>(() => _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false, "NotAvailable"))
-                .HandleErrors()
-                .ContinueWith(t => InvokeOnMainThread(() =>
-                        {
-                            FareEstimate = t.Result;
-                            ShowFareEstimateAlertDialogIfNecessary();
-                        }));
-
-
-
+            ShowFareEstimateAlertDialogIfNecessary();
 
             Console.WriteLine("Done opening confirmation view....");
 
         }
-        private string _fareEstimate;
+
         public string FareEstimate
         {
             get
             {
-                return _fareEstimate;
+                return FormatPrice(Order.Estimate.Price);
             }
-            set
-            {
-                if (value != _fareEstimate)
-                {
-                    _fareEstimate = value;
-                    FirePropertyChanged("FareEstimate");
-                }
-            }
+
         }
 
         public RideSettingsViewModel RideSettings {get;set;}
@@ -128,6 +111,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string OrderPassengerNumber
         {
             get { return Order.Settings.Passengers.ToString(); }
+        }
+
+        public string OrderLargeBagsNumber
+        {
+            get { return Order.Settings.LargeBags.ToString(); }
         }
 
         public string OrderName
@@ -240,11 +228,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                 Order.Settings.ChargeTypeId = result.Settings.ChargeTypeId;
                                                                 Order.Settings.Phone = result.Settings.Phone;
                                                                 Order.Settings.Passengers = result.Settings.Passengers;
+                                                                Order.Settings.LargeBags = result.Settings.LargeBags;
                                                                 InvokeOnMainThread(() =>
                                                                 {
-                                                                    FirePropertyChanged(()=>AptRingCode);
-                                                                    FirePropertyChanged(()=>BuildingName);
+                                                                    FirePropertyChanged(() => AptRingCode);
+                                                                    FirePropertyChanged(() => BuildingName);
                                                                     FirePropertyChanged(() => OrderPassengerNumber);
+                                                                    FirePropertyChanged(() => OrderLargeBagsNumber);
                                                                     FirePropertyChanged(() => OrderPhone);
                                                                     FirePropertyChanged(() => OrderName);
                                                                     FirePropertyChanged(() => OrderApt);
@@ -431,6 +421,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
             return result;
         }
+
+        private string FormatPrice(double? price)
+        {
+            if (price.HasValue)
+            {
+                var culture = ConfigurationManager.GetSetting("PriceFormat");
+                return string.Format(new CultureInfo(culture), "{0:C}", price);
+            }
+            else
+            {
+                return "";
+            }
+
+        }
+
         public string CultureInfoString
         {
             get

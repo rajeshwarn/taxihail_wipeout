@@ -74,8 +74,7 @@ namespace apcurium.MK.Booking.Api.Services
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
-
-            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers; 
+            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers;
 
             var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
@@ -136,7 +135,7 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
 
-            var note = BuildNote(request.Note, request.PickupAddress.BuildingName);
+            var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
 
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                                                     request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
@@ -149,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
             return ((address != null) && address.FullAddress.HasValue() && address.Longitude != 0 && address.Latitude != 0);
         }
 
-        private string BuildNote(string note, string buildingName)
+        private string BuildNote(string note, string buildingName, int largeBags)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -173,15 +172,28 @@ namespace apcurium.MK.Booking.Api.Services
                 buildingName = "Building name: " + buildingName;
             }
 
+            var largeBagsString = string.Empty;
+            if (largeBags > 0)
+            {
+                largeBagsString = "Large bags: " + largeBags;
+            }
+
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                return noteTemplate
-                    .Replace("\\r", "\r")
-                    .Replace("\\n", "\n")
-                    .Replace("\\t", "\t")
-                    .Replace("{{userNote}}", note ?? string.Empty)
-                    .Replace("{{buildingName}}", buildingName ?? string.Empty)
-                    .Trim();
+                var transformedTemplate = noteTemplate
+                                            .Replace("\\r", "\r")
+                                            .Replace("\\n", "\n")
+                                            .Replace("\\t", "\t")
+                                            .Replace("{{userNote}}", note ?? string.Empty)
+                                            .Replace("{{buildingName}}", buildingName ?? string.Empty)
+                                            .Trim();
+
+                if (!string.IsNullOrWhiteSpace(largeBagsString))
+                {
+                    transformedTemplate += (Environment.NewLine + largeBagsString).Trim();
+                }
+
+                return transformedTemplate;
             }
 
             // In versions prior to 1.4, there was no note template
@@ -190,6 +202,10 @@ namespace apcurium.MK.Booking.Api.Services
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();
+            }
+            if (!string.IsNullOrWhiteSpace(largeBagsString))
+            {
+                formattedNote += (Environment.NewLine + largeBagsString).Trim();
             }
             return formattedNote;
         }
