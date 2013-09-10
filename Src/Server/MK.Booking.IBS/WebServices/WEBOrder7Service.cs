@@ -3736,8 +3736,10 @@ public partial class TOrderStatus {
     private double fareField;
     
     private double tollsField;
-    
+
     private double tipsField;
+
+    private double vatField;
     
     private TWEBTimeStamp eTATimeField;
     
@@ -3888,6 +3890,19 @@ public partial class TOrderStatus {
         }
         set {
             this.tipsField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double VAT
+    {
+        get
+        {
+            return this.vatField;
+        }
+        set
+        {
+            this.vatField = value;
         }
     }
     

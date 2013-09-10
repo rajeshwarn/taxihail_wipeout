@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                              Fare = @event.Fare.GetValueOrDefault(),
                              Toll = @event.Toll.GetValueOrDefault(),
                              Tip = @event.Tip.GetValueOrDefault(),
+                             Tax = @event.Tax.GetValueOrDefault(),
                          };
 
                          _commandBus.Send(command);

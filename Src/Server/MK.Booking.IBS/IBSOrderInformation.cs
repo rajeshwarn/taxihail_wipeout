@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.IBS
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
-            VAT = 0;
+            VAT = orderInfoFromIBS.VAT;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
