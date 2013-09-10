@@ -314,9 +314,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        private void ShowWarningIfNecessary()
+        private async void ShowWarningIfNecessary()
         {
-            var validationInfo = _bookingService.ValidateOrder( Order );
+            var validationInfo = await _bookingService.ValidateOrder( Order );
             if ( validationInfo.HasWarning )
             {
 

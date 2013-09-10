@@ -50,15 +50,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
 
-        public OrderValidationResult ValidateOrder (CreateOrder order)
+        public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
-            var validationResut = new OrderValidationResult ();
-            
-            UseServiceClient<OrderServiceClient> (service =>
+            return Task.Run(() =>
             {
-                validationResut = service.ValidateOrder  (order);
-            }, ex => Logger.LogError (ex));
-            return validationResut;
+                var validationResut = new OrderValidationResult();
+                
+                UseServiceClient<OrderServiceClient>(service =>
+                {
+                    validationResut = service.ValidateOrder(order);
+                }, ex => Logger.LogError(ex));
+                return validationResut;
+            });
         }
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
@@ -181,8 +184,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusTimedOut(string statusId)
         {
-            return statusId.IsNullOrEmpty() ||
-                statusId.SoftEqual(VehicleStatuses.Common.Timeout);
+            return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
         }
 
         public bool IsStatusCompleted (string statusId)
