@@ -94,8 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             
-            
-            
             lblVehiculeType.Maybe(x=>x.Text = Resources.ConfirmVehiculeTypeLabel + ":"); 
             lblChargeType.Maybe(x=>x.Text = Resources.ChargeTypeLabel + ":");                      
             lblEntryCode.Maybe(x=>x.Text = Resources.GetValue ( "EntryCodeLabel" )+ ":");
