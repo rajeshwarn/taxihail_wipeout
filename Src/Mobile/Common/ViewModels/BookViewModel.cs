@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate() 
         {
-            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
+            _fareEstimate = base.BookingService.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
             
             InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
         }

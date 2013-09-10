@@ -232,28 +232,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
 
-            var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
+            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
+            {
+                var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
 
-            if (estimatedFare.Price.HasValue) {
-                if (formatString.HasValue() || (estimatedFare.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue())) 
+                if (estimatedFare.Price.HasValue)
                 {
-                    fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > 100 
+                    if (formatString.HasValue() || (estimatedFare.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue()))
+                    {
+                        fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > 100 
                                                                            ? "EstimatePriceOver100"
                                                                            : formatString), 
                                                  estimatedFare.FormattedPrice);
-                } else {
-                    fareEstimate = estimatedFare.FormattedPrice;
-                }
-
-                if (includeDistance && estimatedFare.Distance.HasValue) {
-                    var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), estimatedFare.FormattedDistance);
-                    if (!string.IsNullOrWhiteSpace(destinationString))
+                    }
+                    else
                     {
-                        fareEstimate += destinationString;
+                        fareEstimate = estimatedFare.FormattedPrice;
+                    }
+
+                    if (includeDistance && estimatedFare.Distance.HasValue)
+                    {
+                        var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), estimatedFare.FormattedDistance);
+                        if (!string.IsNullOrWhiteSpace(destinationString))
+                        {
+                            fareEstimate += destinationString;
+                        }
                     }
                 }
-            } else {
-                fareEstimate = String.Format (appResource.GetString (cannotGetFareText));
+                else
+                {
+                    fareEstimate = String.Format(appResource.GetString(cannotGetFareText));
+                }
             }
 
             return fareEstimate;
