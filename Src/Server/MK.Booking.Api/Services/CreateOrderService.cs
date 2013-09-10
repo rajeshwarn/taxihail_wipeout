@@ -96,6 +96,8 @@ namespace apcurium.MK.Booking.Api.Services
             var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
             var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
 
+            command.Settings.ChargeType = chargeType;
+            command.Settings.VehicleType = vehicleType;
             emailCommand.Settings.ChargeType = chargeType;
             emailCommand.Settings.VehicleType = vehicleType;
 
@@ -136,9 +138,9 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
 
             var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
-
+            var fare = GetFare(request.Estimate);
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                                                    request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
+                request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress, fare);
 
             return result;
         }
@@ -208,6 +210,26 @@ namespace apcurium.MK.Booking.Api.Services
                 formattedNote += (Environment.NewLine + largeBagsString).Trim();
             }
             return formattedNote;
+        }
+    
+        private Fare GetFare(CreateOrder.RideEstimate estimate)
+        {
+            if (estimate == null || !estimate.Price.HasValue)
+            {
+                return default(Fare);
+            }
+
+            bool vatEnabled = _configManager.GetSetting("VATIsEnabled", false);
+            
+            if (!vatEnabled)
+            {
+                return Fare.FromAmountInclTax((decimal)estimate.Price.Value, 0m);
+            }
+
+            double taxPercentage = _configManager.GetSetting("VATPercentage", 0d);
+            return Fare.FromAmountInclTax((decimal)estimate.Price.Value, (decimal)taxPercentage);
+
+
         }
     }
 }

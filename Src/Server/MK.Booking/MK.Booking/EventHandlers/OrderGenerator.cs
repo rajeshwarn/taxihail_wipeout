@@ -89,6 +89,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Fare = @event.Fare;
                 order.Toll = @event.Toll;
                 order.Tip = @event.Tip;
+                order.Tax = @event.Tax;
                 context.Save(order);
             }
         }

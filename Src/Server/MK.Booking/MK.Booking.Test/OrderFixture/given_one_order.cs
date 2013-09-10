@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_complete_order_successfully()
         {
-            var completeOrder = new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed}, Fare = 23, Toll = 2, Tip = 5 };
+            var completeOrder = new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed}, Fare = 23, Toll = 2, Tip = 5, Tax = 3};
             this.sut.When(completeOrder);
 
             var @event = sut.ThenHasOne<OrderCompleted>();
@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(completeOrder.Fare, @event.Fare);
             Assert.AreEqual(completeOrder.Toll, @event.Toll);
             Assert.AreEqual(completeOrder.Tip, @event.Tip);
+            Assert.AreEqual(completeOrder.Tax, @event.Tax);
         }
 
         [Test]

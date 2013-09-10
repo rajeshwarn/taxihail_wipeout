@@ -118,10 +118,11 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     private System.Threading.SendOrPostCallback GetAvailableVehiclesOperationCompleted;
     
+    private System.Threading.SendOrPostCallback SendDriverMsg_2OperationCompleted;
+    
     /// <remarks/>
-    public WebOrder7Service()
-    {
-        this.Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder_7";
+    public WebOrder7Service() {
+        this.Url = "http://thriev.drivelinq.com:6928/xds_iaspi.dll/soap/IWebOrder_7";
     }
     
     /// <remarks/>
@@ -255,6 +256,9 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public event GetAvailableVehiclesCompletedEventHandler GetAvailableVehiclesCompleted;
+    
+    /// <remarks/>
+    public event SendDriverMsg_2CompletedEventHandler SendDriverMsg_2Completed;
     
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
@@ -2976,6 +2980,57 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     }
     
     /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SendDriverMsg_2", RequestNamespace="urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace="urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int SendDriverMsg_2(string Login, string Password, string CarID, string Msg) {
+        object[] results = this.Invoke("SendDriverMsg_2", new object[] {
+                    Login,
+                    Password,
+                    CarID,
+                    Msg});
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public System.IAsyncResult BeginSendDriverMsg_2(string Login, string Password, string CarID, string Msg, System.AsyncCallback callback, object asyncState) {
+        return this.BeginInvoke("SendDriverMsg_2", new object[] {
+                    Login,
+                    Password,
+                    CarID,
+                    Msg}, callback, asyncState);
+    }
+    
+    /// <remarks/>
+    public int EndSendDriverMsg_2(System.IAsyncResult asyncResult) {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+    
+    /// <remarks/>
+    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg) {
+        this.SendDriverMsg_2Async(Login, Password, CarID, Msg, null);
+    }
+    
+    /// <remarks/>
+    public void SendDriverMsg_2Async(string Login, string Password, string CarID, string Msg, object userState) {
+        if ((this.SendDriverMsg_2OperationCompleted == null)) {
+            this.SendDriverMsg_2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSendDriverMsg_2OperationCompleted);
+        }
+        this.InvokeAsync("SendDriverMsg_2", new object[] {
+                    Login,
+                    Password,
+                    CarID,
+                    Msg}, this.SendDriverMsg_2OperationCompleted, userState);
+    }
+    
+    private void OnSendDriverMsg_2OperationCompleted(object arg) {
+        if ((this.SendDriverMsg_2Completed != null)) {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.SendDriverMsg_2Completed(this, new SendDriverMsg_2CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+    
+    /// <remarks/>
     public new void CancelAsync(object userState) {
         base.CancelAsync(userState);
     }
@@ -3079,7 +3134,7 @@ public enum TWEBOrderStatusValue {
     
     /// <remarks/>
     wosCCEncryptCCInfoDone,
-
+    
     /// <remarks/>
     wosTIMEOUT,
 }
@@ -3681,8 +3736,10 @@ public partial class TOrderStatus {
     private double fareField;
     
     private double tollsField;
-    
+
     private double tipsField;
+
+    private double vatField;
     
     private TWEBTimeStamp eTATimeField;
     
@@ -3835,6 +3892,19 @@ public partial class TOrderStatus {
             this.tipsField = value;
         }
     }
+
+    /// <remarks/>
+    public double VAT
+    {
+        get
+        {
+            return this.vatField;
+        }
+        set
+        {
+            this.vatField = value;
+        }
+    }
     
     /// <remarks/>
     public TWEBTimeStamp ETATime {
@@ -3890,6 +3960,8 @@ public partial class TBookOrder_7 : TBookOrder_6 {
     
     private double tipsField;
     
+    private double vATField;
+    
     /// <remarks/>
     public double Tips {
         get {
@@ -3897,6 +3969,16 @@ public partial class TBookOrder_7 : TBookOrder_6 {
         }
         set {
             this.tipsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double VAT {
+        get {
+            return this.vATField;
+        }
+        set {
+            this.vATField = value;
         }
     }
 }
@@ -6245,6 +6327,32 @@ public partial class GetAvailableVehiclesCompletedEventArgs : System.ComponentMo
         get {
             this.RaiseExceptionIfNecessary();
             return ((TVehiclePosition[])(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+public delegate void SendDriverMsg_2CompletedEventHandler(object sender, SendDriverMsg_2CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class SendDriverMsg_2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    
+    private object[] results;
+    
+    internal SendDriverMsg_2CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+            base(exception, cancelled, userState) {
+        this.results = results;
+    }
+    
+    /// <remarks/>
+    public int Result {
+        get {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
         }
     }
 }
