@@ -354,6 +354,9 @@
     <Content Include="themes\LuxorCab\img\cancel-icon.png" />
     <Content Include="themes\LuxorCab\img\location.png" />
     <Content Include="themes\LuxorCab\img\logo.png" />
+    <Content Include="themes\MearsTaxi\img\cancel-icon.png" />
+    <Content Include="themes\MearsTaxi\img\location.png" />
+    <Content Include="themes\MearsTaxi\img\logo.png" />
     <Content Include="themes\MetroTaxiCT\img\cancel-icon.png" />
     <Content Include="themes\MetroTaxiCT\img\location.png" />
     <Content Include="themes\MetroTaxiCT\img\logo.png" />
@@ -586,6 +589,10 @@
     <Content Include="themes\Thriev\templates\BookingConfirmation.handlebars">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="themes\MearsTaxi\less\combined-responsive.less" />
+    <Content Include="themes\MearsTaxi\less\combined.less" />
+    <Content Include="themes\MearsTaxi\less\style.less" />
+    <Content Include="themes\MearsTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
