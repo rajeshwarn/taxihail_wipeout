@@ -67,11 +67,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-            //TODO: Fix this when IBS will accept more than 10 digits phone numbers
-            //Send 10 digits maximum to IBS
-            request.Settings.Phone = new string(request.Settings.Phone.Where(Char.IsDigit).Reverse().Take(10).Reverse().ToArray());
-
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
