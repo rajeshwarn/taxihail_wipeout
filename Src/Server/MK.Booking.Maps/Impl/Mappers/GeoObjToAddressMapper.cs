@@ -48,8 +48,9 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             {
                 address.FullAddress = placeName +", " + address.FullAddress.ToSafeString();
             }
-            else if (address.FullAddress.HasValue() &&
-                address.FullAddress.Contains("-"))
+            else if (!allowRange && 
+                (address.FullAddress.HasValue() &&
+                address.FullAddress.Contains("-")))
             {
                 var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
                 if (firstWordStreetNumber.Contains("-"))
@@ -58,7 +59,13 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                     address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
                 }
             }
-
+            else if (allowRange &&
+              (address.FullAddress.HasValue() &&
+              address.FullAddress.Contains("-")))
+            {
+                var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
+                address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, address.StreetNumber);
+            }
             return address;
         }
     }

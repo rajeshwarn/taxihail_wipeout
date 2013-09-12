@@ -72,7 +72,8 @@ namespace apcurium.MK.Booking.Maps.Impl
             geoResult = geoResult ?? _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {
-                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, false )).ToArray();
+                var allowAddressRange = _configManager.GetSetting("Client.AllowAddressRange").SelectOrDefault(setting => bool.Parse(setting), false);
+                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, allowAddressRange)).ToArray();
             }
             else
             {
