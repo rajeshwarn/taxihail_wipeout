@@ -143,7 +143,11 @@ namespace MK.ConfigurationManager.Tabs
                 var md5 = result.Substring(index + 6, 47).Trim();
                 Console.WriteLine("");
                 Console.WriteLine("You must generate the Google key.  Navigate to this link and copy the result in the appinfo.json file. The link is copied to your clipboard. ");
-                Clipboard.SetText("http://www.google.com/glm/mmap/a/api?fp=" + md5);
+                try
+                {
+                    Clipboard.SetText("http://www.google.com/glm/mmap/a/api?fp=" + md5);
+                }
+                catch { }
                 Process.Start("http://www.google.com/glm/mmap/a/api?fp=" + md5);
                 if (MobileConfigurationProperties.All(x => x.Key != "GoogleMapKey"))
                 {
