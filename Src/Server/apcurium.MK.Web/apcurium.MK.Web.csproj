@@ -339,6 +339,10 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\BlackWhiteCab\img\cancel-icon.png" />
+    <Content Include="themes\BlackWhiteCab\img\location.png" />
+    <Content Include="themes\BlackWhiteCab\img\logo.png" />
+    <Content Include="themes\BluelineTaxi\img\logo.png" />
     <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
     <Content Include="themes\CasinoTaxi\img\logo.png" />
     <Content Include="themes\CentralTaxiBelleville\img\logo.png" />
@@ -350,6 +354,10 @@
     <Content Include="themes\FourTwos\img\header-bg.png" />
     <Content Include="themes\FourTwos\img\location.png" />
     <Content Include="themes\FourTwos\img\Logo.png" />
+    <Content Include="themes\GreenYellowCab\img\cancel-icon.png" />
+    <Content Include="themes\GreenYellowCab\img\header-bg.png" />
+    <Content Include="themes\GreenYellowCab\img\location.png" />
+    <Content Include="themes\GreenYellowCab\img\Logo.png" />
     <Content Include="themes\LacledeCab\img\logo.png" />
     <Content Include="themes\LuxorCab\img\cancel-icon.png" />
     <Content Include="themes\LuxorCab\img\location.png" />
@@ -408,9 +416,6 @@
     <Content Include="themes\YellowCabJacksonville\img\cancel-icon.png" />
     <Content Include="themes\YellowCabJacksonville\img\location.png" />
     <Content Include="themes\YellowCabJacksonville\img\logo.png" />
-    <Content Include="themes\YellowCabOrlando\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabOrlando\img\location.png" />
-    <Content Include="themes\YellowCabOrlando\img\logo.png" />
     <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
     <Content Include="themes\YellowCabTampa\img\header-bg.png" />
     <Content Include="themes\YellowCabTampa\img\location.png" />
@@ -580,10 +585,6 @@
     <Content Include="themes\YellowCabColumbus\less\combined.less" />
     <Content Include="themes\YellowCabColumbus\less\style.less" />
     <Content Include="themes\YellowCabColumbus\less\variables.less" />
-    <Content Include="themes\YellowCabOrlando\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabOrlando\less\combined.less" />
-    <Content Include="themes\YellowCabOrlando\less\style.less" />
-    <Content Include="themes\YellowCabOrlando\less\variables.less" />
     <Content Include="themes\Thriev\localization\Book.json" />
     <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
     <Content Include="themes\Thriev\templates\BookingConfirmation.handlebars">
@@ -593,6 +594,18 @@
     <Content Include="themes\MearsTaxi\less\combined.less" />
     <Content Include="themes\MearsTaxi\less\style.less" />
     <Content Include="themes\MearsTaxi\less\variables.less" />
+    <Content Include="themes\GreenYellowCab\less\combined-responsive.less" />
+    <Content Include="themes\GreenYellowCab\less\combined.less" />
+    <Content Include="themes\GreenYellowCab\less\style.less" />
+    <Content Include="themes\GreenYellowCab\less\variables.less" />
+    <Content Include="themes\BlackWhiteCab\less\combined-responsive.less" />
+    <Content Include="themes\BlackWhiteCab\less\combined.less" />
+    <Content Include="themes\BlackWhiteCab\less\style.less" />
+    <Content Include="themes\BlackWhiteCab\less\variables.less" />
+    <Content Include="themes\BluelineTaxi\less\combined-responsive.less" />
+    <Content Include="themes\BluelineTaxi\less\combined.less" />
+    <Content Include="themes\BluelineTaxi\less\style.less" />
+    <Content Include="themes\BluelineTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
