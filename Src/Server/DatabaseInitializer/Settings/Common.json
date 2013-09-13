@@ -50,7 +50,8 @@
    "APNS.CertificatePassword": "TaxiHail",
    "AvailableVehicles.Enabled" : "true",
    "AvailableVehicles.Radius" : "2000",
-   "AvailableVehicles.Count" : "10"
+   "AvailableVehicles.Count" : "10",
+   "Client.AllowAddressRange" : "false"
     
 }
 

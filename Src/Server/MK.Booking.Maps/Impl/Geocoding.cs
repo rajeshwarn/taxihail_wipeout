@@ -79,7 +79,8 @@ namespace apcurium.MK.Booking.Maps.Impl
             geoResult = geoResult ?? _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {
-                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, false )).ToArray();
+                var allowAddressRange = _configManager.GetSetting("Client.AllowAddressRange").SelectOrDefault(setting => bool.Parse(setting), false);
+                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, allowAddressRange)).ToArray();
             }
             else
             {
@@ -127,7 +128,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                                                   r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                   (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) ||
                                                   (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-				.Select(r=>new GeoObjToAddressMapper().ConvertToAddress(r,allowRange,placeName)).ToArray();
+                .Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, placeName, allowRange)).ToArray();
         }
 
       
