@@ -55,10 +55,12 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             {
                 PaymentId = _paymentId,
                 PayPalPayerId = "payerid",
+                TransactionId = "the transaction"
             });
 
             var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentCompleted>();
             Assert.AreEqual("payerid", @event.PayPalPayerId);
+            Assert.AreEqual("the transaction", @event.TransactionId);
             Assert.AreEqual("the token", @event.Token);
             Assert.AreEqual(12.34m, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);

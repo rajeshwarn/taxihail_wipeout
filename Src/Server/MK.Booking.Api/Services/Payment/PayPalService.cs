@@ -91,11 +91,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 throw new HttpError(HttpStatusCode.NotFound, "Not Found");
             }
 
+            var payPalSettings = GetPayPalSettings();
+            var credentials = payPalSettings.IsSandbox
+                                  ? payPalSettings.SandboxCredentials
+                                  : payPalSettings.Credentials;
+            var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
+            var transactionId = service.DoExpressCheckoutPayment(payment.Token, request.PayerId, payment.Amount);
+
             _commandBus.Send(new CompletePayPalExpressCheckoutPayment
                                  {
                                      PaymentId = payment.PaymentId,
                                      PayPalPayerId = request.PayerId,
+                                     TransactionId = transactionId,
                                  });
+
             return new HttpResult()
             {
                 StatusCode = HttpStatusCode.Redirect,

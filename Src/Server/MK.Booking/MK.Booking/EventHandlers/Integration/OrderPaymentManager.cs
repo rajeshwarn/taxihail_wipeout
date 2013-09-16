@@ -27,16 +27,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            // Process payment with paypal
-            var cultureName = _configurationManager.GetSetting("PriceFormat");
-            var paymentSettings = (ServerPaymentSettings)_configurationManager.GetPaymentSettings();
-            var payPalCredentials = paymentSettings.PayPalServerSettings.IsSandbox 
-                ? paymentSettings.PayPalServerSettings.SandboxCredentials
-                : paymentSettings.PayPalServerSettings.Credentials;
-
-            var payPalService = new ExpressCheckoutServiceClient(payPalCredentials, new RegionInfo(cultureName), paymentSettings.PayPalServerSettings.IsSandbox);
-            var transactionId = payPalService.DoExpressCheckoutPayment(@event.Token, @event.PayPalPayerId, @event.Amount);
-
             // Send message to driver
             var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
             if (orderStatusDetail == null) throw new InvalidOperationException("Order Status not found");
@@ -48,7 +38,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (orderDetail == null) throw new InvalidOperationException("Order not found");
             if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
 
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, transactionId);
+            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, @event.TransactionId);
 
         }
 
