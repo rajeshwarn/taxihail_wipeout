@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string Token { get; set; }
         public decimal Amount { get; set; }
         public string PayPalPayerId { get; set; }
+        public string TransactionId { get; set; }
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
 

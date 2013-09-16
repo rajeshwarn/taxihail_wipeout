@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using Infrastructure.Messaging.Handling;
+using MK.Booking.PayPal;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -12,11 +16,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         readonly IOrderDao _dao;
         readonly IIBSOrderService _ibs;
+        readonly IConfigurationManager _configurationManager;
 
-        public OrderPaymentManager(IOrderDao dao, IIBSOrderService ibs)
+        public OrderPaymentManager(IOrderDao dao, IIBSOrderService ibs, IConfigurationManager configurationManager)
         {
             _dao = dao;
             _ibs = ibs;
+            _configurationManager = configurationManager;
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -32,8 +38,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (orderDetail == null) throw new InvalidOperationException("Order not found");
             if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
 
-            var transactionId = string.Format("PayPal Express Checkout | Token:{0} | PayerId:{1}", @event.Token, @event.PayPalPayerId);
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, transactionId);
+            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, @event.TransactionId);
 
         }
 
