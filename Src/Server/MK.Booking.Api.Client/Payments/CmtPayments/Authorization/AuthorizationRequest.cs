@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 {
-    [Route("v2/authorize")]
+    [Route("v2/merchants/{MerchantToken}/authorize")]
     public class AuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public AuthorizationRequest()
@@ -32,6 +32,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 
         [XmlElement("L3Data")]
         public LevelThreeData L3Data { get; set; }
+
+        [XmlIgnore]
+        public string MerchantToken { get; set; }
 
         public class TransactionTypes
         {
