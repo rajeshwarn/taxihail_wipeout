@@ -5,6 +5,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -34,15 +35,18 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public PayPalExpressCheckoutPaymentResponse Post(
             InitiatePayPalExpressCheckoutPaymentRequest request)
         {
+            var root = ApplicationPathResolver.GetApplicationPath(base.RequestContext);
+            var successUrl = root + "/api/payment/paypal/success";
+            var cancelUrl = root + "/api/payment/paypal/cancel";
+
             var payPalSettings = GetPayPalSettings();
             var credentials = payPalSettings.IsSandbox
                                   ? payPalSettings.SandboxCredentials
                                   : payPalSettings.Credentials;
 
-            var service = _factory
-                .CreateService(RequestContext, credentials, payPalSettings.IsSandbox);
+            var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
-            var token = service.SetExpressCheckout(request.Amount);
+            var token = service.SetExpressCheckout(request.Amount, successUrl, cancelUrl);
             var checkoutUrl = service.GetCheckoutUrl(token);
 
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
@@ -118,8 +122,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var service = new ExpressCheckoutServiceFactory(configurationManager)
-                .CreateService(requestContext, payPalServerSettings, isSandbox);
-                service.SetExpressCheckout(2);
+                    .CreateService(payPalServerSettings, isSandbox);
+                service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel");
                 return true;
             }
             catch (Exception)

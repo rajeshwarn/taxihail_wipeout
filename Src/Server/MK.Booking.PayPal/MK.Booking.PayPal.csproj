@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExpressCheckoutException.cs" />
     <Compile Include="ExpressCheckoutServiceClient.cs" />
     <Compile Include="PayPalAPIInterfaceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

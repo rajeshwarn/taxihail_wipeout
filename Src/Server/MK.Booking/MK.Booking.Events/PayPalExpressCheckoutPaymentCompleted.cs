@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.Events
         public Guid OrderId { get; set; }
 
         public decimal Amount { get; set; }
-
-        public object Token { get; set; }
+        public string Token { get; set; }
     }
 }
