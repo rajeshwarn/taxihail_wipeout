@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
         readonly ICommandBus _commandBus;
         readonly ICreditCardPaymentDao _dao;
         readonly IOrderDao _orderDao;
+        private IConfigurationManager _configurationManager;
         private CmtPaymentServiceClient Client { get; set; }
         public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
@@ -32,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
 
             Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, true);
+            _configurationManager = configurationManager;
         }
 
 
@@ -68,7 +70,9 @@ namespace apcurium.MK.Booking.Api.Services
                         L3Data = new LevelThreeData()
                             {
                                 PurchaseOrderNumber = orderDetail.IBSOrderId.ToString()
-                            }
+                            },
+                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+
                     };
                 var response = Client.Post(request);
 
