@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
 
-                    MessageService.ShowMessage(
+                    MessageService.ShowMessage( "Confirmation",
                         Resources.GetString("ConfirmationOfPaymentSent"));
 
                     VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
