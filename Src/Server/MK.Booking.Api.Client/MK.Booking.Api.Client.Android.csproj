@@ -108,7 +108,6 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
-    <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
   </ItemGroup>
