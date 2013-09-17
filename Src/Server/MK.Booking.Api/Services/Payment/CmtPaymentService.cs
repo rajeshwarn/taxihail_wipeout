@@ -116,6 +116,7 @@ namespace apcurium.MK.Booking.Api.Services
                 
                 var response = Client.Post(new CaptureRequest
                     {
+                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                         TransactionId = request.TransactionId.ToLong(),
                     });
 
