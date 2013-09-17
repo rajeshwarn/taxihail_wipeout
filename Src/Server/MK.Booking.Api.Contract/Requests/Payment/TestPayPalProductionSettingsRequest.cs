@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Route("/settings/payments/server/test/payPal/production", "POST")]
     [Authenticate(ApplyTo.All)]
-    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.SuperAdmin)]
     public class TestPayPalProductionSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public PayPalCredentials Credentials { get; set; }
