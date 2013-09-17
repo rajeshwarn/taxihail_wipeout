@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings)
             : base(baseUrl,sessionId)
         {
-			CmtClient = new CmtPaymentServiceClient(cmtSettings,true);
+            CmtClient = new CmtPaymentServiceClient(cmtSettings,null);
         }
 
         private CmtPaymentServiceClient CmtClient { get; set; }
@@ -31,12 +31,12 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             return Tokenize(CmtClient, accountNumber, expiryDate);
         }
 
-        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtClient,string accountNumber, DateTime expiryDate)
+        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtClient, string accountNumber, DateTime expiryDate)
         {
             var response = cmtClient.Post(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
-                    ExpiryDateYYMM = expiryDate.ToString("yyMM")
+                    ExpiryDate = expiryDate.ToString("yyMM")
                 });
 
             return new TokenizedCreditCardResponse()
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            return Client.Post(new DeleteTokenizedCreditcardCmtRequest()
+            return Client.Delete(new DeleteTokenizedCreditcardCmtRequest()
                 {
                     CardToken = cardToken
                 });
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
         {
-            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,true);
+            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,null);
             return Tokenize(cmtClient, number, date).IsSuccessfull;
         }
     }

@@ -25,15 +25,16 @@ namespace apcurium.MK.Booking.Api.Services
         readonly ICreditCardPaymentDao _dao;
         readonly IOrderDao _orderDao;
         private IConfigurationManager _configurationManager;
-        private CmtPaymentServiceClient Client { get; set; }
+        private CmtPaymentServiceClient Client;
+
         public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _dao = dao;
             _orderDao = orderDao;
 
-            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, true);
             _configurationManager = configurationManager;
+            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null);
         }
 
 
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Services
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
-                var request = new AuthorizationRequest()
+                var request =  new AuthorizationRequest()
                     {
                         Amount = (int) (preAuthorizeRequest.Amount*100),
                         CardOnFileToken = preAuthorizeRequest.CardToken,

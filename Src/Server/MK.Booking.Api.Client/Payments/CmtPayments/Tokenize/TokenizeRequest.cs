@@ -9,13 +9,12 @@ using System.Xml.Serialization;
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
 {
     [Route("v2/tokenize")]
-    [XmlRoot(Namespace = "")]
     public class TokenizeRequest : IReturn<TokenizeResponse>
     {
-        [XmlElement("accountNumber")]
         public string AccountNumber {get; set;}
 
-        [XmlElement("expiryDate")]
-        public string ExpiryDateYYMM { get; set; }
+        public string ExpiryDate { get; set; }
+
+        
     }
 }
