@@ -7,14 +7,14 @@ using System.Xml.Serialization;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture
 {
-    [Route("v2/capture")]
+    [Route("v2/merchants/{MerchantToken}/capture")]
     public class CaptureRequest : IReturn<CaptureResponse>
     {
         
-        [XmlElement("transactionId")]
         public long TransactionId { get; set; }
 
-        [XmlElement("L3Data")]
         public LevelThreeData L3Data { get; set; }
+
+        public string MerchantToken { get; set; }
     }
 }

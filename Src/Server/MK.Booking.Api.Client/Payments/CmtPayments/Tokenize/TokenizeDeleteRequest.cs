@@ -10,7 +10,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
     [Route("v2/tokenize/{CardToken}")]
     public class TokenizeDeleteRequest : IReturn<TokenizeDeleteResponse>
     {
-        [XmlIgnore]
         public string CardToken { get; set; }
     }
 }
