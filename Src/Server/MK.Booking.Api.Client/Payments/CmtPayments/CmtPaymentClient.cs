@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Net;
+using System.IO;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
@@ -33,6 +35,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtClient,string accountNumber, DateTime expiryDate)
         {
+            try
+            {
             var response = cmtClient.Post(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
@@ -47,6 +51,17 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                     CardType = response.CardType,
                     LastFour = response.LastFour,
                 };
+            }
+            catch(WebException e)
+            {
+                var x= new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
+
+                return new TokenizedCreditCardResponse()
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
         }
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
