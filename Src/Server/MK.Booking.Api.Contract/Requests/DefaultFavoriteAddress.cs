@@ -11,7 +11,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
     [Route("/admin/addresses", "GET")]
     [Route("/admin/addresses", "POST")]
     [Route("/admin/addresses/{Id}", "PUT, DELETE")]

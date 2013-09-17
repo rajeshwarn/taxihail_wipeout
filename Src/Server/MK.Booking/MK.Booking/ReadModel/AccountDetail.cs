@@ -40,6 +40,20 @@ namespace apcurium.MK.Booking.ReadModel
         {
             get { return (Roles & (int)Security.Roles.Admin) == (int)Security.Roles.Admin; }
         }
+
+        public IEnumerable<string> RoleNames
+        {
+            get
+            {
+                foreach (int role in Enum.GetValues(typeof(Roles)))
+                {
+                    if ((Roles & role) == role)
+                    {
+                        yield return Enum.GetName(typeof(Roles), role);
+                    }
+                }
+            }
+        }
         
     }
 }

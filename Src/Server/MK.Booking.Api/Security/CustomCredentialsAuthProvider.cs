@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web;
 using Infrastructure.Messaging;
@@ -45,14 +46,7 @@ namespace apcurium.MK.Booking.Api.Security
             session.UserAuthId = account.Id.ToString();
             session.IsAuthenticated = true;
 
-            session.Permissions = new List<string>();
-            foreach (int role in Enum.GetValues(typeof(Roles)))
-            {
-                if ((account.Roles & role) == role)
-                {
-                    session.Permissions.Add(Enum.GetName(typeof(Roles), role));
-                }
-            }
+            session.Permissions = account.RoleNames.ToList();
 
             authService.SaveSession(session, SessionExpiry);
         }

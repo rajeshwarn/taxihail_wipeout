@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
 #if !CLIENT
-    [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
     [RestService("/admin/tariffs", "GET, POST")]
     [RestService("/admin/tariffs/{Id}", "PUT, DELETE")]

@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
 #if !CLIENT
-    [AuthorizationRequired(ApplyTo.Post, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
 #endif
 
     [RestService("/admin/rules/{RuleId}/activate", "POST")]

@@ -49,7 +49,9 @@
         },
 
         initialize: function (options) {
-            $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
+            $('.menu-zone').html(new TaxiHail.AdminMenuView({
+                model: options.account
+            }).render().el);
             
         },
         

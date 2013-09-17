@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.admin
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
-            if(!base.UserSession.HasPermission(Permissions.Admin))
+            if(!base.UserSession.HasPermission(RoleName.Admin))
             {
                 this.Response.Redirect("~");
             }

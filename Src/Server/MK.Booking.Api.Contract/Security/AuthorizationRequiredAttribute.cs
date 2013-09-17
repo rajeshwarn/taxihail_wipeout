@@ -30,14 +30,8 @@ namespace apcurium.MK.Booking.Api.Contract.Security
                 && authSession.UserAuthId != null)
             {
                 var account = AccountDao.FindById(new Guid(authSession.UserAuthId));
-                authSession.Permissions = new List<string>();
-                foreach (int role in Enum.GetValues(typeof(Roles)))
-                {
-                    if ((account.Roles & role) == role)
-                    {
-                        authSession.Permissions.Add(Enum.GetName(typeof(Roles), role));
-                    }
-                }
+                authSession.Permissions = account.RoleNames.ToList();
+                
             }
             base.Execute(req, res, requestDto);
         }

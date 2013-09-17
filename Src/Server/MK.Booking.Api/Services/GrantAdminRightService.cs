@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(new AddUserToRole()
             {
                 AccountId = account.Id,
-                RoleName = Enum.GetName(typeof (Roles), Roles.Admin)
+                RoleName = RoleName.Admin
             });
             return HttpStatusCode.OK;
         }

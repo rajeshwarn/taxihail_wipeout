@@ -273,7 +273,7 @@ namespace DatabaseInitializer
                     commandBus.Send(new AddUserToRole
                                         {
                                             AccountId = registerAdminAccountCommand.AccountId,
-                                            RoleName = Enum.GetName(typeof(Roles), Roles.SuperAdmin),
+                                            RoleName = RoleName.SuperAdmin,
                                         });
 
 

@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Security;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
     [RestService("/account/grantadmin", "PUT")]
     public class GrantAdminRightRequest : BaseDTO
     {

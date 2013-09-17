@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Security;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.Get, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.Get, RoleName.Admin)]
     [RestService("/admin/export/{Target}", "GET")]
     public class ExportDataRequest
     {

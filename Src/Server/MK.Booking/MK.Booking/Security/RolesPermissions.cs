@@ -5,9 +5,10 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Security
 {
-    public class Permissions
+    public class RoleName
     {
         public const string Admin = "Admin";
+        public const string SuperAdmin = "SuperAdmin";
     }
 
     [Flags]
