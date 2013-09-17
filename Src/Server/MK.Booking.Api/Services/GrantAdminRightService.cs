@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPut(GrantAdminRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            _commandBus.Send(new AddUserToRole()
+            _commandBus.Send(new AddRoleToUserAccount()
             {
                 AccountId = account.Id,
                 RoleName = RoleName.Admin

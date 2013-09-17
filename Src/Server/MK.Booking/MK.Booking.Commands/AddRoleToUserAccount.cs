@@ -6,9 +6,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddUserToRole : ICommand
+    public class AddRoleToUserAccount : ICommand
     {
-        public AddUserToRole()
+        public AddRoleToUserAccount()
         {
             Id = new Guid();
         }

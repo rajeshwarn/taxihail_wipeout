@@ -270,7 +270,7 @@ namespace DatabaseInitializer
                                                               registerAdminAccountCommand.Name,
                                                               registerAdminAccountCommand.Phone);
                     commandBus.Send(registerAdminAccountCommand);
-                    commandBus.Send(new AddUserToRole
+                    commandBus.Send(new AddRoleToUserAccount
                                         {
                                             AccountId = registerAdminAccountCommand.AccountId,
                                             RoleName = RoleName.SuperAdmin,
