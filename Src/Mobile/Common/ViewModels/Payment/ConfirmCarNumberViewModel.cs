@@ -35,7 +35,8 @@ namespace apcurium.MK.Booking.Mobile
                         order = Order.ToJson(),
                         orderStatus = OrderStatus.ToJson(),
                     }.ToStringDictionary(), 
-                    _=>{});
+                    _=>{
+                    });
 					
 					RequestClose(this);
 				});

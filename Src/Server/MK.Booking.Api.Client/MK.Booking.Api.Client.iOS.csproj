@@ -109,7 +109,6 @@
     <Compile Include="Client\CmtJsonServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
-    <Compile Include="Client\CmtXmlServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />

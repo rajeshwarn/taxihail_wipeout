@@ -245,7 +245,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void ShowCreditCardPaymentConfirmation(string transactionId)
 		{
-			MessageService.ShowMessage(Str.CmtTransactionSuccessTitle, string.Format(Str.CmtTransactionSuccessMessage, transactionId),
+			MessageService.ShowMessage(Str.CmtTransactionSuccessTitle,
+                                       string.Format(Str.CmtTransactionSuccessMessage, transactionId),
 			                           Str.CmtTransactionResendConfirmationButtonText, ()=>
 			                           {				
 				ConfirmPaymentForDriver();

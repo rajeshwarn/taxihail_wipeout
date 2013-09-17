@@ -1297,6 +1297,9 @@
   <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
     <value>PayPal payment was successful. Confirmation sent to the driver.</value>
   </data>
+    <data name="ConfirmationOfPaymentSent" xml:space="preserve">
+    <value>Confirmation of payment has been sent to the driver.</value>
+  </data>
   <data name="OkButtonText" xml:space="preserve">
     <value>Ok</value>
   </data>
