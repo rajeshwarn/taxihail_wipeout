@@ -1,4 +1,6 @@
-﻿using apcurium.MK.Common.Entity;
+﻿using System.Collections.Generic;
+using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Entity;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,8 +26,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsConfirmed { get; set; }
         public bool DisabledByAdmin { get; set; }
         public string Language { get; set; }
-        public bool IsAdmin { get; set; }
         public string ConfirmationToken { get; set; }
+        public int Roles { get; set; }
 
         public BookingSettings Settings { get; set; }
 
@@ -33,6 +35,25 @@ namespace apcurium.MK.Booking.ReadModel
         public int? DefaultTipPercent { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public bool IsAdmin
+        {
+            get { return (Roles & (int)Security.Roles.Admin) == (int)Security.Roles.Admin; }
+        }
+
+        public IEnumerable<string> RoleNames
+        {
+            get
+            {
+                foreach (int role in Enum.GetValues(typeof(Roles)))
+                {
+                    if ((Roles & role) == role)
+                    {
+                        yield return Enum.GetName(typeof(Roles), role);
+                    }
+                }
+            }
+        }
         
     }
 }

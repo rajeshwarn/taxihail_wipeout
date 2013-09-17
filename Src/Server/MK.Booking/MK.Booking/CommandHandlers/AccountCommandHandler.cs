@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                                                  ICommandHandler<RegisterFacebookAccount>,
                                                  ICommandHandler<RegisterTwitterAccount>,
                                                  ICommandHandler<UpdateAccountPassword>,
-                                                 ICommandHandler<GrantAdminRight>,
+                                                 ICommandHandler<AddRoleToUserAccount>,
                                                  ICommandHandler<AddCreditCard>,
                                                  ICommandHandler<RemoveCreditCard>,
                                                  ICommandHandler<DeleteAllCreditCards>,
@@ -101,10 +101,10 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(GrantAdminRight command)
+        public void Handle(AddRoleToUserAccount command)
         {
             var account = _repository.Find(command.AccountId);
-            account.GrantAdminRight();
+            account.AddRole(command.RoleName);
             _repository.Save(account, command.Id.ToString());
         }
 

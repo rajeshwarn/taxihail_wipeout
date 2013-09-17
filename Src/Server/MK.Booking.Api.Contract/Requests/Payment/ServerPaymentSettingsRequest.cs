@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Route("/settings/payments/server", "GET")]
     [Authenticate(ApplyTo.All)]
-    [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.SuperAdmin)]
     public class ServerPaymentSettingsRequest : IReturn<ServerPaymentSettingsResponse>
     {
     }

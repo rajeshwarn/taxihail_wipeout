@@ -2,27 +2,27 @@
     
     var View = TaxiHail.GrantAdminAccessView = TaxiHail.TemplatedView.extend({
 
-        tagName: 'form',
+        tagName: 'div',
         className: 'form-horizontal',
         
         events: {
-            'click [data-action=grantadmin]': 'grantadmin'
+            'click [data-action^=grant]': 'grantadmin'
         },
-
+        
         render: function () {
-            this.$el.html(this.renderTemplate());
+            this.$el.html(this.renderTemplate(TaxiHail.parameters));
 
-        
-        
             return this;
         },
         
         grantadmin: function (e) {
             e.preventDefault();
-            var email = this.$('[name=email]').val();
+            var action = $(e.currentTarget).data().action,
+                email = this.$('[name=email]').val();
+            
             return $.ajax({
                 type: 'PUT',
-                url: '../api/account/grantadmin',
+                url: '../api/account/' + action,
                 data: {
                     accountEmail: email
                 },

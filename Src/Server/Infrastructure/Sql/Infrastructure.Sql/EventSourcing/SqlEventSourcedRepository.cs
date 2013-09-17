@@ -127,7 +127,12 @@ namespace Infrastructure.Sql.EventSourcing
         {
             using (var reader = new StringReader(@event.Payload))
             {
-                return (IVersionedEvent)this.serializer.Deserialize(reader);
+                var e = (IVersionedEvent)serializer.Deserialize(reader);
+                if (e is IUpgradableEvent)
+                {
+                    e = ((IUpgradableEvent)e).Upgrade();
+                }
+                return e;
             }
         }
     }

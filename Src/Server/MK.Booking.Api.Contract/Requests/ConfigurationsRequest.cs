@@ -12,8 +12,8 @@ using apcurium.MK.Common.Enumeration;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate(ApplyTo.Post)]
-    [AuthorizationRequired(ApplyTo.Post, Permissions.Admin)]
-    [RestService("/settings", "GET, POST")]
+    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
+    [Route("/settings", "GET, POST")]
     public class ConfigurationsRequest
     {
         public Dictionary<string, string> AppSettings { get; set; } 

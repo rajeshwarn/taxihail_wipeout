@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Security;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [AuthorizationRequired(ApplyTo.Post, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.Post, RoleName.Admin)]
     [RestService("/admin/exclusions", "GET, POST")]
     public class ExclusionsRequest
     {

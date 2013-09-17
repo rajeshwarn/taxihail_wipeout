@@ -7,14 +7,14 @@
 
         },
 
-        render: function() {
-            this.$el.html(this.renderTemplate({ version: TaxiHail.parameters.version }));
+        render: function () {
+            this.$el.html(this.renderTemplate(TaxiHail.parameters));
             return this;
         },
         
         onitemclick: function (e) {
-              var $item = $(e.currentTarget).closest('li');
-            var route = $item.data().route || '';
+            var $item = $(e.currentTarget).closest('li'),
+                route = $item.data().route || '';
             
             e.preventDefault();
             $item.addClass('active').siblings().removeClass('active');

@@ -29,10 +29,9 @@ namespace apcurium.MK.Booking.Api.Contract.Security
             if (authSession != null
                 && authSession.UserAuthId != null)
             {
-                if(AccountDao.FindById(new Guid(authSession.UserAuthId)).IsAdmin)
-                {
-                    authSession.Permissions = new List<string> {Permissions.Admin};
-                }
+                var account = AccountDao.FindById(new Guid(authSession.UserAuthId));
+                authSession.Permissions = account.RoleNames.ToList();
+                
             }
             base.Execute(req, res, requestDto);
         }

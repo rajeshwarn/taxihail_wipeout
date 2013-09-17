@@ -31,25 +31,16 @@ $(function () {
                 }
             });
 
-            // Application starts here
-            // If user is logged in, we need to load its Account before we continue
+            new TaxiHail.UserAccount().fetch({
+                success: function(model) {
 
-            if(TaxiHail.parameters.isLoggedIn) {
+                    TaxiHail.app = new TaxiHail.App({
+                        account: model
+                    });
+                    Backbone.history.start();
 
-                new TaxiHail.UserAccount().fetch({
-                    success: function(model) {
-
-                        TaxiHail.app = new TaxiHail.App({
-                            account: model
-                        });
-                        Backbone.history.start();
-
-                    }
-                });
+                }
+            });
                 
-            } else {
-                TaxiHail.app = new TaxiHail.App();
-                Backbone.history.start();
-            }
         });
 });
