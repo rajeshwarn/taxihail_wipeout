@@ -8,6 +8,7 @@ using ServiceStack.ServiceHost;
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 {
     [Route("v2/merchants/{MerchantToken}/authorize")]
+
     public class AuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public AuthorizationRequest()
@@ -15,25 +16,18 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
             CardReaderMethod = CardReaderMethods.Manual;
         }
 
-        [XmlElement("transactionType")]
         public string TransactionType { get; set; }
 
-        [XmlElement("amount")]
         public int Amount { get; set; }
 
-        [XmlElement("cardReaderMethod")]
         public int CardReaderMethod { get; set; }
 
-        [XmlElement("cardOnFileToken")]
         public string CardOnFileToken { get; set; }
 
-        [XmlElement("currencyCode")]
         public string CurrencyCode { get; set; }
 
-        [XmlElement("L3Data")]
         public LevelThreeData L3Data { get; set; }
 
-        [XmlIgnore]
         public string MerchantToken { get; set; }
 
         public class TransactionTypes
