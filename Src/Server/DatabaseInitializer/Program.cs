@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -269,6 +270,11 @@ namespace DatabaseInitializer
                                                               registerAdminAccountCommand.Name,
                                                               registerAdminAccountCommand.Phone);
                     commandBus.Send(registerAdminAccountCommand);
+                    commandBus.Send(new AddUserToRole
+                                        {
+                                            AccountId = registerAdminAccountCommand.AccountId,
+                                            RoleName = Enum.GetName(typeof(Roles), Roles.SuperAdmin),
+                                        });
 
 
                     commandBus.Send(new ConfirmAccount

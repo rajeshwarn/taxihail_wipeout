@@ -10,27 +10,37 @@ namespace apcurium.MK.Booking.Resources
     public class DynamicResources: System.Dynamic.DynamicObject
     {
         readonly ResourceManager _resources;
-        readonly bool _missingResourceFile;
+        bool? _missingResourceFile;
 
         public DynamicResources(string applicationKey)
         {
             _resources = new ResourceManager("apcurium.MK.Booking.Resources." + applicationKey, GetType().Assembly);
-            _missingResourceFile = false;
-            
-            try
+        }
+
+        public bool MissingResourceFile
+        {
+            get
             {
-                _resources.GetString("test");
-            }
-            catch (System.Resources.MissingManifestResourceException)
-            {
-                // It's all right, we'll use the Global resource file instead
-                _missingResourceFile = true;
+                if (!_missingResourceFile.HasValue)
+                {
+                    try
+                    {
+                        _resources.GetString("test");
+                        _missingResourceFile = false;
+                    }
+                    catch (System.Resources.MissingManifestResourceException)
+                    {
+                        // It's all right, we'll use the Global resource file instead
+                        _missingResourceFile = true;
+                    }
+                }
+                return _missingResourceFile.Value;
             }
         }
 
         public string GetString(string key)
         {
-            if (_missingResourceFile)
+            if (MissingResourceFile)
             {
                 return Global.ResourceManager.GetString(key);
             }
@@ -43,15 +53,7 @@ namespace apcurium.MK.Booking.Resources
 
         public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
         {
-            if (_missingResourceFile)
-            {
-                result = Global.ResourceManager.GetString(binder.Name);
-            }
-            else
-            {
-                result = _resources.GetString(binder.Name)
-                    ?? Global.ResourceManager.GetString(binder.Name);
-            }
+            result = GetString(binder.Name);
             return true;
         } 
 
