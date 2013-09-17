@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
@@ -9,7 +10,7 @@ using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class GrantAdminRightService : RestServiceBase<GrantAdminRightRequest>
+    public class GrantAdminRightService : Service
     {
         public GrantAdminRightService(IAccountDao dao, ICommandBus commandBus)
         {
@@ -20,15 +21,30 @@ namespace apcurium.MK.Booking.Api.Services
         protected IAccountDao Dao;
         private readonly ICommandBus _commandBus;
 
-        public override object OnPut(GrantAdminRightRequest request)
+        public object Put(GrantAdminRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
+            if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
+
             _commandBus.Send(new AddRoleToUserAccount()
             {
                 AccountId = account.Id,
                 RoleName = RoleName.Admin
             });
-            return HttpStatusCode.OK;
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Put(GrantSuperAdminRightRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account == null) throw new HttpError(HttpStatusCode.BadRequest, "Bad request");
+
+            _commandBus.Send(new AddRoleToUserAccount()
+            {
+                AccountId = account.Id,
+                RoleName = RoleName.SuperAdmin
+            });
+            return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
 }

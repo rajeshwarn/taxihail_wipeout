@@ -7,11 +7,8 @@
 
         },
 
-        render: function() {
-            this.$el.html(this.renderTemplate({
-                version: TaxiHail.parameters.version,
-                isSuperAdmin: this.model.get('isSuperAdmin')
-            }));
+        render: function () {
+            this.$el.html(this.renderTemplate(TaxiHail.parameters));
             return this;
         },
         

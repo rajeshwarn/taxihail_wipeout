@@ -20,6 +20,7 @@ namespace apcurium.MK.Web.admin
         protected string ApplicationVersion { get; private set; }
         
         protected bool IsAuthenticated { get; private set; }
+        protected bool IsSuperAdmin { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,10 +32,13 @@ namespace apcurium.MK.Web.admin
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
-            if(!base.UserSession.HasPermission(RoleName.Admin))
+            IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
+
+            if (!base.UserSession.HasPermission(RoleName.Admin))
             {
                 this.Response.Redirect("~");
             }
+
         }
 
     }
