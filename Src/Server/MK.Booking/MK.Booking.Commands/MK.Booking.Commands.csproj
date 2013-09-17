@@ -82,7 +82,7 @@
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
-    <Compile Include="GrantAdminRight.cs" />
+    <Compile Include="AddUserToRole.cs" />
     <Compile Include="RemoveAddressFromHistory.cs" />
     <Compile Include="RemoveDefaultFavoriteAddress.cs" />
     <Compile Include="RemoveOrderFromHistory.cs" />

@@ -1,9 +1,11 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -21,7 +23,11 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPut(GrantAdminRightRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            _commandBus.Send(new GrantAdminRight(){AccountId = account.Id});
+            _commandBus.Send(new AddUserToRole()
+            {
+                AccountId = account.Id,
+                RoleName = Enum.GetName(typeof (Roles), Roles.Admin)
+            });
             return HttpStatusCode.OK;
         }
     }

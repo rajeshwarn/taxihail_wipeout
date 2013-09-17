@@ -64,6 +64,7 @@
     <Compile Include="PayPalExpressCheckoutPaymentCancelled.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
+    <Compile Include="RoleAddedToUserAccount.cs" />
     <Compile Include="RuleActivated.cs" />
     <Compile Include="RuleDeactivated.cs" />
     <Compile Include="RuleCreated.cs" />

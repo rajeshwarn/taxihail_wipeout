@@ -44,10 +44,16 @@ namespace apcurium.MK.Booking.Api.Security
             var account = Dao.FindByEmail(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
             session.IsAuthenticated = true;
-            if(account.IsAdmin)
+
+            session.Permissions = new List<string>();
+            foreach (int role in Enum.GetValues(typeof(Roles)))
             {
-                session.Permissions = new List<string> { Permissions.Admin };
+                if ((account.Roles & role) == role)
+                {
+                    session.Permissions.Add(Enum.GetName(typeof(Roles), role));
+                }
             }
+
             authService.SaveSession(session, SessionExpiry);
         }
 

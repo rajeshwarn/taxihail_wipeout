@@ -9,4 +9,11 @@ namespace apcurium.MK.Booking.Security
     {
         public const string Admin = "Admin";
     }
+
+    [Flags]
+    public enum Roles
+    {
+        Admin = 1,
+        SuperAdmin = 3,
+    }
 }

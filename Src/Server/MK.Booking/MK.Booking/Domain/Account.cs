@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<BookingSettingsUpdated>(NoAction);
             base.Handles<AccountPasswordUpdated>(NoAction);
             base.Handles<AddressRemovedFromHistory>(NoAction);
-            base.Handles<AdminRightGranted>(NoAction);
+            base.Handles<RoleAddedToUserAccount>(NoAction);
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
             base.Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
@@ -238,9 +238,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void GrantAdminRight()
+        public void AddRole(string rolename)
         {
-            this.Update(new AdminRightGranted());
+            this.Update(new RoleAddedToUserAccount
+            {
+                RoleName = rolename,
+            });
         }
 
         public void RegisterDeviceForPushNotifications(string deviceToken, PushNotificationServicePlatform platform)

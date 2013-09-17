@@ -377,9 +377,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             [Test]
             public void when_account_granted_admin_access_then_account_dto_populated()
             {
-                this.sut.Handle(new AdminRightGranted()
+                this.sut.Handle(new RoleAddedToUserAccount
                 {
                     SourceId = _accountId,
+                    RoleName = "Admin",
                 });
 
                 using (var context = new BookingDbContext(dbName))

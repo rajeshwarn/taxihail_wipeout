@@ -100,11 +100,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_granting_admin_rights_successfully()
         {
-            this.sut.When(new GrantAdminRight() { AccountId = _accountId });
+            this.sut.When(new AddUserToRole() { AccountId = _accountId, RoleName = "Admin" });
 
-            var @event = sut.ThenHasSingle<AdminRightGranted>();
+            var @event = sut.ThenHasSingle<RoleAddedToUserAccount>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual("Admin", @event.RoleName);
 
         }
 

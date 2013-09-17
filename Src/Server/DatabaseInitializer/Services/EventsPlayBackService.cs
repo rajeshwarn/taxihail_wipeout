@@ -52,7 +52,12 @@ namespace DatabaseInitializer.Services
         {
             using (var reader = new StringReader(@event.Payload))
             {
-                return (IVersionedEvent)_serializer.Deserialize(reader);
+                var e = (IVersionedEvent) _serializer.Deserialize(reader);
+                if (e is IUpgradableEvent)
+                {
+                    e = ((IUpgradableEvent) e).Upgrade();
+                }
+                return e;
             }
         }
     }

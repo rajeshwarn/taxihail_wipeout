@@ -6,14 +6,15 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class GrantAdminRight : ICommand
+    public class AddUserToRole : ICommand
     {
-        public GrantAdminRight()
+        public AddUserToRole()
         {
             Id = new Guid();
         }
 
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
+        public string RoleName { get; set; }
     }
 }
