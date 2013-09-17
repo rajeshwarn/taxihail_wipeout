@@ -64,7 +64,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Nustache.Core">
       <HintPath>..\..\packages\Nustache.1.12.4.29\lib\net20\Nustache.Core.dll</HintPath>
@@ -140,7 +140,7 @@
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
-    <Compile Include="EventHandlers\Integration\ReceiptSender.cs" />
+    <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
@@ -193,11 +193,21 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
+    <Compile Include="Resources\DynamicResources.cs" />
+    <Compile Include="Resources\Global.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Thriev.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Thriev.resx</DependentUpon>
+    </Compile>
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -218,6 +228,15 @@
     <Content Include="Email\Templates\BookingConfirmation.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\ReceiptWithVAT.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssigned.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssignedWithVAT.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="MK.Booking.psproj">
       <SubType>Designer</SubType>
     </None>
@@ -227,6 +246,10 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
+      <Project>{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}</Project>
+      <Name>MK.Booking.PayPal</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
@@ -240,6 +263,17 @@
       <Project>{1D5CC591-D706-4F4E-B4BD-805A191999D7}</Project>
       <Name>MK.Booking.Events</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Global.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Thriev.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

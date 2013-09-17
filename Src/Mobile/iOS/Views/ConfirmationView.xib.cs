@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -44,6 +45,19 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
+        public override void LoadView()
+        {
+            base.LoadView();
+            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            bool isThriev = appSettings.ApplicationName == "Thriev";
+            if (isThriev)
+            {
+                NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);
+            } else {
+                NSBundle.MainBundle.LoadNib ("ConfirmationView", this, null);
+            }
+        }
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
@@ -64,32 +78,36 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.GetValue ( "EditDetails" ), AppStyle.ButtonColor.Grey );          
             
             
+
+            lblName.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
+            lblNameValue.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
             
-            lblName.Hidden = !ViewModel.ShowPassengerName;
-            lblNameValue.Hidden = !ViewModel.ShowPassengerName;
+            lblPassengers.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerNumber);
+            lblPassengersValue.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerNumber);
             
-            lblPassengers.Hidden = !ViewModel.ShowPassengerNumber;
-            lblPassengersValue.Hidden = !ViewModel.ShowPassengerNumber;
+            lblPhone.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerPhone);
+            lblPhoneValue.Maybe(x=>x.Hidden = !ViewModel.ShowPassengerPhone);
             
-            lblPhone.Hidden = !ViewModel.ShowPassengerPhone;
-            lblPhoneValue.Hidden = !ViewModel.ShowPassengerPhone;
+            topStack.Maybe(x => {
+                var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
+                x.Offset = x.Offset + countHidden ;
+            });
+
             
+            lblVehiculeType.Maybe(x=>x.Text = Resources.ConfirmVehiculeTypeLabel + ":"); 
+            lblChargeType.Maybe(x=>x.Text = Resources.ChargeTypeLabel + ":");                      
+            lblEntryCode.Maybe(x=>x.Text = Resources.GetValue ( "EntryCodeLabel" )+ ":");
+            lblApartment.Maybe(x=>x.Text = Resources.GetValue ( "ApartmentLabel" )+ ":");
+            lblNoteDriver.Maybe(x=>x.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ":");
             
-            var countHidden = Params.Get ( ViewModel.ShowPassengerName , ViewModel.ShowPassengerNumber, ViewModel.ShowPassengerPhone ).Count ( s => !s );
-            
-            topStack.Offset = topStack.Offset + countHidden ;
-            
-            
-            
-            lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel + ": "; 
-            lblChargeType.Text = Resources.ChargeTypeLabel + ": ";                      
-            lblEntryCode.Text = Resources.GetValue ( "EntryCodeLabel" )+ ": ";
-            lblApartment.Text = Resources.GetValue ( "ApartmentLabel" )+ ": ";
-            lblNoteDriver.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ": ";
-            
-            lblName.Text = Resources.GetValue ( "PassengerNameLabel" )+ ": ";
-            lblPassengers.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ": ";
-            lblPhone.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ": ";
+            lblName.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNameLabel" )+ ":");
+            lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ":");
+            lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ":");
+            lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ":");
+
+            lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ":");
+            lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ":");
+            lblFare.Maybe(x => x.Text = Resources.GetValue("EstimatePrice") + ":");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
             
@@ -97,42 +115,45 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtNotes.Started += NoteStartedEdit;
             txtNotes.Changed += (sender, e) => ViewModel.Order.Note = txtNotes.Text;
 
-            lblNameValue.TextColor = AppStyle.DarkText;
-            lblNameValue.Font = AppStyle.GetBoldFont (lblNameValue.Font.PointSize);
-            
-            lblPhoneValue.TextColor = AppStyle.DarkText;
-            lblPhoneValue.Font = AppStyle.GetBoldFont (lblPhoneValue.Font.PointSize);
-            
-            lblPassengersValue.TextColor = AppStyle.DarkText;
-            lblPassengersValue.Font = AppStyle.GetBoldFont (lblPassengersValue.Font.PointSize);
-            
-            lblApartmentValue.TextColor = AppStyle.DarkText;
-            lblApartmentValue.Font = AppStyle.GetBoldFont (lblApartmentValue.Font.PointSize);
-            
-            lblEntryCodeValue.TextColor = AppStyle.DarkText;
-            lblEntryCodeValue.Font = AppStyle.GetBoldFont (lblEntryCodeValue.Font.PointSize);
-            
-            lblVehicleTypeValue.TextColor = AppStyle.DarkText;
-            lblVehicleTypeValue.Font = AppStyle.GetBoldFont (lblVehicleTypeValue.Font.PointSize);
-            
-            lblChargeTypeValue.TextColor = AppStyle.DarkText;
-            lblChargeTypeValue.Font = AppStyle.GetBoldFont (lblChargeTypeValue.Font.PointSize);
-            
-            
-            this.AddBindings(new Dictionary<object, string>() {
-                { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
-                { btnEdit, "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"},
-                { lblNameValue, "{'Text': {'Path': 'OrderName'}}" },
-                { lblPhoneValue, "{'Text': {'Path': 'OrderPhone'}}" },
-                { lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}" },
-                
-                { lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}" },
-                { lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}" },
-                { lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}" },
-                { lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}" },
-            });
-            
-            
+            // Apply Font style to values
+            new [] { 
+                lblNameValue,
+                lblPhoneValue,
+                lblPassengersValue,
+                lblLargeBagsValue,
+                lblApartmentValue,
+                lblEntryCodeValue,
+                lblVehicleTypeValue,
+                lblChargeTypeValue,
+                lblPickupValue,
+                lblDestinationValue,
+                lblFareValue
+            }
+                .Where(x => x != null)
+                .ForEach(x => x.TextColor = AppStyle.DarkText)
+                .ForEach(x => x.Font = AppStyle.GetBoldFont(x.Font.PointSize));
+
+           
+
+            var bindings = new [] {
+                Tuple.Create<object,string>(btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"),
+                Tuple.Create<object,string>(btnEdit   , "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"),
+                Tuple.Create<object,string>(lblNameValue, "{'Text': {'Path': 'OrderName'}}"),
+                Tuple.Create<object,string>(lblPhoneValue, "{'Text': {'Path': 'OrderPhone'}}"),
+                Tuple.Create<object,string>(lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}"),
+                Tuple.Create<object,string>(lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}"),
+                Tuple.Create<object,string>(lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}"),
+                Tuple.Create<object,string>(lblVehicleTypeValue, "{'Text': {'Path': 'VehicleName'}}"),
+                Tuple.Create<object,string>(lblChargeTypeValue, "{'Text': {'Path': 'ChargeType'}}"),
+                Tuple.Create<object,string>(lblLargeBagsValue, "{'Text': {'Path': 'OrderLargeBagsNumber'}}"),
+                Tuple.Create<object,string>(lblPickupValue, "{'Text': {'Path': 'Order.PickupAddress.DisplayAddress'}}"),
+                Tuple.Create<object,string>(lblDestinationValue, "{'Text': {'Path': 'Order.DropOffAddress.DisplayAddress'}}"),
+                Tuple.Create<object,string>(lblFareValue, "{'Text': {'Path': 'FareEstimate'}}"),
+            }
+                .Where(x=> x.Item1 != null )
+                .ToDictionary(x=>x.Item1, x=>x.Item2);
+
+            this.AddBindings(bindings);
             
             this.View.ApplyAppFont ();
         }

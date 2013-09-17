@@ -22,11 +22,11 @@ namespace apcurium.MK.Booking.Commands
         public double Tip { get; set; }
         public double Fare { get; set; }
         public double Toll { get; set; }
+        public double Tax { get; set; }
 
         public double TotalFare
         {
-            get { return Fare + Toll + Tip; }
+            get { return Fare + Toll + Tip + Tax; }
         }
-
     }
 }

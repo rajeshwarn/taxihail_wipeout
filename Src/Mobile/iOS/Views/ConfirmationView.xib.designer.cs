@@ -11,6 +11,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 	[Register ("ConfirmationView")]
 	partial class ConfirmationView
 	{
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblPickup { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblDestination { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblPickupValue { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblDestinationValue { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblFare { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblFareValue { get; set; }
+
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
 
@@ -25,6 +43,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+
+        [Outlet]
+        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBagsValue { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
@@ -73,6 +97,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+
+            if (lblPickup != null) {
+                lblPickup.Dispose ();
+                lblPickup = null;
+            }
+
+            if (lblDestination != null) {
+                lblDestination.Dispose ();
+                lblDestination = null;
+            }
+
+            if (lblFare != null) {
+                lblFare.Dispose ();
+                lblFare = null;
+            }
+
+            if (lblPickupValue != null) {
+                lblPickupValue.Dispose ();
+                lblPickupValue = null;
+            }
+
+            if (lblDestinationValue != null) {
+                lblDestinationValue.Dispose ();
+                lblDestinationValue = null;
+            }
+
+            if (lblFareValue != null) {
+                lblFareValue.Dispose ();
+                lblFareValue = null;
+            }
+
 			if (lblChargeTypeValue != null) {
 				lblChargeTypeValue.Dispose ();
 				lblChargeTypeValue = null;
@@ -97,6 +152,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassengersValue.Dispose ();
 				lblPassengersValue = null;
 			}
+
+            if (lblLargeBags != null) {
+                lblLargeBags.Dispose ();
+                lblLargeBags = null;
+            }
+
+            if (lblLargeBagsValue != null) {
+                lblLargeBagsValue.Dispose ();
+                lblLargeBagsValue = null;
+            }
 
 			if (lblName != null) {
 				lblName.Dispose ();

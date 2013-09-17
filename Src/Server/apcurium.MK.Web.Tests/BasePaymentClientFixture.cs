@@ -108,7 +108,7 @@ namespace apcurium.CMT.Web.Tests
             const double amount = 21.56;
             var response = client.PreAuthorize(token, amount, orderId);
 
-            Assert.AreNotEqual("-1", response);
+            Assert.True(response.IsSuccessfull);
 
         }
 
@@ -138,7 +138,7 @@ namespace apcurium.CMT.Web.Tests
 
             var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
-            const double amount = 99.50;
+            const double amount = 1.50;
             var authorization = client.PreAuthorize(token, amount, orderId);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);

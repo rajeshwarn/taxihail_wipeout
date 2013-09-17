@@ -4,6 +4,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -14,14 +15,17 @@ namespace apcurium.MK.Booking.Api.Jobs
 {
     public class OrderStatusUpdater
     {
-        readonly IConfigurationManager _configurationManager;
+        private readonly IConfigurationManager _configurationManager;
         readonly ICommandBus _commandBus;
         static readonly ILog Logger = LogManager.GetLogger(typeof(OrderStatusUpdater));
+        readonly dynamic _resources;
 
         public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
             _configurationManager = configurationManager;
             _commandBus = commandBus;
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new DynamicResources(applicationKey);
         }
 
         public void Update(IBSOrderInformation ibsStatus, OrderStatusDetail order)
@@ -40,7 +44,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                                   Status = order,
                                   Fare = ibsStatus.Fare,
                                   Toll = ibsStatus.Toll,
-                                  Tip = ibsStatus.Tip
+                                  Tip = ibsStatus.Tip,
+                                  Tax = ibsStatus.VAT,
                               };
 
             ibsStatus.Update(order);
@@ -51,37 +56,47 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (ibsStatus.IsAssigned)
             {
-                description = string.Format(_configurationManager.GetSetting("OrderStatus.CabDriverNumberAssigned"),
-                                            ibsStatus.VehicleNumber);
+                description = string.Format((string)_resources.OrderStatus_CabDriverNumberAssigned, ibsStatus.VehicleNumber);
 
                 if (ibsStatus.Eta.HasValue)
                 {
-                    description += " - " +
-                                   string.Format(_configurationManager.GetSetting("OrderStatus.CabDriverETA"),
-                                                 ibsStatus.Eta.Value.ToString("t"));
+                    description += " - " + string.Format((string)_resources.OrderStatus_CabDriverETA, ibsStatus.Eta.Value.ToString("t"));
                 }
+            }
+            else if (ibsStatus.IsCanceled)
+            {
+                order.Status = OrderStatus.Canceled;
+                description = (string) _resources.GetString("OrderStatus_" + ibsStatus.Status);
+            }
+            else if (ibsStatus.IsTimedOut)
+            {
+                order.Status = OrderStatus.TimedOut;
             }
             else if (ibsStatus.IsComplete)
             {
                 order.Status = OrderStatus.Completed;
 
-                if (ibsStatus.Fare.HasValue || ibsStatus.Tip.HasValue || ibsStatus.Toll.HasValue)
-                {
-                    //FormatPrice
-                    var total =
-                        Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip)
-                              .Where(amount => amount.HasValue)
-                              .Select(amount => amount)
-                              .Sum();
+                //FormatPrice
+                var total =
+                    Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip, ibsStatus.VAT)
+                            .Select(amount => amount)
+                            .Sum();
 
-                    description = string.Format(_configurationManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
+                if (total > 0)
+                {
+                    description = string.Format((string)_resources.OrderStatus_OrderDoneFareAvailable, FormatPrice(total));
                     order.FareAvailable = true;
+                }
+                else
+                {
+                    description = (string)_resources.OrderStatus_wosDONE;
+                    order.FareAvailable = false;
                 }
             }
 
             order.IBSStatusDescription = description.HasValue()
                                              ? description
-                                             : _configurationManager.GetSetting("OrderStatus." + ibsStatus.Status);
+                                             : (string)_resources.GetString("OrderStatus_" + ibsStatus.Status);
 
             _commandBus.Send(command);
         }

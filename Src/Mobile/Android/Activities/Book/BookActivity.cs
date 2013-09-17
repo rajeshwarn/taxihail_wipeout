@@ -86,14 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}
         }
 
-        private void BookUsingAddress(Address address)
-        {
-            ViewModel.InitializeOrder();
-            ViewModel.Pickup.SetAddress(address, true);
-            ViewModel.Dropoff.ClearAddress();
-            ViewModel.ConfirmOrder.Execute();
-        }
-
         protected override void OnResume()
         {
             base.OnResume();

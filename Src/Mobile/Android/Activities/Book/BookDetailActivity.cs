@@ -4,6 +4,8 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Threading.Tasks;
 using System.Threading;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -18,10 +20,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnViewModelSet()
         {            
-            SetContentView(Resource.Layout.View_BookingDetail);
-            FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewModel.ShowPassengerName  ? ViewStates.Visible : ViewStates.Gone;
-            FindViewById<LinearLayout>(Resource.Id.passengerPhoneLayout).Visibility = ViewModel.ShowPassengerPhone ? ViewStates.Visible : ViewStates.Gone;
-            FindViewById<LinearLayout>(Resource.Id.passengerNumberLayout).Visibility = ViewModel.ShowPassengerNumber ? ViewStates.Visible : ViewStates.Gone;
+            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            bool isThriev = appSettings.ApplicationName == "Thriev";
+            SetContentView(true ? Resource.Layout.View_BookingDetail_Thriev : Resource.Layout.View_BookingDetail);
 
 			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
 

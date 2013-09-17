@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -14,32 +16,38 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         : IIntegrationEventHandler,
           IEventHandler<OrderStatusChanged>
     {
-        private const string wosASSIGNED = "Taxi #{0} has been assigned to you";
-        private const string wosARRIVED = "Your Taxi (#{0}) has arrived";
         readonly Func<BookingDbContext> _contextFactory;
         readonly IPushNotificationService _pushNotificationService;
+        readonly dynamic _resources;
 
-        public PushNotificationSender(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService)
+        public PushNotificationSender(Func<BookingDbContext> contextFactory, IPushNotificationService pushNotificationService, IConfigurationManager configurationManager)
         {
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
+
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            _resources = new DynamicResources(applicationKey);
         }
 
         public void Handle(OrderStatusChanged @event)
         {
-            var shouldSendPushNotification = @event.Status.IBSStatusId == "wosASSIGNED"
-                                                || @event.Status.IBSStatusId == "wosARRIVED";
+            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
 
             if (shouldSendPushNotification)
             {
                 var alert = string.Empty;
                 switch (@event.Status.IBSStatusId)
                 {
-                    case "wosASSIGNED":
-                        alert = string.Format(wosASSIGNED, @event.Status.VehicleNumber);
+                    case VehicleStatuses.Common.Assigned:
+                        alert = string.Format((string)_resources.PushNotification_wosASSIGNED, @event.Status.VehicleNumber);
                         break;
-                    case "wosARRIVED":
-                        alert = string.Format(wosARRIVED, @event.Status.VehicleNumber);
+                    case VehicleStatuses.Common.Arrived:
+                        alert = string.Format((string)_resources.PushNotification_wosARRIVED, @event.Status.VehicleNumber);
+                        break;
+                    case VehicleStatuses.Common.Timeout:
+                        alert = (string)_resources.PushNotification_wosTIMEOUT;
                         break;
                     default:
                         throw new InvalidOperationException("No push notification for this order status");
@@ -49,10 +57,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
                     var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
-                    var data = new Dictionary<string, object>
-                                   {
-                                       {"orderId", order.Id},
-                                   };
+                    var data = new Dictionary<string, object>();
+                    if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                        @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived)
+                    {
+                        data.Add("orderId", order.Id);
+                    }
 
                     foreach (var device in devices)
                     {

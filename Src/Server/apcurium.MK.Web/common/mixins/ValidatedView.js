@@ -80,7 +80,7 @@
 
             var regex = {
                 getRoot: /^[a-z|A-Z]+\./,
-                getMember: /\.[a-z|A-Z]+/,
+                getMember: /\.[a-z|A-Z]+/
             };
 
             var json = {};

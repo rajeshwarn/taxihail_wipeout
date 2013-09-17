@@ -11,28 +11,34 @@
 
         initialize:function () {
             _.bindAll(this, "onsubmit");
-            $.validator.addMethod(
-        "regex",
-        function (value, element, regexp) {
-            var re = new RegExp(regexp);
-            return this.optional(element) || re.test(value);
-        }
-);
-
+            $.validator.addMethod("regex",
+                function (value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }
+            );
+            $.validator.addMethod("tenOrMoreDigits",
+                function (value, element) {
+                    var match = value.match(/\d/g);
+                    if (match == null) return false;
+                    var count = match.length;
+                    return count >= 10;
+                }
+            );
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
-            var itemfb = window.localStorage.getItem('fbinfos');
-            var itemtw = window.localStorage.getItem('twinfos');
+            var itemfb = TaxiHail.localStorage.getItem('fbinfos');
+            var itemtw = TaxiHail.localStorage.getItem('twinfos');
             var infos;
             if (itemfb) {
                 infos = JSON.parse(itemfb);
-                window.localStorage.removeItem('fbinfos');
+                TaxiHail.localStorage.removeItem('fbinfos');
             } else {
                 if (itemtw) {
                     infos = JSON.parse(itemtw);
-                    window.localStorage.removeItem('twinfos');
+                    TaxiHail.localStorage.removeItem('twinfos');
                 }
             }
             if (infos) {
@@ -43,11 +49,8 @@
                 this.model.set('name', infos.name);
                 this.$('#signup-password-div').addClass('hidden');
                 this.$('#signup-confirm-password-div').addClass('hidden');
-                
             }
            
-            
-
             this.validate({
                 rules: {
                     email: {
@@ -56,8 +59,8 @@
                     },
                     name: "required",
                     phone: {
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
-                        required:true
+                        tenOrMoreDigits: true,
+                        required: true
                     },
                     password: {
                         required: true
@@ -77,7 +80,7 @@
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     password: {
                         required: TaxiHail.localize('Password required')

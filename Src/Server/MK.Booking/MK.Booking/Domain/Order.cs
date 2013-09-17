@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings): this(id)                   
+        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings, double? estimatedFare): this(id)                   
         {
             if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
                  ( Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty()) ))
@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Domain
                 PickupAddress = pickupAddress,
                 DropOffAddress = dropOffAddress,
                 Settings =  settings,
+                EstimatedFare = estimatedFare,
                 CreatedDate = DateTime.Now,                
             });
         }
@@ -89,16 +90,16 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new OrderCancelled());
         }
 
-        public void Complete(double? fare, double? tip, double? toll)
+        public void Complete(double? fare, double? tip, double? toll, double? tax)
         {
             if(_status != OrderStatus.Completed)
             {
-                
                 this.Update(new OrderCompleted
                                 {
                                     Fare = fare,
                                     Toll = toll,
-                                    Tip = tip
+                                    Tip = tip,
+                                    Tax = tax
                                 });
             }
         }

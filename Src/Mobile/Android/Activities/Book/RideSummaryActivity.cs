@@ -15,7 +15,7 @@ namespace Activities.Book
 	{
 		protected override int ViewTitleResourceId {
 			get {
-				return Resource.String.View_BookingStatus_ThankYouTitle; 
+				return Resource.String.EmptyString; 
 			}
 		}
 

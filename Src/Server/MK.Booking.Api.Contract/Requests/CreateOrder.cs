@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             DropOffAddress = new Address();
             Settings = new BookingSettings();
             Payment = new PaymentSettings();
+            Estimate = new RideEstimate();
         }
 
         public Guid Id { get; set; }
@@ -32,5 +33,16 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public BookingSettings Settings { get; set; }        
          
         public PaymentSettings Payment { get; set; }
+
+        public RideEstimate Estimate { get; set; }
+
+        public class RideEstimate
+        {
+            /// <summary>
+            /// Price including VAT
+            /// </summary>
+            public double? Price { get; set; }
+            public int Distance { get; set; }
+        }
     }
 }

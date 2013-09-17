@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 
 
@@ -68,7 +69,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                    NumberOfTaxi = 96,
                                    Passengers = 95,
                                    Phone = "94",
-                                   Name = "93"
+                                   Name = "93",
+                                   LargeBags = 92
                                },
                 CreatedDate = createdDate
             });
@@ -97,6 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(95, dto.Settings.Passengers);
                 Assert.AreEqual("94", dto.Settings.Phone);
                 Assert.AreEqual("93", dto.Settings.Name);
+                Assert.AreEqual(92, dto.Settings.LargeBags);
             }
         }
     }
@@ -149,7 +152,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dtoDetails = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(dtoDetails);
                 Assert.AreEqual(OrderStatus.Canceled, dtoDetails.Status);
-                Assert.AreEqual("wosCANCELLED_DONE", dtoDetails.IBSStatusId);
+                Assert.AreEqual(VehicleStatuses.Common.CancelledDone, dtoDetails.IBSStatusId);
             }
         }
 
@@ -227,7 +230,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderCompleted = new OrderCompleted
                                      {
-                                         SourceId = _orderId, Fare = 23, Toll = 2, Tip = 5
+                                         SourceId = _orderId, Fare = 23, Toll = 2, Tip = 5, Tax = 12
                                      };
             this.sut.Handle(orderCompleted);
 
@@ -239,6 +242,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(orderCompleted.Fare, dto.Fare);
                 Assert.AreEqual(orderCompleted.Toll, dto.Toll);
                 Assert.AreEqual(orderCompleted.Tip, dto.Tip);
+                Assert.AreEqual(orderCompleted.Tax, dto.Tax);
             }
         }
 

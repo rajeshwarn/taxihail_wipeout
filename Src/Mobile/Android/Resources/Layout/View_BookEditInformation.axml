@@ -25,7 +25,8 @@
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                local:MvxBind="{'Visibility':{'Path':'ShowPassengerName','Converter':'Visibility'}}">
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
                     android:text="@string/PassengerNameLabel"
                     style="@style/FormLabelText" />
                 <EditText
-                    local:MvxBind="{'Text':{'Path':'Order.Settings.Name'},'Visibility':{'Path':'ShowPassengerName','Converter':'Visibility'}}"
+                    local:MvxBind="{'Text':{'Path':'Order.Settings.Name'}}"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -56,14 +57,15 @@
                         android:id="@+id/passengerPhoneInfoLayout"
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        local:MvxBind="{'Visibility':{'Path':'ShowPassengerPhone','Converter':'Visibility'}}">
                         <TextView
                             android:layout_width="120dip"
                             android:layout_height="wrap_content"
                             android:text="@string/PassengerPhoneLabel"
                             style="@style/FormLabelText" />
                         <EditText
-                            local:MvxBind="{'Text':{'Path':'Order.Settings.Phone'},'Visibility':{'Path':'ShowPassengerPhone','Converter':'Visibility'}}"
+                            local:MvxBind="{'Text':{'Path':'Order.Settings.Phone'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -77,14 +79,15 @@
                         android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/passengerNumberInfoLayout">
+                        android:id="@+id/passengerNumberInfoLayout"
+                        local:MvxBind="{'Visibility':{'Path':'ShowPassengerNumber','Converter':'Visibility'}}">
                         <TextView
                             android:layout_width="120dip"
                             android:layout_height="wrap_content"
                             android:text="@string/PassengerNumberLabel"
                             style="@style/FormLabelText" />
                         <EditText
-                            local:MvxBind="{'Text':{'Path':'Order.Settings.Passengers'},'Visibility':{'Path':'ShowPassengerNumber','Converter':'Visibility'}}"
+                            local:MvxBind="{'Text':{'Path':'Order.Settings.Passengers'}}"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
                             android:singleLine="true"

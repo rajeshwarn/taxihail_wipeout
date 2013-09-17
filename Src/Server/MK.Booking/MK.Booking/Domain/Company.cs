@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
+        public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded)
         {
             if (_defaultTariffId.HasValue)
             {
@@ -181,6 +181,7 @@ namespace apcurium.MK.Booking.Domain
                 Name = name,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
+                KilometerIncluded = kilometerIncluded,
                 MarginOfError = timeAdustmentFactor,
                 PassengerRate = pricePerPassenger,
             });
@@ -190,7 +191,7 @@ namespace apcurium.MK.Booking.Domain
 
 
 
-        public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger,double kilometerIncluded, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
         {
             this.Update(new TariffCreated
             {
@@ -200,6 +201,7 @@ namespace apcurium.MK.Booking.Domain
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
                 MarginOfError = timeAdustmentFactor,
+                KilometerIncluded = kilometerIncluded,
                 PassengerRate = pricePerPassenger,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
@@ -207,7 +209,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DateTime startTime, DateTime endTime)
+        public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DateTime startTime, DateTime endTime)
         {
             this.Update(new TariffCreated
             {
@@ -216,6 +218,7 @@ namespace apcurium.MK.Booking.Domain
                 Name = name,
                 FlatRate = flatRate,
                 KilometricRate = distanceMultiplicator,
+                KilometerIncluded = kilometerIncluded,
                 MarginOfError = timeAdustmentFactor,
                 PassengerRate = pricePerPassenger,
                 StartTime = startTime,
@@ -223,7 +226,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
         {
             this.Update(new TariffUpdated
             {
@@ -233,6 +236,7 @@ namespace apcurium.MK.Booking.Domain
                 KilometricRate = distanceMultiplicator,
                 MarginOfError = timeAdustmentFactor,
                 PassengerRate = pricePerPassenger,
+                KilometerIncluded = kilometerIncluded,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
                 EndTime = endTime

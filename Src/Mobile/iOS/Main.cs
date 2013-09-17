@@ -99,29 +99,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Logger.LogMessage("OnActivated");
 
-            JsConfig.RegisterTypeForAot<OrderStatus>();
-            JsConfig.RegisterTypeForAot<OrderStatusDetail>();
+            try {
+                //Register Enums
+                JsConfig.RegisterTypeForAot<OrderStatus>();
+                JsConfig.RegisterTypeForAot<CoordinatePrecision>();
+                JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
+                JsConfig.RegisterTypeForAot<AddressType>();
+                JsConfig.RegisterTypeForAot<OrganizationType>();
+                JsConfig.RegisterTypeForAot<RelationshipType>();
+                JsConfig.RegisterTypeForAot<EmailType>();
+                JsConfig.RegisterTypeForAot<PhoneType>();
+                JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
+                JsConfig.RegisterTypeForAot<PaymentMethod> ();
+                JsConfig.RegisterTypeForAot<InstantMessagingService>();
+                JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
+                JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponentType>();
+            } catch(NullReferenceException){
+                // In the Simulator, a NullReferenceException is mysteriously thrown
+            }
 			JsConfig.RegisterTypeForAot<Coordinate>();
-			JsConfig.RegisterTypeForAot<CoordinatePrecision>();
-			JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
-			JsConfig.RegisterTypeForAot<AddressType>();
-			JsConfig.RegisterTypeForAot<OrganizationType>();
-			JsConfig.RegisterTypeForAot<RelationshipType>();
-			JsConfig.RegisterTypeForAot<InstantMessagingService>();
-			JsConfig.RegisterTypeForAot<EmailType>();
-			JsConfig.RegisterTypeForAot<PhoneType>();
             JsConfig.RegisterTypeForAot<Contact>();
-			JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
-			JsConfig.RegisterTypeForAot<PaymentMethod> ();
-
-
-
-
-
-            JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
-
-
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponentType>();
             JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponent>();
             JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Bounds>();
             JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.DirectionResult>();

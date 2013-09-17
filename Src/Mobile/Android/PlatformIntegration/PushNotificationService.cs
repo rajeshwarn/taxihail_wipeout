@@ -22,16 +22,18 @@ using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class PushNotificationService: IPushNotificationService
 	{
-		readonly Context _context;
-
-		public PushNotificationService (Context context)
+		private readonly Context _context;
+        private readonly IConfigurationManager _configManager;
+		public PushNotificationService (Context context, IConfigurationManager configManager)
 		{
 			this._context = context;
+            _configManager = configManager;
 		}
 
 		public void RegisterDeviceForPushNotifications (bool force = false)
@@ -56,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				Log.Info(TAG, "Registering...");
 				
 				//Call to register
-				GCMSharp.Client.GCMRegistrar.Register(_context, SampleBroadcastReceiver.SENDER_ID);
+				GCMSharp.Client.GCMRegistrar.Register(_context, _configManager.GetSetting( "GCM.SenderId" ));
 			}
 			else {
 				Log.Info(TAG, "Already registered");
@@ -77,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		//  Be sure to get the right Project ID from your Google APIs Console.  It's not the named project ID that appears in the Overview,
 		//  but instead the numeric project id in the url: eg: https://code.google.com/apis/console/?pli=1#project:785671162406:overview
 		//  where 785671162406 is the project id, which is the SENDER_ID to use!
-		public const string SENDER_ID = "385816297456"; 
+        //public const string SENDER_ID = "385816297456"; 
 		
 		public const string TAG = "PushSharp-GCM";
 	}
@@ -86,8 +88,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public class GCMIntentService : GCMBaseIntentService,
 		IUseServiceClient
 	{
-		public GCMIntentService() : base(SampleBroadcastReceiver.SENDER_ID) {}
+        public GCMIntentService() : base(TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("GCM.SenderId")) { }
 		
+        
 		protected override void OnRegistered (Context context, string registrationId)
 		{
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Registered: " + registrationId);

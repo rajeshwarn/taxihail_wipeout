@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Commands
             public int Passengers { get; set; }
             public string VehicleType { get; set; }
             public string ChargeType { get; set; }
+            public int LargeBags { get; set; }
         }
     }
 }

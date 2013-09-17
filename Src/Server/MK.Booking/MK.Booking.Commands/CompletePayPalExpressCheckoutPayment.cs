@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid PaymentId { get; set; }
 
         public string PayPalPayerId { get; set; }
+
+        public string TransactionId { get; set; }
     }
 }

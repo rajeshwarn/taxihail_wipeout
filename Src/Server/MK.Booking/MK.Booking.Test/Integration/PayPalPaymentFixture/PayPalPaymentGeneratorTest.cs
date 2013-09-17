@@ -100,7 +100,8 @@ namespace apcurium.MK.Booking.Test.Integration
             this.sut.Handle(new PayPalExpressCheckoutPaymentCompleted
             {
                 SourceId = _paymentId,
-                PayPalPayerId = "thepayer"
+                PayPalPayerId = "thepayer",
+                TransactionId = "thetransaction"
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -110,6 +111,7 @@ namespace apcurium.MK.Booking.Test.Integration
                 Assert.AreEqual(false, dto.IsCancelled);
                 Assert.AreEqual(true, dto.IsCompleted);
                 Assert.AreEqual("thepayer", dto.PayPalPayerId);
+                Assert.AreEqual("thetransaction", dto.TransactionId);
             }
         }
     }

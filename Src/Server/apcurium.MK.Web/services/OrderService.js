@@ -1,18 +1,16 @@
-(function(){
+(function(TaxiHail){
 
     var currentOrderKey = "TaxiHail.currentOrder",
-        OrderService = function () {
-            this.store = window.localStorage;
-        };
+        OrderService = function () { };
 
 
     _.extend(OrderService.prototype, {
         setCurrentOrder: function (orderModel) {
-            this.store.setItem(currentOrderKey, JSON.stringify(orderModel));
+            TaxiHail.localStorage.setItem(currentOrderKey, JSON.stringify(orderModel));
         },
 
         getCurrentOrder: function () {
-            var item = this.store.getItem(currentOrderKey);
+            var item = TaxiHail.localStorage.getItem(currentOrderKey);
             if(item) {
                 return new TaxiHail.Order(JSON.parse(item));
             }
@@ -20,7 +18,7 @@
         },
 
         clearCurrentOrder: function () {
-            this.store.removeItem(currentOrderKey);
+            TaxiHail.localStorage.removeItem(currentOrderKey);
         },
 
         validate: function (order) {
@@ -30,4 +28,4 @@
 
     TaxiHail.orderService = new OrderService();
 
-}());
+}(TaxiHail));

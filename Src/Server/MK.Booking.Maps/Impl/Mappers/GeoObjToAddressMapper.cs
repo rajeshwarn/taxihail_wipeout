@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoObj geoCodeResult, bool allowRange, string placeName=null)
+        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName, bool allowRange)
         {
             var address = new Address
             {
@@ -29,27 +29,29 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 
             address.AddressType = "postal";
 
-            if (!allowRange &&              
-                address.StreetNumber.HasValue () &&
-                address.StreetNumber.Contains ("-")) {
-
-                address.StreetNumber = address.StreetNumber.Split ('-') [0].Trim ();
-            }
-            else if (allowRange &&                 
-                     address.StreetNumber.HasValue () &&
-                address.StreetNumber.Contains ("-")) 
+            if (!allowRange &&
+                address.StreetNumber.HasValue() &&
+                address.StreetNumber.Contains("-"))
             {
-                address.StreetNumber = address.StreetNumber.Replace ("-", "");
+
+                address.StreetNumber = address.StreetNumber.Split('-')[0].Trim();
             }
-
-
-
-            if ( address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
+            else if (allowRange &&
+                     address.StreetNumber.HasValue() &&
+                address.StreetNumber.Contains("-"))
             {
-                address.FullAddress = placeName +", " + address.FullAddress.ToSafeString();
+                address.StreetNumber = address.StreetNumber.Replace("-", "");
             }
-            else if (address.FullAddress.HasValue() &&
-                address.FullAddress.Contains("-"))
+
+
+
+            if (address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
+            {
+                address.FullAddress = placeName + ", " + address.FullAddress.ToSafeString();
+            }
+            else if (!allowRange &&
+                (address.FullAddress.HasValue() &&
+                address.FullAddress.Contains("-")))
             {
                 var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
                 if (firstWordStreetNumber.Contains("-"))
@@ -58,7 +60,13 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                     address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
                 }
             }
-
+            else if (allowRange &&
+              (address.FullAddress.HasValue() &&
+              address.FullAddress.Contains("-")))
+            {
+                var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
+                address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, address.StreetNumber);
+            }
             return address;
         }
     }

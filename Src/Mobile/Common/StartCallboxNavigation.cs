@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
-
+            JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
             

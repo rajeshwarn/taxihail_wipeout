@@ -44,7 +44,9 @@ namespace apcurium.MK.Web.Tests
                 KilometricRate = 1.1,
                 FlatRate = 1.2m,
                 PassengerRate = 1.3m,
-                MarginOfError = 1.4
+                MarginOfError = 1.4,
+                KilometerIncluded = 0,
+
             });
         }
 
@@ -65,7 +67,9 @@ namespace apcurium.MK.Web.Tests
                 KilometricRate = 1.1,
                 FlatRate = 1.2m,
                 PassengerRate = 1.3m,
-                MarginOfError = 1.4
+                MarginOfError = 1.4, 
+                KilometerIncluded = 1.6
+
             });
 
             var rates = sut.GetTariffs();
@@ -80,6 +84,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(1.2m, rate.FlatRate);
             Assert.AreEqual(1.3m, rate.PassengerRate);
             Assert.AreEqual(1.4, rate.MarginOfError);
+            Assert.AreEqual(1.6, rate.KilometerIncluded);
             
         }
 

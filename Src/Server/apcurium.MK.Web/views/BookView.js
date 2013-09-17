@@ -13,9 +13,10 @@
             this.model.on('change', function(model, value) {
                 
                 // Enable the buttons if model is valid
-                if(this.model.isValidAddress('pickupAddress')) {
-                    this.$('.buttons .btn').removeClass('disabled');
-                } else this.$('.buttons .btn').addClass('disabled');
+                if (this.model.isValidAddress('pickupAddress') && (!TaxiHail.parameters.isDestinationRequired || (  TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))))
+                {                
+                    this.$('.buttons .btn').prop('disabled', false).removeClass('disabled');
+                } else this.$('.buttons .btn').prop('disabled', true).addClass('disabled');
 
             }, this);
 
@@ -35,19 +36,27 @@
                     this.actualizeEstimate();
                 }, this);
             
-            this.model.on('change:estimate', function(model, value){
+            this.model.on('change:estimate', function (model, value) {
+                var $estimate = this.$('.estimate');
                 if (value.formattedPrice && value.formattedDistance) {
-                    this.$('.estimate').removeClass('hidden') ;
+                    $estimate.removeClass('hidden')
+                        .find('.distance')
+                        .text('(' + value.formattedDistance + ')');
                      
                     if (value.callForPrice) {
-                        this.$('.estimate')
+                        $estimate
                             .find('.fare')
-                            .text(TaxiHail.localize('CallForPrice') + ' (' + value.formattedDistance + ')');
-                        this.$('.estimate')
-                            .find('.label').hide();
+                            .text(TaxiHail.localize('CallForPrice'));
+                        $estimate
+                            .find('.label')
+                            .hide();
                     } else {
-                        this.$('.estimate').find('.fare').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
-                        this.$('.estimate').find('.label').show();
+                        $estimate
+                            .find('.fare')
+                            .text(value.formattedPrice);
+                        $estimate
+                            .find('.label')
+                            .show();
                     }
                     
                 } else {
@@ -126,7 +135,9 @@
                 });
             }, this);
 
-            if(!this.model.isValidAddress('pickupAddress')){
+            
+            
+            if (!this.model.isValidAddress('pickupAddress') || (TaxiHail.parameters.isDestinationRequired && !this.model.isValidAddress('dropOffAddress'))) {
                 this.$('.buttons .btn').addClass('disabled');
             }
             return this;
@@ -153,7 +164,7 @@
             }
            
         },
-                    
+        
         book: function (e) {
             e.preventDefault();
             if(this.model.isValidAddress('pickupAddress')) {

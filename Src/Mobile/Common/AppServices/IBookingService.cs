@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-	    
+        DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
        
         string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 
@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		bool IsCompleted(Guid orderId);
 
         bool IsStatusCompleted(string statusId);
+
+        bool IsStatusTimedOut(string statusId);
 
         bool IsStatusDone(string statusId);
 
@@ -34,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         OrderStatusDetail CreateOrder(CreateOrder info);
 
-        OrderValidationResult ValidateOrder (CreateOrder order);
+        Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);
         

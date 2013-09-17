@@ -1,8 +1,8 @@
 {
-   "ApplicationName" : "TaxiHail",
+   "ApplicationName" : "Thriev",
    "CanChangeServiceUrl" : "true",
-   "DefaultPhoneNumber" : "18666245330",
-   "DefaultPhoneNumberDisplay" : "1.866.624.5330",
+   "DefaultPhoneNumber" : "1441158243142",
+   "DefaultPhoneNumberDisplay" : "+441158243142",
    "ErrorLog" : "",
    "TutorialEnabled" : "true",
    "ErrorLogEnabled" : "false",

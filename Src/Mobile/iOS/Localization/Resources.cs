@@ -612,7 +612,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 		public static string EstimatePrice {
-			get { return GetValue ("EstimatePrice"); }
+			get { return GetValue ("EstimatePriceFormat"); }
 		}
 
 		public static string NotAvailable {
@@ -698,10 +698,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static string CreateAccountErrorNotSpecified {
 			get { return GetValue ("CreateAccountErrorNotSpecified"); }
-		}
-		
-		public static string RideSettingsNumberOfTaxi {
-			get { return GetValue ("RideSettingsNumberOfTaxi"); }
 		}
 		
 		public static string WarningEstimate {

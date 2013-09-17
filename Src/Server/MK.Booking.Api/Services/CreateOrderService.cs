@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Infrastructure.Messaging;
@@ -66,16 +67,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-            //TODO: Fix this when IBS will accept more than 10 digits phone numbers
-            //Send 10 digits maximum to IBS
-            request.Settings.Phone = new string(request.Settings.Phone.Where(Char.IsDigit).Reverse().Take(10).Reverse().ToArray());
-
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
-
-            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers; 
+            request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers;
 
             var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
@@ -97,6 +92,8 @@ namespace apcurium.MK.Booking.Api.Services
             var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
             var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
 
+            command.Settings.ChargeType = chargeType;
+            command.Settings.VehicleType = vehicleType;
             emailCommand.Settings.ChargeType = chargeType;
             emailCommand.Settings.VehicleType = vehicleType;
 
@@ -136,10 +133,10 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
 
-            var note = BuildNote(request.Note, request.PickupAddress.BuildingName);
-
+            var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var fare = GetFare(request.Estimate);
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                                                    request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
+                request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress, fare);
 
             return result;
         }
@@ -149,7 +146,7 @@ namespace apcurium.MK.Booking.Api.Services
             return ((address != null) && address.FullAddress.HasValue() && address.Longitude != 0 && address.Latitude != 0);
         }
 
-        private string BuildNote(string note, string buildingName)
+        private string BuildNote(string note, string buildingName, int largeBags)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -173,15 +170,24 @@ namespace apcurium.MK.Booking.Api.Services
                 buildingName = "Building name: " + buildingName;
             }
 
+            var largeBagsString = string.Empty;
+            if (largeBags > 0)
+            {
+                largeBagsString = "Large bags: " + largeBags;
+            }
+
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                return noteTemplate
-                    .Replace("\\r", "\r")
-                    .Replace("\\n", "\n")
-                    .Replace("\\t", "\t")
-                    .Replace("{{userNote}}", note ?? string.Empty)
-                    .Replace("{{buildingName}}", buildingName ?? string.Empty)
-                    .Trim();
+                var transformedTemplate = noteTemplate
+                                            .Replace("\\r", "\r")
+                                            .Replace("\\n", "\n")
+                                            .Replace("\\t", "\t")
+                                            .Replace("{{userNote}}", note ?? string.Empty)
+                                            .Replace("{{buildingName}}", buildingName ?? string.Empty)
+                                            .Replace("{{largeBags}}", largeBagsString)
+                                            .Trim();
+
+                return transformedTemplate;
             }
 
             // In versions prior to 1.4, there was no note template
@@ -191,7 +197,28 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();
             }
+            // "Large bags" appeared in 1.4, no need to concat it here
             return formattedNote;
+        }
+    
+        private Fare GetFare(CreateOrder.RideEstimate estimate)
+        {
+            if (estimate == null || !estimate.Price.HasValue)
+            {
+                return default(Fare);
+            }
+
+            bool vatEnabled = _configManager.GetSetting("VATIsEnabled", false);
+            
+            if (!vatEnabled)
+            {
+                return Fare.FromAmountInclTax((decimal)estimate.Price.Value, 0m);
+            }
+
+            double taxPercentage = _configManager.GetSetting("VATPercentage", 0d);
+            return Fare.FromAmountInclTax((decimal)estimate.Price.Value, (decimal)taxPercentage);
+
+
         }
     }
 }

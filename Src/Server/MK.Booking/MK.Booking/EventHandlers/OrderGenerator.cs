@@ -4,6 +4,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 
 
@@ -41,7 +42,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     DropOffAddress = @event.DropOffAddress,
                     Settings = @event.Settings,
                     Status = (int)OrderStatus.Created,
-                    IsRated = false
+                    IsRated = false,
+                    EstimatedFare = @event.EstimatedFare,
                 });
 
                 // Create an empty OrderStatusDetail row
@@ -71,7 +73,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (details != null)
                 {
                     details.Status = OrderStatus.Canceled;
-                    details.IBSStatusId = "wosCANCELLED_DONE";
+                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
                     details.IBSStatusDescription = "Order Cancelled";
                     context.Save(details);
                 }
@@ -87,6 +89,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Fare = @event.Fare;
                 order.Toll = @event.Toll;
                 order.Tip = @event.Tip;
+                order.Tax = @event.Tax;
                 context.Save(order);
             }
         }

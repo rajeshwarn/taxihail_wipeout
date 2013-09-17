@@ -14,7 +14,7 @@
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
-            
+            this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
@@ -23,11 +23,6 @@
                     this.model.get('pickupDate')
                     ).done(this.renderResults);
             }
-            
-
-            this.referenceData = new TaxiHail.ReferenceData();
-            this.referenceData.fetch();
-            this.referenceData.on('change', this.render, this);
 
             this.model.validateOrder()
                 .done(_.bind(function (result) {
@@ -38,16 +33,22 @@
 
                 }, this));
 
-            
-            $.validator.addMethod(
-                "regex",
+            $.validator.addMethod("regex",
                 function (value, element, regexp) {
                     var re = new RegExp(regexp);
                     return this.optional(element) || re.test(value);
                 }
-
+            );
+            $.validator.addMethod("tenOrMoreDigits",
+                function (value, element) {
+                    var match = value.match(/\d/g);
+                    if (match == null) return false;
+                    var count = match.length;
+                    return count >= 10;
+                }
             );
 
+            this.render();
         },
 
         render: function (param) {
@@ -59,8 +60,9 @@
             var data = this.model.toJSON();
 
             _.extend(data, {
-                vehiclesList: this.referenceData.attributes.vehiclesList,
-                paymentsList: this.referenceData.attributes.paymentsList
+                vehiclesList: TaxiHail.referenceData.vehiclesList,
+                paymentsList: TaxiHail.referenceData.paymentsList,
+                showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -69,7 +71,7 @@
                 this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
-            if (this.showEstimate) {
+            if ( (this.showEstimate) && ( this.showEstimateWarning )) {
                 this.showEstimatedFareWarning();
             }
             
@@ -84,11 +86,14 @@
                 rules: {
                     'settings.name': "required",
                     'settings.phone': {
-                        required: true,
-                        regex: /^\(?([0-9]{3})\)?[\-. ]?([0-9]{3})[\-. ]?([0-9]{4})$/
+                        tenOrMoreDigits: true,
+                        minlength: 10
                     },
                     'settings.passengers': {
                         required: true,
+                        number: true
+                    },
+                    'settings.largeBags': {
                         number: true
                     }
                 },
@@ -98,10 +103,13 @@
                     },
                     'settings.phone': {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     'settings.passengers': {
                         required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber')
+                    },
+                    'settings.largeBags': {
                         number: TaxiHail.localize('error.NotANumber')
                     }
                 },
@@ -192,5 +200,4 @@
     _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
-
 

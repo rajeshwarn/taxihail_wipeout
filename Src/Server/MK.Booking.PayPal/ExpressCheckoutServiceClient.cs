@@ -9,7 +9,13 @@ namespace MK.Booking.PayPal
 {
     public class ExpressCheckoutServiceClient
     {
+        // Documentation:
+        // https://developer.paypal.com/webapps/developer/docs/classic/express-checkout/integration-guide/ECGettingStarted/
+        // https://developer.paypal.com/webapps/developer/docs/classic/api/
+        // ----------------------------------------------------------------------
+
         const string ApiVersion = "104";
+        const string MobileKnowledgeReferralCode = "MobileKnowledgeSystems_SP_MEC";
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
         readonly CurrencyCodeType _currency;
@@ -17,17 +23,11 @@ namespace MK.Booking.PayPal
         readonly string _cancelUrl;
 
 
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, string returnUrl, string cancelUrl, bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, bool useSandbox = false)
         {
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
-            if (returnUrl == null) throw new ArgumentNullException("returnUrl");
-            if (cancelUrl == null) throw new ArgumentNullException("cancelUrl");
-            if (string.IsNullOrWhiteSpace(returnUrl)) throw new ArgumentException("returnUrl");
-            if (string.IsNullOrWhiteSpace(cancelUrl)) throw new ArgumentException("returnUrl");
-
-            _returnUrl = returnUrl;
-            _cancelUrl = cancelUrl;
+            
             _urls = new Urls(useSandbox);
             _currency = (CurrencyCodeType)Enum.Parse(typeof(CurrencyCodeType), region.ISOCurrencySymbol);
             _credentials = new UserIdPasswordType
@@ -43,11 +43,16 @@ namespace MK.Booking.PayPal
             get { return _currency.ToString(); }
         }
 
-        public string SetExpressCheckout(decimal orderTotal)
+        public string SetExpressCheckout(decimal orderTotal, string returnUrl, string cancelUrl)
         {
+            if (returnUrl == null) throw new ArgumentNullException("returnUrl");
+            if (cancelUrl == null) throw new ArgumentNullException("cancelUrl");
+            if (string.IsNullOrWhiteSpace(returnUrl)) throw new ArgumentException("returnUrl");
+            if (string.IsNullOrWhiteSpace(cancelUrl)) throw new ArgumentException("returnUrl");
+
             using (var api = CreateApiClient())
             {
-                var request = BuildRequest(orderTotal);
+                var request = BuildRequest(orderTotal, returnUrl, cancelUrl);
                 var response = api.SetExpressCheckout(request);
 
                 ThrowIfError(response);
@@ -61,20 +66,68 @@ namespace MK.Booking.PayPal
             return _urls.GetCheckoutUrl(token);
         }
 
-        private static void ThrowIfError(SetExpressCheckoutResponseType response)
+        public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal)
+        {
+            using (var api = CreateApiClient())
+            {
+
+                var amount = new BasicAmountType
+                {
+                    Value = orderTotal.ToString(CultureInfo.InvariantCulture),
+                    currencyID = _currency,
+                };
+
+                var paymentDetails = new PaymentDetailsType
+                {
+                    OrderTotal = amount,
+                };
+
+                var requestDetails = new DoExpressCheckoutPaymentRequestDetailsType
+                {
+                    // Important:
+                    // ButtonSource is a tracking code that links the tansaction with Mobile Knowledge
+                    ButtonSource = ExpressCheckoutServiceClient.MobileKnowledgeReferralCode,
+                    PayerID = payerId,
+                    Token = token,
+                    PaymentDetails = new [] { paymentDetails },
+                    PaymentAction = PaymentActionCodeType.Sale,
+                };
+
+                var requestType = new DoExpressCheckoutPaymentRequestType
+                {
+                    Version = ApiVersion,
+                    DoExpressCheckoutPaymentRequestDetails = requestDetails,
+                };
+
+                var request = new DoExpressCheckoutPaymentReq()
+                {
+                    DoExpressCheckoutPaymentRequest = requestType,
+                };
+
+                var response = api.DoExpressCheckoutPayment(request);
+                ThrowIfError(response);
+
+                return response.DoExpressCheckoutPaymentResponseDetails.PaymentInfo[0].TransactionID;
+            }
+        }
+
+        private static void ThrowIfError(AbstractResponseType response)
         {
             Debug.Assert(response.Ack == AckCodeType.Success);
-            Debug.Assert(response.Token != null);
-            if (response.Errors != null)
+            
+            if (response.Ack != AckCodeType.Success)
             {
-                foreach (var error in response.Errors)
+                var errors = string.Empty;
+                if (response.Errors != null)
                 {
-                    Trace.WriteLine(error.LongMessage);
+                    foreach (var error in response.Errors)
+                    {
+                        Trace.WriteLine(error.LongMessage);
+                        errors += error + Environment.NewLine;
+                    }
                 }
-            }
-            if (response.Token == null)
-            {
-                throw new InvalidOperationException("token should not be null");
+
+                throw new ExpressCheckoutException(errors);
             }
         }
 
@@ -92,7 +145,7 @@ namespace MK.Booking.PayPal
             return api;
         }
 
-        private SetExpressCheckoutReq BuildRequest(decimal orderTotal)
+        private SetExpressCheckoutReq BuildRequest(decimal orderTotal, string returnUrl, string cancelUrl)
         {
             var amount = new BasicAmountType
             {
@@ -104,8 +157,8 @@ namespace MK.Booking.PayPal
             {
                 OrderTotal = amount,
                 PaymentAction = PaymentActionCodeType.Sale,
-                ReturnURL = _returnUrl,
-                CancelURL = _cancelUrl,
+                ReturnURL = returnUrl,
+                CancelURL = cancelUrl,
             };
 
             var requestType = new SetExpressCheckoutRequestType

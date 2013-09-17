@@ -12,8 +12,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         {
 #if DEBUG
             MerchantToken = "E4AFE87B0E864228200FA947C4A5A5F98E02AA7A3CFE907B0AD33B56D61D2D13E0A75F51641AB031500BD3C5BDACC114";
-            CustomerKey = "vmAoqWEY3zIvUCM4";
-            ConsumerSecretKey = "DUWzh0jAldPc7C5I";
+            CustomerKey = "AH7j9KweF235hP";
+            ConsumerSecretKey = "K09JucBn23dDrehZa";
             SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
             BaseUrl = "https://payment.cmtapi.com/";
             IsSandbox = true;

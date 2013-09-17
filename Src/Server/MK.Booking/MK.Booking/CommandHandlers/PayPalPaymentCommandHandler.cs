@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var payment = _repository.Get(command.PaymentId);
 
-            payment.Complete(command.PayPalPayerId);
+            payment.Complete(command.TransactionId, command.PayPalPayerId);
 
             _repository.Save(payment, command.Id.ToString());
         }

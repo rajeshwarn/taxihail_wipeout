@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Events
         public Address DropOffAddress { get; set; }
 
         public BookingSettings Settings { get; set; }
-        
+
+        public double? EstimatedFare { get; set; }
     }
 }

@@ -29,6 +29,8 @@ namespace apcurium.MK.Booking.Commands
         public BookingSettings Settings { get; set; }
 
         public PaymentInformation Payment { get; set; }
+
+        public double? EstimatedFare { get; set; }
     
         public class PaymentInformation
         {

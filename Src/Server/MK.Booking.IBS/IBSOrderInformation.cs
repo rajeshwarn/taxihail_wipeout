@@ -15,9 +15,10 @@ namespace apcurium.MK.Booking.IBS
         public string Status { get; set; }
         public double? VehicleLatitude { get; set; }
         public double? VehicleLongitude { get; set; }
-        public double? Toll { get; set; }
-        public double? Fare { get; set; }
-        public double? Tip { get; set; }
+        public double Toll { get; set; }
+        public double Fare { get; set; }
+        public double Tip { get; set; }
+        public double VAT { get; set; }
         public string VehicleNumber { get; set; }
         /*DriversInfos*/
         public string VehicleType;
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.IBS
             Fare = orderInfoFromIBS.Fare;
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
+            VAT = orderInfoFromIBS.VAT;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
@@ -88,15 +90,22 @@ namespace apcurium.MK.Booking.IBS
 
         public bool IsAssigned 
         { 
-            get
-            {
-                return Status.SoftEqual(VehicleStatuses.Common.Assigned);
-            } 
+            get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); } 
         }
 
         public bool IsComplete
         {
             get { return VehicleStatuses.DoneStatuses.Any(s => s.SoftEqual(Status)); }
+        }
+
+        public bool IsCanceled
+        {
+            get { return VehicleStatuses.CancelStatuses.Any(s => s.SoftEqual(Status)); }
+        }
+
+        public bool IsTimedOut
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Timeout); }
         }
     }
 }
