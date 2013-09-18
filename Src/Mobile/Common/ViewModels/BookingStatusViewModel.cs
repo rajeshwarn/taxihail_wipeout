@@ -313,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
-
+                IsPayButtonVisible = false;
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;

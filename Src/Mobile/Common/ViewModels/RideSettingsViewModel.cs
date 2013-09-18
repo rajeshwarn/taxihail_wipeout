@@ -50,10 +50,11 @@ namespace apcurium.MK.Booking.Mobile
         {
             this._bookingSettings = bookingSettings;
             _accountService = this.GetService<IAccountService>();
-            
-            _vehicules = _accountService.GetVehiclesList().ToArray();
-            _payments = _accountService.GetPaymentsList().ToArray();
-            
+
+            var v = _accountService.GetVehiclesList();
+            _vehicules = v ==null ? new ListItem[0] : v.ToArray();
+            var p = _accountService.GetPaymentsList();
+            _payments = p ==null ? new ListItem[0]  : p.ToArray();
 
 
 

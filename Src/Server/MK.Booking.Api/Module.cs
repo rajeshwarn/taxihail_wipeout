@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -9,6 +10,7 @@ using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -87,7 +89,8 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
-            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>()
+                .ForMember(x=>x.IsSuperAdmin, opt => opt.ResolveUsing(x=> x.RoleNames.Contains(RoleName.SuperAdmin) ));
  
 
            Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()

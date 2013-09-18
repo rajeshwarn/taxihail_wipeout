@@ -112,12 +112,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-
         public IMvxCommand ResendConfirmationCommand {
             get {
                 return new AsyncCommand (() =>
                 {
                     var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
+
+                    MessageService.ShowMessage( "Confirmation",
+                        Resources.GetString("ConfirmationOfPaymentSent"));
+
                     VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
                 });
             }

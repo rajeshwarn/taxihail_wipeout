@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var result = default( T );
 
-            if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            if ((serialized.HasValue()) && (serialized.ToLowerInvariant().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
             {
                 var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
                 if ((cacheItem != null) && (cacheItem.ExpiresAt > DateTime.Now))
@@ -76,6 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
         {
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;    
+
             var item = new CacheItem<T>(obj, expiresAt);
             var serialized = JsonSerializer.SerializeToString(item);
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, CacheKey + key);               

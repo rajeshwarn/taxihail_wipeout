@@ -1,4 +1,4 @@
-"EstimateDistance"=" ";
+"EstimateDistance"=" ({0})";
 "CreateAccoutCancel"="Cancel";
 "SignUpButton"="Create a free account";
 "ResetPasswordPlaceholder"="Enter your email here";
@@ -18,7 +18,7 @@
 "OrderNote"="Booked on mobile";
 "PickupTextPlaceholder"="Pickup street address";
 "TechSupportEmailTitle"="Support Application Mobile";
-"StatusConfirmNewBooking"="Booking a new car will keep this order active, do you want to continue ?";
+"StatusConfirmNewBooking"="Booking a new taxi will keep this order active, do you want to continue ?";
 "HistoryDetailRebookButton"="Rebook trip";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
@@ -139,7 +139,7 @@
 "View_Book_Menu_SignOut"="Sign Out";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "CreateAccoutCreate"="Create";
-"StatusActionBookButton"="Book another car";
+"StatusActionBookButton"="Book another taxi";
 "StatusCallButton"="Call";
 "StatusPayButton"="Pay now";
 "PickupDateDisplay"="Reservation for {0:ddd, MMM d} at {0:h:mm tt}";
@@ -159,7 +159,7 @@
 "LocationAddFavoriteSubtitle"="Select to add a new location";
 "ResetPasswordLabel"="Email";
 "WarningEstimateDontShow"="Don't warn";
-"CarAssigned"="Your car #{0}";
+"CarAssigned"="Your taxi #{0}";
 "RideSettingsChargeType"="Charge type";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "View_RideSettings"="Profile";
@@ -171,10 +171,10 @@
 "LocalContactCannotBeResolverTitle"="Invalid Contact";
 "ServerInfo"="({0} v{1})";
 "CreateAccoutTitleLabel"="Title:";
-"TaxiMapTitle"="Your car";
+"TaxiMapTitle"="Your Taxi";
 "DateToday"="Today";
 "CreateAccoutPasswordLabel"="Password:";
-"EstimatePriceOver100"="Cost: {0}";
+"EstimatePriceOver100"="Call for price";
 "View_BookingDetail_TitleRideSettings"="Ride Settings";
 "HistoryViewSendReceiptButton"="Send Receipt";
 "View_UpdatePassword"="Update Password";
@@ -221,7 +221,7 @@
 "View_Book_Menu_ReportProblem"="Report A Problem";
 "View_RefineAddress"="Pickup Details";
 "InvalidPickupAddress"="Please enter a valid pickup address.";
-"EstimatePrice"="Cost";
+"EstimatePrice"="Estimated Fare";
 "ServiceErrorCallTitle"="Message";
 "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
 "SettingsViewTitle"="Settings";
@@ -336,7 +336,7 @@
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
 "CreditCardType"="Type of Card";
 "Tuto07Bottom"="Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.";
-"ReminderDetails"="Reminder: A car will pick you up from {0} at {1} on {2}.";
+"ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
 "Tuto07Top"="On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.";
 "StreetNumberTitle"="Address Details";
 "AddReminderMessage"="Would you like a reminder added to your calendar for this pick-up time?";
@@ -376,7 +376,7 @@
 "NoPreference"="No preference";
 "DriverInfoDriver"="Driver:";
 "DriverInfoLicence"="Licence #:";
-"DriverInfoTaxiType"="Car Type:";
+"DriverInfoTaxiType"="Taxi Type:";
 "DriverInfoModel"="Model:";
 "NoPhoneNumberMessage"="The phone number is invalid for this driver.";
 "NoPhoneNumberTitle"="Invalid phone Number";
@@ -394,7 +394,7 @@
 "NoAmountSelectedMessage"="Please enter the amount";
 "CmtTransactionErrorMessage"="Transaction Denied";
 "OkButtonText"="Ok";
-"TaxiServerDownMessage"="Can't send message to driver";
+"TaxiServerDownMessage"="Can't send message to Taxi";
 "CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
 "CmtTransactionSuccessTitle"="Payment Received";
 "CmtTransactionResendConfirmationButtonText"="Resend";
@@ -433,4 +433,5 @@
 "InvalidBookinInfoWhenDestinationIsRequired"="To book a ride, you need to enter a valid pickup address and destination address.";
 "EmptyString"="";
 "LargeBagsLabel"="Large Bags";
-"EstimatePriceFormat"="Cost: {0}";
+"EstimatePriceFormat"="Estimated Fare : {0}";
+"ConfirmationOfPaymentSent"="Confirmation of payment has been sent to the driver.";

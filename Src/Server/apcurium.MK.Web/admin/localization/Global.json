@@ -1,5 +1,5 @@
 ﻿{
-	"grantAdminSuccess" : "User has correctly been granted with administrators privilege" ,
+	"grantAdminSuccess" : "User has been granted with administrator privilege" ,
 	"grantAdminError" : "Check that the email address exists in the system",
 	"search.no-result": "Start typing an address or a place name",
 	"favorites.no-result": "You don't have any favorite address yet",

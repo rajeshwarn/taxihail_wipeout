@@ -16,7 +16,9 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station", "route", "postal_code" };
+        
+		private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station", "route", "postal_code", "street_address" };
+
         private IMapsApiClient _mapApi;        
         private IConfigurationManager _configManager;
         private readonly IPopularAddressProvider _popularAddressProvider;

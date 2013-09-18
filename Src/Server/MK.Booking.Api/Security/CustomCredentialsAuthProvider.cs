@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web;
 using Infrastructure.Messaging;
@@ -44,10 +45,9 @@ namespace apcurium.MK.Booking.Api.Security
             var account = Dao.FindByEmail(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
             session.IsAuthenticated = true;
-            if(account.IsAdmin)
-            {
-                session.Permissions = new List<string> { Permissions.Admin };
-            }
+
+            session.Permissions = account.RoleNames.ToList();
+
             authService.SaveSession(session, SessionExpiry);
         }
 

@@ -2,8 +2,10 @@
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
@@ -15,7 +17,7 @@ using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfigurationsService : RestServiceBase<ConfigurationsRequest>
+    public class ConfigurationsService : Service
     {
         private readonly IConfigurationManager _configManager;
         private readonly ICommandBus _commandBus;
@@ -26,9 +28,10 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
         
-        public override object OnGet(ConfigurationsRequest request)
+        public object Get(ConfigurationsRequest request)
         {
             var keys = new string[0];
+            bool returnAllKeys = SessionAs<IAuthSession>().HasPermission(RoleName.SuperAdmin);
             
             if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
@@ -41,13 +44,17 @@ namespace apcurium.MK.Booking.Api.Services
             }
             
             var allKeys = _configManager.GetSettings();
-            
-            var result = allKeys.Where(k => keys.Contains(k.Key) || k.Key.StartsWith("Client.")|| k.Key.StartsWith("GeoLoc.")).ToDictionary(s => s.Key, s => s.Value);
+
+            var result = allKeys.Where(k => returnAllKeys 
+                                            || keys.Contains(k.Key) 
+                                            || k.Key.StartsWith("Client.") 
+                                            || k.Key.StartsWith("GeoLoc."))
+                                .ToDictionary(s => s.Key, s => s.Value);
             
             return result;
         }
         
-        public override object OnPost(ConfigurationsRequest request)
+        public object Post(ConfigurationsRequest request)
         {
             if (request.AppSettings.Any())
             {

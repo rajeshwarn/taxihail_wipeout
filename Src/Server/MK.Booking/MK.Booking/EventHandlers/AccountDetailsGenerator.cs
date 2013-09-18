@@ -4,6 +4,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 
@@ -17,7 +18,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
-        IEventHandler<AdminRightGranted>,
+        IEventHandler<RoleAddedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -43,11 +44,15 @@ namespace apcurium.MK.Booking.EventHandlers
                                      FacebookId = @event.FacebookId,
                                      TwitterId = @event.TwitterId,
                                      Language = @event.Language,
-                                     IsAdmin = @event.IsAdmin,
                                      CreationDate = @event.EventDate,
                                      ConfirmationToken = @event.ConfirmationToken,
                                      IsConfirmed = @event.AccountActivationDisabled
                                  };
+
+                if (@event.IsAdmin)
+                {
+                    account.Roles |= (int)Roles.Admin;
+                }
 
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
@@ -178,12 +183,13 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(AdminRightGranted @event)
+        public void Handle(RoleAddedToUserAccount @event)
         {
             using(var context= _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                account.IsAdmin = true;
+                account.Roles |= (int)Enum.Parse(typeof (Roles), @event.RoleName);
+
                 context.Save(account);
             }
         }

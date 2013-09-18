@@ -1600,6 +1600,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070082
 			public const int ConfirmVehiculeTypeLabel = 2131165314;
 			
+			// aapt resource value: 0x7f0701b6
+			public const int ConfirmationOfPaymentSent = 2131165622;
+			
 			// aapt resource value: 0x7f070181
 			public const int ContinueButton = 2131165569;
 			

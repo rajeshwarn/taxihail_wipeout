@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Route("/settings/payments/server/test/cmt", "POST")]
     [Authenticate(ApplyTo.All)]
-    [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
+    [AuthorizationRequired(ApplyTo.All, RoleName.SuperAdmin)]
     public class TestCmtSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
