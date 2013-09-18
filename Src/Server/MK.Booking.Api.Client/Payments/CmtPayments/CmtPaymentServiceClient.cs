@@ -60,10 +60,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         }
 
-
+        public T Get<T>(IReturn<T> request)
+        {
+            return Client.Get(request);
+        }
         public T Delete<T>(IReturn<T> request)
         {
-            return Client.Post(request);
+            return Client.Delete(request);
         }
         public T Post<T>(IReturn<T> request)
         {

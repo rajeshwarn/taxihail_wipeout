@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
 {
-    [Route("/payments/cmt/deleteToken/{CardToken}", "DELETE")]
+    [Route("/payments/cmt/deleteToken/{CardToken}/", "DELETE")]
     public class DeleteTokenizedCreditcardCmtRequest : IReturn<DeleteTokenizedCreditcardResponse>
     {
         public string CardToken { get; set; }
