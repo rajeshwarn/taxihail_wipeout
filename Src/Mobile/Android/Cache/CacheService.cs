@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
             var serialized = pref.GetString(key, null);
 
-            if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
             {
                 var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
                 if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
