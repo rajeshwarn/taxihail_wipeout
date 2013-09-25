@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(ConfigurationsRequest request)
         {
             var keys = new string[0];
-            bool returnAllKeys = SessionAs<IAuthSession>().HasPermission(RoleName.SuperAdmin);
+            bool returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
             
             if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
