@@ -237,7 +237,6 @@
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
-    <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
