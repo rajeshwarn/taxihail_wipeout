@@ -23,8 +23,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Account GetTwitterAccount(string twitterId);
         
         void ClearCache();
-        
+
+        [Obsolete("Use async method instead")]
         ReferenceData GetReferenceData();
+
+        Task<ReferenceData> GetReferenceDataAsync();
+
         void ClearReferenceData();
         
         Account RefreshAccount();

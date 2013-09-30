@@ -142,8 +142,8 @@ namespace apcurium.MK.Booking.Mobile
 
         private void LoadAppCache()
         {
-            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
-            TinyIoCContainer.Current.Resolve<IAccountService>().GetReferenceData();
+            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
+            TinyIoCContainer.Current.Resolve<IAccountService>().GetReferenceDataAsync();
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSettings();
         }
 
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile
 
         private void RefreshAppData()
         {
-			Task.Factory.StartNew(() =>
+			Task.Run(() =>
 			                      {
 				ClearAppCache();
 				LoadAppCache();

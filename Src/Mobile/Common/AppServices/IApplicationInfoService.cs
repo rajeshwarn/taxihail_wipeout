@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IApplicationInfoService
 	{
-        Task<ApplicationInfo> GetAppInfo( );
+        Task<ApplicationInfo> GetAppInfoAsync( );
 
         void ClearAppInfo();
 

@@ -438,7 +438,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void UpdateServerInfo()
         {
-            var serverInfo = await TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
+            var serverInfo = await TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
             var appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
             var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
 

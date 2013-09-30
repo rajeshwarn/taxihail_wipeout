@@ -39,31 +39,40 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _refDataCacheKey = "Account.ReferenceData";
 
+        [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
         {
+            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
 
-            var refData = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
-            
-            if (refData == null)
+            if (cached == null)
             {
-                UseServiceClient<ReferenceDataServiceClient>(service =>
-                {
-                    refData = service.GetReferenceData();
+                var referenceData = GetReferenceDataAsync();
+                Task.WaitAll(referenceData);
+                return referenceData.Result;
+            }
+            return cached;
+
+        }
+
+        public Task<ReferenceData> GetReferenceDataAsync()
+        {
+            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
+
+            if (cached == null)
+            {
+                return UseServiceClient<ReferenceDataServiceClient, ReferenceData>(service =>
+                                                             {
+                    var refData = service.GetReferenceData();
                     TinyIoCContainer.Current.Resolve<IAppCacheService>().Set(_refDataCacheKey, refData, DateTime.Now.AddHours(1));
+                    return refData;
                 });
             }
-            return refData;
-            
-
+            return Task.Run(() => cached);
         }
 
         public void ClearReferenceData()
         {
             TinyIoCContainer.Current.Resolve<IAppCacheService>().Clear(_refDataCacheKey);
-        }
-
-        protected ILogger Logger {
-            get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
         }
 
         public void ResendConfirmationEmail (string email)

@@ -77,7 +77,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {            
             lock (lockObject) {
                 if (_settings == null) {
+
+                    _logger.StartStopwatch("Start fetching Settings");
                     var settings = Client.Get<Dictionary<string,string>> ("/settings");
+                    _logger.StopStopwatch("End   fetching Settings");
+
                     _settings = new Dictionary<string, string> ();
                     settings.ForEach (s => _settings.Add (s.Key, s.Value));
                     _settings.ToString ();

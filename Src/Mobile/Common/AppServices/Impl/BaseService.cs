@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 try
                 {
                     Logger.StartStopwatch("*************************************   UseServiceClient : " + method);
-                    Thread.Sleep(5000);
+                    Thread.Sleep(10000);
                     var result =  action(service);
                     Logger.StopStopwatch("*************************************   UseServiceClient : " + method);
                     return result;

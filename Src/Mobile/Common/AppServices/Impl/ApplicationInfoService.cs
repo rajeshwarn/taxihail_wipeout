@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private const string _appInfoCacheKey = "ApplicationInfo";
 
-        public Task<ApplicationInfo> GetAppInfo( )
+        public Task<ApplicationInfo> GetAppInfoAsync( )
         {
             var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
 
-            if (true || cached == null)
+            if (cached == null)
             {
                 return UseServiceClient<ApplicationInfoServiceClient, ApplicationInfo>(service => 
                 {
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             bool isUpToDate;
             try
             {
-                var app = await GetAppInfo();
+                var app = await GetAppInfoAsync();
                 isUpToDate = app.Version.StartsWith("1.4.");
             }
             catch (Exception e)
