@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CenterMap(true);
 
-            Task.Factory.SafeStartNew( UpdateServerInfo);
+            UpdateServerInfo();
  
             ForceRefresh();
         }
@@ -436,11 +436,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void UpdateServerInfo()
+        private async void UpdateServerInfo()
         {
+            var serverInfo = await TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
             var appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
             var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
-            var serverInfo = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
 
             var version = string.Format(versionFormat, appVersion);
             if (serverInfo != null)

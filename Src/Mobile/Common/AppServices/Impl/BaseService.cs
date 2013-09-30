@@ -8,6 +8,7 @@ using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -29,10 +30,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			try
 			{
-				var method =  TinyIoCContainer.Current.Resolve<ILogger>().GetStack(3);
-				TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("*************************************   UseServiceClient : " + method);                
+                var method =  Logger.GetStack(3);
+                Logger.StartStopwatch("*************************************   UseServiceClient : " + method);                
 				action(service);
-				TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("*************************************   UseServiceClient : " + method);
+                Logger.StopStopwatch("*************************************   UseServiceClient : " + method);
 				return "";
 			}
 			catch (Exception ex)
@@ -51,6 +52,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
+        protected Task<TResult> UseServiceClient<TService, TResult>(Func<TService, TResult> action) where TResult : class  where TService : class
+        {
+            var service = TinyIoCContainer.Current.Resolve<TService>();
+            var method =  Logger.GetStack(2);
+
+            return Task.Run(() => {
+                try
+                {
+                    Logger.StartStopwatch("*************************************   UseServiceClient : " + method);
+                    Thread.Sleep(5000);
+                    var result =  action(service);
+                    Logger.StopStopwatch("*************************************   UseServiceClient : " + method);
+                    return result;
+                }
+                catch (Exception ex)
+                {                    
+                    Logger.LogError(ex);
+                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                }
+                return default(TResult);
+            });
+        }
+
         protected void QueueCommand<T>(Action<T> action) where T : class
         {
             ThreadPool.QueueUserWorkItem(o =>
@@ -61,10 +85,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 catch (Exception ex)
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                    Logger.LogError(ex);
                 }
             });
             
+        }
+
+        private ILogger _logger;
+        protected ILogger Logger
+        {
+            get
+            {
+                return _logger ?? (_logger = TinyIoCContainer.Current.Resolve<ILogger>());
+            }
         }
 
 

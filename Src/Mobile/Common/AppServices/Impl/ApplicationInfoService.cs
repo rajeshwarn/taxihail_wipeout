@@ -18,20 +18,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private const string _appInfoCacheKey = "ApplicationInfo";
 
-        public ApplicationInfo GetAppInfo( )
+        public Task<ApplicationInfo> GetAppInfo( )
         {
-            var info = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
+            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
 
-            if (info == null)
+            if (true || cached == null)
             {
-                info = new ApplicationInfo();
-                UseServiceClient<ApplicationInfoServiceClient>(service =>
+                return UseServiceClient<ApplicationInfoServiceClient, ApplicationInfo>(service => 
                 {
-                    info = service.GetAppInfo();
-                    TinyIoCContainer.Current.Resolve<IAppCacheService>().Set<ApplicationInfo>(_appInfoCacheKey, info, DateTime.Now.AddHours(1));
+                    var appInfo = service.GetAppInfo();
+                    TinyIoCContainer.Current.Resolve<IAppCacheService>().Set<ApplicationInfo>(_appInfoCacheKey, appInfo, DateTime.Now.AddHours(1));
+                    return appInfo;
                 });
             }
-            return info;
+            return Task.Run(() => cached);
         }
         public void ClearAppInfo()
         {
@@ -39,41 +39,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
         
         
-        public void CheckVersion()
+        public async void CheckVersion()
         {
 
-            var t = Task.Factory.StartNew(() =>
+            bool isUpToDate;
+            try
             {
-                bool isUpToDate;
-                try
-                {
-                    var app = GetAppInfo();
-                    isUpToDate = app.Version.StartsWith("1.4.");
-                }
-                catch (Exception e)
-                {
-                    isUpToDate = true;
-                }
+                var app = await GetAppInfo();
+                isUpToDate = app.Version.StartsWith("1.4.");
+            }
+            catch (Exception e)
+            {
+                isUpToDate = true;
+            }
 
 #if DEBUG
-                isUpToDate = true;
+            isUpToDate = true;
 #endif
 
-                if (!isUpToDate)
-                {
+            if (!isUpToDate)
+            {
 
-                    var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
-                    var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
-                    var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
-                    mService.ShowMessage(title, msg);
-                }
-            });
-
-
-
+                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
+                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
+                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                mService.ShowMessage(title, msg);
+            }
         }
-
-
     }
 }
 
