@@ -44,30 +44,30 @@ namespace apcurium.MK.Callbox.Mobile.Client.Cache
 		public T Get<T>(string key) where T : class
 		{
 			
-			var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-			var serialized = pref.GetString(key, null);
-			
-			if ((serialized.HasValue()) && (serialized.Contains("ExpiresAt"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
-			{
-				var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
-				if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
-				{
-					return cacheItem.Value;
-				}
-			}
-			else if (serialized.HasValue()) //Support for older cached item
-			{
-				var item = JsonSerializer.DeserializeFromString<T>(serialized);
-				if (item != null)
-				{
-					Set(key, item);
-					return item;
-				}
-			}
-			
-			
-			
-			return default(T);
+            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+            var serialized = pref.GetString(key, null);
+
+            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            {
+                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+                if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
+                {
+                    return cacheItem.Value;
+                }
+            }
+            else if (serialized.HasValue()) //Support for older cached item
+            {
+                var item = JsonSerializer.DeserializeFromString<T>(serialized);
+                if (item != null)
+                {
+                    Set(key, item);
+                    return item;
+                }
+            }
+
+
+
+            return default(T);
 		}
 		
 		public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
