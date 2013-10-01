@@ -47,6 +47,8 @@
         initialize: function (options) {
             $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
             
+            //default lat and long are defined in the default.aspx
+            TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
         },
         
         manageCompanySettings: function () {
