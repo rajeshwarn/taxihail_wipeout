@@ -41,13 +41,12 @@
                 defaultLatitude = this.latitude,
                 defaultLongitude = this.longitude,
                 // Check if first character is numeric
-                isNumeric = !_.isNaN(parseInt(address.substring(0, 1), 10)),
-                geoResult = $.when();
+                isNumeric = !_.isNaN(parseInt(address.substring(0, 1), 10));
 
             // Geocode address if address starts by a digit
             if (isNumeric) {
                 var filtered = TaxiHail.parameters.geolocSearchFilter.replace('{0}', address);
-                    
+
                 this.geocoder.geocode({
                     address: filtered,
                     region: TaxiHail.parameters.geolocSearchRegion,
@@ -63,8 +62,9 @@
                         geocodeDefer.reject();
                     }
                 });
+            } else {
+                geocodeDefer.resolve();
             }
-
 
             if (TaxiHail.geolocation.isActive) {
             
