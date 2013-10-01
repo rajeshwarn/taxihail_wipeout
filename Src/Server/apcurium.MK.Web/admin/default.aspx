@@ -35,6 +35,7 @@
         
 
         <!-- assets -->
+        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
         <%: Scripts.Render("~/admin/bundles/assets") %>
@@ -43,7 +44,12 @@
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/resources") %>"></script>
         
         <script type="text/javascript">
+            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
+            TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
+            TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
+            TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
             TaxiHail.parameters.apiRoot = "../api";
         </script>
 
