@@ -44,8 +44,13 @@
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/resources") %>"></script>
         
         <script type="text/javascript">
+            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.isSuperAdmin = <%: this.IsSuperAdmin ? "true" : "false" %>;
+            TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
+            TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
+            TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
         </script>
