@@ -7,6 +7,7 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,14 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
         
-        public void StartStopwatch (string message)
-        {           
-            Logger.StartStopwatch (message);
-        }
-
-        public void StopStopwatch (string message)
+        public IDisposable StartStopwatch(string message)
         {
-            Logger.StopStopwatch (message);
+            var w = new Stopwatch();
+            w.Start();
+            LogMessage("Start: " + message);
+            return Disposable.Create (() => {
+                w.Stop();
+                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
+            });
         }
 
         public void LogStack ()
