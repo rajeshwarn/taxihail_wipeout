@@ -20,18 +20,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<ApplicationInfo> GetAppInfoAsync( )
         {
-            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
-
-            if (cached == null)
+            return UseServiceClient<ApplicationInfoServiceClient, ApplicationInfo>(service => 
             {
-                return UseServiceClient<ApplicationInfoServiceClient, ApplicationInfo>(service => 
+                var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ApplicationInfo>(_appInfoCacheKey);
+
+                if (cached == null)
                 {
                     var appInfo = service.GetAppInfo();
                     TinyIoCContainer.Current.Resolve<IAppCacheService>().Set<ApplicationInfo>(_appInfoCacheKey, appInfo, DateTime.Now.AddHours(1));
                     return appInfo;
-                });
-            }
-            return Task.Run(() => cached);
+                }
+            return cached;
+            });
         }
         public void ClearAppInfo()
         {

@@ -48,13 +48,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _useExistingOrder = true;
         }
 
-        protected override void Initialize()
+        protected async override void Initialize()
         {
             if (_initialized)
                 throw new InvalidOperationException();
             _initialized = true;
 
             Panel = new PanelViewModel(this);
+
+            var showEstimate = Task.Run(() =>  Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate")));
+
+            try
+            {
+                ShowEstimate = await showEstimate;
+            }
+            catch
+            {
+                ShowEstimate = true;
+            }
+
         }
 
 		public override void Load()
@@ -91,9 +103,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var tutorialWasDisplayed = CacheService.Get<string>("TutorialWasDisplayed");
                 if (tutorialWasDisplayed.IsNullOrEmpty())
                 {
-                    Task.Factory.SafeStartNew( () =>
+                    Task.Run( () =>
                     {
-                        Thread.Sleep( 4000 );
+                        //Thread.Sleep( 4000 );
                         Pickup.RequestCurrentLocationCommand.Execute();            
                     });
                 }
@@ -293,21 +305,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private bool _showEstimate = true;
         public bool ShowEstimate
         {
-            get
+            get { return _showEstimate; }
+            private set
             {
-                bool ret;
-                try
-                {
-                     ret =  Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate"));
-                }
-                catch (Exception)
-                {
-                    return true;
-                }
-                return ret;
-            }
+                _showEstimate = value;
+                FirePropertyChanged(() => ShowEstimate);
+            } 
         }
 
         public PanelViewModel Panel { get; set; }
