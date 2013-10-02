@@ -13,9 +13,7 @@ namespace apcurium.MK.Common.Diagnostic
 
         string GetStack(int position);
 
-        void StartStopwatch( string message );
-
-        void StopStopwatch(string message);
+        IDisposable StartStopwatch( string message );
 
 	}
 }

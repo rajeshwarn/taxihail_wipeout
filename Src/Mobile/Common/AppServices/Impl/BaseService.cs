@@ -31,9 +31,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
                 var method =  Logger.GetStack(3);
-                Logger.StartStopwatch("*************************************   UseServiceClient : " + method);                
-				action(service);
-                Logger.StopStopwatch("*************************************   UseServiceClient : " + method);
+                using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
+                {
+				    action(service);
+                }
 				return "";
 			}
 			catch (Exception ex)
@@ -60,11 +61,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return Task.Run(() => {
                 try
                 {
-                    Logger.StartStopwatch("*************************************   UseServiceClient : " + method);
-                    Thread.Sleep(10000);
-                    var result =  action(service);
-                    Logger.StopStopwatch("*************************************   UseServiceClient : " + method);
-                    return result;
+                    using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
+                    {
+                        var result =  action(service);
+                        return result;
+                    }
                 }
                 catch (Exception ex)
                 {                    

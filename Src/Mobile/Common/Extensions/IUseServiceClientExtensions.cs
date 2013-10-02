@@ -15,18 +15,20 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 		{
 			try
 			{
-				TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("UseServiceClient : " + typeof(T));
-				T client;
-				if( name == null )
-				{
-					client = TinyIoCContainer.Current.Resolve<T>();
-				}
-				else
-				{
-					client = TinyIoCContainer.Current.Resolve<T>(name);
-				}
-				action(client);
-				TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("UseServiceClient : " + typeof(T));
+                var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+				using(logger.StartStopwatch("UseServiceClient : " + typeof(T)))
+                {
+    				T client;
+    				if( name == null )
+    				{
+    					client = TinyIoCContainer.Current.Resolve<T>();
+    				}
+    				else
+    				{
+    					client = TinyIoCContainer.Current.Resolve<T>(name);
+    				}
+    				action(client);
+                }
 				return "";
 			}
 			catch (Exception ex)
