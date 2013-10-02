@@ -23,6 +23,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         private TimeSpan TimeOut = TimeSpan.FromSeconds(5);
         private TimeSpan BlinkMs = TimeSpan.FromMilliseconds(500);
 
+        IDisposable _blinkTimer;
+
         private MediaPlayer _mediaPlayer;
 
         public OrderListActivity()
@@ -57,7 +59,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         {
                 _mediaPlayer.Start();
                 var isRed = false;
-                Observable.Timer(TimeSpan.Zero, BlinkMs).Select(c => new Unit())
+                if (_blinkTimer != null)
+                {
+                    _blinkTimer.Dispose();
+                }
+              _blinkTimer = Observable.Timer(TimeSpan.Zero, BlinkMs).Select(c => new Unit())
                                                     .Subscribe(unit => RunOnUiThread(() =>
                                                      {
                                                          if (isRed)
@@ -77,12 +83,20 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
 
         private void DisposeBlinkScreen()
-        {         
+        { 
+            if (_blinkTimer != null)
+            {
+                _blinkTimer.Dispose();
+            }
             RunOnUiThread( () => this.FindViewById<LinearLayout>(Resource.Id.frameLayout).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.background_empty)));
         }
 
         protected override void OnDestroy()
         {
+            if (_blinkTimer != null)
+            {
+                _blinkTimer.Dispose();
+            }
             base.OnDestroy();
             ViewModel.OrderCompleted -= ViewModelOnOrderCompleted; 
 			ViewModel.UnsubscribeToken();

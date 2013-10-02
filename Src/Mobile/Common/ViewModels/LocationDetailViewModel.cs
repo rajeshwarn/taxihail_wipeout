@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     
                         location.CopyTo( _address );
 
-                        FirePropertyChanged (() => BookAddress ); 
+                        FirePropertyChanged (() => BookAddress );                         
 
                         AccountService.UpdateAddress(_address);
 
