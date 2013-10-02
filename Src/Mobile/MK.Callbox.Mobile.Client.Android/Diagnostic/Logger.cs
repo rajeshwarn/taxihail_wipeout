@@ -5,6 +5,7 @@ using System.IO;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 {
@@ -91,21 +92,16 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 		}
 		
 		
-		public void StartStopwatch(string message)
-		{
-			var w = new Stopwatch();
-			_watchs.Push(w);
-			w.Start();
-			LogMessage("Start :" + message);
-		}
-		
-		
-		public void StopStopwatch(string message)
-		{
-			var w = _watchs.Pop();
-			w.Stop();
-			LogMessage(message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
-		}
+        public IDisposable StartStopwatch(string message)
+        {
+            var w = new Stopwatch();
+            w.Start();
+            LogMessage("Start: " + message);
+            return Disposable.Create (() => {
+                w.Stop();
+                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
+            });
+        }
 		
 		public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "TaxiHail"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 		
