@@ -132,16 +132,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private bool _canCall = true;
         public bool CanCall
         {
-            get;
-            private set;
+            get { return _canCall; }
+            private set
+            {
+                _canCall = value;
+                FirePropertyChanged(() => CanCall);
+            }
         }
 
+        private bool _canReportProblem = true;
         public bool CanReportProblem
         {
-            get;
-            private set;
+            get { return _canReportProblem; }
+            private set
+            {
+                _canReportProblem = value;
+                FirePropertyChanged(() => CanReportProblem);
+            }
         }
 
         public IMvxCommand Call {
