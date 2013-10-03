@@ -235,26 +235,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return false;
         }
 
-        [Obsolete("Use async method instead")]
         public Address FindInAccountAddresses (double latitude, double longitude)
         {
-            var task = FindInAccountAddressesAsync(latitude, longitude);
-            Task.WaitAll(task);
-            return task.Result;
-
-        }
-
-        public Task<Address> FindInAccountAddressesAsync (double latitude, double longitude)
-        {
-            return Task.Run(() => 
+            Address found = GetAddresseInRange(GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 100);                   
+            if (found == null)
             {
-                Address found = GetAddresseInRange(GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 100);                   
-                if (found == null)
-                {
-                    found = GetAddresseInRange(GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 75);
-                }
-                return found;
-            });
+                found = GetAddresseInRange(GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 75);
+            }
+            return found;
 
         }
 
