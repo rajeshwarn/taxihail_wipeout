@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
         {
-            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
+            var cached = Cache.Get<ReferenceData>(_refDataCacheKey);
 
             if (cached == null)
             {
@@ -54,25 +54,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public Task<ReferenceData> GetReferenceDataAsync()
+        public async Task<ReferenceData> GetReferenceDataAsync()
         {
-            var cached = TinyIoCContainer.Current.Resolve<IAppCacheService>().Get<ReferenceData>(_refDataCacheKey);
+            var cached = Cache.Get<ReferenceData>(_refDataCacheKey);
 
             if (cached == null)
             {
-                return UseServiceClient<ReferenceDataServiceClient, ReferenceData>(service =>
-                                                             {
-                    var refData = service.GetReferenceData();
-                    TinyIoCContainer.Current.Resolve<IAppCacheService>().Set(_refDataCacheKey, refData, DateTime.Now.AddHours(1));
-                    return refData;
-                });
+                var refData = UseServiceClient<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
+                Cache.Set(_refDataCacheKey, await refData, DateTime.Now.AddHours(1));
+                return await refData;
+
             }
-            return Task.Run(() => cached);
+            return cached;
         }
 
         public void ClearReferenceData()
         {
-            TinyIoCContainer.Current.Resolve<IAppCacheService>().Clear(_refDataCacheKey);
+            Cache.Clear(_refDataCacheKey);
         }
 
         public void ResendConfirmationEmail (string email)

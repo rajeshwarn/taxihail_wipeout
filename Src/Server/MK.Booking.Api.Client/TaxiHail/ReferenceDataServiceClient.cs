@@ -1,4 +1,5 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -9,10 +10,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public ReferenceData GetReferenceData()
+        public Task<ReferenceData> GetReferenceData()
         {
-            var result = Client.Get<ReferenceData>("/referencedata");
-            return result;
+            var tcs = new TaskCompletionSource<ReferenceData>();
+            Client.GetAsync<ReferenceData>("/referencedata", tcs.SetResult, (result, error) => tcs.SetException(error));
+            return tcs.Task;
         }
     }
 }

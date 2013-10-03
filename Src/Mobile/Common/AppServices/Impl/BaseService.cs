@@ -9,28 +9,29 @@ using apcurium.MK.Common.Diagnostic;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Runtime.CompilerServices;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class BaseService: IUseServiceClient
     {
-        protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null) where T : class
+        protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>();
-            return this.UseServiceClient<T>(service, action, errorHandler);
+            return this.UseServiceClient<T>(service, action, errorHandler, method);
         }
 
-        protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null ) where T : class
+        protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>(name);
-			return this.UseServiceClient<T>(service, action, errorHandler);
+			return this.UseServiceClient<T>(service, action, errorHandler, method);
         }
 
-		private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler) where T : class
+        private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler, string method) where T : class
 		{
 			try
 			{
-                var method =  Logger.GetStack(3);
                 using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
                 {
 				    action(service);
@@ -56,27 +57,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-        protected Task<TResult> UseServiceClient<TService, TResult>(Func<TService, TResult> action) where TResult : class  where TService : class
+        protected async Task<TResult> UseServiceClient<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "") where TResult : class  where TService : class
         {
             var service = TinyIoCContainer.Current.Resolve<TService>();
-            var method =  Logger.GetStack(2);
 
-            return Task.Run(() => {
-                try
+            try
+            {
+                using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
                 {
-                    using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-                    {
-                        var result =  action(service);
-                        return result;
-                    }
+                    return await action(service);
                 }
-                catch (Exception ex)
-                {                    
-                    Logger.LogError(ex);
-                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
-                }
-                return default(TResult);
-            });
+            }
+            catch (Exception ex)
+            {                    
+                Logger.LogError(ex);
+                TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+            }
+            return default(TResult);
         }
 
         protected void QueueCommand<T>(Action<T> action) where T : class
@@ -101,6 +98,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get
             {
                 return _logger ?? (_logger = TinyIoCContainer.Current.Resolve<ILogger>());
+            }
+        }
+        protected IAppCacheService Cache
+        {
+            get
+            {
+                return TinyIoCContainer.Current.Resolve<IAppCacheService>();
             }
         }
 
