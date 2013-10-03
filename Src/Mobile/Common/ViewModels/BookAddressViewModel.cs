@@ -344,12 +344,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        private void SearchAddressForCoordinate(Position p)
+        private async void SearchAddressForCoordinate(Position p)
         {
             IsExecuting = true;
             Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture));
 
-            var accountAddress = AccountService.FindInAccountAddresses(p.Latitude, p.Longitude);
+            var accountAddress = await AccountService.FindInAccountAddressesAsync(p.Latitude, p.Longitude);
             if (accountAddress != null)
             {
                 Logger.LogMessage("Address found in account");
@@ -357,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                var address = GeolocService.SearchAddress(p.Latitude, p.Longitude);
+                var address = await GeolocService.SearchAddressAsync(p.Latitude, p.Longitude);
                 Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Any())
                 {

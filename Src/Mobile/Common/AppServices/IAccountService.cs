@@ -50,8 +50,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void ResendConfirmationEmail(string email);
         
         bool Register (RegisterAccount data, out string error);
-        
+
+        [Obsolete("Use async method instead")]
         Address FindInAccountAddresses(double latitude, double longitude);
+
+        Task<Address> FindInAccountAddressesAsync(double latitude, double longitude);
         
         IEnumerable<Address> GetHistoryAddresses();
         

@@ -11,6 +11,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Diagnostic;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -31,19 +32,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-
+        [Obsolete("Use async method instead")]
         public Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
-            try
-            {                
-				var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
-                return addresses;
-            }
-            catch(Exception ex)
+            var task = SearchAddressAsync(latitude, longitude, searchPopularAddresses);
+            Task.WaitAll(task);
+            return task.Result;
+        }
+
+        public Task<Address[]> SearchAddressAsync(double latitude, double longitude, bool searchPopularAddresses = false)
+        {
+            return Task.Run(() =>
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
-                return new Address[0];
-            }
+                try
+                {                
+                    var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
+                    return addresses;
+                }
+                catch (Exception ex)
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                    return new Address[0];
+                }
+            });
         }
 
         public Address[] SearchAddress(string address, double? latitude = null, double? longitude = null)

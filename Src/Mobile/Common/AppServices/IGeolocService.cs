@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
  using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -9,7 +10,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {
         Address ValidateAddress(string address);
 
+        [Obsolete("Use async method instead")]
         Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false);
+        Task<Address[]> SearchAddressAsync(double latitude, double longitude, bool searchPopularAddresses = false);
 
 		Address[] SearchAddress(string address, double? latitude = null, double? longitude = null);
 
