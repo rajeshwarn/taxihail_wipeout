@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _moveMapCommand = new CancellationTokenSource();
 
-            var t = new Task(() => Thread.Sleep(500), _moveMapCommand.Token);
+            var t = Task.Delay(500, _moveMapCommand.Token);
 
             t.ContinueWith(r =>
                 {

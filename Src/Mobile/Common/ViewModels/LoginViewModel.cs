@@ -62,19 +62,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        private void CheckVersion()
+        private async void CheckVersion()
         {
-            Task.Factory.SafeStartNew(() =>
+            //The 2 second delay is required because the view might not be created.
+            await Task.Delay(2000);
+            if (AccountService.CurrentAccount != null)
             {
-                
-                //The 2 second delay is required because the view might not be created.                
-                Thread.Sleep(2000);
-                if (_accountService.CurrentAccount != null)
-                {
-                    TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
-                }
-            });
-
+                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync();
+            }
         }
 
 
