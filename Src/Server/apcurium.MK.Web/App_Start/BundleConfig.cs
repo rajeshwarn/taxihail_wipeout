@@ -58,6 +58,7 @@ namespace apcurium.MK.Web
                 "~/views/BookingStatusView.js",
                 "~/views/MapView.js",
                 "~/views/SignupView.js",
+                "~/views/GetTheAppView.js",
                 "~/views/UserAccountView.js",
                 "~/views/ProfileView.js",
                 "~/views/UpdatePasswordView.js",

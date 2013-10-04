@@ -410,6 +410,7 @@
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="common\views\BootstrapConfirmationView.js" />
+    <Content Include="views\GetTheAppView.js" />
     <Content Include="views\FavoriteDetailsView.js" />
     <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\FavoritesView.js" />
@@ -558,6 +559,9 @@
     <Content Include="themes\MearsTaxi\less\combined.less" />
     <Content Include="themes\MearsTaxi\less\style.less" />
     <Content Include="themes\MearsTaxi\less\variables.less" />
+    <Content Include="templates\GetTheApp.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
