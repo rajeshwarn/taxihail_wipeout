@@ -31,12 +31,13 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new ReferenceDataServiceClient(BaseUrl, SessionId);
             var data = sut.GetReferenceData();
-            Assert.IsNotEmpty(data.CompaniesList);
-            Assert.IsNotEmpty(data.VehiclesList);
-            Assert.IsNotEmpty(data.PaymentsList);
 
-            data.VehiclesList.All(v => data.CompaniesList.Any(c => v.Parent == c));
-            data.PaymentsList.All(v => data.CompaniesList.Any(c => v.Parent == c));
+            Assert.IsNotEmpty(data.Result.CompaniesList);
+            Assert.IsNotEmpty(data.Result.VehiclesList);
+            Assert.IsNotEmpty(data.Result.PaymentsList);
+
+            data.Result.VehiclesList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
+            data.Result.PaymentsList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
             
 
         }

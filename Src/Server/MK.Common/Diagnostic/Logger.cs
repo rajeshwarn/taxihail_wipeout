@@ -25,15 +25,7 @@ namespace apcurium.MK.Common.Diagnostic
         }
 
 
-
-        public void StartStopwatch(string message)
-        {
-        }
-
-
-        public void StopStopwatch(string message)
-        {
-        }
+      
 
         public void LogStack()
         {
@@ -58,5 +50,43 @@ namespace apcurium.MK.Common.Diagnostic
 
             return stackFrames[position].GetMethod().Name;
         }
+
+
+        public IDisposable StartStopwatch(string message)
+        {
+            
+            var w = new Stopwatch();
+            w.Start();
+            LogMessage("Start: " + message);
+            return Disposable.Create(() =>
+            {
+                w.Stop();
+                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
+            });
+        }
+
+        private class Disposable : IDisposable
+        {
+            public static IDisposable Create(Action action)
+            {
+                return new Disposable(action);
+            }
+
+            private Action _action;
+            public Disposable(Action action)
+            {
+                _action = action;
+            }
+
+            public void Dispose()
+            {
+                if (_action != null)
+                {
+                    _action();
+                }
+            }
+        }
+
+
     }
 }

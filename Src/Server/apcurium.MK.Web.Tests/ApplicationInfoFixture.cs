@@ -33,11 +33,11 @@ namespace apcurium.MK.Web.Tests
          public void GetInfo()
          {
              var client = new ApplicationInfoServiceClient(BaseUrl, null);
-             var appInfo = client.GetAppInfo();
+             var appInfo = client.GetAppInfoAsync();
 
 
-             Assert.AreEqual(this.GetType().Assembly.GetName().Version.ToString(), appInfo.Version);
-             Assert.AreEqual("Dev", appInfo.SiteName);
+             Assert.AreEqual(this.GetType().Assembly.GetName().Version.ToString(), appInfo.Result.Version);
+             Assert.AreEqual("Dev", appInfo.Result.SiteName);
              
 
          }
