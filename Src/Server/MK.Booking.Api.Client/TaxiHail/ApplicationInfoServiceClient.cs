@@ -1,5 +1,6 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -11,12 +12,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public ApplicationInfo GetAppInfo()
+        public Task<ApplicationInfo> GetAppInfoAsync()
         {
-            
+            var tcs = new TaskCompletionSource<ApplicationInfo>();
             var resource = string.Format("/app/info");
-            var result = Client.Get<ApplicationInfo>(resource);
-            return result;
+            Client.GetAsync<ApplicationInfo>(resource, tcs.SetResult, (result, error) => tcs.SetException(error));
+            return tcs.Task;
         }
     
     }

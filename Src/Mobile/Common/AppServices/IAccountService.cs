@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void ResendConfirmationEmail(string email);
         
         bool Register (RegisterAccount data, out string error);
-        
+
         Address FindInAccountAddresses(double latitude, double longitude);
-        
+
         IEnumerable<Address> GetHistoryAddresses();
         
         IEnumerable<Address> GetFavoriteAddresses();
