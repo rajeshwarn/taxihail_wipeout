@@ -63,7 +63,7 @@ namespace MK.MigrateIIS
 
         private static void Import(string importPath)
         {
-            var website = _iisManager.Sites["Default Web Site"];
+            var website = _iisManager.Sites["TaxiHailSites"];
             Console.WriteLine("Importing webapplications from " + importPath);
             foreach (var dirPath in Directory.GetDirectories(importPath, "*", SearchOption.AllDirectories))
             {
@@ -77,7 +77,8 @@ namespace MK.MigrateIIS
                     appPool.ManagedRuntimeVersion = "v4.0";
                     Thread.Sleep(2000);
                 }
-                if (appPool.State == ObjectState.Started) appPool.Stop();
+                
+                //if (appPool.State == ObjectState.Started) appPool.Stop();
 
                 Console.WriteLine("Creating/modifying virtual directory for " + companyName);
                 var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
@@ -93,7 +94,7 @@ namespace MK.MigrateIIS
 
                 _iisManager.CommitChanges();
                 _iisManager = new ServerManager();
-                website = _iisManager.Sites["Default Web Site"];
+                website = _iisManager.Sites["TaxiHailSites"];
                 Thread.Sleep(2000);
 
                 Console.WriteLine("Configuring database access for " + companyName);
