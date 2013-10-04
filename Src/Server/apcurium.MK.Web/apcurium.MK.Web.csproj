@@ -401,6 +401,9 @@
     <Content Include="themes\Thriev\img\cancel-icon.png" />
     <Content Include="themes\Thriev\img\location.png" />
     <Content Include="themes\Thriev\img\logo.png" />
+    <Content Include="themes\VETaxi\img\cancel-icon.png" />
+    <Content Include="themes\VETaxi\img\location.png" />
+    <Content Include="themes\VETaxi\img\Logo.png" />
     <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
     <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
     <Content Include="themes\VictoriaTaxi\img\location.png" />
@@ -662,6 +665,10 @@
     <Content Include="themes\BluelineTaxi\less\combined.less" />
     <Content Include="themes\BluelineTaxi\less\style.less" />
     <Content Include="themes\BluelineTaxi\less\variables.less" />
+    <Content Include="themes\VETaxi\less\combined-responsive.less" />
+    <Content Include="themes\VETaxi\less\combined.less" />
+    <Content Include="themes\VETaxi\less\style.less" />
+    <Content Include="themes\VETaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
