@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_BookEditInformation);
+
 
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             bool isThriev = appSettings.ApplicationName == "Thriev";

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {            
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             bool isThriev = appSettings.ApplicationName == "Thriev";
-            SetContentView(true ? Resource.Layout.View_BookingDetail_Thriev : Resource.Layout.View_BookingDetail);
+            SetContentView(isThriev ? Resource.Layout.View_BookingDetail_Thriev : Resource.Layout.View_BookingDetail);
 
 			FindViewById<EditText>(Resource.Id.noteEditText).FocusChange += HandleFocusChange;
 
