@@ -39,6 +39,7 @@ namespace apcurium.MK.Web
                 "~/models/Order.js",
                 "~/models/OrderStatus.js",
                 "~/models/Settings.js",
+                "~/models/CompanySettings.js",
                 "~/models/NewAccount.js",
                 "~/common/models/ReferenceData.js",
                 "~/common/collections/AddressCollection.js",
