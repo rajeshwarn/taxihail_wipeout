@@ -175,7 +175,7 @@ namespace MK.ConfigurationManager
         }
         internal void SaveIbsServers()
         {
-            SaveAll(IBSServers);
+            SaveAll(IBSServers.Where( i=> !string.IsNullOrWhiteSpace( i.Name )));
 
             ReloadIbsServers();
         }
