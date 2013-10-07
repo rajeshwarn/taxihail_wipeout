@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ":");
             lblFare.Maybe(x => x.Text = Resources.GetValue("EstimatePrice") + ":");
 
-            txtNotes.Placeholder = Resources.GetValue("DriversNotePlaceholder");
+            txtNotes.Placeholder = Resources.GetValue("NotesToDriverHint");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
             

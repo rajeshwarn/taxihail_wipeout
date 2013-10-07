@@ -58,9 +58,6 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="SocialNetworks.Services.MonoDroid">
-      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -79,6 +76,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="SocialNetworks.Services.MonoDroid">
+      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

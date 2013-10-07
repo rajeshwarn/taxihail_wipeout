@@ -1,10 +1,10 @@
 ﻿using System;
 using SocialNetworks.Services.Entities;
 using Android.App;
-using Com.Facebook.Android;
 using Android.OS;
 using System.Json;
 using System.Collections.Generic;
+using Com.Facebook.Android;
 
 namespace SocialNetworks.Services.MonoDroid
 {
@@ -14,7 +14,7 @@ namespace SocialNetworks.Services.MonoDroid
 		private Activity _mainActivity;
 		private Handler _handler;
         
-        public FacebookServicesMD(string appId, Activity mainActivity)
+		public FacebookServicesMD(string appId, Activity mainActivity)
         {
 			_facebookClient = new Facebook(appId);
 			SessionEvents.AddAuthListener (this);
@@ -24,8 +24,6 @@ namespace SocialNetworks.Services.MonoDroid
 			SessionStore.Restore(_facebookClient, _mainActivity.BaseContext);
 			_handler = new Handler();
         }
-
-
 
 		public void AuthorizeCallback (int requestCode, int resultCode, Android.Content.Intent data)
 		{
