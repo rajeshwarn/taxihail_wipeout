@@ -233,6 +233,9 @@
     <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
+    <Content Include="assets\img\app-stores-itunes.png" />
+    <Content Include="assets\img\appstores-bg.png" />
+    <Content Include="assets\img\appstores-play.png" />
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
@@ -671,7 +674,7 @@
     <Content Include="themes\VETaxi\less\combined.less" />
     <Content Include="themes\VETaxi\less\style.less" />
     <Content Include="themes\VETaxi\less\variables.less" />
-        <Content Include="templates\GetTheApp.handlebars" />
+    <Content Include="templates\GetTheApp.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
