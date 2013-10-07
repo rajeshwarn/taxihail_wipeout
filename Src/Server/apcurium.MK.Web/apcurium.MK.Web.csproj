@@ -328,6 +328,7 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="models\CompanySettings.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
@@ -451,6 +452,7 @@
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="common\views\BootstrapConfirmationView.js" />
+    <Content Include="views\GetTheAppView.js" />
     <Content Include="views\FavoriteDetailsView.js" />
     <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\FavoritesView.js" />
@@ -669,6 +671,7 @@
     <Content Include="themes\VETaxi\less\combined.less" />
     <Content Include="themes\VETaxi\less\style.less" />
     <Content Include="themes\VETaxi\less\variables.less" />
+        <Content Include="templates\GetTheApp.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

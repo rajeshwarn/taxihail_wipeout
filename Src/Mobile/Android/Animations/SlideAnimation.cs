@@ -5,7 +5,7 @@ using Android.Views;
 
 namespace SlidingPanel
 {
-	public class SlideAnimation : Animation
+	public sealed class SlideAnimation : Animation
 	{
 		private int _mEnd;
 		private int _mStart;
@@ -26,7 +26,7 @@ namespace SlidingPanel
 
 		protected override void ApplyTransformation (float interpolatedTime, Transformation t)
 		{
-			float change = _mChange * interpolatedTime;
+			var change = _mChange * interpolatedTime;
 
 			_mView.ScrollTo((int) -(_mStart + change), 0);
 

@@ -32,6 +32,7 @@
             "login/:url": "login", // #login
             "login": "login",
             "signup": "signup", // #signup
+            "gettheapp": "gettheapp", // #gettheapp
             "signup/:url": "signup",
             "signupconfirmation": "signupconfirmation",
             "signupconfirmation/:url": "signupconfirmation",
@@ -220,6 +221,11 @@
             }, this);
 
             renderView(TaxiHail.SignupView, model);
+        },
+        
+        gettheapp: function () {
+           
+            renderView(new TaxiHail.GetTheAppView());
         },
         
         useraccount: function (tabName) {
