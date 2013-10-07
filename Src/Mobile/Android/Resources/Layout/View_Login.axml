@@ -26,7 +26,7 @@
             android:background="@android:color/transparent">
             <EditText
                 android:id="@+id/Username"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Email&apos;}}"
+                local:MvxBind="{'Text':{'Path':'Email'}}"
                 android:layout_width="fill_parent"
                 android:layout_height="40dip"
                 android:hint="@string/EmailLabel"
@@ -47,7 +47,7 @@
                 android:orientation="horizontal">
                 <EditText
                     android:id="@+id/Password"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Password&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Password'}}"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:hint="@string/PasswordLabel"
@@ -75,7 +75,7 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical|left"
                     android:layout_weight="1"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ResetPassword&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'ResetPassword'}}"
                     android:text="@string/LoginForgotPasswordButton"
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="center_vertical|left" />
@@ -83,7 +83,7 @@
                     local:ButtonStyle="Black"
                     style="@style/ButtonText"
                     android:layout_weight="1"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignInCommand&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'SignInCommand'}}"
                     android:background="@drawable/newBlackButton"
                     android:text="@string/SignInButton"
                     android:layout_alignParentRight="true"
@@ -95,9 +95,27 @@
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
+                    android:id="@+id/SignUpButton"
+                    local:MvxBind="{'Click':{'Path':'SignUp'}}"
+                    android:background="@drawable/gray_button"
+                    android:text="@string/SignUpButton"
+                    android:layout_width="250dip"
+                    android:layout_height="40dip"
+                    android:layout_margin="3dp"
+                    android:gravity="center"
+                    android:paddingBottom="5dip"
+                    android:paddingTop="5dip"
+                    android:width="10dip" />
+                <View
+                    android:layout_height="15dip"
+                    android:layout_width="20dip"
+                    android:gravity="center"
+                    android:visibility="invisible" />
                 <Button
                     android:id="@+id/FacebookButton"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginFacebook&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'LoginFacebook'}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/FacebookButton"
@@ -117,7 +135,7 @@
                     android:visibility="invisible" />
                 <Button
                     android:id="@+id/TwitterButton"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginTwitter&apos;}}"
+                    local:MvxBind="{'Click':{'Path':'LoginTwitter'}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/TwitterButton"
@@ -143,24 +161,6 @@
                     android:drawableLeft="@drawable/server_button_state"
                     android:drawablePadding="-2dip"
                     android:typeface="normal" />
-                <View
-                    android:layout_height="15dip"
-                    android:layout_width="20dip"
-                    android:gravity="center"
-                    android:visibility="invisible" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Grey"
-                    android:id="@+id/SignUpButton"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignUp&apos;}}"
-                    android:background="@drawable/gray_button"
-                    android:text="@string/SignUpButton"
-                    android:layout_width="250dip"
-                    android:layout_height="40dip"
-                    android:layout_margin="3dp"
-                    android:gravity="center"
-                    android:paddingBottom="5dip"
-                    android:paddingTop="5dip"
-                    android:width="10dip" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

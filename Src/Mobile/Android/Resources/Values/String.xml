@@ -346,6 +346,7 @@
   <string name="AddReminderMessage">Would you like a reminder added to your calendar for this pick-up time?</string>
   <string name="AddReminderTitle">Scheduled Pick-Up</string>
   <string name="NotesToDriveLabel">Notes to driver</string>
+  <string name="NotesToDriverHint">Notes to driver: (Name of business, specific entrance)</string>
   <string name="CreditCardNumber">Card Number</string>
   <string name="CreditCardZipCode">Zip code</string>
   <string name="CreditCardsAddTitle">New Credit Card</string>
