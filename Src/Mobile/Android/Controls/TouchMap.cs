@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             });
                     }
                 }, _moveMapCommand.Token);
-            t.Start();
+//            t.Start();
 
           
         }
@@ -357,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				                       string.Empty);
 				_availableVehiclePushPins.Add (pushPin);
 			}
-            SetZoom(Center);
+            //SetZoom(Center);
 		}
     }
 }
