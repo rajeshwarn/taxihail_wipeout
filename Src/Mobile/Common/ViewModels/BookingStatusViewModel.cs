@@ -165,17 +165,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
         public bool IsCallTaxiVisible
         {
-            get { return IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
+            get { 
+                    var showCallDriver = Config.GetSetting<bool>("Client.ShowCallDriver", false);
+                return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
         }
 
         public bool IsDriverInfoAvailable
         {
-            get { return ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
+            get { 
+                var showVehicleInformation = Config.GetSetting<bool>("Client.ShowVehicleInformation", true);
+
+                return showVehicleInformation && ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
 		
 		public bool IsCallButtonVisible {
-			get { return !bool.Parse (TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.HideCallDispatchButton")); }
+            get { return !bool.Parse (Config.GetSetting ("Client.HideCallDispatchButton")); }
 		}
 
 		public bool VehicleDriverHidden
