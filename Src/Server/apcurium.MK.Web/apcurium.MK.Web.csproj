@@ -671,7 +671,7 @@
     <Content Include="themes\VETaxi\less\combined.less" />
     <Content Include="themes\VETaxi\less\style.less" />
     <Content Include="themes\VETaxi\less\variables.less" />
-        <Content Include="templates\GetTheApp.handlebars">
+        <Content Include="templates\GetTheApp.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
