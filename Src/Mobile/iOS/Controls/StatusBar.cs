@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIView _assignedVisibleView;
         private UIView _assignedSlideoutView;
 
+        private bool _wasTouched = false;
+
         private float _minHeight;
         private float _maxHeight;
         
@@ -103,11 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if ( _isEnabled != value )
                 {
                     _isEnabled = value;
-                    if ( IsEnabled )
+                    if ( IsEnabled && !_wasTouched )
                     {
                         SlideOut();
                     }
-                    else
+                    else if ( !IsEnabled )
                     {
                         SlideIn();
                     }
@@ -209,8 +211,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void SetMaxHeight(float height)
 		{
 			_maxHeight = height;
-			SetHeight (_maxHeight, false);
-		}
+
+            if ( !_wasTouched )
+            {
+			    SetHeight (_maxHeight, false);
+            }
+        }
 
         void SetHeight (float height, bool animate)
         {
@@ -237,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             
             base.TouchesEnded (touches, evt);
-            
+            _wasTouched = true;
             
             if (_goingDown) {
                 
