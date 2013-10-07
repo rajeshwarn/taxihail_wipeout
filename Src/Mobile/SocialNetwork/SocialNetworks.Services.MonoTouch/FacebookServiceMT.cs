@@ -18,9 +18,10 @@ namespace SocialNetworks.Services.MonoTouch
 
 		public event EventHandler<FacebookStatus> ConnectionStatusChanged = delegate{};
 
-        public FacebookServiceMT(string appId)
+		public FacebookServiceMT(string appId, string urlSchemeSuffix = "" )
         {
             facebookClient = new Facebook(appId, this);
+			facebookClient.UrlSchemeSuffix = urlSchemeSuffix;
 
             var defaults = NSUserDefaults.StandardUserDefaults;
             if (defaults [FBAccessTokenKey] != null && defaults [FBExpirationDateKey] != null){
@@ -48,20 +49,26 @@ namespace SocialNetworks.Services.MonoTouch
 
         public void GetUserInfos(Action<UserInfos> onRequestDone, Action onError)
         {
+
             facebookClient.GraphRequest ("me", new NSMutableDictionary (), "GET", Handler ((request, obj) => {
-					
 				UserInfos infos = null;
-				if(request.ResponseText != null)
+				if(request.Error == null)
 				{
-					var data = JsonObject.Parse(request.ResponseText.ToString());
+					var data = obj as NSDictionary;
 					infos = new UserInfos();
-					infos.Id = data["id"];
-					infos.Email = data["email"];
-					infos.Firstname = data["first_name"];
-					infos.Lastname = data["last_name"];
-					 
+					infos.Id = data["id"].ToString();
+					infos.Email = data["email"].ToString();
+					infos.Firstname = data["first_name"].ToString();
+					infos.Lastname = data["last_name"].ToString();
 				}
-				if(onRequestDone != null) onRequestDone(infos);
+				if(onRequestDone != null)
+				{
+					onRequestDone(infos);
+				}
+				else
+				{
+					onError();
+				}
 			}				
 		    ));	
         }

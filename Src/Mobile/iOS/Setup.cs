@@ -109,10 +109,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AccessTokenUrl = settings.TwitterAccessTokenUrl,
                 AuthorizeUrl = settings.TwitterAuthorizeUrl 
             };
-            
-            
-            var facebook = new FacebookServiceMT(settings.FacebookAppId );// "134284363380764");
-            var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController);
+
+            var facebook = new FacebookServiceMT(settings.FacebookAppId, settings.ApplicationName.ToLower().Replace(" ", string.Empty) ); // "134284363380764");
+            var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> {
+                return AppContext.Current.Controller; // AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController;
+            });
             
             TinyIoCContainer.Current.Register<IFacebookService>(facebook);
             TinyIoCContainer.Current.Register<ITwitterService>(twitterService);

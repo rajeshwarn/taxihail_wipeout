@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
-            
+
         }
 
    
@@ -258,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
+                return new MvxRelayCommand(() =>
                 {
                     if (_facebookService.IsConnected)
                     {
@@ -266,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        _facebookService.Connect("email, publish_stream, publish_actions");
+                        _facebookService.Connect("email");
 
                     }
                 });
@@ -277,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
+                return new MvxRelayCommand(() =>
                 {
                     if (_twitterService.IsConnected)
                     {
@@ -304,37 +304,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             MessageService.ShowProgress(true);
 
+            _facebookService.GetUserInfos(info =>
+            {
+                var data = new RegisterAccount();
+                data.FacebookId = info.Id;
+                data.Email = info.Email;
+                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
 
-//            _facebookService.GetUserInfos(info =>
-//            {
-//                var data = new RegisterAccount();
-//                data.FacebookId = info.Id;
-//                data.Email = info.Email;
-//                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-//
-//                try
-//                {
-//                    var account = _accountService.GetFacebookAccount(data.FacebookId);
-//                    if (account == null)
-//                    {
-//                        DoSignUp(data);
-//                    }
-//                    else
-//                    {
-//                        RequestNavigate<BookViewModel>(true);
-//                    }
-//                }
-//                finally
-//                {
-//                    MessageService.ShowProgress(false);
-//                }
-//
-//            }, Nothing);
+                try
+                {
+                    var account = _accountService.GetFacebookAccount(data.FacebookId);
+                    if (account == null)
+                    {
+                        DoSignUp(data);
+                    }
+                    else
+                    {
+                        RequestNavigate<BookViewModel>(true);
+                    }
+                }
+                finally
+                {
+                    MessageService.ShowProgress(false);
+                }
+
+            }, () => MessageService.ShowProgress(false) );
+
+
         }
 
         private void Nothing()
-        {
-             }
+        { 
+        }
+
         private void CheckTwitterAccount()
         {
             MessageService.ShowProgress(true);
