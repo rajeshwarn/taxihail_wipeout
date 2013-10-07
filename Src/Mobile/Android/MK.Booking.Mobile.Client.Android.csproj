@@ -84,9 +84,6 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="SocialNetworks.Services.MonoDroid">
-      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -651,6 +648,10 @@
     <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
       <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
       <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoDroid\SocialNetworks.Services.MonoDroid.csproj">
+      <Project>{AD9663ED-C050-4580-B285-9C4AF363EA48}</Project>
+      <Name>SocialNetworks.Services.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

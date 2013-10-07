@@ -1031,7 +1031,10 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver</value>
   </data>
-  <data name="RateBtn" xml:space="preserve">
+  <data name="NotesToDriverHint" xml:space="preserve">
+    <value>Notes to driver: (Name of business, specific entrance)</value>
+  </data>
+    <data name="RateBtn" xml:space="preserve">
     <value>Rate my ride</value>
   </data>
   <data name="Submit" xml:space="preserve">

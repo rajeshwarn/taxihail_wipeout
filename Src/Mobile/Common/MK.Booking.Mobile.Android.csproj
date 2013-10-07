@@ -58,9 +58,6 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="SocialNetworks.Services.MonoDroid">
-      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -294,6 +291,10 @@
     <ProjectReference Include="..\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
       <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
       <Name>BraintreeEncryption.Library.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoDroid\SocialNetworks.Services.MonoDroid.csproj">
+      <Project>{AD9663ED-C050-4580-B285-9C4AF363EA48}</Project>
+      <Name>SocialNetworks.Services.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
