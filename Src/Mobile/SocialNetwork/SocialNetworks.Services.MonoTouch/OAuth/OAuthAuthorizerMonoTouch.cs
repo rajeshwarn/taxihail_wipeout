@@ -19,9 +19,12 @@ namespace SocialNetworks.Services.OAuth
 		/// <summary>
 		/// Only need the first time when need the authorisation
 		/// </summary>
+
+		private Func<UIViewController> _getViewController;
 		public OAuthAuthorizerMonoTouch (OAuthConfig config, Func<UIViewController> getViewController  ) : base (config)
 		{
-			_parent = getViewController();
+			_getViewController = getViewController;
+			//_parent = getViewController();
 		}
 
 
@@ -61,7 +64,7 @@ namespace SocialNetworks.Services.OAuth
 					container.AuthorizationToken = results ["oauth_token"];
 					container.AuthorizationVerifier = results ["oauth_verifier"];
 					DismissModalViewControllerAnimated (false);
-					
+
 					container.AcquireAccessToken ();
 					callback ();
 				}
@@ -71,8 +74,10 @@ namespace SocialNetworks.Services.OAuth
 		
 		public override void AuthorizeUser (Action callback)
 		{
+			_parent = _getViewController();
+
 			var authweb = new AuthorizationViewController (this, config.AuthorizeUrl + "?oauth_token=" + RequestToken, callback);
-			
+
 			_parent.PresentModalViewController (authweb, true);
 		}
 	}

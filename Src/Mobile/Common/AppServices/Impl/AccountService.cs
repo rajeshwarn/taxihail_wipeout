@@ -91,14 +91,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 if (facebook.IsConnected) {                    
                     facebook.Disconnect ();
                 }
-            } catch {
+            } catch( Exception ex )
+            {
+                Console.WriteLine(ex.Message);
             }
+
             try {
                 var twitterService = TinyIoCContainer.Current.Resolve<ITwitterService> ();
                 if (twitterService.IsConnected) {
                     twitterService.Disconnect ();
                 }
-            } catch {
+            } 
+            catch( Exception ex )
+            {
+                Console.WriteLine(ex.Message);
             }
 
             ClearCache ();

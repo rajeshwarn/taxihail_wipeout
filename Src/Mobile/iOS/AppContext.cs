@@ -35,64 +35,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public UIWindow Window  { get; private set; }
             
-
-//        public string LoggedInEmail
-//        {
-//            get
-//            {
-//                Console.WriteLine("getting : LoggedInEmail");
-//                return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInEmail");
-//            }
-//            set
-//            { 
-//
-//                if (value != LoggedInEmail)
-//                {
-//                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInEmail");
-//                }
-//            }
-//        }
-//
-//        public string LoggedInPassword
-//        {
-//            get { return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInPassword"); }
-//            set
-//            {
-//                if (value != LoggedInPassword)
-//                {
-//                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInPassword");
-//                }
-//            }
-//        }
-//                       
-//        public bool ReceiveMemoryWarning
-//        {
-//            get;
-//            set;
-//        }
         
 		public UINavigationController Controller
         {
             get { return _controller; }
             set { _controller = value; }
         }
-
-
-//		public string ServerName {
-//			get {
-//				return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.ServerName");
-//			}
-//			set {
-//				NSUserDefaults.StandardUserDefaults.SetStringOrClear( value, "TaxiMobile.ServerName" );
-//			}
-//		}
-//
-//		public string ServerVersion {
-//			get {
-//				//return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
-//				return "1.0" ;
-//			}
-//		}        
+     
         
     }
 	

@@ -81,7 +81,7 @@ namespace SocialNetworks.Services
 		public void GetUserInfos (Action<UserInfos> onRequestDone)
 		{
 			var content = string.Format("user_id={0}&screen_name={1}", SocialNetworks.Services.OAuth.OAuth.PercentEncode (_userId), SocialNetworks.Services.OAuth.OAuth.PercentEncode (_screenName)) ;
-			var taskUri = new Uri("https://api.twitter.com/1/users/show.json?" + content);
+			var taskUri = new Uri("https://api.twitter.com/1.1/users/show.json?" + content);
 			var request = (HttpWebRequest) WebRequest.Create (taskUri);
 			request.AutomaticDecompression = DecompressionMethods.GZip;		
 			request.Headers [HttpRequestHeader.Authorization] = OAuthAuthorizer.AuthorizeRequest (_oauthConfig, _oAuthToken, _oAuthTokenSecret, "GET", taskUri, null);

@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
 
+
 		public string MobileUser{ get { return Resources.MobileUserStatic; } }
 
 		public string Notes{ get { return Resources.NotesStatic; } }
@@ -590,6 +591,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string OrderNoteStatic {
 			get { return GetValue ("OrderNote"); }
 		}
+
+        public string DriversNotePlaceholder
+        { 
+            get { return GetValue("DriversNotePlaceholder"); }
+        }
 
 		public static string OrderNoteGPS {
 			get { return GetValue ("OrderNoteGPS"); }
