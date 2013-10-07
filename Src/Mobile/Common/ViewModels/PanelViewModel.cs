@@ -59,11 +59,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand SignOut
         {
             get {
-                return GetCommand(() =>
+                return new MvxRelayCommand(() =>
                 {
                     MenuIsOpen = false;
                     _accountService.SignOut ();         
                     RequestNavigate<LoginViewModel> (true);
+
                     RequestClose( _parent );
                 });
             }

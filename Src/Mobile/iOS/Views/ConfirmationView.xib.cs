@@ -108,6 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ":");
             lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ":");
             lblFare.Maybe(x => x.Text = Resources.GetValue("EstimatePrice") + ":");
+
+            txtNotes.Placeholder = Resources.GetValue("DriversNotePlaceholder");
             
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
             
@@ -152,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
                 .Where(x=> x.Item1 != null )
                 .ToDictionary(x=>x.Item1, x=>x.Item2);
-
+        
             this.AddBindings(bindings);
             
             this.View.ApplyAppFont ();

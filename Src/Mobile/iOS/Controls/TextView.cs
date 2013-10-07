@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class TextView : UITextView 
     {
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
+        private UITextView _placeholder;
         public TextView ()
         {
         }
@@ -31,9 +32,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
             this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height );
+
+            _placeholder = CreatePlaceholder();
+            this.AddSubview(_placeholder);
+
+            this.Changed += HandleTextChanged;
         }
 
+        #region Placeholder
+        private UITextView CreatePlaceholder()
+        {
+            var placeholder = new UITextView(new RectangleF(0,0,this.Bounds.Width, this.Bounds.Height) );
+            placeholder.BackgroundColor = UIColor.Clear;
+            placeholder.Layer.BorderColor = UIColor.Clear.CGColor;
+            placeholder.Layer.BorderWidth = 0f;
+            placeholder.UserInteractionEnabled = false;
+            placeholder.Hidden = false;
+            placeholder.Font = AppStyle.NormalTextFont;
+            placeholder.TextColor = AppStyle.GreyText.ColorWithAlpha(0.5f);
 
+            return placeholder;
+        }
+
+        private void HandleTextChanged (object sender, EventArgs e)
+        {
+            SetPlaceholder(this.Text.Length == 0);
+        }
+
+        public string Placeholder { 
+            get { return _placeholder.Text; } 
+            set { _placeholder.Text = value;}
+        }
+
+        private void SetPlaceholder( bool visible )
+        {
+            if( (visible && _placeholder.Hidden) || (!visible && !_placeholder.Hidden) )
+            {
+                _placeholder.Hidden = !visible;
+            }
+        }
+        #endregion
 
         public override void Draw(System.Drawing.RectangleF frame)
         {
