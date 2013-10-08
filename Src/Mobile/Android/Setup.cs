@@ -30,6 +30,7 @@ using Cirrious.MvvmCross.Android.Platform;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Android.Util;
 using apcurium.MK.Common.Configuration;
+using Android.App;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -54,6 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
 			
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
+
+                
+            TinyIoCContainer.Current.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>()));
 
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));			
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));

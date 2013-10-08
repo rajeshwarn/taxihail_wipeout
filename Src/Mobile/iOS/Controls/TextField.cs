@@ -39,7 +39,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
             PaddingLeft = 5;
-            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 34);
+            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
+        }
+
+        public float FieldHeight
+        {
+            set
+            {
+                this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, value);
+            }
         }
 
         public float PaddingLeft

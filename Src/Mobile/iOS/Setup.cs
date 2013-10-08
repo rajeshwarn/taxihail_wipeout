@@ -73,10 +73,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             TinyIoCServiceProviderSetup.Initialize();
 
+            TinyIoCContainer.Current.Register<IAnalyticsService, GoogleAnalyticsService>();
+
             var locationService = new LocationService( );
             locationService.Start();
+
+
             TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
-           
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
@@ -91,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
             TinyIoCContainer.Current.Register<IPushNotificationService, PushNotificationService>();
+
             InitializeSocialNetwork();
         }
 

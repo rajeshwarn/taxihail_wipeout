@@ -109,6 +109,9 @@
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="GoogleAnalytics.MonoDroid">
+      <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -357,6 +360,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
+    <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -713,4 +717,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
+  </ItemGroup>
 </Project>

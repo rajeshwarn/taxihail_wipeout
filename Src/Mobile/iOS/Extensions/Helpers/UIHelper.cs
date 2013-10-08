@@ -21,6 +21,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             UIGraphics.EndImageContext();                         
             return image;           
         }
+
+        public static bool Is4InchDisplay
+        {
+            get { return UIScreen.MainScreen.Bounds.Height > 500; }
+        }
+
     }
 }
 
