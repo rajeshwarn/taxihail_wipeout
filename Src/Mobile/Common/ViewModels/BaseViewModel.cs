@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public virtual void Start (bool firstStart = false)
         {
-
+            firstStart.ToString();
         }
 
         public virtual void Restart ()

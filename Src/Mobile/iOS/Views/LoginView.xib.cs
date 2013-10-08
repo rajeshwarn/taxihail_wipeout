@@ -24,6 +24,8 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyMessenger;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -74,6 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ((TextField)txtEmail).PaddingLeft = 5;
             ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
+            ((TextField)txtEmail).FieldHeight = 48;
+            ((TextField)txtPassword).FieldHeight = 48;
 
             txtEmail.Placeholder = Resources.EmailLabel;
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
@@ -127,6 +131,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtEmail, "{'Text':{'Path':'Email'}}"},
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
+
+
+            if (!UIHelper.Is4InchDisplay)
+            {
+
+                btnSignUp.IncrementY(-25);
+            }
 
             ViewModel.Load ();
             this.View.ApplyAppFont();           

@@ -108,6 +108,9 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
+</Reference>   
+ <Reference Include="GoogleAnalytics.MonoDroid">
+      <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -357,6 +360,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
+    <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -713,4 +717,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
+  </ItemGroup>
 </Project>
