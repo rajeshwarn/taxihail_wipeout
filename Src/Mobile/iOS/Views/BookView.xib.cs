@@ -151,14 +151,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear (animated);
 
-            var button = AppButtons.CreateStandardButton( new RectangleF( 16,0,40,33 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
+            var button = AppButtons.CreateStandardButton( new RectangleF( 16,2,40,40 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
             button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
-            var offsetView = new UIView( new RectangleF( 0,0,60,33) );
+
+            var offsetView = UIButton.FromType(UIButtonType.Custom);
+            offsetView.Frame = new RectangleF(0, 0, 60, 44);                
             offsetView.AddSubview ( button );
+            offsetView.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
 
             var btn = new UIBarButtonItem ( offsetView );
             navBar.TopItem.RightBarButtonItem = btn;
-            navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-20, 0), UIBarMetrics.Default);
             ViewModel.ShowTutorial.Execute ();
         }
 
