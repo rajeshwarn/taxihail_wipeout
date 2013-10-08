@@ -125,9 +125,10 @@ namespace apcurium.MK.Booking.Mobile
 
         void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
-            if (e.LifetimeEvent == MvxLifetimeEvent.Deactivated) {
+            if ( (e.LifetimeEvent == MvxLifetimeEvent.Deactivated) || (e.LifetimeEvent == MvxLifetimeEvent.Closing) )  {
                 ClearAppCache ();
-            } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)) {
+                TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
+            } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
                 RefreshAppData ();
             }
         }
