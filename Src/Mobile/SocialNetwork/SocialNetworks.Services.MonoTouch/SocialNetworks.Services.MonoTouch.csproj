@@ -54,7 +54,7 @@
     <Reference Include="MonoTouch.Dialog-1" />
     <Reference Include="System.Web.Services" />
     <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+      <HintPath>..\..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />

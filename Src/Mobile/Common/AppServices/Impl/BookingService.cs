@@ -50,6 +50,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
 
+        protected IConfigurationManager Config {
+            get { return TinyIoCContainer.Current.Resolve<IConfigurationManager> (); }
+        }
+
         public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
             return Task.Run(() =>
@@ -240,9 +244,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 if (estimatedFare.Price.HasValue)
                 {
-                    if (formatString.HasValue() || (estimatedFare.Price.Value > 100 && appResource.GetString("EstimatePriceOver100").HasValue()))
+                    var maxEstimate = Config.GetSetting<double>("Client.MaxFareEstimate", 100);
+                    if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && appResource.GetString("EstimatePriceOver100").HasValue()))
                     {
-                        fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > 100 
+                        fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > maxEstimate 
                                                                            ? "EstimatePriceOver100"
                                                                            : formatString), 
                                                  estimatedFare.FormattedPrice);
