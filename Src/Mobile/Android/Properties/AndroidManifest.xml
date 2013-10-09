@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="23" android:versionName="1.4.19">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="24" android:versionName="1.4.20">
   <application android:label="TaxiHail" android:icon="@drawable/Icon" android:screenOrientation="portrait" android:largeHeap="true">
     <uses-library android:name="com.google.android.maps" />
     <receiver android:permission="com.google.android.c2dm.permission.SEND" android:name="apcurium.mk.booking.mobile.client.SampleBroadcastReceiver">
