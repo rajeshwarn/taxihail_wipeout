@@ -184,9 +184,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate() 
         {
+            _fareEstimate = this.Resources.GetString("EstimatingFare");
+
+            FirePropertyChanged(() => FareEstimate);
+
             _fareEstimate = base.BookingService.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
             
-            InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
+            FirePropertyChanged(() => FareEstimate);
         }
 
         public void InitializeOrder()

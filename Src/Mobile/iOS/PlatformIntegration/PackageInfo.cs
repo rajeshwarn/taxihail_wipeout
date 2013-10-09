@@ -17,6 +17,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         }
 
+        public string Platform
+        {
+            get { return "iOS"; }
+        }
 
         public string Version
         {

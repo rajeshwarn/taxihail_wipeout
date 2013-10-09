@@ -592,9 +592,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("OrderNote"); }
 		}
 
-        public string DriversNotePlaceholder
+        public string NotesToDriverHint
         { 
-            get { return GetValue("DriversNotePlaceholder"); }
+            get { return GetValue("NotesToDriverHint"); }
         }
 
 		public static string OrderNoteGPS {

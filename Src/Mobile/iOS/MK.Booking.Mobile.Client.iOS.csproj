@@ -20,7 +20,8 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>6.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
@@ -40,7 +41,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
@@ -62,10 +64,13 @@
     <ConsolePause>False</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <IpaPackageName />
-    <CrashReportingApiKey />
+    <IpaPackageName>
+    </IpaPackageName>
+    <CrashReportingApiKey>
+    </CrashReportingApiKey>
     <BuildIpa>True</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
@@ -84,11 +89,14 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <CodesignKey>iPhone Distribution</CodesignKey>
-    <MtouchI18n />
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <IpaPackageName />
+    <IpaPackageName>
+    </IpaPackageName>
     <BuildIpa>True</BuildIpa>
-    <CrashReportingApiKey />
+    <CrashReportingApiKey>
+    </CrashReportingApiKey>
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
@@ -108,11 +116,14 @@
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchI18n />
-    <CrashReportingApiKey />
+    <MtouchI18n>
+    </MtouchI18n>
+    <CrashReportingApiKey>
+    </CrashReportingApiKey>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchArch>ARMv7</MtouchArch>
-    <IpaPackageName />
+    <IpaPackageName>
+    </IpaPackageName>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <ConsolePause>False</ConsolePause>
@@ -134,9 +145,12 @@
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CrashReportingApiKey />
-    <IpaPackageName />
-    <MtouchI18n />
+    <CrashReportingApiKey>
+    </CrashReportingApiKey>
+    <IpaPackageName>
+    </IpaPackageName>
+    <MtouchI18n>
+    </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchArch>ARMv7</MtouchArch>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
@@ -193,6 +207,9 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
       <HintPath>Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAnalytics">
+      <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -463,6 +480,7 @@
     </Compile>
     <Compile Include="Controls\PaymentSelector.cs" />
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
+    <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -51,6 +51,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             {
                 return new BooleanConverter();
             }
+            else if (t.Equals(typeof(double)))
+            {
+                return new  DoubleConverter();
+            }
+
             _logger.LogMessage("Could not convert setting to " + typeof(T).Name);
             throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
         }

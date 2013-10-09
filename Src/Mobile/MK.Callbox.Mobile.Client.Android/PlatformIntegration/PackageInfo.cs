@@ -13,6 +13,15 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             _appContext = appContext;
         }
 
+        public string Platform
+        {
+            get
+            {
+                return "Android";
+            }
+        }
+
+
         public string Version
         {
             get

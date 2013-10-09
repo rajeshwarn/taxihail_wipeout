@@ -1873,6 +1873,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07005f
 			public const int EstimatedFareNotAvailable = 2131165279;
 			
+			// aapt resource value: 0x7f0701b8
+			public const int EstimatingFare = 2131165624;
+			
 			// aapt resource value: 0x7f070036
 			public const int FacebookButton = 2131165238;
 			

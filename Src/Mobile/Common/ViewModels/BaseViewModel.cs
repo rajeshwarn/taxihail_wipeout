@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                  IMvxServiceConsumer<IAppSettings>,
                                  IMvxServiceConsumer<IMessageService>,
                                     IMvxServiceConsumer<ILogger>,
+                                    IMvxServiceConsumer<IConfigurationManager>,
                                  IMvxServiceConsumer<IPhoneService>
     {
         protected BaseViewModel()
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Settings = this.GetService<IAppSettings>();
             MessageService = this.GetService<IMessageService>();
             Logger = this.GetService<ILogger>();
+            Config = this.GetService<IConfigurationManager>();
             PhoneService = this.GetService<IPhoneService>();
 
 
@@ -42,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public static Action NoAction = () => { };
 
         protected ILogger Logger { get; private set; }
+
+        protected IConfigurationManager Config { get; private set; }
 
         protected IMessageService MessageService { get; private set; }
 
@@ -135,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public virtual void Start (bool firstStart = false)
         {
-
+            firstStart.ToString();
         }
 
         public virtual void Restart ()

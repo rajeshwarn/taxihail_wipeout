@@ -336,7 +336,7 @@
     <value>Confirmed</value>
   </data>
   <data name="StatusDescription" xml:space="preserve">
-    <value>Confirmation #{0}</value>
+    <value>Order #{0}</value>
   </data>
   <data name="ChangeBookingSettingsButton" xml:space="preserve">
     <value>Change booking settings</value>
@@ -507,7 +507,7 @@
     <value>Status:</value>
   </data>
   <data name="HistoryDetailConfirmationLabel" xml:space="preserve">
-    <value>Confirmation:</value>
+    <value>Order:</value>
   </data>
   <data name="StatusStatusLabel" xml:space="preserve">
     <value>Status: {0}</value>
@@ -1031,7 +1031,10 @@
   <data name="NotesToDriveLabel" xml:space="preserve">
     <value>Notes to driver</value>
   </data>
-  <data name="RateBtn" xml:space="preserve">
+  <data name="NotesToDriverHint" xml:space="preserve">
+    <value>Name of business, specific entrance</value>
+  </data>
+    <data name="RateBtn" xml:space="preserve">
     <value>Rate my ride</value>
   </data>
   <data name="Submit" xml:space="preserve">
@@ -1375,4 +1378,10 @@
   <data name="EmptyString" xml:space="preserve">
     <value></value>
   </data>
+
+  <data name="EstimatingFare" xml:space="preserve">
+    <value>Estimating your fare...</value>
+  </data>
+
+
 </root>

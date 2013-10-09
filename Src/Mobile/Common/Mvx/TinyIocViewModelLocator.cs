@@ -1,3 +1,5 @@
+using apcurium.MK.Booking.Mobile.Infrastructure;
+
 
 #region Copyright
 // <copyright file="MvxDefaultViewModelLocator.cs" company="Cirrious">
@@ -25,11 +27,15 @@ namespace MK.Booking.Mobile.Infrastructure.Mvx
     {
         #region IMvxViewModelLocator Members
 
+
+
         public bool TryLoad(Type viewModelType, IDictionary<string, string> parameters, out IMvxViewModel model)
         {
             model = null;
 
             var dict = new Dictionary<string,object>();
+
+            LogAnalytics(viewModelType);
 
             if ((parameters != null) && (parameters.Count > 0))
             {
@@ -46,6 +52,16 @@ namespace MK.Booking.Mobile.Infrastructure.Mvx
             }
 
             return (model != null);
+        }
+        private void LogAnalytics(Type viewModelType)
+        {
+            try
+            {
+                TinyIoCContainer.Current.Resolve<IAnalyticsService>().LogViewModel(viewModelType.ToString().Split('.').Last());
+            }
+            catch
+            {
+            }
         }
 
         #endregion
