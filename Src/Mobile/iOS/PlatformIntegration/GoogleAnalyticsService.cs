@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             GoogleAnalytics.GAI.SharedInstance.DispatchInterval = 20;
             GoogleAnalytics.GAI.SharedInstance.Debug = true;// Optional: set debug to YES for extra debugging information.
 
-            Tracker = GoogleAnalytics.GAI.SharedInstance.GetTracker (  "UA-37031104-6" );
+            Tracker = GoogleAnalytics.GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
             Tracker.AppName =  settings.ApplicationName.Replace( ' ' , '_' );
             Tracker.AppVersion = packageInfo.Version;
 

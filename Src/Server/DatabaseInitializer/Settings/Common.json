@@ -41,7 +41,6 @@
    "Client.ShowPassengerPhone" : "true",   
    "Client.ShowPassengerNumber" : "true",   
    "Client.ShowRingCodeField" : "true", 
-   "Client.AllowAddressRange" : "false",   
    "Client.DestinationIsRequired" : "false", 
    "Client.ShowVehicleInformation" : "true",   
    "Client.ShowCallDriver" : "false",   

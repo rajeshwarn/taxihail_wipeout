@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Maps.Impl
           
             if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
             {
-                return popularPlaces.Concat(  ConvertGeoResultToAddresses(geoResult,null, true)).ToArray();
+                return popularPlaces.Concat(  ConvertGeoResultToAddresses(geoResult,null)).ToArray();
             }
 
             return popularPlaces;
@@ -80,9 +80,8 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             geoResult = geoResult ?? _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
-            {
-                var allowAddressRange = _configManager.GetSetting("Client.AllowAddressRange").SelectOrDefault(setting => bool.Parse(setting), false);
-                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null, allowAddressRange)).ToArray();
+            {				
+				return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null)).ToArray();
             }
             else
             {
@@ -118,7 +117,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return addressesInRange.ToArray();
         }
 
-        private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName, bool allowRange)
+		private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {
             if ((geoResult.Status != ResultStatus.OK) || (geoResult.Results == null) || (geoResult.Results.Count == 0))
             {
@@ -130,7 +129,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                                                   r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                   (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) ||
                                                   (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                .Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, placeName, allowRange)).ToArray();
+				.Select(r => new GeoObjToAddressMapper().ConvertToAddress(r, placeName)).ToArray();
         }
 
       

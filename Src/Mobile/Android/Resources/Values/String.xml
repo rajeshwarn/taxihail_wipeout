@@ -200,7 +200,7 @@
   <string name="DestinationMapTitle">Destination location</string>
   <string name="LocationDetailGiveItANameLabel">Friendly Name</string>
   <string name="Submit">Submit</string>
-  <string name="StatusDescription">Confirmation #{0}</string>
+  <string name="StatusDescription">Order #{0}</string>
   <string name="HistoryViewSendReceiptError">Error sending receipt for this order</string>
   <string name="StatusStatusLabel">Status: {0}</string>
   <string name="BookDropoffLocationEmptyPlaceholder">Tap to choose destination</string>
@@ -260,7 +260,7 @@
   <string name="CreateAccountFullName">Full Name</string>
   <string name="DestinationOffButtonImageName">Assets/Button/btnDest_off_en.png</string>
   <string name="View_LocationDetail">Location Detail</string>
-  <string name="HistoryDetailConfirmationLabel">Confirmation:</string>
+  <string name="HistoryDetailConfirmationLabel">Order:</string>
   <string name="LocationAddFavoriteTitle">Add location</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="InvalidChoiceTitle">Invalid Choice</string>
@@ -346,7 +346,7 @@
   <string name="AddReminderMessage">Would you like a reminder added to your calendar for this pick-up time?</string>
   <string name="AddReminderTitle">Scheduled Pick-Up</string>
   <string name="NotesToDriveLabel">Notes to driver</string>
-  <string name="NotesToDriverHint">Notes to driver: (Name of business, specific entrance)</string>
+  <string name="NotesToDriverHint">Name of business, specific entrance</string>
   <string name="CreditCardNumber">Card Number</string>
   <string name="CreditCardZipCode">Zip code</string>
   <string name="CreditCardsAddTitle">New Credit Card</string>
@@ -440,4 +440,5 @@
   <string name="LargeBagsLabel">Large Bags</string>
   <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
   <string name="ConfirmationOfPaymentSent">Confirmation of payment has been sent to the driver.</string>
+  <string name="EstimatingFare">Estimating your fare...</string>
 </resources>

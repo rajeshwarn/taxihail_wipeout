@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var g = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
             g.SetDebug(true);
 
-            Tracker = g.GetTracker("UA-37031104-6");
+            Tracker = g.GetTracker("UA-44714416-1");
 
             Tracker.SetAppName(  settings.ApplicationName.Replace( ' ' , '_' ) );
             Tracker.SetAppVersion(packageInfo.Version);
