@@ -4,6 +4,7 @@ using Android.App;
 using Android.OS;
 using System.Json;
 using System.Collections.Generic;
+using com.facebook.droid;
 using Com.Facebook.Android;
 
 namespace SocialNetworks.Services.MonoDroid
@@ -17,6 +18,7 @@ namespace SocialNetworks.Services.MonoDroid
 		public FacebookServicesMD(string appId, Activity mainActivity)
         {
 			_facebookClient = new Facebook(appId);
+
 			SessionEvents.AddAuthListener (this);
 			SessionEvents.AddLogoutListener (this);
 			_mainActivity = mainActivity;
@@ -182,6 +184,7 @@ namespace SocialNetworks.Services.MonoDroid
 		{
 			public override void OnComplete (Bundle values)
 			{
+
 				SessionEvents.OnLoginSuccess ();
 			}			
 		}		

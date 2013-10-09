@@ -1,6 +1,6 @@
 using Android.Content;
 
-namespace Com.Facebook.Android
+namespace com.facebook.droid
 {
     public class SessionStore
     {    
@@ -8,7 +8,7 @@ namespace Com.Facebook.Android
         const string EXPIRES = "expires_in";
         const string KEY = "facebook-session";
     
-        public static bool Save (Facebook session, Context context)
+		public static bool Save (Facebook session, Context context)
         {
             var editor = context.GetSharedPreferences (KEY,FileCreationMode.Private).Edit ();
             editor.PutString (TOKEN, session.AccessToken);
@@ -16,7 +16,7 @@ namespace Com.Facebook.Android
             return editor.Commit ();
         }
 
-        public static bool Restore (Facebook session, Context context)
+		public static bool Restore (Facebook session, Context context)
         {
             var savedSession = context.GetSharedPreferences (KEY, FileCreationMode.Private);
             session.AccessToken = savedSession.GetString (TOKEN, null);
