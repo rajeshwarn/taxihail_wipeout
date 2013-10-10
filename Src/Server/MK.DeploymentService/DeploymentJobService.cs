@@ -68,7 +68,7 @@ namespace MK.DeploymentService
                 .Include(x => x.IBSServer)
                 .Include(x => x.TaxHailEnv)
                 .Include(x => x.Version)
-                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && (x.DeployServer || x.DeployDB));
+                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && !x.iOS_AdHoc && !x.iOS_AppStore && !x.Android);
 
             if (job == null) return;
 
@@ -84,7 +84,7 @@ namespace MK.DeploymentService
                 if (Properties.Settings.Default.Mode == "Build")
                 {
                     taxiRepo.FetchSource(job.GetRevisionNumber(),str=>Log(str));
-                    BuildDataBaseInitializer(sourceDirectory);
+                    Build(sourceDirectory);
                 }
 
                 //build server and deploy
@@ -95,7 +95,8 @@ namespace MK.DeploymentService
                     {
                         packagesDirectory = Properties.Settings.Default.DeployFolder;
                     }
-                    DeployTaxiHail(packagesDirectory);
+                    var packagesLocation = CleanAndUnZip(packagesDirectory);
+                    DeployTaxiHail(packagesLocation);
                 }
 
                 Log("Job Complete", JobStatus.SUCCESS);
@@ -109,6 +110,29 @@ namespace MK.DeploymentService
             }
         }
 
+        private string CleanAndUnZip(string packagesDirectory)
+        {
+            Log("Get the binaries and unzip it");
+            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(job));
+            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(job.GetVersionNumber()));
+
+            if (Directory.Exists(unzipDirectory))
+            {
+                Directory.Delete(unzipDirectory, true);
+            }
+            Directory.CreateDirectory(unzipDirectory);
+
+            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("x {0} *", packageFile), unzipDirectory);
+            using (var exeProcess = Process.Start(zipProcess))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during unziping Process" + output);
+                }
+            }
+            return unzipDirectory;
+        }
 
         private void Log(string details, JobStatus? status=null)
         {
@@ -122,8 +146,8 @@ namespace MK.DeploymentService
 
             dbContext.SaveChanges();
         }
-        
-        private void BuildDataBaseInitializer(string sourceDirectory)
+
+        private void Build(string sourceDirectory)
         {
             Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
@@ -156,6 +180,29 @@ namespace MK.DeploymentService
             targetDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites");
             sourcePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\obj\Release\Package\PackageTmp");
             CopyFiles(sourcePath, targetDir);
+
+            Log("Zip Web directory and move it to the drop folder");
+            //compress data
+            var fileName = GetZipFileName(job);
+
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            var packageDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\");
+            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), packageDir);
+            using (var exeProcess = Process.Start(zipProcess))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during Zip Process" + output);
+                }
+            }
+
+            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName));
+            Log("Finished");
         }
 
         private void CopyFiles(string source, string target)
@@ -292,10 +339,23 @@ namespace MK.DeploymentService
             Log("Deploying IIS Finished");
         }
 
-
         public void Stop()
         {
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        private static string GetZipFileName(DeploymentJob job)
+        {
+            return string.Format("TaxiHail_{0}.zip", MakeValidFileName(job.GetVersionNumber()));
+        }
+
+        private static string MakeValidFileName(string name)
+        {
+            name = name.Replace(" ", string.Empty);
+            var invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            var invalidReStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+            var safeName = System.Text.RegularExpressions.Regex.Replace(name, invalidReStr, "_");
+            return safeName;
         }
     }
 }
