@@ -135,16 +135,25 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.InsertSubviewBelow (_menu.View, bookView);
         }
 
-        protected override void OnViewModelChanged ()
-        {
-            base.OnViewModelChanged ();
-        }
-
+        private bool _firstStart = true;
         public override void ViewWillAppear (bool animated)
         {
-            base.ViewWillAppear (animated);     
-
+            base.ViewWillAppear (animated);
+            if (_firstStart) {
+                _firstStart = false;
+                ViewModel.Start (firstStart: true);
+            } else {
+                ViewModel.Restart();
+                ViewModel.Start(firstStart: false);
+            }
             NavigationController.NavigationBar.Hidden = true;
+
+        }
+
+        public override void ViewWillDisappear (bool animated)
+        {
+            base.ViewWillDisappear (animated);
+            if(ViewModel!= null) ViewModel.Stop();
         }
         
         public override void ViewDidAppear (bool animated)
