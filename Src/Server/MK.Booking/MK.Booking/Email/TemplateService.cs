@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Email
     {
         public string Find(string templateName)
         {
-            var path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".mustache");
+            var path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".html");
             if (File.Exists(path))
             {
                 return File.ReadAllText(path);

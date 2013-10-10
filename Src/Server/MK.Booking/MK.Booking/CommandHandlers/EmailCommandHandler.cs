@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         
         const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
         const string ReceiptTemplateName = "Receipt";
-        const string ReceiptWithVATTemplateName = "ReceiptWithVAT";
+        
 
         const string BookingConfirmationTemplateName = "BookingConfirmation";
         const string BookingConfirmationEmailSubject = "{{ ApplicationName }} - Booking confirmation";
@@ -164,9 +164,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendReceipt command)
         {
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var templateName = vatEnabled 
-                                    ? ReceiptWithVATTemplateName 
-                                    : ReceiptTemplateName;
+            var templateName =  ReceiptTemplateName;
 
             var template = _templateService.Find(templateName);
             if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
