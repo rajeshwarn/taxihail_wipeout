@@ -41,10 +41,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
                 UseService(service =>
                 {
+                    Logger.LogMessage( string.Format(  "GetAvailableVehicles call : longitude : {0}, latitude : {1}, radius : {2}, count : {3}",longitude, latitude, radius, count ) );
+
                     result = service
                         .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
                         .Select(Mapper.Map<IBSVehiclePosition>)
                         .ToArray();
+
+                    Logger.LogMessage(string.Format("GetAvailableVehicles call returned : " + result.Count().ToString() + " vehicles"));
+
+                    result.ForEach( r => Logger.LogMessage(  string.Format(  "Vehicle found {0},  longitude : {1}, latitude : {2}" , r.VehicleNumber, r.Longitude, r.Latitude ) ));
+                    
+
                 });
             }
             

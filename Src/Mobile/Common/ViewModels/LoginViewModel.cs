@@ -212,10 +212,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var facebookId = data.FacebookId;
                     var twitterId = data.TwitterId;
-                    MessageService.ShowProgress(true);
+
                     try
                     {
-                        Thread.Sleep(500);
+                        Thread.Sleep(1500);
                         var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                         Account account;
                         if (facebookId.HasValue() || twitterId.HasValue())
