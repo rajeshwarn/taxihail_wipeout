@@ -351,7 +351,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsPayButtonVisible =  statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded;
 			
-			IsCancelButtonVisible = !IsPayButtonVisible;
+            IsCancelButtonVisible = statusId == VehicleStatuses.Common.Assigned 
+                                || statusId == VehicleStatuses.Common.Waiting 
+                                || statusId == VehicleStatuses.Common.Arrived;
 		
 			var setting = ConfigurationManager.GetPaymentSettings ();
 			var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
