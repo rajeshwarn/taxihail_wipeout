@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             var place = _client.GetPlaceDetail(referenceId);
 
-            var result = new GeoObjToAddressMapper().ConvertToAddress(place, name);
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place, name, true);
 
             result.PlaceReference = referenceId;
 
