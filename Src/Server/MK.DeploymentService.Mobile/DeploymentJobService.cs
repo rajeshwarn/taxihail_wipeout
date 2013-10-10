@@ -283,7 +283,7 @@ namespace MK.DeploymentService.Mobile
 				}
 			}
 
-			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug|x86");
+			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug");
             _builder.BuildProject(string.Format("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine(sourceDirectory, "Src", "ConfigTool")));
 
 			UpdateJob ("Run Config Tool Customization");

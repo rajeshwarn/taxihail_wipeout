@@ -1,9 +1,9 @@
 using Android.OS;
 using Java.Lang;
 
-namespace Com.Facebook.Android
+namespace com.facebook.droid
 {
-    public abstract class BaseDialogListener : Object, Facebook.IDialogListener
+	public abstract class BaseDialogListener : Object, Facebook.IDialogListener
     {
         public abstract void OnComplete (Bundle bundle);
 		

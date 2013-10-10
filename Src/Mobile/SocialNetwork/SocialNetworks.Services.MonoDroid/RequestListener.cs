@@ -4,7 +4,7 @@ using Java.Lang;
 using Java.Net;
 using System;
 
-namespace Com.Facebook.Android
+namespace com.facebook.droid
 {
     public class RequestListener : Java.Lang.Object, AsyncFacebookRunner.IRequestListener
     {
