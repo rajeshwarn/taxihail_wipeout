@@ -27,12 +27,15 @@
 					<tr>
 						<td><strong>Cab&nbsp;#</strong></td><td>{{VehicleNumber}}</td>
 					</tr>
-					<tr>
-						<td><strong>Fare</strong></td><td>{{Fare}}</td>
-					</tr>
-					<tr id="vatRow" >
-						<td><strong>VAT</strong></td><td>{{VATAmount}} (#: {{VATRegistrationNumber}})</td>
-					</tr>
+				    <tr>
+				        <td><strong>Fare</strong></td><td>{{Fare}}</td>
+				    </tr>
+                    
+  {{#VatEnabled}}
+				    <tr id="vatRow" >
+				        <td><strong>VAT</strong></td><td>{{VATAmount}} (#: {{VATRegistrationNumber}})</td>
+				    </tr>
+  {{/VatEnabled}}
 					<tr>
 						<td><strong>Toll</strong></td><td>{{Toll}}</td>
 					</tr>

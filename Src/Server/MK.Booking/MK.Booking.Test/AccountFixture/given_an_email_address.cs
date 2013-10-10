@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -59,5 +60,52 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                     message.AlternateViews[0] != null &&
                     message.Subject.Contains(ApplicationName))));
         }
+
+        [Test]
+        public void when_sending_booking_confirmation_email()
+        {
+            this.sut.When(new SendBookingConfirmationEmail
+                {
+                    EmailAddress = "test@example.net",
+                    DropOffAddress = new Address(),
+                    PickupAddress = new Address(),
+                    IBSOrderId = 12345,
+                    Id = Guid.NewGuid(),
+                    Note = "Tomato Sandwich",
+                    PickupDate = DateTime.Now,
+                    Settings = new SendBookingConfirmationEmail.BookingSettings()
+                    
+                });
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message =>
+                    message.AlternateViews[0] != null &&
+                    message.Subject.Contains(ApplicationName))));
+        }
+
+        [Test]
+        public void when_sending_driver_assigned_confirmation_email()
+        {
+            this.sut.When(new SendAssignedConfirmation
+                {
+                    EmailAddress = "test@example.net",
+                    DropOffAddress = new Address(),
+                    PickupAddress = new Address(),
+                    IBSOrderId = 12345,
+                    Id = Guid.NewGuid(),
+                    PickupDate = DateTime.Now,
+                    Settings = new SendBookingConfirmationEmail.BookingSettings(),
+                    Fare = 12,
+                    TransactionDate = DateTime.Now,
+                    VehicleNumber = 12345+"Tony"
+                    
+                });
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message =>
+                    message.AlternateViews[0] != null &&
+                    message.Subject.Contains(ApplicationName))));
+        }
+
     }
 }

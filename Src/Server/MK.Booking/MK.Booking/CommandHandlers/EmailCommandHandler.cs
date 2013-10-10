@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Net.Mail;
 using System.Text;
+using System.Xml.Linq;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
@@ -164,10 +166,11 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendReceipt command)
         {
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var templateName =  ReceiptTemplateName;
 
-            var template = _templateService.Find(templateName);
-            if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
+
+            var template = _templateService.Find(ReceiptTemplateName);
+
+            if (template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
@@ -183,8 +186,10 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        TotalFare = command.TotalFare.ToString("C", priceFormat),
                                        Note = _configurationManager.GetSetting("Receipt.Note"),
                                        VATAmount = command.Tax.ToString("C", priceFormat),
+                                       VatEnabled = vatEnabled,
                                        VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting)
                                    };
+
 
             SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);
         }
@@ -198,6 +203,23 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var messageSubject = _templateService.Render(subjectTemplate, templateData);
             var messageBody = _templateService.Render(bodyTemplate, templateData);
+
+#if DEBUG
+            try
+            {
+
+                using (var file = new StreamWriter("email.html"))
+                {
+                    file.Write(messageBody);
+                }
+            }
+            catch
+            {
+
+
+            }
+#endif
+
 
             var mailMessage = new MailMessage(@from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: to,

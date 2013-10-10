@@ -212,14 +212,27 @@
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Email\Templates\AccountConfirmation.html" />
-    <Content Include="Email\Templates\AccountConfirmationSuccess.html" />
-    <Content Include="Email\Templates\BookingConfirmation.html" />
-    <Content Include="Email\Templates\DriverAssigned.html" />
-    <Content Include="Email\Templates\DriverAssignedWithVAT.html" />
-    <Content Include="Email\Templates\PasswordReset.html" />
-    <Content Include="Email\Templates\Receipt.html" />
-    <Content Include="Email\Templates\ReceiptWithVAT.html" />
+    <Content Include="Email\Templates\AccountConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\AccountConfirmationSuccess.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\BookingConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssigned.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\DriverAssignedWithVAT.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\PasswordReset.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\Receipt.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="App.config" />
     <None Include="MK.Booking.psproj">
       <SubType>Designer</SubType>
