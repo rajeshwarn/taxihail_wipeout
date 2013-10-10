@@ -36,9 +36,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_sending_receipt_email()
         {
-            const string newPassword = "123456";
-
-            this.sut.When(new SendReceipt
+            sut.When(new SendReceipt
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
@@ -46,7 +44,32 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Fare = 26.32,
                 Toll = 3.68,
                 Tip = 5.25,
-                Tax = 2.21
+                Tax = 2.21,
+
+            });
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message =>
+                    message.AlternateViews.Any() &&
+                    message.Subject.Contains(ApplicationName))));
+
+        }
+        [Test]
+        public void given_cc_payment_when_sending_receipt_email()
+        {
+
+
+            sut.When(new SendReceipt
+            {
+                EmailAddress = "test@example.net",
+                IBSOrderId = 777,
+                VehicleNumber = "Cab555",
+                Fare = 26.32,
+                Toll = 3.68,
+                Tip = 5.25,
+                Tax = 2.21,
+                CardOnFileInfo = new SendReceipt.CardOnFile(22,12354+"tomato","chris")
+
             });
 
             emailSenderMock.Verify(s => s

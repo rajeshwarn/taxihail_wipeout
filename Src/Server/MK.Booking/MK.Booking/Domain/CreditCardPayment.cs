@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount)
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, string cardToken)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.Domain
             {
                 OrderId = orderId,
                 TransactionId = transactionId,
-                Amount = amount
+                Amount = amount,
+                CardToken = cardToken
             });
         }
 

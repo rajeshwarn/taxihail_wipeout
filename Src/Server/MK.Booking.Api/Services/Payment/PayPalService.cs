@@ -98,6 +98,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
             var transactionId = service.DoExpressCheckoutPayment(payment.Token, request.PayerId, payment.Amount);
 
+            
             _commandBus.Send(new CompletePayPalExpressCheckoutPayment
                                  {
                                      PaymentId = payment.PaymentId,

@@ -187,7 +187,24 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        Note = _configurationManager.GetSetting("Receipt.Note"),
                                        VATAmount = command.Tax.ToString("C", priceFormat),
                                        VatEnabled = vatEnabled,
-                                       VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting)
+                                       VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
+
+                                       IsCardOnFile = command.CardOnFileInfo != null,
+                                       CardOnFileAmount = command.CardOnFileInfo != null
+                                                    ? command.CardOnFileInfo.Amount 
+                                                    : default(decimal),
+                                       CardOnFileCompany = command.CardOnFileInfo != null
+                                                    ? command.CardOnFileInfo.Company
+                                                    : null,
+                                       CardOnFileFriendlyName = command.CardOnFileInfo != null
+                                                    ? command.CardOnFileInfo.FriendlyName
+                                                    : null,
+                                       CardOnFileLastFour = command.CardOnFileInfo != null
+                                                    ? command.CardOnFileInfo.LastFour
+                                                    : null,
+                                       CardOnFileTransactionId = command.CardOnFileInfo != null
+                                                    ? command.CardOnFileInfo.TransactionId
+                                                    : null
                                    };
 
 

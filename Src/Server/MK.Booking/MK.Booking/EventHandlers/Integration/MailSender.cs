@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 
@@ -17,12 +19,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configurationManager;
+        private readonly IPayPalExpressCheckoutPaymentDao _payPalExpressCheckoutPaymentDao;
 
-        public MailSender(Func<BookingDbContext> contextFactory, ICommandBus commandBus, IConfigurationManager configurationManager)
+        public MailSender(Func<BookingDbContext> contextFactory, 
+            ICommandBus commandBus, 
+            IConfigurationManager configurationManager,
+            IPayPalExpressCheckoutPaymentDao payPalExpressCheckoutPaymentDao
+            )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _configurationManager = configurationManager;
+            _payPalExpressCheckoutPaymentDao = payPalExpressCheckoutPaymentDao;
         }
 
         public void Handle(OrderCompleted @event)
@@ -30,12 +38,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             using (var context = _contextFactory.Invoke())
             {
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
                 if (orderStatus != null)
                 {
                      if (orderStatus.IBSStatusId == "wosDONE" && @event.Fare.GetValueOrDefault() > 0)
                      {
+                         
                          var account = context.Find<AccountDetail>(orderStatus.AccountId);
-                         var command = new Commands.SendReceipt
+                         var command = new SendReceipt
                          {
                              Id = Guid.NewGuid(),
                              OrderId = @event.SourceId,
@@ -48,6 +58,33 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                              Tip = @event.Tip.GetValueOrDefault(),
                              Tax = @event.Tax.GetValueOrDefault(),
                          };
+
+                         
+                        var creditCardPayment = context.Query<CreditCardPaymentDetail>().FirstOrDefault(d => d.OrderId == orderStatus.OrderId);
+                        if (creditCardPayment != null)
+                        {
+                            command.CardOnFileInfo = new SendReceipt.CardOnFile(
+                                creditCardPayment.Amount,
+                                creditCardPayment.TransactionId,
+                                "Credit Card");
+
+                            var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(cc => cc.Token == creditCardPayment.CardToken);
+                            if (creditCard != null)
+                            {
+                                command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                                command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                                command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                            }
+                        }
+                
+                        var paypalPayment = context.Query<PayPalExpressCheckoutPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId);
+                        if (paypalPayment != null)
+                        {
+                            command.CardOnFileInfo = new SendReceipt.CardOnFile(
+                                      paypalPayment.Amount,
+                                       paypalPayment.TransactionId,
+                                      "PayPal");
+                        }
 
                          _commandBus.Send(command);
                      }
