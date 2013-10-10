@@ -29,7 +29,7 @@
                     style="@style/FormLabelText" />
                 <EditText
                     android:id="@+id/SignUpEditEmail"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.Email&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Data.Email'}}"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:layout_width="fill_parent"
@@ -41,7 +41,7 @@
                     style="@style/FormLabelText" />
                 <EditText
                     android:id="@+id/SignUpName"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.Name&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Data.Name'}}"
                     android:layout_height="wrap_content"
                     android:inputType="textNoSuggestions"
                     android:padding="10dip"
@@ -53,7 +53,7 @@
                     style="@style/FormLabelText" />
                 <EditText
                     android:id="@+id/SignUpPhone"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.Phone&apos;}}"
+                    local:MvxBind="{'Text':{'Path':'Data.Phone'}}"
                     android:layout_height="wrap_content"
                     android:padding="10dip"
                     android:inputType="phone"
@@ -61,6 +61,7 @@
                 <TableLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    local:MvxBind="{'Visibility':{'Path':'HasSocialInfo','Converter':'InvertedVisibility'}}"
                     android:stretchColumns="0,2">
                     <TableRow>
                         <LinearLayout
@@ -74,7 +75,7 @@
                                 style="@style/FormLabelText" />
                             <EditText
                                 android:id="@+id/SignUpPassword"
-                                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.Password&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HasSocialInfo&apos;,&apos;Converter&apos;:&apos;InvertedVisibilityConverter&apos;}}"
+                                local:MvxBind="{'Text':{'Path':'Data.Password'}}"
                                 android:layout_height="wrap_content"
                                 android:padding="10dip"
                                 android:inputType="textPassword"
@@ -95,7 +96,7 @@
                                 style="@style/FormLabelText" />
                             <EditText
                                 android:id="@+id/SignUpConfirmPassword"
-                                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ConfirmPassword&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HasSocialInfo&apos;,&apos;Converter&apos;:&apos;InvertedVisibilityConverter&apos;}}"
+                                local:MvxBind="{'Text':{'Path':'ConfirmPassword'}}"
                                 android:layout_height="wrap_content"
                                 android:padding="10dip"
                                 android:inputType="textPassword"
@@ -117,7 +118,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="45dip"
                         android:layout_weight="1"
-                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CreateAccount&apos;}}"
+                        local:MvxBind="{'Click':{'Path':'CreateAccount'}}"
                         android:text="@string/CreateAccountCreate" />
                 </LinearLayout>
             </LinearLayout>
