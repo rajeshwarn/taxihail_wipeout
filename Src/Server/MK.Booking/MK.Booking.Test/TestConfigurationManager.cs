@@ -64,16 +64,16 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public string GetSetting(string key)
         {
-            return _config[key];
+            return _config.ContainsKey(key) ? _config[key] : null;
         }
 
         static public string AssemblyDirectory
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
         }
