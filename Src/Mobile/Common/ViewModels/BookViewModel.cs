@@ -584,14 +584,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        private IDisposable _getAvailableVehicles = NullDisposable.Instance;
-        private void LoadAvailableVehicles(double latitude, double longitude)
+        private async void LoadAvailableVehicles(double latitude, double longitude)
         {
-            _getAvailableVehicles.Dispose ();
-            _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
-                .Subscribe (result => InvokeOnMainThread(() =>{
-                    AvailableVehicles = result;
-                }));
+            AvailableVehicles = await VehicleClient.GetAvailableVehiclesAsync(latitude, longitude);
+
         }
+
+       
+
     }
 }

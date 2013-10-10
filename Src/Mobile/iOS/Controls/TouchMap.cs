@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -297,7 +298,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             set
             {
-                ShowAvailableVehicles (value);
+                ShowAvailableVehicles (Clusterize(value.ToArray()));
+                //ShowAvailableVehicles (value.ToArray());
             }
         }
 
@@ -458,11 +460,85 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var v in vehicles)
             {
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), AddressAnnotationType.NearbyTaxi, string.Empty, string.Empty);
+                var annotationType = (v is AvailableVehicleCluster) ? AddressAnnotationType.NearbyTaxiCluster : AddressAnnotationType.NearbyTaxi;
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
                 AddAnnotation (pushPin);
                 _availableVehiclePushPins.Add (pushPin);
             }
+
+
+
         }
+
+        private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
+        {
+            // Divide the map in 16 cells (4*4)
+            const int numberOfRows = 4;
+            const int numberOfColumns = 4;
+            // Maximum number of vehicles in a cell before we start displaying a cluster
+            const int cellThreshold = 4;
+
+            var result = new List<AvailableVehicle>();
+
+            var bounds =  this.Bounds;
+            var clusterWidth = bounds.Width / numberOfColumns;
+            var clusterHeight = bounds.Height / numberOfRows;
+
+            var list = new List<AvailableVehicle>(vehicles);
+
+            for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+                for (int colIndex = 0; colIndex < numberOfColumns; colIndex++)
+                {
+                    var rect = new RectangleF(this.Bounds.X + (colIndex + 1) * clusterWidth, this.Bounds.Y + (rowIndex + 1) * clusterHeight, clusterWidth, clusterHeight);
+
+                    var vehiclesInRect = list.Where(v => rect.Contains(this.ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
+                    if (vehiclesInRect.Length > cellThreshold)
+                    {
+                        var clusterBuilder = new VehicleClusterBuilder();
+                        foreach(var v in vehiclesInRect) clusterBuilder.Add(v);
+                        result.Add(clusterBuilder.Build());
+                    }
+                    else
+                    {
+                        result.AddRange(vehiclesInRect);
+                    }
+                    foreach(var v in vehiclesInRect) list.Remove(v);
+
+                }
+            return result.ToArray();
+        }
+    }
+
+    public class AvailableVehicleCluster: AvailableVehicle
+    {
+
+    }
+
+    public class VehicleClusterBuilder
+    {
+        private readonly List<AvailableVehicle> _vehicles = new List<AvailableVehicle>();
+        public void Add(AvailableVehicle vehicle)
+        {
+            if (vehicle == null) throw new ArgumentNullException();
+
+            _vehicles.Add(vehicle);
+        }
+
+        public bool IsEmpty { get { return _vehicles.Count == 0; } }
+
+        public AvailableVehicle Build()
+        {
+            return new AvailableVehicleCluster
+            {
+                Latitude = IsEmpty
+                            ? default(double)
+                            : _vehicles.Sum(x => x.Latitude) / _vehicles.Count,
+                Longitude = IsEmpty
+                            ? default(double)
+                            : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
+            };
+        }
+
     }
 }
 
