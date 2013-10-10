@@ -68,7 +68,7 @@ namespace MK.DeploymentService
                 .Include(x => x.IBSServer)
                 .Include(x => x.TaxHailEnv)
                 .Include(x => x.Version)
-                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && (x.DeployServer || x.DeployDB));
+                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && !x.iOS_AdHoc && !x.iOS_AppStore && !x.Android);
 
             if (job == null) return;
 
@@ -84,7 +84,7 @@ namespace MK.DeploymentService
                 if (Properties.Settings.Default.Mode == "Build")
                 {
                     taxiRepo.FetchSource(job.GetRevisionNumber(),str=>Log(str));
-                    BuildDataBaseInitializer(sourceDirectory);
+                    Build(sourceDirectory, job);
                 }
 
                 //build server and deploy
@@ -122,8 +122,8 @@ namespace MK.DeploymentService
 
             dbContext.SaveChanges();
         }
-        
-        private void BuildDataBaseInitializer(string sourceDirectory)
+
+        private void Build(string sourceDirectory, DeploymentJob job)
         {
             Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
@@ -156,6 +156,22 @@ namespace MK.DeploymentService
             targetDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites");
             sourcePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\obj\Release\Package\PackageTmp");
             CopyFiles(sourcePath, targetDir);
+
+            Log("Zip Web directory and move it to the drop folder");
+            //compress data
+            var fileName = string.Format("TaxiHail_Web{0}.zip", job.GetVersionNumber().Replace(" ", string.Empty));
+            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), targetDir);
+            using (var exeProcess = Process.Start(zipProcess))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during Zip Process" + output);
+                }
+            }
+
+            File.Copy(Path.Combine(targetDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName));
+            Log("Finished");
         }
 
         private void CopyFiles(string source, string target)

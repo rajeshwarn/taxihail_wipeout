@@ -53,6 +53,12 @@ namespace MK.ConfigurationManager.Entities
 
             return string.IsNullOrEmpty(Revision) ? string.Empty : Revision;
         }
+
+        public string GetVersionNumber()
+        {
+           return Version != null ? Version.Display : string.Empty;
+        }
+
     }
 
     public enum JobStatus   
