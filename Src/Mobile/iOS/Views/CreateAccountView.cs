@@ -64,8 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtName, "{'Text': {'Path': 'Data.Name', 'Mode': 'TwoWay' }}" },
                 { txtEmail, "{'Text': {'Path': 'Data.Email', 'Mode': 'TwoWay' }}" },
                 { txtPhone, "{'Text': {'Path': 'Data.Phone', 'Mode': 'TwoWay' }}" },
-                { txtPassword, "{'Text': {'Path': 'Data.Password', 'Mode': 'TwoWay' }}" },
-                { txtConfirmPassword, "{'Text': {'Path': 'ConfirmPassword', 'Mode': 'TwoWay' }}" },
+                { txtPassword, "{'Text': {'Path': 'Data.Password', 'Mode': 'TwoWay' },'Hidden': {'Path': 'HasSocialInfo'}}" },
+                { txtConfirmPassword, "{'Text': {'Path': 'ConfirmPassword', 'Mode': 'TwoWay' },'Hidden': {'Path': 'HasSocialInfo'}}" },
+                { lblPassword, "{'Hidden': {'Path': 'HasSocialInfo'}}" },
+                { lblConfirmPassword, "{'Hidden': {'Path': 'HasSocialInfo'}}" },
             });
 
             this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SignUp"), true);

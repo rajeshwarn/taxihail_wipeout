@@ -93,6 +93,8 @@ namespace apcurium.MK.Booking.Mobile
                         var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
+
+
 						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
 						if (result)
 						{
