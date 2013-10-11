@@ -83,6 +83,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                     message.Subject.Contains(ApplicationName))));
         }
 
+     
+
         [Test]
         public void when_sending_driver_assigned_confirmation_email()
         {

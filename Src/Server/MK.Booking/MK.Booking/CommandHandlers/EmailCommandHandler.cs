@@ -174,6 +174,30 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
+            var isCardOnFile = command.CardOnFileInfo != null;
+            var cardOnFileAmount = "";
+            var cardNumber = "";
+            var cardOnFileTransactionId = "";
+            if (isCardOnFile)
+            {
+                cardOnFileAmount = command.CardOnFileInfo.Amount.ToString("C",priceFormat);
+                cardNumber = command.CardOnFileInfo.Company;
+
+                if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.LastFour))
+                {
+                    cardNumber += " XXXX " + command.CardOnFileInfo.LastFour;
+                }
+                
+                if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.FriendlyName))
+                {
+                    cardNumber += " (" + command.CardOnFileInfo.FriendlyName+")";
+                }
+                                            
+                cardOnFileTransactionId = command.CardOnFileInfo.TransactionId;
+                                                        
+            }
+            
+
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                                        AccentColor = _configurationManager.GetSetting(AccentColorSetting),
@@ -189,22 +213,10 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        VatEnabled = vatEnabled,
                                        VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
 
-                                       IsCardOnFile = command.CardOnFileInfo != null,
-                                       CardOnFileAmount = command.CardOnFileInfo != null
-                                                    ? command.CardOnFileInfo.Amount 
-                                                    : default(decimal),
-                                       CardOnFileCompany = command.CardOnFileInfo != null
-                                                    ? command.CardOnFileInfo.Company
-                                                    : null,
-                                       CardOnFileFriendlyName = command.CardOnFileInfo != null
-                                                    ? command.CardOnFileInfo.FriendlyName
-                                                    : null,
-                                       CardOnFileLastFour = command.CardOnFileInfo != null
-                                                    ? command.CardOnFileInfo.LastFour
-                                                    : null,
-                                       CardOnFileTransactionId = command.CardOnFileInfo != null
-                                                    ? command.CardOnFileInfo.TransactionId
-                                                    : null
+                                       IsCardOnFile = isCardOnFile,
+                                       CardOnFileAmount = cardOnFileAmount,
+                                       CardNumber = cardNumber,
+                                       CardOnFileTransactionId = cardOnFileTransactionId
                                    };
 
 

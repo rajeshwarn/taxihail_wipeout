@@ -68,7 +68,36 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22,12354+"tomato","chris")
+                CardOnFileInfo = new SendReceipt.CardOnFile(22,12354+"qweqw","Visa")
+                {
+                    LastFour = "6578",
+                    FriendlyName = "Home"
+                }
+
+            });
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message =>
+                    message.AlternateViews.Any() &&
+                    message.Subject.Contains(ApplicationName))));
+
+        }
+        [Test]
+        public void given_paypal_payment_when_sending_receipt_email()
+        {
+
+
+            sut.When(new SendReceipt
+            {
+                EmailAddress = "test@example.net",
+                IBSOrderId = 777,
+                VehicleNumber = "Cab555",
+                Fare = 26.32,
+                Toll = 3.68,
+                Tip = 5.25,
+                Tax = 2.21,
+                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "PayPal")
+
 
             });
 

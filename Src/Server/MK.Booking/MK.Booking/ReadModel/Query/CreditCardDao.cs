@@ -21,6 +21,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<CreditCardDetails>().Where(c => c.AccountId.Equals(accountId)).ToList();
             }
         }
+
+        public CreditCardDetails FindByToken(string cardToken)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<CreditCardDetails>().FirstOrDefault(c => c.Token == cardToken);
+            }
+        }
     }
 
 }

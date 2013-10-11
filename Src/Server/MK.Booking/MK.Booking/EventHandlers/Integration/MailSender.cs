@@ -20,17 +20,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configurationManager;
         private readonly IPayPalExpressCheckoutPaymentDao _payPalExpressCheckoutPaymentDao;
+        private readonly ICreditCardPaymentDao _cardPaymentDao;
+        private readonly ICreditCardDao _creditCardDao;
 
         public MailSender(Func<BookingDbContext> contextFactory, 
             ICommandBus commandBus, 
             IConfigurationManager configurationManager,
-            IPayPalExpressCheckoutPaymentDao payPalExpressCheckoutPaymentDao
+            IPayPalExpressCheckoutPaymentDao payPalExpressCheckoutPaymentDao,
+            ICreditCardPaymentDao cardPaymentDao,
+            ICreditCardDao creditCardDao
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _configurationManager = configurationManager;
             _payPalExpressCheckoutPaymentDao = payPalExpressCheckoutPaymentDao;
+            _cardPaymentDao = cardPaymentDao;
+            _creditCardDao = creditCardDao;
         }
 
         public void Handle(OrderCompleted @event)
@@ -59,32 +65,33 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                              Tax = @event.Tax.GetValueOrDefault(),
                          };
 
-                         
-                        var creditCardPayment = context.Query<CreditCardPaymentDetail>().FirstOrDefault(d => d.OrderId == orderStatus.OrderId);
-                        if (creditCardPayment != null)
-                        {
-                            command.CardOnFileInfo = new SendReceipt.CardOnFile(
-                                creditCardPayment.Amount,
-                                creditCardPayment.TransactionId,
-                                "Credit Card");
+#warning Copy and paste
+                         var creditCardPayment = _cardPaymentDao.FindByOrderId(@event.SourceId);
+                         if (creditCardPayment != null)
+                         {
+                             command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                                 creditCardPayment.Amount,
+                                 creditCardPayment.TransactionId,
+                                 "Credit Card");
 
-                            var creditCard = context.Query<CreditCardDetails>().FirstOrDefault(cc => cc.Token == creditCardPayment.CardToken);
-                            if (creditCard != null)
-                            {
-                                command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                                command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                                command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
-                            }
-                        }
-                
-                        var paypalPayment = context.Query<PayPalExpressCheckoutPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId);
-                        if (paypalPayment != null)
-                        {
-                            command.CardOnFileInfo = new SendReceipt.CardOnFile(
-                                      paypalPayment.Amount,
-                                       paypalPayment.TransactionId,
-                                      "PayPal");
-                        }
+                             var creditCard = _creditCardDao.FindByToken(creditCardPayment.CardToken);
+                             if (creditCard != null)
+                             {
+                                 command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                                 command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                                 command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                             }
+                         }
+
+                         var paypalPayment = _payPalExpressCheckoutPaymentDao.FindByOrderId(@event.SourceId);
+                         if (paypalPayment != null)
+                         {
+                             command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                                       paypalPayment.Amount,
+                                        paypalPayment.TransactionId,
+                                       "PayPal");
+                         }
+
 
                          _commandBus.Send(command);
                      }
