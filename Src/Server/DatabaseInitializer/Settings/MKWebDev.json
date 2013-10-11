@@ -1,6 +1,6 @@
 {
    "IBS.WebServicesPassword" : "test",
-   "IBS.WebServicesUrl" : "http://nyc.taxihail.com/IBSCab/IBSCab.dll/soap/",
+   "IBS.WebServicesUrl" : "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
    "XXXIBS.WebServicesUrlXXX":"http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",  
    "IBS.FakeOrderStatusUpdate": "true",
