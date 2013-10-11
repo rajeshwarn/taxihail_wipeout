@@ -16,6 +16,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -24,14 +25,16 @@ namespace apcurium.MK.Booking.Api.Services
         readonly ICommandBus _commandBus;
         readonly ICreditCardPaymentDao _dao;
         readonly IOrderDao _orderDao;
-        private IConfigurationManager _configurationManager;
+        readonly ILogger _logger;
+        readonly IConfigurationManager _configurationManager;
         private CmtPaymentServiceClient Client;
 
-        public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
+        public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager, ILogger logger)
         {
             _commandBus = commandBus;
             _dao = dao;
             _orderDao = orderDao;
+            _logger = logger;
 
             _configurationManager = configurationManager;
             Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null);

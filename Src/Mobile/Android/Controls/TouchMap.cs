@@ -360,6 +360,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				                       string.Empty);
 				_availableVehiclePushPins.Add (pushPin);
 			}
+            this.PostInvalidate();
 		}
 
         private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
