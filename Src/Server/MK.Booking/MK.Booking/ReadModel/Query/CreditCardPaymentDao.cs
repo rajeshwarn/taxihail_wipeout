@@ -21,5 +21,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     .SingleOrDefault(x => x.TransactionId == transactionId);
             }
         }
+
+        public CreditCardPaymentDetail FindByOrderId(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<CreditCardPaymentDetail>()
+                    .SingleOrDefault(x => x.OrderId == orderId);
+            }
+        }
     }
 }

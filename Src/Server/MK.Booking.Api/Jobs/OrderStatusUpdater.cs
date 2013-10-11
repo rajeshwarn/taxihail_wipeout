@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+
+
             var command = new ChangeOrderStatus
                               {
                                   Status = order,

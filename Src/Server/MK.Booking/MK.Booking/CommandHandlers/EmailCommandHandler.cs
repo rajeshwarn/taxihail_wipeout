@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Net.Mail;
 using System.Text;
+using System.Xml.Linq;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
@@ -30,7 +32,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         
         const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
         const string ReceiptTemplateName = "Receipt";
-        const string ReceiptWithVATTemplateName = "ReceiptWithVAT";
+        
 
         const string BookingConfirmationTemplateName = "BookingConfirmation";
         const string BookingConfirmationEmailSubject = "{{ ApplicationName }} - Booking confirmation";
@@ -164,14 +166,37 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendReceipt command)
         {
             var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            var templateName = vatEnabled 
-                                    ? ReceiptWithVATTemplateName 
-                                    : ReceiptTemplateName;
 
-            var template = _templateService.Find(templateName);
-            if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
+
+            var template = _templateService.Find(ReceiptTemplateName);
+
+            if (template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
 
             var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
+
+            var isCardOnFile = command.CardOnFileInfo != null;
+            var cardOnFileAmount = "";
+            var cardNumber = "";
+            var cardOnFileTransactionId = "";
+            if (isCardOnFile)
+            {
+                cardOnFileAmount = command.CardOnFileInfo.Amount.ToString("C",priceFormat);
+                cardNumber = command.CardOnFileInfo.Company;
+
+                if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.LastFour))
+                {
+                    cardNumber += " XXXX " + command.CardOnFileInfo.LastFour;
+                }
+                
+                if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.FriendlyName))
+                {
+                    cardNumber += " (" + command.CardOnFileInfo.FriendlyName+")";
+                }
+                                            
+                cardOnFileTransactionId = command.CardOnFileInfo.TransactionId;
+                                                        
+            }
+            
 
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -185,8 +210,15 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        TotalFare = command.TotalFare.ToString("C", priceFormat),
                                        Note = _configurationManager.GetSetting("Receipt.Note"),
                                        VATAmount = command.Tax.ToString("C", priceFormat),
-                                       VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting)
+                                       VatEnabled = vatEnabled,
+                                       VATRegistrationNumber = _configurationManager.GetSetting(VATRegistrationNumberSetting),
+
+                                       IsCardOnFile = isCardOnFile,
+                                       CardOnFileAmount = cardOnFileAmount,
+                                       CardNumber = cardNumber,
+                                       CardOnFileTransactionId = cardOnFileTransactionId
                                    };
+
 
             SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);
         }
@@ -200,6 +232,23 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var messageSubject = _templateService.Render(subjectTemplate, templateData);
             var messageBody = _templateService.Render(bodyTemplate, templateData);
+
+#if DEBUG
+            try
+            {
+
+                using (var file = new StreamWriter("email.html"))
+                {
+                    file.Write(messageBody);
+                }
+            }
+            catch
+            {
+
+
+            }
+#endif
+
 
             var mailMessage = new MailMessage(@from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: to,

@@ -156,6 +156,7 @@ namespace apcurium.MK.Booking.Api.Services
                             Amount = preAuthorizeRequest.Amount,
                             TransactionId = result.Target.Id,
                             OrderId = preAuthorizeRequest.OrderId,
+                            CardToken = preAuthorizeRequest.CardToken
                         });
                 }
 

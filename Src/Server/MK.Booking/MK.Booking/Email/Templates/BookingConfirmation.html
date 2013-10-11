@@ -3,28 +3,24 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{{ ApplicationName }} - Driver assigned confirmation</title>
+    <title>{{ ApplicationName }} - Booking confirmation</title>
   </head>
   <body style="font-family:Calibri,Helvetica, sans-serif; color:#686868">
-   <table width="598px" cellpadding="0" cellspacing="0" style="border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};width:598px;" id="backgroundTable">       
+   <table width="345px" cellpadding="0" cellspacing="0" style="border-right:1px solid {{ AccentColor }};border-left:1px solid {{ AccentColor }};width:345px;" id="backgroundTable">       
 		<tr style="background-color:{{ AccentColor }}">
 				<td colspan="2">&nbsp;</td>
 		</tr>
         <tr>
             <td colspan="2">
-                <h1 style="color:{{ AccentColor }};padding-left:45px;padding-right:20px;width:530px;">{{ ApplicationName }} - Driver assigned confirmation</h1>
+                <h1 style="color:{{ AccentColor }};padding-left:45px;padding-right:20px;width:345px;">{{ ApplicationName }}<br/>Booking confirmation</h1>
             </td>
         </tr>
       <tr>
 			<td colspan='2'>
-				<table cellpadding="1" cellspacing="0" border="0" style="border:none;margin-left:45px;margin-right:20px;width:530px;">
+				<table cellpadding="1" cellspacing="0" border="0" style="border:none;margin-left:45px;margin-right:20px;width:345px;">
 					<tr>
 						<td width=1 valign=top><strong>Order&nbsp;#</strong></td>
 						<td valign=top>{{IBSOrderId}}</td>
-					</tr>
-					<tr>
-						<td valign=top><strong>Transaction&nbsp;Time</strong></td>
-						<td valign=top>{{TransactionDate}} at {{TransactionTime}}</td>
 					</tr>
 					<tr>
 						<td valign=top><strong>Pickup&nbsp;Time</strong></td>
@@ -64,24 +60,24 @@
 							</table>
 						</td>
 					</tr>
+					<tr style="display:{{VisibilityLargeBags}};">
+						<td valign=top><strong>Large&nbsp;bags&nbsp;&nbsp;</strong></td>
+						<td valign=top>{{LargeBags}}</td>
+					</tr>
 					<tr>
-						<td valign=top><strong>Charge&nbsp;Type</strong></td>
+						<td valign=top><strong>Charge Type</strong></td>
 						<td valign=top>{{ChargeType}}</td>
 					</tr>
 					<tr>
-						<td valign=top><strong>Vehicle&nbsp;Number&nbsp;assigned</strong></td>
-						<td valign=top>{{VehicleNumber}}</td>
-					</tr>
-					<tr>
-						<td valign=top><strong>Estimated&nbsp;Fare</strong></td>
-						<td valign=top>{{TotalFare}}</td>
+						<td valign=top><strong>Note</strong></td>
+						<td valign=top>{{Note}}</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
             <td colspan="2">
-              <p style="padding-left:45px;padding-right:20px;width:530px;">Thank you<br>
+              <p style="padding-left:45px;padding-right:20px;width:345px;">Thank you<br>
 			      <strong>The {{ ApplicationName }} Team</strong></p>
             </td>
       </tr>

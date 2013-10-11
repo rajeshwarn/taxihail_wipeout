@@ -31,13 +31,15 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             const string transactionId = "transaction123456";
             Guid orderId = Guid.NewGuid();
             Guid paymentId = Guid.NewGuid();
+            var token = Guid.NewGuid().ToString();
             decimal amount = 12.34m;
             sut.When(new InitiateCreditCardPayment
             {
                 PaymentId = paymentId,
                 TransactionId = transactionId,
                 Amount = amount,
-                OrderId = orderId
+                OrderId = orderId,
+                CardToken = token
             });
 
             var @event = sut.ThenHasSingle<CreditCardPaymentInitiated>();
@@ -46,6 +48,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(orderId, @event.OrderId);
             Assert.AreEqual(transactionId, @event.TransactionId);
             Assert.AreEqual(amount, @event.Amount);
+            Assert.AreEqual(token, @event.CardToken);
         }
     }
 }
