@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -30,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
 
-            sut = new VehicleServiceClient(BaseUrl, SessionId);
+            sut = new VehicleServiceClient(BaseUrl, SessionId, new Logger());
         }
 
         [Test]
