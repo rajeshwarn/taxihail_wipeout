@@ -11,6 +11,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Data;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
@@ -489,7 +490,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
                 for (int colIndex = 0; colIndex < numberOfColumns; colIndex++)
                 {
-                    var rect = new RectangleF(this.Bounds.X + (colIndex + 1) * clusterWidth, this.Bounds.Y + (rowIndex + 1) * clusterHeight, clusterWidth, clusterHeight);
+                    var rect = new RectangleF(this.Bounds.X + colIndex * clusterWidth, this.Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
 
                     var vehiclesInRect = list.Where(v => rect.Contains(this.ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
                     if (vehiclesInRect.Length > cellThreshold)
@@ -509,36 +510,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
     }
 
-    public class AvailableVehicleCluster: AvailableVehicle
-    {
-
-    }
-
-    public class VehicleClusterBuilder
-    {
-        private readonly List<AvailableVehicle> _vehicles = new List<AvailableVehicle>();
-        public void Add(AvailableVehicle vehicle)
-        {
-            if (vehicle == null) throw new ArgumentNullException();
-
-            _vehicles.Add(vehicle);
-        }
-
-        public bool IsEmpty { get { return _vehicles.Count == 0; } }
-
-        public AvailableVehicle Build()
-        {
-            return new AvailableVehicleCluster
-            {
-                Latitude = IsEmpty
-                            ? default(double)
-                            : _vehicles.Sum(x => x.Latitude) / _vehicles.Count,
-                Longitude = IsEmpty
-                            ? default(double)
-                            : _vehicles.Sum(x => x.Longitude) / _vehicles.Count,
-            };
-        }
-
-    }
 }
 

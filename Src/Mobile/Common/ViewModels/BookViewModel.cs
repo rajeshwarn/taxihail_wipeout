@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ForceRefresh();
         }
 
-        public override void Start(bool firstStart)
+        public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
             ObserveAvailableVehicles();
