@@ -355,7 +355,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
-                    if ( !Settings.TutorialEnabled )
+                    if ( !Config.GetSetting<bool>( "Client.TutorialEnabled" , true )  )
                     {
                         return;
                     }

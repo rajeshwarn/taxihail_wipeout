@@ -16,7 +16,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{			
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
-			IsRatingButtonShown = AppSettings.RatingEnabled;
+
+
+            IsRatingButtonShown = Config.GetSetting<bool>( "Client.RatingEnabled", false );  
+
 		}
         public override void Start(bool firstStart)
         {

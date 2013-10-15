@@ -11,7 +11,7 @@ using apcurium.MK.Web.Tests;
 
 namespace apcurium.CMT.Web.Tests
 {
-
+    [TestFixture]
     public abstract class BasePaymentClientFixture : BaseTest
     {
         [TestFixtureSetUp]

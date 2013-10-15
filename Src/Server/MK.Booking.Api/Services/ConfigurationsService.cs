@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Api.Services
                 if(listKeys != null) keys = listKeys.Split(',');
             }
             else //AppSettingsType.Mobile
-            {
-                keys = new[] { "GCM.SenderId", "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "AccountActivationDisabled" };
+            { 
+                keys = new[] {"DefaultPhoneNumber", "DefaultPhoneNumberDisplay","GCM.SenderId", "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "AccountActivationDisabled" };
             }
             
             var allKeys = _configManager.GetSettings();

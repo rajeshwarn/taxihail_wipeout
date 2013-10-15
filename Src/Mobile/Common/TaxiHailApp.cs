@@ -46,7 +46,10 @@ namespace apcurium.MK.Booking.Mobile
         public TaxiHailApp(IDictionary<string, string> @params)
         {
             InitalizeServices();
-            if(TinyIoCContainer.Current.Resolve<IAppSettings> ().PushNotificationsEnabled)
+
+            var isPushEnabled = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.PushNotificationsEnabled", false);
+
+            if(isPushEnabled)
             {
                 InitializePushNotifications();
             }
@@ -109,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
-                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
+                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<ILogger>());
 			});
             
 

@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
                         var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
                         var companyName = settings.ApplicationName;
-                        var phoneNumber = settings.PhoneNumberDisplay(0);
+                        var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
                         message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
                     }
                     Logger.LogMessage("Message 6 ");

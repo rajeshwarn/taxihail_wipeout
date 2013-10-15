@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -28,7 +29,7 @@ namespace apcurium.MK.Web.Tests
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
-            return new CmtPaymentClient(BaseUrl, null, new CmtPaymentSettings());
+            return new CmtPaymentClient(BaseUrl, null, new CmtPaymentSettings(), new Logger());
         }
     }
 }

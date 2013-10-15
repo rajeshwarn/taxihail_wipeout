@@ -66,8 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             
                             	FirePropertyChanged(() => VehicleName);
                             	FirePropertyChanged(() => ChargeType);
-                            	MessageService.ShowProgress(false);
-                            	ShowChooseProviderDialogIfNecessary();                            
+                            	MessageService.ShowProgress(false);                            
                             	ShowWarningIfNecessary();
 							}
 
@@ -289,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             				InvokeOnMainThread (() =>
             				{
             					var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            					var err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+                                var err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName,Config.GetSetting( "DefaultPhoneNumberDisplay" ));
             					MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
             				});
             			}
@@ -356,29 +355,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
                 }
             }
-		}
-
-        private void ShowChooseProviderDialogIfNecessary()
-        {
-            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-            var companyList = service.GetCompaniesList();
-			if (Settings.CanChooseProvider && Order.Settings.ProviderId ==null)
-			{
-				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
-					if(result != null) {
-						Order.Settings.ProviderId =  result.Id;
-                        FirePropertyChanged("RideSettings");
-					}
-
-                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard,  _accountService.CurrentAccount.DefaultTipPercent );
-				});
-			}
-               else if(Order.Settings.ProviderId == null)
-            {
-                Order.Settings.ProviderId = RideSettings.ProviderId;
-            }
-		}
-
+		}      
 
         public string AptRingCode
         {
