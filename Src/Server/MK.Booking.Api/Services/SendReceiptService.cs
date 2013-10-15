@@ -19,13 +19,27 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
+        private readonly ICreditCardPaymentDao _cardPaymentDao;
         private readonly IAccountDao _accountDao;
+        private readonly IPayPalExpressCheckoutPaymentDao _palExpressCheckoutPaymentDao;
+        private readonly ICreditCardDao _creditCardDao;
 
-        public SendReceiptService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao)
+        public SendReceiptService(
+            ICommandBus commandBus, 
+            IBookingWebServiceClient bookingWebServiceClient, 
+            IOrderDao orderDao,
+            ICreditCardPaymentDao cardPaymentDao,
+            IPayPalExpressCheckoutPaymentDao palExpressCheckoutPaymentDao,
+            ICreditCardDao creditCardDao,
+            IAccountDao accountDao
+            )
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
+            _cardPaymentDao = cardPaymentDao;
             _accountDao = accountDao;
+            _palExpressCheckoutPaymentDao = palExpressCheckoutPaymentDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
 
@@ -57,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
             }
-
+           
             var command = new Commands.SendReceipt
             {
                 Id = Guid.NewGuid(), 
@@ -70,7 +84,36 @@ namespace apcurium.MK.Booking.Api.Services
                 Toll = ibsOrder.Toll.GetValueOrDefault(),
                 Tip = ibsOrder.Tip.GetValueOrDefault(),
                 Tax = ibsOrder.VAT.GetValueOrDefault(),
+                
             };
+
+#warning Copy and paste
+            var creditCardPayment = _cardPaymentDao.FindByOrderId(request.OrderId);
+            if (creditCardPayment != null)
+            {
+                command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                    creditCardPayment.Amount,
+                    creditCardPayment.TransactionId,
+                    "Credit Card");
+
+                var creditCard = _creditCardDao.FindByToken(creditCardPayment.CardToken);
+                if (creditCard != null)
+                {
+                    command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                    command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                    command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                }
+            }
+
+            var paypalPayment = _palExpressCheckoutPaymentDao.FindByOrderId(request.OrderId);
+            if (paypalPayment != null)
+            {
+                command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                          paypalPayment.Amount,
+                           paypalPayment.TransactionId,
+                          "PayPal");
+            }
+
 
             _commandBus.Send(command);
 

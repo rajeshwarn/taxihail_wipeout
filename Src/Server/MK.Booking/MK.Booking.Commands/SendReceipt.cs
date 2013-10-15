@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Commands
         public SendReceipt()
         {
             Id = Guid.NewGuid();
+            CardOnFileInfo = null; // must be null if not used - see email template
         }
 
         public Guid Id { get; set; }
@@ -23,6 +24,24 @@ namespace apcurium.MK.Booking.Commands
         public double Fare { get; set; }
         public double Toll { get; set; }
         public double Tax { get; set; }
+
+        public CardOnFile CardOnFileInfo { get; set; } // OPTIONAL Null if not needed
+
+        public class CardOnFile
+        {
+            public CardOnFile(decimal amount, string transactionId,string company)
+            {
+                Amount = amount;
+                TransactionId = transactionId;
+                Company = company;
+            }
+
+            public decimal Amount { get; set; }
+            public string TransactionId { get; set; }
+            public string Company { get; set; }
+            public string LastFour { get; set; }
+            public string FriendlyName { get; set; }
+        }
 
         public double TotalFare
         {

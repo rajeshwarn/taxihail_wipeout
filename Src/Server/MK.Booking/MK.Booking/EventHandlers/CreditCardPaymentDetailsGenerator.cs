@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers
                                      Amount = @event.Amount,
                                      TransactionId = @event.TransactionId,
                                      OrderId = @event.OrderId,
+                                     CardToken = @event.CardToken,
                                      IsCaptured = false,
                                  });
             }

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 
@@ -17,12 +19,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configurationManager;
+        private readonly IPayPalExpressCheckoutPaymentDao _payPalExpressCheckoutPaymentDao;
+        private readonly ICreditCardPaymentDao _cardPaymentDao;
+        private readonly ICreditCardDao _creditCardDao;
 
-        public MailSender(Func<BookingDbContext> contextFactory, ICommandBus commandBus, IConfigurationManager configurationManager)
+        public MailSender(Func<BookingDbContext> contextFactory, 
+            ICommandBus commandBus, 
+            IConfigurationManager configurationManager,
+            IPayPalExpressCheckoutPaymentDao payPalExpressCheckoutPaymentDao,
+            ICreditCardPaymentDao cardPaymentDao,
+            ICreditCardDao creditCardDao
+            )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _configurationManager = configurationManager;
+            _payPalExpressCheckoutPaymentDao = payPalExpressCheckoutPaymentDao;
+            _cardPaymentDao = cardPaymentDao;
+            _creditCardDao = creditCardDao;
         }
 
         public void Handle(OrderCompleted @event)
@@ -30,12 +44,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             using (var context = _contextFactory.Invoke())
             {
                 var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
                 if (orderStatus != null)
                 {
                      if (orderStatus.IBSStatusId == "wosDONE" && @event.Fare.GetValueOrDefault() > 0)
                      {
+                         
                          var account = context.Find<AccountDetail>(orderStatus.AccountId);
-                         var command = new Commands.SendReceipt
+                         var command = new SendReceipt
                          {
                              Id = Guid.NewGuid(),
                              OrderId = @event.SourceId,
@@ -48,6 +64,34 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                              Tip = @event.Tip.GetValueOrDefault(),
                              Tax = @event.Tax.GetValueOrDefault(),
                          };
+
+#warning Copy and paste
+                         var creditCardPayment = _cardPaymentDao.FindByOrderId(@event.SourceId);
+                         if (creditCardPayment != null)
+                         {
+                             command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                                 creditCardPayment.Amount,
+                                 creditCardPayment.TransactionId,
+                                 "Credit Card");
+
+                             var creditCard = _creditCardDao.FindByToken(creditCardPayment.CardToken);
+                             if (creditCard != null)
+                             {
+                                 command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                                 command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                                 command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                             }
+                         }
+
+                         var paypalPayment = _payPalExpressCheckoutPaymentDao.FindByOrderId(@event.SourceId);
+                         if (paypalPayment != null)
+                         {
+                             command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                                       paypalPayment.Amount,
+                                        paypalPayment.TransactionId,
+                                       "PayPal");
+                         }
+
 
                          _commandBus.Send(command);
                      }

@@ -20,5 +20,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Set<PayPalExpressCheckoutPaymentDetail>().SingleOrDefault(x => x.Token == token);
             }
         }
+
+        public PayPalExpressCheckoutPaymentDetail FindByOrderId(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+#if DEBUG
+                return context.Set<PayPalExpressCheckoutPaymentDetail>().SingleOrDefault(x => x.OrderId == orderId);
+#else
+                return context.Set<PayPalExpressCheckoutPaymentDetail>().FirstOrDefault(x => x.OrderId == orderId);
+#endif
+            }
+        }
     }
 }

@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
                 detail.IsCompleted = true;
                 detail.PayPalPayerId = @event.PayPalPayerId;
+                
                 detail.TransactionId = @event.TransactionId;
                 context.SaveChanges();
             }
