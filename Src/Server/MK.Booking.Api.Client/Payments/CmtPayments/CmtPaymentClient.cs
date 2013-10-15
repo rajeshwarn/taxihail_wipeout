@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         {
             _logger = logger;
             CmtClient = new CmtPaymentServiceClient(cmtSettings,null);
+
         }
 
         private CmtPaymentServiceClient CmtClient { get; set; }
