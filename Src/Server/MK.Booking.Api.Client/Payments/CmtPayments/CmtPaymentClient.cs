@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             : base(baseUrl,sessionId)
         {
             CmtClient = new CmtPaymentServiceClient(cmtSettings,null);
+
         }
 
         private CmtPaymentServiceClient CmtClient { get; set; }

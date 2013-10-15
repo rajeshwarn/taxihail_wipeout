@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     ? cmtSettings.SandboxBaseUrl
                     : cmtSettings.BaseUrl, sessionId)            
         {
-            Client.Timeout = new TimeSpan(0, 0, 0, 20, 0);
+            Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
             
 
