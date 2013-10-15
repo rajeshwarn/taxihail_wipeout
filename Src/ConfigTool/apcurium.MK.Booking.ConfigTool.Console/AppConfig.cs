@@ -170,11 +170,11 @@ namespace apcurium.MK.Booking.ConfigTool
                     {
                             if ( string.IsNullOrEmpty( Config.FacebookAppId ) )
                             {
-                                ele.InnerXml = string.Format( "<string>taxihail</string>", Config.FacebookAppId);
+							ele.InnerXml = string.Format( "<string>{1}</string>", Config.FacebookAppId, Config.ApplicationName.Replace( " " , string.Empty ));
                             }
                             else
                             {
-							ele.InnerXml = string.Format( "<string>fb{0}{1}</string><string>taxihail</string>", Config.FacebookAppId, Config.ApplicationName.Replace( " " , string.Empty ) );
+							ele.InnerXml = string.Format( "<string>fb{0}{1}</string><string>{1}</string>", Config.FacebookAppId, Config.ApplicationName.Replace( " " , string.Empty ) );
                             }
                     },
 
