@@ -80,6 +80,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CheckVersion();
 
+            SetupPushNotification();
+
             LoadLastActiveOrder();
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
@@ -129,6 +131,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             UpdateServerInfo();
  
             ForceRefresh();
+        }
+
+        void SetupPushNotification()
+        {
+            InvokeOnMainThread(()=> TinyIoCContainer.Current.Resolve<IPushNotificationService>().RegisterDeviceForPushNotifications(force: true));
         }
 
         void RevertToPickupSelection (object sender, EventArgs e)

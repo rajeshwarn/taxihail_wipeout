@@ -47,12 +47,6 @@ namespace apcurium.MK.Booking.Mobile
         {
             InitalizeServices();
 
-            var isPushEnabled = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.PushNotificationsEnabled", false);
-
-            if(isPushEnabled)
-            {
-                InitializePushNotifications();
-            }
             InitializeStartNavigation(@params);
         }
         
@@ -176,15 +170,9 @@ namespace apcurium.MK.Booking.Mobile
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        private void InitializePushNotifications()
-        {
-            var accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
-            var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService>();
-            if (accountService.CurrentAccount != null)
-            {
-                pushService.RegisterDeviceForPushNotifications();
-            }
-        }
+
+
+       
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
