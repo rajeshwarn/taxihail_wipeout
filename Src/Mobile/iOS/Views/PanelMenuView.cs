@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 })              
             });
 
-            if (_viewModel.Settings.TutorialEnabled) {
+            if (_viewModel.TutorialEnabled) {
                 sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToTutorial.Execute();
                 })              

@@ -5,6 +5,7 @@ using apcurium.MK.Common.Entity;
 using MK.Common.Android;
 using apcurium.MK.Booking.Mobile;
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -39,34 +40,24 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
-        public AvailableVehicle[] GetAvailableVehicles(double latitude, double longitude)
+        public Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
         {
-            try{                 
+            var tcs = new TaskCompletionSource<AvailableVehicle[]>();
+            var stopwatch = Logger.StartStopwatch("Fetching Available Vehicles");
+            tcs.Task.ContinueWith(_ => stopwatch.Dispose());
 
-
-
-                using (Logger.StartStopwatch("Fetching Available Vehicles"))
-                {
-
-                    var x=  Client.Get(new AvailableVehicles
-                    {
-                        Latitude = latitude,
-                        Longitude = longitude
-                    });
-
-
-
-                    return x.ToArray();
-                }
-                
-
-            }
-            catch(Exception)
+            Client.GetAsync(new AvailableVehicles
             {
-#warning Dirty!!
-                //todo fix this
-                return new AvailableVehicle[0];
-            }
+                    Latitude = latitude,
+                    Longitude = longitude
+            },
+            result => tcs.SetResult(result.ToArray()),
+            (result, error) => {
+                Logger.LogError(error);
+                tcs.SetResult(new AvailableVehicle[0]);
+            });
+
+            return tcs.Task;
 
         }
     }

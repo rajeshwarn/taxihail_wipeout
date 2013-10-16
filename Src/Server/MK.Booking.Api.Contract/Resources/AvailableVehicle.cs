@@ -6,4 +6,9 @@
         public double Longitude { get; set; }
         public double VehicleNumber { get; set; }
     }
+
+    public class AvailableVehicleCluster : AvailableVehicle
+    {
+
+    }
 }

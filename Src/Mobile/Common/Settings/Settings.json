@@ -6,7 +6,7 @@
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
    "SupportEmail" : "techsupport@apcurium.com",
-   "ServiceUrl" : "https://test.taxihail.biz/taxihaildemo/api/",
+   "ServiceUrl" : "https://services.taxihail.com/taxi303/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://api.twitter.com/oauth/authorize",

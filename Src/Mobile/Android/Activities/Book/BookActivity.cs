@@ -101,16 +101,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
         }
 
-        protected override void OnPause()
+        protected override void OnStart ()
         {
-            base.OnPause();
-
+            base.OnStart ();
+            if(ViewModel != null) ViewModel.Start();
         }
+
+        protected override void OnRestart ()
+        {
+            base.OnRestart ();
+            if(ViewModel != null) ViewModel.Restart();
+        }
+
         protected override void OnStop()
         {            
             base.OnStop();
-			
+            if(ViewModel != null) ViewModel.Stop();
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
+        }
+
+        protected override void OnDestroy ()
+        {
+            base.OnDestroy ();
+
+            if (ViewModel != null) {
+                ViewModel.Unload();
+                ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
+            }
         }
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
@@ -181,13 +198,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-		protected override void OnDestroy ()
-		{
-			base.OnDestroy ();
-            
-			if (ViewModel != null) {
-				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
-			}
-		}
     }
 }

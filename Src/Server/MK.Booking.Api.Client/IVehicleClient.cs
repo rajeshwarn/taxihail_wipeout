@@ -1,13 +1,14 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
 	public interface IVehicleClient
 	{		
 		bool SendMessageToDriver(string carNumber, string message);
-	    AvailableVehicle[] GetAvailableVehicles(double latitude, double longitude);
+	    Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude);
 	}
 }
 

@@ -42,7 +42,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.CanReportProblem = await canReportProblem;
         }
 
-        private bool _menuIsOpen = false;
+
+
+        public bool TutorialEnabled {
+            get{
+                return Config.GetSetting<bool>("Client.TutorialEnabled", true);
+            }
+        }
+
+                private bool _menuIsOpen = false;
 
         public bool MenuIsOpen {
             get {
@@ -125,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
 
-                    if (  Config.GetSetting<bool>( "Client.TutorialEnabled" , true ) )
+                        if ( TutorialEnabled )
                     {
                         MenuIsOpen = false;
                         MessageService.ShowDialogActivity (typeof(TutorialViewModel));

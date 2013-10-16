@@ -114,19 +114,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
                 MessageService.ShowProgress(true);
-                Logger.LogMessage("Message 1 ");
                 var account = default(Account);
-
-                Logger.LogMessage("Message 2");
                 try
                 {
-                    Logger.LogMessage("Message 3 ");
-                    account = _accountService.GetAccount(Email, Password);
-                    Logger.LogMessage("Message 4 ");
+                    account = _accountService.GetAccount(Email, Password);                 
                 }
                 catch (Exception e)
                 {
-                    Logger.LogMessage("Message 5 ");
                     var title = Resources.GetString("InvalidLoginMessageTitle");
                     var message = Resources.GetString(e.Message);
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
@@ -134,17 +128,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var companyName = settings.ApplicationName;
                         var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
                         message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
-                    }
-                    Logger.LogMessage("Message 6 ");
+                    }                 
                     MessageService.ShowMessage(title, message);
                 }
 
-                Logger.LogMessage("Message 7");
                 if (account != null)
                 {
                     needToHideProgress = false;
                     this.Password = string.Empty;
-                    Logger.LogMessage("Message 8 ");
+                
+
                     InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
 
                     Task.Factory.SafeStartNew(() =>

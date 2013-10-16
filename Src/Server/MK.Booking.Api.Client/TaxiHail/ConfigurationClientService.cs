@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             if (!_settings.ContainsKey (key)) {
+                Console.WriteLine( "Missing Key!!!Missing Key!!!Missing Key!!!Missing Key!!!Missing Key!!!Missing Key!!!" );
+                Console.WriteLine( "!!!"+key+"!!!"+key+"!!!"+key+"!!!"+key+"!!!"+key+"!!!"+key+"!!!"+key+"!!!"+key );
                 return null;
             }
 

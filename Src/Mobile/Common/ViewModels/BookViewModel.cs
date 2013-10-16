@@ -21,6 +21,7 @@ using System.Globalization;
 using apcurium.MK.Common.Entity;
 using apcurium.Framework;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -80,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CheckVersion();
 
+            SetupPushNotification();
+
             LoadLastActiveOrder();
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
@@ -126,9 +129,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CenterMap(true);
 
+
             UpdateServerInfo();
  
             ForceRefresh();
+        }
+
+        public override void Start(bool firstStart = false)
+        {
+            base.Start(firstStart);
+            ObserveAvailableVehicles();
+        }
+        
+        void SetupPushNotification()
+        {
+            InvokeOnMainThread(()=> TinyIoCContainer.Current.Resolve<IPushNotificationService>().RegisterDeviceForPushNotifications(force: true));
+        }
+
+
+        protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
+        public override void Stop ()
+        {
+            base.Stop ();
+            Subscriptions.DisposeAll ();
         }
 
         void RevertToPickupSelection (object sender, EventArgs e)
@@ -175,8 +198,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
 
             CenterMap(sender is bool && !(bool)sender);
-
-            LoadAvailableVehicles (Pickup.Model.Latitude, Pickup.Model.Longitude);
 
             Task.Factory.SafeStartNew(CalculateEstimate);
             FirePropertyChanged(() => CanClearAddress);
@@ -584,14 +605,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        private IDisposable _getAvailableVehicles = NullDisposable.Instance;
-        private void LoadAvailableVehicles(double latitude, double longitude)
+        private async void ObserveAvailableVehicles()
         {
-            _getAvailableVehicles.Dispose ();
-            _getAvailableVehicles = Observable.Start (() => VehicleClient.GetAvailableVehicles (latitude, longitude))
-                .Subscribe (result => InvokeOnMainThread(() =>{
-                    AvailableVehicles = result;
-                }));
+            var subscription = new BooleanDisposable();
+            this.Subscriptions.Add(subscription);
+            do
+            {
+                AvailableVehicles = await VehicleClient.GetAvailableVehiclesAsync(Pickup.Model.Latitude, Pickup.Model.Longitude);
+                await Task.Delay(5000);
+            }
+            while(!subscription.IsDisposed);
         }
+
+
+
+       
+
     }
 }
