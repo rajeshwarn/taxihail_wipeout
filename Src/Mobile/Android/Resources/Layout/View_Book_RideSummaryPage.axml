@@ -43,7 +43,8 @@
                 android:layout_marginBottom="20dip" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
                 android:id="@+id/SendReceiptBtn"
-                local:ButtonStyle="Grey"
+                local:ButtonStyle="Green"
+                style="@style/ButtonText"
                 local:MvxBind="{'Click':{'Path':'SendReceiptCommand'}, 'Visibility':{'Path':'IsSendReceiptButtonShown','Converter':'Visibility'} }"
                 android:background="@drawable/green_button"
                 android:text="@string/HistoryDetailSendReceiptButton"
@@ -55,7 +56,8 @@
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
+                local:ButtonStyle="Green"
+                style="@style/ButtonText"
                 local:MvxBind="{'Click':{'Path':'NavigateToRatingPage'}, 'Visibility':{'Path':'IsRatingButtonShown','Converter':'Visibility'} }"
                 android:background="@drawable/green_button"
                 android:text="@string/RateBtn"
@@ -67,7 +69,8 @@
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
+                local:ButtonStyle="Green"
+                style="@style/ButtonText"
                 local:MvxBind="{'Click':{'Path':'ResendConfirmationCommand'}, 'Visibility':{'Path':'IsResendConfirmationButtonShown','Converter':'Visibility' } }"
                 android:background="@drawable/green_button"
                 android:text="@string/ReSendConfirmationButton"
@@ -79,7 +82,8 @@
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
             <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
+                local:ButtonStyle="Green"
+                style="@style/ButtonText"
                 local:MvxBind="{'Click':{'Path':'PayCommand'}, 'Visibility':{'Path':'IsPayButtonShown','Converter':'Visibility'} }"
                 android:background="@drawable/green_button"
                 android:text="@string/StatusPayButton"

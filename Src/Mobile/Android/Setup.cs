@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AuthorizeUrl = settings.TwitterAuthorizeUrl
             };
             
-            TinyIoCContainer.Current.Register<IFacebookService>((c, p) => new FacebookServicesMD(c.Resolve<IAppSettings>().FacebookAppId, LoginActivity.TopInstance ));
+            TinyIoCContainer.Current.Register<IFacebookService>( (c,p) => new FacebookServicesMD(c.Resolve<IAppSettings>().FacebookAppId, LoginActivity.TopInstance ));
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
