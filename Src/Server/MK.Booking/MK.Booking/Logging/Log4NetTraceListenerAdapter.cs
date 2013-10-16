@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Logging
     public sealed class Log4netTraceListener : TraceListener
     {
         #region Variables
-        private static readonly ILog Log = LogManager.GetLogger("TraceOutput");
+        private static readonly ILog Log = LogManager.GetLogger("TraceOutput");        
         #endregion
 
         #region Constructor & destructor
@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.Logging
         /// </PermissionSet>
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
+          
+
             // Check the type
             switch (eventType)
             {
@@ -152,6 +154,8 @@ namespace apcurium.MK.Booking.Logging
                 Log.Debug(message);
             }
         }
+        
+
         #endregion
     }
 

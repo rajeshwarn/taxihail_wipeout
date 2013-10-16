@@ -156,15 +156,12 @@ namespace apcurium.MK.Web
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            
-            Trace.WriteLine("Request Begin");
+        {                        
         }
 
        
         protected void Application_EndRequest(object sender, EventArgs e)
-        {
-            Trace.WriteLine("End Requestn");
+        {         
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void get_available_vehicles()
         {
-            var result = sut.GetAvailableVehicles(45.420833, -75.69);
+            var result = sut.GetAvailableVehiclesAsync( 45.420833, -75.69);
 
             Assert.Inconclusive("Service returns no vehicles");
         }

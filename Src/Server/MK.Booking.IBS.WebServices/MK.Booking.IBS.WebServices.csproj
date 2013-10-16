@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}</ProjectGuid>
+    <ProjectGuid>{7B223D35-2D7D-44B4-9EA9-A64E1AED5C65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MK.Booking.IBS.Test</RootNamespace>
-    <AssemblyName>MK.Booking.IBS.Test</AssemblyName>
+    <RootNamespace>MK.Booking.IBS.WebServices</RootNamespace>
+    <AssemblyName>MK.Booking.IBS.WebServices</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,15 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=2.1.267.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="MK.Booking.IBS.WebServices">
-      <HintPath>..\Libraries\MK.Booking.IBS.WebServices.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\MK.Booking\MK.Booking.Test\bin\Debug\nunit.framework.dll</HintPath>
+    <Reference Include="PostSharp">
+      <HintPath>..\MK.Booking.CompiledProjects\packages\PostSharp.3.0.37\lib\net20\PostSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,26 +44,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountFixture\given_no_account.cs" />
-    <Compile Include="BookingWebServiceClientFixture\given_a_service_provider.cs" />
-    <Compile Include="FakeConfigurationManager.cs" />
-    <Compile Include="OrderFixture\given_no_order.cs" />
+    <Compile Include="DummyClassToSetAssemblyAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticDataFixture\given_a_service_provider.cs" />
-    <Compile Include="StaticDataWebServiceClientFixture\given_a_service_provider.cs" />
+    <Compile Include="RequiresPostSharp.cs" />
+    <Compile Include="StaticDataservice.cs" />
+    <Compile Include="WebAccount3Service.cs" />
+    <Compile Include="WebDriverService.cs" />
+    <Compile Include="WEBOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
-      <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
-      <Name>MK.Booking.IBS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MK.Common</Name>
+    <None Include="GenerateWSDL.bat" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MK.Booking.CompiledProjects\MK.Booking.PostSharp\MK.Booking.PostSharp.csproj">
+      <Project>{900a116f-10d3-465d-ab3f-22518848d472}</Project>
+      <Name>MK.Booking.PostSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\MK.Booking.CompiledProjects\packages\PostSharp.3.0.37\tools\PostSharp.targets" Condition="Exists('..\MK.Booking.CompiledProjects\packages\PostSharp.3.0.37\tools\PostSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
