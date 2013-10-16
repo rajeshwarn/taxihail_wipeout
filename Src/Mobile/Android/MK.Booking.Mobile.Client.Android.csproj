@@ -56,7 +56,7 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/string.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />        
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/string.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
@@ -108,8 +108,8 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
-</Reference>   
- <Reference Include="GoogleAnalytics.MonoDroid">
+    </Reference>
+    <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -463,7 +463,6 @@
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
     <AndroidResource Include="Resources\Drawable\add_button.png" />
@@ -490,8 +489,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon_state.xml" />
     <AndroidResource Include="Resources\Drawable\twitter_icon_state.xml" />

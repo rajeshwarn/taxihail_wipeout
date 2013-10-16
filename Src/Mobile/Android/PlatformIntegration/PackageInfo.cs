@@ -10,6 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Android.Content.PM;
+using Java.Security;
+using Android.Util;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
