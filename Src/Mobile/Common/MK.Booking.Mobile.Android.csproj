@@ -270,6 +270,7 @@
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
     <Compile Include="Infrastructure\IAnalyticsService.cs" />
+    <Compile Include="Data\VehicleClusterBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

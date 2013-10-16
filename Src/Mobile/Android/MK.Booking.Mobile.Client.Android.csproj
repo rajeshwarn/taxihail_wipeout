@@ -56,7 +56,7 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/string.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />        
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/string.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
@@ -108,8 +108,8 @@
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
-</Reference>   
- <Reference Include="GoogleAnalytics.MonoDroid">
+    </Reference>
+    <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -361,6 +361,8 @@
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin_cluster.png" />
+    <AndroidResource Include="Resources\Drawable\pin_cluster.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

@@ -33,6 +33,9 @@
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
+    <MtouchLink>None</MtouchLink>
+    <OptimizePNGs>false</OptimizePNGs>
+    <MtouchExtraArgs>-time -time</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -786,5 +789,7 @@
     <BundleResource Include="Assets\sliderYellowBarBody%402x.png" />
     <BundleResource Include="Assets\CreditCard\paypal.png" />
     <BundleResource Include="Assets\CreditCard\paypal%402x.png" />
+    <BundleResource Include="Assets\pin_cluster%402x.png" />
+    <BundleResource Include="Assets\pin_cluster.png" />
   </ItemGroup>
 </Project>

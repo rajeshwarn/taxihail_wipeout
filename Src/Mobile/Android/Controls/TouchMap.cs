@@ -13,11 +13,13 @@ using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Data;
+using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -215,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		{
 			set
 			{
-				ShowAvailableVehicles (value);
+				ShowAvailableVehicles (Clusterize(value.ToArray()));
 			}
 		}
 
@@ -337,7 +339,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		}
 
 		private List<PushPinOverlay> _availableVehiclePushPins = new List<PushPinOverlay> ();
-		private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
+		private void ShowAvailableVehicles(AvailableVehicle[] vehicles)
 		{
 			// remove currently displayed pushpins
 			foreach (var pp in _availableVehiclePushPins)
@@ -351,13 +353,69 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			foreach (var v in vehicles)
 			{
+                var resId = (v is AvailableVehicleCluster) ? Resource.Drawable.pin_cluster : Resource.Drawable.nearby_cab;
 				var pushPin = MapService.AddPushPin (this,
-				                       Resources.GetDrawable (Resource.Drawable.nearby_cab),
+                                       Resources.GetDrawable (resId),
 				                       MapService.GetGeoPoint (v.Latitude, v.Longitude),
 				                       string.Empty);
 				_availableVehiclePushPins.Add (pushPin);
 			}
-            //SetZoom(Center);
+            this.PostInvalidate();
 		}
+
+        private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
+        {
+            // Divide the map in 16 cells (4*4)
+            const int numberOfRows = 4;
+            const int numberOfColumns = 4;
+            // Maximum number of vehicles in a cell before we start displaying a cluster
+            const int cellThreshold = 4;
+
+            var result = new List<AvailableVehicle>();
+
+            Rect bounds = new Rect();
+            this.GetDrawingRect(bounds);
+
+            var clusterWidth = (bounds.Right - bounds.Left) / numberOfColumns;
+            var clusterHeight = (bounds.Bottom - bounds.Top) / numberOfRows;
+
+            var list = new List<AvailableVehicle>(vehicles);
+
+            for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+                for (int colIndex = 0; colIndex < numberOfColumns; colIndex++)
+            {
+                var top = bounds.Top + rowIndex * clusterHeight;
+                var left = bounds.Left + colIndex * clusterWidth;
+                var bottom = bounds.Top + (rowIndex + 1) * clusterHeight;
+                var right = bounds.Left + (colIndex + 1) * clusterWidth;
+                var rect = new Rect(left, top, right, bottom);
+
+                var vehiclesInRect = list.Where(v => IsVehicleInRect(v, rect)).ToArray();
+                if (vehiclesInRect.Length > cellThreshold)
+                {
+                    var clusterBuilder = new VehicleClusterBuilder();
+                    foreach(var v in vehiclesInRect) clusterBuilder.Add(v);
+                    result.Add(clusterBuilder.Build());
+                }
+                else
+                {
+                    result.AddRange(vehiclesInRect);
+                }
+                foreach(var v in vehiclesInRect) list.Remove(v);
+
+            }
+            return result.ToArray();
+        }
+
+        private bool IsVehicleInRect(AvailableVehicle vehicle, Rect rect)
+        {
+            Point currentDevicePosition = new Point();
+            GeoPoint vehicleLocation = new GeoPoint((int) (vehicle.Latitude.ConvertToE6()), (int) (vehicle.Longitude.ConvertToE6()));
+
+            this.Projection.ToPixels(vehicleLocation, currentDevicePosition);
+
+            return rect.Contains(currentDevicePosition.X, currentDevicePosition.Y);
+
+        }
     }
 }

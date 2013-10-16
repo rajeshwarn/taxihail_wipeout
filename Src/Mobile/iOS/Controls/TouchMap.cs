@@ -11,6 +11,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Data;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
@@ -20,6 +21,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
+using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -297,7 +299,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             set
             {
-                ShowAvailableVehicles (value);
+                ShowAvailableVehicles (Clusterize(value.ToArray()));
+                //ShowAvailableVehicles (value.ToArray());
             }
         }
 
@@ -458,11 +461,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var v in vehicles)
             {
-                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), AddressAnnotationType.NearbyTaxi, string.Empty, string.Empty);
+                var annotationType = (v is AvailableVehicleCluster) ? AddressAnnotationType.NearbyTaxiCluster : AddressAnnotationType.NearbyTaxi;
+                var pushPin = new AddressAnnotation (new CLLocationCoordinate2D(v.Latitude, v.Longitude), annotationType, string.Empty, string.Empty);
                 AddAnnotation (pushPin);
                 _availableVehiclePushPins.Add (pushPin);
             }
+
+
+
+        }
+
+        private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
+        {
+            // Divide the map in 16 cells (4*4)
+            const int numberOfRows = 4;
+            const int numberOfColumns = 4;
+            // Maximum number of vehicles in a cell before we start displaying a cluster
+            const int cellThreshold = 4;
+
+            var result = new List<AvailableVehicle>();
+
+            var bounds =  this.Bounds;
+            var clusterWidth = bounds.Width / numberOfColumns;
+            var clusterHeight = bounds.Height / numberOfRows;
+
+            var list = new List<AvailableVehicle>(vehicles);
+
+            for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+                for (int colIndex = 0; colIndex < numberOfColumns; colIndex++)
+                {
+                    var rect = new RectangleF(this.Bounds.X + colIndex * clusterWidth, this.Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
+
+                    var vehiclesInRect = list.Where(v => rect.Contains(this.ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
+                    if (vehiclesInRect.Length > cellThreshold)
+                    {
+                        var clusterBuilder = new VehicleClusterBuilder();
+                        foreach(var v in vehiclesInRect) clusterBuilder.Add(v);
+                        result.Add(clusterBuilder.Build());
+                    }
+                    else
+                    {
+                        result.AddRange(vehiclesInRect);
+                    }
+                    foreach(var v in vehiclesInRect) list.Remove(v);
+
+                }
+            return result.ToArray();
         }
     }
+
 }
 
