@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public static string GetServerErrorCreatingOrder(int phoneNumberId)
 		{
-			return  string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _appSettings.PhoneNumberDisplay (phoneNumberId));
+            return  string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _config.GetSetting( "DefaultPhoneNumberDisplay" ));
 			
 		}
 

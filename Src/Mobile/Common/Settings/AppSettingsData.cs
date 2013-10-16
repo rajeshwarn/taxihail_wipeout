@@ -14,14 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string SiteUrl { get; set; }
 
         public bool CanChangeServiceUrl{ get; set; }
-        public bool CanChooseProvider { get; set; }
         public string ServiceUrl { get; set; }
-
-        public string DefaultPhoneNumber { get; set; }
-        public string DefaultPhoneNumberDisplay { get; set; }
-
-
-        public bool? TutorialEnabled{ get; set; }
 
         public bool TwitterEnabled{ get; set; }
         public string TwitterConsumerKey { get; set; }
@@ -30,18 +23,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string TwitterRequestTokenUrl { get; set; }
         public string TwitterAccessTokenUrl { get; set; }
         public string TwitterAuthorizeUrl { get; set; }
-        
            
         public bool FacebookEnabled { get; set; }
         public string FacebookAppId{ get; set; }
 
-        public string SupportEmail { get; set; }
-        public bool RatingEnabled { get; set; }        
-        public bool StreetNumberScreenEnabled { get; set; }
-        public bool PayByCreditCardEnabled { get; set; }
-        
-        public bool PushNotificationsEnabled { get; set; }
-
-        public bool HideNoPreference { get;set; }
     }
 }

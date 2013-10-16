@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
         }
 
-        public bool CanChooseProvider { get { return _data.CanChooseProvider; } }
 
         public bool ErrorLogEnabled {
             get { return true; }
@@ -46,34 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.SiteUrl; }
         }
         
-        //todo WTF?
-        public string PhoneNumber (int? providerId)
-        {
-            return _data.DefaultPhoneNumber;
-        }
-        //todo WTF?
-        public string PhoneNumberDisplay (int? companyId)
-        {
-            return _data.DefaultPhoneNumberDisplay;
-        }
-
-        public bool TutorialEnabled
-        {
-            get{
-				#if DEBUG				
-				return false;
-				#endif
-                if ( _data.TutorialEnabled.HasValue )
-                {
-                    return _data.TutorialEnabled.Value;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-        }
+    
         public int[] InvalidProviderIds {
             get { return new int[0]; }
         }
@@ -158,28 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return _data.FacebookAppId; }
         }
 
-        public string SupportEmail {
-            get { return _data.SupportEmail; }
-        }
-
-        public bool RatingEnabled {
-            get { return _data.RatingEnabled; }
-        }
-
-        public bool StreetNumberScreenEnabled {
-            get { return _data.StreetNumberScreenEnabled; }
-        }
-
-
-        
-        public bool PushNotificationsEnabled {
-            get { return _data.PushNotificationsEnabled; }
-        }
-
-
-        public bool HideNoPreference {
-            get { return _data.HideNoPreference; }
-        }
+     
 
 
 	

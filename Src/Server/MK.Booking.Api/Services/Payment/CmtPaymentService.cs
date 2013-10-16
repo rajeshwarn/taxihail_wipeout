@@ -89,6 +89,7 @@ namespace apcurium.MK.Booking.Api.Services
                             TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
                             Amount = request.Amount,
                             OrderId = preAuthorizeRequest.OrderId,
+                            CardToken = preAuthorizeRequest.CardToken
                         });
                 }
 

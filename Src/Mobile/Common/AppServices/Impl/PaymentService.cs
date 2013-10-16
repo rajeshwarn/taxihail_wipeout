@@ -42,9 +42,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         string _sessionId;
         ICacheService _cache;
         private const string PayedCacheSuffix = "_Payed";
+        ILogger _logger;
 
-        public PaymentService(string url, string sessionId,  IConfigurationManager configurationManager, ICacheService cache)
+        public PaymentService(string url, string sessionId,  IConfigurationManager configurationManager, ICacheService cache, ILogger logger)
         {
+            _logger = logger;
             _baseUrl = url;
             _sessionId = sessionId;
             _cache = cache;
@@ -75,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var settings = _configurationManager.GetPaymentSettings();
 
             var braintreeServiceClient = new BraintreeServiceClient(_baseUrl,_sessionId,settings.BraintreeClientSettings.ClientKey);
-            var cmtServiceClient = new CmtPaymentClient(_baseUrl,_sessionId, settings.CmtPaymentSettings);
+            var cmtServiceClient = new CmtPaymentClient(_baseUrl,_sessionId, settings.CmtPaymentSettings, _logger );
 
             switch (settings.PaymentMode)
             {

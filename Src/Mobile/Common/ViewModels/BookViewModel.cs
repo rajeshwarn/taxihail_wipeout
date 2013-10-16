@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             CheckVersion();
 
+            SetupPushNotification();
+
             LoadLastActiveOrder();
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
@@ -137,8 +139,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.Start(firstStart);
             ObserveAvailableVehicles();
-
         }
+        
+        void SetupPushNotification()
+        {
+            InvokeOnMainThread(()=> TinyIoCContainer.Current.Resolve<IPushNotificationService>().RegisterDeviceForPushNotifications(force: true));
+        }
+
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
         public override void Stop ()
@@ -369,7 +376,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
-                    if ( !Settings.TutorialEnabled )
+                    if ( !Config.GetSetting<bool>( "Client.TutorialEnabled" , true )  )
                     {
                         return;
                     }

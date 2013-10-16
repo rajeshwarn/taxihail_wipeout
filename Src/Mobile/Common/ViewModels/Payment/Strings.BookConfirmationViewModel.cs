@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public partial class Str
 	{
 		public static string GetServiceErrorCreatingOrderMessage(int phoneNumberId){
-			return string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _appSettings.PhoneNumberDisplay (phoneNumberId));
+
+            return string.Format (_r.GetString ("ServiceError_ErrorCreatingOrderMessage"), _appSettings.ApplicationName, _config.GetSetting( "DefaultPhoneNumberDisplay" ));
 		}
 	
 		public static string HistoryDetailBuildingNameNotSpecified {

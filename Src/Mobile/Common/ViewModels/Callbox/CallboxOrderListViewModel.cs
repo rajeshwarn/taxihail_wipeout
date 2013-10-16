@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     InvokeOnMainThread(() =>
                     {
                         var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-                        string err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay(null));
+                        string err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, Config.GetSetting( "DefaultPhoneNumberDisplay" ));
                         MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
                     });
                 }

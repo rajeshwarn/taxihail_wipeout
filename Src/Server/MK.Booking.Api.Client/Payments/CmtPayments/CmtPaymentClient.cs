@@ -8,6 +8,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Net;
 using System.IO;
+using apcurium.MK.Common.Diagnostic;
 
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
@@ -20,10 +21,14 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings)
+        readonly ILogger _logger;
+
+		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings, ILogger logger)
             : base(baseUrl,sessionId)
         {
+            _logger = logger;
             CmtClient = new CmtPaymentServiceClient(cmtSettings,null);
+
         }
 
         private CmtPaymentServiceClient CmtClient { get; set; }
@@ -37,6 +42,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         {
             try
             {
+                
             var response = cmtClient.Post(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,

@@ -117,9 +117,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            string err = string.Format (message, settings.ApplicationName, settings.PhoneNumberDisplay (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
+            string err = string.Format (message, settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
 
-            TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, err, "Call", () => CallCompany (settings.ApplicationName, settings.PhoneNumber (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", delegate {
+            TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, err, "Call", () => CallCompany (settings.ApplicationName, Config.GetSetting("DefaultPhoneNumber")), "Cancel", delegate {
             });
         }
 

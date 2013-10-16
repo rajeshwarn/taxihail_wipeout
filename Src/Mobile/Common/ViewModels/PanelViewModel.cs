@@ -42,7 +42,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.CanReportProblem = await canReportProblem;
         }
 
-        private bool _menuIsOpen = false;
+
+
+        public bool TutorialEnabled {
+            get{
+                return Config.GetSetting<bool>("Client.TutorialEnabled", true);
+            }
+        }
+
+                private bool _menuIsOpen = false;
 
         public bool MenuIsOpen {
             get {
@@ -124,7 +132,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-                    if ( Settings.TutorialEnabled )
+
+                        if ( TutorialEnabled )
                     {
                         MenuIsOpen = false;
                         MessageService.ShowDialogActivity (typeof(TutorialViewModel));
@@ -160,9 +169,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    Action call = () => { PhoneService.Call (Settings.PhoneNumber (_accountService.CurrentAccount.Settings.ProviderId)); };
+                    Action call = () => { PhoneService.Call (Config.GetSetting( "DefaultPhoneNumber" )); };
                     MessageService.ShowMessage (string.Empty, 
-                                               Settings.PhoneNumberDisplay (_accountService.CurrentAccount.Settings.ProviderId), 
+                                                Config.GetSetting( "DefaultPhoneNumberDisplay" ), 
                                                Resources.GetString ("CallButton"), 
                                                call, Resources.GetString ("CancelBoutton"), 
                                                () => {});
@@ -175,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    InvokeOnMainThread( ()=> PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Settings.SupportEmail, Resources.GetString ("TechSupportEmailTitle")) );
+                    InvokeOnMainThread( ()=> PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Config.GetSetting( "Client.SupportEmail" ) , Resources.GetString ("TechSupportEmailTitle")) );
                 });
             }
         }

@@ -1,10 +1,7 @@
 {
    "ApplicationName" : "TaxiHail",
-   "CanChangeServiceUrl" : "true",
-   "DefaultPhoneNumber" : "1441158243142",
-   "DefaultPhoneNumberDisplay" : "+441158243142",
-   "ErrorLog" : "",
-   "TutorialEnabled" : "true",
+   "CanChangeServiceUrl" : "true",   
+   "ErrorLog" : "",   
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
@@ -19,11 +16,7 @@
    "TwitterEnabled" : "true",
    "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
    "AndroidSigningKeyAlias" : "MKTaxiHail",
-   "AndroidSigningKeyPassStorePass" : "mkt0001.",
-   "AppName" : "TaxiHail",
+   "AndroidSigningKeyPassStorePass" : "mkt0001.",   
    "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
-   "Package" : "com.apcurium.MK.TaxiHailDemo",
-   "StreetNumberScreenEnabled" : "true",
-   "PushNotificationsEnabled" : "false",
-   "HideNoPreference" : "false"
+   "Package" : "com.apcurium.MK.TaxiHailDemo"   
 }

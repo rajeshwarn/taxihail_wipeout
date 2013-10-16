@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		static IAppResource _r =  TinyIoCContainer.Current.Resolve<IAppResource>();
 		static IAppSettings _appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+        static IConfigurationManager _config = TinyIoCContainer.Current.Resolve<IConfigurationManager> ();
 
 
 		public static string LoadingMessage {

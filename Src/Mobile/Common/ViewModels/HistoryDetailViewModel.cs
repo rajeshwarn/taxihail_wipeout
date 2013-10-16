@@ -116,7 +116,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool HasRated
         {
             get {
-                return TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled && _hasRated;
+                var ratingEnabled = Config.GetSetting<bool>( "Client.RatingEnabled", false );  
+                return ratingEnabled && _hasRated;
             }
             set { 
 				_hasRated = value; 
@@ -130,11 +131,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if (!TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled)
-                {
-                    return false;
-                }
-                return IsDone && !HasRated;
+                    var ratingEnabled = Config.GetSetting<bool>( "Client.RatingEnabled", false );                
+                    return ratingEnabled && IsDone && !HasRated;
             }
             set
             {

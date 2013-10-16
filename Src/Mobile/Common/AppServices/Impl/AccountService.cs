@@ -39,6 +39,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _refDataCacheKey = "Account.ReferenceData";
 
+
+        protected IConfigurationManager Config
+        {
+            get { return TinyIoCContainer.Current.Resolve < IConfigurationManager>(); }
+        }
+
+        protected ICacheService Cache
+        {
+            get { return TinyIoCContainer.Current.Resolve < ICacheService>(); }
+        }
+
+
         [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
         {
@@ -84,10 +96,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
             
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("AuthenticationData");
-            TinyIoCContainer.Current.Resolve<ICacheService> ().ClearAll ();
+            Cache.Clear (_historyAddressesCacheKey);
+            Cache.Clear (_favoriteAddressesCacheKey);
+            Cache.Clear ("AuthenticationData");
+            Cache.ClearAll ();
             TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
         }
 
@@ -120,8 +132,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RefreshCache (bool reload)
         {
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
+            Cache.Clear (_historyAddressesCacheKey);
+            Cache.Clear (_favoriteAddressesCacheKey);
 
             if (reload) {
                 GetFavoriteAddresses ();
@@ -131,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetHistoryAddresses ()
         {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<Address[]> (_historyAddressesCacheKey);
+            var cached = Cache.Get<Address[]> (_historyAddressesCacheKey);
             if (cached != null) {
                 return cached;
             } else {
@@ -143,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 );
 
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Set (_historyAddressesCacheKey, result.ToArray ());
+                Cache.Set (_historyAddressesCacheKey, result.ToArray ());
                 return result;
             }
         }
@@ -187,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetFavoriteAddresses ()
         {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<Address[]> (_favoriteAddressesCacheKey);
+            var cached = Cache.Get<Address[]> (_favoriteAddressesCacheKey);
 
             if (cached != null) {
                 return cached;
@@ -199,14 +211,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     result = service.GetFavoriteAddresses ();
                 }
                 );
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Set (_favoriteAddressesCacheKey, result.ToArray ());
+                Cache.Set (_favoriteAddressesCacheKey, result.ToArray ());
                 return result;
             }
         }
 
         private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare)
         {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<T[]> (key);
+            var cached = Cache.Get<T[]> (key);
 
             if (cached != null) {
 
@@ -216,11 +228,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     Array.Copy (cached, newList, cached.Length);
                     newList [cached.Length] = updated;
 
-                    TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, newList);
+                    Cache.Set (key, newList);
                 } else {
                     var foundIndex = cached.IndexOf (updated, compare);
                     cached [foundIndex] = updated;
-                    TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, cached);
+                    Cache.Set (key, cached);
                 }
             }
 
@@ -229,13 +241,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private bool RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
         {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<T[]> (key);
+            var cached = Cache.Get<T[]> (key);
 
             if ((cached != null) && (cached.Length > 0)) {
                 var list = new List<T> (cached);
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
                 var removed = list.Remove (toDelete);
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, list.ToArray ());
+                Cache.Set (key, list.ToArray ());
                 return removed;
             }
             return false;
@@ -268,14 +280,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account CurrentAccount {
             get {
 
-                var account = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<Account> ("LoggedUser");
+                var account = Cache.Get<Account> ("LoggedUser");
                 return account;
             }
             private set {
                 if (value != null) {
-                    TinyIoCContainer.Current.Resolve<ICacheService> ().Set ("LoggedUser", value);    
+                    Cache.Set ("LoggedUser", value);    
                 } else {
-                    TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("LoggedUser");
+                    Cache.Clear ("LoggedUser");
                 }                
             }
         }
@@ -349,9 +361,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         private static void SaveCredentials (AuthenticationData authResponse)
-        {
-            var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ();
-            cache.Set ("AuthenticationData", authResponse);
+        {         
+            TinyIoCContainer.Current.Resolve < ICacheService>().Set ("AuthenticationData", authResponse);
         }
 
         public Account GetFacebookAccount (string facebookId)
@@ -386,8 +397,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             Account data = null;
 
             try {
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
-                TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
+                Cache.Clear (_historyAddressesCacheKey);
+                Cache.Clear (_favoriteAddressesCacheKey);
 
                 var service = TinyIoCContainer.Current.Resolve<IAccountServiceClient> ("Authenticate");
                 var account = service.GetMyAccount ();
@@ -522,8 +533,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetCompaniesList ()
         {
             var refData = GetReferenceData();
-            
-            if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().HideNoPreference
+
+
+
+            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
                 && refData.CompaniesList != null)
             {
                 refData.CompaniesList.Insert(0, new ListItem
@@ -540,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var refData = GetReferenceData();
 
-            if (!TinyIoCContainer.Current.Resolve<IAppSettings> ().HideNoPreference
+            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
                 && refData.VehiclesList != null)
             {
                 refData.VehiclesList.Insert(0, new ListItem
@@ -556,11 +569,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             var refData = GetReferenceData();
-            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+
             var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
 			var paymentsEnabled = settings.IsPayInTaxiEnabled || settings.PayPalClientSettings.IsEnabled;
 			           
-            if (!appSettings.HideNoPreference
+            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0, new ListItem

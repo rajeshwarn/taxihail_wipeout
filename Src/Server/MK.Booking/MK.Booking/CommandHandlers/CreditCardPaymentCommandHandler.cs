@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(InitiateCreditCardPayment command)
         {
-            var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId, command.Amount);
+            var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId, command.Amount,command.CardToken);
             _repository.Save(payment, command.Id.ToString());
         }
 

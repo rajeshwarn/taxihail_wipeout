@@ -36,8 +36,8 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public string GetZoneByCoordinate(int? providerId, double latitude, double longitude)
         {
-            string zone = "";
-            bool useProvider = providerId.HasValue && providerId > 0;
+            var zone = "";
+            var useProvider = providerId.HasValue && providerId > 0;
             var zoneByCompanyEnabled = ConfigManager.GetSetting("IBS.ZoneByCompanyEnabled").SelectOrDefault(setting => bool.Parse(setting), false);
 
             UseService(service =>

@@ -46,10 +46,7 @@ namespace apcurium.MK.Booking.Mobile
         public TaxiHailApp(IDictionary<string, string> @params)
         {
             InitalizeServices();
-            if(TinyIoCContainer.Current.Resolve<IAppSettings> ().PushNotificationsEnabled)
-            {
-                InitializePushNotifications();
-            }
+
             InitializeStartNavigation(@params);
         }
         
@@ -109,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = this.GetSessionId(c);
 
-                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
+                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<ILogger>());
 			});
             
 
@@ -173,15 +170,9 @@ namespace apcurium.MK.Booking.Mobile
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        private void InitializePushNotifications()
-        {
-            var accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
-            var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService>();
-            if (accountService.CurrentAccount != null)
-            {
-                pushService.RegisterDeviceForPushNotifications();
-            }
-        }
+
+
+       
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {

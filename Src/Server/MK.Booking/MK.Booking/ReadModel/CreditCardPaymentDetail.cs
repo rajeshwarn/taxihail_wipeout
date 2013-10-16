@@ -11,5 +11,7 @@ namespace apcurium.MK.Booking.ReadModel
         public decimal Amount { get; set; }
         public string TransactionId { get; set; }
         public bool IsCaptured { get; set; }
+
+        public string CardToken { get; set; }
     }
 }
