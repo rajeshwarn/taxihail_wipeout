@@ -465,7 +465,6 @@
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
     <AndroidResource Include="Resources\Drawable\add_button.png" />
@@ -492,8 +491,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon_state.xml" />
     <AndroidResource Include="Resources\Drawable\twitter_icon_state.xml" />
