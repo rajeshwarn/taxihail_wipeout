@@ -11,16 +11,20 @@ namespace SocialNetworks.Services.MonoDroid
 {
     public class FacebookServicesMD : IFacebookService, SessionEvents.IAuthListener, SessionEvents.ILogoutListener
     {
-        private Facebook _facebookClient;
+        private static Facebook _facebookClient;
 		private Activity _mainActivity;
 		private Handler _handler;
         
 		public FacebookServicesMD(string appId, Activity mainActivity)
         {
-			_facebookClient = new Facebook(appId);
+			Console.WriteLine (mainActivity.ToString ());
+			if (_facebookClient == null) {
+				_facebookClient = new Facebook (appId);
+			}
 
 			SessionEvents.AddAuthListener (this);
 			SessionEvents.AddLogoutListener (this);
+
 			_mainActivity = mainActivity;
             SessionStore.Clear(_mainActivity.BaseContext);
 			SessionStore.Restore(_facebookClient, _mainActivity.BaseContext);
@@ -48,7 +52,7 @@ namespace SocialNetworks.Services.MonoDroid
         {
 			if(!_facebookClient.IsSessionValid)
 			{	
-				_facebookClient.Authorize(_mainActivity,new string[]{ permissions }, new LoginDialogListener ());
+				_facebookClient.Authorize(_mainActivity, new string[] { permissions }, new LoginDialogListener ());
 			}
         }
 
@@ -157,8 +161,10 @@ namespace SocialNetworks.Services.MonoDroid
 		#region IAuthListener implementation
 		public void OnAuthSucceed ()
 		{
-			SessionStore.Save (_facebookClient, _mainActivity.BaseContext);
-			ConnectionStatusChanged(this, new FacebookStatus(true));
+			if (_mainActivity != null) {
+				SessionStore.Save (_facebookClient, _mainActivity.BaseContext);
+			}
+			ConnectionStatusChanged (this, new FacebookStatus (true));
 		}
 
 		public void OnAuthFail (string error)
@@ -175,7 +181,9 @@ namespace SocialNetworks.Services.MonoDroid
 
 		public void OnLogoutFinish ()
 		{
-			SessionStore.Clear (_mainActivity.BaseContext);
+			if (_mainActivity != null) {
+				SessionStore.Clear (_mainActivity.BaseContext);
+			}
 			ConnectionStatusChanged(this, new FacebookStatus(false));
 		}
 		#endregion

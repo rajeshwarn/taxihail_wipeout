@@ -163,6 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								if(success)
 								{
 									ShowPayPalPaymentConfirmation();
+                                    PaymentService.SetPaymentFromCache(Order.Id, Amount);
 
 								} else {
 									MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
@@ -192,14 +193,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Thread.Sleep(500); //todo <- waiting needlessly
 
 					var response = PaymentService.CommitPreAuthorized(preAuthResponse.TransactionId);
-					if(!response.IsSuccessfull)
-					{
-						MessageService.ShowMessage (Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
-					}
+                    if (!response.IsSuccessfull)
+                    {
+                        MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
+                    }
+                    else
+                    {
+                        PaymentService.SetPaymentFromCache(Order.Id, Amount);
 
-                    PaymentService.SetPaymentFromCache(Order.Id, Amount);
-
-					ShowCreditCardPaymentConfirmation(preAuthResponse.TransactionId);					          
+                        ShowCreditCardPaymentConfirmation(preAuthResponse.TransactionId);	
+                    }
 				}
 			}
 		}
@@ -234,25 +237,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
 			                           Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
-			                           Str.CmtTransactionResendConfirmationButtonText,
-			                           ()=> {
-				ConfirmPaymentForDriver();
-				ShowPayPalPaymentConfirmation();
-			},
-			Str.OkButtonText,
-			()=> ReturnResult(""));
+                                       null, () => ReturnResult(""),
+                                       Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
 		private void ShowCreditCardPaymentConfirmation(string transactionId)
 		{
 			MessageService.ShowMessage(Str.CmtTransactionSuccessTitle,
                                        string.Format(Str.CmtTransactionSuccessMessage, transactionId),
-			                           Str.CmtTransactionResendConfirmationButtonText, ()=>
-			                           {				
-				ConfirmPaymentForDriver();
-				ShowCreditCardPaymentConfirmation(transactionId);
-			},
-			Str.OkButtonText, ()=> ReturnResult(""));
+                                       null, () => ReturnResult(""),
+			                            Str.OkButtonText, ()=> ReturnResult(""));
 		}
 
     }

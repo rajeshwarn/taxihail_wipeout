@@ -153,7 +153,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 		
-		private string _confirmationNoTxt;
+        bool _isResendButtonVisible;
+        public bool IsResendButtonVisible{
+            get{
+                return _isResendButtonVisible;
+            } set{
+                _isResendButtonVisible = value;
+                FirePropertyChanged (() => IsResendButtonVisible); 
+            }
+        }
+
+        private string _confirmationNoTxt;
 		public string ConfirmationNoTxt {
 			get {
 				return _confirmationNoTxt;
@@ -348,20 +358,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		void UpdatePayCancelButtons (string statusId)
 		{
-			IsPayButtonVisible =  statusId == VehicleStatuses.Common.Done
-								||statusId == VehicleStatuses.Common.Loaded;
+            var setting = ConfigurationManager.GetPaymentSettings ();
+            var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+
+			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
+								||statusId == VehicleStatuses.Common.Loaded) 
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
 			
             IsCancelButtonVisible = statusId == VehicleStatuses.Common.Assigned 
                                 || statusId == VehicleStatuses.Common.Waiting 
                                 || statusId == VehicleStatuses.Common.Arrived;
-		
-			var setting = ConfigurationManager.GetPaymentSettings ();
-			var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-            if (!isPayEnabled || PaymentService.GetPaymentFromCache(Order.Id).HasValue)
-            {
-                IsPayButtonVisible = false;
-            }
+            IsResendButtonVisible = isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}
 
 		public void GoToSummary(){
@@ -492,6 +500,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                 () => PhoneService.Call ( Config.GetSetting( "DefaultPhoneNumber" )),
 						                       Str.CancelButtonText, 
                                                () => {});                    
+                });
+            }
+        }
+
+        public IMvxCommand ResendConfirmationToDriver {
+            get {
+                return GetCommand (() =>
+                                   {
+                    if( PaymentService.GetPaymentFromCache(Order.Id).HasValue )
+                    {
+                        var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value ); 
+                        VehicleClient.SendMessageToDriver(OrderStatusDetail.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
+                    }
                 });
             }
         }
