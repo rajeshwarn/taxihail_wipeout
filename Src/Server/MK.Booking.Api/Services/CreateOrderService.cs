@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Infrastructure.Messaging;
+using log4net;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -24,6 +25,8 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class CreateOrderService : RestServiceBase<CreateOrder>
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CreateOrderService));
+        
         private ICommandBus _commandBus;
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IConfigurationManager _configManager;
@@ -51,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CreateOrder request)
         {
-            Trace.WriteLine("Create order request : " + request);
+            Log.Info( "Create order request : " + request);
             var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
           

@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 .Select(statusDetail => statusDetail.IBSOrderId.Value)
                 .ToList();
 
-            Logger.Debug("Call IBS for ids : " + ibsOrdersIds.Join(","));
 
             var ibsOrders = new List<IBSOrderInformation>();
 
@@ -60,8 +59,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (ibsStatus == null) continue;
 
                 _orderStatusUpdater.Update(ibsStatus, order);
-            }
-            Logger.Debug("End Call IBS for Status");
+            }            
         }
 
         

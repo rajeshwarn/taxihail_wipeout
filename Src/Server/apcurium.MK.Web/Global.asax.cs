@@ -4,114 +4,26 @@ using System.Globalization;
 using System.Reactive.Linq;
 using System.Web;
 using System.Web.Optimization;
-using Infrastructure.Messaging;
+using log4net;
 using Microsoft.Practices.Unity;
-using ServiceStack.ServiceInterface.Validation;
-using ServiceStack.Text;
-using ServiceStack.Text.Common;
-using ServiceStack.WebHost.Endpoints;
-using Funq;
 using apcurium.MK.Booking.Api.Jobs;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
-using apcurium.MK.Booking.Api.Security;
-using apcurium.MK.Common.IoC;
 using log4net.Config;
+using PostSharp.Aspects.Dependencies;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web
 {
     public class Global : HttpApplication
     {
-
-        public class MKWebAppHost : AppHostBase
-        {
-            public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly)
-            {
-
-                JsConfig.Reset();
-                JsConfig.EmitCamelCaseNames = true;
-                JsConfig.DateHandler = JsonDateHandler.ISO8601;
-                JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
-
-
-            }
-            
-
-
-            private DateTime? NullableDateTimeRawDesirializtion(string s)
-            {
-                try
-                {
-                    if (s.IndexOf('.') > 0)
-                    {
-                        s = s.Substring(0, s.IndexOf('.'));
-                    }
-                    return DateTimeSerializer.ParseShortestXsdDateTime(s);
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-
-            public override void Configure(Container containerFunq)
-            {
-                Trace.WriteLine("Configure AppHost");
-                new Module().Init(UnityServiceLocator.Instance);
-
-                var container = UnityServiceLocator.Instance;
-                containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
-
-                Plugins.Add(new AuthFeature(() => new AuthUserSession(),
-                    new IAuthProvider[]
-                    {
-                        new CustomCredentialsAuthProvider(container.Resolve<ICommandBus>(), container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
-                        new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
-                        new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
-                    }));
-
-                Plugins.Add(new ValidationFeature());
-                containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
-                
-                RequestFilters.Add((httpReq, httpResp, requestDto) =>
-                {
-                    var authSession = httpReq.GetSession();
-                    if (authSession != null && authSession.UserAuthId != null)
-                    {
-                        var account = container.Resolve<IAccountDao>().FindById(new Guid(authSession.UserAuthId));
-                        if (account.DisabledByAdmin)
-                        {
-                            httpReq.RemoveSession();
-                        }
-                    }
-                });
-
-                SetConfig(new EndpointHostConfig
-                {
-                    GlobalResponseHeaders =
-                        {
-                            { "Access-Control-Allow-Origin", "*" },
-                            { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
-                        },
-                });
-
-                Trace.WriteLine("Configure AppHost finished");
-            }
-            
-        }
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Global));      
+        
 
         protected void Application_Start(object sender, EventArgs e)
         {
             XmlConfigurator.Configure();
-            new MKWebAppHost().Init();
-
+            new MkWebAppHost().Init();
+            
             var config = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
             BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
 
@@ -131,13 +43,12 @@ namespace apcurium.MK.Web
 
         private void PollIbs(int pollingValue)
         {
-            Trace.WriteLine("Queue OrderStatusJob "+DateTime.Now.ToString("HH:MM:ss"));
+            Log.Info("Queue OrderStatusJob "+DateTime.Now.ToString("HH:MM:ss"));
             Observable.Timer(TimeSpan.FromSeconds(pollingValue))
                 .Subscribe(_ =>
                 {
                     try
-                    {
-                        Trace.WriteLine("Check Order Status " + DateTime.Now.ToString("HH:MM:ss"));
+                    {                        
                         StatusJobService.CheckStatus();
                     }
                     finally
@@ -156,12 +67,30 @@ namespace apcurium.MK.Web
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
-        {                        
+        {
+            if (Request.Path.Contains(@"/api/"))
+            {
+                var watch = new Stopwatch();
+                watch.Start();
+                HttpContext.Current.Items.Add("RequestLoggingWatch", watch);
+            }
         }
 
        
         protected void Application_EndRequest(object sender, EventArgs e)
-        {         
+        {
+            if (Request.Path.Contains(@"/api/"))
+            {
+                if (HttpContext.Current.Items["RequestLoggingWatch"] is Stopwatch)
+                {
+                                    
+                    var watch = (Stopwatch) HttpContext.Current.Items["RequestLoggingWatch"];
+                    watch.Stop();
+
+                    var config = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+                    Log.Info(string.Format("[{2}] Request info : {0} completed in {1}ms ", Request.Path, watch.ElapsedMilliseconds, config.GetSetting("TaxiHail.ApplicationKey")));                    
+                }
+            }
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Infrastructure.Messaging;
 using Infrastructure.Serialization;
+using log4net;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -22,6 +23,8 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class ValidateOrderService : RestServiceBase<ValidateOrderRequest>
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ValidateOrderService));
+
         private IConfigurationManager _configManager;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
         private IRuleCalculator _ruleCalculator;
@@ -38,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(ValidateOrderRequest request)
         {
-            Trace.WriteLine("Validating order request : " );
+            Log.Info("Validating order request : " );
 
             var zone = request.TestZone;
             if (!request.TestZone.HasValue())

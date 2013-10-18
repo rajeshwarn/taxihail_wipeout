@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using log4net;
+
 namespace Infrastructure.Messaging.Handling
 {
     using System;
@@ -23,8 +25,10 @@ namespace Infrastructure.Messaging.Handling
 
     public class EventDispatcher
     {
+        
+        
         private Dictionary<Type, List<Tuple<Type, Action<Envelope>>>> handlersByEventType;
-        private Dictionary<Type, Action<IEvent, string, string, string>> dispatchersByEventType;
+        private Dictionary<Type, Action<IEvent, string, string, string>> dispatchersByEventType;        
 
         public EventDispatcher()
         {
@@ -102,8 +106,7 @@ namespace Infrastructure.Messaging.Handling
             if (this.handlersByEventType.TryGetValue(typeof(T), out handlers))
             {
                 foreach (var handler in handlers)
-                {
-                    // Trace.WriteLine(string.Format(CultureInfo.InvariantCulture, "Event{0} handled by {1}.", traceIdentifier, handler.Item1.FullName));
+                {                    
                     handler.Item2(envelope);
                 }
             }

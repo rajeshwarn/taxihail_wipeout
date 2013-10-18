@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MK.Booking.PostSharp.Test")]
+[assembly: AssemblyTitle("MK.Booking.IBS.WebServices.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MK.Booking.PostSharp.Test")]
+[assembly: AssemblyProduct("MK.Booking.IBS.WebServices.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("14c712cf-8779-45d8-80d8-f4be2cc58b48")]
+[assembly: Guid("933205fb-edf2-45f4-a0eb-d524199e814d")]
 
 // Version information for an assembly consists of the following four values:
 //

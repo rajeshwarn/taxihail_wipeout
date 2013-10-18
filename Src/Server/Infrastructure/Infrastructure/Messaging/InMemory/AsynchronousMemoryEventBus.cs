@@ -18,6 +18,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Infrastructure.Serialization;
+using log4net;
 
 namespace Infrastructure.Messaging.InMemory
 {
@@ -30,7 +31,9 @@ namespace Infrastructure.Messaging.InMemory
         private readonly ITextSerializer _serializer;
         private Dictionary<Type, List<Tuple<Type, Action<Envelope>>>> handlersByEventType;
         private Dictionary<Type, Action<IEvent, string, string, string>> dispatchersByEventType;
-        
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AsynchronousMemoryEventBus));      
+
         public AsynchronousMemoryEventBus(ITextSerializer serializer, params IEventHandler[] handlers)
         {
             _serializer = serializer;
@@ -157,8 +160,7 @@ namespace Infrastructure.Messaging.InMemory
             if (this.handlersByEventType.TryGetValue(typeof(T), out handlers))
             {
                 foreach (var handler in handlers)
-                {
-                    Trace.WriteLine(string.Format(CultureInfo.InvariantCulture, "Event{0} handled by {1}.", traceIdentifier, handler.Item1.FullName));
+                {                    
                     handler.Item2(envelope);
                 }
             }
@@ -187,7 +189,7 @@ namespace Infrastructure.Messaging.InMemory
                 {
                     innerException = e.InnerException.ToString();
                 }
-                Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
+                Log.Error("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException, e);
             }
         }
 

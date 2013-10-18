@@ -40,17 +40,13 @@ namespace apcurium.MK.Booking.IBS.Impl
                 var count = ConfigManager.GetSetting("AvailableVehicles.Count", 10);
 
                 UseService(service =>
-                {
-                    Logger.LogMessage( string.Format(  "GetAvailableVehicles call : longitude : {0}, latitude : {1}, radius : {2}, count : {3}",longitude, latitude, radius, count ) );
+                {                    
 
                     result = service
                         .GetAvailableVehicles(UserNameApp, PasswordApp, longitude, latitude, radius, count)
                         .Select(Mapper.Map<IBSVehiclePosition>)
-                        .ToArray();
-
-                    Logger.LogMessage(string.Format("GetAvailableVehicles call returned : " + result.Count().ToString() + " vehicles"));
-
-                    result.ForEach( r => Logger.LogMessage(  string.Format(  "Vehicle found {0},  longitude : {1}, latitude : {2}" , r.VehicleNumber, r.Longitude, r.Latitude ) ));
+                        .ToArray();                 
+                    
                     
 
                 });
@@ -120,10 +116,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
                     foreach (var orderInfoFromIBS in status)
-                    {
-                        Logger.LogMessage("Status from IBS");
-                        Logger.LogMessage(orderInfoFromIBS.Dump());
-
+                    {                     
                         var statusInfos = new IBSOrderInformation(orderInfoFromIBS);
 
                         result.Add(statusInfos);

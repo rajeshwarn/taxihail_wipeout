@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Infrastructure.Serialization;
+using log4net;
+using log4net.Core;
 
 namespace Infrastructure.Messaging.InMemory
 {
@@ -30,6 +32,9 @@ namespace Infrastructure.Messaging.InMemory
     {
         private readonly ITextSerializer _serializer;
         private Dictionary<Type, ICommandHandler> handlers = new Dictionary<Type, ICommandHandler>();
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AsynchronousMemoryCommandBus));      
+
         
         public AsynchronousMemoryCommandBus(ITextSerializer serializer, params ICommandHandler[] handlers)
         {
@@ -74,15 +79,13 @@ namespace Infrastructure.Messaging.InMemory
                     ICommandHandler handler = null;
 
                     if (this.handlers.TryGetValue(commandType, out handler))
-                    {
-                        Trace.WriteLine("-- Handled by " + handler.GetType().FullName);
+                    {                     
                         ((dynamic)handler).Handle((dynamic)command.Body);
                     }
 
                     // There can be a generic logging/tracing/auditing handlers
                     if (this.handlers.TryGetValue(typeof(ICommand), out handler))
-                    {
-                        Trace.WriteLine("-- Handled by " + handler.GetType().FullName);
+                    {                        
                         ((dynamic)handler).Handle((dynamic)command.Body);
                     }
                    
@@ -95,7 +98,8 @@ namespace Infrastructure.Messaging.InMemory
                     {
                         innerException = e.InnerException.ToString();
                     }
-                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
+                    Log.Error("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException, e);
+                    
                 }
             });
         }
