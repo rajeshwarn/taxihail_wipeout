@@ -363,6 +363,10 @@
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\pin_cluster.png" />
     <AndroidResource Include="Resources\Drawable\pin_cluster.png" />
+    <AndroidResource Include="Resources\Layout\View_TermsAndConditions.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Activities\Account\TermsAndConditionsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

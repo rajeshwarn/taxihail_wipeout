@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IBookingService, BookingService>();
 
             container.Register<ITutorialService, TutorialService>();
-
+            container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 
 
             container.Register<IGeolocService, GeolocService>();

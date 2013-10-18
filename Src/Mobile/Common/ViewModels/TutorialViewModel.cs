@@ -9,6 +9,7 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using Cirrious.MvvmCross.ExtensionMethods;
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class TutorialViewModel : BaseViewModel,                 
