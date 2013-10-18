@@ -5,7 +5,8 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:id="@+id/HeaderedLayout">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +29,8 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dip">
+            android:layout_marginRight="5dip"
+            android:id="@+id/ButtonLayout">
             <ImageButton
                 android:id="@+id/ViewNavBarRightButton"
                 style="@style/ButtonText"
@@ -53,18 +55,13 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/NavBarSection"
         android:orientation="vertical" />
-    <LinearLayout
-        android:id="@+id/ContentLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/NavBarImage"
-        android:orientation="vertical" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:gravity="top"
-        android:layout_marginTop="3dip">
+        android:layout_marginTop="3dip"
+        android:id="@+id/LogoLayout">
         <ImageView
             android:layout_alignParentTop="true"
             android:layout_width="82dip"

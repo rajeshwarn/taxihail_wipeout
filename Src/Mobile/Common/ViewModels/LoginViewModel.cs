@@ -314,7 +314,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<BookViewModel>(true);
+                        Task.Factory.SafeStartNew(() =>
+                                                  {
+                            try
+                            {
+                                RequestNavigate<BookViewModel>(true);
+                                RequestMainThreadAction( () => RequestClose(this));
+                            }
+                            finally
+                            {
+                            }
+                        });
                     }
                 }
                 finally
@@ -350,7 +360,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<BookViewModel>(true);
+                        Task.Factory.SafeStartNew(() =>
+                                                  {
+                            try
+                            {
+                                RequestNavigate<BookViewModel>(true);
+                                RequestMainThreadAction( () => RequestClose(this));
+                            }
+                            finally
+                            {
+                            }
+                        });
                     }
                 }
                 finally

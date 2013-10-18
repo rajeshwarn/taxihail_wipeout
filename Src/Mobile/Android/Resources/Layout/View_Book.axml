@@ -9,7 +9,8 @@
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:id="@+id/RelIncludeLayout">
         <include
             android:id="@+id/BookSettingsMenu"
             android:layout_width="match_parent"
@@ -142,7 +143,8 @@
                         android:layout_below="@+id/pickupDateLayout">
                         <RelativeLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                            android:layout_height="fill_parent"
+                            android:id="@+id/RelMapLayout">
                             <apcurium.mk.booking.mobile.client.controls.TouchMap
                                 android:id="@+id/mapPickup"
                                 android:layout_width="fill_parent"
@@ -192,7 +194,8 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:background="@drawable/StatusBottomBarBackground">
+                            android:background="@drawable/StatusBottomBarBackground"
+                            android:id="@+id/RelIncludeLayout2">
                             <include
                                 android:id="@+id/BookButtons"
                                 android:layout_width="match_parent"
