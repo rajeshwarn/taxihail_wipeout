@@ -201,7 +201,7 @@ namespace MK.DeploymentService
                 }
             }
 
-            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName));
+            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName),true);
             Log("Finished");
         }
 
@@ -218,7 +218,7 @@ namespace MK.DeploymentService
                 Directory.CreateDirectory(dirPath.Replace(source, target));
 
             foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
-                File.Copy(newPath, newPath.Replace(source, target));
+                File.Copy(newPath, newPath.Replace(source, target), true);
         }
 
         private void DeployTaxiHail(string packagesDirectory)
