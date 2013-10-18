@@ -9,7 +9,15 @@
 
 	
 	<remove-node path="/api/package[@name='com.facebook']/class[@name='RequestAsyncTask']/method[@name='doInBackground']" />
+		<!--- 
 	<remove-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']" />
+		-->
+		
+		        <remove-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']/implements" />
+        <add-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']">
+      <implements name="java.util.Collection" name-generic-aware="java.util.Collection&lt;T&gt;" />
+        </add-node>
+        
 	<remove-node path="/api/package[@name='com.facebook.widget']/class[@name='GraphObjectAdapter']" />
 	<remove-node path="/api/package[@name='com.facebook']/class[@name='UiLifecycleHelper']" />
 		

@@ -49,7 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-   
+        public IFacebookService FacebookService { get { return _facebookService; } }
+
         public override void Load()
         {
             base.Load();

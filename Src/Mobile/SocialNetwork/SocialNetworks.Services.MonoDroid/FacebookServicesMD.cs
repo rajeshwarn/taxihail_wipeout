@@ -6,112 +6,129 @@ using System.Json;
 using System.Collections.Generic;
 using com.facebook.droid;
 using Com.Facebook.Android;
+using Com.Facebook;
+using Com.Facebook.Model;
+using Android.Runtime;
+using SocialNetworks.Services.MonoDroid.Callbacks;
+using System.Linq;
 
 namespace SocialNetworks.Services.MonoDroid
 {
-    public class FacebookServicesMD : IFacebookService, SessionEvents.IAuthListener, SessionEvents.ILogoutListener
+    public class FacebookServicesMD : IFacebookService
     {
-        private static Facebook _facebookClient;
 		private Activity _mainActivity;
-		private Handler _handler;
-        
+
 		public FacebookServicesMD(string appId, Activity mainActivity)
         {
-			Console.WriteLine (mainActivity.ToString ());
-			if (_facebookClient == null) {
-				_facebookClient = new Facebook (appId);
-			}
-
-			SessionEvents.AddAuthListener (this);
-			SessionEvents.AddLogoutListener (this);
-
 			_mainActivity = mainActivity;
-            SessionStore.Clear(_mainActivity.BaseContext);
-			SessionStore.Restore(_facebookClient, _mainActivity.BaseContext);
-			_handler = new Handler();
         }
 
 		public void AuthorizeCallback (int requestCode, int resultCode, Android.Content.Intent data)
 		{
-			_facebookClient.AuthorizeCallback (requestCode, resultCode, data);
+			if (Session.ActiveSession != null)
+				Session.ActiveSession.OnActivityResult(_mainActivity, requestCode, resultCode, data);
 
-            GetUserInfos(u =>
-                {
-                    u.ToString();
-                }, () => Console.Write("ee"));
-            //ConnectionStatusChanged(this, new FacebookStatus(false));
+			Session currentSession = Session.ActiveSession;
+			if (currentSession == null || currentSession.IsClosed) {
+				Session session = new Session.Builder(_mainActivity).Build();
+				Session.ActiveSession = session;
+				currentSession = session;
+			}
+
+			if (currentSession.IsOpened) {
+				Session.OpenActiveSession (_mainActivity, true, new StatusCallback ((session,state,exception) => {
+					ConnectionStatusChanged (this, new FacebookStatus (state == SessionState.Opened));
+				}));
+			}
 		}
 		
 		#region IFacebookService implementation
         public bool IsConnected
         {
-			get { return _facebookClient.IsSessionValid;  }
+			get { return Session.ActiveSession != null && Session.ActiveSession.State == SessionState.Opened;  }
         }
 
 		public void Connect(string permissions)
         {
-			if(!_facebookClient.IsSessionValid)
-			{	
-				_facebookClient.Authorize(_mainActivity, new string[] { permissions }, new LoginDialogListener ());
+			Session currentSession = Session.ActiveSession;
+			if (currentSession == null || currentSession.IsClosed ) {
+				Session session = new Session.Builder(_mainActivity).Build();
+				Session.ActiveSession = session;
+				currentSession = session;
+			}
+
+			if ( currentSession.IsOpened ) {
+		
+
+			} else if (!currentSession.IsOpened) {
+				Session.OpenRequest op = new Session.OpenRequest(_mainActivity);
+
+				op.SetLoginBehavior(SessionLoginBehavior.SuppressSso);
+				op.SetCallback (null);
+
+				List<string> perms = permissions.Split (',').ToList ();
+				op.SetPermissions(perms);
+
+				Session s = new Session.Builder(_mainActivity).Build();
+				Session.ActiveSession = s;
+				s.OpenForRead(op);
 			}
         }
 
         public void GetUserInfos(Action<UserInfos> onRequestDone, Action onError)
         {
-            var asyncRunner = new AsyncFacebookRunner (_facebookClient);
-			asyncRunner.Request("me", new RequestListener((response, obj) => {
-				var data = (JsonObject) JsonValue.Parse (response);
-                if (!data.ContainsKey("id"))
-                {
-                    onError();
-                    return;
-                }
-				var infos = new UserInfos();
-				infos = new UserInfos();
-				infos.Id = data["id"];
-				infos.Email = data["email"];
-				infos.Firstname = data["first_name"];
-				infos.Lastname = data["last_name"];
+			Request.ExecuteGraphPathRequestAsync (Session.ActiveSession, "me", new RequestCallback ( (r) => {
+				var user = GraphObjectFactory.Create( r.GraphObject.InnerJSONObject ).AsMap();
 
-                if (onRequestDone != null)
-                {
-                    onRequestDone(infos);
-                }
-                else
-                {
-                    onError();
-                }
-			}));
+				if( user != null )
+				{
+					var infos = new UserInfos();
+					infos.Id = user["id"].ToString();
+					infos.Email = user["email"].ToString();
+					infos.Firstname = user["first_name"].ToString();
+					infos.Lastname = user["last_name"].ToString();
+
+					if (onRequestDone != null)
+					{
+						onRequestDone(infos);
+					}
+				}
+				else
+				{
+					onError();
+				}
+
+			} ));
         }
 
 		public void GetLikes( Action<List<UserLike>> onRequestDone )                   
 		{
-			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
-			asyncRunner.Request ("me/likes", new RequestListener((response, obj) => {
-					
-				List<UserLike> likesList = new List<UserLike>();
-				if(response != null)
-				{
-					var data = JsonObject.Parse(response);
-					var jv = data["data"];
-					foreach( JsonValue item in jv )
-					{
-						var like = new UserLike();
-						like.Id = item["id"];
-						like.Category = item["category"];
-						like.Name = item["name"];
-						like.CreatedTime = item["created_time"];
-
-						likesList.Add( like );
-					}
-				}
-
-				if(onRequestDone != null)
-				{
-					onRequestDone(likesList);
-				}
-			}				
-		    ));	
+//			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
+//			asyncRunner.Request ("me/likes", new RequestListener((response, obj) => {
+//					
+//				List<UserLike> likesList = new List<UserLike>();
+//				if(response != null)
+//				{
+//					var data = JsonObject.Parse(response);
+//					var jv = data["data"];
+//					foreach( JsonValue item in jv )
+//					{
+//						var like = new UserLike();
+//						like.Id = item["id"];
+//						like.Category = item["category"];
+//						like.Name = item["name"];
+//						like.CreatedTime = item["created_time"];
+//
+//						likesList.Add( like );
+//					}
+//				}
+//
+//				if(onRequestDone != null)
+//				{
+//					onRequestDone(likesList);
+//				}
+//			}				
+//		    ));	
 		}
 
         public void SetCurrentContext(object context)
@@ -121,81 +138,36 @@ namespace SocialNetworks.Services.MonoDroid
 
         public void Like( string objectId )
 		{
-			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
-			asyncRunner.Request( objectId + "/likes", new RequestListener((response, obj) => {
-				Console.WriteLine( obj.ToString() );
-				Console.WriteLine( response );
-
-			}));
+//			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
+//			asyncRunner.Request( objectId + "/likes", new RequestListener((response, obj) => {
+//				Console.WriteLine( obj.ToString() );
+//				Console.WriteLine( response );
+//
+//			}));
 		}
 
         public void Share(Post post, Action onRequestDone)
         {
-			Bundle parameters = new Bundle ();
-			parameters.PutString ("message", post.Message);
-			parameters.PutString ("link", post.Url);
-			parameters.PutString ("name", post.Name);
-			parameters.PutString ("description", post.Description);
-			parameters.PutString ("picture", post.Picture);
-			
-            var asyncRunner = new AsyncFacebookRunner (_facebookClient);
-			asyncRunner.Request("me/feed",parameters, "POST", new RequestListener((response, obj) => {
-				if(onRequestDone != null) onRequestDone();
-			}), null);
+//			Bundle parameters = new Bundle ();
+//			parameters.PutString ("message", post.Message);
+//			parameters.PutString ("link", post.Url);
+//			parameters.PutString ("name", post.Name);
+//			parameters.PutString ("description", post.Description);
+//			parameters.PutString ("picture", post.Picture);
+//			
+//            var asyncRunner = new AsyncFacebookRunner (_facebookClient);
+//			asyncRunner.Request("me/feed",parameters, "POST", new RequestListener((response, obj) => {
+//				if(onRequestDone != null) onRequestDone();
+//			}), null);
         }
 
         public void Disconnect()
         {
-            SessionEvents.OnLogoutBegin ();
-			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
-			asyncRunner.Logout(_mainActivity.BaseContext, new RequestListener ((r,o) => {
-				_handler.Post (delegate {
-					SessionEvents.OnLogoutFinish ();
-				});
-			}));
+			Session.ActiveSession.CloseAndClearTokenInformation ();
         }
 
 		public event EventHandler<FacebookStatus> ConnectionStatusChanged = delegate {};
 		#endregion
-
-		#region IAuthListener implementation
-		public void OnAuthSucceed ()
-		{
-			if (_mainActivity != null) {
-				SessionStore.Save (_facebookClient, _mainActivity.BaseContext);
-			}
-			ConnectionStatusChanged (this, new FacebookStatus (true));
-		}
-
-		public void OnAuthFail (string error)
-		{
-			ConnectionStatusChanged(this, new FacebookStatus(false));
-		}
-		#endregion
-
-		#region ILogoutListener implementation
-		public void OnLogoutBegin ()
-		{
-			
-		}
-
-		public void OnLogoutFinish ()
-		{
-			if (_mainActivity != null) {
-				SessionStore.Clear (_mainActivity.BaseContext);
-			}
-			ConnectionStatusChanged(this, new FacebookStatus(false));
-		}
-		#endregion
-		
-		class LoginDialogListener : BaseDialogListener
-		{
-			public override void OnComplete (Bundle values)
-			{
-
-				SessionEvents.OnLoginSuccess ();
-			}			
-		}		
-			
     }    
+
 }

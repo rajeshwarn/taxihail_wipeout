@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="TwitterServiceMonoDroid.cs" />
     <Compile Include="Entities\UserLike.cs" />
+    <Compile Include="FacebookHelpers\Callbacks.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
