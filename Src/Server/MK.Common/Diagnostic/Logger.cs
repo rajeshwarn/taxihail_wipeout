@@ -1,14 +1,20 @@
 ﻿using System;
 
 using System.Diagnostics;
+using log4net;
+
 
 namespace apcurium.MK.Common.Diagnostic
 {
     public class Logger : ILogger
     {
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Logger));      
+
+
         public void LogError(Exception ex)
         {
-            Trace.TraceError(ex.Message + " " + ex.StackTrace);
+            Log.Error( ex.Message + " " + ex.StackTrace);
             if (ex.InnerException != null)
             {
                 LogError(ex.InnerException);
@@ -21,7 +27,7 @@ namespace apcurium.MK.Common.Diagnostic
             {
                 message = string.Format(message, args);
             }
-            Trace.WriteLine(message);            
+            Log.Info( message );        
         }
 
 

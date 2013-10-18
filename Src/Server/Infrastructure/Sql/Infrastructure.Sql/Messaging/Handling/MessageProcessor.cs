@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+
+
 namespace Infrastructure.Sql.Messaging.Handling
 {
     using System;
@@ -19,12 +21,16 @@ namespace Infrastructure.Sql.Messaging.Handling
     using Infrastructure.Serialization;
     using Infrastructure.Sql.Messaging;
 
+    using log4net;
+
     /// <summary>
     /// Provides basic common processing code for components that handle 
     /// incoming messages from a receiver.
     /// </summary>
     public abstract class MessageProcessor : IProcessor, IDisposable
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MessageProcessor));      
+
         private readonly IMessageReceiver receiver;
         private readonly ITextSerializer serializer;
         private readonly object lockObject = new object();
@@ -111,18 +117,18 @@ namespace Infrastructure.Sql.Messaging.Handling
 
         private void OnMessageReceived(object sender, MessageReceivedEventArgs args)
         {
-            Trace.WriteLine(new string('-', 100));
+            Log.Debug(new string('-', 100));
 
             try
             {
                 var body = Deserialize(args.Message.Body);
 
                 TracePayload(body);
-                Trace.WriteLine("");
+                Log.Debug("");
 
                 ProcessMessage(body, args.Message.CorrelationId);
 
-                Trace.WriteLine(new string('-', 100));
+                Log.Debug(new string('-', 100));
             }
             catch (Exception e)
             {
@@ -130,8 +136,8 @@ namespace Infrastructure.Sql.Messaging.Handling
                 // development/debugging. The Windows Azure implementation 
                 // supports retries and dead-lettering, which would 
                 // be totally overkill for this alternative debug-only implementation.
-                Trace.TraceError("An exception happened while processing message through handler/s:\r\n{0}", e);
-                Trace.TraceWarning("Error will be ignored and message receiving will continue.");
+                Log.Error("An exception happened while processing message through handler/s:\r\n{0}", e);
+                Log.Warn("Error will be ignored and message receiving will continue.");
             }
         }
 
@@ -162,7 +168,7 @@ namespace Infrastructure.Sql.Messaging.Handling
         [Conditional("TRACE")]
         private void TracePayload(object payload)
         {
-            Trace.WriteLine(this.Serialize(payload));
+            Log.Debug(this.Serialize(payload));
         }
     }
 }

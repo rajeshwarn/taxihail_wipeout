@@ -36,6 +36,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="MK.Booking.IBS.WebServices">
+      <HintPath>..\Libraries\MK.Booking.IBS.WebServices.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\MK.Booking\MK.Booking.Test\bin\Debug\nunit.framework.dll</HintPath>
     </Reference>

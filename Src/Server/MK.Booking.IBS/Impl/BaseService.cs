@@ -28,10 +28,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             var service = new T { Url = GetUrl() };
 
             try
-            {
-                Logger.LogMessage("Begin call to " + this.GetUrl());
-                action(service);
-                Logger.LogMessage("End call to " + this.GetUrl());
+            {             
+                action(service);                
             }
             catch (Exception exception)
             {

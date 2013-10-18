@@ -51,9 +51,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                               };
 
             ibsStatus.Update(order);
-
-            Logger.Debug("Status from IBS Webservice " + ibsStatus.Dump());
-            Logger.Debug("Status Changed for " + order.OrderId + " -- new status IBS : " + ibsStatus.Status);
+            
             string description = null;
 
             if (ibsStatus.IsAssigned)

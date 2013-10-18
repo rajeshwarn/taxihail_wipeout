@@ -7,6 +7,7 @@
    "FacebookEnabled" : "true",
    "SupportEmail" : "techsupport@apcurium.com",
    "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",
+   "ServiceUrl2" : "http://192.168.12.105/apcurium.MK.Web/api/",   
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://api.twitter.com/oauth/authorize",

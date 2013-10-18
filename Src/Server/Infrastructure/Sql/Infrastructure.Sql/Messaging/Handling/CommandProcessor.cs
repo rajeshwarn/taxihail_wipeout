@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+
+
 namespace Infrastructure.Sql.Messaging.Handling
 {
     using System;
@@ -21,7 +23,7 @@ namespace Infrastructure.Sql.Messaging.Handling
     using Infrastructure.Messaging.Handling;
     using Infrastructure.Serialization;
     using Infrastructure.Sql.Messaging;
-
+    using log4net;
     /// <summary>
     /// Processes incoming commands from the bus and routes them to the appropriate 
     /// handlers.
@@ -29,7 +31,7 @@ namespace Infrastructure.Sql.Messaging.Handling
     public class CommandProcessor : MessageProcessor, ICommandHandlerRegistry
     {
         private Dictionary<Type, ICommandHandler> handlers = new Dictionary<Type, ICommandHandler>();
-
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CommandProcessor));      
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandProcessor"/> class.
         /// </summary>
@@ -73,14 +75,14 @@ namespace Infrastructure.Sql.Messaging.Handling
 
             if (this.handlers.TryGetValue(commandType, out handler))
             {
-                Trace.WriteLine("-- Handled by " + handler.GetType().FullName);
+                Log.Debug("-- Handled by " + handler.GetType().FullName);
                 ((dynamic)handler).Handle((dynamic)payload);
             }
 
             // There can be a generic logging/tracing/auditing handlers
             if (this.handlers.TryGetValue(typeof(ICommand), out handler))
             {
-                Trace.WriteLine("-- Handled by " + handler.GetType().FullName);
+                Log.Debug("-- Handled by " + handler.GetType().FullName);
                 ((dynamic)handler).Handle((dynamic)payload);
             }
         }
