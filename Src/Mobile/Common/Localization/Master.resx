@@ -198,6 +198,15 @@
   <data name="SignUpButton" xml:space="preserve">
     <value>Create a free account</value>
   </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
+    <value>By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</value>
+  </data>
+  <data name="AcceptButton" xml:space="preserve">
+    <value>Accept</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -928,6 +937,9 @@
   </data>
   <data name="View_SignUp" xml:space="preserve">
     <value>Create Account</value>
+  </data>
+  <data name="View_TermsAndConditions" xml:space="preserve">
+    <value></value>
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
     <value>Create Profile</value>

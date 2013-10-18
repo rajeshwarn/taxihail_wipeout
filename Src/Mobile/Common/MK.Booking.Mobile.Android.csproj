@@ -271,6 +271,10 @@
     <Compile Include="AppServices\IPaymentService.cs" />
     <Compile Include="Infrastructure\IAnalyticsService.cs" />
     <Compile Include="Data\VehicleClusterBuilder.cs" />
+    <Compile Include="ViewModels\TermsAndConditionsViewModel.cs" />
+    <Compile Include="AppServices\ITermsAndConditionsService.cs" />
+    <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
+    <Compile Include="Data\TermsAndConditionsContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -309,6 +313,7 @@
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <None Include="Localization\Thriev.resx" />
+    <EmbeddedResource Include="TermsAndConditionsContent\TermsAndConditions.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -328,6 +333,7 @@
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Fakes\" />
+    <Folder Include="TermsAndConditionsContent\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -10,6 +10,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyMessenger;
 using ServiceStack.Text;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -88,12 +89,17 @@ namespace apcurium.MK.Booking.Mobile
 
 					try
 					{
+                        var showTermsAndConditions = ConfigurationManager.GetSetting<bool>("Client.ShowTermsAndConditions", false);
+                        if( showTermsAndConditions && !_termsAndConditionsApproved )
+                        {
+                            RequestSubNavigate<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
+                            return;
+                        }
+
 						string error;
 						
                         var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
-
-
 
 						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
 						if (result)
@@ -129,6 +135,20 @@ namespace apcurium.MK.Booking.Mobile
 
 			}			
 		}
+
+        private bool _termsAndConditionsApproved;
+        private void OnTermsAndConditionsCallback(bool approved)
+        {
+            _termsAndConditionsApproved = approved;
+            if (approved && CreateAccount.CanExecute())
+            {
+                CreateAccount.Execute();
+            }
+            else
+            {
+                RequestClose( this );
+            }
+        }
 	}
 }
 
