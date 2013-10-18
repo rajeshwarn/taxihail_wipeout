@@ -441,4 +441,5 @@
   <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
   <string name="ConfirmationOfPaymentSent">Confirmation of payment has been sent to the driver.</string>
   <string name="EstimatingFare">Estimating your fare...</string>
-</resources>
+  <string name="app_id">134284363380764</string>
+  </resources>

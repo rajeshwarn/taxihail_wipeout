@@ -51,8 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         /// </param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();            
-            (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
+            base.OnActivityResult(requestCode, resultCode, data);
+                       
+            (ViewModel.FacebookService as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
 		public LoginActivity ()
