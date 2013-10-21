@@ -437,3 +437,8 @@
 "EstimatePriceFormat"="Estimated Fare : {0}";
 "ConfirmationOfPaymentSent"="Confirmation of payment has been sent to the driver.";
 "EstimatingFare"="Estimating your fare...";
+"View_TermsAndConditions"="";
+"TermsAndConditionsAcknowledgment"="By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.";
+"AcceptButton"="Accept";
+"TermsAndConditionsLabel"="Terms and Conditions";
+"app_id"="134284363380764";

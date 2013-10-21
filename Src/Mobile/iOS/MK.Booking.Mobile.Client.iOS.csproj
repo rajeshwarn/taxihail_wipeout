@@ -484,6 +484,12 @@
     <Compile Include="Controls\PaymentSelector.cs" />
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
+    <Compile Include="Views\TermsAndConditionsView.xib.cs">
+      <DependentUpon>TermsAndConditionsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TermsAndConditionsView.xib.designer.cs">
+      <DependentUpon>TermsAndConditionsView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -554,6 +560,7 @@
     <InterfaceDefinition Include="Views\RideSummaryPage.xib" />
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
+    <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
