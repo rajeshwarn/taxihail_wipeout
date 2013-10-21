@@ -1,66 +1,19 @@
 // WARNING
 //
 // This file has been generated automatically by Xamarin Studio to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	[Register ("ConfirmationView")]
 	partial class ConfirmationView
 	{
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblPickup { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblDestination { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblPickupValue { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblDestinationValue { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblFare { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblFareValue { get; set; }
-
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.StackView topStack { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBagsValue { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblNameValue { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhoneValue { get; set; }
+		MonoTouch.UIKit.UIButton btnConfirm { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnEdit { get; set; }
@@ -72,7 +25,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartmentValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblNoteDriver { get; set; }
+		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblDestination { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblDestinationValue { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
@@ -81,52 +43,90 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCodeValue { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblFare { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblFareValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBagsValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblNameValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblNoteDriver { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhoneValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPickup { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPickupValue { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnConfirm { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.StackView topStack { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.TextView txtNotes { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPickup != null) {
+				lblPickup.Dispose ();
+				lblPickup = null;
+			}
 
-            if (lblPickup != null) {
-                lblPickup.Dispose ();
-                lblPickup = null;
-            }
+			if (lblDestination != null) {
+				lblDestination.Dispose ();
+				lblDestination = null;
+			}
 
-            if (lblDestination != null) {
-                lblDestination.Dispose ();
-                lblDestination = null;
-            }
+			if (lblPickupValue != null) {
+				lblPickupValue.Dispose ();
+				lblPickupValue = null;
+			}
 
-            if (lblFare != null) {
-                lblFare.Dispose ();
-                lblFare = null;
-            }
+			if (lblDestinationValue != null) {
+				lblDestinationValue.Dispose ();
+				lblDestinationValue = null;
+			}
 
-            if (lblPickupValue != null) {
-                lblPickupValue.Dispose ();
-                lblPickupValue = null;
-            }
+			if (lblFare != null) {
+				lblFare.Dispose ();
+				lblFare = null;
+			}
 
-            if (lblDestinationValue != null) {
-                lblDestinationValue.Dispose ();
-                lblDestinationValue = null;
-            }
-
-            if (lblFareValue != null) {
-                lblFareValue.Dispose ();
-                lblFareValue = null;
-            }
+			if (lblFareValue != null) {
+				lblFareValue.Dispose ();
+				lblFareValue = null;
+			}
 
 			if (lblChargeTypeValue != null) {
 				lblChargeTypeValue.Dispose ();
@@ -153,15 +153,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassengersValue = null;
 			}
 
-            if (lblLargeBags != null) {
-                lblLargeBags.Dispose ();
-                lblLargeBags = null;
-            }
+			if (lblLargeBags != null) {
+				lblLargeBags.Dispose ();
+				lblLargeBags = null;
+			}
 
-            if (lblLargeBagsValue != null) {
-                lblLargeBagsValue.Dispose ();
-                lblLargeBagsValue = null;
-            }
+			if (lblLargeBagsValue != null) {
+				lblLargeBagsValue.Dispose ();
+				lblLargeBagsValue = null;
+			}
 
 			if (lblName != null) {
 				lblName.Dispose ();

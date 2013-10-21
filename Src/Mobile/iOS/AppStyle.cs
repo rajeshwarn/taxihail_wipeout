@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static UIColor GreyText { get { return UIColor.FromRGB (86, 86, 86); } }
 
+        public static UIColor LightGreyText { get { return UIColor.FromRGB (150, 150, 150); } }
+
         public static UIColor NavigationTitleColor { get { return  UIColor.FromRGBA (StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue, StyleManager.Current.NavigationTitleColor.Alpha); } }
 
         public static UIColor NavigationBarColor { get { return  UIColor.FromRGBA (StyleManager.Current.NavigationBarColor.Red, StyleManager.Current.NavigationBarColor.Green, StyleManager.Current.NavigationBarColor.Blue, StyleManager.Current.NavigationBarColor.Alpha); } }
