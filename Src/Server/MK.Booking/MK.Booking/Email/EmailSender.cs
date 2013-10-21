@@ -53,13 +53,13 @@ namespace apcurium.MK.Booking.Email
                     var client = new System.Net.Mail.SmtpClient();
                     AutoMapper.Mapper.Map(_configuration, client);
                     using (client)
-                    {
+                    {                        
                         client.Send(message);
                     }
                 };
 
 
-                sendAction.Retry( new TimeSpan(0,0,0,30), 5 );
+                sendAction.Retry( new TimeSpan(0,0,0,15), 10 );
 
             });
         }

@@ -43,7 +43,9 @@ namespace apcurium.MK.Booking.Maps.Impl
                 if (route.Legs.Count > 0)
                 {
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
-                    
+                    var duration = route.Legs.Sum(leg => leg.Duration.Value);
+
+                    result.Duration = duration;
                     result.Distance = distance;
                     result.Price = _priceCalculator.GetPrice(distance, date ?? DateTime.Now);
 
