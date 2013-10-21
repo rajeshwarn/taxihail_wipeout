@@ -308,6 +308,7 @@
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
+    <EmbeddedResource Include="TermsAndConditionsContent\TermsAndConditions.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Style\" />
@@ -323,7 +324,6 @@
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />
     <None Include="Localization\Thriev.resx" />
-    <None Include="TermsAndConditionsContent\TermsAndConditions.json" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

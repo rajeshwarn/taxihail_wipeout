@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<ITermsAndConditionsService>
 
 	{
-		public RegisterAccount Data { get; set; }
 
         public TermsAndConditionsViewModel ( string messageId ) : base(messageId)
 		{
@@ -59,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var service = this.GetService<ITermsAndConditionsService>();
                     _text = service.GetText();
                 }
-                return _text; 
+                return @_text; 
             } 
         }
 	}

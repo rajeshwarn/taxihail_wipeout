@@ -484,11 +484,9 @@
     <Compile Include="Controls\PaymentSelector.cs" />
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
-    <Compile Include="Views\TermsAndConditionsView.xib.cs">
-      <DependentUpon>TermsAndConditionsView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TermsAndConditionsView.xib.designer.cs">
-      <DependentUpon>TermsAndConditionsView.xib</DependentUpon>
+    <Compile Include="Views\TermsAndConditionsView.cs" />
+    <Compile Include="Views\TermsAndConditionsView.designer.cs">
+      <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
