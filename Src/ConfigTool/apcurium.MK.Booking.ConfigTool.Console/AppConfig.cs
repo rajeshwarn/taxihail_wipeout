@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using CustomerPortal.Web.Entities;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -12,10 +13,10 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-        public AppConfig(string name, string configDirectoryPath, string srcDirectoryPath, string commonDirectoryPath)
+        public AppConfig(string name, Company company, string srcDirectoryPath, string commonDirectoryPath)
         {
             Name = name;
-            ConfigDirectoryPath = configDirectoryPath;
+            Company = company;
             SrcDirectoryPath = srcDirectoryPath;
             CommonDirectoryPath = commonDirectoryPath;
             Init();
@@ -192,6 +193,7 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 if (_config == null)
                 {
+                    //TODO : The file seettings.json must be created from the company settings
                     using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "Settings.json"), FileMode.Open))
                     {
                         _config = JsonSerializer.DeserializeFromStream(typeof(AppConfigFile), file) as AppConfigFile;
@@ -209,7 +211,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string Name { get; private set; }
 
-        public string ConfigDirectoryPath { get; private set; }
+        public Company Company { get; private set; }
 
         public string SrcDirectoryPath { get; private set; }
 
@@ -217,6 +219,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public void Apply ()
 		{
+            //Todo :  Here we need to create a temporary folder and get all the assest from the server using the new api to get the files
 			var errorsList = new List<string> ();
 			foreach (var config in _configs) {
 				try {
