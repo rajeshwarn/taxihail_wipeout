@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 
         public string CurrencyCode { get; set; }
 
+        public string CustomerReferenceNumber { get; set; }
+
         public LevelThreeData L3Data { get; set; }
 
         public string MerchantToken { get; set; }

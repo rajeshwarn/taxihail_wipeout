@@ -71,11 +71,9 @@ namespace apcurium.MK.Booking.Api.Services
                         CardOnFileToken = preAuthorizeRequest.CardToken,
                         TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
                         CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                        L3Data = new LevelThreeData()
-                            {
-                                PurchaseOrderNumber = orderDetail.IBSOrderId.ToString()
-                            },
+                        CustomerReferenceNumber =  orderDetail.IBSOrderId.ToString(),
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+
 
                     };
                 var response = Client.Post(request);
