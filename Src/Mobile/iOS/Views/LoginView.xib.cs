@@ -29,7 +29,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>
+    public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
     {
 
         #region Constructors
@@ -51,14 +51,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
-            
+
         }
 
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
-            NavigationController.NavigationBar.Hidden = true;
         }
+
+        #region INavigationView implementation
+
+        public bool HideNavigationBar {
+            get { return true;}
+        }
+
+        #endregion
 
         public override void ViewDidAppear (bool animated)
         {
@@ -164,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             };
             popup.Show ();
         }
-
+       
         private void LoadBackgroundNavBar (UINavigationBar bar)
         {
             bar.TintColor = AppStyle.NavigationBarColor;  
@@ -175,6 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             } catch {
             }
         }       
+
         #endregion
     }
 }

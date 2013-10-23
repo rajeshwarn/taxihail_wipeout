@@ -46,7 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
-
         }
 
         public IFacebookService FacebookService { get { return _facebookService; } }
@@ -59,8 +58,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Password = "password";			
 
 #endif
-
-
         }
 
         private async void CheckVersion()
@@ -145,8 +142,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             try
                             {
-                                RequestNavigate<BookViewModel>(true);
-                                RequestMainThreadAction( () => RequestClose(this));
+                                LoginSucess();
                             }
                             finally
                             {
@@ -230,7 +226,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (account != null)
                         {
-                            RequestNavigate<BookViewModel>(true);
+                            LoginSucess();
                         }
                     }
                     catch
@@ -313,13 +309,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         DoSignUp(data);
                     }
                     else
-                    {
+                    {                                
                         Task.Factory.SafeStartNew(() =>
                                                   {
                             try
                             {
-                                RequestNavigate<BookViewModel>(true);
-                                RequestMainThreadAction( () => RequestClose(this));
+                                LoginSucess();
                             }
                             finally
                             {
@@ -364,8 +359,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                   {
                             try
                             {
-                                RequestNavigate<BookViewModel>(true);
-                                RequestMainThreadAction( () => RequestClose(this));
+                                LoginSucess();
                             }
                             finally
                             {
@@ -395,6 +389,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
             TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+        }
+
+        private void LoginSucess()
+        {
+            _applicationInfoService = null;     
+            _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
+            _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
+
+            RequestNavigate<BookViewModel>(true);
+
         }
     }
 }
