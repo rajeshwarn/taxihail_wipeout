@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var bindings = new [] {
                 Tuple.Create<object,string>(txtName, "{'Text':{'Path':'Order.Settings.Name'}}"),
-                Tuple.Create<object,string>(txtPhone, "{'Text':{'Path':'Order.Settings.Name'}}"),
+                Tuple.Create<object,string>(txtPhone, "{'Text':{'Path':'Order.Settings.Phone'}}"),
                 Tuple.Create<object,string>(txtNbPassengers, "{'Text':{'Path':'Order.Settings.Passengers'}}"),
                 Tuple.Create<object,string>(txtLargeBags, "{'Text':{'Path':'Order.Settings.LargeBags'}}"),
                 Tuple.Create<object,string>(txtAprtment, "{'Text':{'Path':'Order.PickupAddress.Apartment'}}"),
