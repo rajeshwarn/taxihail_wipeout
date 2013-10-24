@@ -120,6 +120,8 @@
     <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
+    <Compile Include="Enumeration\PaymentProvider.cs" />
+    <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />

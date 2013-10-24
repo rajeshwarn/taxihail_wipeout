@@ -37,9 +37,9 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var dto = context.Find<CreditCardPaymentDetail>(_paymentId);
+                var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
-                Assert.AreEqual(true, dto.IsCaptured);
+                Assert.AreEqual(true, dto.IsCompleted);
             }
         }
     }

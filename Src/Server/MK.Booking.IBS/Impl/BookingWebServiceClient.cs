@@ -55,12 +55,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public void ConfirmExternalPayment(int orderId, decimal amount, string transactionId)
+        public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider, string transactionId, string authorizationCode)
         {
             int result = 0;
             UseService(service =>
             {
-                result = service.SaveExtrPayment(UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount), transactionId);
+             //   string param = string.Format(@"{{""authorizationCode"":""{0}"",""transactionId"":""{1}"",""type"":""{2}"",""provider"":""{3}""}}", transactionId, authorizationCode, type, provider);
+
+                result = service.SaveExtrPayment(UserNameApp, PasswordApp, orderId, Convert.ToDouble(amount), authorizationCode);
             });
 
             if (result != 1) throw new Exception("SaveExtrPayment failed");

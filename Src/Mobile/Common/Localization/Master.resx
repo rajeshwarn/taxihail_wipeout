@@ -1292,7 +1292,7 @@
     <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
-    <value>The Client has payed {0}</value>
+    <value>The passenger has paid {0} (auth : {1})</value>
   </data>
   <data name="CmtTransactionErrorMessage" xml:space="preserve">
     <value>Resend confirmation</value>

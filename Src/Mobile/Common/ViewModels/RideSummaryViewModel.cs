@@ -124,7 +124,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     MessageService.ShowMessage( "Confirmation",
                         Resources.GetString("ConfirmationOfPaymentSent"));
 
-                    VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
+
+                    PaymentService.ResendConfirmationToDriver( Order.Id );
+
                 });
             }
         }

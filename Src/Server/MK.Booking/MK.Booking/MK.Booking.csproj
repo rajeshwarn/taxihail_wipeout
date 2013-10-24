@@ -155,17 +155,14 @@
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
-    <Compile Include="ReadModel\CreditCardPaymentDetail.cs" />
-    <Compile Include="ReadModel\PayPalExpressCheckoutPaymentDetail.cs" />
+    <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\Query\ConfigurationDao.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
-    <Compile Include="ReadModel\Query\Contract\ICreditCardPaymentDao.cs" />
-    <Compile Include="ReadModel\Query\Contract\IPayPalExpressCheckoutPaymentDao.cs" />
-    <Compile Include="ReadModel\Query\CreditCardPaymentDao.cs" />
-    <Compile Include="ReadModel\Query\PayPalExpressCheckoutPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
@@ -267,6 +264,7 @@
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Thriev.resx">
       <Generator>ResXFileCodeGenerator</Generator>

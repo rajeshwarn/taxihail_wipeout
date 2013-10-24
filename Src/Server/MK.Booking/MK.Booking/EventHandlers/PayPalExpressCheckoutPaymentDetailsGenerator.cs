@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -23,12 +24,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var detail = new PayPalExpressCheckoutPaymentDetail
+                var detail = new OrderPaymentDetail()
                                  {
                                      PaymentId = @event.SourceId,
                                      Amount = @event.Amount,
                                      OrderId = @event.OrderId,
-                                     Token = @event.Token,
+                                     PayPalToken =  @event.Token,
+                                     Provider = PaymentProvider.PayPal,
+                                     Type = PaymentType.PayPal
                                  };
                 context.Save(detail);
             }
@@ -38,8 +41,8 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var detail = context.Set<PayPalExpressCheckoutPaymentDetail>().Find(@event.SourceId);
-                if (detail == null)
+                var detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                if ((detail == null) || (detail.Type != PaymentType.PayPal))
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
@@ -52,14 +55,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var detail = context.Set<PayPalExpressCheckoutPaymentDetail>().Find(@event.SourceId);
-                if (detail == null)
+                var detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                if ((detail == null) || (detail.Type != PaymentType.PayPal))
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
                 detail.IsCompleted = true;
                 detail.PayPalPayerId = @event.PayPalPayerId;
-                
+                detail.AuthorizationCode = @event.PayPalPayerId;
                 detail.TransactionId = @event.TransactionId;
                 context.SaveChanges();
             }

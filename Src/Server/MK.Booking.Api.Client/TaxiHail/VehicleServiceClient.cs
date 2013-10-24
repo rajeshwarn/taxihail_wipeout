@@ -25,20 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-
-		public bool SendMessageToDriver (string carNumber, string message)
-		{
-			return SendMessage(carNumber, message).Success;
-		}
-
-	    public SendMessageToDriverResponse SendMessage(string carNumber, string message)
-        {
-			var result = Client.Post(new SendMessageToDriverRequest(){
-				Message = message,
-				CarNumber = carNumber
-			});
-            return result;
-        }
+        		
 
         public Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
         {

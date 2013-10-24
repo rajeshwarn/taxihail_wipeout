@@ -95,6 +95,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
+        public void ResendConfirmationToDriver(Guid orderId)
+        {
+            GetClient().ResendConfirmationToDriver(orderId);
+        }
+
+
 
         public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {

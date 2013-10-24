@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Net;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -18,18 +19,18 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Diagnostic;
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class CmtPaymentService : Service
     {
         readonly ICommandBus _commandBus;
-        readonly ICreditCardPaymentDao _dao;
+        readonly IOrderPaymentDao  _dao;
         readonly IOrderDao _orderDao;
         readonly ILogger _logger;
         readonly IConfigurationManager _configurationManager;
         private CmtPaymentServiceClient Client;
 
-        public CmtPaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager, ILogger logger)
+        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager, ILogger logger)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -84,10 +85,11 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(new InitiateCreditCardPayment
                         {
                             PaymentId = Guid.NewGuid(),
-                            TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
-                            Amount = request.Amount,
+                            TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),                            
+                            Amount = Convert.ToDecimal( preAuthorizeRequest.Amount ),
                             OrderId = preAuthorizeRequest.OrderId,
-                            CardToken = preAuthorizeRequest.CardToken
+                            CardToken = preAuthorizeRequest.CardToken,
+                            Provider = PaymentProvider.CMT,
                         });
                 }
 
@@ -95,7 +97,8 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         IsSuccessfull = isSuccessful,
                         Message = response.ResponseMessage,
-                        TransactionId = response.TransactionId + "",
+                        TransactionId = response.TransactionId.ToString(),
+
                     };
             }
             catch (Exception e)
@@ -122,6 +125,7 @@ namespace apcurium.MK.Booking.Api.Services
                         TransactionId = request.TransactionId.ToLong(),
                     });
 
+                
                 var isSuccessful = response.ResponseCode == 1;
 
                 if (isSuccessful)
@@ -129,6 +133,8 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(new CaptureCreditCardPayment
                         {
                             PaymentId = payment.PaymentId,
+                            AuthorizationCode = response.AuthorizationCode,
+                            Provider = PaymentProvider.CMT,
                         });
                 }
                 return new CommitPreauthorizedPaymentResponse()

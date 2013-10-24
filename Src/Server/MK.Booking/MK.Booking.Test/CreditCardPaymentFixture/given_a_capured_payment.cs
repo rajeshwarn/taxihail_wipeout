@@ -18,12 +18,14 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
         private EventSourcingTestHelper<CreditCardPayment> sut;
         private Guid _orderId;
         private Guid _paymentId;
+        private string _authCode;
 
         [SetUp]
         public void Setup()
         {
             _orderId = Guid.NewGuid();
             _paymentId = Guid.NewGuid();
+            _authCode = "123456";
 
             sut = new EventSourcingTestHelper<CreditCardPayment>();
             sut.Setup(new CreditCardPaymentCommandHandler(this.sut.Repository));
@@ -31,7 +33,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 SourceId = _paymentId,
                 OrderId = _orderId,
-                TransactionId = "the transaction",
+                TransactionId = "the transaction",                
                 Amount = 12.34m
             });
             sut.Given(new CreditCardPaymentCaptured() { SourceId = _paymentId });
@@ -43,6 +45,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.Throws<InvalidOperationException>(() => sut.When(new CaptureCreditCardPayment
             {
                 PaymentId = _paymentId,
+                AuthorizationCode = _authCode,
             }));
 
         }

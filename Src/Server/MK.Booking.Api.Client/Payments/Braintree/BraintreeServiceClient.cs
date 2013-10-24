@@ -1,6 +1,7 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using BraintreeEncryption.Library;
 
@@ -58,6 +59,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 {
                     TransactionId = transactionId,
                 });
+        }
+
+        public void ResendConfirmationToDriver(Guid orderId)
+        {
+            Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
     }
 }

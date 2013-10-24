@@ -59,7 +59,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached == null)
             {
                 var referenceData = GetReferenceDataAsync();
-                Task.WaitAll(referenceData);
+                referenceData.Start();
+//                if (!referenceData.IsCompleted)
+//                {
+//                    Task.WaitAll(referenceData);
+//                }
                 return referenceData.Result;
             }
             return cached;

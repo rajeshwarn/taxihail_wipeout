@@ -1,9 +1,11 @@
 ﻿using System;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
 {
+    [Authenticate]
     [Route("/payments/cmt/preAuthorizePayment", "POST")]
     public class PreAuthorizePaymentCmtRequest : IReturn<PreAuthorizePaymentResponse>
     {

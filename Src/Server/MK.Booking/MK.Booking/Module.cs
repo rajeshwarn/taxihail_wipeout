@@ -44,8 +44,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IRatingTypeDao>(new RatingTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPayPalExpressCheckoutPaymentDao>(new PayPalExpressCheckoutPaymentDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<ICreditCardPaymentDao>(new CreditCardPaymentDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IOrderPaymentDao>(new OrderPaymentDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IConfigurationDao>(new ConfigurationDao(() => container.Resolve<ConfigurationDbContext>()));
             
 

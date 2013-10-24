@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -25,18 +26,22 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Amount = 34.56m,
                 TransactionId = "the transaction",
                 OrderId = orderId,
-                CardToken = t
+                CardToken = t,
+                Provider = PaymentProvider.Braintree
+
             });
 
             using (var context = new BookingDbContext(dbName))
             {
-                var dto = context.Find<CreditCardPaymentDetail>(paymentId);
+                var dto = context.Find<OrderPaymentDetail>(paymentId);
                 Assert.NotNull(dto);
                 Assert.AreEqual(orderId, dto.OrderId);
                 Assert.AreEqual(34.56m, dto.Amount);
                 Assert.AreEqual("the transaction", dto.TransactionId);
-                Assert.AreEqual(false, dto.IsCaptured);
+                Assert.AreEqual(false, dto.IsCompleted);
                 Assert.AreEqual(t, dto.CardToken);
+                Assert.AreEqual(PaymentProvider.Braintree, dto.Provider);
+                Assert.AreEqual(PaymentType.CreditCard, dto.Type);
             }
         }
     }

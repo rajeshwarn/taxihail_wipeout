@@ -66,17 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\CmtJsonServiceClient.cs" />
-    <Compile Include="Cmt\CmtAccountServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthCredentials.cs" />
     <Compile Include="Cmt\CmtAuthResponse.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
-    <Compile Include="Cmt\CmtLinkServiceClient.cs" />
-    <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
-    <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
@@ -110,6 +106,7 @@
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
+    <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -143,4 +140,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Payments\Braintree\" />
+  </ItemGroup>
 </Project>

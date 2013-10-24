@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -44,15 +45,16 @@ namespace apcurium.MK.Booking.Test.Integration
                 Amount = 12.34m,
                 Token = "the token",
                 OrderId = orderId,
+                
             });
 
             using (var context = new BookingDbContext(dbName))
             {
-                var dto = context.Find<PayPalExpressCheckoutPaymentDetail>(paymentId);
+                var dto = context.Find<OrderPaymentDetail>(paymentId);
                 Assert.NotNull(dto);
                 Assert.AreEqual(orderId, dto.OrderId);
                 Assert.AreEqual(12.34m, dto.Amount);
-                Assert.AreEqual("the token", dto.Token);
+                Assert.AreEqual("the token", dto.PayPalToken);
                 Assert.AreEqual(false, dto.IsCancelled);
                 Assert.AreEqual(false, dto.IsCompleted);
             }
@@ -87,10 +89,12 @@ namespace apcurium.MK.Booking.Test.Integration
 
             using (var context = new BookingDbContext(dbName))
             {
-                var dto = context.Find<PayPalExpressCheckoutPaymentDetail>(_paymentId);
+                var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
                 Assert.AreEqual(true, dto.IsCancelled);
                 Assert.AreEqual(false, dto.IsCompleted);
+                Assert.AreEqual(PaymentType.PayPal, dto.Type);
+                Assert.AreEqual(PaymentProvider.PayPal, dto.Provider);
             }
         }
 
@@ -106,12 +110,14 @@ namespace apcurium.MK.Booking.Test.Integration
 
             using (var context = new BookingDbContext(dbName))
             {
-                var dto = context.Find<PayPalExpressCheckoutPaymentDetail>(_paymentId);
+                var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
                 Assert.AreEqual(false, dto.IsCancelled);
                 Assert.AreEqual(true, dto.IsCompleted);
                 Assert.AreEqual("thepayer", dto.PayPalPayerId);
                 Assert.AreEqual("thetransaction", dto.TransactionId);
+                Assert.AreEqual(PaymentType.PayPal, dto.Type);
+                Assert.AreEqual(PaymentProvider.PayPal, dto.Provider);
             }
         }
     }

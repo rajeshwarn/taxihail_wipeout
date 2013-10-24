@@ -26,6 +26,13 @@ namespace apcurium.CMT.Web.Tests
             base.TestFixtureTearDown();
         }
 
+        [SetUp]
+        public override void Setup()
+        {
+
+            base.Setup();
+            CreateAndAuthenticateTestAccount();            
+        }
         protected BasePaymentClientFixture(TestCreditCards.TestCreditCardSetting settings)
         {
             TestCreditCards = new TestCreditCards(settings);
@@ -147,5 +154,45 @@ namespace apcurium.CMT.Web.Tests
 
             Assert.True(response.IsSuccessfull, response.Message);
         }
+
+
+        [Test]
+        public void when_authorized_a_credit_card_payment_and_resending_confirmation()
+        {
+            var orderId = Guid.NewGuid();
+            using (var context = ContextFactory.Invoke())
+            {
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    IBSOrderId = 1234,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = DateTime.Now
+                });
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    VehicleNumber = "vehicle",
+                    PickupDate = DateTime.Now,
+                });
+                context.SaveChanges();
+            }
+
+            var client = GetPaymentClient();
+
+            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
+
+            const double amount = 1.50;
+            var authorization = client.PreAuthorize(token, amount, orderId);
+
+            Assert.True(authorization.IsSuccessfull, authorization.Message);
+
+            var response = client.CommitPreAuthorized(authorization.TransactionId);
+
+            Assert.True(response.IsSuccessfull, response.Message);
+
+            client.ResendConfirmationToDriver(orderId);
+        }
+
     }
 }

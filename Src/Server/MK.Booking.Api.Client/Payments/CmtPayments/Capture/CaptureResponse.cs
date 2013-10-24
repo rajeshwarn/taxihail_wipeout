@@ -12,6 +12,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture
         [XmlElement("transactionId")]
         public long TransactionId { get; set; }
 
+        [XmlElement("authorizationCode")]
+        public string AuthorizationCode { get; set; }
+        
+
         [XmlElement("captureDate")]
         public string CaptureDate { get; set; }
 

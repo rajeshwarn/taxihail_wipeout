@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             Assert.AreEqual("the token", @event.Token);
             Assert.AreEqual(12.34m, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);
+            
 
         }
     }

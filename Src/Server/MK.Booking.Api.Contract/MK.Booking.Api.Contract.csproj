@@ -83,6 +83,7 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
+    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
-    <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfigurationResetRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
@@ -151,14 +151,6 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
-    <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
-    <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogChoice.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogFeature.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogMapItem.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogMessage.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />

@@ -43,9 +43,8 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<PopularAddressDetails>().ToTable("PopularAddressDetails", SchemaName);
             modelBuilder.Entity<OrderRatingDetails>().ToTable("OrderRatingDetails", SchemaName);
             modelBuilder.Entity<RatingScoreDetails>().ToTable("RatingScoreDetails", SchemaName);
-            modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);
-            modelBuilder.Entity<PayPalExpressCheckoutPaymentDetail>().ToTable("PayPalExpressCheckoutPaymentDetail", SchemaName);
-            modelBuilder.Entity<CreditCardPaymentDetail>().ToTable("CreditCardPaymentDetail", SchemaName);
+            modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);            
+            modelBuilder.Entity<OrderPaymentDetail>().ToTable("OrderPaymentDetail", SchemaName);
 
 
         }

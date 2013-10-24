@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Braintree;
 using BraintreeEncryption.Library;
 using Infrastructure.Messaging;
@@ -18,16 +20,16 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Commands;
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class BraintreePaymentService : Service
     {
         readonly ICommandBus _commandBus;
-        readonly ICreditCardPaymentDao _dao;
+        readonly IOrderPaymentDao _dao;
         readonly IOrderDao _orderDao;
         readonly IConfigurationManager _configurationManager;
 
-        public BraintreePaymentService(ICommandBus commandBus, ICreditCardPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
+        public BraintreePaymentService(ICommandBus commandBus, IOrderPaymentDao dao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -156,7 +158,8 @@ namespace apcurium.MK.Booking.Api.Services
                             Amount = preAuthorizeRequest.Amount,
                             TransactionId = result.Target.Id,
                             OrderId = preAuthorizeRequest.OrderId,
-                            CardToken = preAuthorizeRequest.CardToken
+                            CardToken = preAuthorizeRequest.CardToken,
+                            Provider = PaymentProvider.Braintree,
                         });
                 }
 
@@ -190,19 +193,22 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var result = BraintreeGateway.Transaction.SubmitForSettlement(request.TransactionId);
 
-                var isSuccessful = result.IsSuccess();
+                var isSuccessful = result.IsSuccess() && (result.Target != null) && (result.Target.ProcessorAuthorizationCode.HasValue());
+
                 if (isSuccessful)
                 {
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
                         PaymentId = payment.PaymentId,
+                        AuthorizationCode = result.Target.ProcessorAuthorizationCode,
+                        Provider = PaymentProvider.Braintree,
                     });
                 }
 
                 return new CommitPreauthorizedPaymentResponse()
                 {
                     IsSuccessfull = isSuccessful,
-                    Message = "Success"
+                    Message = "Success"                    
                 };
             }
             catch (Exception e)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -19,26 +21,23 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
-        private readonly ICreditCardPaymentDao _cardPaymentDao;
-        private readonly IAccountDao _accountDao;
-        private readonly IPayPalExpressCheckoutPaymentDao _palExpressCheckoutPaymentDao;
+        private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IAccountDao _accountDao;        
         private readonly ICreditCardDao _creditCardDao;
 
         public SendReceiptService(
             ICommandBus commandBus, 
             IBookingWebServiceClient bookingWebServiceClient, 
             IOrderDao orderDao,
-            ICreditCardPaymentDao cardPaymentDao,
-            IPayPalExpressCheckoutPaymentDao palExpressCheckoutPaymentDao,
+            IOrderPaymentDao orderPaymentDao,            
             ICreditCardDao creditCardDao,
             IAccountDao accountDao
             )
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
-            _cardPaymentDao = cardPaymentDao;
-            _accountDao = accountDao;
-            _palExpressCheckoutPaymentDao = palExpressCheckoutPaymentDao;
+            _orderPaymentDao = orderPaymentDao;
+            _accountDao = accountDao;            
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
@@ -88,30 +87,25 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
 #warning Copy and paste
-            var creditCardPayment = _cardPaymentDao.FindByOrderId(request.OrderId);
-            if (creditCardPayment != null)
+            var orderPayement = _orderPaymentDao.FindByOrderId(request.OrderId );
+            if (orderPayement != null)
             {
                 command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
-                    creditCardPayment.Amount,
-                    creditCardPayment.TransactionId,
-                    "Credit Card");
+                    orderPayement.Amount,
+                    orderPayement.TransactionId,
+                    orderPayement.Type == PaymentType.CreditCard ? "Credit Card" : orderPayement.Type.ToString());
 
-                var creditCard = _creditCardDao.FindByToken(creditCardPayment.CardToken);
-                if (creditCard != null)
+                if (orderPayement.CardToken.HasValue())
                 {
-                    command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                    command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                    command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                    var creditCard = _creditCardDao.FindByToken(orderPayement.CardToken);
+                    if (creditCard != null)
+                    {
+                        command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                        command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                        command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                    }
                 }
-            }
 
-            var paypalPayment = _palExpressCheckoutPaymentDao.FindByOrderId(request.OrderId);
-            if (paypalPayment != null)
-            {
-                command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
-                          paypalPayment.Amount,
-                           paypalPayment.TransactionId,
-                          "PayPal");
             }
 
 

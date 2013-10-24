@@ -12,9 +12,9 @@ namespace apcurium.MK.Booking.Api.Payment
             _client = client;
         }
 
-        public void ConfirmExternalPayment(int orderId, decimal amount, string transactionId)
+        public void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider, string transactionId, string authorizationCode)
         {
-            _client.ConfirmExternalPayment(orderId, amount, transactionId);
+            _client.ConfirmExternalPayment(orderId, amount,type, provider , transactionId, authorizationCode);
         }
 
         public void SendMessageToDriver(string message, string vehicleNumber)

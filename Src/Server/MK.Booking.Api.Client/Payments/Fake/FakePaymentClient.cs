@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Api.Client
@@ -49,6 +50,11 @@ namespace apcurium.MK.Booking.Api.Client
                     IsSuccessfull = true,
                     Message = "Success"
                 };
+        }
+
+        public void ResendConfirmationToDriver(Guid orderId)
+        {
+            //Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
     }
 }

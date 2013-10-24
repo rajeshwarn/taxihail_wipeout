@@ -121,6 +121,7 @@
     <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\Payment\ResendPaymentConfirmationSevice.cs" />
     <Compile Include="Services\Payment\BraintreePaymentService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />

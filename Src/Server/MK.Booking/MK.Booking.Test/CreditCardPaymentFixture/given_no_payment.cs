@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -39,7 +40,8 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 TransactionId = transactionId,
                 Amount = amount,
                 OrderId = orderId,
-                CardToken = token
+                CardToken = token,
+                Provider = PaymentProvider.CMT
             });
 
             var @event = sut.ThenHasSingle<CreditCardPaymentInitiated>();

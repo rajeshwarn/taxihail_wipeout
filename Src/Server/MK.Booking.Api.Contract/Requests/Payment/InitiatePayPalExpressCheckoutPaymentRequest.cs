@@ -1,8 +1,10 @@
 using System;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
+       [Authenticate]
     [Route("/payment/paypal", "POST")]
     public class InitiatePayPalExpressCheckoutPaymentRequest : IReturn<PayPalExpressCheckoutPaymentResponse>
     {

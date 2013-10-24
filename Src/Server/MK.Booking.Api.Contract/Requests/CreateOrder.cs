@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
          
         public PaymentSettings Payment { get; set; }
 
-        public RideEstimate Estimate { get; set; }
+        public RideEstimate Estimate { get; set; }                
 
         public class RideEstimate
         {

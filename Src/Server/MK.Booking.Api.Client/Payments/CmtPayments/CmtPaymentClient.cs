@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
@@ -98,6 +99,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
         }
 
+        public void ResendConfirmationToDriver(Guid orderId)
+        {
+            Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
+        }
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 
@@ -9,6 +10,7 @@ namespace apcurium.MK.Booking.Domain
     {
         private Guid _orderId;
         private string _transactionId;
+        private string _authorizationCode;        
         private decimal _amount;
         private bool _isCaptured;
 
@@ -25,7 +27,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, string cardToken)
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, string cardToken,PaymentProvider provider)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -35,11 +37,12 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = orderId,
                 TransactionId = transactionId,
                 Amount = amount,
-                CardToken = cardToken
+                CardToken = cardToken,
+                Provider = provider, 
             });
         }
 
-        public void Capture()
+        public void Capture( PaymentProvider provider, string authorizationCode)
         {
             if (_isCaptured)
             {
@@ -50,7 +53,10 @@ namespace apcurium.MK.Booking.Domain
             {
                 OrderId = _orderId,
                 TransactionId = _transactionId,
-                Amount = _amount
+                AuthorizationCode = authorizationCode,
+                Amount = _amount,
+                Provider = provider
+                
             });
         }
 
@@ -60,11 +66,13 @@ namespace apcurium.MK.Booking.Domain
             _orderId = obj.OrderId;
             _transactionId = obj.TransactionId;
             _amount = obj.Amount;
+            
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
         {
             _isCaptured = true;
+            _authorizationCode = obj.AuthorizationCode;
         }
     }
 }

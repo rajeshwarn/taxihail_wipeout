@@ -171,4 +171,7 @@
   <data name="PushNotification_wosTIMEOUT" xml:space="preserve">
     <value>Sorry no cars are available due to high demand, please try later.</value>
   </data>
+  <data name="PaymentConfirmationToDriver" xml:space="preserve">
+    <value>The passenger has paid {0:c} (Auth #{1})</value>
+  </data>
 </root>

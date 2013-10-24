@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public class PayPalService : Service
     {
         private readonly ICommandBus _commandBus;
-        private readonly IPayPalExpressCheckoutPaymentDao _dao;
+        private readonly IOrderPaymentDao _dao;
         private readonly ExpressCheckoutServiceFactory _factory;
         private readonly IConfigurationManager _configurationManager;
 
-        public PayPalService(ICommandBus commandBus, IPayPalExpressCheckoutPaymentDao dao,
+        public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
                              ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public HttpResult Get(CancelPayPalExpressCheckoutPaymentRequest request)
         {
-            var payment = _dao.FindByToken(request.Token);
+            var payment = _dao.FindByPayPalToken(request.Token);
             if (payment == null)
             {
                 throw new HttpError(HttpStatusCode.NotFound, "Not Found");
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public HttpResult Get(CompletePayPalExpressCheckoutPaymentRequest request)
         {
-            var payment = _dao.FindByToken(request.Token);
+            var payment = _dao.FindByPayPalToken(request.Token);
             if (payment == null)
             {
                 throw new HttpError(HttpStatusCode.NotFound, "Not Found");
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                   ? payPalSettings.SandboxCredentials
                                   : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
-            var transactionId = service.DoExpressCheckoutPayment(payment.Token, request.PayerId, payment.Amount);
+            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
 
             
             _commandBus.Send(new CompletePayPalExpressCheckoutPayment

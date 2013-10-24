@@ -78,7 +78,6 @@
     <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
-    <Compile Include="Requests\Payment\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
@@ -101,14 +100,6 @@
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
-    <Compile Include="Resources\Payments\Cmt\CmtResponse.cs" />
-    <Compile Include="Resources\Payments\Cmt\LinkData.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogActionType.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogChoice.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogFeature.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogMapItem.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogMessage.cs" />
-    <Compile Include="Resources\Payments\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
     <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
@@ -124,6 +115,7 @@
     <Compile Include="Requests\Messages\SendMessageToDriverResponse.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
+    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -145,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\Payments\Braintree\" />
+    <Folder Include="Resources\Payments\Cmt\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

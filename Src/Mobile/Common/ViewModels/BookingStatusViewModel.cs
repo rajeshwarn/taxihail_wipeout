@@ -510,8 +510,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                    {
                     if( PaymentService.GetPaymentFromCache(Order.Id).HasValue )
                     {
-                        var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value ); 
-                        VehicleClient.SendMessageToDriver(OrderStatusDetail.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
+                        PaymentService.ResendConfirmationToDriver( Order.Id );
                     }
                 });
             }

@@ -1,9 +1,11 @@
 ﻿using System;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Braintree
 {
+    [Authenticate]
     [Route("/payments/braintree/preAuthorizePayment", "POST")]
     public class PreAuthorizePaymentBraintreeRequest : IReturn<PreAuthorizePaymentResponse>
     {

@@ -113,19 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set;
         }
 
-		public bool ConfirmPaymentForDriver(){
-			
-			try
-			{
-				var formattedAmount = CultureProvider.FormatCurrency(Amount); 
-				return VehicleClient.SendMessageToDriver(OrderStatus.VehicleNumber, Str.GetPaymentConfirmationMessageToDriver(formattedAmount));
-			}
-			catch(Exception){
-			}
-			
-			return false;
-		}
-
+ 
 
 
         public IMvxCommand ConfirmOrderCommand

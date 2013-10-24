@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using apcurium.MK.Booking.Resources;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using MK.Booking.PayPal;
 using apcurium.MK.Booking.Events;
@@ -28,34 +30,32 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
             // Send message to driver
-            var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
-            if (orderStatusDetail == null) throw new InvalidOperationException("Order Status not found");
-
-            _ibs.SendMessageToDriver("The passenger has paid " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
-
-            // Confirm to IBS that order was payed
-            var orderDetail = _dao.FindById(@event.OrderId);
-            if (orderDetail == null) throw new InvalidOperationException("Order not found");
-            if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
-
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, @event.TransactionId);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, PaymentType.PayPal.ToString(), PaymentProvider.PayPal.ToString(), @event.TransactionId, @event.PayPalPayerId);
 
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, PaymentType.CreditCard.ToString(), @event.Provider.ToString(),  @event.TransactionId, @event.AuthorizationCode);
+        }
+
+        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount,  string type, string provider, string transactionId, string authorizationCode)
+        {
             // Send message to driver
-            var orderStatusDetail = _dao.FindOrderStatusById(@event.OrderId);
+            var orderStatusDetail = _dao.FindOrderStatusById(orderId);
             if (orderStatusDetail == null) throw new InvalidOperationException("Order Status not found");
 
-            _ibs.SendMessageToDriver("The passenger has paid " + @event.Amount.ToString("C"), orderStatusDetail.VehicleNumber);
+            var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            var resources = new DynamicResources(applicationKey);
+
+            _ibs.SendMessageToDriver( string.Format( resources.GetString( "PaymentConfirmationToDriver"), amount, transactionId ), orderStatusDetail.VehicleNumber);
 
             // Confirm to IBS that order was payed
-            var orderDetail = _dao.FindById(@event.OrderId);
+            var orderDetail = _dao.FindById(orderId);
             if (orderDetail == null) throw new InvalidOperationException("Order not found");
             if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
 
-            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, @event.Amount, @event.TransactionId);
+            _ibs.ConfirmExternalPayment(orderDetail.IBSOrderId.Value, amount, type, provider , transactionId, authorizationCode);
         }
     }
 }
