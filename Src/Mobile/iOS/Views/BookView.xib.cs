@@ -119,11 +119,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 'Dropoff':{'Path':'Dropoff.Model'},
 'MapMoved':{'Path':'SelectedAddress.SearchCommand'},
 'MapCenter':{'Path':'MapCenter'},
-'AvailableVehicles': {'Path': 'AvailableVehicles'},
+'AvailableVehicles': {'Path': 'AvailableVehicles', 'Mode':'OneWayToSource'},
 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}
 }" },
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}, 'Hidden':{'Path':'ShowEstimate', 'Converter':'BoolInverter'}}" },              
-                { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
+                { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
                 { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
                 { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookNow'}}" }                  
             });

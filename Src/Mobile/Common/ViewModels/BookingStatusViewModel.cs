@@ -504,7 +504,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ResendConfirmationToDriver {
+       public IMvxCommand ResendConfirmationToDriver {
             get {
                 return GetCommand (() =>
                                    {

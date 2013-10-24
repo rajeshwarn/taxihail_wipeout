@@ -617,7 +617,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             while(!subscription.IsDisposed);
         }
 
+        protected override bool CanClose()
+        {
+            return base.CanClose();
+        }
 
+        protected override void Close()
+        {
+            base.Close();
+        }
 
        
 

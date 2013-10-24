@@ -135,8 +135,10 @@ namespace SocialNetworks.Services.MonoTouch
         #region FBSessionDelegate overrides
         public override void DidLogin ()
         {
-            SaveAuthorization ();
-			ConnectionStatusChanged(this, new FacebookStatus(true));
+			if( facebookClient.IsSessionValid )
+            	SaveAuthorization ();
+
+			ConnectionStatusChanged(this, new FacebookStatus(facebookClient.IsSessionValid));
         }
         public override void DidLogout ()
         {
@@ -161,9 +163,7 @@ namespace SocialNetworks.Services.MonoTouch
             defaults [FBAccessTokenKey] = new NSString (facebookClient.AccessToken);
             defaults [FBExpirationDateKey] = facebookClient.ExpirationDate;
             defaults.Synchronize ();
-        }
-
-         
+		}
 
         private void ClearAuthorization ()
         {
@@ -171,8 +171,7 @@ namespace SocialNetworks.Services.MonoTouch
             defaults.RemoveObject (FBAccessTokenKey);
             defaults.RemoveObject (FBExpirationDateKey);
             defaults.Synchronize ();
-        } 
-
+		}
         
         public bool HandleOpenURL (UIApplication application, NSUrl url)
         {
