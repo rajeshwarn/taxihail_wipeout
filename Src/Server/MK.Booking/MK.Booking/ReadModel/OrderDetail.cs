@@ -52,5 +52,7 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsRated { get; set; }
 
         public double? EstimatedFare { get; set; }
+
+        public string UserAgent  { get; set; }
     }
 }

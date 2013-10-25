@@ -6,8 +6,8 @@ namespace MK.Booking.Api.Client.TaxiHail
 {
     public class PayPalServiceClient: BaseServiceClient
     {
-        public PayPalServiceClient (string url, string sessionId)
-            :base(url, sessionId)
+        public PayPalServiceClient (string url, string sessionId, string userAgent)
+            :base(url, sessionId,userAgent)
         {
             
         }

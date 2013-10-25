@@ -31,7 +31,9 @@ namespace apcurium.MK.Booking.Commands
         public PaymentInformation Payment { get; set; }
 
         public double? EstimatedFare { get; set; }
-    
+        
+        public string UserAgent { get; set; }
+
         public class PaymentInformation
         {
             public bool PayWithCreditCard { get; set; }

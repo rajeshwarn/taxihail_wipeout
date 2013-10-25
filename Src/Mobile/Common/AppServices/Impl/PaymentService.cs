@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var settings = _configurationManager.GetPaymentSettings();
 
-            var braintreeServiceClient = new BraintreeServiceClient(_baseUrl,_sessionId,settings.BraintreeClientSettings.ClientKey);
-            var cmtServiceClient = new CmtPaymentClient(_baseUrl,_sessionId, settings.CmtPaymentSettings, _logger );
+            var braintreeServiceClient = new BraintreeServiceClient(_baseUrl,_sessionId,settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
+            var cmtServiceClient = new CmtPaymentClient(_baseUrl,_sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent );
 
             switch (settings.PaymentMode)
             {

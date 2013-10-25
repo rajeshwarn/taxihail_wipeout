@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CreateOrder command)
         {
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate, 
-                                    command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare);
+                                    command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare, command.UserAgent);
 
             if (command.Payment.PayWithCreditCard)
             {

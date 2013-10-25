@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
         
-        public BraintreeServiceClient(string url, string sessionId, string clientKey):base(url, sessionId)
+        public BraintreeServiceClient(string url, string sessionId, string clientKey, string userAgent):base(url, sessionId,userAgent)
         {
 			ClientKey =clientKey;
 

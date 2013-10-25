@@ -14,5 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         }
 
         string Version { get; }
+        string UserAgent { get; }
     }
 }

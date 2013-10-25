@@ -17,10 +17,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
 
         public CmtPaymentServiceClient(
-            CmtPaymentSettings cmtSettings, string sessionId)
+            CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
             : base(cmtSettings.IsSandbox
                     ? cmtSettings.SandboxBaseUrl
-                    : cmtSettings.BaseUrl, sessionId)            
+                    : cmtSettings.BaseUrl, sessionId,userAgent)            
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;

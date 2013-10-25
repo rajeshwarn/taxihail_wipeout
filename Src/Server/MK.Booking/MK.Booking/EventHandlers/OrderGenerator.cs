@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Status = (int)OrderStatus.Created,
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
+                    UserAgent = @event.UserAgent,
                 });
 
                 // Create an empty OrderStatusDetail row

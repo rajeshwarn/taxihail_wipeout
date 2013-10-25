@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             Log.Info( "Create order request : " + request.ToJson());
+
             
             var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), ()=>_staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude));
           
@@ -90,6 +91,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
+            command.UserAgent = base.Request.UserAgent;
             emailCommand.EmailAddress = account.Email;
 
             // Get Charge Type and Vehicle Type from reference data

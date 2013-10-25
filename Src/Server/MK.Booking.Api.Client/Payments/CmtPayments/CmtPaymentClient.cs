@@ -23,12 +23,13 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
         readonly ILogger _logger;
-
-		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings, ILogger logger)
-            : base(baseUrl,sessionId)
+        readonly string _userAgent;
+		public CmtPaymentClient(string baseUrl,string sessionId, CmtPaymentSettings cmtSettings, ILogger logger, string userAgent)
+            : base(baseUrl,sessionId, userAgent)
         {
             _logger = logger;
-            CmtClient = new CmtPaymentServiceClient(cmtSettings,null);
+            _userAgent = userAgent;
+            CmtClient = new CmtPaymentServiceClient(cmtSettings,null,userAgent);
 
         }
 
@@ -106,7 +107,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
         {
-            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,null);
+            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,null, "test");
             return Tokenize(cmtClient, number, date).IsSuccessfull;
         }
     }

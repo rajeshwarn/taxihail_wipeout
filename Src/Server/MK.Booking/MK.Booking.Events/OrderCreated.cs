@@ -26,5 +26,7 @@ namespace apcurium.MK.Booking.Events
         public BookingSettings Settings { get; set; }
 
         public double? EstimatedFare { get; set; }
+
+        public string UserAgent { get; set; }
     }
 }

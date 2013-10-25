@@ -12,8 +12,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-        public VehicleServiceClient(string url, string sessionId, ILogger logger)
-            : base(url, sessionId)
+        public VehicleServiceClient(string url, string sessionId, ILogger logger, string userAgent)
+            : base(url, sessionId,userAgent)
         {
             Logger = logger;
         }

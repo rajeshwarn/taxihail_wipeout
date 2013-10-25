@@ -7,8 +7,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class PushNotificationRegistrationServiceClient: BaseServiceClient
 	{
-		public PushNotificationRegistrationServiceClient(string url, string sessionId)
-			: base(url, sessionId)
+        public PushNotificationRegistrationServiceClient(string url, string sessionId, string userAgent)
+            : base(url, sessionId,userAgent)
 		{
 		}
 			

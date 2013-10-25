@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		readonly ILogger _logger;
         private static object lockObject = new object ();
 
-		public ConfigurationClientService (string url, string sessionId, ILogger logger)
-            : base(url, sessionId)
+        public ConfigurationClientService (string url, string sessionId, ILogger logger, string userAgent)
+            : base(url, sessionId, userAgent)
         {
 			this._logger = logger;
         }

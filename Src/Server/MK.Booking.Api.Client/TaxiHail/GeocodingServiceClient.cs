@@ -5,8 +5,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class GeocodingServiceClient : BaseServiceClient
     {
-        public GeocodingServiceClient(string url, string sessionId)
-            : base(url, sessionId)
+        public GeocodingServiceClient(string url, string sessionId, string userAgent)
+            : base(url, sessionId, userAgent)
         {
         }
 

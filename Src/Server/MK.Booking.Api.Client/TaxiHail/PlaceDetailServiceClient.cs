@@ -6,8 +6,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PlaceDetailServiceClient: BaseServiceClient
     {
-        public PlaceDetailServiceClient(string url, string sessionId)
-            : base(url, sessionId)
+        public PlaceDetailServiceClient(string url, string sessionId, string userAgent)
+            : base(url, sessionId,userAgent)
         {
         }
 
