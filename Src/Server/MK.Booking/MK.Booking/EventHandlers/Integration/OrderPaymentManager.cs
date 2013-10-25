@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var applicationKey = _configurationManager.GetSetting("TaxiHail.ApplicationKey");
             var resources = new DynamicResources(applicationKey);
 
-            _ibs.SendMessageToDriver( string.Format( resources.GetString( "PaymentConfirmationToDriver"), amount, transactionId ), orderStatusDetail.VehicleNumber);
+            _ibs.SendMessageToDriver( string.Format( resources.GetString( "PaymentConfirmationToDriver"), amount, authorizationCode ), orderStatusDetail.VehicleNumber);
 
             // Confirm to IBS that order was payed
             var orderDetail = _dao.FindById(orderId);

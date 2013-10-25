@@ -25,19 +25,19 @@ namespace apcurium.MK.Booking.ReadModel.Query
         }
 
 
-        public IList<RuleDetail> GetActiveDisableRule(bool isFutureBooking, string zone)
+        public IList<RuleDetail> GetActiveDisableRule(bool isFutureBooking)
         {
-            return GetActiveRule(isFutureBooking, zone, RuleCategory.DisableRule);
+            return GetActiveRule(isFutureBooking,  RuleCategory.DisableRule);
         }
 
 
 
-        public IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking, string zone)
+        public IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking)
         {
-            return GetActiveRule(isFutureBooking, zone, RuleCategory.WarningRule);
+            return GetActiveRule(isFutureBooking,  RuleCategory.WarningRule);
         }
 
-        private IList<RuleDetail> GetActiveRule(bool isFutureBooking, string zone, RuleCategory category)
+        private IList<RuleDetail> GetActiveRule(bool isFutureBooking, RuleCategory category)
         {
             using (var context = _contextFactory.Invoke())
             {

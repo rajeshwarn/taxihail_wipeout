@@ -16,23 +16,29 @@ namespace apcurium.MK.Booking.Calculator
         {
             _ruleDao = ruleDao;
         }
-      
 
-        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, string zone)
+
+        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> zoneGetterFunc)
         {
-            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveWarningRule(isFutureBooking, zone).ToArray();
+            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveWarningRule(isFutureBooking).ToArray();
 
-            rules = FilterRulesByZone(rules, zone );
+            if (rules.Any())
+            {
+                rules = FilterRulesByZone(rules, zoneGetterFunc());
+            }
 
             return GetMatching(rules,  pickupDate);
 
         }
 
-        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, string zone)
+        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> zoneGetterFunc)
         {
-            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveDisableRule(isFutureBooking, zone).ToArray();
+            IEnumerable<RuleDetail> rules = _ruleDao.GetActiveDisableRule(isFutureBooking).ToArray();
 
-            rules = FilterRulesByZone(rules, zone);
+            if (rules.Any())
+            {
+                rules = FilterRulesByZone(rules, zoneGetterFunc());
+            }
 
             return GetMatching(rules, pickupDate);
 

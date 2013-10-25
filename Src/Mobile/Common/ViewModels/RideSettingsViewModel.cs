@@ -28,6 +28,32 @@ namespace apcurium.MK.Booking.Mobile
         
         }
 
+        public RideSettingsViewModel(BookingSettings bookingSettings)
+        {
+            this._bookingSettings = bookingSettings;
+            _accountService = this.GetService<IAccountService>();
+
+            var refDataTask = _accountService.GetReferenceDataAsync();
+
+            refDataTask.ContinueWith(result =>
+                                     {
+                var v = _accountService.GetVehiclesList();
+                _vehicules = v == null ? new ListItem[0] : v.ToArray();
+                FirePropertyChanged( ()=> Vehicles );
+                FirePropertyChanged( ()=> VehicleTypeId );
+                FirePropertyChanged( ()=> VehicleTypeName );
+
+
+                var p = _accountService.GetPaymentsList();
+                _payments = p == null ? new ListItem[0] : p.ToArray();
+
+                FirePropertyChanged( ()=> Payments );
+                FirePropertyChanged( ()=> ChargeTypeId );
+                FirePropertyChanged( ()=> ChargeTypeName );
+            });
+
+        }
+
         public bool ShouldDisplayTipSlider
         {
             get
@@ -46,19 +72,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public RideSettingsViewModel(BookingSettings bookingSettings)
-        {
-            this._bookingSettings = bookingSettings;
-            _accountService = this.GetService<IAccountService>();
-
-            var v = _accountService.GetVehiclesList();
-            _vehicules = v ==null ? new ListItem[0] : v.ToArray();
-            var p = _accountService.GetPaymentsList();
-            _payments = p ==null ? new ListItem[0]  : p.ToArray();
-
-
-
-        }
+     
 
         public override void Restart()
         {
@@ -134,6 +148,13 @@ namespace apcurium.MK.Booking.Mobile
                     return base.Resources.GetString("NoPreference");
                 }
 
+                if (Vehicles == null)
+                {
+                    return null;
+                }
+
+
+
                 var vehicle = this.Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
                 if (vehicle == null)
                     return null;
@@ -167,6 +188,12 @@ namespace apcurium.MK.Booking.Mobile
                     return base.Resources.GetString("NoPreference");
                 }
 
+
+                if (Payments == null)
+                {
+                    return null;
+                }
+                                
                 var chargeType = this.Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
                 if (chargeType == null)
                     return null;

@@ -207,6 +207,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 return new CommitPreauthorizedPaymentResponse()
                 {
+                    AuthorizationCode = result.Target.ProcessorAuthorizationCode,
                     IsSuccessfull = isSuccessful,
                     Message = "Success"                    
                 };

@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
     {
         IList<RuleDetail> GetAll();
 
-        IList<RuleDetail> GetActiveDisableRule( bool isFutureBooking, string zone);
+        IList<RuleDetail> GetActiveDisableRule( bool isFutureBooking);
 
-        IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking, string zone);
+        IList<RuleDetail> GetActiveWarningRule(bool isFutureBooking);
     }
 }

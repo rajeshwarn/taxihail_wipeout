@@ -122,15 +122,27 @@ namespace MK.DeploymentService
             }
             Directory.CreateDirectory(unzipDirectory);
 
-            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("x {0} *", packageFile), unzipDirectory);
-            using (var exeProcess = Process.Start(zipProcess))
+            Log("packageFile : " + packageFile);
+            Log("unzipDirectory : " + unzipDirectory);
+
+            try
             {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
+                var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("x {0} *", packageFile), unzipDirectory);
+                using (var exeProcess = Process.Start(zipProcess))
                 {
-                    throw new Exception("Error during unziping Process" + output);
+                    var output = ProcessEx.GetOutput(exeProcess);
+                    if (exeProcess.ExitCode > 0)
+                    {
+                        throw new Exception("Error during unziping Process" + output);
+                    }
                 }
             }
+            catch (Exception)
+            {
+                Log("Cannot unzip file, make sure 7zip is installed");
+                throw;
+            }
+            
             return unzipDirectory;
         }
 

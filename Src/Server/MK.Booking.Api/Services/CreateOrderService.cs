@@ -19,6 +19,7 @@ using AutoMapper;
 using ServiceStack.Common.Web;
 using System.Net;
 using apcurium.MK.Common;
+using ServiceStack.Text;
 
 
 namespace apcurium.MK.Booking.Api.Services
@@ -54,9 +55,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CreateOrder request)
         {
-            Log.Info( "Create order request : " + request);
-            var zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);
+            Log.Info( "Create order request : " + request.ToJson());
+            
+            var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), ()=>_staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude));
           
             if (rule!= null)
             {

@@ -49,30 +49,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Console.WriteLine("Opening confirmation view....");
 
-			MessageService.ShowProgress(true);
+			
 
 
 
+            RideSettings = new RideSettingsViewModel(Order.Settings);
+            ShowWarningIfNecessary();
 
-            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.Settings ) )
-                .HandleErrors( )
-                .ContinueWith(t =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-							if ( t.Result != null )
-							{
-                            	this.RideSettings = t.Result;
-                            
-                            	FirePropertyChanged(() => VehicleName);
-                            	FirePropertyChanged(() => ChargeType);
-                            	MessageService.ShowProgress(false);                            
-                            	ShowWarningIfNecessary();
-							}
-
-                        });
-                    });
-
+//            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.Settings ) )
+//                .HandleErrors( )
+//                .ContinueWith(t =>
+//                    {
+//                        InvokeOnMainThread(() =>
+//                        {
+//							if ( t.Result != null )
+//							{
+//                            	this.RideSettings = t.Result;
+//                            
+//                            	FirePropertyChanged(() => VehicleName);
+//                            	FirePropertyChanged(() => ChargeType);
+//                            	MessageService.ShowProgress(false);                            
+//                            	ShowWarningIfNecessary();
+//							}
+//
+//                        });
+//                    });
+//
             ShowFareEstimateAlertDialogIfNecessary();
 
             Console.WriteLine("Done opening confirmation view....");

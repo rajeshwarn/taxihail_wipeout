@@ -43,12 +43,17 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Validating order request : " );
 
-            var zone = request.TestZone;
-            if (!request.TestZone.HasValue())
-            {
-                zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-            }
-            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), zone);            
+            
+            var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue, request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
+                () =>
+                {
+                    var zone = request.TestZone;
+                    if (!request.TestZone.HasValue())
+                    {
+                        zone = _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                    }
+                    return zone;
+                });            
             
             return new OrderValidationResult{ HasWarning = rule != null , Message = rule != null ? rule.Message : null } ;
            

@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         PaymentService.SetPaymentFromCache(Order.Id, Amount);
 
-                        ShowCreditCardPaymentConfirmation(preAuthResponse.TransactionId);	
+                        ShowCreditCardPaymentConfirmation(response.AuthorizationCode);	
                     }
 				}
 			}

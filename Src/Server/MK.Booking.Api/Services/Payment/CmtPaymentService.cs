@@ -141,6 +141,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         IsSuccessfull = isSuccessful,
                         Message = response.ResponseMessage,
+                        AuthorizationCode = response.AuthorizationCode,
                     };
             }
             catch (Exception e)
