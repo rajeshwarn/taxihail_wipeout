@@ -82,13 +82,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Cmt\CmtAccountServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthCredentials.cs" />
     <Compile Include="Cmt\CmtAuthResponse.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
-    <Compile Include="Cmt\CmtLinkServiceClient.cs" />
-    <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />

@@ -399,7 +399,7 @@
 "CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
 "CmtTransactionSuccessTitle"="Payment Received";
 "CmtTransactionResendConfirmationButtonText"="Resend";
-"PaymentConfirmationMessageToDriver"="The Client has payed {0}";
+"PaymentConfirmationMessageToDriver"="The passenger has paid {0} (auth : {1})";
 "OrderNumber"="Order #";
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
 "NoOrderId"="Order Not ready";
