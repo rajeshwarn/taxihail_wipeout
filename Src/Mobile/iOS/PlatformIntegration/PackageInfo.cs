@@ -6,6 +6,8 @@ using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TinyIoC;
+using Cirrious.MvvmCross.Interfaces.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -40,15 +42,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 if ( _userAgent == null )
                 {
-                    try
+                    _userAgent = "";
+                    TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>
                     {
-                        var webView = new UIWebView();
-                        _userAgent = webView.EvaluateJavascript( "navigator.userAgent" );
-                    }
-                    catch 
-                    {
-                        _userAgent = "";
-                    }
+                        try
+                        {
+                            var webView = new UIWebView();
+                            _userAgent = webView.EvaluateJavascript("navigator.userAgent");
+                        }
+                        catch
+                        {
+                            _userAgent = "";
+                        }
+                    });
                 }
                 return _userAgent;
             }
