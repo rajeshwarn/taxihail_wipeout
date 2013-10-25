@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    local:MvxBind="{'Text':{'Path':'VehicleName'}}" />
+                    local:MvxBind="{'Text':{'Path':'RideSettings.VehicleTypeName'}}" />
             </LinearLayout>
             <LinearLayout
                 android:layout_centerInParent="true"
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    local:MvxBind="{'Text':{'Path':'ChargeType'}}" />
+                    local:MvxBind="{'Text':{'Path':'RideSettings.ChargeTypeName'}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile
                 FirePropertyChanged( ()=> Payments );
                 FirePropertyChanged( ()=> ChargeTypeId );
                 FirePropertyChanged( ()=> ChargeTypeName );
+
+
             });
 
         }

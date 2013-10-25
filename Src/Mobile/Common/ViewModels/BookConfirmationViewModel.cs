@@ -39,6 +39,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 			_bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
+            RideSettings = new RideSettingsViewModel(Order.Settings);
+
+
+
+            RideSettings.OnPropertyChanged().Subscribe(p => 
+                                                       {
+                FirePropertyChanged(()=> RideSettings);
+            });
+        }
+
+        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
         }
 
 
@@ -49,11 +62,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Console.WriteLine("Opening confirmation view....");
 
-			
-
-
-
-            RideSettings = new RideSettingsViewModel(Order.Settings);
             ShowWarningIfNecessary();
 
 //            Task.Factory.StartNew<RideSettingsViewModel>(() => new RideSettingsViewModel( Order.Settings ) )
