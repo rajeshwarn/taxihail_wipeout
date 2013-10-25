@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
 
-            sut = new VehicleServiceClient(BaseUrl, SessionId, new Logger());
+            sut = new VehicleServiceClient(BaseUrl, SessionId, new Logger(), "Test");
         }
 
         [Test]

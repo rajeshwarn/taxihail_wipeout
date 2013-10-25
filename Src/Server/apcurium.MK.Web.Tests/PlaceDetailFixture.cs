@@ -35,7 +35,7 @@ namespace apcurium.MK.Web.Tests
             try
             {
 
-                var refService = new SearchLocationsServiceClient(BaseUrl, SessionId);
+                var refService = new SearchLocationsServiceClient(BaseUrl, SessionId, "Test");
                 var addresses = refService.Search("yul", 45.5227967351675, -73.6242310144007);
 
 
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
 
 
 
-                var sut = new PlaceDetailServiceClient(BaseUrl, SessionId);
+                var sut = new PlaceDetailServiceClient(BaseUrl, SessionId, "Test");
                 var address = sut.GetPlaceDetail(a1.PlaceReference,a1.FriendlyName);
                 Assert.AreNotEqual(0, address.Latitude);
                 Assert.AreNotEqual(0, address.Longitude);

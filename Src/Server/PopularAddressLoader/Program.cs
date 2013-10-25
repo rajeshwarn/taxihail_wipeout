@@ -18,10 +18,10 @@ namespace PopularAddressLoader
             //string url = @"http://staging.taxihail.biz:8181/taxiworld/Api/";
             string url = @"http://localhost/apcurium.MK.Web/Api/";
 
-            
-            var auth = new AuthServiceClient(url, null);
+
+            var auth = new AuthServiceClient(url, null, "Test");
             var token = auth.Authenticate("taxihail@apcurium.com", "1l1k3B4n4n@");
-            var c = new PopularAddressesServiceClient(url, token.SessionId);
+            var c = new PopularAddressesServiceClient(url, token.SessionId, "Test");
 
 
             var reader = new StreamReader(File.OpenRead(@"D:\Dropbox\Mobile Knowledge\train.csv"));

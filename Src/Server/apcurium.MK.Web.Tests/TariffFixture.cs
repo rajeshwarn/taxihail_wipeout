@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new TariffsServiceClient(BaseUrl, SessionId);
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
             sut.CreateTariff(new Common.Entity.Tariff
             {
                 Id = (_knownTariffId = Guid.NewGuid()),
@@ -54,7 +54,7 @@ namespace apcurium.MK.Web.Tests
         public void AddTariff()
         {
             var tariffId = Guid.NewGuid();
-            var sut = new TariffsServiceClient(BaseUrl, SessionId);
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
 
             sut.CreateTariff(new Common.Entity.Tariff
             {
@@ -91,7 +91,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void DeleteTariff()
         {
-            var sut = new TariffsServiceClient(BaseUrl, SessionId);
+            var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
 
             sut.DeleteTariff(_knownTariffId);
 

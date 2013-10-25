@@ -35,7 +35,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId);
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             //Act
             var order = new CreateOrder
@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
@@ -69,8 +69,8 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl,  SessionId);
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var orderService = new OrderServiceClient(BaseUrl,  SessionId, "Test");
+            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -121,7 +121,7 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
-            var orderService = new OrderServiceClient(BaseUrl, SessionId);
+            var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             
             var order = new CreateOrder
@@ -144,7 +144,7 @@ namespace apcurium.MK.Web.Tests
             };
             orderService.CreateOrder(order);
 
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
 
             //Act

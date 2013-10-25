@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
          [Test]
          public void GetInfo()
          {
-             var client = new ApplicationInfoServiceClient(BaseUrl, null);
+             var client = new ApplicationInfoServiceClient(BaseUrl, null, "Test");
              var appInfo = client.GetAppInfoAsync();
 
 

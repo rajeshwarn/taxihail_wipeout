@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _logger = logger;
 
             _configurationManager = configurationManager;
-            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null);
+            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "Test");
         }
 
 

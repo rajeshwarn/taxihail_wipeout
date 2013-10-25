@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Tests
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
         public void when_creating_order_without_passing_settings()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -97,10 +97,10 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            var auth = new AuthServiceClient(BaseUrl, SessionId).Authenticate(TestAccount.Email, TestAccountPassword);
+            var auth = new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = auth.SessionId;
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -132,7 +132,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void ibs_order_was_created()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = sut.GetOrder(_orderId);
             
             Assert.IsNotNull(order);
@@ -144,14 +144,14 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
         }
 
         [Test]
         public void can_cancel_it()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             sut.CancelOrder(_orderId);
 
 
@@ -182,7 +182,7 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
               
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
         }
@@ -191,7 +191,7 @@ namespace apcurium.MK.Web.Tests
         public void when_remove_it_should_not_be_in_history()
         {
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             sut.RemoveFromHistory(_orderId);
 
@@ -202,7 +202,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_order_rated_ratings_should_not_be_null()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             var orderRatingsRequest = new OrderRatingsRequest
                 {
@@ -228,7 +228,7 @@ namespace apcurium.MK.Web.Tests
         public void GetOrderList()
         {
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             var orders = sut.GetOrders();
             Assert.NotNull(orders);
@@ -237,7 +237,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetOrder()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             var orders = sut.GetOrder(_orderId);
             Assert.NotNull(orders);

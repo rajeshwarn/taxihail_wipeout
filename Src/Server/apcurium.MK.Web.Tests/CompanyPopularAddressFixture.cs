@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
 
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddPopularAddress(new PopularAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             var addressId = Guid.NewGuid();
             sut.AddPopularAddress(new PopularAddress
@@ -84,7 +84,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddInvalidAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.AddPopularAddress(new PopularAddress()));
         }
@@ -92,7 +92,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.UpdatePopularAddress(new PopularAddress
             {
@@ -124,7 +124,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddressWithInvalidData()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut
                 .UpdatePopularAddress(new PopularAddress
@@ -149,7 +149,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.RemovePopularAddress(_knownAddressId);
 
@@ -160,7 +160,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetAddressList()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             var addresses = sut.GetPopularAddresses();
 

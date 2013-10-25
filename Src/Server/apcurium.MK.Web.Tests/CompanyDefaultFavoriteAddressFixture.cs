@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
 
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             var addressId = Guid.NewGuid();
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
@@ -83,7 +83,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddInvalidAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress()));
         }
@@ -91,7 +91,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
@@ -123,7 +123,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddressWithInvalidData()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut
                 .UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
@@ -148,7 +148,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveAddress()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.RemoveDefaultFavoriteAddress(_knownAddressId);
 
@@ -159,7 +159,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetAddressList()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             var addresses = sut.GetDefaultFavoriteAddresses();
 

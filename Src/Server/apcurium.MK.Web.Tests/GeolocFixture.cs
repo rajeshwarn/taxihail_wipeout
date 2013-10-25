@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void DefaultLocationIsAnAddress()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var address = sut.DefaultLocation();
 
             Assert.IsNotNull(address);
@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicNameSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.Search("11 hines");
             Assert.True(addresses.Count() == 1);
             Assert.True(addresses.ElementAt(0).FullAddress.Contains( "11" ));
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AdvancedNameSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
             Assert.AreEqual(2, addresses.Count());
             var address = addresses.ElementAt(0);
@@ -67,7 +67,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.Search( 45.5062, -73.5726);
             Assert.True(addresses.Count() >= 1);            
         }
@@ -76,7 +76,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RangeCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.Search(45.5364, -73.6103);
             Assert.True(addresses.Count() >= 1);
 
@@ -87,7 +87,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void SearchMiddleField()
         {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
             var addresses = sut.Search(45.5364, -73.6103);                     
                         
 

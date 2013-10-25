@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddOrUpdateAppSettings(new ConfigurationsRequest()
                     {
                         AppSettings = new Dictionary<string, string> { { "Key.DefaultSetupWeb", "Value.DefaultSetupWeb" } }
@@ -42,7 +42,7 @@ namespace apcurium.MK.Web.Tests
         //[Test]
         //public void AddAppSettings()
         //{
-        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
         //    Assert.AreEqual(HttpStatusCode.OK.ToString(), sut.AddAppSettings(new ConfigurationsRequest()
         //            {
@@ -54,7 +54,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAppSettings()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.AddOrUpdateAppSettings(new ConfigurationsRequest
                    {
@@ -65,7 +65,7 @@ namespace apcurium.MK.Web.Tests
         //[Test] //No more invalid data with AddOrUpdate
         //public void UpdateAppSettingsWithInvalidData()
         //{
-        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
         //    Assert.AreEqual(HttpStatusCode.Conflict.ToString(), sut.AddOrUpdateAppSettings(new ConfigurationsRequest()
         //            {

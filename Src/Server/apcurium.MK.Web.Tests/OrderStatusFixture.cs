@@ -20,11 +20,11 @@ namespace apcurium.MK.Web.Tests
             
 
             base.TestFixtureSetup();
-            
-            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
+
+            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
 
             _orderId = Guid.NewGuid();
-            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId);
+            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, "Test");
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -61,7 +61,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_and_get_a_valid_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var data = sut.GetOrderStatus( _orderId);
          
             Assert.AreEqual(OrderStatus.Created, data.Status);
@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
         }
@@ -83,7 +83,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void get_active_orders_status()
         {
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var data = sut.GetActiveOrdersStatus();
 
 

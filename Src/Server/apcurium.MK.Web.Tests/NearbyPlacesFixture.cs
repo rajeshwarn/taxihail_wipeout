@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_searching_for_nearby_places()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId);
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
             var addresses = sut.GetNearbyPlaces(Latitude, Longitude);
             
             if (!addresses.Any())
@@ -52,7 +52,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_searching_for_nearby_places_with_a_max_radius()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId);
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
             var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 100);
             var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 10);
 
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_location_is_not_provided()
         {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId);
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
             Assert.Throws<WebServiceException>(() => sut.GetNearbyPlaces(null, null), ErrorCode.NearbyPlaces_LocationRequired.ToString());
         }
 
@@ -77,14 +77,14 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_an_order_with_a_nearby_place()
         {
             var orderId = Guid.NewGuid();
-            var address = new NearbyPlacesClient(BaseUrl, SessionId).GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
+            var address = new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
 
             if (address == null)
             {
                 Assert.Inconclusive("no places returned");
             }
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             sut.CreateOrder(new CreateOrder
                                 {
@@ -107,7 +107,7 @@ namespace apcurium.MK.Web.Tests
 
         //    var sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
 
-        //    var sut = new NearbyPlacesClient(BaseUrl, SessionId);
+        //    var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
         //    var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 1000);
 
         //    Assert.IsTrue( greatRadius.First().FriendlyName == "FakePlace");
@@ -122,7 +122,7 @@ namespace apcurium.MK.Web.Tests
         //    var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
 
 
-        //    var service = new PopularAddressesServiceClient(BaseUrl, SessionId);
+        //    var service = new PopularAddressesServiceClient(BaseUrl, SessionId, "Test");
         //    service.Add(new PopularAddress { Id = Guid.NewGuid(), Address = new Address { FriendlyName = friendlyName, FullAddress = fullAddress, Latitude = latitude, Longitude = longitude } });
 
 
