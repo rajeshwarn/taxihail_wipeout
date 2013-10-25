@@ -32,9 +32,9 @@ using PostSharp.Toolkit.Diagnostics;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.4.22")]
-[assembly: AssemblyVersion("1.4.22")]
-[assembly: AssemblyFileVersion("1.4.22")]
+// [assembly: AssemblyVersion("1.4.23")]
+[assembly: AssemblyVersion("1.4.23")]
+[assembly: AssemblyFileVersion("1.4.23")]
 
 //[assembly: Log] 
 //[assembly: Log(AttributeTargetMembers="regex:get_.*|set_.*" , OnEntryOptions = LogOptions.IncludeParameterValue, OnSuccessOptions = LogOptions.IncludeReturnValue)]
