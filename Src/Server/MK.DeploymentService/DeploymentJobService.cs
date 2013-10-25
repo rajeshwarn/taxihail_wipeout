@@ -9,6 +9,8 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using DeploymentServiceTools;
+using Microsoft.Build.Exceptions;
+using Microsoft.Build.Framework;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
 using Microsoft.Build.Evaluation;
@@ -159,14 +161,25 @@ namespace MK.DeploymentService
             dbContext.SaveChanges();
         }
 
+
         private void Build(string sourceDirectory)
         {
             Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
-            var globalProperty = new Dictionary<string, string> { { "Configuration", "Release" } };
-            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Build" }, null);
-            var buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
+            var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Build"}, null);
+
+            var bParam = new BuildParameters(pc);
+
+
+            Log("Setting logger");
+
+            bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] {new BuildLogger(txt => Log(txt))});       
+
+            var buildResult = BuildManager.DefaultBuildManager.Build(bParam, buildRequestData);
+
+            
 
             Log("Build Finished");
 
