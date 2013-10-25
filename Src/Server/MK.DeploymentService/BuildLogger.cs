@@ -29,7 +29,7 @@ namespace MK.DeploymentService
             
             // For brevity, we'll only register for certain event types. Loggers can also 
             // register to handle TargetStarted/Finished and other events.
-            eventSource.ProjectStarted += new ProjectStartedEventHandler(eventSource_ProjectStarted);
+            //eventSource.ProjectStarted += new ProjectStartedEventHandler(eventSource_ProjectStarted);
             eventSource.ErrorRaised += new BuildErrorEventHandler(eventSource_ErrorRaised);
             
         }
@@ -37,7 +37,9 @@ namespace MK.DeploymentService
         void eventSource_ErrorRaised(object sender, BuildErrorEventArgs e)
         {
             // BuildErrorEventArgs adds LineNumber, ColumnNumber, File, amongst other parameters 
-            string line = String.Format(": ERROR {0}({1},{2}): ", e.File, e.LineNumber, e.ColumnNumber);
+            string line = String.Format(": ERROR {0}({1},{2}, {3}): ", e.File, e.LineNumber, e.ColumnNumber, e.ProjectFile);
+
+            
             WriteLineWithSenderAndMessage(line, e);
         }
 
