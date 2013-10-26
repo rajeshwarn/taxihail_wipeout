@@ -51,11 +51,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected async override void Initialize()
         {
+
             if (_initialized)
                 throw new InvalidOperationException();
+
             _initialized = true;
 
             Panel = new PanelViewModel(this);
+
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AppActivated>(_ => AppActivated());
 
             var showEstimate = Task.Run(() =>  Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate")));
 
@@ -133,6 +137,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             UpdateServerInfo();
  
             ForceRefresh();
+        }
+
+        private void AppActivated()
+        {
+            Load();
         }
 
         public override void Start(bool firstStart = false)

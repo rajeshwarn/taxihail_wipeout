@@ -31,6 +31,10 @@ using MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -126,7 +130,33 @@ namespace apcurium.MK.Booking.Mobile
                 ClearAppCache ();
                 TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
             } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
+                NavigateToFirstScreen();
                 RefreshAppData ();
+            }
+        }
+
+        void NavigateToFirstScreen()
+        {
+            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
+                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
+                                                                                                          new MvxShowViewModelRequest(
+                    typeof(LoginViewModel),
+                    null,
+                    true,
+                    MvxRequestedBy.UserAction));
+
+                //RequestNavigate<> ();
+            } 
+            else
+            {
+                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
+                                                                                                          new MvxShowViewModelRequest(
+                    typeof(BookViewModel),
+                    null,
+                    true,
+                    MvxRequestedBy.UserAction));
+                //RequestNavigate<BookViewModel>();
             }
         }
 
