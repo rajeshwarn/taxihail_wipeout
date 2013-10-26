@@ -21,8 +21,8 @@
             TaxiHail.localStorage.removeItem(currentOrderKey);
         },
 
-        validate: function (order) {
-            return $.post('api/account/orders/validate', order.toJSON(), function () { }, 'json');
+        validate: function (order) {            
+            return $.post('api/account/orders/validate', JSON.stringify(order.toJSON()), function () { }, 'application/json');
         }
     });
 
