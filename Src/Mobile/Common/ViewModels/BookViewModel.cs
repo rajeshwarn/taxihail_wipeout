@@ -107,8 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (! _useExistingOrder ) 
             {
-                var tutorialWasDisplayed = CacheService.Get<string>("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty())
+                var tutorialWasDisplayed = AppCacheService.Get<string>("TutorialWasDisplayed");
+                if (tutorialWasDisplayed.IsNullOrEmpty() || !tutorialWasDisplayed.SoftEqual( AccountService.CurrentAccount.Email ))
                 {
                     Task.Run( () =>
                     {
@@ -141,7 +141,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AppActivated()
         {
-            Load();
+            LocationService.GetNextPosition(new TimeSpan(0,0,2), 20).Subscribe(p =>
+            {
+                InvokeOnMainThread( () => Load() );
+            });
+            
+            
         }
 
         public override void Start(bool firstStart = false)
@@ -395,10 +400,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Thread.Sleep(1000);
                         InvokeOnMainThread(() =>
                         {
-                            var tutorialWasDisplayed = CacheService.Get<string>("TutorialWasDisplayed");
-                            if (!tutorialWasDisplayed.IsNullOrEmpty()) return;
 
-                            CacheService.Set("TutorialWasDisplayed", true.ToString());
+                            var tutorialWasDisplayed = AppCacheService.Get<string>("TutorialWasDisplayed");
+                            if (tutorialWasDisplayed.SoftEqual( AccountService.CurrentAccount.Email )) return;
+
+                            AppCacheService.Set("TutorialWasDisplayed", AccountService.CurrentAccount.Email);
                             MessageService.ShowDialogActivity(typeof(TutorialViewModel));
                         });
                     });

@@ -30,8 +30,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude)
         {
             var tcs = new TaskCompletionSource<AvailableVehicle[]>();
-            var stopwatch = Logger.StartStopwatch("Fetching Available Vehicles");
-            tcs.Task.ContinueWith(_ => stopwatch.Dispose());
+
+
 
             Client.GetAsync(new AvailableVehicles
             {

@@ -308,7 +308,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     var positionSet = false;
-
                     if(LocationService.BestPosition != null)
                     {                        
                         InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ));
