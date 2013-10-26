@@ -53,24 +53,27 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     {
         public static TimeSpan ValidCoordinateTime = new TimeSpan(0, 0, 10);
 
-        public static bool IsBetterThan(this Position thisPosition, Position thatPosition)
+        public static bool IsBetterThan(this Position trueIfBetter, Position falseIfBetter)
         {
-            if (thatPosition == null)
+
+            if (falseIfBetter == null)
             {
                 return true;
             }
 
-            if (thisPosition == null)
+            if (trueIfBetter == null)
             {
                 return false;
             }
 
-            if((thatPosition.Time - thisPosition.Time).Duration() > ValidCoordinateTime)            
+            if((falseIfBetter.Time - trueIfBetter.Time).Duration() > ValidCoordinateTime)            
             {
-                return true;
+                Console.WriteLine("IsBetterThan : too old");
+                return false;
             }
 
-            return thisPosition.Error <= thatPosition.Error;
+            Console.WriteLine( string.Format("IsBetterThan current error {0}, other error {1}", trueIfBetter.Error, falseIfBetter.Error) );
+            return trueIfBetter.Error < falseIfBetter.Error;
         }
     }
 }
