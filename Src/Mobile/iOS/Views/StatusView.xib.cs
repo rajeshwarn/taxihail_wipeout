@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             try {
                 ViewModel.Load();
 
-                NavigationItem.HidesBackButton = true;                
+                NavigationItem.HidesBackButton = false;
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
                 View.BringSubviewToFront (statusBar);
@@ -88,8 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton ((GradientButton)btnPay, Resources.StatusPayButton, AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton ((GradientButton)btnResend, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
-                this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, false);
-                
+                this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, true);
+                                
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged+= (sender, e) => {

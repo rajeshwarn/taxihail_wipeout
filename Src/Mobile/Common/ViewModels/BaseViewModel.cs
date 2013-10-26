@@ -75,6 +75,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        protected IAppCacheService AppCacheService{
+            get{
+                return TinyIoCContainer.Current.Resolve<IAppCacheService> ();
+            }
+        }
+
 		protected IAppSettings AppSettings{
 			get{
 				return TinyIoCContainer.Current.Resolve<IAppSettings> ();

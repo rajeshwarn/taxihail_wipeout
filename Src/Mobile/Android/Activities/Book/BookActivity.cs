@@ -27,11 +27,12 @@ using System.Reactive.Linq;
 using System.Reactive;
 using Java.Lang;
 using Android.OS;
+using Android.Content.PM;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true  )]
+    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true )]
     public class BookActivity : MvxBindingMapActivityView<BookViewModel>
     {
         private int _menuWidth = 400;

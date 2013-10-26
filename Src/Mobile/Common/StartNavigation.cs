@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile
 
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
-                RequestNavigate<LoginViewModel> ();
+                 RequestNavigate<LoginViewModel> ();
             } 
             else if (_params.ContainsKey ("orderId"))
             {

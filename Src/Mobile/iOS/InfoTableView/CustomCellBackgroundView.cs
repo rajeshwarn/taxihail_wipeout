@@ -84,7 +84,15 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 
 			//Fill
-			var backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
+            UIColor backgroundColor = UIColor.Clear;
+            if (Superview is UITableViewCell)
+            {
+                backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
+            }
+            else if (Superview.Superview is UITableViewCell)
+            {
+                backgroundColor = ((UITableViewCell)Superview.Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
+            }
 			backgroundColor.SetFill();
 			fillRectPath.LineWidth = _strokeSize;
 			fillRectPath.Fill();
