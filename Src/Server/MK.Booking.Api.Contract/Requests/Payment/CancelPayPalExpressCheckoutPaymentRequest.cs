@@ -4,7 +4,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
        
-    [Authenticate]
+   
     [Route("/payment/paypal/cancel", "GET")]
     public class CancelPayPalExpressCheckoutPaymentRequest
     {
