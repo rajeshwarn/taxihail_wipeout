@@ -130,6 +130,8 @@ namespace apcurium.MK.Booking.Mobile
                 ClearAppCache ();
                 TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
             } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
+                TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
+
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
                 NavigateToFirstScreen();
                 RefreshAppData ();
