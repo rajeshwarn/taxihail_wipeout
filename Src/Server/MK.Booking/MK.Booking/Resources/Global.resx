@@ -151,10 +151,10 @@
     <value>Invalid order, please call dispatch center</value>
   </data>
   <data name="OrderStatus_wosNOSHOW" xml:space="preserve">
-    <value>Scheduled</value>
+    <value>No show</value>
   </data>
   <data name="OrderStatus_wosSCHED" xml:space="preserve">
-    <value>No show</value>
+    <value>Scheduled</value>
   </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>Waiting for driver to be assigned</value>

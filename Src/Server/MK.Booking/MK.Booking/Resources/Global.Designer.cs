@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scheduled.
+        ///   Looks up a localized string similar to No show.
         /// </summary>
         public static string OrderStatus_wosNOSHOW {
             get {
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No show.
+        ///   Looks up a localized string similar to Scheduled.
         /// </summary>
         public static string OrderStatus_wosSCHED {
             get {
