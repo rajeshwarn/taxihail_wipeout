@@ -117,8 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnStop()
         {            
             base.OnStop();
-            if(ViewModel != null) ViewModel.Stop();
-			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
+            if(ViewModel != null) ViewModel.Stop();			
         }
 
         protected override void OnDestroy ()
