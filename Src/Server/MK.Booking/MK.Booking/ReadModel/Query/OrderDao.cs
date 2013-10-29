@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var joinedLines = from order in context.Set<OrderDetail>()
-                                  join account in context.Set<AccountDetail>()
-                                  on order.AccountId equals account.Id
+                                  join account in context.Set<AccountDetail>() 
+                                  on order.AccountId equals account.Id                                    
                                   select new {order,account} ;
 
                 foreach (var joinedLine in joinedLines)

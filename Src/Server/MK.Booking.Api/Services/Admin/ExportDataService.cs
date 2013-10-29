@@ -71,7 +71,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                                       DropOffAddress = x.DropOffAddress.DisplayAddress,
                                                       x.Tip,
                                                       x.Toll,
-                                                      x.Fare
+                                                      x.Fare,
+                                                      x.UserAgent
                                                   });
                break;
             }

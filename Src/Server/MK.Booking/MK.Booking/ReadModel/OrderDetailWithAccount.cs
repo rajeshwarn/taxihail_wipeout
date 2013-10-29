@@ -48,5 +48,10 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsRemovedFromHistory { get; set; }
 
         public bool IsRated { get; set; }
+
+        public string UserAgent { get; set; }
+
+         
+
     }
 }
