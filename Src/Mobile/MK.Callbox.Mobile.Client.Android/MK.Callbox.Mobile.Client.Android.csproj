@@ -93,6 +93,12 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Facebook">
+      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="SocialNetworks.Services.MonoDroid">
+      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\AlertDialogActivity.cs" />
