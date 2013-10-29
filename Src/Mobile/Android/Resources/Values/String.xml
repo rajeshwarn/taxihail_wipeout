@@ -399,7 +399,7 @@
   <string name="OrderNumber">Order #</string>
   <string name="NoAmountSelectedMessage">Please enter the amount</string>
   <string name="CmtTransactionSuccessTitle">Payment Received</string>
-  <string name="PaymentConfirmationMessageToDriver">The Client has payed {0}</string>
+  <string name="PaymentConfirmationMessageToDriver">The passenger has paid {0} (auth : {1})</string>
   <string name="CmtTransactionErrorMessage">Transaction Denied</string>
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
@@ -446,4 +446,4 @@
   <string name="TermsAndConditionsAcknowledgment">By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</string>
   <string name="AcceptButton">Accept</string>
   <string name="View_TermsAndConditions"></string>
-  </resources>
+</resources>
