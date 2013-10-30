@@ -102,6 +102,7 @@
     <Compile Include="Helpers\ApplicationPathResolver.cs" />
     <Compile Include="Helpers\OrderStatusHelper.cs" />
     <Compile Include="Helpers\OrderStatusIbsMock.cs" />
+    <Compile Include="Helpers\UserAgentParser.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJobStub.cs" />
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />

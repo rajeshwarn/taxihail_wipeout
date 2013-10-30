@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using apcurium.MK.Booking.Api.Helpers;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -54,26 +55,32 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                break;
                case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
-                    return orders.Select(x => new
-                                                  {
-                                                      x.Id,
-                                                      x.IBSAccountId,
-                                                      x.IBSOrderId,
-                                                      x.Name,
-                                                      x.Phone,
-                                                      x.Email,
-                                                      PickupDate = x.PickupDate.ToString("d", CultureInfo.InvariantCulture),
-                                                      PickupTime = x.PickupDate.ToString("t", CultureInfo.InvariantCulture),
-                                                      CreateDate = x.CreatedDate.Add(offset).ToString("d", CultureInfo.InvariantCulture),
-                                                      CreateTime = x.CreatedDate.Add(offset).ToString("t", CultureInfo.InvariantCulture),
-                                                      Status = (OrderStatus)x.Status,
-                                                      PickupAddress = x.PickupAddress.DisplayAddress,
-                                                      DropOffAddress = x.DropOffAddress.DisplayAddress,
-                                                      x.Tip,
-                                                      x.Toll,
-                                                      x.Fare,
-                                                      x.UserAgent
-                                                  });
+                    return orders.Select(x =>
+                    {
+                        var userAgent = UserAgentParser.GetOperatingSystem(x.UserAgent);                            
+                        return new
+                        {
+                            x.Id,
+                            x.IBSAccountId,
+                            x.IBSOrderId,
+                            x.Name,
+                            x.Phone,
+                            x.Email,
+                            PickupDate = x.PickupDate.ToString("d", CultureInfo.InvariantCulture),
+                            PickupTime = x.PickupDate.ToString("t", CultureInfo.InvariantCulture),
+                            CreateDate = x.CreatedDate.Add(offset).ToString("d", CultureInfo.InvariantCulture),
+                            CreateTime = x.CreatedDate.Add(offset).ToString("t", CultureInfo.InvariantCulture),
+                            Status = (OrderStatus) x.Status,
+                            PickupAddress = x.PickupAddress.DisplayAddress,
+                            DropOffAddress = x.DropOffAddress.DisplayAddress,
+                            x.Tip,
+                            x.Toll,
+                            x.Fare,
+                            userAgent,
+                            x.UserAgent
+                        };
+
+                    });
                break;
             }
             return new HttpResult(HttpStatusCode.NotFound);
