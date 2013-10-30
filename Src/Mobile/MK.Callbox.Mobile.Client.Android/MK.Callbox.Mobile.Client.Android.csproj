@@ -33,8 +33,10 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidLinkSkip />
-    <AndroidStoreUncompressedFileExtensions />
+    <AndroidLinkSkip>
+    </AndroidLinkSkip>
+    <AndroidStoreUncompressedFileExtensions>
+    </AndroidStoreUncompressedFileExtensions>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -69,11 +71,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Mono.Facebook">
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -94,6 +92,12 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Facebook">
+      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="SocialNetworks.Services.MonoDroid">
+      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
