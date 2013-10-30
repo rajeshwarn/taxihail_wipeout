@@ -142,13 +142,11 @@ namespace apcurium.MK.Booking.Mobile
         {
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
                 TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
-                                                                                                          new MvxShowViewModelRequest(
+                    new MvxShowViewModelRequest(
                     typeof(LoginViewModel),
                     null,
                     true,
                     MvxRequestedBy.UserAction));
-
-                //RequestNavigate<> ();
             } 
             else
             {
@@ -158,8 +156,8 @@ namespace apcurium.MK.Booking.Mobile
                     typeof(BookViewModel),
                     null,
                         true,
-                    MvxRequestedBy.UserAction));
-                //RequestNavigate<BookViewModel>();
+                        MvxRequestedBy.Unknown));
+
             }
         }
 
