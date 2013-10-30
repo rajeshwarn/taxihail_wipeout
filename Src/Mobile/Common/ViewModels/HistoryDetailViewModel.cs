@@ -72,8 +72,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var sendReceiptAvailable = !ConfigurationManager.GetSetting("Client.SendReceiptAvailable").TryToParse(false);
-                return (Status != null) && Status.FareAvailable && Order.Fare > 0.1 && sendReceiptAvailable;
+                var sendReceiptAvailable =  ConfigurationManager.GetSetting<bool>("Client.SendReceiptAvailable",false);
+                return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
             }
         }
 
