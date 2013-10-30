@@ -152,11 +152,12 @@ namespace apcurium.MK.Booking.Mobile
             } 
             else
             {
+
                 TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
                                                                                                           new MvxShowViewModelRequest(
                     typeof(BookViewModel),
                     null,
-                    true,
+                        true,
                     MvxRequestedBy.UserAction));
                 //RequestNavigate<BookViewModel>();
             }
