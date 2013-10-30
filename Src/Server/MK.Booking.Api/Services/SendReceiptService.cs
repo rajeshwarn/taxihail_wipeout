@@ -93,6 +93,7 @@ namespace apcurium.MK.Booking.Api.Services
                 command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
                     orderPayement.Amount,
                     orderPayement.TransactionId,
+                    orderPayement.AuthorizationCode,
                     orderPayement.Type == PaymentType.CreditCard ? "Credit Card" : orderPayement.Type.ToString());
 
                 if (orderPayement.CardToken.HasValue())

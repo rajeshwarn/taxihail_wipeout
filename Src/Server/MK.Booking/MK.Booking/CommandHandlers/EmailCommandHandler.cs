@@ -178,11 +178,13 @@ namespace apcurium.MK.Booking.CommandHandlers
             var cardOnFileAmount = "";
             var cardNumber = "";
             var cardOnFileTransactionId = "";
+            var cardOnFileAuthorizationCode = "";
             if (isCardOnFile)
             {
                 cardOnFileAmount = command.CardOnFileInfo.Amount.ToString("C",priceFormat);
                 cardNumber = command.CardOnFileInfo.Company;
-
+                cardOnFileAuthorizationCode = command.CardOnFileInfo.AuthorizationCode;
+                
                 if (!string.IsNullOrWhiteSpace(command.CardOnFileInfo.LastFour))
                 {
                     cardNumber += " XXXX " + command.CardOnFileInfo.LastFour;
@@ -216,7 +218,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        IsCardOnFile = isCardOnFile,
                                        CardOnFileAmount = cardOnFileAmount,
                                        CardNumber = cardNumber,
-                                       CardOnFileTransactionId = cardOnFileTransactionId
+                                       CardOnFileTransactionId = cardOnFileTransactionId,
+                                       CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                                    };
 
 

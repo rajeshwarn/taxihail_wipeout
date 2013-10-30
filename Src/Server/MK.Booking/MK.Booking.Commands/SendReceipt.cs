@@ -29,15 +29,17 @@ namespace apcurium.MK.Booking.Commands
 
         public class CardOnFile
         {
-            public CardOnFile(decimal amount, string transactionId,string company)
+            public CardOnFile(decimal amount, string transactionId, string authorizationCode, string company)
             {
                 Amount = amount;
                 TransactionId = transactionId;
                 Company = company;
+                AuthorizationCode = authorizationCode;
             }
 
             public decimal Amount { get; set; }
             public string TransactionId { get; set; }
+            public string AuthorizationCode { get; set; }
             public string Company { get; set; }
             public string LastFour { get; set; }
             public string FriendlyName { get; set; }

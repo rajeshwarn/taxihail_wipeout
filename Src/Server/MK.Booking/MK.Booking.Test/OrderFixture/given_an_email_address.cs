@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22,12354+"qweqw","Visa")
+                CardOnFileInfo = new SendReceipt.CardOnFile(22,12354+"qweqw","1234","Visa")
                 {
                     LastFour = "6578",
                     FriendlyName = "Home"
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "PayPal")
+                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1231", "PayPal")
 
 
             });
