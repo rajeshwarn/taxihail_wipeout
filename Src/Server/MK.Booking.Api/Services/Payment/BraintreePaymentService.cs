@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         }
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
         {
-            settings.IsSandbox = true;
+            //settings.IsSandbox = true;
             var client = GetBraintreeGateway(settings);
 
             var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
