@@ -30,9 +30,9 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mk303Taxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK303Taxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mk303Taxi0001.</AndroidSigningKeyPass>
     <AndroidLinkSkip />
     <AndroidStoreUncompressedFileExtensions />
   </PropertyGroup>
@@ -46,9 +46,9 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mk303Taxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK303Taxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mk303Taxi0001.</AndroidSigningKeyPass>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>

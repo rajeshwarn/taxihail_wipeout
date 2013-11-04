@@ -34,8 +34,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");                                
                 var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");                
                 var common = Directory.GetDirectories(configRootFolder).Single(name => Path.GetFileName(name).ToLower().Equals("common"));
-
-                //TODO : Instead of reading all the directories in the config folder, we need to build                 
+                
                 var config = companies.Select(company => new AppConfig( company.CompanyName ,company, src, common)).ToArray();
 
                 if (args.Length > 0)

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.IO;
+using apcurium.MK.Booking.ConfigTool.ServiceClient;
 using CustomerPortal.Web.Entities;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
@@ -19,7 +21,7 @@ namespace apcurium.MK.Booking.ConfigTool
             Company = company;
             SrcDirectoryPath = srcDirectoryPath;
             CommonDirectoryPath = commonDirectoryPath;
-            Init();
+            
         }
 
         private void Init()
@@ -217,9 +219,15 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string CommonDirectoryPath { get; private set; }
 
+        public string ConfigDirectoryPath { get; set; }
+
         public void Apply ()
-		{
-            //Todo :  Here we need to create a temporary folder and get all the assest from the server using the new api to get the files
+        {
+
+            ConfigDirectoryPath = GetFiles();
+
+            Init();
+
 			var errorsList = new List<string> ();
 			foreach (var config in _configs) {
 				try {
@@ -236,5 +244,51 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+        private string GetFiles()
+        {
+            var tempPath = Path.Combine( Path.GetTempPath(), "ConfigTool" );
+            if ( Directory.Exists(tempPath))
+            {
+                Directory.Delete( tempPath, true  );
+            }
+
+            Directory.CreateDirectory(tempPath);
+
+
+
+            var newFile = File.CreateText(Path.Combine(tempPath, "settings.json"));
+            newFile.Write( Company.Settings.ToJson());
+            newFile.Close();
+            newFile.Dispose();
+
+
+            var service = new CompanyServiceClient();
+            var stream = service.GetCompanyFiles(Company.Id);
+            var zipFile = Path.Combine(tempPath, "out.zip");
+            using (Stream file = File.OpenWrite(zipFile))
+            {
+                CopyStream(stream, file);
+            }
+
+            ZipFile.ExtractToDirectory(zipFile, tempPath);
+            File.Delete( zipFile );
+
+            return tempPath;
+
+        }
+
+        
+            
+        public static void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[8 * 1024];
+            int len;
+            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+        }
+
+        
     }
 }
