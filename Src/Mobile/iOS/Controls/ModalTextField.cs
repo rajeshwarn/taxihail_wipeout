@@ -56,25 +56,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void Configure<T>(string title, ListItem<T>[] values, Nullable<T> selectedId, Action<ListItem<T>> onItemSelected) where T: struct
+        public void Configure<T>(string title, Func <ListItem<T>[]> getValues,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected, IObservable<string> listObservable = null) where T: struct
         {
+
+            if (listObservable != null)
+            {
+
+                listObservable.Subscribe(_ =>
+                                         {
+
+                    Configure( title, getValues(), selectedId , onItemSelected );
+                });
+            }
+
+            Configure( title, getValues(), selectedId , onItemSelected );
+
+
+        }
+
+        public void Configure<T>(string title, ListItem<T>[] values,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected ) where T: struct
+        {
+          
+            if ( values == null )
+            {
+                return;
+            }
+
+
             int selected = 0;
             var section = new SectionWithBackground(title);
             var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+
             foreach (var v in values)
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
                 var display = value.Display;
-                if(!value.Id.HasValue)
+                if (!value.Id.HasValue)
                 {
                     display = resources.GetString("NoPreference");
                 }
+
                 var item = new RadioElementWithId<T>(value.Id, display, value.Image);
-                item.Tapped += ()=> {
+                item.Tapped += () =>
+                {
                     onItemSelected(value);
                     var controller = this.FindViewController();
-                    if(controller != null) controller.NavigationController.PopViewControllerAnimated(true);
+                    if (controller != null)
+                        controller.NavigationController.PopViewControllerAnimated(true);
                 };
                 section.Add(item);
                 if (selectedId.Equals(value.Id))
@@ -82,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     selected = Array.IndexOf(values, value);
                 }
             }
-            
+
             _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
         }

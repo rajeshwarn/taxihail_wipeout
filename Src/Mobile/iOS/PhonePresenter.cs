@@ -46,33 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        private IMvxTouchView _last;
-
-        public override void Show(Cirrious.MvvmCross.Views.MvxShowViewModelRequest request)
-        {
-            var view = CreateView(request);
-
-            if ((_last != null) && (_last.GetType() == view.GetType()))
-            {
-                view = _last;
-            }
-
-                
-            _last = view;               
-
-            if (request.ClearTop)
-                ClearBackStack();
-
-            Show(view);
-
-
-        }
-
-        private IMvxTouchView CreateView(MvxShowViewModelRequest request)
-        {
-            return this.GetService().CreateView(request);
-        }
-
         public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
            
