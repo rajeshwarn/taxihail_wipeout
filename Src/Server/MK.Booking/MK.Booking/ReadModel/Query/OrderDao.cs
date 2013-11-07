@@ -45,15 +45,21 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var joinedLines = from order in context.Set<OrderDetail>()
-                                  join account in context.Set<AccountDetail>() 
-                                  on order.AccountId equals account.Id                                    
-                                  select new {order,account} ;
+                                  join account in context.Set<AccountDetail>()                                   
+                                  on order.AccountId equals account.Id
+                                   
+                                  join payment in context.Set<OrderPaymentDetail>()
+                                  on order.Id equals payment.OrderId into orderPayment
+                                  from payment in orderPayment.DefaultIfEmpty()
+
+                                  select new { order, account, payment };
 
                 foreach (var joinedLine in joinedLines)
                 {
                     var details = new OrderDetailWithAccount();
                     AutoMapper.Mapper.Map(joinedLine.account, details);
                     AutoMapper.Mapper.Map(joinedLine.order, details);
+                    AutoMapper.Mapper.Map(joinedLine.payment, details);
                     list.Add(details);
                 }
             }

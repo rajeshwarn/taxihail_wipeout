@@ -1,5 +1,6 @@
 using System;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -51,7 +52,30 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string UserAgent { get; set; }
 
-         
+
+
+        public  decimal? PaymentMeterAmount  { get; set; }
+
+        public  decimal? PaymentTipAmount { get; set; }
+
+        public  decimal? PaymentTotalAmount { get; set; }
+
+        
+
+
+        public string CardToken { get; set; }
+        public string PayPalToken { get; set; }
+
+        public PaymentType? PaymentType { get; set; }
+        public PaymentProvider? PaymentProvider { get; set; }
+
+        public string PayPalPayerId { get; set; }
+        public string TransactionId { get; set; }
+        public string AuthorizationCode { get; set; }
+
+        public bool IsCancelled { get; set; }
+        public bool IsCompleted { get; set; }
+
 
     }
 }

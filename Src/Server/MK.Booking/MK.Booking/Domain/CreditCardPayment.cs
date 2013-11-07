@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Domain
         private string _transactionId;
         private string _authorizationCode;        
         private decimal _amount;
+        private decimal _meter;
+        private decimal _tip;
         private bool _isCaptured;
 
         protected CreditCardPayment(Guid id)
@@ -27,7 +29,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, string cardToken,PaymentProvider provider)
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip, string cardToken, PaymentProvider provider)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -37,7 +39,9 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = orderId,
                 TransactionId = transactionId,
                 Amount = amount,
-                CardToken = cardToken,
+                Meter = meter,
+                Tip = tip,
+                CardToken = cardToken,                
                 Provider = provider, 
             });
         }
@@ -55,6 +59,8 @@ namespace apcurium.MK.Booking.Domain
                 TransactionId = _transactionId,
                 AuthorizationCode = authorizationCode,
                 Amount = _amount,
+                Meter = _meter,
+                Tip = _tip,
                 Provider = provider
                 
             });
@@ -66,6 +72,8 @@ namespace apcurium.MK.Booking.Domain
             _orderId = obj.OrderId;
             _transactionId = obj.TransactionId;
             _amount = obj.Amount;
+            _meter = obj.Meter;
+            _tip = obj.Tip;
             
         }
 

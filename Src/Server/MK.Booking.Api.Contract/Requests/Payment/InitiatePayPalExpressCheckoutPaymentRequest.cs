@@ -9,7 +9,11 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
     public class InitiatePayPalExpressCheckoutPaymentRequest : IReturn<PayPalExpressCheckoutPaymentResponse>
     {
         public Guid OrderId { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Amount  { get; set; }
+        public decimal Meter { get; set; }
+        public decimal Tip { get; set; }
+
+
     }
 
     public class PayPalExpressCheckoutPaymentResponse

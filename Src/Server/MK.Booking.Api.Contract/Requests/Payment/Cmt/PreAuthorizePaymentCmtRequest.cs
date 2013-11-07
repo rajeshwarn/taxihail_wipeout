@@ -9,6 +9,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
     [Route("/payments/cmt/preAuthorizePayment", "POST")]
     public class PreAuthorizePaymentCmtRequest : IReturn<PreAuthorizePaymentResponse>
     {
+        public double Tip { get; set; }
+        public double Meter { get; set; }
+
         public double Amount { get; set; }
 
         public string CardToken { get; set; }

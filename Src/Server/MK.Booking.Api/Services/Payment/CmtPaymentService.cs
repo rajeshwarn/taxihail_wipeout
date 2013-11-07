@@ -88,6 +88,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),                            
                             Amount = Convert.ToDecimal( preAuthorizeRequest.Amount ),
                             OrderId = preAuthorizeRequest.OrderId,
+                            Tip = Convert.ToDecimal( preAuthorizeRequest.Tip),
+                            Meter = Convert.ToDecimal( preAuthorizeRequest.Meter),
                             CardToken = preAuthorizeRequest.CardToken,
                             Provider = PaymentProvider.CMT,
                         });

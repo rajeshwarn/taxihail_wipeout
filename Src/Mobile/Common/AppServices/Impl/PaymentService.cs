@@ -112,9 +112,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
-            return GetClient().PreAuthorize(cardToken, amount, orderId);
+            return GetClient().PreAuthorize(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)

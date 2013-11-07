@@ -31,5 +31,10 @@ namespace apcurium.MK.Web.Tests
         {
             return new CmtPaymentClient(BaseUrl, SessionId, new CmtPaymentSettings(), new Logger(), "Test");
         }
+
+        protected override Common.Enumeration.PaymentProvider GetProvider()
+        {
+            return Common.Enumeration.PaymentProvider.CMT;
+        }
     }
 }

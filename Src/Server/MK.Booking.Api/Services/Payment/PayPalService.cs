@@ -55,6 +55,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                                      PaymentId = Guid.NewGuid(),
                                      Token = token,
                                      Amount = request.Amount,
+                                     Meter = request.Meter,
+                                     Tip = request.Tip ,
                                  });
 
             return new PayPalExpressCheckoutPaymentResponse

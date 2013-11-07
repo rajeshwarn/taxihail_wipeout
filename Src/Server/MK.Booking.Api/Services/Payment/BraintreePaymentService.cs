@@ -156,6 +156,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             PaymentId = Guid.NewGuid(),
                             Amount = preAuthorizeRequest.Amount,
+                            Meter = preAuthorizeRequest.Meter,
+                            Tip = preAuthorizeRequest.Tip,
                             TransactionId = result.Target.Id,
                             OrderId = preAuthorizeRequest.OrderId,
                             CardToken = preAuthorizeRequest.CardToken,

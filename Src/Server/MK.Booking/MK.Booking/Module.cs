@@ -89,6 +89,15 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
                 .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
+            AutoMapper.Mapper.CreateMap<OrderPaymentDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.PaymentMeterAmount, opt => opt.MapFrom(m => m.Amount))
+                    .ForMember(d => d.PaymentTotalAmount, opt => opt.MapFrom(m => m.Amount))
+                        
+                    .ForMember(d => d.PaymentType, opt => opt.MapFrom(m => m.Type))
+                    .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Provider ))
+
+                .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Amount));
+
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)

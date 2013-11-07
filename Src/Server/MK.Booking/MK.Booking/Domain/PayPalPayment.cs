@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public PayPalPayment(Guid id, Guid orderId, string token, decimal amount) : this(id)
+        public PayPalPayment(Guid id, Guid orderId, string token, decimal amount, decimal meter, decimal tip) : this(id)
         {
             if(token == null) throw new InvalidOperationException("token cannot be null");
 
@@ -35,7 +35,9 @@ namespace apcurium.MK.Booking.Domain
             {
                 OrderId = orderId,
                 Token = token,
-                Amount = amount
+                Amount = amount,
+                Meter = meter,
+                Tip = tip,
             });
         }
 

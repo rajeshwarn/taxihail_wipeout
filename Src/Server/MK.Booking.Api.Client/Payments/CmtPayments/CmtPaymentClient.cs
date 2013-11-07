@@ -80,11 +80,13 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Client.Post(new PreAuthorizePaymentCmtRequest()
                 {
                     Amount = amount,
+                    Meter = meterAmount,
+                    Tip = tipAmount,
                     CardToken = cardToken,
                     OrderId = orderId
                 });

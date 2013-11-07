@@ -42,11 +42,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 });
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Client.Post(new PreAuthorizePaymentBraintreeRequest()
                 {
                     Amount = (decimal) amount,
+                    Meter = (decimal)meterAmount,
+                    Tip = (decimal)tipAmount,
                     CardToken = cardToken,
                     OrderId = orderId,
                 });

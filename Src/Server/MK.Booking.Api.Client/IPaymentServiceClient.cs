@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Api.Client
         void ResendConfirmationToDriver(Guid orderId);
         TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
         DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken);
-        PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, Guid orderId);
+        PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId);
         CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId);
 	}
 }

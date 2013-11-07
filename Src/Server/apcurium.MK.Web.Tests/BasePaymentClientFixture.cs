@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Data.Entity;
+using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Database;
@@ -112,8 +114,10 @@ namespace apcurium.CMT.Web.Tests
 
             var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "").CardOnFileToken;
 
-            const double amount = 21.56;
-            var response = client.PreAuthorize(token, amount, orderId);
+            const double amount = 22.75;
+            const double meter = 21.25;
+            const double tip = 1.25;
+            var response = client.PreAuthorize(token, amount, meter,tip, orderId);
 
             Assert.True(response.IsSuccessfull);
 
@@ -145,8 +149,11 @@ namespace apcurium.CMT.Web.Tests
 
             var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
-            const double amount = 1.50;
-            var authorization = client.PreAuthorize(token, amount, orderId);
+            const double amount = 22.75;
+            const double meter = 21.25;
+            const double tip = 1.25;
+
+            var authorization = client.PreAuthorize(token, amount,meter,tip, orderId);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);
             
@@ -182,8 +189,11 @@ namespace apcurium.CMT.Web.Tests
 
             var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
-            const double amount = 1.50;
-            var authorization = client.PreAuthorize(token, amount, orderId);
+            const double amount = 12.75;
+            const double meter = 11.25;
+            const double tip = 1.50;
+
+            var authorization = client.PreAuthorize(token, amount, meter, tip, orderId);
 
             Assert.True(authorization.IsSuccessfull, authorization.Message);
 
@@ -192,7 +202,22 @@ namespace apcurium.CMT.Web.Tests
             Assert.True(response.IsSuccessfull, response.Message);
 
             client.ResendConfirmationToDriver(orderId);
+
+
+            using (var context = ContextFactory.Invoke())
+            {
+                var payement = context.Set<OrderPaymentDetail>().Single (p => p.OrderId == orderId);
+
+                Assert.AreEqual(amount, payement.Amount);
+                Assert.AreEqual(meter, payement.Meter);
+                Assert.AreEqual(tip, payement.Tip);
+
+                Assert.AreEqual(PaymentType.CreditCard , payement.Type);
+                Assert.AreEqual(GetProvider(), payement.Provider);
+
+            }
         }
 
+        protected abstract PaymentProvider GetProvider();
     }
 }

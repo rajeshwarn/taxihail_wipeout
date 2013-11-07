@@ -20,5 +20,10 @@ namespace apcurium.MK.Web.Tests
 
             return new BraintreeServiceClient(BaseUrl, SessionId, new BraintreeClientSettings().ClientKey, "Test");
         }
+
+        protected override Common.Enumeration.PaymentProvider GetProvider()
+        {
+            return Common.Enumeration.PaymentProvider.Braintree;
+        }
     }
 }

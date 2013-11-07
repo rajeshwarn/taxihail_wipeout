@@ -27,11 +27,14 @@ namespace apcurium.MK.Booking.EventHandlers
                                  {
                                      PaymentId = @event.SourceId,
                                      Amount = @event.Amount,
+                                     Meter = @event.Meter,
+                                     Tip = @event.Tip ,
                                      TransactionId = @event.TransactionId,
                                      OrderId = @event.OrderId,
                                      CardToken = @event.CardToken,
                                      IsCompleted = false,                                     
-                                     Provider = @event.Provider
+                                     Provider = @event.Provider,
+                                     Type = PaymentType.CreditCard, 
                                  });
             }
         }

@@ -57,14 +57,16 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     var orders = _orderDao.GetAllWithAccountSummary();
                     return orders.Select(x =>
                     {
-                        var userAgent = UserAgentParser.GetOperatingSystem(x.UserAgent);                            
+                        var OperatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
+                        var Phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : "Tel: " + x.Phone.ToSafeString();
+                        var TransactionId =  string.IsNullOrEmpty(  x.TransactionId ) ? "" : "Auth: " + x.TransactionId.ToSafeString();
                         return new
                         {
                             x.Id,
                             x.IBSAccountId,
                             x.IBSOrderId,
                             x.Name,
-                            x.Phone,
+                            Phone,
                             x.Email,
                             PickupDate = x.PickupDate.ToString("d", CultureInfo.InvariantCulture),
                             PickupTime = x.PickupDate.ToString("t", CultureInfo.InvariantCulture),
@@ -76,7 +78,22 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             x.Tip,
                             x.Toll,
                             x.Fare,
-                            userAgent,
+                            
+                            x.PaymentMeterAmount,
+                            x.PaymentTipAmount,
+                            x.PaymentTotalAmount,
+                            x.PaymentType ,
+                            x.PaymentProvider,
+                            TransactionId,
+                            x.AuthorizationCode,
+                            x.CardToken,
+                            
+                            x.PayPalPayerId,
+                            x.PayPalToken,
+                            x.IsCancelled,
+                            x.IsCompleted,
+
+                            OperatingSystem,
                             x.UserAgent
                         };
 

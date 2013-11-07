@@ -16,7 +16,12 @@ namespace apcurium.MK.Booking.Api.Helpers
         public static string GetOperatingSystem(string userAgent)
         {
             var clientOsName = string.Empty;
-            if (userAgent.Contains("Windows 98"))
+
+            if (string.IsNullOrWhiteSpace(userAgent))
+            {
+                clientOsName = "Unknown OS";
+            }
+            else if (userAgent.Contains("Windows 98"))
                 clientOsName = "Windows 98";
             else if (userAgent.Contains("Windows NT 5.0"))
                 clientOsName = "Windows 2000";
