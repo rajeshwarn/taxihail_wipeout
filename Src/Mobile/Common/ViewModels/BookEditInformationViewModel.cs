@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -26,12 +27,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             : base(messageId)
         {
             _accountService = this.GetService<IAccountService>();
+
             Order = JsonSerializer.DeserializeFromString<Order>(order);
             RideSettings = new RideSettingsViewModel( Order.Settings);
-            FirePropertyChanged(() => Vehicles);
-            FirePropertyChanged(() => Payments);
-            FirePropertyChanged(() => VehicleName);
-            FirePropertyChanged(() => ChargeType);
+            RideSettings.OnPropertyChanged().Subscribe(p => 
+                                                       {
+                FirePropertyChanged(()=> RideSettings);
+                FirePropertyChanged(() => Payments);
+                FirePropertyChanged(() => Vehicles);
+                FirePropertyChanged(() => VehicleName);
+                FirePropertyChanged(() => ChargeType);
+            });
+
+
         }
 
         public RideSettingsViewModel RideSettings { get; set; }
