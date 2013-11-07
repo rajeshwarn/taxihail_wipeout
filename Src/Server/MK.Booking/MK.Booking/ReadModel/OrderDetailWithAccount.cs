@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Phone { get; set; }
 
+        public string Vehicle { get; set; }
+
         public int IBSAccountId { get; set; }
 
         public DateTime PickupDate { get; set; }
@@ -40,11 +42,11 @@ namespace apcurium.MK.Booking.ReadModel
 
         public int Status { get; set; }
 
-        public double? Fare { get; set; }
+        public double? MdtFare { get; set; }
 
-        public double? Toll { get; set; }
+        public double? MdtToll { get; set; }
 
-        public double? Tip { get; set; }
+        public double? MdtTip { get; set; }
 
         public bool IsRemovedFromHistory { get; set; }
 
@@ -52,6 +54,22 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string UserAgent { get; set; }
 
+
+        public string VehicleNumber { get; set; }
+
+        public string VehicleType { get; set; }
+
+        public string VehicleMake { get; set; }
+
+        public string VehicleModel { get; set; }
+
+        public string VehicleColor { get; set; }
+
+        public string VehicleRegistration { get; set; }
+
+        public string DriverFirstName { get; set; }
+
+        public string DriverLastName { get; set; }
 
 
         public  decimal? PaymentMeterAmount  { get; set; }

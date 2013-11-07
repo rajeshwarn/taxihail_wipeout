@@ -93,7 +93,7 @@
                         android:width="150dp"
                         android:layout_marginTop="6dp"
                         android:selectAllOnFocus="true"
-                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
+                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}, 'Text' : {'Path':'MeterAmount'}}" />
                 </FrameLayout>
             </LinearLayout>
             <apcurium.mk.booking.mobile.client.controls.TipSlider
@@ -130,7 +130,7 @@
                         android:width="150dp"
                         android:layout_gravity="right"
                         android:selectAllOnFocus="true"
-                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}}" />
+                        local:MvxBind="{'Hint': {'Path': 'PlaceholderAmount', 'Mode':'TwoWay'}, 'Text' : {'Path':'TipAmount'}}" />
                 </FrameLayout>
             </LinearLayout>
             <LinearLayout

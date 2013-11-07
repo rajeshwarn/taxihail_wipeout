@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using log4net;
+using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -17,13 +18,15 @@ namespace apcurium.MK.Booking.Api.Jobs
     {
         private readonly IConfigurationManager _configurationManager;
         readonly ICommandBus _commandBus;
+        private readonly IOrderPaymentDao _orderPayementDao;
         static readonly ILog Logger = LogManager.GetLogger(typeof(OrderStatusUpdater));
         readonly dynamic _resources;
 
-        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus)
+        public OrderStatusUpdater(IConfigurationManager configurationManager, ICommandBus commandBus, IOrderPaymentDao orderPayementDao)
         {
             _configurationManager = configurationManager;
             _commandBus = commandBus;
+            _orderPayementDao = orderPayementDao;
             var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new DynamicResources(applicationKey);
         }
@@ -76,6 +79,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 order.Status = OrderStatus.Completed;
 
+                
+
                 //FormatPrice
                 var total =
                     Params.Get(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip, ibsStatus.VAT)
@@ -91,6 +96,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     description = (string)_resources.OrderStatus_wosDONE;
                     order.FareAvailable = false;
+                }
+                
+                var payment = _orderPayementDao.FindByOrderId(order.OrderId);
+                if (payment != null)
+                {
+                    order.FareAvailable = true;
                 }
             }
 

@@ -52,14 +52,28 @@ namespace apcurium.MK.Booking.ReadModel.Query
                                   on order.Id equals payment.OrderId into orderPayment
                                   from payment in orderPayment.DefaultIfEmpty()
 
-                                  select new { order, account, payment };
+                                  join status in context.Set<OrderStatusDetail>()
+                                  on order.Id equals status.OrderId into statusOrder
+                                  from status in statusOrder.DefaultIfEmpty()
+
+
+                                  select new { order, account, payment, status };
 
                 foreach (var joinedLine in joinedLines)
                 {
                     var details = new OrderDetailWithAccount();
                     AutoMapper.Mapper.Map(joinedLine.account, details);
                     AutoMapper.Mapper.Map(joinedLine.order, details);
-                    AutoMapper.Mapper.Map(joinedLine.payment, details);
+                    if (joinedLine.payment != null)
+                    {
+                        AutoMapper.Mapper.Map(joinedLine.payment, details);
+                    }
+
+                    if (joinedLine.status != null)
+                    {
+                        AutoMapper.Mapper.Map(joinedLine.status, details);
+                    }
+
                     list.Add(details);
                 }
             }

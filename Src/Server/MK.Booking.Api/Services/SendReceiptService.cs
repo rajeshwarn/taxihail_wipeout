@@ -59,10 +59,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             var orderStatus = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
-            if (orderStatus.Status != VehicleStatuses.Common.Done)
-            {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
-            }
+            //if (orderStatus.Status != VehicleStatuses.Common.Done)
+            //{
+            //    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
+            //}
 
             var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
@@ -70,7 +70,15 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
             }
-           
+
+            var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
+
+            var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
+            var fare = ibsOrder.Fare.GetValueOrDefault() > 0 ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
+
+            var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
+            var tip = ibsOrder.Tip.GetValueOrDefault() > 0 ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
+
             var command = new Commands.SendReceipt
             {
                 Id = Guid.NewGuid(), 
@@ -79,9 +87,9 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSOrderId = order.IBSOrderId.Value,
                 TransactionDate = order.PickupDate,
                 VehicleNumber = ibsOrder.VehicleNumber,
-                Fare = ibsOrder.Fare.GetValueOrDefault(),
+                Fare = fare,
                 Toll = ibsOrder.Toll.GetValueOrDefault(),
-                Tip = ibsOrder.Tip.GetValueOrDefault(),
+                Tip = tip,
                 Tax = ibsOrder.VAT.GetValueOrDefault(),
                 
             };

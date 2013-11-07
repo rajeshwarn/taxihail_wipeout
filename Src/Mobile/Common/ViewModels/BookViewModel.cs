@@ -211,7 +211,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     FirePropertyChanged(() => Dropoff);
                 });
 
-            CenterMap(sender is bool && !(bool)sender);
+            bool isUserInitiated = sender is bool && (bool)sender;
+            if (!isUserInitiated)
+            {
+                CenterMap(!isUserInitiated );
+            }
 
             Task.Factory.SafeStartNew(CalculateEstimate);
             FirePropertyChanged(() => CanClearAddress);

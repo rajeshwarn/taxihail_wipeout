@@ -133,34 +133,32 @@ namespace apcurium.MK.Booking.Mobile
                 TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
 
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
-                NavigateToFirstScreen();
+                //NavigateToFirstScreen();
                 RefreshAppData ();
             }
         }
-
-        void NavigateToFirstScreen()
-        {
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
-                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
-                    new MvxShowViewModelRequest(
-                    typeof(LoginViewModel),
-                    null,
-                    true,
-                    MvxRequestedBy.UserAction));
-            } 
-            else
-            {
-
-                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
-                                                                                                          new MvxShowViewModelRequest(
-                    typeof(BookViewModel),
-                    null,
-                        true,
-                        MvxRequestedBy.Unknown));
-
-            }
-        }
-
+//
+//        void NavigateToFirstScreen()
+//        {
+//            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
+//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
+//                    new MvxShowViewModelRequest(
+//                    typeof(LoginViewModel),
+//                    null,
+//                    true,
+//                    MvxRequestedBy.UserAction));
+//            } 
+//            else
+//            {
+//
+//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( new MvxShowViewModelRequest(
+//                    typeof(BookViewModel),
+//                    null,
+//                        true,
+//                        MvxRequestedBy.Unknown));
+//
+//            }
+//        }
         private void LoadAppCache()
         {
             TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();

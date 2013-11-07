@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public PaymentViewModel (string order, string orderStatus, string messageId) : base(messageId)
         {
-			ConfigurationManager.GetPaymentSettings (true);
+			ConfigurationManager.GetPaymentSettings (false);
 
 			Order = JsonSerializer.DeserializeFromString<Order>(order); 
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -108,6 +108,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+
+
+        public string TipAmount
+        {
+            get;
+            set;
+        }
+
+        public string MeterAmount
+        {
+            get;
+            set;
+        }
+
         public PaymentDetailsViewModel PaymentPreferences {
             get;
             private set;
@@ -138,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				MessageService.ShowProgress(true);
 				var paypal = this.GetService<IPayPalExpressCheckoutService>();
-				paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount))
+                paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency (MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency( TipAmount)) )
 					.ToObservable()
 						// Always Hide progress indicator
 						.Do(_=> MessageService.ShowProgress(false), _=> MessageService.ShowProgress(false))
@@ -163,13 +177,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+
 		private void CreditCardFlow()
 		{
 			if(CanProceedToPayment())
 			{
 				using(MessageService.ShowProgress ())
 				{
-					var preAuthResponse = PaymentService.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount, Order.Id);
+
+                    var preAuthResponse = PaymentService.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token,  Amount,CultureProvider.ParseCurrency( MeterAmount) , CultureProvider.ParseCurrency (TipAmount),   Order.Id);
 
 					if (!preAuthResponse.IsSuccessfull)
 					{
