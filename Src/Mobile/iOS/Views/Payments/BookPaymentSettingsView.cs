@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             set{
                 MeterAmountLabel.Text = CultureProvider.FormatCurrency(value);
+                ViewModel.MeterAmount = CultureProvider.FormatCurrency(value);//Todo ugly binding done in code behind
             }
         }
 
@@ -37,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             set{
                 TipAmountLabel.Text = CultureProvider.FormatCurrency(value);
+                ViewModel.TipAmount = CultureProvider.FormatCurrency(value);//Todo ugly binding done in code behind
             }
         }
 
@@ -124,10 +126,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
-                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount")
-                    .Add("Text", "MeterAmount") },
-                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount")
-                    .Add("Text", "TipAmount") },
+                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount")},
+                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
 				{ payPalToggle, 
 					new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay)
 						.Add("Hidden", "PaymentSelectorToggleIsVisible", "BoolInverter")
