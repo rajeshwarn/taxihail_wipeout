@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if ( selected.Content != null )
             {
-                SetAddress(selected.Content, true);
+                SetAddress(selected.Content, !selected.ShouldRecenter);
             }
             else
             {
