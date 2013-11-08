@@ -1,10 +1,11 @@
 // WARNING
 //
 // This file has been generated automatically by Xamarin Studio to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -15,25 +16,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.StackView contentStack { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehiculeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehiculeType { get; set; }
 
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtAprtment { get; set; }
@@ -42,28 +55,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.TextField txtEntryCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtNbPassengers { get; set; }
-
-        [Outlet]
-        apcurium.MK.Booking.Mobile.Client.TextField txtLargeBags { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextField txtLargeBags { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextField txtNbPassengers { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtPhone { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -102,10 +103,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblPassengers = null;
 			}
 
-            if (lblLargeBags != null) {
-                lblLargeBags.Dispose ();
-                lblLargeBags = null;
-            }
+			if (lblLargeBags != null) {
+				lblLargeBags.Dispose ();
+				lblLargeBags = null;
+			}
 
 			if (txtAprtment != null) {
 				txtAprtment.Dispose ();
@@ -122,10 +123,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNbPassengers = null;
 			}
 
-            if (txtLargeBags != null) {
-                txtLargeBags.Dispose ();
-                txtLargeBags = null;
-            }
+			if (txtLargeBags != null) {
+				txtLargeBags.Dispose ();
+				txtLargeBags = null;
+			}
+
+			if (txtName != null) {
+				txtName.Dispose ();
+				txtName = null;
+			}
 
 			if (pickerVehicleType != null) {
 				pickerVehicleType.Dispose ();
@@ -135,11 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (pickerChargeType != null) {
 				pickerChargeType.Dispose ();
 				pickerChargeType = null;
-			}
-
-			if (txtName != null) {
-				txtName.Dispose ();
-				txtName = null;
 			}
 
 			if (lblName != null) {
