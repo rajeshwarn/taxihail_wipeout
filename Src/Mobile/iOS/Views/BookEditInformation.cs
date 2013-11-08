@@ -97,17 +97,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtAprtment.Maybe(x => x.Ended += HandleTouchDown);
             txtEntryCode.Maybe(x => x.Ended += HandleTouchDown);
 
-//            pickerVehicleType.Maybe(x=> x.Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, y=> { ViewModel.SetVehicleTypeId ( y.Id );})); 
-//            pickerChargeType.Maybe(x => x.Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId, y=> { ViewModel.SetChargeTypeId( y.Id ); }));
-//
+            pickerVehicleType.Configure(Resources.RideSettingsVehiculeType, 
+                                        ()=> ViewModel.Vehicles, 
+                                        ViewModel.VehicleTypeId, 
+                                        x => ViewModel.SetVehicleTypeId(x.Id), 
+                                        ViewModel.OnPropertyChanged().Where( property => property == "Vehicles") );
 
-            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ()=> ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
-                ViewModel.SetVehicleTypeId(x.Id);
-            }, ViewModel.OnPropertyChanged().Where( property => property == "Vehicles") );
-
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType,()=>ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
-                ViewModel.SetChargeTypeId(x.Id);
-            }, ViewModel.OnPropertyChanged().Where( property => property == "Payments"));
+            pickerChargeType.Configure(Resources.RideSettingsChargeType,
+                                       ()=>ViewModel.Payments, 
+                                       ViewModel.ChargeTypeId, 
+                                       x => ViewModel.SetChargeTypeId(x.Id), 
+                                       ViewModel.OnPropertyChanged().Where( property => property == "Payments"));
 
             var bindings = new [] {
                 Tuple.Create<object,string>(txtName, "{'Text':{'Path':'Order.Settings.Name'}}"),
