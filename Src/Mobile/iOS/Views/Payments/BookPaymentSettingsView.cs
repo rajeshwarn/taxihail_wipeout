@@ -124,8 +124,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
-                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount") },
-                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
+                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount")
+                    .Add("Text", "MeterAmount") },
+                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount")
+                    .Add("Text", "TipAmount") },
 				{ payPalToggle, 
 					new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay)
 						.Add("Hidden", "PaymentSelectorToggleIsVisible", "BoolInverter")
