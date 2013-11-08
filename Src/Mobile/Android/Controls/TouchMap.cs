@@ -365,11 +365,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private AvailableVehicle[] Clusterize(AvailableVehicle[] vehicles)
         {
-            // Divide the map in 16 cells (4*4)
-            const int numberOfRows = 4;
-            const int numberOfColumns = 4;
+            // Divide the map in 25 cells (5*5)
+            const int numberOfRows = 5;
+            const int numberOfColumns = 5;
             // Maximum number of vehicles in a cell before we start displaying a cluster
-            const int cellThreshold = 4;
+            const int cellThreshold = 1;
 
             var result = new List<AvailableVehicle>();
 

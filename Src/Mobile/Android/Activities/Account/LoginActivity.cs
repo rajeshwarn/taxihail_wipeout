@@ -31,7 +31,7 @@ using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait )]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, NoHistory = true  )]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
         public static LoginActivity TopInstance{get;set;}
