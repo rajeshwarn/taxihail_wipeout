@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 'Dropoff':{'Path':'Dropoff.Model'},
 'MapMoved':{'Path':'SelectedAddress.SearchCommand'},
 'MapCenter':{'Path':'MapCenter'},
-'AvailableVehicles': {'Path': 'AvailableVehicles', 'Mode':'OneWayToSource'},
+'AvailableVehicles': {'Path': 'AvailableVehicles'},
 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}
 }" },
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}, 'Hidden':{'Path':'ShowEstimate', 'Converter':'BoolInverter'}}" },              
