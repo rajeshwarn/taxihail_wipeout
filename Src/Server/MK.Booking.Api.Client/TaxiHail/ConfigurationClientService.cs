@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 
 
-		ClientPaymentSettings _cachedSettings = null;
+		private static ClientPaymentSettings _cachedSettings = null;
         public ClientPaymentSettings GetPaymentSettings(bool cleanCache = false)
 		{
 			if(_cachedSettings == null || cleanCache)

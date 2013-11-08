@@ -34,32 +34,34 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
             switch (request.Target)
             {
-               case DataType.Accounts:
-                    var accounts =  _accountDao.GetAll();
-                    return accounts.Select(x => new{ 
-                        x.Id, 
+                case DataType.Accounts:
+                    var accounts = _accountDao.GetAll();
+                    return accounts.Select(x => new
+                    {
+                        x.Id,
                         x.IBSAccountId,
                         CreateDate = x.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
                         CreateTime = x.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
-                        x.Settings.Name, 
-                        x.Settings.Phone, 
-                        x.Email, 
-                        x.DefaultCreditCard, 
-                        x.DefaultTipPercent, 
-                        x.Language, 
-                        x.TwitterId, 
-                        x.FacebookId, 
-                        x.IsAdmin, 
+                        x.Settings.Name,
+                        x.Settings.Phone,
+                        x.Email,
+                        x.DefaultCreditCard,
+                        x.DefaultTipPercent,
+                        x.Language,
+                        x.TwitterId,
+                        x.FacebookId,
+                        x.IsAdmin,
                         x.IsConfirmed,
-                        x.DisabledByAdmin} );
-               break;
-               case DataType.Orders:
+                        x.DisabledByAdmin
+                    });
+                    break;
+                case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
                     return orders.Select(x =>
                     {
                         var OperatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
                         var Phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : "Tel: " + x.Phone.ToSafeString();
-                        var TransactionId =  string.IsNullOrEmpty(  x.TransactionId ) ? "" : "Auth: " + x.TransactionId.ToSafeString();
+                        var TransactionId = string.IsNullOrEmpty(x.TransactionId) || (x.TransactionId.Trim().Length <= 1) ? "" : "Auth: " + x.TransactionId.ToSafeString();
                         return new
                         {
                             x.Id,
@@ -72,33 +74,42 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             PickupTime = x.PickupDate.ToString("t", CultureInfo.InvariantCulture),
                             CreateDate = x.CreatedDate.Add(offset).ToString("d", CultureInfo.InvariantCulture),
                             CreateTime = x.CreatedDate.Add(offset).ToString("t", CultureInfo.InvariantCulture),
-                            Status = (OrderStatus) x.Status,
+                            Status = (OrderStatus)x.Status,
                             PickupAddress = x.PickupAddress.DisplayAddress,
                             DropOffAddress = x.DropOffAddress.DisplayAddress,
-                            x.Tip,
-                            x.Toll,
-                            x.Fare,
-                            
+                            x.MdtTip,
+                            x.MdtToll,
+                            x.MdtFare,
+
                             x.PaymentMeterAmount,
                             x.PaymentTipAmount,
                             x.PaymentTotalAmount,
-                            x.PaymentType ,
+                            x.PaymentType,
                             x.PaymentProvider,
                             TransactionId,
                             x.AuthorizationCode,
                             x.CardToken,
-                            
+
                             x.PayPalPayerId,
                             x.PayPalToken,
                             x.IsCancelled,
                             x.IsCompleted,
+
+                            x.VehicleNumber,
+                            x.VehicleType,
+                            x.VehicleMake,
+                            x.VehicleModel,
+                            x.VehicleColor,
+                            x.VehicleRegistration,
+                            x.DriverFirstName,
+                            x.DriverLastName,
 
                             OperatingSystem,
                             x.UserAgent
                         };
 
                     });
-               break;
+                    break;
             }
             return new HttpResult(HttpStatusCode.NotFound);
         }

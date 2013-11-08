@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Text;
+using System.ComponentModel;
 
 namespace apcurium.MK.Common.Extensions
 {
     public static class StringExtensions
     {
-		public static double ToDouble(this string instance)
-		{
-			double amount;
-			if(double.TryParse(instance,out amount))
-			{
-				return amount;
-			}
-			return 0;
-		}
+        public static double ToDouble(this string instance)
+        {
+            double amount;
+            if (double.TryParse(instance, out amount))
+            {
+                return amount;
+            }
+            return 0;
+        }
 
         public static long ToLong(this string instance)
         {
@@ -47,7 +48,6 @@ namespace apcurium.MK.Common.Extensions
         {
             return instance.ToCharArray().All(Char.IsDigit);
         }
-
         //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {
@@ -139,7 +139,6 @@ namespace apcurium.MK.Common.Extensions
         {
             return target.Append(chunk, s => !s.EndsWith(chunk));
         }
-
         //Replaces accent characters from a string with the equivalent non accent character
         public static string RemoveDiacritics(this string instance)
         {
@@ -157,7 +156,6 @@ namespace apcurium.MK.Common.Extensions
 
             return (sb.ToString().Normalize(System.Text.NormalizationForm.FormC));
         }
-
 
         public static TEnum ToEnum<TEnum>(this string instance, bool ignoreCase, TEnum @default) where TEnum : struct
         {
@@ -186,14 +184,60 @@ namespace apcurium.MK.Common.Extensions
             return "";
         }
 
-        public static bool TryToParse( this string value, bool defaultValue )
+        public static bool TryToParse(this string value, bool defaultValue)
         {
-            if ( value.IsNullOrEmpty() )
+            if (value.IsNullOrEmpty())
             {
-                return defaultValue ;
+                return defaultValue;
             }
             bool r;
-            return bool.TryParse( value, out r ) ? r : defaultValue;
+            return bool.TryParse(value, out r) ? r : defaultValue;
+        }
+
+        public static T TryToParse<T>(this string value, T defaultValue)
+        {
+            if (value.IsNullOrEmpty())
+            {
+                return defaultValue;
+            }
+
+            if (string.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            TypeConverter converter = GetConverter<T>();
+
+            try
+            {
+                return (T)converter.ConvertFromInvariantString(value);
+            }
+            catch
+            {
+            }
+            return defaultValue;
+
+        }
+
+        private static TypeConverter GetConverter<T>()
+        {
+            //TypeDescriptor.GetConverter(defaultValue); doesn't work on the mobile device because the constructor is removed 
+            //The actual type is not referenced so the linker removes it 
+
+            var t = typeof(T);
+            if (t.Equals(typeof(bool)))
+            {
+                return new BooleanConverter();
+            }
+            else if (t.Equals(typeof(double)))
+            {
+                return new  DoubleConverter();
+            }
+
+            else if (t.Equals(typeof(decimal)))
+            {
+                return new  DecimalConverter();
+            }
+                
+            throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
         }
 
         public static string GetValue(this string instance, string fallback)
@@ -202,8 +246,5 @@ namespace apcurium.MK.Common.Extensions
                        ? fallback
                        : instance;
         }
-
-
-
     }
 }

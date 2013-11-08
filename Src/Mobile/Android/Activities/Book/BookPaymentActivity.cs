@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return CultureProvider.ParseCurrency(_tipAmountTextView.Text);
 			}
 			set{
+
 				_tipAmountTextView.Text = CultureProvider.FormatCurrency(value);
 			}
 		}

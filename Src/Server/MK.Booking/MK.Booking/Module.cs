@@ -85,18 +85,30 @@ namespace apcurium.MK.Booking
 
             AutoMapper.Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
 
-            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
+            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.MdtFare, opt => opt.MapFrom(m => m.Fare))
+                .ForMember(d => d.MdtTip, opt => opt.MapFrom(m => m.Tip))
+                .ForMember(d => d.MdtToll, opt => opt.MapFrom(m => m.Toll));
+
             AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
                 .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
+                
             AutoMapper.Mapper.CreateMap<OrderPaymentDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.PaymentMeterAmount, opt => opt.MapFrom(m => m.Amount))
+                    .ForMember(d => d.PaymentMeterAmount, opt => opt.MapFrom(m => m.Meter))
                     .ForMember(d => d.PaymentTotalAmount, opt => opt.MapFrom(m => m.Amount))
-                        
+                    .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Tip))                                                           
                     .ForMember(d => d.PaymentType, opt => opt.MapFrom(m => m.Type))
-                    .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Provider ))
+                    .ForMember(d => d.PaymentProvider, opt => opt.MapFrom(m => m.Provider ));
 
-                .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Amount));
+            AutoMapper.Mapper.CreateMap<OrderStatusDetail, OrderDetailWithAccount>()
+                    .ForMember(d => d.VehicleType, opt => opt.MapFrom(m => m.DriverInfos.VehicleType ))
+                    .ForMember(d => d.VehicleColor, opt => opt.MapFrom(m => m.DriverInfos.VehicleColor))
+                    .ForMember(d => d.VehicleMake, opt => opt.MapFrom(m => m.DriverInfos.VehicleMake))
+                    .ForMember(d => d.VehicleModel, opt => opt.MapFrom(m => m.DriverInfos.VehicleModel))
+                    .ForMember(d => d.DriverFirstName, opt => opt.MapFrom(m => m.DriverInfos.FirstName))
+                    .ForMember(d => d.DriverLastName, opt => opt.MapFrom(m => m.DriverInfos.LastName))
+                    .ForMember(d => d.VehicleRegistration, opt => opt.MapFrom(m => m.DriverInfos.VehicleRegistration));
 
         }
 

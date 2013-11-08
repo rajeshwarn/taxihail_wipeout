@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Data.SqlTypes;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
@@ -50,13 +51,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 // Create an empty OrderStatusDetail row
                 context.Save(new OrderStatusDetail
                 {
-                     OrderId = @event.SourceId,
-                     AccountId = @event.AccountId,
-                     IBSOrderId = @event.IBSOrderId,
-                     Status = OrderStatus.Created,
-                     IBSStatusDescription = "Processing your order",
-                     PickupDate = @event.PickupDate,
-                     Name = @event.Settings != null ? @event.Settings.Name : null
+                    OrderId = @event.SourceId,
+                    AccountId = @event.AccountId,
+                    IBSOrderId = @event.IBSOrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusDescription = "Processing your order",
+                    PickupDate = @event.PickupDate,
+                    Name = @event.Settings != null ? @event.Settings.Name : null
                 });
             }
 
@@ -86,14 +87,17 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
+                var payment = context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == @event.SourceId);
                 order.Status = (int)OrderStatus.Completed;
                 order.Fare = @event.Fare;
-                order.Toll = @event.Toll;
                 order.Tip = @event.Tip;
+                order.Toll = @event.Toll;
                 order.Tax = @event.Tax;
                 context.Save(order);
             }
         }
+
+
 
         public void Handle(OrderRemovedFromHistory @event)
         {
@@ -161,8 +165,8 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
-                                               ? (DateTime) SqlDateTime.MinValue
+                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
+                                               ? (DateTime)SqlDateTime.MinValue
                                                : @event.Status.PickupDate;
                 var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
                 if (details == null)
@@ -182,7 +186,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.SaveChanges();
             }
         }
-        
+
         public void Handle(OrderVehiclePositionChanged @event)
         {
             using (var context = _contextFactory.Invoke())

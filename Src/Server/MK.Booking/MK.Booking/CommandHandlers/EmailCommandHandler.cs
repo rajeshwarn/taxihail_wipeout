@@ -236,23 +236,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             var messageSubject = _templateService.Render(subjectTemplate, templateData);
             var messageBody = _templateService.Render(bodyTemplate, templateData);
 
-#if DEBUG
-            try
-            {
-
-                using (var file = new StreamWriter("email.html"))
-                {
-                    file.Write(messageBody);
-                }
-            }
-            catch
-            {
-
-
-            }
-#endif
-
-
             var mailMessage = new MailMessage(@from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: to,
                                               subject: messageSubject,

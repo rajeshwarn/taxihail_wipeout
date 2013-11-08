@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
           IEventHandler<OrderCompleted>,
+        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
+        IEventHandler<CreditCardPaymentCaptured>,
           IEventHandler<OrderStatusChanged>
     {
         readonly Func<BookingDbContext> _contextFactory;
@@ -39,62 +41,105 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
         }
 
+        public void Handle(CreditCardPaymentCaptured @event)
+        {
+            SendReceipt(@event.OrderId);            
+        }
+
+        public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
+        {
+            SendReceipt(@event.OrderId);
+        }
+
+        private void SendReceipt(Guid orderId)
+        {
+            double? mdtFare;
+            double? mdtTip;
+            double? mdtToll;
+            double? mdtTax;
+
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+                mdtFare = order.Fare;
+                mdtTip = order.Tip;
+                mdtToll = order.Toll;
+                mdtTax = order.Tax;
+            }
+
+            SendReceipt(orderId, mdtFare, mdtTip, mdtToll, mdtTax);
+        }
+
+
         public void Handle(OrderCompleted @event)
+        {
+                          
+            SendReceipt(@event.SourceId, @event.Fare, @event.Tip, @event.Toll, @event.Tax);            
+        }
+
+        private void SendReceipt(Guid orderId, double? mdtFare, double? mdtTip, double? mdtToll, double? mdtTax)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-
+                var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                     if (orderStatus.IBSStatusId == "wosDONE" && @event.Fare.GetValueOrDefault() > 0)
-                     {
-                         
-                         var account = context.Find<AccountDetail>(orderStatus.AccountId);
-                         var command = new SendReceipt
-                         {
-                             Id = Guid.NewGuid(),
-                             OrderId = @event.SourceId,
-                             EmailAddress = account.Email,
-                             IBSOrderId = orderStatus.IBSOrderId.GetValueOrDefault(),
-                             TransactionDate = orderStatus.PickupDate,
-                             VehicleNumber = orderStatus.VehicleNumber,
-                             Fare = @event.Fare.GetValueOrDefault(),
-                             Toll = @event.Toll.GetValueOrDefault(),
-                             Tip = @event.Tip.GetValueOrDefault(),
-                             Tax = @event.Tax.GetValueOrDefault(),
-                         };
+                    var orderPayment =
+                        context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == orderStatus.OrderId);
+                    if (orderStatus.IBSStatusId == "wosDONE" &&
+                        (mdtFare.GetValueOrDefault() > 0 || ((orderPayment != null) && (orderPayment.Amount > 0))))
+                    {
+                        var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
+                        var fare = mdtFare.GetValueOrDefault() > 0 ? mdtFare.GetValueOrDefault() : paidFare;
+
+                        var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
+                        var tip = mdtTip.GetValueOrDefault() > 0 ? mdtTip.GetValueOrDefault() : paidTip;
+
+                        var account = context.Find<AccountDetail>(orderStatus.AccountId);
+                        var command = new SendReceipt
+                        {
+                            Id = Guid.NewGuid(),
+                            OrderId = orderId,
+                            EmailAddress = account.Email,
+                            IBSOrderId = orderStatus.IBSOrderId.GetValueOrDefault(),
+                            TransactionDate = orderStatus.PickupDate,
+                            VehicleNumber = orderStatus.VehicleNumber,
+                            Fare = fare,
+                            Toll = mdtToll.GetValueOrDefault(),
+                            Tip = tip,
+                            Tax = mdtTax.GetValueOrDefault(),
+                        };
 
 #warning Copy and paste
-                         var orderPayement = _orderPaymentDao.FindByOrderId(@event.SourceId);
-                         if (orderPayement != null)
-                         {
-                             command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
-                                 orderPayement.Amount,
-                                 orderPayement.TransactionId,
-                                 orderPayement.AuthorizationCode,
-                                 orderPayement.Type == PaymentType.CreditCard ?  "Credit Card" : orderPayement.Type.ToString());
+                        var orderPayement = _orderPaymentDao.FindByOrderId(orderId);
+                        if (orderPayement != null)
+                        {
+                            command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                                orderPayement.Amount,
+                                orderPayement.TransactionId,
+                                orderPayement.AuthorizationCode,
+                                orderPayement.Type == PaymentType.CreditCard
+                                    ? "Credit Card"
+                                    : orderPayement.Type.ToString());
 
-                             if (orderPayement.CardToken.HasValue())
-                             {
-                                 var creditCard = _creditCardDao.FindByToken(orderPayement.CardToken);
-                                 if (creditCard != null)
-                                 {
-                                     command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                                     command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                                     command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
-                                 }
-                             }
-
-                         }
-
-                         
+                            if (orderPayement.CardToken.HasValue())
+                            {
+                                var creditCard = _creditCardDao.FindByToken(orderPayement.CardToken);
+                                if (creditCard != null)
+                                {
+                                    command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+                                    command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+                                    command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+                                }
+                            }
+                        }
 
 
-                         _commandBus.Send(command);
-                     }
+                        _commandBus.Send(command);
+                    }
                 }
             }
+
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -133,5 +178,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 }
             }
         }
+
+      
     }
 }

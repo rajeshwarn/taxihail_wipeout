@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
@@ -47,6 +48,19 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (payment == null) throw new InvalidOperationException("Payment not found");
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
+
+                var order = context.Set<OrderDetail>().Single(o=>o.Id == payment.OrderId );
+
+                if (!order.Fare.HasValue || order.Fare == 0)
+                {
+                    order.Fare = Convert.ToDouble( payment.Meter );
+                }
+
+                if (!order.Tip.HasValue || order.Tip == 0)
+                {
+                    order.Tip = Convert.ToDouble(payment.Tip);
+                }
+
                 context.SaveChanges();
             }
         }
