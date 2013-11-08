@@ -89,15 +89,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             LoadLastActiveOrder();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
-            {
-                IsExecuting = true,
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address)
-            {
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
+            ClearAddresses();
             
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
@@ -139,11 +131,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ForceRefresh();
         }
 
+        void ClearAddresses()
+        {
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address) {
+                IsExecuting = true,
+                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
+            };
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address) {
+                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
+            };
+        }
+
         private void AppActivated()
         {
             LocationService.GetNextPosition(new TimeSpan(0,0,2), 20).Subscribe(p =>
             {
-                InvokeOnMainThread( () => Load() );
+                NewOrder();
             });
             
             
