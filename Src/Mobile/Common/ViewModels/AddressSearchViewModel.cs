@@ -225,13 +225,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 placeAddress.FullAddress = address.Address.FullAddress;
                             }
                             RequestClose (this);
-                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId)));
+                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId, true)));
                         } else if (address.Address.AddressType == "localContact") {
 
                             var addresses = GeolocService.SearchAddress (address.Address.FullAddress);
                             if (addresses.Any()) {
                                 RequestClose (this);
-                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
+                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId, true)));
                             } else {
                                     
                                 var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverTitle");
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         } else {
                             RequestClose (this);
                                 
-                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId)));
+                        InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId, true)));
                         }
                     }));
             }

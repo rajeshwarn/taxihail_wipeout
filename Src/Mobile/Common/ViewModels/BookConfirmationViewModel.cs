@@ -222,6 +222,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                 Order.Settings.LargeBags = result.Settings.LargeBags;
                                                                 InvokeOnMainThread(() =>
                                                                 {
+                                                                    FirePropertyChanged(()=> RideSettings);
                                                                     FirePropertyChanged(() => AptRingCode);
                                                                     FirePropertyChanged(() => BuildingName);
                                                                     FirePropertyChanged(() => OrderPassengerNumber);

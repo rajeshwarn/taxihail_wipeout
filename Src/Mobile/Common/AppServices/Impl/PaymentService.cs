@@ -38,13 +38,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     public class PaymentService : BaseService, IPaymentService
     {
         IConfigurationManager _configurationManager;
-        string _baseUrl; 
+        string _baseUrl;
         string _sessionId;
         ICacheService _cache;
         private const string PayedCacheSuffix = "_Payed";
         ILogger _logger;
 
-        public PaymentService(string url, string sessionId,  IConfigurationManager configurationManager, ICacheService cache, ILogger logger)
+        public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache, ILogger logger)
         {
             _logger = logger;
             _baseUrl = url;
@@ -53,21 +53,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _configurationManager = configurationManager;
         }
 
-        
         public double? GetPaymentFromCache(Guid orderId)
         {
             var result = _cache.Get<string>(orderId + PayedCacheSuffix);
             double amount;
 
-            if(double.TryParse(result,out amount))
+            if (double.TryParse(result, out amount))
             {
                 return amount;
             }
             return null;
         }
+
         public void SetPaymentFromCache(Guid orderId, double amount)
         {
-            _cache.Set(orderId+PayedCacheSuffix, amount.ToString());            
+            _cache.Set(orderId + PayedCacheSuffix, amount.ToString());            
         }
 
         public IPaymentServiceClient GetClient()
@@ -76,31 +76,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var settings = _configurationManager.GetPaymentSettings();
 
-            var braintreeServiceClient = new BraintreeServiceClient(_baseUrl,_sessionId,settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
-            var cmtServiceClient = new CmtPaymentClient(_baseUrl,_sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent );
+
 
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return braintreeServiceClient;
+                    return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);;
 
-                    case PaymentMethod.Cmt:
-                    return cmtServiceClient;
+                case PaymentMethod.Cmt:
+                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
 
-                    case PaymentMethod.Fake:
+                case PaymentMethod.Fake:
                     return new FakePaymentClient();
-                    default:
+                default:
                     throw new Exception(onErrorMessage);
             }
         }
-
 
         public void ResendConfirmationToDriver(Guid orderId)
         {
             GetClient().ResendConfirmationToDriver(orderId);
         }
-
-
 
         public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
@@ -122,9 +118,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return GetClient().CommitPreAuthorized(transactionId);
 
 
-        }   
-
-
+        }
     }
 }
 

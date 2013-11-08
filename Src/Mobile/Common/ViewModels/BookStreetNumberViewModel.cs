@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile
                 return GetCommand(() =>
                                   {
 
-                    MessengerHub.Publish(new AddressSelected(this, null,_ownerId));                                                        
+                    MessengerHub.Publish(new AddressSelected(this, null,_ownerId,false));                                                        
                     RequestClose( this );
                 });
             }
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile
                 return GetCommand(() => 
                 {
                     Model.UpdateStreetOrNumberBuildingName(StreetNumberOrBuildingName);
-                    MessengerHub.Publish(new AddressSelected(this, Model,_ownerId));                    
+                    MessengerHub.Publish(new AddressSelected(this, Model,_ownerId,true));                    
                 });
             }
         }
