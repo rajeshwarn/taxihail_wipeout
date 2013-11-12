@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Jobs;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -16,12 +19,14 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
+        private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
 
-        public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao)
+        public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;
             _accountDao = accountDao;
+            _updateOrderStatusJob = updateOrderStatusJob;
             _commandBus = commandBus;
         }
 
@@ -56,10 +61,24 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
+            
+
             var command = new Commands.CancelOrder {Id = Guid.NewGuid(), OrderId = request.OrderId};
             _commandBus.Send(command);
-            
+
+            UpdateStatusAsync();
+
             return new HttpResult(HttpStatusCode.OK);
+        }
+        
+        private void UpdateStatusAsync()
+        {
+            new TaskFactory().StartNew(() =>
+            {
+                //We have to wait for the order to be completed.
+                Thread.Sleep(750);
+                _updateOrderStatusJob.CheckStatus();
+            });
         }
     }
 }

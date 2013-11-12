@@ -3,6 +3,10 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Common.IoC;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.ServiceInterface;
@@ -35,14 +39,16 @@ namespace apcurium.MK.Booking.Api.Services
         private ReferenceDataService _referenceDataService;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
         private IRuleCalculator _ruleCalculator;
+        private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
 
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IAccountDao accountDao, 
                                     IConfigurationManager configManager,
                                     ReferenceDataService referenceDataService,
-             IStaticDataWebServiceClient staticDataWebServiceClient,
-            IRuleCalculator ruleCalculator)
+                                    IStaticDataWebServiceClient staticDataWebServiceClient,
+                                    IRuleCalculator ruleCalculator,
+                                    IUpdateOrderStatusJob updateOrderStatusJob)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -51,6 +57,7 @@ namespace apcurium.MK.Booking.Api.Services
             _configManager = configManager;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _ruleCalculator = ruleCalculator;
+            _updateOrderStatusJob = updateOrderStatusJob;
         }
 
         public override object OnPost(CreateOrder request)
@@ -109,7 +116,23 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(emailCommand);
             }
 
+
+            UpdateStatusAsync();
+            
+
+            
+
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
+        }
+
+        private void UpdateStatusAsync()
+        {
+            new TaskFactory().StartNew(() =>
+            {
+                //We have to wait for the order to be completed.
+                Thread.Sleep(750);
+                _updateOrderStatusJob.CheckStatus();
+            });
         }
 
         private DateTime GetCurrentOffsetedTime()
