@@ -136,7 +136,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             RectangleF activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
             // activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
-            
+			activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
+
             // Check if the activeField will be partially or entirely covered by the keyboard
             if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
             {
