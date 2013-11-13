@@ -18,27 +18,11 @@ using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
-
     public class CreateOrderInfo 
     {
-        public string PassengerName
-        {
-            get;
-            set;
-        }
-
-        public bool IsPendingCreation
-        {
-            get;
-            set;
-        }
-
-        public CallboxOrderViewModel Order
-        {
-            get;
-            set;
-        }
-
+		public string PassengerName { get; set; }
+		public bool IsPendingCreation { get; set; }
+		public CallboxOrderViewModel Order { get; set; }
     }
 
     public class CallboxOrderListViewModel : BaseCallboxViewModel
@@ -61,11 +45,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             _orderToCreate = null;
         }
 
-        public CallboxOrderListViewModel(string passengerName)
-            : this()
+		public CallboxOrderListViewModel(string passengerName) : this()
         {
             _orderToCreate = new CreateOrderInfo { PassengerName = passengerName, IsPendingCreation = true }; 
-
         }
 
         public ObservableCollection<CallboxOrderViewModel> Orders
@@ -86,10 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
             _orderNotified = new List<int?>();
 
-
-
             _refreshTimer = Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(a => RefreshOrderStatus());                           
-
 
             _token = this.MessengerHub.Subscribe<OrderDeleted>(orderId =>
             {
@@ -99,9 +78,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             if (_orderToCreate != null )
             {
                 CreateOrder(_orderToCreate.PassengerName);
-
             }
-
         }
 
         private void RefreshOrderStatus()
@@ -128,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                         Orders.Add(_orderToCreate.Order);
                     }
 
-
                     Orders.AddRange(orderStatus.Select(status => new CallboxOrderViewModel()
                     {
                         OrderStatus = status,
@@ -144,14 +120,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                         Close();
                     }
 
-                    foreach (var order in Orders)
-                    {
-                        if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !_orderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
-                        {
-                            _orderNotified.Add(order.IbsOrderId);
-                            OrderCompleted(this, null);
-                        }
-                    }
+					if(Orders.None(x => BookingService.IsCallboxStatusCompleted(x.OrderStatus.IBSStatusId)))
+					{
+						NoMoreTaxiWaiting(this, null);
+					}
+					else
+					{
+						foreach (var order in Orders)
+						{
+							if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !_orderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
+							{
+								_orderNotified.Add(order.IbsOrderId);
+								OrderCompleted(this, null);
+							}
+						}
+					}
                 });
             }
             catch (WebServiceException e)
@@ -166,8 +149,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                             .Subscribe(a => RefreshOrderStatus());                           
                 }
             }
-             
-           
         }
 
         protected override void Close()
@@ -191,8 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 return this.GetCommand(() => this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
                                                                                     Resources.GetString("BookTaxiPassengerName"), 
                                                                                     Resources.GetString("Ok"), 
-
-                                                                                    passengerName => CreateOrder(passengerName)));
+ 																					passengerName => CreateOrder(passengerName)));
             }
         }
 
@@ -200,39 +180,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return this.GetCommand<Guid>(orderId => this.MessageService.ShowMessage(this.Resources.GetString("CancelOrderTitle"), 
-                                                                                        this.Resources.GetString("CancelOrderMessage"), 
-                                                                                        this.Resources.GetString("Yes"), ()
-                    =>
-                {
+                return this.GetCommand<Guid>(orderId => 
+					this.MessageService.ShowMessage(this.Resources.GetString("CancelOrderTitle"), 
+                                                    this.Resources.GetString("CancelOrderMessage"), 
+													this.Resources.GetString("Yes"), () => 
+						{
+							MessageService.ShowProgress(true);
 
-                    MessageService.ShowProgress(true);
-
-                    try
-                    {
-                        BookingService.CancelOrder(orderId);
-                        RemoveOrderFromList(orderId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Thread.Sleep( 500 );
-                        try
-                        {
-                            BookingService.CancelOrder(orderId);
-                            RemoveOrderFromList(orderId);
-                        }
-                        catch 
-                        {
-                            MessageService.ShowMessage(this.Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Resources.GetString("ErrorCancellingOrderTitle"));
-                        }
-                    }
-                    finally
-                    {
-                       
-                        MessageService.ShowProgress(false);
-                    }
-			
-                }, this.Resources.GetString("No"), () => { }));
+		                    try
+		                    {
+		                        BookingService.CancelOrder(orderId);
+		                        RemoveOrderFromList(orderId);
+		                    }
+		                    catch (Exception ex)
+		                    {
+		                        Thread.Sleep( 500 );
+		                        try
+		                        {
+		                            BookingService.CancelOrder(orderId);
+		                            RemoveOrderFromList(orderId);
+		                        }
+		                        catch 
+		                        {
+		                            MessageService.ShowMessage(this.Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Resources.GetString("ErrorCancellingOrderTitle"));
+		                        }
+		                    }
+		                    finally
+		                    {
+		                        MessageService.ShowProgress(false);
+		                    }
+						}, this.Resources.GetString("No"), () => { }));
             }
         }
 
@@ -253,13 +230,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                         Close();
                                     }
                                 });
-
         }
 
         private void CreateOrder(string passengerName)
-        {
-                            
-                      
+        {        
             MessageService.ShowProgress(true);
 
             if ( _orderToCreate == null )
@@ -271,7 +245,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 try
                 {
-              
                     var pickupAddress = AccountService.GetFavoriteAddresses().FirstOrDefault();
 
                     var newOrderCreated = new CreateOrder();
@@ -279,7 +252,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     newOrderCreated.Settings = AccountService.CurrentAccount.Settings;
                     newOrderCreated.PickupAddress = pickupAddress;
                     newOrderCreated.PickupDate = DateTime.Now;
-                    if (!string.IsNullOrEmpty(passengerName))
+                    
+					if (!string.IsNullOrEmpty(passengerName))
                     {
                         newOrderCreated.Note = string.Format(Resources.GetString("Callbox.passengerName"), passengerName);
                         newOrderCreated.Settings.Name = passengerName;
@@ -292,18 +266,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                     var orderInfo = BookingService.CreateOrder(newOrderCreated);
 
-                    InvokeOnMainThread ( () =>
-                                        {                    
-                    if (pickupAddress != null)
-                    {
-                           
-              
-                        
-
-                        if (orderInfo.IBSOrderId.HasValue
-                            && orderInfo.IBSOrderId > 0)
-                        {
-                            orderInfo.Name = newOrderCreated.Settings.Name;
+                    InvokeOnMainThread (() =>
+                    {                    
+	                    if (pickupAddress != null)
+	                    {
+							if (orderInfo.IBSOrderId.HasValue && orderInfo.IBSOrderId > 0)
+                			{
+                            	orderInfo.Name = newOrderCreated.Settings.Name;
                                 var o = new CallboxOrderViewModel()
                                 {
                                     CreatedDate = DateTime.Now,
@@ -316,16 +285,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                 {
                                     _orderToCreate.Order  = o;
                                 }
-                                Orders.Add(o);
 
-                        }
-                                        
-               
-                    }
-                    else
-                    {
-                        MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), Resources.GetString("NoPickupAddress"));
-                    }
+                                Orders.Add(o);
+                        	}
+                    	}
+	                    else
+	                    {
+	                        MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), Resources.GetString("NoPickupAddress"));
+	                    }
                     });
                 }
                 catch (Exception ex)
@@ -343,12 +310,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     MessageService.ShowProgress(false);
                 }
             }).HandleErrors();
-
-         
         }
 
         public delegate void OrderHandler(object sender,EventArgs args);
 
         public event OrderHandler OrderCompleted;
+		public event OrderHandler NoMoreTaxiWaiting;
     }
 }

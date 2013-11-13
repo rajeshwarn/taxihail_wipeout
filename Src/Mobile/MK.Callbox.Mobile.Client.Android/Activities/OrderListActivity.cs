@@ -19,7 +19,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
     public class OrderListActivity : MvxBindingActivityView<CallboxOrderListViewModel>
     {
         private const int NbClick = 5;
-        private TimeSpan TimeBlinkScreenLongSec = TimeSpan.FromSeconds(30);
         private TimeSpan TimeOut = TimeSpan.FromSeconds(5);
         private TimeSpan BlinkMs = TimeSpan.FromMilliseconds(500);
 
@@ -47,6 +46,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             _mediaPlayer = MediaPlayer.Create(this, Resource.Raw.vehicle);
 
             ViewModel.OrderCompleted += ViewModelOnOrderCompleted; 
+			ViewModel.NoMoreTaxiWaiting += ViewModelOnNoMoreTaxiWaiting;
 
             FindViewById<LinearLayout>(Resource.Id.frameLayout).Touch += (sender, e) => DisposeBlinkScreen();
 
@@ -57,30 +57,35 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
         private void ViewModelOnOrderCompleted(object sender, EventArgs args)
         {
-                _mediaPlayer.Start();
-                var isRed = false;
-                if (_blinkTimer != null)
-                {
-                    _blinkTimer.Dispose();
-                }
-              _blinkTimer = Observable.Timer(TimeSpan.Zero, BlinkMs).Select(c => new Unit())
-                                                    .Subscribe(unit => RunOnUiThread(() =>
-                                                     {
-                                                         if (isRed)
-                                                         {
-                                                            this.FindViewById<LinearLayout>(Resource.Id.frameLayout).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.background_empty));
-                                                         }
-                                                         else
-                                                         {
-                                                            this.FindViewById<LinearLayout>(Resource.Id.frameLayout).SetBackgroundColor(Android.Graphics.Color.Red);
-                                                         }
-                                                         isRed = !isRed;
-                                                     }));
+			_mediaPlayer.Start();
 
-                Observable.Timer(TimeBlinkScreenLongSec).Select(c => new Unit())
-                .Subscribe(unit => DisposeBlinkScreen());
+			var isRed = false;
+			if (_blinkTimer != null)
+			{
+			    _blinkTimer.Dispose();
+			}
+            
+			_blinkTimer = Observable.Timer(TimeSpan.Zero, BlinkMs)
+								.Select(c => new Unit())
+								.Subscribe(unit => RunOnUiThread(() =>
+                                {
+                                     if (isRed)
+                                     {
+                                        this.FindViewById<LinearLayout>(Resource.Id.frameLayout).SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.background_empty));
+                                     }
+                                     else
+                                     {
+                                        this.FindViewById<LinearLayout>(Resource.Id.frameLayout).SetBackgroundColor(Android.Graphics.Color.Red);
+                                     }
+
+                                     isRed = !isRed;
+                                 }));
         }
 
+		private void ViewModelOnNoMoreTaxiWaiting(object sender, EventArgs args)
+		{
+			DisposeBlinkScreen();
+		}
 
         private void DisposeBlinkScreen()
         { 
@@ -99,6 +104,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
             }
             base.OnDestroy();
             ViewModel.OrderCompleted -= ViewModelOnOrderCompleted; 
+			ViewModel.NoMoreTaxiWaiting -= ViewModelOnNoMoreTaxiWaiting; 
 			ViewModel.UnsubscribeToken();
         }
     }

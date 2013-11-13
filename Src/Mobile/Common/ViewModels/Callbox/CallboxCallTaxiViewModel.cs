@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                             { 
                                                   try
                                                     {
-                            RequestClose( this );
+                            							RequestClose( this );
                                                         RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);                                                        
                                                     }
                                                    catch( Exception e )

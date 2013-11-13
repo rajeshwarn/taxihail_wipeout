@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -22,8 +21,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class StartCallboxNavigation : MvxApplicationObject
-                    , IMvxStartNavigation
+	public class StartCallboxNavigation : MvxApplicationObject, IMvxStartNavigation
     {
         public void Start()
         {
@@ -31,11 +29,13 @@ namespace apcurium.MK.Booking.Mobile
 
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
             
+			var activeOrderStatusDetails = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus();
+
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
                 RequestNavigate<CallboxLoginViewModel>();
             }
-            else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+			else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
             {
                 RequestNavigate<CallboxOrderListViewModel>();
             }
@@ -52,6 +52,4 @@ namespace apcurium.MK.Booking.Mobile
             get { return true; }
         }
     }
-
 }
-
