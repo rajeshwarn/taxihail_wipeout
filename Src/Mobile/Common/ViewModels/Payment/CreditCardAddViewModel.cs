@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using System.Text.RegularExpressions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -84,6 +85,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         public CreditCardInfos Data { get; set; }
+
+        public string CreditCardNumber
+        {
+            get{ return Data.CardNumber;}
+            set
+            {
+                Data.CardNumber = value;
+
+                //Choose type
+                string visaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
+                Regex visaRgx = new Regex(visaPattern, RegexOptions.IgnoreCase);
+
+                MatchCollection matches = visaRgx.Matches(Data.CardNumber);
+
+                if (matches.Count > 0)
+                {
+                    this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "Visa").Id;
+
+                }
+                else
+                {
+                    string masterPattern = "^5[1-5][0-9]{14}$";
+                    Regex masterRgx = new Regex(masterPattern, RegexOptions.IgnoreCase);
+
+                    matches = masterRgx.Matches(Data.CardNumber);
+                    if (matches.Count > 0)
+                    {
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "MasterCard").Id;
+                    }
+                    else
+                    {
+                        string amexPattern = "^3[47][0-9]{13}$";
+                        Regex amexRgx = new Regex(amexPattern, RegexOptions.IgnoreCase);
+
+                        matches = amexRgx.Matches(Data.CardNumber);
+                        if (matches.Count > 0)
+                        {
+                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "Amex").Id;
+                        }
+                    }
+                }
+                FirePropertyChanged("CreditCardNumber");
+            }
+        }
 
 		int _creditCardCategory;
 		public int CreditCardCategory {

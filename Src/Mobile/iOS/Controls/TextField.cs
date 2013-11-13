@@ -130,6 +130,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         protected UIImageView Image { get; set; }
 
+        private string _imageSource;
+        public string ImageSource
+        {
+            get {return _imageSource;}
+            set
+            {
+                _imageSource = value;
+                SetImage(value);
+            }
+        }
+
         public void SetImage(string image)
         {
             var img = UIImage.FromFile(image);
