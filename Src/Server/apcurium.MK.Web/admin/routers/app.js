@@ -17,6 +17,7 @@
             "security": "manageSecurity",
             "confirmemail": "confirmEmail",
             "disableemail": "disableEmail",
+            "sendpushnotification": "sendPushNotification",
             
             /* settings */
             "settings" : "manageCompanySettings",
@@ -97,6 +98,10 @@
         
         disableEmail: function () {
             action(TaxiHail.SecurityController, 'disableemail');
+        },
+
+        sendPushNotification: function () {
+            action(TaxiHail.SecurityController, 'sendpushnotification');
         },
 
         manageTariffs: function() {

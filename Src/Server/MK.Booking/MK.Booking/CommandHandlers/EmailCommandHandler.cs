@@ -198,7 +198,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 cardOnFileTransactionId = command.CardOnFileInfo.TransactionId;
                                                         
             }
-            
+
+            var hasDropOffAddress = command.DropOffAddress != null && !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
 
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
@@ -220,6 +221,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        CardNumber = cardNumber,
                                        CardOnFileTransactionId = cardOnFileTransactionId,
                                        CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
+
+                                       PickupAddress = command.PickupAddress.DisplayAddress,
+                                       DropOffAddress = hasDropOffAddress ? command.DropOffAddress.DisplayAddress : "-",
                                    };
 
 

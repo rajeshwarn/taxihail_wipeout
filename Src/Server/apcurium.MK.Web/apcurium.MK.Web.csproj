@@ -227,6 +227,7 @@
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
+    <Content Include="admin\views\SendPushNotificationView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\TariffItemView.js" />
     <Content Include="admin\default.aspx" />
@@ -681,6 +682,8 @@
     <Content Include="themes\VETaxi\less\style.less" />
     <Content Include="themes\VETaxi\less\variables.less" />
     <Content Include="templates\GetTheApp.handlebars" />
+    <Content Include="admin\localization\SendPushNotification.json" />
+    <Content Include="admin\templates\SendPushNotification.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

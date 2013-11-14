@@ -91,7 +91,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Toll = ibsOrder.Toll.GetValueOrDefault(),
                 Tip = tip,
                 Tax = ibsOrder.VAT.GetValueOrDefault(),
-                
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.DropOffAddress,
             };
 
 #warning Copy and paste
