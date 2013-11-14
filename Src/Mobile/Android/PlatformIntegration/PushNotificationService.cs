@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				Log.Info(TAG, "Registering...");
 				
 				//Call to register
-				GCMSharp.Client.GCMRegistrar.Register(_context, _configManager.GetSetting( "GCM.SenderId" ));
+                var registerIdDebug =  _configManager.GetSetting( "GCM.SenderId" );
+                GCMSharp.Client.GCMRegistrar.Register(_context, registerIdDebug);
 			}
 			else {
 				Log.Info(TAG, "Already registered");

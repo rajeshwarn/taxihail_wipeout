@@ -21,6 +21,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         IAccountService _accountService;
 
+#region Const and ReadOnly
+        private const string Visa = "Visa";
+        private const string MasterCard = "MasterCard";
+        private const string Amex = "Amex";
+        private const string VisaElectron = "Visa Electron";
+        private readonly string[] VisaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
+        private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
+        private const string MasterPattern = "^5[1-5][0-9]{14}$";
+        private const string AmexPattern = "^3[47][0-9]{13}$";
+#endregion
+
+
         public class DummyVisa
         {
 			public static string BraintreeNumber = "4009 3488 8888 1881".Replace(" ", "");
@@ -42,11 +54,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CreditCardCategory = 0;
 
             CreditCardCompanies = new List<ListItem>();
-            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0 });
-            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
-            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
-            CreditCardCompanies.Add ( new ListItem { Display = "Visa Electron", Id = 3 });
-            CreditCardType = 0;
+            CreditCardCompanies.Add (new ListItem { Display = Visa, Id = 0 });
+            CreditCardCompanies.Add ( new ListItem { Display = MasterCard, Id = 1 });
+            CreditCardCompanies.Add ( new ListItem { Display = Amex, Id = 2 });
+            CreditCardCompanies.Add ( new ListItem { Display = VisaElectron, Id = 3 });
+            CreditCardType = -1;
 
             ExpirationYears = new List<ListItem>();
             for (int i = 0; i <= 15; i++)
@@ -71,10 +83,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
 			if(ConfigurationManager.GetPaymentSettings().PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.Braintree)
 			{
-				Data.CardNumber = DummyVisa.BraintreeNumber;
+				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
 			else{
-				Data.CardNumber = DummyVisa.CmtNumber;
+				CreditCardNumber = DummyVisa.CmtNumber;
 			}
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 
@@ -84,7 +96,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif            
         }
 
+#region Properties
         public CreditCardInfos Data { get; set; }
+
 
         public string CreditCardNumber
         {
@@ -93,37 +107,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 Data.CardNumber = value;
 
-                //Choose type
-                string visaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
-                Regex visaRgx = new Regex(visaPattern, RegexOptions.IgnoreCase);
-
+                Regex visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
                 MatchCollection matches = visaRgx.Matches(Data.CardNumber);
 
                 if (matches.Count > 0)
                 {
-                    this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "Visa").Id;
-
+                    if (VisaElectronFirstNumbers.Any(x => Data.CardNumber.StartsWith(x)) && Data.CardNumber.Count() == 16)
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == VisaElectron).Id;
+                    else
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == Visa).Id;
                 }
                 else
                 {
-                    string masterPattern = "^5[1-5][0-9]{14}$";
-                    Regex masterRgx = new Regex(masterPattern, RegexOptions.IgnoreCase);
 
+                    Regex masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
                     matches = masterRgx.Matches(Data.CardNumber);
                     if (matches.Count > 0)
-                    {
-                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "MasterCard").Id;
-                    }
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
                     else
                     {
-                        string amexPattern = "^3[47][0-9]{13}$";
-                        Regex amexRgx = new Regex(amexPattern, RegexOptions.IgnoreCase);
-
+                        Regex amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
                         matches = amexRgx.Matches(Data.CardNumber);
                         if (matches.Count > 0)
-                        {
-                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "Amex").Id;
-                        }
+                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Amex).Id;
+                        else
+                            this.CreditCardType = -1;
                     }
                 }
                 FirePropertyChanged("CreditCardNumber");
@@ -152,9 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         int _creditCardType;
         public int CreditCardType {
-            get {
-                return _creditCardType;
-            }
+            get {return _creditCardType;}
             set {
                 _creditCardType = value;
                 FirePropertyChanged("CreditCardType");
@@ -233,6 +239,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
 
+#endregion
+
+#region Private Methods
         private void AddCrediCard ()
         {
 			Data.FriendlyName = CreditCardCategoryName;
@@ -305,6 +314,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             return (sum % 10 == 0);
         }
+
+#endregion
 
     }
 }

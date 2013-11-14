@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
         private float _paddingRight = 0;
         private float _paddingLeft = 0;
+        private float _paddingBaseLeft = 5;
         private UIActivityIndicatorView _progress;
 
 
@@ -38,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             BackgroundColor = UIColor.Clear;
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
-            PaddingLeft = 5;
+            PaddingLeft = _paddingBaseLeft;
             this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
         }
 
@@ -58,13 +59,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _paddingLeft = value;
                 if (_paddingLeft != 0)
                 {
+                    if (LeftView != null)
+                        LeftView.RemoveFromSuperview();  
                     LeftView = new UIView{ Frame = new RectangleF( 0,0,_paddingLeft,30) };
                     LeftViewMode = UITextFieldViewMode.Always;
                 }
                 else
-                {
                     LeftViewMode = UITextFieldViewMode.Never;
-                }
             }
         }
 
@@ -137,20 +138,28 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _imageSource = value;
-                SetImage(value);
+                SetImage(_imageSource);
             }
         }
 
         public void SetImage(string image)
         {
-            var img = UIImage.FromFile(image);
-            Image = new UIImageView(new RectangleF(5, Frame.Height / 2 - img.Size.Height / 2, img.Size.Width, img.Size.Height));
-            Image.BackgroundColor = UIColor.Clear;
-            Image.Image = img;
+            if (image != null)
+            {
+                var img = UIImage.FromFile(image);
+                Image = new UIImageView(new RectangleF(5, Frame.Height / 2 - img.Size.Height / 2, img.Size.Width, img.Size.Height));
+                Image.BackgroundColor = UIColor.Clear;
+                Image.Image = img;
 
-            AddSubview(Image);
+                AddSubview(Image);
 
-            PaddingLeft += img.Size.Width + 4;
+                PaddingLeft = _paddingBaseLeft + img.Size.Width + 4;
+            }
+            else
+            {
+                Image.Hidden = true;
+                PaddingLeft = _paddingBaseLeft;
+            }
         }
 
         public UIColor StrokeColor
