@@ -128,6 +128,7 @@
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\PushNotificationAdministrationRequest.cs" />
     <Compile Include="Requests\RuleActivateRequest.cs" />
     <Compile Include="Requests\RuleDeactivateRequest.cs" />
     <Compile Include="Requests\RuleRequest.cs" />
