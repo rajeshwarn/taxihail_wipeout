@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
             CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardCompanies.Add ( new ListItem { Display = "Visa Electron", Id = 3 });
-            CreditCardType = 0;
+            CreditCardType = -1;
 
             ExpirationYears = new List<ListItem>();
             for (int i = 0; i <= 15; i++)
@@ -71,10 +71,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
 			if(ConfigurationManager.GetPaymentSettings().PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.Braintree)
 			{
-				Data.CardNumber = DummyVisa.BraintreeNumber;
+				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
 			else{
-				Data.CardNumber = DummyVisa.CmtNumber;
+				CreditCardNumber = DummyVisa.CmtNumber;
 			}
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 
@@ -122,7 +122,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         matches = amexRgx.Matches(Data.CardNumber);
                         if (matches.Count > 0)
                         {
-                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == "Amex").Id;
+                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == "Amex").Id;
+                        }
+                        else
+                        {
+                            this.CreditCardType = -1;
                         }
                     }
                 }
@@ -152,9 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         int _creditCardType;
         public int CreditCardType {
-            get {
-                return _creditCardType;
-            }
+            get {return _creditCardType;}
             set {
                 _creditCardType = value;
                 FirePropertyChanged("CreditCardType");
