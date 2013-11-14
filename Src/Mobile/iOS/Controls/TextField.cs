@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
         private float _paddingRight = 0;
         private float _paddingLeft = 0;
+        private float _paddingBaseLeft = 5;
         private UIActivityIndicatorView _progress;
 
 
@@ -38,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             BackgroundColor = UIColor.Clear;
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
-            PaddingLeft = 5;
+            PaddingLeft = _paddingBaseLeft;
             this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
         }
 
@@ -150,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AddSubview(Image);
 
-            PaddingLeft += img.Size.Width + 4;
+            PaddingLeft = _paddingBaseLeft + img.Size.Width + 4;
         }
 
         public UIColor StrokeColor
