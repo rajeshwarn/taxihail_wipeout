@@ -74,10 +74,12 @@ namespace apcurium.MK.Booking.Api.Services
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
 
             var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
-            var fare = ibsOrder.Fare.GetValueOrDefault() > 0 ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
-
             var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
-            var tip = ibsOrder.Tip.GetValueOrDefault() > 0 ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
+
+            bool useIbsValue = ((ibsOrder.Tip > 0) || (ibsOrder.Fare > 0));
+
+            var fare = useIbsValue ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
+            var tip = useIbsValue  ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
 
             var command = new Commands.SendReceipt
             {
