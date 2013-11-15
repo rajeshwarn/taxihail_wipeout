@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemoCallbox" android:versionCode="1" android:versionName="1.4.24">
-	<uses-sdk android:targetSdkVersion="8" />
-	<application android:label="TaxiHail Callbox" android:icon="@drawable/icon" android:screenOrientation="landscape"></application>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemoCallbox" android:versionCode="2" android:versionName="1.4.28">
+  <uses-sdk android:targetSdkVersion="8" />
+  <application android:label="TaxiHail Callbox" android:icon="@drawable/icon" android:screenOrientation="landscape">
+  </application>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
