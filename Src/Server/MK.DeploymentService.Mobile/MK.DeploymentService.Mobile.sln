@@ -5,6 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.DeploymentService.Mobile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentServiceTools", "..\DeploymentServiceTools\DeploymentServiceTools.csproj", "{78A8B275-4004-4586-893B-607EC1F98F26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6D285F1E-F08A-4B9E-BB50-08F17FB25F60}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,10 +22,10 @@ Global
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MK.DeploymentService.Mobile.csproj
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MK.DeploymentService.Mobile.csproj
 	EndGlobalSection
 EndGlobal
