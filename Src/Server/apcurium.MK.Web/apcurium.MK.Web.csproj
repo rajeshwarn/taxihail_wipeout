@@ -243,7 +243,11 @@
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
+    <Content Include="assets\img\nearby_cab.png" />
+    <Content Include="assets\img\pin_cluster.png" />
     <Content Include="assets\js\storage-polyfill.js" />
+    <Content Include="common\collections\AvailableVehicleCollection.js" />
+    <Content Include="common\models\AvailableVehicle.js" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />

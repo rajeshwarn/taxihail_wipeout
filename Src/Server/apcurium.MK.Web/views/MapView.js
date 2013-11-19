@@ -5,8 +5,24 @@
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
             this.cityZoomLevel = 12;
+            var self = this;                      
+                this.interval = window.setInterval(function () {                    
+                    self.refresh();
+            }, 5000);
+
         },
         
+        refresh: function () {
+            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position });            
+            var self = this;
+            this.availableVehicles.fetch({
+                success: function (response) {
+                    self.availableVehicles = response;
+                    self.updateAvailableVehiclesPosition();                    
+                }
+            });                 
+        },
+
         setModel: function(model, centerMapOnAddressChange) {
             if(this.model) {
                 this.model.off(null, null, this);
@@ -89,9 +105,12 @@
             label.bindTo('position', this._vehicleMarker, 'position');
             label.bindTo('text', this._vehicleMarker, 'text');
             label.bindTo('visible', this._vehicleMarker, 'visible');
+            
+            this._availableVehiclePins = {};
 
             this._pickupPin = new google.maps.Marker({
                 position: this._map.getCenter(),
+                zIndex: 99999,
                 map: this._map,
                 icon: 'assets/img/pin_green.png',
                 visible: false
@@ -170,6 +189,52 @@
                 this._vehicleMarker.setVisible(true);
                 this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
             }
+        },
+        updateAvailableVehiclesPosition: function () {
+
+            // TODO: Used underscore lib to proceed in MapView, should use a view inside AvailableVehicleCollection if it's possible to avoid this dynamic/not managed marker approach (new marker etc)
+
+            // Get vehicle backbone models as simple objects for underscore query purposes
+            var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });
+
+            // Get all existing available vehicle pin ID to manage them
+            var _pins = _.map(this._availableVehiclePins, function (e) { return (e.metadata) });
+
+            var self = this;
+
+            _.each(_vehicles, function (_vehicle) {
+                if (self._availableVehiclePins.hasOwnProperty(_vehicle.vehicleNumber)==false) {
+
+                    // Add a new marker on the map
+                    self._availableVehiclePins[_vehicle.vehicleNumber] = new google.maps.Marker({
+                        position: new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude),
+                        map: self._map,
+                        icon: 'assets/img/nearby_cab.png',
+                        metadata: _vehicle.vehicleNumber
+                    });
+                    self.updatePickup();
+                } else {
+
+                    // Refresh existing marker on the map
+                    var _car = self._availableVehiclePins[_vehicle.vehicleNumber];
+
+                    // Verify that position changed to avoid flicker
+                    if (_vehicle.latitude.toFixed(4) != _car.position.ob.toFixed(4) || _vehicle.longitude.toFixed(4) != _car.position.pb.toFixed(4)) {
+                        _car.position = new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude);
+                        _car.setMap(self._map);
+                        self.updatePickup();
+                    }                    
+                }
+            });
+            
+            // Remove unused markers on the map
+            _.each(_.difference(_pins, _.map(_vehicles, function (e) { return (e.vehicleNumber) })), function (_removedVehicle) {
+                self._availableVehiclePins[_removedVehicle].setMap(null);
+            });
+        },
+        updateFromCollectionTest: function()
+        {
+            console.log('Yee');
         },
 
         updatePickup: function() {

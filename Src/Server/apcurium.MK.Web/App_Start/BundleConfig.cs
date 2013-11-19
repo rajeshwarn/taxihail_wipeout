@@ -43,8 +43,10 @@ namespace apcurium.MK.Web
                 "~/models/Settings.js",
                 "~/models/CompanySettings.js",
                 "~/models/NewAccount.js",
+                "~/common/models/AvailableVehicle.js",
                 "~/common/models/ReferenceData.js",
                 "~/common/collections/AddressCollection.js",
+                "~/common/collections/AvailableVehicleCollection.js",
                 "~/collections/OrderCollection.js",
                 "~/common/views/TemplatedView.js",
                 "~/common/views/LoginStatusView.js",
@@ -142,6 +144,7 @@ namespace apcurium.MK.Web
                 "~/admin/models/PaymentSettings.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
+                "~/common/collections/AvailableVehicleCollection.js",
                 "~/admin/collections/CompanySettingsCollection.js",
                 "~/admin/collections/TariffCollection.js",
                 "~/admin/collections/RuleCollection.js",
