@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             			
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));            		
 
-			((SearchTextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
+			((SearchTextField)SearchTextField).SetImageLeft( "Assets/Search/SearchIcon.png" );
 			SearchTextField.Placeholder = Resources.SearchHint;
             			
 			var source = new BindableAddressTableViewSource(

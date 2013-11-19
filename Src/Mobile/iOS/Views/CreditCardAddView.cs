@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
             ViewModel.CreditCardCompanies[3].Image = "Assets/CreditCard/visa_electron.png";
+			ViewModel.CreditCardCompanies[4].Image = "Assets/CreditCard/credit_card_generic.png";
 
 
             ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
-                { txtCardNumber, "{'Text': {'Path': 'CreditCardNumber', 'Mode': 'TwoWay' }, 'ImageSource': {'Path': 'CreditCardImagePath'}}" }, 
+				{ txtCardNumber, "{'Text': {'Path': 'CreditCardNumber', 'Mode': 'TwoWay' }, 'ImageLeftSource': {'Path': 'CreditCardImagePath'}}" }, 
                 { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
                 { pickerExpirationMonth, "{'Text': {'Path': 'ExpirationMonthDisplay'}}" }, 
                 { pickerExpirationYear, "{'Text': {'Path': 'ExpirationYear' }}" }, 

@@ -14,7 +14,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using System.Text.RegularExpressions;
-using Android;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

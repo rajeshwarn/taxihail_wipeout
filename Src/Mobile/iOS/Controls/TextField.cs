@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
             PaddingLeft = _paddingBaseLeft;
+			LeftViewMode = UITextFieldViewMode.Always;
             this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
         }
 
@@ -57,15 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _paddingLeft = value;
-                if (_paddingLeft != 0)
-                {
-                    if (LeftView != null)
-                        LeftView.RemoveFromSuperview();  
-                    LeftView = new UIView{ Frame = new RectangleF( 0,0,_paddingLeft,30) };
-                    LeftViewMode = UITextFieldViewMode.Always;
-                }
-                else
-                    LeftViewMode = UITextFieldViewMode.Never;
+
+				if (LeftView != null)
+					LeftView.Frame = new RectangleF(LeftView.Frame.X, LeftView.Frame.Y, _paddingLeft, LeftView.Frame.Height);
+				else
+					LeftView = new UIView{ Frame = new RectangleF(Frame.X, Frame.Y,_paddingLeft,30) };
             }
         }
 
@@ -75,15 +72,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _paddingRight = value;
-                if (_paddingRight != 0)
-                {
-                    RightView = new UIView{ Frame = new RectangleF( 0,0,_paddingRight,30) };
-                    RightViewMode = UITextFieldViewMode.Always;
-                }
-                else
-                {
-                    RightViewMode = UITextFieldViewMode.Never;
-                }
             }
                 
         }
@@ -100,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void InitProgress()
         {
-            var r  = new RectangleF(5, Frame.Height / 2 - Image.Image.Size.Height / 2, Image.Image.Size.Width, Image.Image.Size.Height);
+			var r  = new RectangleF(5, Frame.Height / 2 - ImageLeft.Image.Size.Height / 2, ImageLeft.Image.Size.Width, ImageLeft.Image.Size.Height);
             _progress = new UIActivityIndicatorView(r );
             _progress.BackgroundColor = UIColor.Clear;
             _progress.Hidden = true;
@@ -109,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         private void RefreshUI()
         { 
-            Image.Hidden = _isProgressing ;
+			ImageLeft.Hidden = _isProgressing ;
 
             if ( _progress == null )
             {
@@ -124,43 +112,63 @@ namespace apcurium.MK.Booking.Mobile.Client
             else
             {
                 _progress.StopAnimating();
-            }
-                
-              
+            }   
         }
 
-        protected UIImageView Image { get; set; }
+		protected UIImageView ImageLeft { get; set; }
 
-        private string _imageSource;
-        public string ImageSource
+		private string _imageLeftSource;
+		public string ImageLeftSource
         {
-            get {return _imageSource;}
+			get {return _imageLeftSource;}
             set
             {
-                _imageSource = value;
-                SetImage(_imageSource);
+				_imageLeftSource = value;
+				SetImageLeft(_imageLeftSource);
             }
         }
 
-        public void SetImage(string image)
+		protected UIImageView ImageRight { get; set; }
+
+		private string _imageRightSource;
+		public string ImageRightSource
+		{
+			get {return _imageRightSource;}
+			set
+			{
+				_imageRightSource = value;
+				SetImageRight(_imageRightSource);
+			}
+		}
+
+
+		public void SetImageLeft(string image)
         {
-            if (image != null)
-            {
-                var img = UIImage.FromFile(image);
-                Image = new UIImageView(new RectangleF(5, Frame.Height / 2 - img.Size.Height / 2, img.Size.Width, img.Size.Height));
-                Image.BackgroundColor = UIColor.Clear;
-                Image.Image = img;
+			if (image != null)
+			{
+				var img = UIImage.FromFile(image);
 
-                AddSubview(Image);
+				ImageLeft = new UIImageView(new RectangleF(0, 0, img.Size.Width, img.Size.Height));
 
-                PaddingLeft = _paddingBaseLeft + img.Size.Width + 4;
-            }
-            else
-            {
-                Image.Hidden = true;
-                PaddingLeft = _paddingBaseLeft;
-            }
+				ImageLeft.BackgroundColor = UIColor.Clear;
+				ImageLeft.Image = img;
+
+				LeftView = new UIView{ Frame = new RectangleF(Frame.X, Frame.Y,ImageLeft.Frame.Width, ImageLeft.Frame.Height) };
+
+				LeftView.AddSubview(ImageLeft);
+
+				PaddingLeft = _paddingBaseLeft + img.Size.Width;
+			}
+			else
+				PaddingLeft = _paddingBaseLeft;
         }
+
+
+		public void SetImageRight(string image)
+		{
+
+		}
+
 
         public UIColor StrokeColor
         {
