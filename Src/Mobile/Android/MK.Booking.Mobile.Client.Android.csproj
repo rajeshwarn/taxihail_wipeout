@@ -367,6 +367,11 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Account\TermsAndConditionsActivity.cs" />
+    <Compile Include="Controls\EditTextLeftImage.cs" />
+    <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
+    <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
+    <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

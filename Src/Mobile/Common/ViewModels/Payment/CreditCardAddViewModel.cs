@@ -14,6 +14,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using System.Text.RegularExpressions;
+using Android;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -25,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private const string Visa = "Visa";
         private const string MasterCard = "MasterCard";
         private const string Amex = "Amex";
+		private const string Credit_Card_Generic = "Credit Card Generic";
         private const string VisaElectron = "Visa Electron";
         private readonly string[] VisaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
         private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
@@ -58,7 +60,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CreditCardCompanies.Add ( new ListItem { Display = MasterCard, Id = 1 });
             CreditCardCompanies.Add ( new ListItem { Display = Amex, Id = 2 });
             CreditCardCompanies.Add ( new ListItem { Display = VisaElectron, Id = 3 });
-            CreditCardType = -1;
+			CreditCardCompanies.Add ( new ListItem { Display = Credit_Card_Generic, Id = 4 });
+
+			CreditCardType = (int)CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
 
             ExpirationYears = new List<ListItem>();
             for (int i = 0; i <= 15; i++)
@@ -131,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (matches.Count > 0)
                             this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Amex).Id;
                         else
-                            this.CreditCardType = -1;
+							this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
                     }
                 }
                 FirePropertyChanged("CreditCardNumber");
@@ -172,14 +176,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string CreditCardTypeName { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                return type == null ? null : type.Display;
+				return type == null ? null : type.Display;
             }
         }
 
         public string CreditCardImagePath { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                return type == null ? null : type.Image;
+				return type == null ? null : type.Image;
             }
         }
 
