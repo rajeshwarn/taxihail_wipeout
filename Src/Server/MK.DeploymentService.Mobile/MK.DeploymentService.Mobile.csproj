@@ -94,5 +94,9 @@
       <Project>{78A8B275-4004-4586-893B-607EC1F98F26}</Project>
       <Name>DeploymentServiceTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Cupertino\Cupertino.csproj">
+      <Project>{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}</Project>
+      <Name>Cupertino</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
