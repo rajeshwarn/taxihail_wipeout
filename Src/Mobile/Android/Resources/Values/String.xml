@@ -21,7 +21,6 @@
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="TechSupportEmailTitle">Support Application Mobile</string>
   <string name="StatusConfirmNewBooking">Booking a new taxi will keep this order active, do you want to continue ?</string>
-  <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
@@ -446,4 +445,5 @@
   <string name="TermsAndConditionsAcknowledgment">By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</string>
   <string name="AcceptButton">Accept</string>
   <string name="View_TermsAndConditions"></string>
+  <string name="HistoryDetailRebookButton">Book using this address</string>
 </resources>
