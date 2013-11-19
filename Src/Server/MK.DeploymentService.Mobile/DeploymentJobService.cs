@@ -23,6 +23,7 @@ namespace MK.DeploymentService.Mobile
         Database _db;
         DeploymentJob _job;
 	    private MonoBuilder _builder;
+	    private CustomerPortalRepository _customerPortalRepository;
 
 		const string HG_PATH = "/usr/local/bin/hg";
 		
@@ -31,6 +32,7 @@ namespace MK.DeploymentService.Mobile
 			_timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
 			_logger = LogManager.GetLogger("DeploymentJobService");
             _builder = new MonoBuilder(str=>UpdateJob(str));
+            _customerPortalRepository = new CustomerPortalRepository();
 		}
 		
 		public void Start()
@@ -120,6 +122,8 @@ namespace MK.DeploymentService.Mobile
 						UpdateJob("Deploy");
 						Deploy (sourceDirectory, company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
+                        CreateNewVersionInCustomerPortalIfNecessary(releaseiOSAdHocDir, releaseAndroidDir);
+
 						UpdateJob("Done",JobStatus.SUCCESS);
 
 						_logger.Debug("Deployment finished without error");
@@ -133,10 +137,66 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		public void Stop()
+	    private void CreateNewVersionInCustomerPortalIfNecessary(string ipaAdHocPath, string apkPath)
+	    {
+            if ((_job.TaxHailEnv.Url.Contains("services.taxihail.com") || _job.TaxHailEnv.Url.Contains("staging.taxihail.com")) && _job.GetVersionNumber() != null && _job.iOS_AdHoc && _job.Android)
+            {
+                UpdateJob("Creating new version in Customer Portal");
+
+                var ipaAdHocFile = GetiOSAdHocFile(ipaAdHocPath);
+                var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
+
+                var apkFile = GetAndroidFile(apkPath);
+                var apkFileName = new FileInfo(apkFile).Name;
+
+                var success = _customerPortalRepository.CreateNewVersion(_job.Company.Name, _job.GetVersionNumber(), _job.TaxHailEnv.Url, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+            }
+	    }
+
+	    public void Stop()
 		{
 			_timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
+
+        private string GetAndroidFile(string apkPath)
+        {
+            if (!Directory.Exists(apkPath))
+            {
+                throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+            }
+            
+            return Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        }
+
+        private string GetAndroidCallboxFile(string apkPathCallBox)
+        {
+            if (!Directory.Exists(apkPathCallBox))
+            {
+                throw new Exception("Android callbox release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+            }
+
+            return Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        }
+
+        private string GetiOSAdHocFile(string ipaAdHocPath)
+        {
+            if (!Directory.Exists(ipaAdHocPath))
+            {
+                throw new Exception("iOS AdHoc dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+            }
+
+            return Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        }
+
+        private string GetiOSAppStoreFile(string ipaAppStorePath)
+        {
+            if (!Directory.Exists(ipaAppStorePath))
+            {
+                throw new Exception("iOS AppStore dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
+            }
+
+            return Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+        }
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
@@ -159,10 +219,7 @@ namespace MK.DeploymentService.Mobile
 
 				if (_job.Android) {
 					_logger.DebugFormat("Copying Apk");
-					if (!Directory.Exists (apkPath)) {
-						throw new Exception("Android release dir does not exist, there probably was a problem with the build or a project was added to the solution without being added in the list of projects to build.");
-					}
-					var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+				    var apkFile = GetAndroidFile(apkPath);
 					if(apkFile != null)
 					{
 						var fileInfo = new FileInfo(apkFile); 
@@ -179,7 +236,7 @@ namespace MK.DeploymentService.Mobile
 				if(_job.CallBox)
 				{
 					_logger.DebugFormat("Copying CallBox Apk");
-					var apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    var apkFile = GetAndroidCallboxFile(apkPathCallBox);
 					if(apkFile != null)
 					{
 						var fileInfo = new FileInfo(apkFile); 
@@ -195,7 +252,7 @@ namespace MK.DeploymentService.Mobile
 				
 				if (_job.iOS_AdHoc) {
 					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
-					var ipaFile = Directory.EnumerateFiles(ipaAdHocPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					var ipaFile = GetiOSAdHocFile(ipaAdHocPath);
 					if(ipaFile != null)
 					{
 						var fileUplaoder = new FileUploader();
@@ -214,7 +271,7 @@ namespace MK.DeploymentService.Mobile
 
 				if (_job.iOS_AppStore) {
 					_logger.DebugFormat ("Uploading and copying IPA AppStore");
-					var ipaFile = Directory.EnumerateFiles(ipaAppStorePath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    var ipaFile = GetiOSAppStoreFile(ipaAppStorePath);
 					if(ipaFile != null)
 					{
 										
