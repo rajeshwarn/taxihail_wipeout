@@ -27,7 +27,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Web" />
     <Reference Include="HtmlAgilityPack">
-      <HintPath>..\Libraries\HtmlAgilityPack\bin\Debug\HtmlAgilityPack.dll</HintPath>
+      <HintPath>..\Libraries\HtmlAgilityPack\Mono\bin\Debug\HtmlAgilityPack.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
