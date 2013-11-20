@@ -178,6 +178,7 @@
     <Compile Include="Models\OrderItemListModel.cs" />
     <Compile Include="Models\ParentScreens.cs" />
     <Compile Include="Models\RatingModel.cs" />
+    <Compile Include="NetworkUtilities\ConnectionChangeReceiver.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

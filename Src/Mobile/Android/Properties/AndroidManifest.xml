@@ -17,6 +17,10 @@
         <action android:name="com.google.android.c2dm.intent.RECEIVE" />
         <category android:name="com.apcurium.MK.TaxiHailDemo" />
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+        <action android:name="android.net.wifi.STATE_CHANGE"/>
+      </intent-filter>
     </receiver>
   </application>
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11" />
@@ -38,6 +42,8 @@
   <uses-permission android:name="android.permission.CALL_PHONE" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+  <!-- Required to monitor wifi state -->  
+  <user-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <!-- Required for logging -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>
