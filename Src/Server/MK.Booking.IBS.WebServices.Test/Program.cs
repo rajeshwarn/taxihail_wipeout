@@ -10,11 +10,54 @@ namespace MK.Booking.IBS.WebServices.Test
     {
         static void Main(string[] args)
         {
-            CallGetVehicleTypes("http://mk.drivelinq.com:6929/XDS_IASPI.DLL/soap/");
-            CallGetVehicleTypes("http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/");
+            //CallGetVehicleTypes("http://mk.drivelinq.com:6929/XDS_IASPI.DLL/soap/");
+            //CallGetVehicleTypes("http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/");
+            CallGetPriceEstimate("http://thriev.drivelinq.com:6928/xds_iaspi.dll/soap/");
             Console.ReadLine();
         }
 
+
+        private static void CallGetPriceEstimate(string baseUrl)
+        {
+
+            //var di = direction.GetDirectionDistance(51.434028, -0.526826, 51.5035709, -0.199753);
+
+            Console.WriteLine("Calling CallGetAvailableVehicles web service " + baseUrl);
+
+            var orderService = new WebOrder7Service { Url = baseUrl + "IWebOrder_7" };
+
+
+            try
+            {
+                var oio = new TBookOrder_7
+                {
+                    OrderStatus = TWEBOrderStatusValue.wosPriceQry,
+                    PickupAddress = new TWEBAddress {Latitude = 51.434028, Longitude = -0.526826},
+                    DropoffAddress = new TWEBAddress {Latitude = 51.5035709, Longitude = -0.199753}
+                };
+
+                var o = orderService.SaveBookOrder_7("taxi", "test", oio);
+                //var vehicles = orderService.GetAvailableVehicles("taxi", "test", 45.3417, -75.9233, 10000, 10000);
+
+                o.ToString();
+                //if (vehicles.Count() == 0)
+                //{
+                //    Console.WriteLine("Call made sucesfully but no vehicle found");
+                //}
+                //foreach (var c in vehicles)
+                //{
+                //    Console.WriteLine(string.Format("Vehicle found #{0} , Postion {1} / {2}", c.VehicleNumber, c.Latitude, c.Longitude));
+                //}
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+
+        
 
         private static void CallGetZoneForCompany(string baseUrl)
         {
