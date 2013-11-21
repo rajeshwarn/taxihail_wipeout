@@ -149,8 +149,9 @@ namespace MK.DeploymentService.Mobile
                 var apkFile = GetAndroidFile(apkPath);
                 var apkFileName = new FileInfo(apkFile).Name;
 
-                var success = _customerPortalRepository.CreateNewVersion(_job.Company.Name, _job.GetVersionNumber(), _job.TaxHailEnv.Url, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
-            }
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.Name, _job.GetVersionNumber(), _job.TaxHailEnv.Url, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				UpdateJob (message);
+			}
 	    }
 
 	    public void Stop()

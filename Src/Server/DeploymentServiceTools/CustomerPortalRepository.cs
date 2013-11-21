@@ -10,11 +10,13 @@ namespace DeploymentServiceTools
 {
 	public class CustomerPortalRepository
     {
-		public bool CreateNewVersion(string companyId, string versionNumber, string websiteUrl, string ipaFileName, FileStream ipaFile, string apkFileName, FileStream apkFile)
+		public string CreateNewVersion(string companyKey, string versionNumber, string websiteUrl, string ipaFileName, FileStream ipaFile, string apkFileName, FileStream apkFile)
 		{
+			versionNumber = versionNumber.Replace("[Bitbucket]", string.Empty).Replace(" ", string.Empty);
+
 			var data = new
 			{
-				CompanyId = companyId,
+				CompanyId = companyKey,
 				VersionNumber = versionNumber,
 				WebsiteUrl = websiteUrl
 			};
@@ -41,7 +43,15 @@ namespace DeploymentServiceTools
 
 					var url = Path.Combine (ConfigurationManager.AppSettings ["CustomerPortalAPIUrl"], "admin/version");
 					var result = client.PostAsync(url, multipartFormDataContent).Result;
-					return result.StatusCode.Equals(HttpStatusCode.OK);
+
+					var message = string.Empty;
+					if (result.IsSuccessStatusCode) {
+						message = string.Format ("Version {0} created for company {1}", versionNumber, companyKey);
+					} else {
+						message = string.Format("Version could not be created: HttpError: {0}", result.Content.ReadAsStringAsync ().Result);
+					}
+
+					return message;
 				}
 			}
 		}
