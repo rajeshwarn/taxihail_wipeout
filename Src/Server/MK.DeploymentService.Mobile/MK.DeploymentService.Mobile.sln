@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.DeploymentService.Mobile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentServiceTools", "..\DeploymentServiceTools\DeploymentServiceTools.csproj", "{78A8B275-4004-4586-893B-607EC1F98F26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cupertino", "..\Cupertino\Cupertino.csproj", "{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,10 +19,6 @@ Global
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|x86.Build.0 = Debug|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Release|x86.ActiveCfg = Debug|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Release|x86.Build.0 = Debug|Any CPU
-		{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}.Debug|x86.Build.0 = Debug|Any CPU
-		{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}.Release|x86.ActiveCfg = Release|x86
-		{EF63D209-CC8F-4B7D-9E64-2B59395A3CBE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MK.DeploymentService.Mobile.csproj
