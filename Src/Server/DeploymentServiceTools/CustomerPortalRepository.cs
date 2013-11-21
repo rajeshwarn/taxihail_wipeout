@@ -14,6 +14,10 @@ namespace DeploymentServiceTools
 		{
 			versionNumber = versionNumber.Replace("[Bitbucket]", string.Empty).Replace(" ", string.Empty);
 
+			if (websiteUrl.Contains ("staging.taxihail.com")) {
+				versionNumber = versionNumber + ".staging";
+			}
+
 			var data = new
 			{
 				CompanyKey = companyKey,
