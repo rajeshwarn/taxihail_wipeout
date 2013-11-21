@@ -16,7 +16,7 @@ namespace DeploymentServiceTools
 
 			var data = new
 			{
-				CompanyId = companyKey,
+				CompanyKey = companyKey,
 				VersionNumber = versionNumber,
 				WebsiteUrl = websiteUrl
 			};
