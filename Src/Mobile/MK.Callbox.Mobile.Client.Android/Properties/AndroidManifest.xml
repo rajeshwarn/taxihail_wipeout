@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemoCallbox" android:versionCode="2" android:versionName="1.4.28">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemoCallbox" android:versionCode="3" android:versionName="1.4.29">
   <uses-sdk android:targetSdkVersion="8" />
   <application android:label="TaxiHail Callbox" android:icon="@drawable/icon" android:screenOrientation="landscape">
   </application>
