@@ -12,7 +12,9 @@ namespace MK.Booking.IBS.WebServices.Test
         {
             //CallGetVehicleTypes("http://mk.drivelinq.com:6929/XDS_IASPI.DLL/soap/");
             //CallGetVehicleTypes("http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/");
-            CallGetPriceEstimate("http://thriev.drivelinq.com:6928/xds_iaspi.dll/soap/");
+            //CallGetPriceEstimate("http://thriev.drivelinq.com:6928/xds_iaspi.dll/soap/");
+            CallGetPriceEstimate("http://mk.drivelinq.com:6928/xds_iaspi.dll/soap/");
+        
             Console.ReadLine();
         }
 
@@ -22,7 +24,7 @@ namespace MK.Booking.IBS.WebServices.Test
 
             //var di = direction.GetDirectionDistance(51.434028, -0.526826, 51.5035709, -0.199753);
 
-            Console.WriteLine("Calling CallGetAvailableVehicles web service " + baseUrl);
+            Console.WriteLine("Calling CallGetPriceEstimate web service " + baseUrl);
 
             var orderService = new WebOrder7Service { Url = baseUrl + "IWebOrder_7" };
 
@@ -32,14 +34,16 @@ namespace MK.Booking.IBS.WebServices.Test
                 var oio = new TBookOrder_7
                 {
                     OrderStatus = TWEBOrderStatusValue.wosPriceQry,
-                    PickupAddress = new TWEBAddress {Latitude = 51.434028, Longitude = -0.526826},
-                    DropoffAddress = new TWEBAddress {Latitude = 51.5035709, Longitude = -0.199753}
+                    PickupAddress = new TWEBAddress {Latitude = 45.3417, Longitude = -75.9233},
+                    DropoffAddress = new TWEBAddress { Latitude = 45.2897, Longitude = -75.8756 }
                 };
 
-                var o = orderService.SaveBookOrder_7("taxi", "test", oio);
+                double fare;
+                double toll;
+                double distance;
+                orderService.EstimateFare("taxi", "test", oio, out fare, out toll, out distance);
                 //var vehicles = orderService.GetAvailableVehicles("taxi", "test", 45.3417, -75.9233, 10000, 10000);
 
-                o.ToString();
                 //if (vehicles.Count() == 0)
                 //{
                 //    Console.WriteLine("Call made sucesfully but no vehicle found");
