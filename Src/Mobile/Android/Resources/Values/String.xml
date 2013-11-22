@@ -170,6 +170,7 @@
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
   <string name="View_BookingStatus_ThankYouMessage">Thank you for riding with {0}, we look forward to serving you again soon.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="LocalContactCannotBeResolverTitle">Invalid Contact</string>
   <string name="ServerInfo">({0} v{1})</string>
