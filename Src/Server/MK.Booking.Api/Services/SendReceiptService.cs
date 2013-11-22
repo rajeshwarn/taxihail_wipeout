@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Services
             if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
                 var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,  Convert.ToDouble( orderPayment.Meter), 0, Convert.ToDouble( orderPayment.Meter),0, orderPayment, creditCard ));
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,  Convert.ToDouble( orderPayment.Meter), 0, Convert.ToDouble( orderPayment.Tip),0, orderPayment, creditCard ));
             }
             else
             {

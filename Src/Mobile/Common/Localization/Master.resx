@@ -1397,6 +1397,12 @@
   <data name="EstimatingFare" xml:space="preserve">
     <value>Estimating your fare...</value>
   </data>
+ <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
+    <value>Confirmation Required</value>
+  </data>
+	<data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
+    <value>You will be charged {0}. Please confirm the amount. </value>
+  </data>
 
-
+  
 </root>

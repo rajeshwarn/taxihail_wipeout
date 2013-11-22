@@ -1963,6 +1963,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0701d0
 			public const int ConfirmationOfPaymentSent = 2131165648;
 			
+			// aapt resource value: 0x7f0701d8
+			public const int ConfirmationPaymentAmountOver100 = 2131165656;
+			
+			// aapt resource value: 0x7f0701d7
+			public const int ConfirmationPaymentAmountOver100Title = 2131165655;
+			
 			// aapt resource value: 0x7f07019b
 			public const int ContinueButton = 2131165595;
 			
