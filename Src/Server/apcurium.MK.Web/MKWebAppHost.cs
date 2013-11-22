@@ -17,6 +17,8 @@ using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Common.IoC;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
+using ServiceStack.Common.Web;
+using apcurium.MK.Booking.Serialization;
 namespace apcurium.MK.Web
 {
     public class MkWebAppHost : AppHostBase
@@ -92,6 +94,18 @@ namespace apcurium.MK.Web
                             { "Access-Control-Allow-Origin", "*" },
                             { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                         },
+            });
+
+
+            ContentTypeFilters.Register("text/x-csv",
+    CsvCustomSerializer.SerializeToStream, CsvCustomSerializer.DeserializeFromStream);
+            ResponseFilters.Add((req, res, dto) =>
+            {
+                if (req.ResponseContentType == "text/x-csv")
+                {
+                    res.AddHeader(HttpHeaders.ContentDisposition,
+                        string.Format("attachment;filename={0}.csv", req.OperationName));
+                }
             });
 
             Log.Info("Configure AppHost finished");
