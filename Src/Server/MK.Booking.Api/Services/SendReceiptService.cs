@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using apcurium.MK.Booking.CommandBuilder;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -56,73 +58,71 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
-
-            var orderStatus = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-
-            //if (orderStatus.Status != VehicleStatuses.Common.Done)
-            //{
-            //    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
-            //}
-
+                        
             var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-
-            if(ibsOrder.Fare.GetValueOrDefault() < .1)
-            {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
-            }
-
+            
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
 
-            var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
-            var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
-
-            bool useIbsValue = ((ibsOrder.Tip > 0) || (ibsOrder.Fare > 0));
-
-            var fare = useIbsValue ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
-            var tip = useIbsValue  ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
-
-            var command = new Commands.SendReceipt
+            if ((orderPayment != null) && (orderPayment.IsCompleted))
             {
-                Id = Guid.NewGuid(), 
-                OrderId = request.OrderId,
-                EmailAddress = account.Email,
-                IBSOrderId = order.IBSOrderId.Value,
-                TransactionDate = order.PickupDate,
-                VehicleNumber = ibsOrder.VehicleNumber,
-                Fare = fare,
-                Toll = ibsOrder.Toll.GetValueOrDefault(),
-                Tip = tip,
-                Tax = ibsOrder.VAT.GetValueOrDefault(),
-                
-            };
-
-#warning Copy and paste
-            var orderPayement = _orderPaymentDao.FindByOrderId(request.OrderId );
-            if (orderPayement != null)
-            {
-                command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
-                    orderPayement.Amount,
-                    orderPayement.TransactionId,
-                    orderPayement.AuthorizationCode,
-                    orderPayement.Type == PaymentType.CreditCard ? "Credit Card" : orderPayement.Type.ToString());
-
-                if (orderPayement.CardToken.HasValue())
-                {
-                    var creditCard = _creditCardDao.FindByToken(orderPayement.CardToken);
-                    if (creditCard != null)
-                    {
-                        command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                        command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                        command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
-                    }
-                }
-
+                var creditCard = orderPayment.CardToken.HasValue() ? _creditCardDao.FindByToken(orderPayment.CardToken) : null;
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber,  Convert.ToDouble( orderPayment.Meter), 0, Convert.ToDouble( orderPayment.Meter),0, orderPayment, creditCard ));
             }
-
-
-            _commandBus.Send(command);
-
+            else
+            {
+                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, ibsOrder.Fare, ibsOrder.Toll, ibsOrder.Tip, ibsOrder.VAT, null,null ));
+            }
+            
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
+
+        //private Commands.SendReceipt GetSendReceiptCommand(OrderDetail order,  IBSOrderDetails ibsOrder, OrderPaymentDetail orderPayment, AccountDetail account)
+        //{
+
+        //    var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
+        //    var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
+
+        //    bool useIbsValue = ((ibsOrder.Tip > 0) || (ibsOrder.Fare > 0));
+
+        //    var fare = useIbsValue ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
+        //    var tip = useIbsValue ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
+
+
+        //    var command = new Commands.SendReceipt
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        OrderId =  order.Id ,
+        //        EmailAddress = account.Email,
+        //        IBSOrderId = order.IBSOrderId.Value,
+        //        TransactionDate = order.PickupDate,
+        //        VehicleNumber = ibsOrder.VehicleNumber,
+        //        Fare = fare,
+        //        Toll = ibsOrder.Toll.GetValueOrDefault(),
+        //        Tip = tip,
+        //        Tax = ibsOrder.VAT.GetValueOrDefault(),
+        //    };
+
+
+        //    if (orderPayment != null)
+        //    {
+        //        command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+        //            orderPayment.Amount,
+        //            orderPayment.TransactionId,
+        //            orderPayment.AuthorizationCode,
+        //            orderPayment.Type == PaymentType.CreditCard ? "Credit Card" : orderPayment.Type.ToString());
+
+        //        if (orderPayment.CardToken.HasValue())
+        //        {
+        //            var creditCard = _creditCardDao.FindByToken(orderPayment.CardToken);
+        //            if (creditCard != null)
+        //            {
+        //                command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
+        //                command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
+        //                command.CardOnFileInfo.FriendlyName = creditCard.FriendlyName;
+        //            }
+        //        }
+        //    }
+        //    return command;
+        //}
     }
 }

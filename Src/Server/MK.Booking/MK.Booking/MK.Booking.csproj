@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Calculator\IRuleCalculator.cs" />
     <Compile Include="Calculator\RuleCalculator.cs" />
+    <Compile Include="CommandBuilder\SendReceiptCommandBuilder.cs" />
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
     <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
@@ -271,6 +272,9 @@
       <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Res\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

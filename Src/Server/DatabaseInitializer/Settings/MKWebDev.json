@@ -5,7 +5,7 @@
    "IBS.WebServicesUrl.Dev" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",         
    "IBS.WebServicesUserName" : "taxi",  
    "IBS.FakeOrderStatusUpdate": "true",
-   "DefaultBookingSettings.NbPassenger" : "3",
+   "DefaultBookingSettings.NbPassenger" : "1",
    "Direction.FlateRate" : "3.45",
    "Direction.MaxDistance" : "50",
    "Direction.RatePerKm" : "1.70",
