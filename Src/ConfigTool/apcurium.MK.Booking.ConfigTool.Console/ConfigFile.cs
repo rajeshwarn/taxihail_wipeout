@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.ConfigTool
         public override void Apply()
         {
             var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(  Destination ) );
+
+            //Todo : Here _filePathToPatch should be the equal to temp folder containing all the assets
             var sourcePath = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(  Source ) );
             if (!File.Exists(sourcePath))
             {

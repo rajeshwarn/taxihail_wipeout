@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemoCallbox"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.Taxi303CallBox"
     android:id="@+id/frameLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
