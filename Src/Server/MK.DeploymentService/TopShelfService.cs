@@ -1,4 +1,5 @@
-﻿using Topshelf;
+﻿using System;
+using Topshelf;
 
 namespace MK.DeploymentService
 {
@@ -6,6 +7,8 @@ namespace MK.DeploymentService
     {
         static void Main(string[] args)
         {
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             HostFactory.Run(x =>
             {
                 x.Service<DeploymentJobService>(s =>                        
@@ -20,6 +23,11 @@ namespace MK.DeploymentService
                 x.SetDisplayName("TaxiHailDeploymentService");
                 x.SetServiceName("TaxiHailDeploymentService");  
             });
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            
         }
     }
 }

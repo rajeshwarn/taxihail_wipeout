@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using CustomerPortal.Web.Entities;
 using DeploymentServiceTools;
 using Microsoft.Build.Exceptions;
 using Microsoft.Build.Framework;
-using MK.ConfigurationManager;
-using MK.ConfigurationManager.Entities;
+
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Web.Administration;
+using MK.DeploymentService.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using log4net;
@@ -36,8 +38,7 @@ namespace MK.DeploymentService
 
         public void Start()
         {
-            Database.SetInitializer<ConfigurationManagerDbContext>(null);
-            _timer.Change(0, 2000);
+            _timer.Change(0, 20000);
         }
 
         private void TimerOnElapsed(object state)
@@ -61,39 +62,35 @@ namespace MK.DeploymentService
         }
 
         private DeploymentJob job;
-        private ConfigurationManagerDbContext dbContext;
+        //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
-            dbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
-            job = dbContext.Set<DeploymentJob>()
-                .Include(x => x.Company)
-                .Include(x => x.IBSServer)
-                .Include(x => x.TaxHailEnv)
-                .Include(x => x.Version)
-                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED && !x.iOS_AdHoc && !x.iOS_AppStore && !x.Android);
+            job = new DeploymentJobServiceClient().GetNext();
 
             if (job == null) return;
 
+           
             try
             {
-                Log("Starting",JobStatus.INPROGRESS);
+
+                Log("Starting", JobStatus.Inprogress);
 
                 var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
 
                 Log("Source Folder = " + sourceDirectory);
-                
+
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
-                if (Properties.Settings.Default.Mode == "Build")
+                if (job.Server.Role == EnvironmentRole.BuildServer )
                 {
-                    taxiRepo.FetchSource(job.GetRevisionNumber(),str=>Log(str));
+                    taxiRepo.FetchSource(job.Revision.Commit, str => Log(str));
                     Build(sourceDirectory);
                 }
 
                 //build server and deploy
-                if (job.DeployServer || job.DeployDB)
+                if (job.ServerSide || job.Create || job.Database)
                 {
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
-                    if (Properties.Settings.Default.Mode != "Build")
+                    if (job.Server.Role != EnvironmentRole.BuildServer)
                     {
                         packagesDirectory = Properties.Settings.Default.DeployFolder;
                     }
@@ -101,14 +98,14 @@ namespace MK.DeploymentService
                     DeployTaxiHail(packagesLocation);
                 }
 
-                Log("Job Complete", JobStatus.SUCCESS);
-                
+                Log("Job Complete", JobStatus.Success);
+
 
             }
             catch (Exception e)
             {
                 _logger.Error(e.Message, e);
-                Log(e.Message, JobStatus.ERROR);
+                Log(e.Message, JobStatus.Error);
             }
         }
 
@@ -116,7 +113,7 @@ namespace MK.DeploymentService
         {
             Log("Get the binaries and unzip it");
             var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(job));
-            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(job.GetVersionNumber()));
+            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
             {
@@ -127,38 +124,42 @@ namespace MK.DeploymentService
             Log("packageFile : " + packageFile);
             Log("unzipDirectory : " + unzipDirectory);
 
+            if (!Directory.Exists(unzipDirectory))
+            {
+                Directory.CreateDirectory(unzipDirectory);
+            }
             try
             {
-                var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("x {0} *", packageFile), unzipDirectory);
-                using (var exeProcess = Process.Start(zipProcess))
-                {
-                    var output = ProcessEx.GetOutput(exeProcess);
-                    if (exeProcess.ExitCode > 0)
-                    {
-                        throw new Exception("Error during unziping Process" + output);
-                    }
-                }
+                ZipFile.ExtractToDirectory(packageFile, unzipDirectory);
+              
             }
             catch (Exception)
             {
                 Log("Cannot unzip file, make sure 7zip is installed");
                 throw;
             }
-            
+
             return unzipDirectory;
         }
 
-        private void Log(string details, JobStatus? status=null)
+        private void Log( string details, JobStatus? status = null)
         {
 
             _logger.Debug(details);
-            if (status.HasValue)
-            {
-                job.Status = status.Value;
-            }
-            job.Details += details + "\n";
 
-            dbContext.SaveChanges();
+            if (job != null)
+            {
+                new DeploymentJobServiceClient().UpdateStatus(job.Id, details, status);
+            }
+
+
+            //if (status.HasValue)
+            //{
+            //    job.Status  = status.Value.ToString();
+            //}
+            //job.Details += details + "\n";
+
+           // dbContext.SaveChanges();
         }
 
 
@@ -167,19 +168,19 @@ namespace MK.DeploymentService
             Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
-            var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
-            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Build"}, null);
+            var globalProperty = new Dictionary<string, string> { { "Configuration", "Release" } };
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Build" }, null);
 
             var bParam = new BuildParameters(pc);
 
 
             Log("Setting logger");
 
-            bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] {new BuildLogger(txt => Log(txt))});       
+            bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] { new BuildLogger(txt => Log(txt)) });
 
             var buildResult = BuildManager.DefaultBuildManager.Build(bParam, buildRequestData);
 
-            
+
 
             Log("Build Finished");
 
@@ -226,13 +227,13 @@ namespace MK.DeploymentService
                 }
             }
 
-            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName),true);
+            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName), true);
             Log("Finished");
         }
 
         private void CopyFiles(string source, string target)
         {
-            Log("CopyFiles "+source+" => "+target);
+            Log("CopyFiles " + source + " => " + target);
             if (Directory.Exists(target))
             {
                 Directory.Delete(target, true);
@@ -249,7 +250,7 @@ namespace MK.DeploymentService
         private void DeployTaxiHail(string packagesDirectory)
         {
             Log(String.Format("Deploying"));
-            var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
+            var companyName = job.Company.CompanyKey;
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
             if (appPool == null)
@@ -263,32 +264,37 @@ namespace MK.DeploymentService
             }
             if (appPool.State == ObjectState.Started) appPool.Stop();
 
-            if (job.DeployDB)
+            if (job.Database)
             {
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName);
             }
 
-            if (job.DeployServer)
-            {
-                Log("Deploying Server");
-                DeployServer(companyName, packagesDirectory, iisManager);
-            }
+
+            Log("Deploying Server");
+            DeployServer(companyName, packagesDirectory, iisManager);
+
             appPool.Start();
         }
 
-        private void DeployDataBase( string packagesDirectory, string companyName)
+        private void DeployDataBase(string packagesDirectory, string companyName)
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
-            foreach (var setting in job.Company.ConfigurationProperties)
+            foreach (var setting in job.Company.Settings)
             {
-                jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                if ((setting.Key != "IBS.WebServicesUrl") &&
+                    (setting.Key != "IBS.WebServicesUserName") &&
+                    (setting.Key != "IBS.WebServicesPassword"))
+                {
+                    jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                }
             }
 
-            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.IBSServer.Url));
-            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.IBSServer.Username));
-            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.IBSServer.Password));
+
+            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.Company.IBS.ServiceUrl ));
+            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.Company.IBS.Username));
+            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.Company.IBS.Password));
 
             var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName + ".json";
             var stringBuilder = new StringBuilder();
@@ -296,11 +302,14 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
             var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1} {2}", companyName, job.InitDatabase ? "C" : "U",
-                                                   job.TaxHailEnv.SqlServerInstance), null, true);
+                                                   string.Format("{0} {1} {2}", companyName, job.Create ? "C" : "U",
+                                                   job.Server.SqlServerInstance), null, true);
+
+            
 
             using (var exeProcess = Process.Start(deployDB))
             {
+                exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
                 var output = ProcessEx.GetOutput(exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
@@ -311,17 +320,23 @@ namespace MK.DeploymentService
             }
         }
 
+        void exeProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            Console.WriteLine(e.Data);
+            Log(e.Data);
+        }
+
         private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
         {
             Log("Deploying IIS");
 
-            var revision = job.GetRevisionNumber();
+            var revision = job.Revision.Commit;
 
-            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + revision + "." + DateTime.Now.Ticks + "\\";
-            var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
+            var subFolder = job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
+            var targetWeDirectory = Path.Combine(job.Server.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
-     
+
             CopyFiles(sourcePath, targetWeDirectory);
 
             var website = iisManager.Sites["Default Web Site"];
@@ -371,7 +386,7 @@ namespace MK.DeploymentService
 
         private static string GetZipFileName(DeploymentJob job)
         {
-            return string.Format("TaxiHail_{0}.zip", MakeValidFileName(job.GetVersionNumber()));
+            return string.Format("TaxiHail_[Bitbucket]{0}.zip", MakeValidFileName(job.Revision.Tag));
         }
 
         private static string MakeValidFileName(string name)
