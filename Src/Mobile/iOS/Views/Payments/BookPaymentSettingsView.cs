@@ -122,6 +122,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				payPalLogo.Hidden = !((PaymentSelector)sender).PayPalSelected;
 			};
 		
+			btConfirm.TouchDown += (sender, e) =>
+			{
+				if ( MeterAmountLabel.IsFirstResponder )
+				{
+					MeterAmountLabel.ResignFirstResponder();
+				}
+				if ( TipAmountLabel.IsFirstResponder )
+				{
+					TipAmountLabel.ResignFirstResponder();
+				}
+				ViewModel.MeterAmount = MeterAmountLabel.Text;//Todo ugly binding done in code behind
+				ViewModel.TipAmount = TipAmountLabel.Text;//Todo ugly binding done in code behind
+			};
+
             this.AddBindings(new Dictionary<object, string>() {         
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
