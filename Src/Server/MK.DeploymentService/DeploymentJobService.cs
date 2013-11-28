@@ -112,7 +112,16 @@ namespace MK.DeploymentService
         private string CleanAndUnZip(string packagesDirectory)
         {
             Log("Get the binaries and unzip it");
+
+            
             var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(_job));
+            if (!File.Exists(  packageFile ) )
+            {
+                Log("Getting the binaries from server");
+                var client = new PackagesServiceClient();
+                client.GetPackage(GetZipFileName(_job), packageFile);
+                Log("Done getting the binaries from server");
+            }
             var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
@@ -207,18 +216,26 @@ namespace MK.DeploymentService
                 File.Delete(fileName);
             }
 
+            
             var packageDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\");
-            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), packageDir);
-            using (var exeProcess = Process.Start(zipProcess))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during Zip Process" + output);
-                }
-            }
 
-            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName), true);
+            ZipFile.CreateFromDirectory(packageDir, fileName);
+
+            //var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), packageDir);
+            //using (var exeProcess = Process.Start(zipProcess))
+            //{
+            //    var output = ProcessEx.GetOutput(exeProcess);
+            //    if (exeProcess.ExitCode > 0)
+            //    {
+            //        throw new Exception("Error during Zip Process" + output);
+            //    }
+            //}
+
+            Log("Uploading package to server...");
+            new PackagesServiceClient().UploadPackage(fileName);
+            Log("Done uploading package to server...");
+
+            //File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName), true);
             Log("Finished");
         }
 
