@@ -39,7 +39,7 @@ namespace MK.DeploymentService.Service
             var url = Settings.Default.CustomerPortalUrl;
 
 //#if DEBUG
-            url = "http://localhost:2287/api/";
+           // url = "http://localhost:2287/api/";
 //#endif
             return url;
         }
