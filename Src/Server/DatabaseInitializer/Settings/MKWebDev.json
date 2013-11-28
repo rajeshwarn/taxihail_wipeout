@@ -12,9 +12,9 @@
    "TaxiHail.SiteName" : "Dev",
 
 
-   "IBS.WebServicesUrl" : "http://mkcsales.drivelinq.com:6928/XDS_IASPI.DLL/soap/",      
+   "IBS.WebServicesUrl.Local" : "http://mkcsales.drivelinq.com:6928/XDS_IASPI.DLL/soap/",      
  
-   "IBS.WebServicesUrl.Local" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",         
+   "IBS.WebServicesUrl" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",         
    "IBS.WebServicesUrl.Dev" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",         
    
    "Direction.FlateRate" : "3.45",   

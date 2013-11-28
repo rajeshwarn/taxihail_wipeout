@@ -61,15 +61,15 @@ namespace MK.DeploymentService
             }
         }
 
-        private DeploymentJob job;
+        private DeploymentJob _job;
         //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
-            job = new DeploymentJobServiceClient().GetNext();
+            var job = new DeploymentJobServiceClient().GetNext();
 
             if (job == null) return;
 
-           
+            _job = job;
             try
             {
 
@@ -80,17 +80,17 @@ namespace MK.DeploymentService
                 Log("Source Folder = " + sourceDirectory);
 
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
-                if (job.Server.Role == EnvironmentRole.BuildServer )
+                if (_job.Server.Role == EnvironmentRole.BuildServer )
                 {
-                    taxiRepo.FetchSource(job.Revision.Commit, str => Log(str));
+                    taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
                     Build(sourceDirectory);
                 }
 
                 //build server and deploy
-                if (job.ServerSide || job.Create || job.Database)
+                if (_job.ServerSide || _job.Create || _job.Database)
                 {
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
-                    if (job.Server.Role != EnvironmentRole.BuildServer)
+                    if (_job.Server.Role != EnvironmentRole.BuildServer)
                     {
                         packagesDirectory = Properties.Settings.Default.DeployFolder;
                     }
@@ -112,8 +112,8 @@ namespace MK.DeploymentService
         private string CleanAndUnZip(string packagesDirectory)
         {
             Log("Get the binaries and unzip it");
-            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(job));
-            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(job.Revision.Tag));
+            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(_job));
+            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
             {
@@ -147,19 +147,10 @@ namespace MK.DeploymentService
 
             _logger.Debug(details);
 
-            if (job != null)
+            if (_job != null)
             {
-                new DeploymentJobServiceClient().UpdateStatus(job.Id, details, status);
+                new DeploymentJobServiceClient().UpdateStatus(_job.Id, details, status);
             }
-
-
-            //if (status.HasValue)
-            //{
-            //    job.Status  = status.Value.ToString();
-            //}
-            //job.Details += details + "\n";
-
-           // dbContext.SaveChanges();
         }
 
 
@@ -209,7 +200,7 @@ namespace MK.DeploymentService
 
             Log("Zip Web directory and move it to the drop folder");
             //compress data
-            var fileName = GetZipFileName(job);
+            var fileName = GetZipFileName(_job);
 
             if (File.Exists(fileName))
             {
@@ -250,7 +241,7 @@ namespace MK.DeploymentService
         private void DeployTaxiHail(string packagesDirectory)
         {
             Log(String.Format("Deploying"));
-            var companyName = job.Company.CompanyKey;
+            var companyName = _job.Company.CompanyKey;
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
             if (appPool == null)
@@ -264,7 +255,7 @@ namespace MK.DeploymentService
             }
             if (appPool.State == ObjectState.Started) appPool.Stop();
 
-            if (job.Database)
+            if (_job.Database)
             {
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName);
@@ -281,7 +272,7 @@ namespace MK.DeploymentService
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
-            foreach (var setting in job.Company.Settings)
+            foreach (var setting in _job.Company.Settings)
             {
                 if ((setting.Key != "IBS.WebServicesUrl") &&
                     (setting.Key != "IBS.WebServicesUserName") &&
@@ -292,9 +283,9 @@ namespace MK.DeploymentService
             }
 
 
-            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.Company.IBS.ServiceUrl ));
-            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.Company.IBS.Username));
-            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.Company.IBS.Password));
+            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ));
+            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username));
+            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(_job.Company.IBS.Password));
 
             var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName + ".json";
             var stringBuilder = new StringBuilder();
@@ -302,8 +293,8 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
             var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1} {2}", companyName, job.Create ? "C" : "U",
-                                                   job.Server.SqlServerInstance), null, true);
+                                                   string.Format("{0} {1} {2}", companyName, _job.Create ? "C" : "U",
+                                                   _job.Server.SqlServerInstance), null, true);
 
             
 
@@ -330,10 +321,10 @@ namespace MK.DeploymentService
         {
             Log("Deploying IIS");
 
-            var revision = job.Revision.Commit;
+            var revision = _job.Revision.Commit;
 
-            var subFolder = job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
-            var targetWeDirectory = Path.Combine(job.Server.WebSitesFolder, companyName, subFolder);
+            var subFolder = _job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
+            var targetWeDirectory = Path.Combine(_job.Server.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
 
