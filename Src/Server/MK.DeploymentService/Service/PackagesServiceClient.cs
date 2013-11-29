@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using MK.DeploymentService.Properties;
+using System.Net;
 
 namespace MK.DeploymentService.Service
 {
@@ -19,7 +20,7 @@ namespace MK.DeploymentService.Service
             var url = GetUrl();
 
 
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
             {
                 client.BaseAddress = new Uri(url);
 
@@ -42,7 +43,7 @@ namespace MK.DeploymentService.Service
         public string[] GetPackageList()
         {
             var url = GetUrl();
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
             {
                 client.BaseAddress = new Uri(url);
                 var packagesName =
@@ -59,7 +60,7 @@ namespace MK.DeploymentService.Service
         {
             var url = GetUrl();
 
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
             {
                 client.BaseAddress = new Uri(url);
                 var r = client.GetAsync(@"packages/?fileName=" + HttpUtility.UrlEncode(fileName)).Result; // + ).Result;
