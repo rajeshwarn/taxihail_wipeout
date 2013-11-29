@@ -13,14 +13,10 @@ namespace apcurium.MK.Booking.Maps
         public void Init(IUnityContainer container)
         {
             container.RegisterType<IAddresses, Addresses>();
-
-            var useIbsPriceCalculator = container.Resolve<IConfigurationManager>().GetSetting<bool>("IBS.UseIbsPrice", false);
-
             container.RegisterType<IPriceCalculator, PriceCalculator>();
             container.RegisterType<IDirections, Directions>();
             container.RegisterType<IGeocoding, Geocoding>();
-            container.RegisterType<IPlaces, Places>();
-            
+            container.RegisterType<IPlaces, Places>();            
         }
     }
 }

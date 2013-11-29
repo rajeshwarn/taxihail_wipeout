@@ -73,6 +73,7 @@
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
+    <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
     <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
     <Compile Include="TaxiHail\TariffsServiceClient.cs" />
+    <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
@@ -140,7 +142,5 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Payments\Braintree\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
