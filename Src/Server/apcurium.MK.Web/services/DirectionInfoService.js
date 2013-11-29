@@ -14,7 +14,6 @@
             if (tarifMode != 'AppTarif') {
                 return $.get('api/ibsfare/', coordinates, function () { }, fmt)
         .done(function (result) {
-            console.log(result)
             if (tarifMode == 'Both' && result.price == 0)
                 return $.get('api/directions/', coordinates, function () { }, fmt)
            .done(function (result) {
