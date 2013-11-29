@@ -3,6 +3,8 @@
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
         getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
 
+            var preferedPrice = null, tempPrice = null;
+
             var coordinates = {
                 originLat: originLat,
                 originLng: originLng,
@@ -11,21 +13,35 @@
                 date: date
             }, tarifMode = TaxiHail.parameters.directionTarifMode, fmt = 'json';
 
-            if (tarifMode != 'AppTarif') {
-                return $.get('api/ibsfare/', coordinates, function () { }, fmt)
-        .done(function (result) {
-            if (tarifMode == 'Both' && result.price == 0)
-                return $.get('api/directions/', coordinates, function () { }, fmt)
-           .done(function (result) {
-               result.callForPrice = (result.price > 100);
-           });
-        });
-            } else {
-                return $.get('api/directions/', coordinates, function () { }, fmt)
-            .done(function (result) {
-                result.callForPrice = (result.price > 100);
-            });
+            function getDirectionInfoEvent() {
+
+                var directionInfoDefer = $.Deferred();
+
+                if (tarifMode != 'AppTarif') {
+                    $.get('api/ibsfare/', coordinates, function () { }, fmt).then(function (result) {                        
+                        if (result.price == 0) {
+                            $.get('api/directions/', coordinates, function () { }, fmt).done(function (result) {                                
+                                directionInfoDefer.resolve(result);
+                            });
+                        } else {                            
+                            directionInfoDefer.resolve(result);
+                        }
+                    });
+
+                } else {
+                    $.get('api/directions/', coordinates, function () { }, fmt).then(function (result) {                        
+                        directionInfoDefer.resolve(result);
+                    });
+                }
+                
+                return directionInfoDefer.promise();
             }
+
+            return $.when(getDirectionInfoEvent()).done(
+              function (result) {
+                  result.callForPrice = (result.price > 100);
+              }
+            );
         }
     });
 }());
