@@ -1,12 +1,12 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using System.IO;
 using apcurium.MK.Booking.ConfigTool.ServiceClient;
 using CustomerPortal.Web.Entities;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
+using Newtonsoft.Json;
+using Internals;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
@@ -195,11 +195,10 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 if (_config == null)
                 {
-                    //TODO : The file seettings.json must be created from the company settings
-                    using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "Settings.json"), FileMode.Open))
-                    {
-                        _config = JsonSerializer.DeserializeFromStream(typeof(AppConfigFile), file) as AppConfigFile;
-                    }
+
+					var json = File.ReadAllText(Path.Combine(ConfigDirectoryPath, "Settings.json"));
+					_config = JsonConvert.DeserializeObject<AppConfigFile> (json);
+                    
                 }
                 return _config;
 
@@ -257,7 +256,8 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
             var newFile = File.CreateText(Path.Combine(tempPath, "settings.json"));
-            newFile.Write( Company.Settings.ToJson());
+	
+			newFile.Write( JsonConvert.SerializeObject (Company.Settings));
             newFile.Close();
             newFile.Dispose();
 
@@ -270,7 +270,12 @@ namespace apcurium.MK.Booking.ConfigTool
                 CopyStream(stream, file);
             }
 
-            ZipFile.ExtractToDirectory(zipFile, tempPath);
+			using (var unzip = new Unzip(zipFile))
+			{
+				unzip.ExtractToDirectory(tempPath);
+			}
+
+			//ZipFile.ExtractToDirectory(zipFile, tempPath);
             File.Delete( zipFile );
 
             return tempPath;
