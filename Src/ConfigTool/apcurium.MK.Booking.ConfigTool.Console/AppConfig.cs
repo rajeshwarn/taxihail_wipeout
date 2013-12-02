@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
 					/* notification */
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.C2D_MESSAGE" },
-				new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[@android:name=""com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE""]", Attribute="android:name", SetterAtt = ( app, att )=> 
+				new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
 						att.Value = Config.ApplicationName + ".permission.C2D_MESSAGE";
 					}},
