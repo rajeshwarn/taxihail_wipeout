@@ -506,6 +506,9 @@
   <data name="HistoryDetailRebookButton" xml:space="preserve">
     <value>Rebook trip</value>
   </data>
+<data name="LocationDetailRebookButton" xml:space="preserve">
+    <value>Book using this address</value>
+  </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
   </data>
@@ -889,6 +892,9 @@
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
   </data>
   <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
     <value>Invalid Contact</value>

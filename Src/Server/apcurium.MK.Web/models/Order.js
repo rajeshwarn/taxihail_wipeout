@@ -63,6 +63,10 @@
             }));
         },
 
+        getAvailableVehicles: function () {
+            return new TaxiHail.AvailableVehicleCollection([], { latitude: 0, longitude: 0 });
+        },
+
         isValidAddress: function(attr) {
             var value = this.get(attr);
             return !!(value && value.fullAddress && value.latitude && value.longitude);

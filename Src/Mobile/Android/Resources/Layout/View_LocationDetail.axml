@@ -112,7 +112,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:layout_weight="0.33"
-                    android:text="@string/HistoryDetailRebookButton"
+                    android:text="@string/LocationDetailRebookButton"
                     local:MvxBind="{'Click': {'Path': 'RebookOrder'}, Visibility: {'Path': 'RebookIsAvailable', 'Converter': 'Visibility'}}" />
             </LinearLayout>
         </LinearLayout>

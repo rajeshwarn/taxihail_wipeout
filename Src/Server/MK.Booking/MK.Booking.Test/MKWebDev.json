@@ -14,9 +14,9 @@
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca",
    "IBS.AutoDispatch" : "true",   
    
-   "IBS.WebServicesUrl" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",     
-   "IBS.WebServicesUrl.2":"http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUrl.3" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",         
+   "IBS.WebServicesUrl.1" : "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",     
+   "IBS.WebServicesUrlOld":"http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl":" http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",   
    "IBS.WebServicesUrl.4" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUrl.5" : "http://mkcsales.drivelinq.com:6928/XDS_IASPI.DLL/soap/",             
    

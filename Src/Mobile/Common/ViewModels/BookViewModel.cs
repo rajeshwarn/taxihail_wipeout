@@ -545,6 +545,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public IMvxCommand ClosePanelCommand
+        {
+            get
+            {
+                return GetCommand(() => {
+                    Panel.MenuIsOpen = false;
+                });
+            }
+        }
+
         public void ProcessOrder()
         {
             using(MessageService.ShowProgress())

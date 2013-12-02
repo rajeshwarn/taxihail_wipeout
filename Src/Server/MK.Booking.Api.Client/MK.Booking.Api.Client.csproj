@@ -111,6 +111,7 @@
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
+    <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
     <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
     <Compile Include="TaxiHail\GeocodingServiceClient.cs" />

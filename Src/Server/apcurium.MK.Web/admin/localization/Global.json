@@ -47,6 +47,8 @@
 	"confirmEmailError" : "Error: Check that the email address exists in the system",
 	"disableEmailSuccess" : "User has correctly been disabled." ,
 	"disableEmailError" : "Error: Check that the email address exists in the system",
+	"sendPushNotificationSuccess" : "Message has correctly been sent." ,
+	"sendPushNotificationError" : "Error: Couldn't send the message to the user",		
 	"Default": "Default",
 
 	"/******* Begin settings Aliases *******/":"",

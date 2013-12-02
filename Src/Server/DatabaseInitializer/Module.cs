@@ -15,6 +15,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 
+
 namespace DatabaseInitializer
 {
     public class Module

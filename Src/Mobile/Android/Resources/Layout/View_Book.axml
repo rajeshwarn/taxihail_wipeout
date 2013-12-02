@@ -204,6 +204,14 @@
                         </RelativeLayout>
                     </FrameLayout>
                 </RelativeLayout>
+                <Button
+                    android:id="@+id/BigButtonTransparent"
+                    android:background="@color/transparent"
+                    android:layout_width="50dip"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="right"
+                    local:MvxBind="{'Visibility':{'Path':'Panel.MenuIsOpen', 'Converter':'Visibility'}}"
+                    />
             </FrameLayout>
         </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
     </RelativeLayout>

@@ -3,8 +3,8 @@
 // Events: loggedIn, loggedOut
 (function () {
 
-    var isLoggedIn = false;
-
+    var isLoggedIn = false,
+    currentOrderKey = "TaxiHail.currentOrder";
 
     TaxiHail.auth = _.extend({}, Backbone.Events, {
         account: null,
@@ -22,6 +22,8 @@
         logout: function () {
             isLogged = false;
             TaxiHail.localStorage.removeItem('fbId');
+            TaxiHail.localStorage.removeItem(currentOrderKey);
+
             return $.post('api/auth/logout', _.bind(function () {
                 isLoggedIn = false;
                 this.trigger('change', isLoggedIn);
