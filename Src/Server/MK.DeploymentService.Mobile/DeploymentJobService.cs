@@ -105,6 +105,10 @@ namespace MK.DeploymentService.Mobile
 					if (Directory.Exists (releaseCallboxAndroidDir))
 						Directory.Delete (releaseCallboxAndroidDir, true);
 
+					if (!Directory.Exists (sourceDirectory))
+						Directory.CreateDirectory( sourceDirectory);
+
+
 
 					var taxiRepo = new TaxiRepository (HG_PATH, sourceDirectory);
 					UpdateJob ("FetchSource");
