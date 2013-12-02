@@ -84,6 +84,7 @@
     <Compile Include="Cmt\CmtAuthResponse.cs" />
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
+    <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="TaxiHail\AuthServiceClient.cs" />
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />

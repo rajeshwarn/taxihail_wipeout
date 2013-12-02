@@ -50,6 +50,7 @@
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />

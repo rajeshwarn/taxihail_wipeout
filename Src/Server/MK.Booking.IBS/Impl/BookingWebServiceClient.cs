@@ -110,7 +110,23 @@ namespace apcurium.MK.Booking.IBS.Impl
             });
             return result;
         }
-        
+        public IBSFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng)
+        {
+            var result = new IBSFareEstimate();
+            double _fare, _tolls, _distance;
+            UseService(service =>
+            {
+                TBookOrder_7 tbook = new TBookOrder_7();                
+                tbook.PickupAddress = new TWEBAddress() { Latitude = (double)pickupLat, Longitude = (double)pickupLng };
+                tbook.DropoffAddress = new TWEBAddress() { Latitude = (double)dropoffLat, Longitude = (double)dropoffLng };                                                
+                result.FareEstimate = service.EstimateFare(UserNameApp, PasswordApp, tbook, out _fare, out _tolls, out _distance);
+                result.Distance = _distance;
+                result.Tolls = _tolls;
+            });
+            
+            return result;
+        }
+
         public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
         {
             var result = new List<IBSOrderInformation>();

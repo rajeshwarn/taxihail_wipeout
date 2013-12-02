@@ -58,6 +58,7 @@
             TaxiHail.parameters.isEstimateWarningEnabled = <%: this.EstimateWarningEnabled %>;
             TaxiHail.parameters.isDestinationRequired = <%: this.DestinationIsRequired %>;
             TaxiHail.parameters.showPassengerNumber = <%: this.ShowPassengerNumber ? "true" : "false"  %>;
+            TaxiHail.parameters.directionTarifMode = "<%: this.DirectionTarifMode %>";
             TaxiHail.parameters.apiRoot = "api";
 
             TaxiHail.referenceData = <%= ReferenceData %>;

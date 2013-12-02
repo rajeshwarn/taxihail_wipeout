@@ -442,5 +442,5 @@
 "AcceptButton"="Accept";
 "TermsAndConditionsLabel"="Terms and Conditions";
 "app_id"="134284363380764";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
-"LocationDetailRebookButton"="Book using this address";
+"ConfirmationPaymentAmountOver100"="You will be charged {0}. Please confirm the amount. ";
+"ConfirmationPaymentAmountOver100Title"="Confirmation Required";

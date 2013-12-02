@@ -1,11 +1,19 @@
-﻿using Topshelf;
+﻿using System;
+using log4net;
+using Topshelf;
 
 namespace MK.DeploymentService
 {
     public class TopShelfService
     {
+        private static ILog _logger;
         static void Main(string[] args)
         {
+
+            _logger = LogManager.GetLogger("DeploymentJobService");
+            _logger.Debug("Service started");
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             HostFactory.Run(x =>
             {
                 x.Service<DeploymentJobService>(s =>                        
@@ -20,6 +28,11 @@ namespace MK.DeploymentService
                 x.SetDisplayName("TaxiHailDeploymentService");
                 x.SetServiceName("TaxiHailDeploymentService");  
             });
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            _logger.Error("UnhandledException", e.ExceptionObject as Exception );
         }
     }
 }

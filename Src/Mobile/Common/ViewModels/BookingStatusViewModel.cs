@@ -35,15 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly IBookingService _bookingService;
         private int _refreshPeriod = 5; //in seconds
-        private bool _hasSeenReminder = false;
         private bool _waitingToNavigateAfterTimeOut = false;
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-            IsCancelButtonVisible = true;
-			_hasSeenReminder = false;
+            IsCancelButtonVisible = true;			
             _waitingToNavigateAfterTimeOut = false;
 			_bookingService = this.GetService<IBookingService>();
 		}
@@ -285,12 +283,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#endregion
 
+
+        private bool HasSeenReminderPrompt( Guid orderId )
+        {
+            var hasSeen = CacheService.Get<string>( "OrderReminderWasSeen." + orderId.ToString());
+            return !string.IsNullOrEmpty(hasSeen);
+        }
+        private void SetHasSeenReminderPrompt( Guid orderId )
+        {
+            CacheService.Set( "OrderReminderWasSeen." + orderId.ToString(), true.ToString() );                     
+        }
+
+
+
+
         private void AddReminder (OrderStatusDetail status)
         {
-			if (!_hasSeenReminder
+            if (!HasSeenReminderPrompt(status.OrderId )
 				&& this.PhoneService.CanUseCalendarAPI())
             {
-                this._hasSeenReminder = true;
+                SetHasSeenReminderPrompt(status.OrderId);
                 InvokeOnMainThread (() => 
                 {
 					MessageService.ShowMessage (Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () => 
@@ -368,7 +380,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsCancelButtonVisible = statusId == null ||
                                     statusId == VehicleStatuses.Common.Assigned 
                                 || statusId == VehicleStatuses.Common.Waiting 
-                                || statusId == VehicleStatuses.Common.Arrived;
+                                || statusId == VehicleStatuses.Common.Arrived
+                                || statusId == VehicleStatuses.Common.Scheduled;
 
             IsResendButtonVisible = isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 		}

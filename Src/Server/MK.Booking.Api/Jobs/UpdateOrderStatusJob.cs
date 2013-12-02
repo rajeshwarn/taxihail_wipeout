@@ -36,9 +36,10 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             var orders = _orderDao.GetOrdersInProgress();
 
-
-            var ibsOrdersIds = orders
-                .Where(statusDetail => statusDetail.IBSOrderId.HasValue)
+            
+            var ibsOrdersIds= orders
+                .Where(statusDetail => statusDetail.PickupDate >= DateTime.Now.AddDays(-1) || statusDetail.IBSStatusId == VehicleStatuses.Common.Scheduled)
+                 .Where(statusDetail => statusDetail.IBSOrderId.HasValue)
                 .Select(statusDetail => statusDetail.IBSOrderId.Value)
                 .ToList();
 
@@ -60,6 +61,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 _orderStatusUpdater.Update(ibsStatus, order);
             }            
+
+
         }
 
         

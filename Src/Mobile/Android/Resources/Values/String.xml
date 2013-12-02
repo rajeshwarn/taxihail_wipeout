@@ -448,4 +448,6 @@
   <string name="View_TermsAndConditions"></string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="LocationDetailRebookButton">Book using this address</string>
+  <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
+  <string name="ConfirmationPaymentAmountOver100">You will be charged {0:c}. Please confirm the amount. </string>
 </resources>
