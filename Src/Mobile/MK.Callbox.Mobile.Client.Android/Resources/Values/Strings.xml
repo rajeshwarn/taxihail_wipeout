@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">MK Callbox</string>
+  <string name="Hello">Hello World, Click Me!</string>
+  <string name="ApplicationName">303 Taxi LLC CallBox</string>
   <string name="EmailLabel">Email</string>
   <string name="PasswordLabel">Password</string>
   <string name="SignInButton">Sign In</string>
-  <string name="View_SignIn"></string>
+  <string name="View_SignIn">
+  </string>
   <string name="OrderNote">Booked on mobile</string>
   <string name="LoadingMessage">Loading...</string>
   <string name="LanguageCode">en</string>
@@ -37,6 +38,6 @@
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="ServiceErrorCallTitle">Server Error</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
-<string name="NotSpecified">Not Specified</string>
-<string name="PassengerName">Passenger</string>
+  <string name="NotSpecified">Not Specified</string>
+  <string name="PassengerName">Passenger</string>
 </resources>

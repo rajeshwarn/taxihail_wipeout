@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void UpdateCallButtonSize (RectangleF callFrame)
         {
-            if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible) {
+			if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsResendButtonVisible && !ViewModel.IsPayButtonVisible) {
                 btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
             }

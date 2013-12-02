@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -22,36 +21,35 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class StartCallboxNavigation : MvxApplicationObject
-                    , IMvxStartNavigation
-    {
-        public void Start()
-        {
-            JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
+	public class StartCallboxNavigation : MvxApplicationObject, IMvxStartNavigation
+	{
+		public void Start()
+		{
+			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
-            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
-            
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
-            {
-                RequestNavigate<CallboxLoginViewModel>();
-            }
-            else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
-            {
-                RequestNavigate<CallboxOrderListViewModel>();
-            }
-            else
-            {
-                RequestNavigate<CallboxCallTaxiViewModel>();
-            }
+			TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
 
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
-        }
+			var activeOrderStatusDetails = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus();
 
-        public bool ApplicationCanOpenBookmarks
-        {
-            get { return true; }
-        }
-    }
+			if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
+			{
+				RequestNavigate<CallboxLoginViewModel>();
+			}
+			else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+			{
+				RequestNavigate<CallboxOrderListViewModel>();
+			}
+			else
+			{
+				RequestNavigate<CallboxCallTaxiViewModel>();
+			}
 
+			TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
+		}
+
+		public bool ApplicationCanOpenBookmarks
+		{
+			get { return true; }
+		}
+	}
 }
-

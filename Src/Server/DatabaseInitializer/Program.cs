@@ -89,6 +89,8 @@ namespace DatabaseInitializer
                 creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
                 creatorDb.CreateSchemas(connectionString);
 
+                Console.WriteLine("Add user for IIS...");
+
                 ////add user for IIS IIS APPPOOL\MyCompany
                 if (companyName != "MKWebDev")
                 {
@@ -127,6 +129,8 @@ namespace DatabaseInitializer
                 var appSettings = new Dictionary<string, string>();
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
+
+                Console.WriteLine("Loading settings...");
                 if (isUpdate)
                 {
                     settingsInDb.ForEach(setting =>
@@ -154,13 +158,13 @@ namespace DatabaseInitializer
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
                 
-                
 
 
 
 
                 if (isUpdate)
                 {
+                    Console.WriteLine("Playing events...");
                     //migrate events
                     var migrators = container.ResolveAll<IEventsMigrator>();
                     foreach (var eventsMigrator in migrators)
@@ -180,7 +184,7 @@ namespace DatabaseInitializer
                     }
 
                     CreateDefaultRules(connectionString, configurationManager, commandBus);
-
+                    Console.WriteLine("Done playing events...");
                 }
                 else
                 {
@@ -189,6 +193,7 @@ namespace DatabaseInitializer
                     CreateDefaultTariff(configurationManager, commandBus);
                     CreateDefaultRules(connectionString, configurationManager, commandBus);
 
+                    Console.WriteLine("Calling ibs...");
                     //Get default settings from IBS
                     var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
                     var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
@@ -214,6 +219,7 @@ namespace DatabaseInitializer
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     appSettings.Clear();
 
+                    Console.WriteLine("Register normal account...");
                     //Register normal account
                     var registerAccountCommand = new RegisterAccount
                                                       {
@@ -248,7 +254,7 @@ namespace DatabaseInitializer
 
 
                     //Register admin account
-
+                    Console.WriteLine("Register admin account...");
                     var registerAdminAccountCommand = new RegisterAccount
                     {
                         Id = Guid.NewGuid(),

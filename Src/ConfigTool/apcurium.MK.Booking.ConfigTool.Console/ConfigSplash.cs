@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.ConfigTool
         public ConfigSplash(AppConfig parent, string filePathToPatch, string outputFolder, string filename)
             : base(parent)
         {
-
+            //Todo : Here _filePathToPatch should be the equal to temp folder containing all the assets
             _filePathToPatch = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(filePathToPatch));
             _outputFolder = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(outputFolder));
 

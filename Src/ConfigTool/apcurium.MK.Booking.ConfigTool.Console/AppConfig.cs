@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.IO;
+using apcurium.MK.Booking.ConfigTool.ServiceClient;
+using CustomerPortal.Web.Entities;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -12,13 +15,13 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-        public AppConfig(string name, string configDirectoryPath, string srcDirectoryPath, string commonDirectoryPath)
+        public AppConfig(string name, Company company, string srcDirectoryPath, string commonDirectoryPath)
         {
             Name = name;
-            ConfigDirectoryPath = configDirectoryPath;
+            Company = company;
             SrcDirectoryPath = srcDirectoryPath;
             CommonDirectoryPath = commonDirectoryPath;
-            Init();
+            
         }
 
         private void Init()
@@ -192,6 +195,7 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 if (_config == null)
                 {
+                    //TODO : The file seettings.json must be created from the company settings
                     using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "Settings.json"), FileMode.Open))
                     {
                         _config = JsonSerializer.DeserializeFromStream(typeof(AppConfigFile), file) as AppConfigFile;
@@ -209,14 +213,21 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string Name { get; private set; }
 
-        public string ConfigDirectoryPath { get; private set; }
+        public Company Company { get; private set; }
 
         public string SrcDirectoryPath { get; private set; }
 
         public string CommonDirectoryPath { get; private set; }
 
+        public string ConfigDirectoryPath { get; set; }
+
         public void Apply ()
-		{
+        {
+
+            ConfigDirectoryPath = GetFiles();
+
+            Init();
+
 			var errorsList = new List<string> ();
 			foreach (var config in _configs) {
 				try {
@@ -233,5 +244,51 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+        private string GetFiles()
+        {
+            var tempPath = Path.Combine( Path.GetTempPath(), "ConfigTool" );
+            if ( Directory.Exists(tempPath))
+            {
+                Directory.Delete( tempPath, true  );
+            }
+
+            Directory.CreateDirectory(tempPath);
+
+
+
+            var newFile = File.CreateText(Path.Combine(tempPath, "settings.json"));
+            newFile.Write( Company.Settings.ToJson());
+            newFile.Close();
+            newFile.Dispose();
+
+
+            var service = new CompanyServiceClient();
+            var stream = service.GetCompanyFiles(Company.Id);
+            var zipFile = Path.Combine(tempPath, "out.zip");
+            using (Stream file = File.OpenWrite(zipFile))
+            {
+                CopyStream(stream, file);
+            }
+
+            ZipFile.ExtractToDirectory(zipFile, tempPath);
+            File.Delete( zipFile );
+
+            return tempPath;
+
+        }
+
+        
+            
+        public static void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[8 * 1024];
+            int len;
+            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+        }
+
+        
     }
 }

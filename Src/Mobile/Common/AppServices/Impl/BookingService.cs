@@ -20,6 +20,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Maps;
+using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -222,10 +224,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
+            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<Direction.TarifMode>("Direction.TarifMode", Direction.TarifMode.AppTarif);            
+            DirectionInfo directionInfo = new DirectionInfo();
+            
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
+                if (tarifMode != Direction.TarifMode.AppTarif)
+                {
+                    directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
+                }
 
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);
+                if (tarifMode == Direction.TarifMode.AppTarif || (tarifMode == Direction.TarifMode.Both && directionInfo.Price == 0d))
+                {
+                    directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
+                }            
 
                 return directionInfo ?? new DirectionInfo();
             }
