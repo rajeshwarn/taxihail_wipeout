@@ -32,9 +32,9 @@ namespace MK.Booking.Mobile.Client.Android
 
         public override void OnReceive(Context context, Intent intent)
         {
-            ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-            NetworkInfo mobNetInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			//ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.CONNECTIVITY_SERVICE);
+			//NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+			//NetworkInfo mobNetInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             //if (activeNetInfo != null)
             //{
             //    Toast.makeText(context, "Active Network Type : " + activeNetInfo.getTypeName(), Toast.LENGTH_SHORT).show();

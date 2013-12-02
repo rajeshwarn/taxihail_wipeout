@@ -504,6 +504,9 @@
     <value>Hide from history</value>
   </data>
   <data name="HistoryDetailRebookButton" xml:space="preserve">
+    <value>Rebook trip</value>
+  </data>
+<data name="LocationDetailRebookButton" xml:space="preserve">
     <value>Book using this address</value>
   </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">

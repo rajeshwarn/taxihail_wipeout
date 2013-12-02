@@ -19,7 +19,7 @@
 "PickupTextPlaceholder"="Pickup street address";
 "TechSupportEmailTitle"="Support Application Mobile";
 "StatusConfirmNewBooking"="Booking a new taxi will keep this order active, do you want to continue ?";
-"HistoryDetailRebookButton"="Book using this address";
+"HistoryDetailRebookButton"="Rebook trip";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
 "ConfirmAptRingCodeLabel"="Apt / Entry code:";
@@ -442,3 +442,5 @@
 "AcceptButton"="Accept";
 "TermsAndConditionsLabel"="Terms and Conditions";
 "app_id"="134284363380764";
+"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
+"LocationDetailRebookButton"="Book using this address";
