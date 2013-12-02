@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NinePatchMaker.Lib\NinePatchMaker.Lib.csproj">
-      <Project>{b8904225-5135-49bd-9ea7-0b3d11e872c6}</Project>
+      <Project>{B8904225-5135-49BD-9EA7-0B3D11E872C6}</Project>
       <Name>NinePatchMaker.Lib</Name>
     </ProjectReference>
   </ItemGroup>

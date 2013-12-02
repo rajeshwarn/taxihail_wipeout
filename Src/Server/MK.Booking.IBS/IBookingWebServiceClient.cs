@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.IBS
 
         IBSOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);
 
+        IBSFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng);
+
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 
         IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds);

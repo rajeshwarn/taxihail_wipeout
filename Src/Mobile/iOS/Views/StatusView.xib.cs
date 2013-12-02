@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
                     btnPay.SetFrame(btnCancel.Frame);
-                    btnResend.SetFrame(btnCancel.Frame);
+                    btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
 
                     var callFrame = btnCall.Frame;
                     UpdateCallButtonSize (callFrame);
@@ -180,11 +180,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void UpdateCallButtonSize (RectangleF callFrame)
         {
-			if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsResendButtonVisible && !ViewModel.IsPayButtonVisible) {
+            if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
+            {
                 btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
             }
-            else {
+            else
+            {
                 btnCall.SetFrame (callFrame);
             }
         }

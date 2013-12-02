@@ -21,6 +21,7 @@ namespace apcurium.MK.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
+
             XmlConfigurator.Configure();
             new MkWebAppHost().Init();
             

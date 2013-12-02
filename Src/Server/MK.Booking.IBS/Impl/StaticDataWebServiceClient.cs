@@ -22,10 +22,15 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public ListItem[] GetCompaniesList()
         {
+
+            
+
             var items = new ListItem[] {};
             UseService(service =>
             {
-                var companies = service.GetProviders(UserNameApp, PasswordApp);
+                var u = UserNameApp;
+                var p = PasswordApp;
+                var companies = service.GetProviders(u,p );
                 items= companies.Select(x => new ListItem { Display = x.ProviderName, Id = x.ProviderNum , IsDefault = x.isDefault }).ToArray();
             });
             return items;

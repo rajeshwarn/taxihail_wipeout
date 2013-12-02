@@ -1,4 +1,5 @@
 using System;
+using DeploymentServiceTools;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -7,7 +8,7 @@ namespace MK.DeploymentService.Mobile
 		public static void Main (string[] args)
 		{
             var service = new DeploymentJobService();
-            service.Start();
+			service.Start();
             while (true) { }
 		}
 	}

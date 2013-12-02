@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -25,6 +26,9 @@ namespace apcurium.MK.Booking.Commands
         public double Toll { get; set; }
         public double Tax { get; set; }
 
+        public Address PickupAddress { get; set; }
+        public Address DropOffAddress { get; set; }
+        
         public CardOnFile CardOnFileInfo { get; set; } // OPTIONAL Null if not needed
 
         public class CardOnFile

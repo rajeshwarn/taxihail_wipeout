@@ -1,10 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -12,22 +13,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton cancelBtn { get; set; }
+		MonoTouch.UIKit.UIButton backBtn { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
+		MonoTouch.UIKit.UIButton bookBtn { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton bookLaterButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton pickupActivationButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton cancelBtn { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton dropoffActivationButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffButton { get; set; }
@@ -36,22 +40,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIImageView headerBackgroundView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton bookLaterButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton refreshCurrentLocationButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton bookBtn { get; set; }
+		MonoTouch.UIKit.UILabel infoLabel { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel infoLabel { get; set; }
+		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton pickupActivationButton { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton refreshCurrentLocationButton { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -123,6 +127,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (infoLabel != null) {
 				infoLabel.Dispose ();
 				infoLabel = null;
+			}
+
+			if (backBtn != null) {
+				backBtn.Dispose ();
+				backBtn = null;
 			}
 		}
 	}

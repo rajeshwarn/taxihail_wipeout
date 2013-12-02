@@ -796,5 +796,7 @@
     <BundleResource Include="Assets\CreditCard\paypal%402x.png" />
     <BundleResource Include="Assets\pin_cluster%402x.png" />
     <BundleResource Include="Assets\pin_cluster.png" />
+    <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
+    <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
   </ItemGroup>
 </Project>

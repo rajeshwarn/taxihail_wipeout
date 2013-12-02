@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using CustomerPortal.Web.Entities;
 using MK.DeploymentService.Properties;
+using System.Net;
 
 
 namespace MK.DeploymentService.Service
@@ -22,19 +23,29 @@ namespace MK.DeploymentService.Service
 
             var url = GetUrl();
 
-            using (var client = new HttpClient())
+
+
+            
+
+            using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
             {
-                client.BaseAddress = new Uri(url);
-                return
-                    client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next")
-                        .Result.Content.ReadAsAsync<DeploymentJob>()
-                        .Result;
+                client.BaseAddress = new Uri(url);                
+                var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
+                if (r.IsSuccessStatusCode)
+                {
+                    return r.Content.ReadAsAsync<DeploymentJob>()
+                            .Result;
+                }
+                else
+                {
+                    return null;
+                }
 
             }
             
         }
 
-        
+
 
 
         private static string GetUrl()
@@ -52,7 +63,7 @@ namespace MK.DeploymentService.Service
         {
             var url = GetUrl();
 
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
             {
                 client.BaseAddress = new Uri(url);
 

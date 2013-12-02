@@ -24,6 +24,7 @@
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
     "CreateOrder_InvalidPickupAddress": "Invalid Pickup Address",
     "CreateOrder_CannotCreateInIbs_1002": "Booking cannot be completed. The specified Pickup address lies outside the regular service area. Please contact us for further assistance.",
+	"CreateOrder_CannotCreateInIbs_7000": "The order cannot be created because your account is currently inactive. Please contact us for further assistance.",
     "CreateOrder_SettingsRequired": "Settings required",
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",

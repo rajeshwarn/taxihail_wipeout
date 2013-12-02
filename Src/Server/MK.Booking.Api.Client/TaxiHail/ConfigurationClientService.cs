@@ -6,8 +6,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Diagnostic;
-
-
+using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -56,6 +55,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             else if (t.Equals(typeof(double)))
             {
                 return new  DoubleConverter();
+            }
+            else if (t.BaseType != null)
+            {
+                if (t.BaseType.Equals(typeof(System.Enum)) && t.Equals(typeof(Direction.TarifMode)))
+                {
+                    return new EnumConverter(typeof(Direction.TarifMode));
+                }
             }
 
             _logger.LogMessage("Could not convert setting to " + typeof(T).Name);

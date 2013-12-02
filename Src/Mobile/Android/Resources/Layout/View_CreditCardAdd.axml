@@ -42,12 +42,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/CreditCardNumber"
                 style="@style/FormLabelText" />
-            <EditText
+            <apcurium.mk.booking.mobile.client.controls.EditTextLeftImage
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:inputType="number"
-                local:MvxBind="{'Text':{'Path':'Data.CardNumber'}}" />
+                local:MvxBind="{'CreditCardNumber':{'Path':'CreditCardNumber'}, 'LeftImage': {'Path': 'CreditCardImagePath'}}" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
