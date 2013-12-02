@@ -83,6 +83,7 @@
     <Compile Include="WebEntities\UnitOfLength.cs" />
     <Compile Include="WebEntities\Version.cs" />
     <Compile Include="Services\DeploymentJobServiceClient.cs" />
+    <Compile Include="Services\CustomerPortalRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
