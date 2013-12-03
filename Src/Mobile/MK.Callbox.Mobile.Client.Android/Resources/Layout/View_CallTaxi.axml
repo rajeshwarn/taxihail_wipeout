@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.Taxi303CallBox"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_logo">
@@ -12,7 +12,7 @@
         android:layout_gravity="top|left" />
     <apcurium.mk.callbox.mobile.client.controls.StyledButton
         local:ButtonStyle="Black"
-        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;}}"
+        local:MvxBind="{'Click':{'Path':'CallTaxi'}}"
         android:background="@drawable/newBlackButton"
         android:text="@string/PushTaxi"
         android:layout_alignParentRight="true"

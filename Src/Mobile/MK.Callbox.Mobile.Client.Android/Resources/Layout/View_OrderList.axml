@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.Taxi303CallBox"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:id="@+id/frameLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -27,7 +27,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="30dip"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ApplicationName&apos;}}"
+            local:MvxBind="{'Text':{'Path':'ApplicationName'}}"
             android:layout_gravity="left|center_vertical" />
     </FrameLayout>
     <RelativeLayout
@@ -100,7 +100,7 @@
             android:layout_gravity="center"
             android:layout_below="@id/stroke"
             local:MvxItemTemplate="@layout/control_ordercell"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;Orders&apos;}}" />
+            local:MvxBind="{'ItemsSource':{'Path':'Orders'}}" />
     </RelativeLayout>
     <FrameLayout
         android:layout_width="fill_parent"
@@ -108,7 +108,7 @@
         <apcurium.mk.callbox.mobile.client.controls.StyledButton
             local:ButtonStyle="Black"
             style="@style/CallboxButtonText"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;}}"
+            local:MvxBind="{'Click':{'Path':'CallTaxi'}}"
             android:background="@drawable/newBlackButton"
             android:text="@string/OrderAnotherTaxi"
             android:layout_width="wrap_content"
