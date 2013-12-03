@@ -9,9 +9,8 @@ namespace CustomerPortal.Web.Entities
         [Required]
         public string Password { get; set; }
 
-        
+       
         [Required]
-        [Url]
         public string ServiceUrl { get; set; }
     }
 }

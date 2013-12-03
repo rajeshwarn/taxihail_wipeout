@@ -31,8 +31,7 @@ namespace CustomerPortal.Web.Entities
         [Display(Name = "Contact Name")]
         public string ProjectContactName { get; set; }
 
-        [Display(Name = "Contact Email Address")]
-        [EmailAddress]
+        [Display(Name = "Contact Email Address")]        
         public string ProjectContactEmail { get; set; }
 
         [Display(Name = "Contact Telephone")]
