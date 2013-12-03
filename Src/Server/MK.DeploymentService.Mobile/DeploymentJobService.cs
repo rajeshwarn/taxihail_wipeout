@@ -133,7 +133,7 @@ namespace MK.DeploymentService.Mobile
 
 		private void CreateNewVersionInCustomerPortalIfNecessary(string ipaAdHocPath, string apkPath)
 		{
-			if ((_job.Server.Url.Contains("services.taxihail.com") || _job.Server.Url.Contains("staging.taxihail.com")) && _job.Revision.Tag != null && _job.IosAdhoc && _job.Android)
+			if ((_job.ServerUrl.Contains("services.taxihail.com") || _job.ServerUrl.Contains("staging.taxihail.com")) && _job.Revision.Tag != null && _job.IosAdhoc && _job.Android)
 			{
 				UpdateJob("Creating new version in Customer Portal");
 
@@ -277,21 +277,21 @@ namespace MK.DeploymentService.Mobile
 			_logger.DebugFormat ("Generate Settings");
 
 			var jsonSettings = new JObject ();
-			foreach (var setting in company.Settings) {
+			foreach (var setting in company.CompanySettings) {
 				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
 			}
 
 			var isCMT = false;
 			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.CompanyKey);
-			if (company.Settings.ContainsKey ("IsCMT")) {
-				isCMT = bool.Parse (company.Settings ["IsCMT"]);
+			if (company.CompanySettings.ContainsKey ("IsCMT")) {
+				isCMT = bool.Parse (company.CompanySettings.GetValue("IsCMT"));
 			}
 			if (isCMT) {
 				serviceUrl = taxiHailEnv.Url;
 			} 
 
 
-			if (company.Settings.ContainsKey ("ServiceUrl")) {
+			if (company.CompanySettings.ContainsKey ("ServiceUrl")) {
 				jsonSettings ["ServiceUrl"] = JToken.FromObject (serviceUrl);
 			} else {
 				jsonSettings.Add ("ServiceUrl", JToken.FromObject (serviceUrl));

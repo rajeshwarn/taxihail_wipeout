@@ -107,6 +107,7 @@
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Entity\DirectionSetting.cs" />
   </ItemGroup>
   <ItemGroup />
   <ProjectExtensions>

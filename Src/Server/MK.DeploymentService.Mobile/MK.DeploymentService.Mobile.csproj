@@ -84,6 +84,8 @@
     <Compile Include="WebEntities\Version.cs" />
     <Compile Include="Services\DeploymentJobServiceClient.cs" />
     <Compile Include="Services\CustomerPortalRepository.cs" />
+    <Compile Include="WebEntities\CompanySetting.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -105,5 +107,6 @@
     <Folder Include="Services\" />
     <Folder Include="WebEntities\" />
     <Folder Include="Entities\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

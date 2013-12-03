@@ -444,3 +444,5 @@
 "app_id"="134284363380764";
 "ConfirmationPaymentAmountOver100"="You will be charged {0}. Please confirm the amount. ";
 "ConfirmationPaymentAmountOver100Title"="Confirmation Required";
+"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
+"LocationDetailRebookButton"="Book using this address";

@@ -123,6 +123,8 @@
     <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
     <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="IIbsFareClient.cs" />
+    <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PayPal\" />

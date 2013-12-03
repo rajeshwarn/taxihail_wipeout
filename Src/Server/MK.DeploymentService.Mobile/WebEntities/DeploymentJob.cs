@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,6 +6,14 @@ using System.Web;
 
 namespace CustomerPortal.Web.Entities
 {
+	public enum DeploymentJobType
+	{
+		ServerPackage = 1,
+
+		DeployServer = 2,
+		DeployClient = 3,
+	}
+
     public class DeploymentJob
     {
         public string Id { get; set; }
@@ -26,7 +34,10 @@ namespace CustomerPortal.Web.Entities
         public bool IosAdhoc { get; set; }
         public bool IosAppStore { get; set; }
         public DateTime Date { get; set; }
-        public string Details { get; set; }
+		public string Details { get; set; }
+		public string ServerUrl { get; set; }
+		public DeploymentJobType Type { get; set; }
+
         public DeploymentJob()
         {
             ServerSide = true;
