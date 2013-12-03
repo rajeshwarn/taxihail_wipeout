@@ -23,7 +23,7 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchSdkVersion>7.0</MtouchSdkVersion>
+    <MtouchSdkVersion>6.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
