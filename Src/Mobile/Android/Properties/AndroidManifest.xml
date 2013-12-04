@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="35" android:versionName="1.4.30">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.TaxiHailDemo" android:versionCode="36" android:versionName="1.4.31">
   <application android:label="TaxiHail" android:icon="@drawable/Icon" android:screenOrientation="portrait" android:largeHeap="true">
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id" />
     <activity android:name="com.facebook.LoginActivity" />
@@ -18,8 +18,8 @@
         <category android:name="com.apcurium.MK.TaxiHailDemo" />
       </intent-filter>
       <intent-filter>
-        <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
-        <action android:name="android.net.wifi.STATE_CHANGE"/>
+        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+        <action android:name="android.net.wifi.STATE_CHANGE" />
       </intent-filter>
     </receiver>
   </application>
@@ -42,7 +42,7 @@
   <uses-permission android:name="android.permission.CALL_PHONE" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-  <!-- Required to monitor wifi state -->  
+  <!-- Required to monitor wifi state -->
   <user-permission android:name="android.permission.ACCESS_WIFI_STATE" />
   <!-- Required for logging -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
