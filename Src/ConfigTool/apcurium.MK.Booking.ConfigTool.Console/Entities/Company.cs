@@ -10,8 +10,7 @@ namespace CustomerPortal.Web.Entities
         public Company()
         {
             
-            Settings = new Dictionary<string, string>();
-            GraphicsPaths = new Dictionary<string, string>();
+			CompanySettings = new List<CompanySetting> ();            
             
         }
 
@@ -20,9 +19,8 @@ namespace CustomerPortal.Web.Entities
         public string CompanyKey { get; set; }        
         public string CompanyName { get; set; }
 
-        public Dictionary<string, string> Settings { get; set; }
+		public List<CompanySetting> CompanySettings { get; set; }
 
-        public Dictionary<string,string> GraphicsPaths { get; set; }
 
     }
     

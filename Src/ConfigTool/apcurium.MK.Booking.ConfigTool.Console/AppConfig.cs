@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -259,8 +259,8 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
             var newFile = File.CreateText(Path.Combine(tempPath, "settings.json"));
-	
-			newFile.Write( JsonConvert.SerializeObject (Company.Settings));
+			var dict = Company.CompanySettings.Where (s => s.IsClientSetting).ToDictionary (s => s.Key, s => s.Value);
+			newFile.Write( JsonConvert.SerializeObject (dict));
             newFile.Close();
             newFile.Dispose();
 

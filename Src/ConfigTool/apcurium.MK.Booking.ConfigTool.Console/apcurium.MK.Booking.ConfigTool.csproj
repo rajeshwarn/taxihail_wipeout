@@ -71,6 +71,7 @@
     <Compile Include="ConfigCropImage.cs" />
     <Compile Include="ConfigSource.cs" />
     <Compile Include="Unzip.cs" />
+    <Compile Include="Entities\CompanySetting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
