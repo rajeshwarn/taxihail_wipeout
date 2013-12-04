@@ -81,8 +81,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         //    var paidFare = Convert.ToDouble((orderPayment != null) ? orderPayment.Meter : 0);
         //    var paidTip = Convert.ToDouble((orderPayment != null) ? orderPayment.Tip : 0);
-                PickupAddress = order.PickupAddress,
-                DropOffAddress = order.DropOffAddress,
+                //PickupAddress = order.PickupAddress,
+                //DropOffAddress = order.DropOffAddress,
 
         //    var fare = useIbsValue ? ibsOrder.Fare.GetValueOrDefault() : paidFare;
         //    var tip = useIbsValue ? ibsOrder.Tip.GetValueOrDefault() : paidTip;
