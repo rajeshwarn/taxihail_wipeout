@@ -70,22 +70,45 @@
       <Link>FakeAttributes\NotMappedAttribute.cs</Link>
     </Compile>
     <Compile Include="FileUploader.cs" />
-    <Compile Include="WebEntities\AppStatus.cs" />
-    <Compile Include="WebEntities\Company.cs" />
-    <Compile Include="WebEntities\CompanyIdGenerator.cs" />
-    <Compile Include="WebEntities\DeploymentJob.cs" />
-    <Compile Include="WebEntities\Environment.cs" />
-    <Compile Include="WebEntities\IBSSettings.cs" />
-    <Compile Include="WebEntities\JobStatusDetails.cs" />
-    <Compile Include="WebEntities\Revision.cs" />
-    <Compile Include="WebEntities\StoreCredentials.cs" />
-    <Compile Include="WebEntities\StoreSettings.cs" />
-    <Compile Include="WebEntities\UnitOfLength.cs" />
-    <Compile Include="WebEntities\Version.cs" />
-    <Compile Include="Services\DeploymentJobServiceClient.cs" />
-    <Compile Include="Services\CustomerPortalRepository.cs" />
-    <Compile Include="WebEntities\CompanySetting.cs" />
-    <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="..\MK.ConfigurationManager\Entities\AppVersion.cs">
+      <Link>Entities\AppVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\AppStatus.cs">
+      <Link>WebEntities\AppStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Company.cs">
+      <Link>WebEntities\Company.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\CompanyIdGenerator.cs">
+      <Link>WebEntities\CompanyIdGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\DeploymentJob.cs">
+      <Link>WebEntities\DeploymentJob.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Environment.cs">
+      <Link>WebEntities\Environment.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\IBSSettings.cs">
+      <Link>WebEntities\IBSSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\JobStatusDetails.cs">
+      <Link>WebEntities\JobStatusDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Revision.cs">
+      <Link>WebEntities\Revision.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\StoreCredentials.cs">
+      <Link>WebEntities\StoreCredentials.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\StoreSettings.cs">
+      <Link>WebEntities\StoreSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\UnitOfLength.cs">
+      <Link>WebEntities\UnitOfLength.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Version.cs">
+      <Link>WebEntities\Version.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -106,7 +129,7 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="WebEntities\" />
-    <Folder Include="Entities\" />
+  
     <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>
