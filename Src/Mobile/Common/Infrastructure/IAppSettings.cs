@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         bool CanChangeServiceUrl { get; }
                 
         string ErrorLog{ get; }
-        string SiteUrl{ get; }
+        
         string DefaultServiceUrl{ get; }
 
         bool TwitterEnabled{ get; }       

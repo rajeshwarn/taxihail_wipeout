@@ -10,8 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
     {
         public string ApplicationName { get; set; }
         public bool ErrorLogEnabled { get; set; }
-        public string ErrorLog { get; set; }
-        public string SiteUrl { get; set; }
+        public string ErrorLog { get; set; }        
 
         public bool CanChangeServiceUrl{ get; set; }
         public string ServiceUrl { get; set; }
