@@ -30,13 +30,9 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mk303Taxi0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MK303Taxi</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mk303Taxi0001.</AndroidSigningKeyPass>
-    <AndroidLinkSkip>
-    </AndroidLinkSkip>
-    <AndroidStoreUncompressedFileExtensions>
-    </AndroidStoreUncompressedFileExtensions>
+    <AndroidSigningStorePass>mkTaxiHailDemoCallbox0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK.TaxiHailDemoCallbox</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkTaxiHailDemoCallbox0001.</AndroidSigningKeyPass>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
