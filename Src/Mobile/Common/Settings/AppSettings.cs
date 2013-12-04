@@ -41,15 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
         }
 
-        public string SiteUrl {
-            get { return _data.SiteUrl; }
-        }
+        
         
     
-        public int[] InvalidProviderIds {
-            get { return new int[0]; }
-        }
-
         public string ApplicationName { get { return _data.ApplicationName; } }
 
         public string DefaultServiceUrl {

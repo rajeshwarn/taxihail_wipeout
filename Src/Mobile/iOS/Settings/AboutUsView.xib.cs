@@ -37,8 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			
-            var url = TinyIoCContainer.Current.Resolve<IAppSettings>().SiteUrl;
+			            
             webView.LoadRequest( NSUrlRequest.FromUrl( new NSUrl( ViewModel.Uri ) ) ); 
             webView.ScalesPageToFit = true;
 		}

@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 if (_config == null)
                 {
 
-					var json = File.ReadAllText(Path.Combine(ConfigDirectoryPath, "Settings.json"));
+					var json = File.ReadAllText(Path.Combine(ConfigDirectoryPath, "AllSettings.json"));
 					_config = JsonConvert.DeserializeObject<AppConfigFile> (json);
                     
                 }
@@ -246,6 +246,15 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+		void CreateConfigFile (string fileName, Func<CompanySetting,bool> predicate)
+		{
+			var newFile = File.CreateText (fileName);
+			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value);
+			newFile.Write (JsonConvert.SerializeObject (dict));
+			newFile.Close ();
+			newFile.Dispose ();
+		}
+
         private string GetFiles()
         {
             var tempPath = Path.Combine( Path.GetTempPath(), "ConfigTool" );
@@ -258,11 +267,8 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
 
-            var newFile = File.CreateText(Path.Combine(tempPath, "settings.json"));
-			var dict = Company.CompanySettings.Where (s => s.IsClientSetting).ToDictionary (s => s.Key, s => s.Value);
-			newFile.Write( JsonConvert.SerializeObject (dict));
-            newFile.Close();
-            newFile.Dispose();
+			CreateConfigFile (Path.Combine (tempPath, "settings.json"), s => s.IsClientSetting);
+			CreateConfigFile (Path.Combine (tempPath, "allSettings.json"), s => true);
 
 
             var service = new CompanyServiceClient();
