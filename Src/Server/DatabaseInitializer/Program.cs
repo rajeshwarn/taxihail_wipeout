@@ -185,6 +185,24 @@ namespace DatabaseInitializer
 
                     CreateDefaultRules(connectionString, configurationManager, commandBus);
                     Console.WriteLine("Done playing events...");
+
+                    var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
+                    var admin = accounts.GetAll().FirstOrDefault(x => x.Email == "taxihail@apcurium.com");
+                    
+                    commandBus.Send(new AddRoleToUserAccount
+                    {
+                        AccountId = admin.Id,
+                        RoleName = RoleName.SuperAdmin,
+                    });
+
+
+                    commandBus.Send(new ConfirmAccount
+                    {
+                        AccountId = admin.Id,
+                        ConfimationToken = admin.ConfirmationToken
+                    });
+
+
                 }
                 else
                 {
