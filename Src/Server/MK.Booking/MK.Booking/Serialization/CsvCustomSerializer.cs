@@ -38,9 +38,9 @@ namespace apcurium.MK.Booking.Serialization
                 foreach (var column in columns)
                 {
                     if (columnsName == null)
-                        columnsName = column.Key;
+                        columnsName = "\"" + column.Key + "\"";
                     else
-                        columnsName += "," + column.Key;
+                        columnsName += "," + "\""  + column.Key + "\"";
                 }
 
                 writer.WriteField(columnsName, false);
@@ -52,9 +52,9 @@ namespace apcurium.MK.Booking.Serialization
                     foreach (var column in line)
                     {
                         if (columnValue == null)
-                            columnValue = column.Value;
+                            columnValue = "\"" + column.Value + "\"";
                         else
-                            columnValue += "," + column.Value;
+                            columnValue += "," + "\"" + column.Value + "\"";
                     }
                     writer.WriteField(columnValue, false);
                     writer.NextRecord();
