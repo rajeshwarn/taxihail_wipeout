@@ -75,6 +75,7 @@
                     defer.reject();
                     
                 }), { maximumAge: 60000, timeout: 1000, enableHighAccuracy: false },this);
+                window.setTimeout(defer.reject, 4);
             }
             else {
                 window.setTimeout(defer.reject, 1);
