@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Serialization
 
             using (var writer = new CsvWriter(new StreamWriter(stream)))
             {
-                var columns = response[0];
+                var columns = response.OrderByDescending(x => x.Keys.Count).First();
                 string columnsName = null;
                
                 foreach (var column in columns)
