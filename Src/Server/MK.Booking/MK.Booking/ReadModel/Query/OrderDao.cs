@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
                 foreach (var joinedLine in joinedLines)
                 {
-                    if (details == null || details.AccountId != joinedLine.account.Id)
+                    if (details == null || details.IBSOrderId != joinedLine.order.IBSOrderId)
                     {
                         if (details != null)
                             list.Add(details);
