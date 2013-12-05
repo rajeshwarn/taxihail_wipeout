@@ -1,6 +1,6 @@
 {
    "ApplicationName" : "TaxiHail", 
-   "ServiceUrl" : "http://192.168.12.122/apcurium.MK.Web/api/",   
+   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",   
    "CanChangeServiceUrl" : "true",   
    "ErrorLog" : "",   
    "ErrorLogEnabled" : "false",
