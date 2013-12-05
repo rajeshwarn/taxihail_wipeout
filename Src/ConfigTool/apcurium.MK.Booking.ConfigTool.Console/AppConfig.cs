@@ -15,13 +15,14 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-        public AppConfig(string name, Company company, string srcDirectoryPath, string commonDirectoryPath)
+		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath, string commonDirectoryPath)
         {
             Name = name;
             Company = company;
             SrcDirectoryPath = srcDirectoryPath;
             CommonDirectoryPath = commonDirectoryPath;
-            
+			ConfigDirectoryPath = configDirectoryPath;
+
         }
 
         private void Init()
@@ -226,7 +227,7 @@ namespace apcurium.MK.Booking.ConfigTool
         public void Apply ()
         {
 
-            ConfigDirectoryPath = GetFiles();
+            GetFiles();
 
             Init();
 
@@ -249,15 +250,24 @@ namespace apcurium.MK.Booking.ConfigTool
 		void CreateConfigFile (string fileName, Func<CompanySetting,bool> predicate)
 		{
 			var newFile = File.CreateText (fileName);
-			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value);
+			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value ?? "");
+
+			if (dict.ContainsKey ("ServiceUrl") && string.IsNullOrWhiteSpace(dict["ServiceUrl"]) ){
+
+				dict ["ServiceUrl"] = "http://staging.taxihail.com/" + Company.CompanyKey + "/api/";
+			}
+
+
 			newFile.Write (JsonConvert.SerializeObject (dict));
+
 			newFile.Close ();
+
 			newFile.Dispose ();
 		}
 
         private string GetFiles()
         {
-            var tempPath = Path.Combine( Path.GetTempPath(), "ConfigTool" );
+			var tempPath = ConfigDirectoryPath;
             if ( Directory.Exists(tempPath))
             {
                 Directory.Delete( tempPath, true  );
@@ -267,8 +277,6 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
 
-			CreateConfigFile (Path.Combine (tempPath, "settings.json"), s => s.IsClientSetting);
-			CreateConfigFile (Path.Combine (tempPath, "allSettings.json"), s => true);
 
 
             var service = new CompanyServiceClient();
@@ -284,8 +292,12 @@ namespace apcurium.MK.Booking.ConfigTool
 				unzip.ExtractToDirectory(tempPath);
 			}
 
-			//ZipFile.ExtractToDirectory(zipFile, tempPath);
             File.Delete( zipFile );
+
+
+			CreateConfigFile (Path.Combine (tempPath, "settings.json"), s => s.IsClientSetting);
+			CreateConfigFile (Path.Combine (tempPath, "allSettings.json"), s => true);
+
 
             return tempPath;
 
