@@ -15,13 +15,14 @@ using Newtonsoft.Json.Linq;
 
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
+using System.Threading.Tasks;
 
 namespace MK.DeploymentService.Mobile
 {
 	public class DeploymentJobService
 	{
 
-		private readonly Timer _timer;
+		private Timer _timer;
 		private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
@@ -39,7 +40,7 @@ namespace MK.DeploymentService.Mobile
 
 		public void Start ()
 		{
-			_timer.Change (0, 2000);
+			_timer.Change (0, 10000);
 		}
 
 		private void TimerOnElapsed (object state)
@@ -67,7 +68,11 @@ namespace MK.DeploymentService.Mobile
 				if (job == null)
 					return;
 
-				_job = job;
+				_timer.Change( TimeSpan.FromHours(1), TimeSpan.FromHours(1) );
+
+				_timer.Dispose();
+
+							_job = job;
 
 
 				try {
@@ -130,6 +135,10 @@ namespace MK.DeploymentService.Mobile
 			} catch (Exception e) {
 				_logger.Error (e.Message);
 			}
+			finally {
+				_timer = new Timer (TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
+				_timer.Change (0, 10000);
+			}
 		}
 
 
@@ -145,7 +154,11 @@ namespace MK.DeploymentService.Mobile
 				var apkFile = GetAndroidFile(apkPath);
 				var apkFileName = new FileInfo(apkFile).Name;
 
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.Server.Url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				 
+				bool isProduction  = _job.ServerUrl.Contains ("services.taxihail.com");
+				var url = isProduction ? "https://services.taxihail.com/" + _job.Company.CompanyKey : "http://staging.taxihail.com/" + _job.Company.CompanyKey;
+
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
 			}
 		}
@@ -243,9 +256,11 @@ namespace MK.DeploymentService.Mobile
 					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
 					var ipaFile = GetiOSAdHocFile(ipaAdHocPath);
 					if (ipaFile != null) {
-						var fileUplaoder = new FileUploader ();
-						fileUplaoder.Upload (ipaFile);
 
+//						Task.Factory.StartNew (() => {
+//							var fileUplaoder = new FileUploader ();
+//							fileUplaoder.Upload (ipaFile);
+//						});
 						var fileInfo = new FileInfo (ipaFile); 
 						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
 						if (File.Exists (targetDir))
