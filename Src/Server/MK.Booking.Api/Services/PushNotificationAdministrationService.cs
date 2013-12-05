@@ -36,14 +36,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (account == null)
             {
-                throw new HttpError(HttpStatusCode.InternalServerError, "Account not found");                
+                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");                
             }                
             
             var devices = _daoDevice.FindByAccountId(account.Id);
             
             if (devices == null || devices.ToList<DeviceDetail>().Count == 0)
-            {                
-                throw new HttpError(HttpStatusCode.InternalServerError, "No device for user");                
+            {
+                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");                
             }
 
                    

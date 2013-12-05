@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public void SendManualPushNotification(string emailAddress, string message)
         {
-            Client.Post<string>("/account/pushnotifications/" + Uri.EscapeDataString(emailAddress), new PushNotificationAdministrationRequest
+            Client.Post<string>("/admin/pushnotifications/" + Uri.EscapeDataString(emailAddress), new PushNotificationAdministrationRequest
             {
                 Message = message
             });
