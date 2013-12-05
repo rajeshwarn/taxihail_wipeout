@@ -26,6 +26,7 @@ namespace MK.DeploymentService.Service
 
 
 
+
             using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
             {
                 client.BaseAddress = new Uri(url);          

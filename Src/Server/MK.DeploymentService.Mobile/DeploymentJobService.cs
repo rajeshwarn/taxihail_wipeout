@@ -12,14 +12,17 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
+using System.Threading.Tasks;
 
 namespace MK.DeploymentService.Mobile
 {
 	public class DeploymentJobService
 	{
-		private readonly Timer _timer;
+
+		private Timer _timer;
 		private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
@@ -37,7 +40,7 @@ namespace MK.DeploymentService.Mobile
 
 		public void Start ()
 		{
-			_timer.Change (0, 2000);
+			_timer.Change (0, 10000);
 		}
 
 		private void TimerOnElapsed (object state)
@@ -65,7 +68,11 @@ namespace MK.DeploymentService.Mobile
 				if (job == null)
 					return;
 
-				_job = job;
+				_timer.Change( TimeSpan.FromHours(1), TimeSpan.FromHours(1) );
+
+				_timer.Dispose();
+
+							_job = job;
 
 
 				try {
@@ -107,7 +114,7 @@ namespace MK.DeploymentService.Mobile
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));
 
 					UpdateJob ("Customize");
-					Customize (sourceDirectory, _job.Company , _job.Server);
+					Customize (sourceDirectory, _job);
 
 					UpdateJob ("Build");
 					BuildMobile (sourceDirectory);
@@ -128,6 +135,10 @@ namespace MK.DeploymentService.Mobile
 			} catch (Exception e) {
 				_logger.Error (e.Message);
 			}
+			finally {
+				_timer = new Timer (TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
+				_timer.Change (0, 10000);
+			}
 		}
 
 
@@ -143,7 +154,11 @@ namespace MK.DeploymentService.Mobile
 				var apkFile = GetAndroidFile(apkPath);
 				var apkFileName = new FileInfo(apkFile).Name;
 
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.Server.Url + @"				/" + _job.Company.CompanyKey , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				 
+				bool isProduction  = _job.ServerUrl.Contains ("services.taxihail.com");
+				var url = isProduction ? "https://services.taxihail.com/" + _job.Company.CompanyKey : "http://staging.taxihail.com/" + _job.Company.CompanyKey;
+
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
 			}
 		}
@@ -241,9 +256,11 @@ namespace MK.DeploymentService.Mobile
 					_logger.DebugFormat ("Uploading and copying IPA AdHoc");
 					var ipaFile = GetiOSAdHocFile(ipaAdHocPath);
 					if (ipaFile != null) {
-						var fileUplaoder = new FileUploader ();
-						fileUplaoder.Upload (ipaFile);
 
+//						Task.Factory.StartNew (() => {
+//							var fileUplaoder = new FileUploader ();
+//							fileUplaoder.Upload (ipaFile);
+//						});
 						var fileInfo = new FileInfo (ipaFile); 
 						var targetDir = Path.Combine (targetDirWithoutFileName, fileInfo.Name);
 						if (File.Exists (targetDir))
@@ -272,29 +289,34 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		void Customize (string sourceDirectory, Company company, CustomerPortal.Web.Entities.Environment taxiHailEnv)
+		void Customize (string sourceDirectory, DeploymentJob job)
 		{
+			Company company = job.Company;
+			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
 			_logger.DebugFormat ("Generate Settings");
 
 			var jsonSettings = new JObject ();
+
+
+		 
 			foreach (var setting in company.CompanySettings) {
-				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
+			try
+			{
+				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value ?? ""));
+				}
+				catch(Exception ex)
+				{
+					_logger.DebugFormat ("Settings Error" );
+				}
 			}
 
-			var isCMT = false;
-			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.CompanyKey);
-			if (company.CompanySettings.ContainsKey ("IsCMT")) {
-				isCMT = bool.Parse (company.CompanySettings.GetValue("IsCMT"));
-			}
-			if (isCMT) {
-				serviceUrl = taxiHailEnv.Url;
-			} 
 
+		
 
 			if (company.CompanySettings.ContainsKey ("ServiceUrl")) {
-				jsonSettings ["ServiceUrl"] = JToken.FromObject (serviceUrl);
+				jsonSettings ["ServiceUrl"] = job.ServerUrl;
 			} else {
-				jsonSettings.Add ("ServiceUrl", JToken.FromObject (serviceUrl));
+				jsonSettings.Add ("ServiceUrl",  job.ServerUrl);
 			}
 
 			var jsonSettingsFile = GetSettingsFilePath (sourceDirectory, company.CompanyKey);
@@ -305,16 +327,16 @@ namespace MK.DeploymentService.Mobile
 			_logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
 
-			if (!isCMT) {
+			 
 				var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
-				var projectName = "NinePatchMaker";
+				var projectName = "NinePatchMaker.Lib";
 				if (_builder.ProjectIsInSolution (sln, projectName)) {
 					var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 					_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 				} else {
 					_logger.Debug ("Skipping NinePatch because it does not exist on this version");
 				}
-			}
+			
 
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug");
 			_builder.BuildProject (string.Format ("build " + mainConfig + "  \"{0}/ConfigTool.iOS.sln\"", Path.Combine (sourceDirectory, "Src", "ConfigTool")));
