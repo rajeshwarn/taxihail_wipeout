@@ -14,8 +14,8 @@ namespace CustomerPortal.Web.Entities
             AppleAppStoreCredentials = new StoreCredentials();
             GooglePlayCredentials = new StoreCredentials();
             Versions = new List<Version>();
-            Settings = new Dictionary<string, string>();
-            GraphicsPaths = new Dictionary<string, string>();
+            CompanySettings = new List<CompanySetting>();
+            
             LayoutRejected = new Dictionary<DateTime, string>();
         }
 
@@ -61,7 +61,8 @@ namespace CustomerPortal.Web.Entities
         {
             return Versions.FirstOrDefault(x => x.VersionId == versionId);
         }
-        public Dictionary<string, string> Settings { get; set; }
+
+        public List<CompanySetting> CompanySettings { get; set; }
 
         [Obsolete]
         public Dictionary<string,string> GraphicsPaths { get; set; }
