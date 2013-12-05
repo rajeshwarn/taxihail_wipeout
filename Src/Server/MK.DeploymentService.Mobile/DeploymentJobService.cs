@@ -145,7 +145,7 @@ namespace MK.DeploymentService.Mobile
 				var apkFile = GetAndroidFile(apkPath);
 				var apkFileName = new FileInfo(apkFile).Name;
 
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.Server.Url + @"				/" + _job.Company.CompanyKey , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.Server.Url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
 			}
 		}
@@ -281,8 +281,18 @@ namespace MK.DeploymentService.Mobile
 			_logger.DebugFormat ("Generate Settings");
 
 			var jsonSettings = new JObject ();
+
+
+		 
 			foreach (var setting in company.CompanySettings) {
-				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
+			try
+			{
+				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value ?? ""));
+				}
+				catch(Exception ex)
+				{
+					_logger.DebugFormat ("Settings Error" );
+				}
 			}
 
 
