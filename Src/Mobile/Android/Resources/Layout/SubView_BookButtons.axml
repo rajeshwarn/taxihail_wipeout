@@ -42,6 +42,7 @@
             local:MvxBind="{'Click': {'Path': 'BookNow'}}" />
         <ImageButton
             android:id="@+id/pickupDateButton"
+            local:MvxBind="{'Visibility':{'Path':'DisableFutureBooking','Converter':'InvertedVisibility'}}"
             android:src="@drawable/bookLater_state"
             android:background="@drawable/black_button"
             style="@style/ButtonTextGray"
