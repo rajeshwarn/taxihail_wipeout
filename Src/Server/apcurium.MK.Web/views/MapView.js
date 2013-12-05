@@ -285,7 +285,7 @@
                     var _car = self._availableVehiclePins[_vehicle.vehicleNumber];
 
                     // Verify that vehicle position changed to avoid flicker, or check if vehicle was previously unavailable
-                    if (_vehicle.latitude.toFixed(4) != _car.position.ob.toFixed(4) || _vehicle.longitude.toFixed(4) != _car.position.pb.toFixed(4) || (_car.map != self._map)) {
+                    if (_vehicle.longitude.toFixed(4) != _car.position.lng().toFixed(4) || _vehicle.latitude.toFixed(4) != _car.position.lat().toFixed(4) || (_car.map != self._map)) {
                         _car.position = new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude);
                         _car.setMap(self._map);
                         self.updatePickup();

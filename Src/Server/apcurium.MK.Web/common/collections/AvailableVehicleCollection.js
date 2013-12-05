@@ -5,7 +5,7 @@
             this.position = options.position;                                 
         },
         url: function () {            
-            return TaxiHail.parameters.apiRoot + '/vehicles/' + '?latitude=' + this.position.pb + '&longitude=' + this.position.qb + "&format=json"
+            return TaxiHail.parameters.apiRoot + '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json"
         },
         parse: function (response) {
             var collection = new TaxiHail.AvailableVehicleCollection([], this.position);            
