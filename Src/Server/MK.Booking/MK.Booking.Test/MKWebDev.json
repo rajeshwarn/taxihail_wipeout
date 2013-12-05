@@ -6,7 +6,7 @@
    "Direction.FlateRate" : "3.45",
    "Direction.MaxDistance" : "50",
    "Direction.RatePerKm" : "1.70",
-   "Direction.TarifMode" : "Both",
+   
    "DistanceFormat" : "KM",
    "Email.NoReply" : "noreply@apcurium.com",  
    "GeoLoc.DefaultLatitude" : "45.516667",

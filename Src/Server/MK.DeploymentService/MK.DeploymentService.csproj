@@ -114,6 +114,7 @@
     <Compile Include="WebEntities\AppStatus.cs" />
     <Compile Include="WebEntities\Company.cs" />
     <Compile Include="WebEntities\CompanyIdGenerator.cs" />
+    <Compile Include="WebEntities\CompanySetting.cs" />
     <Compile Include="WebEntities\DeploymentJob.cs" />
     <Compile Include="WebEntities\Environment.cs" />
     <Compile Include="WebEntities\IBSSettings.cs" />

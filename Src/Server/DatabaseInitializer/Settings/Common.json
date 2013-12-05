@@ -4,6 +4,7 @@
    "DefaultBookingSettings.NbPassenger" : "1",         
    "PriceFormat" : "en-US",   
    "Direction.MaxDistance" : "50",
+   "Direction.TarifMode" : "AppTarif",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
    "TwitterAccessTokenUrl" : "",

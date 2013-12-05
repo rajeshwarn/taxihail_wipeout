@@ -220,22 +220,12 @@ namespace MK.DeploymentService
             var packageDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\");
 
             ZipFile.CreateFromDirectory(packageDir, fileName);
-
-            //var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), packageDir);
-            //using (var exeProcess = Process.Start(zipProcess))
-            //{
-            //    var output = ProcessEx.GetOutput(exeProcess);
-            //    if (exeProcess.ExitCode > 0)
-            //    {
-            //        throw new Exception("Error during Zip Process" + output);
-            //    }
-            //}
-
+            
             Log("Uploading package to server...");
             new PackagesServiceClient().UploadPackage(fileName);
             Log("Done uploading package to server...");
 
-            //File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName), true);
+            
             Log("Finished");
         }
 
@@ -289,7 +279,7 @@ namespace MK.DeploymentService
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
-            foreach (var setting in _job.Company.Settings)
+            foreach (var setting in _job.Company.CompanySettings)
             {
                 if ((setting.Key != "IBS.WebServicesUrl") &&
                     (setting.Key != "IBS.WebServicesUserName") &&
