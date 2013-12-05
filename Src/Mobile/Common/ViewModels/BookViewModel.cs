@@ -262,6 +262,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool DisableFutureBooking
+        {
+            get
+            {
+                return Config.GetSetting("Client.DisableFutureBooking", false);
+            }
+        }
+
         private void NewOrder()
         {
             RequestMainThreadAction(() =>
