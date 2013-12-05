@@ -126,9 +126,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
                 { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
                 { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookNow'}}" },
+                { _bottomAction.BookLaterButton , "{'Hidden': {'Path': 'DisableFutureBooking'}}" },
+
                 { backBtn , "{'TouchUpInside': {'Path': 'ClosePanelCommand'},'Hidden': {'Path': 'Panel.MenuIsOpen', 'Converter': 'BoolInverter'}}" }        
             });
 
+             
             this.View.ApplyAppFont ();
             ViewModel.Load();
 
