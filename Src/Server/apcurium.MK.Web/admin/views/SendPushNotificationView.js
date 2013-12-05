@@ -2,6 +2,8 @@
     
     var View = TaxiHail.SendPushNotificationView = TaxiHail.TemplatedView.extend({
 
+        urlRoot: TaxiHail.parameters.apiRoot + "/admin/pushnotifications",
+
         tagName: 'form',
         className: 'form-horizontal',
         
@@ -21,7 +23,7 @@
            
             return $.ajax({
                 type: 'POST',
-                url: '../api/admin/pushnotifications/' + email,
+                url: this.urlRoot + '/' + email,
                 data: {
                     message: message
                 },
@@ -29,8 +31,13 @@
                 success: _.bind(function () {
                     this.$('.errors').text(TaxiHail.localize('sendPushNotificationSuccess'));
                 }, this)
-            }).fail(_.bind(function (e) {
-                this.$('.errors').text(TaxiHail.localize('sendPushNotificationError'));
+            }).fail(_.bind(function (xhr, textStatus, error) {
+                if (xhr.statusText == "DirectoryNotFoundException")
+                {
+                    this.$('.errors').text(TaxiHail.localize('sendPushNotificationErrorHandleDirectory'));
+                } else {
+                    this.$('.errors').text(TaxiHail.localize(xhr.statusText));
+                }                
             }), this);
         }
     });
