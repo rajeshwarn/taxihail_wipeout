@@ -352,16 +352,22 @@ namespace MK.DeploymentService
             }
 
             var configuration = webApp.GetWebConfiguration();
-            var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+            var section =
+                configuration.GetSection("connectionStrings")
+                    .GetCollection()
+                    .First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
             var connSting = section.Attributes["connectionString"];
-            connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+            connSting.Value =
+                string.Format(
+                    "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",
+                    companyName);
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");
 
             var atttribute = (from XElement e in document.Descendants("appender")
-                              where e.Attribute("name").Value == "Courriel"
-                              select e).FirstOrDefault();
+                where e.Attribute("name").Value == "Courriel"
+                select e).FirstOrDefault();
 
             if (atttribute != null)
             {
@@ -372,9 +378,68 @@ namespace MK.DeploymentService
 
             document.Save(targetWeDirectory + "log4net.xml");
 
+            EnsureThemeFolderExist(companyName, targetWeDirectory);
+
             iisManager.CommitChanges();
 
             Log("Deploying IIS Finished");
+        }
+
+        private void EnsureThemeFolderExist(string companyName, string targetWeDirectory)
+        {
+            try
+            {
+                var themeFolder = Path.Combine(targetWeDirectory, @"themes\" + companyName);
+                Log("Checking if default theme exist : " + themeFolder);
+                if (!Directory.Exists(themeFolder))
+                {
+                    Log("Copying default theme");
+                    var defaultThemeFolder = Path.Combine(targetWeDirectory, @"themes\TaxiHail");
+                    DirectoryCopy(defaultThemeFolder, themeFolder, true);
+                }
+            }
+            catch(Exception ex)
+            {
+                Log("Warning, cannot copy theme : " + ex.Message );
+            }
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location. 
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
 
         public void Stop()
