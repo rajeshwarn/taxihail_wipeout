@@ -285,14 +285,14 @@ namespace MK.DeploymentService
                     (setting.Key != "IBS.WebServicesUserName") &&
                     (setting.Key != "IBS.WebServicesPassword"))
                 {
-                    jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                    jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value ?? ""));
                 }
             }
 
 
-            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ));
-            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username));
-            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(_job.Company.IBS.Password));
+            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ?? ""));
+            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username ?? ""));
+            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(_job.Company.IBS.Password ?? ""));
 
             var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName + ".json";
             var stringBuilder = new StringBuilder();
