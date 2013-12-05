@@ -69,6 +69,8 @@
    "Client.ShowTermsAndConditions" : "false",
    "Client.SupportEmail" : "taxihail@apcurium.com",      
    "Client.SendReceiptAvailable" : "true",   
+   "Client.DisableFutureBooking" : "false",      
+   "Client.HideDestination" : "false",      
     "Client.AboutUsUrl" : "http://www.mobile-knowledge.com/index.html",   
    "GeoLoc.PopularAddress.Range" : "500",
    "GeoLoc.PlacesTypes" : "airport,amusement_park,art_gallery,bank,bar,bus_station,cafe,casino,clothing_store,convenience_store,courthouse,department_store,doctor,embassy,food,gas_station,hospital,lawyer,grocery_or_supermarket,library,liquor_store,lodging,local_government_office,movie_theater,moving_company,museum,night_club,park,parking,pharmacy,police,physiotherapist",

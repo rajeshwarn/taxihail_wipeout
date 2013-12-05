@@ -270,6 +270,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool HideDestination
+        {
+            get
+            {
+                return Config.GetSetting("Client.HideDestination", false);
+            }
+        }
+        
         private void NewOrder()
         {
             RequestMainThreadAction(() =>
