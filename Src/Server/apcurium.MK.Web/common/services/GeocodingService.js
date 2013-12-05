@@ -2,7 +2,7 @@
 
 (function (maps) {
     TaxiHail.geocoder = {
-        
+
         initialize: function (lat, lng) {
             this.latitude = lat;
             this.longitude = lng;
@@ -12,10 +12,10 @@
 
         geocode: function (lat, lng) {
             var defer = $.Deferred();
-            
+
             this.geocoder.geocode({ latLng: new maps.LatLng(lat, lng) }, function (results, status) {
                 if (status == maps.GeocoderStatus.OK) {
-                    
+
 
 
                     $.ajax({
@@ -25,7 +25,7 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json"
                     }).then(defer.resolve, defer.reject);
-                    
+
                 } else {
                     defer.reject();
                 }
@@ -35,44 +35,70 @@
 
         },
 
-        search: function(address) {
+        search: function (address) {
 
             var geocodeDefer = $.Deferred(), // Deferred for the geocoding request
-                geolocDefer = $.Deferred(), // Deferred for the geolocation request
                 defaultLatitude = this.latitude,
-                defaultLongitude = this.longitude;
+                defaultLongitude = this.longitude,
+                // Check if first character is numeric
+                isNumeric = !_.isNaN(parseInt(address.substring(0, 1), 10));
 
-            var filtered = TaxiHail.parameters.geolocSearchFilter.replace('{0}', address);
+            // Geocode address if address starts by a digit
+            if (isNumeric) {
+                var filtered = TaxiHail.parameters.geolocSearchFilter.replace('{0}', address);
 
-            TaxiHail.geolocation.getCurrentPosition()
-                .then(geolocDefer.resolve, function () {
-                    // If geoloc failed, resolve geolocDefer with default coordinates
-                    geolocDefer.resolve({
+                this.geocoder.geocode({
+                    address: filtered,
+                    region: TaxiHail.parameters.geolocSearchRegion,
+                    bounds: this.bounds
+                }, function (results, status) {
+                    if (status == maps.GeocoderStatus.OK) {
+
+                        geocodeDefer.resolve({
+                            results: fixResults(results),
+                            status: status
+                        });
+                    } else {
+                        geocodeDefer.reject();
+                    }
+                });
+            } else {
+                geocodeDefer.resolve();
+            }
+
+            if (TaxiHail.geolocation.isActive) {
+
+                return TaxiHail.geolocation.getCurrentPosition()
+               .pipe(function (coords) {
+                   return geocodeDefer.pipe(function (geoResult) {
+                       return search(address, coords, geoResult);
+                   });
+
+               }, function () {
+                   return geocodeDefer.pipe(function (geoResult) {
+                       return search(address, {
+                           latitude: defaultLatitude,
+                           longitude: defaultLongitude
+                       }, geoResult);
+                   });
+
+               });
+
+            }
+            else {
+
+                return geocodeDefer.pipe(function (geoResult) {
+                    return search(address, {
                         latitude: defaultLatitude,
                         longitude: defaultLongitude
-                    });
+                    }, geoResult);
                 });
 
-            this.geocoder.geocode({
-                address: filtered,
-                region: TaxiHail.parameters.geolocSearchRegion,
-                bounds: this.bounds
-            }, function(results, status) {
-                if (status == maps.GeocoderStatus.OK) {
+            }
 
-                    geocodeDefer.resolve({
-                        results: fixResults(results),
-                        status: status
-                    });
-                } else {
-                    geocodeDefer.reject();
-                }
-            });
 
-            var result = $.when(geolocDefer.promise() /*always resolves*/, geocodeDefer.promise()).pipe(function (geoloc, geocode) {
-                return search(address, geoloc, geocode);
-            });
-            return result;
+
+
 
         }
     };
