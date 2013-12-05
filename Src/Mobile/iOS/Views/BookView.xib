@@ -195,7 +195,7 @@
 								<reference key="NSSuperview" ref="341210108"/>
 								<reference key="NSWindow"/>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<array class="NSMutableArray" key="IBUIItems">
+								<array key="IBUIItems">
 									<object class="IBUINavigationItem" id="854254531">
 										<reference key="IBUINavigationBar" ref="249660567"/>
 										<string key="IBUITitle">Title</string>
@@ -213,10 +213,8 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">3</int>
 								<int key="IBUIContentVerticalAlignment">3</int>
-								<int key="IBUIButtonType">1</int>
 								<reference key="IBUITintColor" ref="902649983"/>
 								<reference key="IBUINormalTitleColor" ref="902649983"/>
-								<reference key="IBUIHighlightedTitleColor" ref="902649983"/>
 								<reference key="IBUINormalTitleShadowColor" ref="902649983"/>
 								<reference key="IBUIFontDescription" ref="205923970"/>
 								<reference key="IBUIFont" ref="265439845"/>
