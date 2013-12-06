@@ -162,7 +162,7 @@
   <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
   <string name="ResetPasswordLabel">Email</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
-  <string name="CarAssigned">Your taxi #{0}</string>
+  <string name="CarAssigned">Your taxi {0}</string>
   <string name="RideSettingsChargeType">Charge type</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="View_RideSettings">Profile</string>
@@ -449,5 +449,5 @@
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="LocationDetailRebookButton">Book using this address</string>
   <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
-  <string name="ConfirmationPaymentAmountOver100">You will be charged {0:c}. Please confirm the amount. </string>
+  <string name="ConfirmationPaymentAmountOver100">You will be charged {0}. Please confirm the amount. </string>
 </resources>

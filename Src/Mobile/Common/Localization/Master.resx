@@ -213,9 +213,9 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>The location service is not enabled.</value>
   </data>
-    <data name="app_id" xml:space="preserve">
+  <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
-    </data>
+  </data>
   <data name="FacebookButton" xml:space="preserve">
     <value>Sign In with Facebook</value>
   </data>
@@ -267,7 +267,6 @@
   <data name="InvalidBookinInfoTitle" xml:space="preserve">
     <value>Invalid booking info</value>
   </data>
-  
   <data name="InvalidBookinInfo" xml:space="preserve">
     <value>To book a ride, you need to enter a valid pickup address.</value>
   </data>
@@ -283,10 +282,9 @@
   <data name="PickupMapTitle" xml:space="preserve">
     <value>Pickup location</value>
   </data>
-    
-    <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
-        <value>Authorization:</value>
-    </data>
+  <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+    <value>Authorization:</value>
+  </data>
   <data name="CancelBoutton" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -506,7 +504,7 @@
   <data name="HistoryDetailRebookButton" xml:space="preserve">
     <value>Rebook trip</value>
   </data>
-<data name="LocationDetailRebookButton" xml:space="preserve">
+  <data name="LocationDetailRebookButton" xml:space="preserve">
     <value>Book using this address</value>
   </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">
@@ -741,7 +739,7 @@
     <value>Displaying trips from the last month</value>
   </data>
   <data name="CarAssigned" xml:space="preserve">
-    <value>Your taxi #{0}</value>
+    <value>Your taxi {0}</value>
   </data>
   <data name="SupportEmail" xml:space="preserve">
     <value>techsupport@apcurium.com</value>
@@ -945,7 +943,7 @@
     <value>Create Account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
     <value>Create Profile</value>
@@ -1055,7 +1053,7 @@
   <data name="NotesToDriverHint" xml:space="preserve">
     <value>Name of business, specific entrance</value>
   </data>
-    <data name="RateBtn" xml:space="preserve">
+  <data name="RateBtn" xml:space="preserve">
     <value>Rate my ride</value>
   </data>
   <data name="Submit" xml:space="preserve">
@@ -1234,7 +1232,7 @@
   </data>
   <data name="NoPreference" xml:space="preserve">
     <value>No preference</value>
-    </data>
+  </data>
   <data name="StreetNumberPlacesBt" xml:space="preserve">
     <value>Search for places</value>
   </data>
@@ -1262,11 +1260,9 @@
   <data name="NoPhoneNumberTitle" xml:space="preserve">
     <value>Invalid phone Number</value>
   </data>
-  
   <data name="DeleteAddressBt" xml:space="preserve">
     <value>Clear Address</value>
   </data>
-
   <data name="PassengerNameLabel" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -1301,9 +1297,6 @@
     <value>The passenger has paid {0} (auth : {1})</value>
   </data>
   <data name="CmtTransactionErrorMessage" xml:space="preserve">
-    <value>Resend confirmation</value>
-  </data>
-  <data name="CmtTransactionErrorMessage" xml:space="preserve">
     <value>Transaction Denied</value>
   </data>
   <data name="SendMessageErrorMessage" xml:space="preserve">
@@ -1321,7 +1314,7 @@
   <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
     <value>PayPal payment was successful. Confirmation sent to the driver.</value>
   </data>
-    <data name="ConfirmationOfPaymentSent" xml:space="preserve">
+  <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmation of payment has been sent to the driver.</value>
   </data>
   <data name="OkButtonText" xml:space="preserve">
@@ -1397,18 +1390,15 @@
     <value>Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</value>
   </data>
   <data name="EmptyString" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
-
   <data name="EstimatingFare" xml:space="preserve">
     <value>Estimating your fare...</value>
   </data>
- <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
+  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
     <value>Confirmation Required</value>
   </data>
-	<data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
+  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
     <value>You will be charged {0}. Please confirm the amount. </value>
   </data>
-
-  
 </root>
