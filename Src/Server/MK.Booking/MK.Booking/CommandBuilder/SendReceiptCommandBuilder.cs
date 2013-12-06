@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Tip = tip.GetValueOrDefault(),
                 Tax = tax.GetValueOrDefault(),
                 PickupAddress = order.PickupAddress,
-                DropOffAddress = order.PickupAddress
+                DropOffAddress = order.DropOffAddress
             };
 
 
