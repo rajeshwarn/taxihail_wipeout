@@ -27,7 +27,9 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Fare = fare.GetValueOrDefault(),
                 Toll = toll.GetValueOrDefault(),
                 Tip = tip.GetValueOrDefault(),
-                Tax = tax.GetValueOrDefault()
+                Tax = tax.GetValueOrDefault(),
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.PickupAddress
             };
 
 
