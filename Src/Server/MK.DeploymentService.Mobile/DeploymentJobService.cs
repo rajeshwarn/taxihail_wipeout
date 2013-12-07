@@ -23,7 +23,7 @@ namespace MK.DeploymentService.Mobile
 	{
 
 		private Timer _timer;
-		private readonly Object _resourceLock = new System.Object ();
+		//private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
 		private MonoBuilder _builder;
@@ -45,9 +45,9 @@ namespace MK.DeploymentService.Mobile
 
 		private void TimerOnElapsed (object state)
 		{
-			lock (_resourceLock) {
+		//	lock (_resourceLock) {
 				CheckAndRunJobWithBuild ();
-			}
+		//	}
 		}
 
 		void UpdateJob (string details = null, JobStatus? jobStatus = null)
