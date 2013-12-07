@@ -322,7 +322,10 @@ namespace MK.DeploymentService.Mobile
 			var jsonSettingsFile = GetSettingsFilePath (sourceDirectory, company.CompanyKey);
 			var stringBuilder = new StringBuilder ();
 			jsonSettings.WriteTo (new JsonTextWriter (new StringWriter (stringBuilder)));
-			File.WriteAllText (jsonSettingsFile, stringBuilder.ToString ());
+
+			var file = new FileInfo(jsonSettingsFile);
+			if (file.Directory != null) file.Directory.Create();
+			File.WriteAllText(file.FullName, stringBuilder.ToString());
 
 			_logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
