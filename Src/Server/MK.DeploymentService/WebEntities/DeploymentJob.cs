@@ -27,6 +27,12 @@ namespace CustomerPortal.Web.Entities
         public bool IosAppStore { get; set; }
         public DateTime Date { get; set; }
         public string Details { get; set; }
+
+		public string ServerUrl {
+			get;
+			set;
+		}
+
         public DeploymentJob()
         {
             ServerSide = true;
