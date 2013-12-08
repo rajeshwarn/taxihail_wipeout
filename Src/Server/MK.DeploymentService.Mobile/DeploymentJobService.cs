@@ -321,14 +321,22 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob ("Customize - Build Config Tool Customization");
 
 			 
-				var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
-				var projectName = "NinePatchMaker";
-				if (_builder.ProjectIsInSolution (sln, projectName)) {
-					var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
-					_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
-				} else {
-					_logger.Debug ("Skipping NinePatch because it does not exist on this version");
-				}
+			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
+			var projectName = "NinePatchMaker.Lib";
+			if (_builder.ProjectIsInSolution (sln, projectName)) {
+				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
+				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
+			} else {
+				_logger.Debug ("Skipping NinePatch.Lib because it does not exist on this version");
+			}
+
+			projectName = "NinePatchMaker";
+			if (_builder.ProjectIsInSolution (sln, projectName)) {
+				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
+				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
+			} else {
+				_logger.Debug ("Skipping NinePatch because it does not exist on this version");
+			}
 			
 
 			var mainConfig = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", "apcurium.MK.Booking.ConfigTool", "Debug");
