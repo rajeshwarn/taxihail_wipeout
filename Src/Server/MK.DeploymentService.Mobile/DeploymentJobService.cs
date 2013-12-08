@@ -23,12 +23,13 @@ namespace MK.DeploymentService.Mobile
 	{
 
 		private Timer _timer;
-		//private readonly Object _resourceLock = new System.Object ();
+		private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
 		private MonoBuilder _builder;
 		private CustomerPortalRepository _customerPortalRepository;
 		const string HG_PATH = "/usr/local/bin/hg";
+		public bool _isWorking = false;
 
 		public DeploymentJobService ()
 		{
@@ -45,9 +46,11 @@ namespace MK.DeploymentService.Mobile
 
 		private void TimerOnElapsed (object state)
 		{
-		//	lock (_resourceLock) {
+			if (!_isWorking){
+				_isWorking = true;
 				CheckAndRunJobWithBuild ();
-		//	}
+				_isWorking = false;
+			}
 		}
 
 		void UpdateJob (string details = null, JobStatus? jobStatus = null)
@@ -68,18 +71,9 @@ namespace MK.DeploymentService.Mobile
 				if (job == null)
 					return;
 
-				_timer.Change( TimeSpan.FromHours(1), TimeSpan.FromHours(1) );
-
-				_timer.Dispose();
-
-							_job = job;
-
+				_job = job;
 
 				try {
-
-
-
-
 
 					_logger.Debug ("Begin work on " + job.Company.CompanyName);
 
@@ -134,10 +128,6 @@ namespace MK.DeploymentService.Mobile
 				}
 			} catch (Exception e) {
 				_logger.Error (e.Message);
-			}
-			finally {
-				_timer = new Timer (TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
-				_timer.Change (0, 10000);
 			}
 		}
 
@@ -332,7 +322,7 @@ namespace MK.DeploymentService.Mobile
 
 			 
 				var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
-				var projectName = "NinePatchMaker.Lib";
+				var projectName = "NinePatchMaker";
 				if (_builder.ProjectIsInSolution (sln, projectName)) {
 					var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 					_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
