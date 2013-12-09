@@ -59,8 +59,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
 #endif
             // Push notifications
-            
-            var androidSettings = new GcmPushChannelSettings(_configurationManager.GetSetting("GCM.SenderId"), _configurationManager.GetSetting("GCM.APIKey"), _configurationManager.GetSetting("GCM.PackageName"));
+
+            var test = _configurationManager.GetSetting("GCM.SenderId");
+            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _configurationManager.GetSetting("GCM.PackageName"));
 
             //Wire up the events
             _push.Events.OnDeviceSubscriptionExpired += Events_OnDeviceSubscriptionExpired;
