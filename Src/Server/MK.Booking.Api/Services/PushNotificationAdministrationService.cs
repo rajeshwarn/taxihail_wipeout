@@ -55,7 +55,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                 }catch(Exception e)
                 {
-                    throw new HttpError(HttpStatusCode.InternalServerError, e.Message); 
+                    var message = "Error for device " + device.Platform;
+                    throw new HttpError(HttpStatusCode.InternalServerError, message + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace); 
                 }
             }            
 
