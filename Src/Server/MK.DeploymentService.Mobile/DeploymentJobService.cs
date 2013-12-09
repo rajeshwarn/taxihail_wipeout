@@ -79,7 +79,7 @@ namespace MK.DeploymentService.Mobile
 
 					UpdateJob ("Starting", JobStatus.Inprogress);
 
-					var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSource");
+					var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSourceNewService");
 
 
 					var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
