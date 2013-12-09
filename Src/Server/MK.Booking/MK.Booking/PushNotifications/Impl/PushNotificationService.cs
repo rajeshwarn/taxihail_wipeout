@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
@@ -120,7 +121,13 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
 		void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
 		{
-            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + notificationFailureException.Message + " -> " + notification.ToString());
+            var message = notificationFailureException.Message;
+		    var details = notificationFailureException as NotificationFailureException;
+		    if (details != null)
+		    {
+		        message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
+		    }
+            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + message + " -> " + notification.ToString());
 		}
 
 		void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)
