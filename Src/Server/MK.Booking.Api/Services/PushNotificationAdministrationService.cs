@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -19,14 +20,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
-        private readonly ICommandBus _commandBus;
         private readonly IPushNotificationService _pushNotificationService;
-
-        public PushNotificationAdministrationService(IAccountDao Dao, IDeviceDao Device, ICommandBus commandBus, IPushNotificationService pushNotificationService )
+        readonly ILogger _logger;
+        public PushNotificationAdministrationService(IAccountDao Dao, IDeviceDao Device, IPushNotificationService pushNotificationService, ILogger logger)
         {
             _dao = Dao;
             _daoDevice = Device;
-            _commandBus = commandBus;
+            _logger = logger;
             _pushNotificationService = pushNotificationService;
         }
 
@@ -55,8 +55,8 @@ namespace apcurium.MK.Booking.Api.Services
 
                 }catch(Exception e)
                 {
-                    var message = "Error for device " + device.Platform;
-                    throw new HttpError(HttpStatusCode.InternalServerError, message + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace); 
+                    _logger.LogError(e);
+                    throw new HttpError(HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message); 
                 }
             }            
 
