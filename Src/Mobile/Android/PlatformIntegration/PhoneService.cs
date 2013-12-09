@@ -13,6 +13,7 @@ using Java.Util;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -64,47 +65,53 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
 		{
-			string uriCalendars = "content://com.android.calendar/calendars";
-			string eventUriString = "content://com.android.calendar/events";
-			string reminderUriString = "content://com.android.calendar/reminders";
+			try{
+				string uriCalendars = "content://com.android.calendar/calendars";
+				string eventUriString = "content://com.android.calendar/events";
+				string reminderUriString = "content://com.android.calendar/reminders";
 
-			var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse (uriCalendars), new String[] { "_id" }, null, null, null);
-			cursor.MoveToFirst ();
-			int[] CalIds = new int[cursor.Count];
-			for (int i = 0; i < CalIds.Length; i++) {
-				CalIds [i] = cursor.GetInt (0);
-				cursor.MoveToNext ();
-			}
-	
-			cursor.Close ();
-
-
-			ContentValues eventValues = new ContentValues ();
-    
-
-			eventValues.Put ("calendar_id", CalIds [0]);
-			eventValues.Put ("title", title);
-			eventValues.Put ("description", addInfo);
-			eventValues.Put ("eventLocation", place);
-    
-			eventValues.Put ("dtstart", GetDateTimeMS (startDate));
-			var endDate = startDate.AddHours (1); // For next 1hr
-			eventValues.Put ("dtend", GetDateTimeMS (endDate));
-			eventValues.Put ("eventTimezone", "UTC");
-			eventValues.Put ("eventEndTimezone", "UTC");        
-
-			Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
-			long eventID = long.Parse (eventUri.LastPathSegment);
+				var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse (uriCalendars), new String[] { "_id" }, null, null, null);
+				cursor.MoveToFirst ();
+				int[] CalIds = new int[cursor.Count];
+				for (int i = 0; i < CalIds.Length; i++) {
+					CalIds [i] = cursor.GetInt (0);
+					cursor.MoveToNext ();
+				}
+		
+				cursor.Close ();
 
 
+				ContentValues eventValues = new ContentValues ();
+	    
 
-			ContentValues reminderValues = new ContentValues ();
+				eventValues.Put ("calendar_id", CalIds [0]);
+				eventValues.Put ("title", title);
+				eventValues.Put ("description", addInfo);
+				eventValues.Put ("eventLocation", place);
+	    
+				eventValues.Put ("dtstart", GetDateTimeMS (startDate));
+				var endDate = startDate.AddHours (1); // For next 1hr
+				eventValues.Put ("dtend", GetDateTimeMS (endDate));
+				eventValues.Put ("eventTimezone", "UTC");
+				eventValues.Put ("eventEndTimezone", "UTC");        
 
-			reminderValues.Put ("event_id", eventID);
-			reminderValues.Put ("minutes", 120); 
-			reminderValues.Put ("method", 1);
+				Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
+				long eventID = long.Parse (eventUri.LastPathSegment);
 
-			Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (reminderUriString), reminderValues);			
+
+
+				ContentValues reminderValues = new ContentValues ();
+
+				reminderValues.Put ("event_id", eventID);
+				reminderValues.Put ("minutes", 120); 
+				reminderValues.Put ("method", 1);
+
+				Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (reminderUriString), reminderValues);	
+
+			}catch(Exception e){
+				var logger = TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>();
+				logger.LogError(e);
+			}		
 
         }
 
