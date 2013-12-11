@@ -13,9 +13,9 @@ namespace ninePatchMaker
     {
         static void Main(string[] args)
         {
-            var fileName = @"C:\Users\christopher.lamothe\Desktop\TestSplashScreen\TestSplashScreen\Resources\splash.png";
+            var fileName = @"C:\Users\matthieu.duluc\Desktop\splash.png";
 
-            NinePatchMaker.Generate(fileName, @"C:\Users\christopher.lamothe\Desktop\TestSplashScreen\TestSplashScreen\Resources\","splash.png");
+            NinePatchMaker.Generate(fileName, @"C:\Users\matthieu.duluc\Desktop\", "splash.91.png");
 
             
         }
