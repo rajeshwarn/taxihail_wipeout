@@ -112,6 +112,12 @@
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
     </Reference>
+    <Reference Include="GooglePlayServicesFroyoLib">
+      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\GooglePlayServicesFroyoLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -727,5 +733,12 @@
   </ProjectExtensions>
   <ItemGroup>
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="googleplayservicesfroyo">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>12.0.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>
