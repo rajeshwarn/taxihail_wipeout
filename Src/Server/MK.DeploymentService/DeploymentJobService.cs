@@ -87,7 +87,7 @@ namespace MK.DeploymentService
                 }
 
                 //build server and deploy
-                if (_job.ServerSide || _job.Create || _job.Database)
+                if (_job.ServerSide || _job.Database)
                 {
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
                     if (_job.Server.Role != EnvironmentRole.BuildServer)
@@ -300,8 +300,7 @@ namespace MK.DeploymentService
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
             var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1} {2}", companyName, _job.Create ? "C" : "U",
-                                                   _job.Server.SqlServerInstance), null, true);
+                                                   string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance), null, true);
 
             
 
