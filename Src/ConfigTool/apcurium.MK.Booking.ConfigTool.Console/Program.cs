@@ -62,16 +62,18 @@ namespace apcurium.MK.Booking.ConfigTool
                     Console.WriteLine("");
                     Console.WriteLine("Enter the config number:");
                     var selectedText = Console.ReadLine();
+                    int selected = int.Parse(selectedText);
 
-                    int selected;
+					Console.WriteLine("Enter the server url:");
+					var url = Console.ReadLine();
 
-                    if (int.TryParse(selectedText, out selected) && selected >= 0 && selected < config.Count())
+					if (selected > 0 && !string.IsNullOrWhiteSpace(url))
                     {
-                        config.ElementAt(selected).Apply();
+						config.ElementAt(selected).Apply(url);
                     }
                     else
                     {
-                        Console.WriteLine("Invalid config selected. Press any key to exit...");
+                        Console.WriteLine("Invalid config selected or bad service url. Press any key to exit...");
                         //Console.ReadKey();
                         return 1;
                     }
