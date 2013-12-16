@@ -270,7 +270,7 @@ namespace MK.DeploymentService
 
 
             Log("Deploying Server");
-            DeployServer(companyName, packagesDirectory, iisManager);
+            DeployServer(_job.Company.Id, companyName, packagesDirectory, iisManager);
 
             appPool.Start();
         }
@@ -324,7 +324,7 @@ namespace MK.DeploymentService
             Log(e.Data);
         }
 
-        private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
+        private void DeployServer(string companyId, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             Log("Deploying IIS");
 
@@ -378,14 +378,14 @@ namespace MK.DeploymentService
 
             document.Save(targetWeDirectory + "log4net.xml");
 
-            EnsureThemeFolderExist(companyName, targetWeDirectory);
+            DeployTheme(companyId, companyName, targetWeDirectory);
 
             iisManager.CommitChanges();
 
             Log("Deploying IIS Finished");
         }
 
-        private void EnsureThemeFolderExist(string companyName, string targetWeDirectory)
+        private void DeployTheme(string companyId, string companyName, string targetWeDirectory)
         {
             try
             {
@@ -396,6 +396,23 @@ namespace MK.DeploymentService
                     Log("Copying default theme");
                     var defaultThemeFolder = Path.Combine(targetWeDirectory, @"themes\TaxiHail");
                     DirectoryCopy(defaultThemeFolder, themeFolder, true);
+
+                    Log("Getting web theme from cutsomer portal");
+                    var service = new CompanyServiceClient();
+                    using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
+                    {
+                        foreach (var  entry in zip.Entries)
+                        {
+                            if (entry.FullName.EndsWith(".css", StringComparison.OrdinalIgnoreCase))
+                            {
+                                entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name));
+                            }
+                            else
+                            {
+                                entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name));
+                            }
+                        }
+                    }
                 }
             }
             catch(Exception ex)
