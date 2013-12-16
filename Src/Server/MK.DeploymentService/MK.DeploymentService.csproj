@@ -108,6 +108,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\CompanyServiceClient.cs" />
     <Compile Include="Service\DeploymentJobServiceClient.cs" />
     <Compile Include="Service\PackagesServiceClient.cs" />
     <Compile Include="TopShelfService.cs" />
