@@ -274,7 +274,7 @@ namespace apcurium.MK.Booking.ConfigTool
             Directory.CreateDirectory(tempPath);
 
             var service = new CompanyServiceClient();
-            var stream = service.GetCompanyFiles(Company.Id);
+            var stream = service.GetCompanyFiles(Company.Id , "assets");
             var zipFile = Path.Combine(tempPath, "out.zip");
             using (Stream file = File.OpenWrite(zipFile))
             {
