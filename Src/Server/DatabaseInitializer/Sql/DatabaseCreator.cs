@@ -13,6 +13,15 @@ namespace DatabaseInitializer.Sql
 {
     public class DatabaseCreator
     {
+        public bool DatabaseExists(string connStringMaster, string companyName)
+        {
+            var exists = "SELECT count(*) FROM sys.databases WHERE name = N'" + companyName + "'";
+
+           var result =  DatabaseHelper.ExecuteScalarQuery<int>(connStringMaster, exists);
+
+           return result > 0;
+        }
+
         public string RenameDatabase(string connectionString, string databaseName)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + databaseName + "') ";
@@ -21,7 +30,7 @@ namespace DatabaseInitializer.Sql
 
             DatabaseHelper.ExecuteNonQuery(connectionString, exists + "ALTER DATABASE [" + databaseName + "] SET ONLINE");
 
-            var oldSuffixe = DatabaseHelper.ExecuteScalarQuery(connectionString, "DECLARE @DATABASE_ID int " +
+            var oldSuffixe = DatabaseHelper.ExecuteScalarQuery<string>(connectionString, "DECLARE @DATABASE_ID int " +
                                 "SET @DATABASE_ID = (SELECT database_id FROM master.sys.databases where name='" + databaseName + "') " +
                                 "SELECT SUBSTRING( name, (CHARINDEX(N'" + databaseName + "', LOWER(name)) + " + databaseName.Length + "),  LEN(name)) " +
                                 "FROM master.sys.master_files " +
@@ -80,7 +89,7 @@ namespace DatabaseInitializer.Sql
         private void AddReadWriteRigthsToUserForADatabase(string connectionString, string user, string dbName)
         {
             
-            var usernameForDb = DatabaseHelper.ExecuteScalarQuery(connectionString,
+            var usernameForDb = DatabaseHelper.ExecuteScalarQuery<string>(connectionString,
                                               "SELECT dp.name FROM [" + dbName + "].sys.database_principals dp JOIN [" +
                                               dbName + "].sys.server_principals sp ON dp.sid = sp.sid WHERE sp.name = '" +
                                               user + "'");
@@ -164,6 +173,6 @@ namespace DatabaseInitializer.Sql
             {
                 //TODO trouver un moyen plus sexy
             }
-        } 
+        }
     }
 }

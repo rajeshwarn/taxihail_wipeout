@@ -42,23 +42,11 @@ namespace DatabaseInitializer
                 var connectionString = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName));
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
-                //Init or Update
-                bool isUpdate;
-                if (args.Length > 1)
-                {
-                    isUpdate = args[1].ToUpperInvariant() == "U";
-                }
-                else
-                {
-                    Console.WriteLine("[C]reate (drop existing) or [U]pdate database ?");
-                    isUpdate = Console.ReadLine().ToUpperInvariant() == "U";
-                }
-
                 //SQL Instance name
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-                if (args.Length > 2)
+                if (args.Length > 1)
                 {
-                    sqlInstanceName = args[2];
+                    sqlInstanceName = args[1];
                 }
                 else
                 {
@@ -79,10 +67,10 @@ namespace DatabaseInitializer
                 
                 IDictionary<string, string> settingsInDb = null;
 
+                var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
