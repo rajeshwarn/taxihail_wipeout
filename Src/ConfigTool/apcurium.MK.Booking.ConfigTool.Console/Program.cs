@@ -40,9 +40,10 @@ namespace apcurium.MK.Booking.ConfigTool
                 if (args.Length > 0)
                 {
                     var configSelected = config.FirstOrDefault(x => x.Name == args[0]);
+					var serviceUrl = args[1];
                     if(configSelected != null)
                     {
-                        configSelected.Apply();
+						configSelected.Apply(serviceUrl);
                     }else
                     {
                         Console.WriteLine("Invalid config selected. Press any key to exit...");                        

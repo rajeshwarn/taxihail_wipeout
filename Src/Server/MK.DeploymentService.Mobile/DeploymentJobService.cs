@@ -283,43 +283,12 @@ namespace MK.DeploymentService.Mobile
 		{
 			Company company = job.Company;
 			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
-			_logger.DebugFormat ("Generate Settings");
+			_logger.DebugFormat ("Service Url : " + job.ServerUrl);
 
 			var jsonSettings = new JObject ();
 
-
-		 
-			foreach (var setting in company.CompanySettings) {
-			try
-			{
-				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value ?? ""));
-				}
-				catch(Exception ex)
-				{
-					_logger.DebugFormat ("Settings Error" );
-				}
-			}
-
-
-		
-
-			if (company.CompanySettings.ContainsKey ("ServiceUrl")) {
-				jsonSettings ["ServiceUrl"] = job.ServerUrl;
-			} else {
-				jsonSettings.Add ("ServiceUrl",  job.ServerUrl);
-			}
-
-			var jsonSettingsFile = GetSettingsFilePath (sourceDirectory, company.CompanyKey);
-			var stringBuilder = new StringBuilder ();
-			jsonSettings.WriteTo (new JsonTextWriter (new StringWriter (stringBuilder)));
-
-			var file = new FileInfo(jsonSettingsFile);
-			if (file.Directory != null) file.Directory.Create();
-			File.WriteAllText(file.FullName, stringBuilder.ToString());
-
 			_logger.DebugFormat ("Build Config Tool Customization");
 			UpdateJob ("Customize - Build Config Tool Customization");
-
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
 			var projectName = "NinePatchMaker.Lib";
@@ -345,7 +314,7 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
-			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0}", company.CompanyKey), workingDirectory);
+			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
 
 			using (var exeProcess = Process.Start (configToolRun)) {
 				var output = ProcessEx.GetOutput (exeProcess);
