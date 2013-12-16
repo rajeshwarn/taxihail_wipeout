@@ -142,11 +142,8 @@ namespace MK.DeploymentService.Mobile
 				var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
 
 				var apkFile = GetAndroidFile(apkPath);
-				var apkFileName = new FileInfo(apkFile).Name;
-
-				 
-				bool isProduction  = _job.ServerUrl.Contains ("services.taxihail.com");
-				var url = isProduction ? "https://services.taxihail.com/" + _job.Company.CompanyKey : "http://staging.taxihail.com/" + _job.Company.CompanyKey;
+				var apkFileName = new FileInfo(apkFile).Name;				 
+				var url = _job.ServerUrl.Replace ("/api/", string.Empty);
 
 				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
@@ -283,12 +280,10 @@ namespace MK.DeploymentService.Mobile
 		{
 			Company company = job.Company;
 			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
-			_logger.DebugFormat ("Service Url : " + job.ServerUrl);
-
-			var jsonSettings = new JObject ();
+			UpdateJob ("Service Url : " + job.ServerUrl);
 
 			_logger.DebugFormat ("Build Config Tool Customization");
-			UpdateJob ("Customize - Build Config Tool Customization");
+			UpdateJob("Customize - Build Config Tool Customization");
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
 			var projectName = "NinePatchMaker.Lib";
@@ -296,7 +291,7 @@ namespace MK.DeploymentService.Mobile
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			} else {
-				_logger.Debug ("Skipping NinePatch.Lib because it does not exist on this version");
+				UpdateJob("Skipping NinePatch.Lib because it does not exist on this version");
 			}
 
 			projectName = "NinePatchMaker";
@@ -304,7 +299,7 @@ namespace MK.DeploymentService.Mobile
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			} else {
-				_logger.Debug ("Skipping NinePatch because it does not exist on this version");
+				UpdateJob ("Skipping NinePatch because it does not exist on this version");
 			}
 			
 
