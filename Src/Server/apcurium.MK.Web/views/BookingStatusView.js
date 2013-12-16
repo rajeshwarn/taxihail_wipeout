@@ -28,9 +28,12 @@
         render: function() {
             var status = this.model.getStatus(),
                 data = _.extend(status.toJSON(), {
-                    isActive: status.isActive()
+
+                    isActive: status.isActive(),
+                    callNumber: TaxiHail.parameters.defaultPhoneNumber
                 });
 
+            
             // Close popover if it is open
             // Otherwise it will stay there forever
             this.$('[data-action=call]').popover('hide');
