@@ -64,8 +64,6 @@ namespace MK.DeploymentService.Mobile
 		private void CheckAndRunJobWithBuild ()
 		{
 			try {
-
-
 				var job = new DeploymentJobServiceClient ().GetNext ();
 
 				if (job == null)
@@ -101,7 +99,7 @@ namespace MK.DeploymentService.Mobile
 					if (!Directory.Exists (sourceDirectory))
 						Directory.CreateDirectory( sourceDirectory);
 
-
+					DownloadAndInstallProfileIfNecessary();
 
 					var taxiRepo = new TaxiRepository (HG_PATH, sourceDirectory);
 					UpdateJob ("FetchSource");
@@ -143,13 +141,39 @@ namespace MK.DeploymentService.Mobile
 
 				var apkFile = GetAndroidFile(apkPath);
 				var apkFileName = new FileInfo(apkFile).Name;				 
-				var url = _job.ServerUrl.Replace ("/api/", string.Empty);
 
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
 			}
 		}
 
+		private void DownloadAndInstallProfileIfNecessary()
+		{
+			if (_job.IosAdhoc || _job.IosAppStore)
+			{
+				var appId = _job.Company.CompanySettings.Any(s => s.Key == "Package") 
+				            ? _job.Company.CompanySettings.First(s => s.Key == "Package").Value
+				            : null;
+				if (string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Username)
+				   || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) {
+					_logger.Debug ("Skipping download of provisioning profile, missing Apple Store Credentials");
+					return;
+				}
+
+				if (appId == null) {
+					_logger.Debug ("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
+					return;
+				}
+
+				UpdateJob("Downloading/installing provisioning profile");
+				_customerPortalRepository.DownloadProfile (
+					_job.Company.AppleAppStoreCredentials.Username, 
+					_job.Company.AppleAppStoreCredentials.Password,
+					null,
+					appId,
+					_job.IosAdhoc);
+			}
+		}
 
 		public void Stop()
 		{
