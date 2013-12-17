@@ -147,7 +147,7 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private void DownloadAndInstallProfileIfNecessary()
+		private async void DownloadAndInstallProfileIfNecessary()
 		{
 			if (_job.IosAdhoc || _job.IosAppStore)
 			{
@@ -166,12 +166,13 @@ namespace MK.DeploymentService.Mobile
 				}
 
 				UpdateJob("Downloading/installing provisioning profile");
-				_customerPortalRepository.DownloadProfile (
+				var message = await _customerPortalRepository.DownloadProfile (
 					_job.Company.AppleAppStoreCredentials.Username, 
 					_job.Company.AppleAppStoreCredentials.Password,
 					_job.Company.AppleAppStoreCredentials.Team,
 					appId,
 					_job.IosAdhoc);
+				UpdateJob (message);
 			}
 		}
 
