@@ -156,12 +156,12 @@ namespace MK.DeploymentService.Mobile
 				            : null;
 				if (string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Username)
 				   || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) {
-					_logger.Debug ("Skipping download of provisioning profile, missing Apple Store Credentials");
+					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
 
 				if (appId == null) {
-					_logger.Debug ("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
+					UpdateJob("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
 					return;
 				}
 
