@@ -395,21 +395,32 @@ namespace MK.DeploymentService
                     Log("Copying default theme");
                     var defaultThemeFolder = Path.Combine(targetWeDirectory, @"themes\TaxiHail");
                     DirectoryCopy(defaultThemeFolder, themeFolder, true);
+                }
 
-                    Log("Getting web theme from cutsomer portal");
-                    var service = new CompanyServiceClient();
-                    using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
+                Log("Getting web theme from cutsomer portal");
+                var service = new CompanyServiceClient();
+                using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
+                {
+                    foreach (var entry in zip.Entries)
                     {
-                        foreach (var  entry in zip.Entries)
+                        if (entry.FullName.EndsWith(".css", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (entry.FullName.EndsWith(".css", StringComparison.OrdinalIgnoreCase))
-                            {
-                                entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name));
-                            }
-                            else
-                            {
-                                entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name));
-                            }
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\localization", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".handlebars", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\templates", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name));
                         }
                     }
                 }
