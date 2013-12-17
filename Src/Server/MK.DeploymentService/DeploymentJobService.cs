@@ -406,24 +406,25 @@ namespace MK.DeploymentService
                 {
                     foreach (var entry in zip.Entries)
                     {
-                        if (entry.FullName.EndsWith(".css", StringComparison.OrdinalIgnoreCase))
+                        Log("Theme file : " + entry.Name);
+                        if (entry.FullName.EndsWith(".less", StringComparison.OrdinalIgnoreCase))
                         {
-                            entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name));
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name), true);
                         }
 
                         if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
                         {
-                            entry.ExtractToFile(Path.Combine(themeFolder + "\\localization", entry.Name));
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\localization", entry.Name), true);
                         }
 
                         if (entry.FullName.EndsWith(".handlebars", StringComparison.OrdinalIgnoreCase))
                         {
-                            entry.ExtractToFile(Path.Combine(themeFolder + "\\templates", entry.Name));
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\templates", entry.Name), true);
                         }
 
                         if (entry.FullName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
                         {
-                            entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name));
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name), true);
                         }
                     }
                 }
