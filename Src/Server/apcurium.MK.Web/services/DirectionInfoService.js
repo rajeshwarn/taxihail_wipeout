@@ -19,7 +19,7 @@
 
                 if (tarifMode != 'AppTarif') {
                     $.get('api/ibsfare/', coordinates, function () { }, fmt).then(function (result) {                        
-                        if (result.price == 0) {
+                        if (result.price == 0 && tarifMode!=="Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (result) {                                
                                 directionInfoDefer.resolve(result);
                             });
