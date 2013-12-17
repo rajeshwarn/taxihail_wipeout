@@ -56,6 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
+			var map = this.Map;
+
         }
 
 		public void SetMapCenterPins (ImageView pickup, ImageView dropoff)
@@ -203,9 +205,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _center = value;                
-                if(Center!= null)
+				if(value!= null)
                 {
-                    SetZoom(Center);                   
+					SetZoom(value.ToArray());                   
                 }
             }
         }
@@ -252,30 +254,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-        private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
+		private void SetZoom(CoordinateViewModel[] adressesToDisplay)
         {
-            if ( adressesToDisplay.Count() == 1)
+			if ( adressesToDisplay.Length == 1)
             {
-                int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
-                int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lon)));
+				double lat = adressesToDisplay[0].Coordinate.Latitude;
+				double lon = adressesToDisplay[0].Coordinate.Longitude;
 
-                if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
-                {
-					Map.MoveCamera(CameraUpdateFactory.ZoomTo(18f));
-                }
+				if (adressesToDisplay[0].Zoom != ViewModels.ZoomLevel.DontChange)
+				{
+					AnimateTo(lat, lon, 18);
+				}
+				else
+				{
+					AnimateTo(lat, lon);
+				}
                 return;
             }
 
-            int minLat = int.MaxValue;
-            int maxLat = int.MinValue;
-            int minLon = int.MaxValue;
-            int maxLon = int.MinValue;
+			double minLat = -90;
+			double maxLat = 90;
+			double minLon = -180;
+			double maxLon = 180;
 
             foreach (var item in adressesToDisplay)
             {
-                int lat = CoordinatesHelper.ConvertToE6(item.Coordinate.Latitude);
-                int lon = CoordinatesHelper.ConvertToE6(item.Coordinate.Longitude);
+				double lat = item.Coordinate.Latitude;
+				double lon = item.Coordinate.Longitude;
                 maxLat = Math.Max(lat, maxLat);
                 minLat = Math.Min(lat, minLat);
                 maxLon = Math.Max(lon, maxLon);
@@ -284,14 +289,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng((maxLat + minLat) / 2, (maxLon + minLon) / 2), 18));
+				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 18);
             }
             else
             {
                 double fitFactor = 1.5;
 
 						//mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng((maxLat + minLat) / 2, (maxLon + minLon) / 2)));
+				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2);
             }
             PostInvalidateDelayed(100);
         }
@@ -405,12 +410,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private bool IsVehicleInRect(AvailableVehicle vehicle, Rect rect)
         {
             Point currentDevicePosition = new Point();
-            GeoPoint vehicleLocation = new GeoPoint((int) (vehicle.Latitude.ConvertToE6()), (int) (vehicle.Longitude.ConvertToE6()));
+			//GeoPoint vehicleLocation = new GeoPoint((int) (vehicle.Latitude.ConvertToE6()), (int) (vehicle.Longitude.ConvertToE6()));
 
 						//this.Projection.ToPixels(vehicleLocation, currentDevicePosition);
 
             return rect.Contains(currentDevicePosition.X, currentDevicePosition.Y);
         }
+
+		private void AnimateTo(double lat, double lng, float zoom)
+		{
+			// Call Map to itilialize CameraUpdateFactory
+			var map = Map;
+			try{
+
+			map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(lat, lng), zoom));
+			}
+			catch(Exception e)
+			{
+
+			}
+		}
+
+		private void AnimateTo(double lat, double lng)
+		{
+			// Call Map to itilialize CameraUpdateFactory
+			var map = Map;
+			try{
+			map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
+			}
+			catch(Exception e)
+			{
+
+			}
+		}
+
 
 
     }

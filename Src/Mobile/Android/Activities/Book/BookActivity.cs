@@ -28,6 +28,8 @@ using System.Reactive;
 using Java.Lang;
 using Android.OS;
 using Android.Content.PM;
+using Android.Gms.Maps;
+using Android.Gms.Common;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -44,6 +46,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			base.OnCreate(bundle);
 
 			_touchMap.OnCreate(bundle);
+			try
+			{
+				MapsInitializer.Initialize(this);
+			}
+			catch (GooglePlayServicesNotAvailableException e)
+			{
+				Logger.LogError(e);
+			}
 		}
 
         protected override void OnViewModelSet()

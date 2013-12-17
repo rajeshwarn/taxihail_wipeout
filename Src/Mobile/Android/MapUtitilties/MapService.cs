@@ -4,46 +4,31 @@ using apcurium.MK.Booking.Mobile.Client.Converters;
 using System;
 using Android.Content;
 using apcurium.MK.Common.Entity;
+using Android.Gms.Maps.Model;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
     public static class MapService
     {
-
-
-        public static GeoPoint SetLocationOnMap(MapView map, Address location)
-        {
-            var point = new GeoPoint(0, 0);
-            if (location != null)
-            {
-                point = new GeoPoint(CoordinatesHelper.ConvertToE6(location.Latitude), CoordinatesHelper.ConvertToE6(location.Longitude));
-                if (point != map.MapCenter)
-                {
-                    map.Controller.AnimateTo(point);
-                }
-            }
-
-            return point;
-        }
-
-        public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin,Address location, string title)
+		
+		public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin, Address location, string title)
         {
             PushPinOverlay pushpinOverlay = null;
             if (location != null)
             {
-                pushpinOverlay = AddPushPin (map, mapPin, GetGeoPoint(location.Latitude, location.Longitude), title);
+				//pushpinOverlay = AddPushPin (map, mapPin, new LatLng(location.Latitude, location.Longitude), title);
             }
             return pushpinOverlay;
 
         }
 
-		public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin, GeoPoint point, string title)
+		public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin, LatLng point, string title)
 		{
 			PushPinOverlay pushpinOverlay = null;
 			if (point != null)
 			{
-				pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
+				//pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
 				map.Overlays.Add(pushpinOverlay);
 			}
 			return pushpinOverlay;
@@ -66,13 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             overlay.EnableMyLocation();
             map.Overlays.Add(overlay);
         }
-
-        public static GeoPoint GetGeoPoint(double latitude, double longitude)
-        {
-            return new GeoPoint(CoordinatesHelper.ConvertToE6(latitude), CoordinatesHelper.ConvertToE6(longitude));
-        }
-
-      
 
     }
 }

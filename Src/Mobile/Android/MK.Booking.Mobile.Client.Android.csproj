@@ -151,7 +151,6 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
-    <Compile Include="Helpers\CoordinatesHelper.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\Confirmation.cs" />
