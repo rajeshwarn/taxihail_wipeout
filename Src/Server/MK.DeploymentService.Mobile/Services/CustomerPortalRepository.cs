@@ -10,6 +10,7 @@ using MK.DeploymentService.Mobile;
 using log4net;
 using ServiceStack.Common.Web;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DeploymentServiceTools
 {
@@ -78,7 +79,7 @@ namespace DeploymentServiceTools
 			}
 		}
 
-		public async void DownloadProfile(string appleUsername, string applePassword, string appleTeam, string appId, bool isAdHoc)
+		public async Task<string> DownloadProfile(string appleUsername, string applePassword, string appleTeam, string appId, bool isAdHoc)
 		{
 			var urlEncodedContent = new FormUrlEncodedContent(new Dictionary<string, string>
 				{
@@ -100,8 +101,7 @@ namespace DeploymentServiceTools
 
 					if(File.Exists(savePath))
 					{
-						_logger.InfoFormat("Provisioning profile {0} for {1} already exists", filename, appId);
-						return;
+						return string.Format("Provisioning profile {0} for {1} already exists", filename, appId);
 					}
 
 					using (Stream contentStream = await result.Content.ReadAsStreamAsync(), 
@@ -110,20 +110,22 @@ namespace DeploymentServiceTools
 						await contentStream.CopyToAsync(stream);
 					} 
 
-					_logger.InfoFormat ("Downloaded and installed profile {0} for {1}", filename, appId);
+					return string.Format("Downloaded and installed profile {0} for {1}", filename, appId);
 				}
 				catch(Exception e) 
 				{
-					_logger.ErrorFormat ("Could not download/install provisioning profile, continuing...{0}{1}", Environment.NewLine, e);
+					return string.Format("Could not download/install provisioning profile, continuing...{0}{1}", Environment.NewLine, e);
 				}
 			} 
 			else 
 			{
 				try
 				{
-					_logger.DebugFormat ("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, result.Content.ReadAsAsync<HttpError>().Result.Message);
+					return string.Format("Downloading profile: StatusCode:{0} Message:{1}", result.StatusCode, result.Content.ReadAsAsync<HttpError>().Result.Message);
 				}
-				catch {}
+				catch {
+					return result.ToString();
+				}
 			}
 		}
 

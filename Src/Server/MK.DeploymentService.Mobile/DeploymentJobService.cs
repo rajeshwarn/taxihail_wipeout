@@ -147,7 +147,7 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		private void DownloadAndInstallProfileIfNecessary()
+		private async void DownloadAndInstallProfileIfNecessary()
 		{
 			if (_job.IosAdhoc || _job.IosAppStore)
 			{
@@ -156,22 +156,23 @@ namespace MK.DeploymentService.Mobile
 				            : null;
 				if (string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Username)
 				   || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) {
-					_logger.Debug ("Skipping download of provisioning profile, missing Apple Store Credentials");
+					UpdateJob("Skipping download of provisioning profile, missing Apple Store Credentials");
 					return;
 				}
 
 				if (appId == null) {
-					_logger.Debug ("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
+					UpdateJob("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
 					return;
 				}
 
 				UpdateJob("Downloading/installing provisioning profile");
-				_customerPortalRepository.DownloadProfile (
+				var message = await _customerPortalRepository.DownloadProfile (
 					_job.Company.AppleAppStoreCredentials.Username, 
 					_job.Company.AppleAppStoreCredentials.Password,
 					_job.Company.AppleAppStoreCredentials.Team,
 					appId,
 					_job.IosAdhoc);
+				UpdateJob (message);
 			}
 		}
 

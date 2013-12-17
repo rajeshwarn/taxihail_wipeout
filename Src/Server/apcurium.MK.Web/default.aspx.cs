@@ -54,7 +54,7 @@ namespace apcurium.MK.Web
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
-            DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", true);
+            DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
 
             ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
 

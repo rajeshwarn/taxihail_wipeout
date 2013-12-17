@@ -249,13 +249,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
+            
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {
                 var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
 
-                if (estimatedFare.Price.HasValue)
-                {
+                var willShowFare = estimatedFare.Price.HasValue && estimatedFare.Price.Value > 0;                                
+
+                if (estimatedFare.Price.HasValue && willShowFare)
+                {                    
                     var maxEstimate = Config.GetSetting<double>("Client.MaxFareEstimate", 100);
                     if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && appResource.GetString("EstimatePriceOver100").HasValue()))
                     {
