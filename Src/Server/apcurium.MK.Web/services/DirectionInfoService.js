@@ -42,7 +42,7 @@
               function (result) {
                   if (needAValidTarif == true)
                   {
-                      result.noEstimateFare == true;
+                      result.noFareEstimate == true;
                   }
                   result.callForPrice = (result.price > 100);
               }
