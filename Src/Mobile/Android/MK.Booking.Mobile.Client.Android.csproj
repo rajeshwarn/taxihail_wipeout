@@ -165,7 +165,6 @@
     <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
-    <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
