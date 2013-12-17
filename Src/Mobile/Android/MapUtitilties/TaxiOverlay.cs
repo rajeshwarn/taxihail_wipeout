@@ -96,8 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             var overlay = _owner.Overlays.ElementAt(index); // as PushPinOverlay;
 
-            RemoveAllBalloons(_owner);
-
             if (_noteBaloon == null)
             {
                 var layoutInflater = (LayoutInflater)Application.Context.GetSystemService(Context.LayoutInflaterService);
@@ -114,17 +112,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             _owner.AddView(_noteBaloon, new MapView.LayoutParams(200, 100, this.Center, MapView.LayoutParams.BottomCenter));
 
             return result;
-        }
-
-        private void RemoveAllBalloons(MapView mapView)
-        {
-            if (mapView.Overlays != null)
-            {
-                foreach (var i in mapView.Overlays.OfType<PushPinOverlay>())
-                {
-                    i.RemoveBaloon();
-                }
-            }
         }
 
         public void RemoveBaloon()

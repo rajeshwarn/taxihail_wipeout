@@ -169,7 +169,7 @@ namespace MK.DeploymentService.Mobile
 				_customerPortalRepository.DownloadProfile (
 					_job.Company.AppleAppStoreCredentials.Username, 
 					_job.Company.AppleAppStoreCredentials.Password,
-					null,
+					_job.Company.AppleAppStoreCredentials.Team,
 					appId,
 					_job.IosAdhoc);
 			}

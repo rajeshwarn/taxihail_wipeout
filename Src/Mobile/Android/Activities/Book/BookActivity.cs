@@ -43,18 +43,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		protected override void OnCreate(Bundle bundle)
 		{
-			base.OnCreate(bundle);
-
-			_touchMap.OnCreate(bundle);
 			try
 			{
-				MapsInitializer.Initialize(this);
+				MapsInitializer.Initialize(this.ApplicationContext);
 			}
 			catch (GooglePlayServicesNotAvailableException e)
 			{
 				Logger.LogError(e);
 			}
+
+			base.OnCreate(bundle);
+			_touchMap.OnCreate(bundle);
+			_touchMap.SetMapReady();
+
 		}
+
+
 
         protected override void OnViewModelSet()
         {

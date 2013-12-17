@@ -8,11 +8,11 @@
     <Setting Name="DropFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\Data\TaxiHailPackages\</Value>
     </Setting>
-    <Setting Name="CustomerPortalUrl" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http:\\customer.taxihail.com\api\</Value>
-    </Setting>
     <Setting Name="ServerName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Dev</Value>
+    </Setting>
+    <Setting Name="CustomerPortalUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://customer.taxihail.com/api/</Value>
     </Setting>
   </Settings>
 </SettingsFile>
