@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly ITwitterService _twitterService;
         readonly IPushNotificationService _pushService;
 
+		public event EventHandler LoginSucceeded; 
         public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
         {
             _applicationInfoService = applicationInfoService;
@@ -412,8 +413,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-            RequestNavigate<BookViewModel>(true);
 
+            RequestNavigate<BookViewModel>(true);
+			if (LoginSucceeded != null)
+			{
+				LoginSucceeded(this, EventArgs.Empty);
+			}
         }
     }
 }
