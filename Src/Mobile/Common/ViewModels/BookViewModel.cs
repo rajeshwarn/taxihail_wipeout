@@ -366,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _showEstimate = true;
         public bool ShowEstimate
         {
-            get { return _showEstimate; }
+			get { return _showEstimate && !HideDestination; }
             private set
             {
                 _showEstimate = value;
