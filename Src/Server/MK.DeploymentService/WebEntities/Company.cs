@@ -11,7 +11,7 @@ namespace CustomerPortal.Web.Entities
         {
             IBS = new IBSSettings();
             Store = new StoreSettings();
-            AppleAppStoreCredentials = new StoreCredentials();
+			AppleAppStoreCredentials = new AppleStoreCredentials();
             GooglePlayCredentials = new StoreCredentials();
             Versions = new List<Version>();
             CompanySettings = new List<CompanySetting>();
@@ -47,7 +47,7 @@ namespace CustomerPortal.Web.Entities
         public IBSSettings IBS { get; set; }
         public StoreSettings Store { get; set; }
 
-        public StoreCredentials AppleAppStoreCredentials { get; set; }
+		public AppleStoreCredentials AppleAppStoreCredentials { get; set; }
 
         public StoreCredentials GooglePlayCredentials { get; set; }
 
