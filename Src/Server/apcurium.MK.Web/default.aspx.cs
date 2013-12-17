@@ -35,6 +35,7 @@ namespace apcurium.MK.Web
         protected string EstimateWarningEnabled { get; private set; }        
         protected string DestinationIsRequired { get; private set; }
         protected string DirectionTarifMode { get; private set; }
+        protected bool DirectionNeedAValidTarif { get; private set; }
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
 
@@ -53,6 +54,7 @@ namespace apcurium.MK.Web
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
 
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
+            DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", true);
 
             ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
 
