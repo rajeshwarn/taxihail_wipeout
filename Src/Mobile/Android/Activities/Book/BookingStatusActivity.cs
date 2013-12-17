@@ -80,13 +80,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _isInit = true;
 
-			var map = FindViewById<TouchMap>(Resource.Id.mapStatus);
+			/*var map = FindViewById<TouchMap>(Resource.Id.mapStatus);
             map.SetBuiltInZoomControls(false);
             map.Clickable = true;
             map.Traffic = false;
             map.Satellite = false;
 
-			map.AddressSelectionMode = Data.AddressSelectionMode.None;
+			map.AddressSelectionMode = Data.AddressSelectionMode.None;*/
 
         }
     }
