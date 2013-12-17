@@ -2,6 +2,7 @@
    "ApplicationName" : "TaxiHail", 
    "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",   
    "CanChangeServiceUrl" : "true",   
+   "DisabledTutorialSlides" : "",
    "ErrorLog" : "",   
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
