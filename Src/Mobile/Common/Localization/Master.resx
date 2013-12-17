@@ -804,6 +804,9 @@
   <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
     <value>Order cannot be created, invalid vehicle type. Please try again or call us.</value>
   </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</value>
+  </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>This email is already in use.</value>
   </data>

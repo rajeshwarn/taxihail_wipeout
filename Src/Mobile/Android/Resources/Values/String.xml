@@ -12,6 +12,7 @@
   <string name="NbPassenger"> ({0} passenger)</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ConfirmNoRingCode">No code</string>
   <string name="View_BookingDetail">Booking Details</string>

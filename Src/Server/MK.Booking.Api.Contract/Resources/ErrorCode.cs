@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateOrder_InvalidProvider,
         CreateOrder_VehiculeType,
         CreateOrder_RuleDisable,
+        CreateOrder_NoFareEstimateAvailable,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,
