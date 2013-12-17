@@ -36,7 +36,6 @@ namespace CustomerPortal.Web.Entities
         {
             ServerSide = true;
             Database = false;
-            Create = false;
             ClientSide = false;
             Android = false;
             CallBox = false;

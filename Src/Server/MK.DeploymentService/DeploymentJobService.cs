@@ -299,8 +299,11 @@ namespace MK.DeploymentService
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
+           
+            var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
+            Log("Calling DB tool with : " + exeArgs);
             var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance), null, true);
+                                                   exeArgs, null, true);
 
             
 
