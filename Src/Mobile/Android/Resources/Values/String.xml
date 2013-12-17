@@ -451,4 +451,7 @@
   <string name="LocationDetailRebookButton">Book using this address</string>
   <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
   <string name="ConfirmationPaymentAmountOver100">You will be charged {0}. Please confirm the amount. </string>
+  <string name="AccountDisabled_NoCall">Your account has been disabled.</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">The order cannot be created.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">The specified Pickup address lies outside the regular service area.</string>
 </resources>
