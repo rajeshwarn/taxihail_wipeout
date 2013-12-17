@@ -64,8 +64,6 @@ namespace MK.DeploymentService.Mobile
 		private void CheckAndRunJobWithBuild ()
 		{
 			try {
-
-
 				var job = new DeploymentJobServiceClient ().GetNext ();
 
 				if (job == null)
@@ -101,7 +99,7 @@ namespace MK.DeploymentService.Mobile
 					if (!Directory.Exists (sourceDirectory))
 						Directory.CreateDirectory( sourceDirectory);
 
-
+					DownloadAndInstallProfileIfNecessary();
 
 					var taxiRepo = new TaxiRepository (HG_PATH, sourceDirectory);
 					UpdateJob ("FetchSource");
@@ -142,17 +140,40 @@ namespace MK.DeploymentService.Mobile
 				var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
 
 				var apkFile = GetAndroidFile(apkPath);
-				var apkFileName = new FileInfo(apkFile).Name;
+				var apkFileName = new FileInfo(apkFile).Name;				 
 
-				 
-				bool isProduction  = _job.ServerUrl.Contains ("services.taxihail.com");
-				var url = isProduction ? "https://services.taxihail.com/" + _job.Company.CompanyKey : "http://staging.taxihail.com/" + _job.Company.CompanyKey;
-
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, url , ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
 				UpdateJob (message);
 			}
 		}
 
+		private void DownloadAndInstallProfileIfNecessary()
+		{
+			if (_job.IosAdhoc || _job.IosAppStore)
+			{
+				var appId = _job.Company.CompanySettings.Any(s => s.Key == "Package") 
+				            ? _job.Company.CompanySettings.First(s => s.Key == "Package").Value
+				            : null;
+				if (string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Username)
+				   || string.IsNullOrWhiteSpace (_job.Company.AppleAppStoreCredentials.Password)) {
+					_logger.Debug ("Skipping download of provisioning profile, missing Apple Store Credentials");
+					return;
+				}
+
+				if (appId == null) {
+					_logger.Debug ("Skipping download of provisioning profile, missing App Identifier (CompanySettings[Package])");
+					return;
+				}
+
+				UpdateJob("Downloading/installing provisioning profile");
+				_customerPortalRepository.DownloadProfile (
+					_job.Company.AppleAppStoreCredentials.Username, 
+					_job.Company.AppleAppStoreCredentials.Password,
+					null,
+					appId,
+					_job.IosAdhoc);
+			}
+		}
 
 		public void Stop()
 		{
@@ -283,43 +304,10 @@ namespace MK.DeploymentService.Mobile
 		{
 			Company company = job.Company;
 			CustomerPortal.Web.Entities.Environment taxiHailEnv = job.Server;
-			_logger.DebugFormat ("Generate Settings");
-
-			var jsonSettings = new JObject ();
-
-
-		 
-			foreach (var setting in company.CompanySettings) {
-			try
-			{
-				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value ?? ""));
-				}
-				catch(Exception ex)
-				{
-					_logger.DebugFormat ("Settings Error" );
-				}
-			}
-
-
-		
-
-			if (company.CompanySettings.ContainsKey ("ServiceUrl")) {
-				jsonSettings ["ServiceUrl"] = job.ServerUrl;
-			} else {
-				jsonSettings.Add ("ServiceUrl",  job.ServerUrl);
-			}
-
-			var jsonSettingsFile = GetSettingsFilePath (sourceDirectory, company.CompanyKey);
-			var stringBuilder = new StringBuilder ();
-			jsonSettings.WriteTo (new JsonTextWriter (new StringWriter (stringBuilder)));
-
-			var file = new FileInfo(jsonSettingsFile);
-			if (file.Directory != null) file.Directory.Create();
-			File.WriteAllText(file.FullName, stringBuilder.ToString());
+			UpdateJob ("Service Url : " + job.ServerUrl);
 
 			_logger.DebugFormat ("Build Config Tool Customization");
-			UpdateJob ("Customize - Build Config Tool Customization");
-
+			UpdateJob("Customize - Build Config Tool Customization");
 			 
 			var sln = string.Format ("{0}/ConfigTool.iOS.sln", Path.Combine (sourceDirectory, "Src", "ConfigTool"));
 			var projectName = "NinePatchMaker.Lib";
@@ -327,7 +315,7 @@ namespace MK.DeploymentService.Mobile
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			} else {
-				_logger.Debug ("Skipping NinePatch.Lib because it does not exist on this version");
+				UpdateJob("Skipping NinePatch.Lib because it does not exist on this version");
 			}
 
 			projectName = "NinePatchMaker";
@@ -335,7 +323,7 @@ namespace MK.DeploymentService.Mobile
 				var ninePatchProjectConfi = String.Format ("\"--project:{0}\" \"--configuration:{1}\"", projectName, "Debug");
 				_builder.BuildProject (string.Format ("build " + ninePatchProjectConfi + "  \"{0}\"", sln));
 			} else {
-				_logger.Debug ("Skipping NinePatch because it does not exist on this version");
+				UpdateJob ("Skipping NinePatch because it does not exist on this version");
 			}
 			
 
@@ -345,7 +333,7 @@ namespace MK.DeploymentService.Mobile
 			UpdateJob ("Run Config Tool Customization");
 
 			var workingDirectory = Path.Combine (sourceDirectory, "Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug");
-			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0}", company.CompanyKey), workingDirectory);
+			var configToolRun = ProcessEx.GetProcess ("mono", string.Format ("apcurium.MK.Booking.ConfigTool.exe {0} {1}", company.CompanyKey, job.ServerUrl), workingDirectory);
 
 			using (var exeProcess = Process.Start (configToolRun)) {
 				var output = ProcessEx.GetOutput (exeProcess);

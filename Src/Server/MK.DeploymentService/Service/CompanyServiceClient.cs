@@ -11,7 +11,7 @@ using System.Net;
 
 
 
-namespace apcurium.MK.Booking.ConfigTool.ServiceClient
+namespace MK.DeploymentService.Service
 {
     public class CompanyServiceClient
     {

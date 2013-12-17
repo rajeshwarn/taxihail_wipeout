@@ -122,7 +122,11 @@
         renderResults: function (result) {
             if (result.callForPrice) {
                 this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
-            } else {
+            } else
+            if (result.noFareEstimate) {
+                this.model.set('priceEstimate', TaxiHail.localize("NoFareEstimate"));
+            } else
+            {
                 this.model.set('priceEstimate', result.formattedPrice);
             }
             this.model.set({

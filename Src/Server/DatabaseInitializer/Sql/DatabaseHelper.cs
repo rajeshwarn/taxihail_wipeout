@@ -46,7 +46,7 @@ namespace DatabaseInitializer.Sql
             }
         }
 
-        public static string ExecuteScalarQuery(string connectionString, string cmdText)
+        public static T ExecuteScalarQuery<T>(string connectionString, string cmdText)
         {
             object result = null;
             using (var connection = new SqlConnection(connectionString))
@@ -57,7 +57,7 @@ namespace DatabaseInitializer.Sql
                 result = sqlCommandCreate.ExecuteScalar();
                 connection.Close();
             }
-            return result as string;
+            return (T)result;
         }
     }
 }

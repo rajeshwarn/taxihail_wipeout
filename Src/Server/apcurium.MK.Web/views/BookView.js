@@ -50,7 +50,17 @@
                         $estimate
                             .find('.label')
                             .hide();
-                    } else {
+                    }
+                    else
+                        if (value.noFareEstimate) {
+                        $estimate
+                            .find('.fare')
+                            .text(TaxiHail.localize('NoFareEstimate'));
+                        $estimate
+                            .find('.label')
+                            .hide();
+                    }
+                    else {
                         $estimate
                             .find('.fare')
                             .text(value.formattedPrice);

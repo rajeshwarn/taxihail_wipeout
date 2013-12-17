@@ -87,7 +87,7 @@ namespace MK.DeploymentService
                 }
 
                 //build server and deploy
-                if (_job.ServerSide || _job.Create || _job.Database)
+                if (_job.ServerSide || _job.Database)
                 {
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
                     if (_job.Server.Role != EnvironmentRole.BuildServer)
@@ -270,7 +270,7 @@ namespace MK.DeploymentService
 
 
             Log("Deploying Server");
-            DeployServer(companyName, packagesDirectory, iisManager);
+            DeployServer(_job.Company.Id, companyName, packagesDirectory, iisManager);
 
             appPool.Start();
         }
@@ -299,9 +299,11 @@ namespace MK.DeploymentService
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
+           
+            var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
+            Log("Calling DB tool with : " + exeArgs);
             var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1} {2}", companyName, _job.Create ? "C" : "U",
-                                                   _job.Server.SqlServerInstance), null, true);
+                                                   exeArgs, null, true);
 
             
 
@@ -324,7 +326,7 @@ namespace MK.DeploymentService
             Log(e.Data);
         }
 
-        private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
+        private void DeployServer(string companyId, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             Log("Deploying IIS");
 
@@ -378,14 +380,14 @@ namespace MK.DeploymentService
 
             document.Save(targetWeDirectory + "log4net.xml");
 
-            EnsureThemeFolderExist(companyName, targetWeDirectory);
+            DeployTheme(companyId, companyName, targetWeDirectory);
 
             iisManager.CommitChanges();
 
             Log("Deploying IIS Finished");
         }
 
-        private void EnsureThemeFolderExist(string companyName, string targetWeDirectory)
+        private void DeployTheme(string companyId, string companyName, string targetWeDirectory)
         {
             try
             {
@@ -396,6 +398,34 @@ namespace MK.DeploymentService
                     Log("Copying default theme");
                     var defaultThemeFolder = Path.Combine(targetWeDirectory, @"themes\TaxiHail");
                     DirectoryCopy(defaultThemeFolder, themeFolder, true);
+                }
+
+                Log("Getting web theme from cutsomer portal");
+                var service = new CompanyServiceClient();
+                using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
+                {
+                    foreach (var entry in zip.Entries)
+                    {
+                        if (entry.FullName.EndsWith(".css", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\localization", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".handlebars", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\templates", entry.Name));
+                        }
+
+                        if (entry.FullName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name));
+                        }
+                    }
                 }
             }
             catch(Exception ex)

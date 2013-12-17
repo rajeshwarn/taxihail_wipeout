@@ -12,5 +12,7 @@ namespace apcurium.MK.Common.Entity
             Ibs,
             Both
         }
+
+        public bool NeedAValidTarif { get; set; }
     }
 }
