@@ -27,11 +27,12 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Common.Configuration;
 using Android.Text;
+using System.Reactive.Linq;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, NoHistory = true  )]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait  )]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
         public static LoginActivity TopInstance{get;set;}
@@ -102,10 +103,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             linkResetPassword.SetTextColor( StyleManager.Current.NavigationTitleColor.ConvertToColor() );
 
+            Observable.FromEventPattern<EventHandler, EventArgs>(
+                ev => ViewModel.LoginSucceeded += ev,
+                ev => ViewModel.LoginSucceeded -= ev)
+                    .Subscribe( _ => Observable.Timer(TimeSpan.FromSeconds(2))  
+                            .Subscribe(__ => RunOnUiThread(Finish)));
+
+                
+
+                
+
+
 #if DEBUG
             FindViewById<EditText>(Resource.Id.Username).Text = "john@taxihail.com";
             FindViewById<EditText>(Resource.Id.Password).Text = "password";            
 #endif 
+
+
 
         }
 
