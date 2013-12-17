@@ -91,13 +91,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
+		public bool CallIsEnabled
+		{
+			get{
+
+				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+			}
+
+		}
+
         private void HandleCreateOrderError (Exception ex, CreateOrder order)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var title = appResource.GetString ("ErrorCreatingOrderTitle");
 
+			string message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall");
 
-            var message = appResource.GetString ("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+			if (CallIsEnabled)
+			{
+				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+			}
 
 
             try {
@@ -106,6 +119,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         message = ((WebServiceException)ex).ErrorMessage;
                     } else {
                         var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
+
+						if ( !CallIsEnabled )
+						{
+							messageKey += "_NoCall";
+						}
+
                         var errorMessage = appResource.GetString (messageKey);
                         if(errorMessage != messageKey)
                         {
@@ -119,10 +138,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            string err = string.Format (message, settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
+			if (CallIsEnabled)
+			{
+				string err = string.Format(message, settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, Config.GetSetting("DefaultPhoneNumber")), "Cancel", delegate
+				{			
+				});
+			}
+			else
+			{
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+			}
 
-            TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, err, "Call", () => CallCompany (settings.ApplicationName, Config.GetSetting("DefaultPhoneNumber")), "Cancel", delegate {
-            });
+
         }
 
         private void CallCompany (string name, string number)
