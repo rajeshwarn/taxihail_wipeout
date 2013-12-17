@@ -40,10 +40,7 @@
 
             return $.when(getDirectionInfoEvent()).done(
               function (result) {
-                  if (needAValidTarif == true)
-                  {
-                      result.noFareEstimate == true;
-                  }
+                  result.noFareEstimate = (result.price == 0);
                   result.callForPrice = (result.price > 100);
               }
             );

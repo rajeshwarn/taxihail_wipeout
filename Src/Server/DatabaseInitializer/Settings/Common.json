@@ -5,8 +5,8 @@
    "PriceFormat" : "en-US",   
    
    "Direction.MaxDistance" : "50",
-   "Direction.TarifMode" : "AppTarif",
-   "Direction.NeedAValidTarif" : "false",
+   "Direction.TarifMode" : "Ibs",
+   "Direction.NeedAValidTarif" : "true",
 
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
