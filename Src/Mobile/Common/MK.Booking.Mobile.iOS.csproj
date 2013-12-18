@@ -326,6 +326,7 @@
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />
     <None Include="Localization\Thriev.resx" />
+    <None Include="Localization\TaxiHail NYC.resx" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
