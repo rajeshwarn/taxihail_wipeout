@@ -371,8 +371,6 @@
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
-    <AndroidResource Include="Resources\Layout\Control_MapWrapper.axml" />
-    <Compile Include="Controls\MapWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
