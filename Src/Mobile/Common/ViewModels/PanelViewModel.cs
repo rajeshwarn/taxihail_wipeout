@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private bool _canCall = true;
+        
         public bool CanCall
         {
             get
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        private bool _canReportProblem = true;
+        
         public bool CanReportProblem
         {
             get { 

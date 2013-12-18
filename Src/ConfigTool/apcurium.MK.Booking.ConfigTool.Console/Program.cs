@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 
 				var config = companies.Select(company => new AppConfig( company.CompanyKey ,company, src, Path.Combine(configRootFolder, company.CompanyKey ) , common)).ToArray();
 
-                if (args.Length > 0)
+				if (args.Length >= 2)
                 {
                     var configSelected = config.FirstOrDefault(x => x.Name == args[0]);
 					var serviceUrl = args[1];
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
                     for (int i = 0; i < config.Count(); i++)
                     {
-                        Console.WriteLine(i.ToString() + " - " + config.ElementAt(i).Name);
+						Console.WriteLine(i.ToString() + " - " + config.ElementAt(i).Name + " - " + config.ElementAt(i).Company.CompanyName );
                     }
                     Console.WriteLine("");
                     Console.WriteLine("Enter the config number:");
