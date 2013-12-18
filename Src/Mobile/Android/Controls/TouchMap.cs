@@ -304,7 +304,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 				if (adressesToDisplay[0].Zoom != ViewModels.ZoomLevel.DontChange)
 				{
-					AnimateTo(lat, lon, 18);
+                    AnimateTo(lat, lon, 16);
 				}
 				else
 				{
@@ -330,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
-				AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 18);
+                AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
             }
             else
             {
