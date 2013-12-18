@@ -411,6 +411,7 @@
     <Content Include="themes\BarrieTaxi\img\logo.png" />
     <Content Include="themes\FlashCab\img\logo.png" />
     <Content Include="themes\Nawlins\img\logo.png" />
+    <Content Include="themes\TaxiHailNYC\img\logo.png" />
     <Content Include="themes\Taxiworld\img\header-bg.png" />
     <Content Include="themes\Taxiworld\img\logo.png" />
     <Content Include="themes\Thriev\img\cancel-icon.png" />
@@ -688,6 +689,10 @@
     <Content Include="templates\GetTheApp.handlebars" />
     <Content Include="admin\localization\SendPushNotification.json" />
     <Content Include="admin\templates\SendPushNotification.handlebars" />
+    <Content Include="themes\TaxiHailNYC\less\combined-responsive.less" />
+    <Content Include="themes\TaxiHailNYC\less\combined.less" />
+    <Content Include="themes\TaxiHailNYC\less\style.less" />
+    <Content Include="themes\TaxiHailNYC\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

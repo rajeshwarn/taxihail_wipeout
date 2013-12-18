@@ -203,6 +203,11 @@
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Resources\DynamicResources.cs" />
+    <Compile Include="Resources\TaxiHailNYC.Designer.cs">
+      <DependentUpon>TaxiHailNYC.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -274,6 +279,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>

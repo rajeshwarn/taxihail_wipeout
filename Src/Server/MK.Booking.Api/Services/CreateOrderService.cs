@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var needATarif = bool.Parse(_configManager.GetSetting("Direction.NeedAValidTarif"));
 
-            if (needATarif && (request.Estimate.Price == null || request.Estimate.Price == 0))
+            if (needATarif && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
