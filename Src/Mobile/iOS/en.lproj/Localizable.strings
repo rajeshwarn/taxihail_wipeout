@@ -302,7 +302,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="Hail";
+"BookItButton"="Book Now";
 "ConfirmDestinationLabel"="Destination";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
@@ -450,3 +450,5 @@
 "AccountDisabled_NoCall"="Your account has been disabled.";
 "ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created.";
 "ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="The specified Pickup address lies outside the regular service area.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="The order cannot be created because your account is currently inactive.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare estimate available for the ride.";

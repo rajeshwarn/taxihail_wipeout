@@ -118,18 +118,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     if (((WebServiceException)ex).ErrorCode ==ErrorCode.CreateOrder_RuleDisable.ToString ()) {
                         message = ((WebServiceException)ex).ErrorMessage;
                     } else {
-                        var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
+                        
+						var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
+						var errorMessage = appResource.GetString (messageKey);
+						if(errorMessage != messageKey)
+						{
+							message = errorMessage;
+						}
 
 						if ( !CallIsEnabled )
 						{
 							messageKey += "_NoCall";
+							errorMessage = appResource.GetString (messageKey);
+							if(errorMessage != messageKey)
+							{
+								message = errorMessage;
+							}
 						}
 
-                        var errorMessage = appResource.GetString (messageKey);
-                        if(errorMessage != messageKey)
-                        {
-                            message = errorMessage;
-                        }
+                       
                     }
                 }
             } catch {

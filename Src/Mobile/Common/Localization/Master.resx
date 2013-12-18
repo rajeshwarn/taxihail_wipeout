@@ -807,6 +807,9 @@
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
     <value>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</value>
   </data>
+<data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>No fare estimate available for the ride.</value>
+  </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>This email is already in use.</value>
   </data>
@@ -909,6 +912,9 @@
 
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
+  </data>
+ <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
+    <value>The order cannot be created because your account is currently inactive.</value>
   </data>
   <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
     <value>Invalid Contact</value>
