@@ -447,3 +447,7 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
 "LocationDetailRebookButton"="Book using this address";
 "ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare estimate available for the ride. Please contact {0} at {1} for further assistance.";
+"AccountDisabled_NoCall"="Your account has been disabled.";
+"ServiceError_ErrorCreatingOrderMessage_NoCall"="The order cannot be created.";
+"ServiceErrorCreateOrder_NoFareEstimateAvailable"="No fare estimate available for the ride. Please contact {0} at {1} for further assistance.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="The specified Pickup address lies outside the regular service area.";

@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		readonly ITwitterService _twitterService;
 		public IFacebookService FacebookService { get { return _facebookService; } }
 
+		public event EventHandler LoginSucceeded; 
 		public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
 			:this(accountService, applicationInfoService, pushService)
 		{
@@ -114,7 +115,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+		public bool CallIsEnabled
+		{
+			get{
 
+				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+			}
+
+		}
         private void SignIn()
         {
             bool needToHideProgress = true;
@@ -131,11 +139,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var title = Resources.GetString("InvalidLoginMessageTitle");
                     var message = Resources.GetString(e.Message);
+
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
-                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-                        var companyName = settings.ApplicationName;
-                        var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
-                        message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
+						if ( CallIsEnabled )
+						{
+                        	var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+                        	var companyName = settings.ApplicationName;
+                        	var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
+                        	message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
+						}
+						else 
+						{
+							message= Resources.GetString("AccountDisabled_NoCall");
+						}
                     }                 
                     MessageService.ShowMessage(title, message);
                 }
@@ -408,8 +424,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 
 			_applicationInfoService = null;     
-            RequestNavigate<BookViewModel>(true);
 
+            RequestNavigate<BookViewModel>(true);
+			if (LoginSucceeded != null)
+			{
+				LoginSucceeded(this, EventArgs.Empty);
+			}
         }
     }
 }

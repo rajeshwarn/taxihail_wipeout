@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.BindingConverter;
 using System.Drawing;
 using System.Threading;
 using System.Reactive.Linq;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -55,11 +56,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
             lblRequested.Text = Resources.HistoryDetailRequestedLabel;
             lblOrigin.Text = Resources.HistoryDetailOriginLabel;
+			lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
             lblDestination.Text = Resources.HistoryDetailDestinationLabel;
+			lblDestination.Hidden = ViewModel.HideDestination;
+			lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
             lblStatus.Text = Resources.HistoryDetailStatusLabel;
-            lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
-            lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
-            lblAuthorization.Text =Resources.HistoryDetailAuthorizationLabel;
+			lblAuthorization.Text = Resources.HistoryDetailAuthorizationLabel;
            
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
@@ -83,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ btnSendReceipt, "{'Hidden':{'Path': 'SendReceiptAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
 
                 { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
-				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}}"},
+				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}, 'Hidden':{'Path': 'HideDestination'}}"},
 				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
 				{ txtRequested, "{'Text':{'Path': 'RequestedTxt'}}"},
 				{ txtAptCode, "{'Text':{'Path': 'AptRingTxt'}}"},
@@ -97,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.Loaded+= (sender, e) => {
 				InvokeOnMainThread(()=>{
 					ReorderButtons();
+					ReorderLabels();
 				});
 			};
 
@@ -124,6 +127,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 				if (!item.Hidden) {
 					var test = item.Title(UIControlState.Normal);
 					item.Frame = new RectangleF(item.Frame.X, yPositionOfFirstButton + (deltaYBetweenButtons * i), item.Frame.Width, item.Frame.Height);
+					i++;
+				}
+			}
+		}
+
+		void ReorderLabels()
+		{
+			var yPositionOfFirstLabel = lblConfirmationNo.Frame.Y;
+			var deltaYBetweenLabels = lblRequested.Frame.Y - yPositionOfFirstLabel;
+
+			var labelList = new List<Tuple<UILabel,UILabel>> ();
+			labelList.Add (new Tuple<UILabel, UILabel>(lblConfirmationNo, txtConfirmationNo));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblRequested, txtRequested));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblOrigin, txtOrigin));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblAptRingCode, txtAptCode));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblDestination, txtDestination));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblPickupDate, txtPickupDate));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblStatus, txtStatus));
+			labelList.Add (new Tuple<UILabel, UILabel>(lblAuthorization, txtAthorization));
+
+			var i = 0;
+			foreach (var item in labelList) {
+				if (!item.Item1.Hidden) {
+					item.Item1.SetY(yPositionOfFirstLabel + (deltaYBetweenLabels * i));
+					item.Item2.SetY(yPositionOfFirstLabel + (deltaYBetweenLabels * i));
 					i++;
 				}
 			}

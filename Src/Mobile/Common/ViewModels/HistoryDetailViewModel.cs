@@ -203,6 +203,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public bool HideDestination
+		{
+			get
+			{
+				return Config.GetSetting("Client.HideDestination", false);
+			}
+		}
+
         public string DestinationTxt
         {
             get

@@ -891,9 +891,22 @@
   <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
     <value>Please contact {0} at {1} for further assistance.</value>
   </data>
+
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>The order cannot be created.</value>
+  </data>
+
+  <data name="AccountDisabled_NoCall" xml:space="preserve">
+    <value>Your account has been disabled.</value>
+  </data>
+
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
   </data>
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
+    <value>The specified Pickup address lies outside the regular service area.</value>
+  </data>
+
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
   </data>

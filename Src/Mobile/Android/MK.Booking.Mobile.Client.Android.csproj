@@ -539,9 +539,6 @@
     <AndroidResource Include="Resources\Drawable\target_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\backPickupDestination.png" />
     <AndroidResource Include="Resources\drawable-hdpi\bookLaterIcon.png" />
-    <AndroidResource Include="Resources\Drawable\backPickupDestination.png">
-      <DependentUpon>background.png</DependentUpon>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
@@ -629,6 +626,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
+    <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
