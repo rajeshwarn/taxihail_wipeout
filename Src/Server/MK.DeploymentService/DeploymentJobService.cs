@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Xml;
 using System.Xml.Linq;
 using CustomerPortal.Web.Entities;
 using DeploymentServiceTools;
-using Microsoft.Build.Exceptions;
 using Microsoft.Build.Framework;
-
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Web.Administration;
@@ -115,13 +111,17 @@ namespace MK.DeploymentService
 
             
             var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(_job));
-            if (!File.Exists(  packageFile ) )
+            if (File.Exists(packageFile))
             {
-                Log("Getting the binaries from server");
-                var client = new PackagesServiceClient();
-                client.GetPackage(GetZipFileName(_job), packageFile);
-                Log("Done getting the binaries from server");
+                Log("Delete existing local package");
+                File.Delete(packageFile);
             }
+
+            Log("Getting the binaries from server");
+            var client = new PackagesServiceClient();
+            client.GetPackage(GetZipFileName(_job), packageFile);
+            Log("Done getting the binaries from server");
+
             var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
@@ -302,12 +302,12 @@ namespace MK.DeploymentService
            
             var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
             Log("Calling DB tool with : " + exeArgs);
-            var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+            var deployDb = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
                                                    exeArgs, null, true);
 
             
 
-            using (var exeProcess = Process.Start(deployDB))
+            using (var exeProcess = Process.Start(deployDb))
             {
                 exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
                 var output = ProcessEx.GetOutput(exeProcess);
