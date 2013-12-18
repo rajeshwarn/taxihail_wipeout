@@ -31,13 +31,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IApplicationInfoService _applicationInfoService;
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
+		public event EventHandler LoginSucceeded; 
 
 #if SOCIAL_NETWORKS
 		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 		public IFacebookService FacebookService { get { return _facebookService; } }
 
-		public event EventHandler LoginSucceeded; 
 		public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
 			:this(accountService, applicationInfoService, pushService)
 		{
