@@ -29,10 +29,12 @@
                 android:layout_weight="0"
                 android:layout_gravity="bottom">
                 <apcurium.mk.booking.mobile.client.controls.TouchMap
+                    local:mapType="normal"
+                    local:uiCompass="false"
+                    local:uiZoomControls="false"
                     android:id="@+id/mapStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:apiKey="@string/GoogleMapKey"
                     android:enabled="false"
                     local:MvxBind="{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'Center':{'Path':'MapCenter'} }"
                     android:clickable="true" />

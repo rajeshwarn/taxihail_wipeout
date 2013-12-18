@@ -149,6 +149,9 @@
                             android:layout_height="fill_parent"
                             android:id="@+id/RelMapLayout">
                             <apcurium.mk.booking.mobile.client.controls.TouchMap
+                                local:mapType="normal"
+                                local:uiCompass="false"
+                                local:uiZoomControls="false"
                                 android:id="@+id/mapPickup"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
