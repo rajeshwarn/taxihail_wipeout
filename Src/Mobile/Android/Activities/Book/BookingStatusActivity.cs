@@ -10,7 +10,6 @@ using Android.Widget;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using TinyIoC;
 using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
