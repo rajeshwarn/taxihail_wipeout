@@ -60,7 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
-
+			// DO NOT REMOVE
+			// This line is the only reference to Mono.Android.GoogleMapsleft in the project
+			// Without it, the project won't compile (MvvmCross issue)
+			var geoPoint = new GeoPoint(0,0);
         }
 
 		public void SetMapReady()
@@ -209,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 							.Anchor(.5f, 1f)
 							.SetPosition(new LatLng(value.VehicleLatitude.Value, value.VehicleLongitude.Value))
 							.InvokeIcon(BitmapDescriptorFactory.FromBitmap(CreateTaxiBitmap(value.VehicleNumber)))
-							.Visible(false));
+							.Visible(true));
 					}
 					PostInvalidateDelayed(100);
 				});
@@ -226,7 +229,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _center = value;                
 				if(value!= null)
                 {
-					SetZoom(value.ToArray());                   
+					DeferWhenMapReady(() =>
+					{
+						SetZoom(value.ToArray());  
+					});                
                 }
             }
         }
@@ -235,7 +241,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		{
 			set
 			{
-				ShowAvailableVehicles (Clusterize(value.ToArray()));
+				DeferWhenMapReady(() =>
+				{
+						ShowAvailableVehicles(Clusterize((value ?? Enumerable.Empty<AvailableVehicle>()).ToArray()));
+				});
 			}
 		}
 
