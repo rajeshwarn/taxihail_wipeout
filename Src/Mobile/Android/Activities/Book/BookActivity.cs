@@ -54,10 +54,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			catch (GooglePlayServicesNotAvailableException e)
 			{
 				Logger.LogError(e);
-				ViewModel.GooglePlayServicesNotAvailable.Execute();
+                ViewModel.GooglePlayServicesNotAvailable.Execute(new Action(() => {
+                    StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=com.google.android.gms")));
+                }));
 			}
 
 		}
+
+
 
 
 

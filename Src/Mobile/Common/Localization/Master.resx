@@ -1424,9 +1424,9 @@
     <value>You will be charged {0}. Please confirm the amount. </value>
   </data>
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
-    <value>GooglePlayServicesNotAvailableTitle </value>
+    <value>Update required</value>
   </data>
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
-    <value>GooglePlayServicesNotAvailableMessage</value>
+    <value>You need to update Google Play Services in order to use this application.</value>
   </data>
 </root>

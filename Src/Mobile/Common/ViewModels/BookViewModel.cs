@@ -570,12 +570,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => 
+                return GetCommand<Action>(async callback => 
 				{
 					// Android specific
 					// Prevent tutorial from appearing above the message box
 					_canShowTutorial = false;
-					MessageService.ShowMessage(Resources.GetString("GooglePlayServicesNotAvailableTitle"), Resources.GetString("GooglePlayServicesNotAvailableMessage"));
+                    await MessageService.ShowMessage(Resources.GetString("GooglePlayServicesNotAvailableTitle"), Resources.GetString("GooglePlayServicesNotAvailableMessage"));
+                    callback.Invoke();
 				});
 			}
 		}

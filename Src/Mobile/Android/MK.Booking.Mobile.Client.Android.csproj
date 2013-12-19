@@ -19,6 +19,7 @@
     <DeployExternal>False</DeployExternal>
     <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <MandroidI18n />
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -67,9 +68,6 @@
     <Reference Include="Cirrious.MvvmCross.Android">
       <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Android.Maps">
-      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding.Android">
       <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
     </Reference>
@@ -108,11 +106,14 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
-    <Reference Include="GooglePlayServicesFroyoLib">
-      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\GooglePlayServicesFroyoLib.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
-      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="GooglePlayServicesLib">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -725,8 +726,8 @@
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="googleplayservicesfroyo">
-      <Version>12.0.0</Version>
+    <XamarinComponentReference Include="googleplayservicesgingerbread">
+      <Version>13.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
