@@ -99,26 +99,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override bool DispatchTouchEvent(MotionEvent e)
         {
-            if (e.Action == MotionEventActions.Down)
-            {
-               IsMapTouchDown = true;
-               CancelMoveMap();
-            }
-            
-            if (e.Action == MotionEventActions.Up)
-            {
-                IsMapTouchDown = false;
-                if (MapTouchUp != null)
-                {
-                    MapTouchUp(this, EventArgs.Empty);
-                }
-                ExecuteCommand();
-            }
-
-            if (e.Action == MotionEventActions.Move)
-            {
-                CancelMoveMap();
-            }
+			if (Map != null)
+			{
+				switch (e.Action)
+				{
+					case MotionEventActions.Down:
+						IsMapTouchDown = true;
+						CancelMoveMap();
+						break;
+					case MotionEventActions.Up:
+						IsMapTouchDown = false;
+						if (MapTouchUp != null)
+						{
+							MapTouchUp(this, EventArgs.Empty);
+						}
+						ExecuteCommand();
+						break;
+					case MotionEventActions.Move:
+						CancelMoveMap();
+						break;
+				}
+			}
 
             return base.DispatchTouchEvent(e);
         }

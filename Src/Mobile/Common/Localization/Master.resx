@@ -1417,4 +1417,10 @@
   <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
     <value>You will be charged {0}. Please confirm the amount. </value>
   </data>
+  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
+    <value>GooglePlayServicesNotAvailableTitle </value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
+    <value>GooglePlayServicesNotAvailableMessage</value>
+  </data>
 </root>

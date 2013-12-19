@@ -43,18 +43,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 		protected override void OnCreate(Bundle bundle)
 		{
+			base.OnCreate(bundle);
+			_touchMap.OnCreate(bundle);
+
 			try
 			{
 				MapsInitializer.Initialize(this.ApplicationContext);
+				_touchMap.SetMapReady();
 			}
 			catch (GooglePlayServicesNotAvailableException e)
 			{
 				Logger.LogError(e);
+				ViewModel.GooglePlayServicesNotAvailable.Execute();
 			}
-
-			base.OnCreate(bundle);
-			_touchMap.OnCreate(bundle);
-			_touchMap.SetMapReady();
 
 		}
 
@@ -119,7 +120,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnResume();
 
-            ViewModel.ShowTutorial.Execute();
+			if (ViewModel.ShowTutorial.CanExecute())
+			{
+				ViewModel.ShowTutorial.Execute();
+			};
 
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
             ViewModel.CenterMap(true);
