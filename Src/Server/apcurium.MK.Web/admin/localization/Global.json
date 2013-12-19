@@ -67,6 +67,7 @@
 	"Client.ShowPassengerName": "Show passenger name",
 	"Client.ShowPassengerNumber": "Show passenger number",
 	"Client.ShowPassengerPhone": "Show passenger phone",	
+	"Client.DisabledTutorialSlides": "Disabled tutorial slides (ex: 1,2)",
 	"DefaultBookingSettings.ChargeTypeId": "Charge type id",
 	"DefaultBookingSettings.NbPassenger": "Passengers number",
 	"DefaultBookingSettings.ProviderId": "Provider Id",

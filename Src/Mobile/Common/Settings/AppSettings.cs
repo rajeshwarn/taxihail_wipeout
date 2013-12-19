@@ -111,9 +111,5 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string FacebookAppId {
             get { return _data.FacebookAppId; }
         }
-
-		public string DisabledTutorialSlides {
-			get { return _data.DisabledTutorialSlides; }
-		}
     }
 }

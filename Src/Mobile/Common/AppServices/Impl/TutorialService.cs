@@ -5,6 +5,7 @@ using System.IO;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -47,8 +48,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     result = JsonSerializer.DeserializeFromString<TutorialContent> (serializedData);
                 }
             }
-            
-			var disabledSlidesString = TinyIoCContainer.Current.Resolve<IAppSettings>().DisabledTutorialSlides;
+
+            var disabledSlidesString = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.DisabledTutorialSlides");
 			if (!string.IsNullOrWhiteSpace(disabledSlidesString))
 			{
 				try

@@ -25,8 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         bool FacebookEnabled { get; }
         string FacebookAppId{ get; }
-
-		string DisabledTutorialSlides { get; }
 	}
 }
 
