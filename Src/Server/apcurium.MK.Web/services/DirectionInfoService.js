@@ -3,6 +3,17 @@
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
         getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
 
+            // Put in a better place
+            String.prototype.format = String.prototype.format = function() {
+                var s = this,
+                    i = arguments.length;
+
+                while (i--) {
+                    s = s.replace(new RegExp('\\{' + i + '\\}', 'gm'), arguments[i]);
+                }
+                return s;
+            };
+
             var preferedPrice = null, tempPrice = null;
 
             var coordinates = {
@@ -17,8 +28,8 @@
 
                 var directionInfoDefer = $.Deferred();
 
-                if (tarifMode != 'AppTarif') {
-                    $.get('api/ibsfare/', coordinates, function () { }, fmt).then(function (result) {
+                if (tarifMode != 'AppTarif') {                    
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng), function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                
                                 directionInfoDefer.resolve(resultGoogleBoth);
