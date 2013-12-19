@@ -88,7 +88,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="Mono.Android" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.Core.dll</HintPath>

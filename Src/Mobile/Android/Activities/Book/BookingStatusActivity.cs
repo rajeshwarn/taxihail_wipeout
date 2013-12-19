@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using Android.App;
 using Android.Content;
-using Android.GoogleMaps;
 using Android.OS;
 using Android.Views;
 using Android.Widget;

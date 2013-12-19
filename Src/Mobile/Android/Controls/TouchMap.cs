@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.Content;
-using Android.GoogleMaps;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
@@ -60,10 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
-			// DO NOT REMOVE
-			// This line is the only reference to Mono.Android.GoogleMapsleft in the project
-			// Without it, the project won't compile (MvvmCross issue)
-			var geoPoint = new GeoPoint(0,0);
         }
 
 		public void SetMapReady()

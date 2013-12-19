@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Android.App;
 using Android.Content;
-using Android.GoogleMaps;
 using Android.Locations;
 using Android.OS;
 using Android.Runtime;
