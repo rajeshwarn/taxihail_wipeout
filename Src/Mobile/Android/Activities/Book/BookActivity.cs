@@ -28,20 +28,45 @@ using System.Reactive;
 using Java.Lang;
 using Android.OS;
 using Android.Content.PM;
+using Android.Gms.Maps;
+using Android.Gms.Common;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true )]
-    public class BookActivity : MvxBindingMapActivityView<BookViewModel>
+    public class BookActivity : MvxBindingActivityView<BookViewModel>
     {
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
+		private TouchMap _touchMap;
+
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.OnCreate(bundle);
+			_touchMap.OnCreate(bundle);
+
+			try
+			{
+				MapsInitializer.Initialize(this.ApplicationContext);
+				_touchMap.SetMapReady();
+			}
+			catch (GooglePlayServicesNotAvailableException e)
+			{
+				Logger.LogError(e);
+				ViewModel.GooglePlayServicesNotAvailable.Execute();
+			}
+
+		}
+
+
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_Book);
-			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
+			SetContentView(Resource.Layout.View_Book);
+
+			_touchMap = FindViewById<TouchMap>(Resource.Id.mapPickup);
+			_touchMap.SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
@@ -95,7 +120,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnResume();
 
-            ViewModel.ShowTutorial.Execute();
+			if (ViewModel.ShowTutorial.CanExecute())
+			{
+				ViewModel.ShowTutorial.Execute();
+			};
 
 			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
             ViewModel.CenterMap(true);
@@ -103,8 +131,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.Invalidate();
 
-            FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
+			_touchMap.PostInvalidateDelayed(100);
+			_touchMap.OnResume();
         }
+
+		protected override void OnPause()
+		{
+			base.OnPause();
+
+			_touchMap.OnPause();
+		}
 
         protected override void OnStart ()
         {
@@ -132,7 +168,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.Unload();
                 ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
             }
+
+			_touchMap.OnDestroy();
         }
+
+		protected override void OnSaveInstanceState(Bundle outState)
+		{
+			base.OnSaveInstanceState(outState);
+			_touchMap.OnSaveInstanceState(outState);
+		}
+
+		public override void OnLowMemory()
+		{
+			base.OnLowMemory();
+			_touchMap.OnLowMemory();
+		}
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
         {
@@ -157,11 +207,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			};
 
             mainLayout.StartAnimation(animation);
-        }
-
-        protected override bool IsRouteDisplayed
-        {
-            get { return true; }
         }
 
         void PickDate_Click(object sender, EventArgs e)

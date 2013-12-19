@@ -15,6 +15,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using MK.Booking.Api.Client;
 using apcurium.MK.Common.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -203,6 +204,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return new AsyncCommand<T>(action);
         }
+
+		readonly IDictionary<string, IMvxCommand> _commands = new Dictionary<string, IMvxCommand>();
+		protected IMvxCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
+		{
+			return _commands.ContainsKey(memberName)
+				? _commands[memberName]
+					: (_commands[memberName] = new MvxRelayCommand(execute, canExecute));
+
+		}
     }
 
 }

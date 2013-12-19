@@ -407,31 +407,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private bool _canShowTutorial = true;
         public IMvxCommand ShowTutorial
         {
             get
             {
-                return new MvxRelayCommand(() =>
+				return GetCommand(async () =>
                 {
                     if ( !Config.GetSetting<bool>( "Client.TutorialEnabled" , true )  )
                     {
                         return;
                     }
 
-                    Task.Factory.SafeStartNew(() => 
-                    {
-                        Thread.Sleep(1000);
-                        InvokeOnMainThread(() =>
-                        {
+					await Task.Delay(1000);
 
-                            var tutorialWasDisplayed = AppCacheService.Get<string>("TutorialWasDisplayed");
-                            if (tutorialWasDisplayed.SoftEqual( AccountService.CurrentAccount.Email )) return;
+                    var tutorialWasDisplayed = AppCacheService.Get<string>("TutorialWasDisplayed");
+                    if (tutorialWasDisplayed.SoftEqual( AccountService.CurrentAccount.Email )) return;
 
-                            AppCacheService.Set("TutorialWasDisplayed", AccountService.CurrentAccount.Email);
-                            MessageService.ShowDialogActivity(typeof(TutorialViewModel));
-                        });
-                    });
-                });
+                    AppCacheService.Set("TutorialWasDisplayed", AccountService.CurrentAccount.Email);
+                    MessageService.ShowDialogActivity(typeof(TutorialViewModel));
+				},() => _canShowTutorial );
             }
         }
 
@@ -570,6 +565,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public IMvxCommand GooglePlayServicesNotAvailable
+		{
+			get
+			{
+				return GetCommand(() => 
+				{
+					// Android specific
+					// Prevent tutorial from appearing above the message box
+					_canShowTutorial = false;
+					MessageService.ShowMessage(Resources.GetString("GooglePlayServicesNotAvailableTitle"), Resources.GetString("GooglePlayServicesNotAvailableMessage"));
+				});
+			}
+		}
 
         public void ProcessOrder()
         {

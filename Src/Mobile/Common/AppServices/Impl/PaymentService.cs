@@ -1,3 +1,6 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+#endif
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -5,7 +8,6 @@ using System.Threading.Tasks;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
-using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
 using MK.Booking.Api.Client;
 using ServiceStack.Common;

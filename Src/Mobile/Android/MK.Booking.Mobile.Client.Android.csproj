@@ -33,13 +33,15 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="" />
       </CustomCommands>
     </CustomCommands>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -47,7 +49,6 @@
     <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
@@ -60,6 +61,7 @@
       </CustomCommands>
     </CustomCommands>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Cirrious.MvvmCross.Android">
@@ -88,9 +90,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Mono.Facebook">
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="Mono.Android" />
     <Reference Include="System.Reactive.Core">
@@ -109,15 +108,17 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
-    <Reference Include="SocialNetworks.Services.MonoDroid">
-      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
+    <Reference Include="GooglePlayServicesFroyoLib">
+      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\GooglePlayServicesFroyoLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\Components\googleplayservicesfroyo-12.0.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
-    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
-    <Compile Include="Helpers\CoordinatesHelper.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\Confirmation.cs" />
@@ -164,8 +164,6 @@
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
-    <Compile Include="MapUtitilties\PushPinOverlay.cs" />
-    <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
@@ -207,7 +205,6 @@
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="ListViewCell\BooleanCell.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="MapUtitilties\MapService.cs" />
     <Compile Include="Controls\ReclickableTabHost.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
@@ -372,6 +369,7 @@
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
+    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -725,5 +723,11 @@
   </ProjectExtensions>
   <ItemGroup>
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="googleplayservicesfroyo">
+      <Version>12.0.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>
