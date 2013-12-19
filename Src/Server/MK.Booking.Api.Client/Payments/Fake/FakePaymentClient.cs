@@ -52,6 +52,15 @@ namespace apcurium.MK.Booking.Api.Client
                 };
         }
 
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        {
+            return new CommitPreauthorizedPaymentResponse()
+            {
+                IsSuccessfull = true,
+                Message = "Success"
+            };
+        }
+
         public void ResendConfirmationToDriver(Guid orderId)
         {
             //Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
