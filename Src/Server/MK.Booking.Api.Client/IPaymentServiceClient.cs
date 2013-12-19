@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Api.Client
         DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken);
         PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId);
         CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId);
+        CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId);
 	}
 }
 

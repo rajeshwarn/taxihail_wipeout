@@ -34,8 +34,8 @@ namespace apcurium.MK.Booking.Api.Helpers
                                   FirstName = "FakeName",
                                   LastName = "FakeName",
                                   MobilePhone = "FakePhone",
-                                  VehicleLatitude = 45,
-                                  VehicleLongitude = -73
+                                  VehicleLatitude = 45.5134,
+                                  VehicleLongitude = -73.5530
                               };
             switch (orderStatus.IBSStatusId)
             {

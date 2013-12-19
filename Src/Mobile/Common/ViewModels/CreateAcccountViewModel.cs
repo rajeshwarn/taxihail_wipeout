@@ -55,7 +55,6 @@ namespace apcurium.MK.Booking.Mobile
 			{
                 return GetCommand(() =>
                 {
-					
 					if (!IsEmail(Data.Email))
 					{
 						MessageService.ShowMessage(Resources.GetString("ResetPasswordInvalidDataTitle"), Resources.GetString("ResetPasswordInvalidDataMessage"));
@@ -143,11 +142,7 @@ namespace apcurium.MK.Booking.Mobile
             if (approved && CreateAccount.CanExecute())
             {
                 CreateAccount.Execute();
-            }
-            else
-            {
-                RequestClose( this );
-            }
+            }            
         }
 	}
 }

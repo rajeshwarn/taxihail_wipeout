@@ -84,13 +84,20 @@ namespace apcurium.MK.Booking.Api.Services
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
             request.Settings.Passengers = request.Settings.Passengers <= 0 ? 1 : request.Settings.Passengers;
 
+            var needATarif = bool.Parse(_configManager.GetSetting("Direction.NeedAValidTarif"));
+
+            if (needATarif && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
+            {
+                throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
+            }
+
             var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
                 string code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value).ToString();
-                throw new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs.ToString() + code);
+                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs.ToString() + code);
             }
 
             var command = Mapper.Map<Commands.CreateOrder>(request);

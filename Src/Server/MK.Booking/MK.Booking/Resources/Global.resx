@@ -121,7 +121,7 @@
     <value>ETA: {0}</value>
   </data>
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
-    <value>Cab #{0} is assigned to you</value>
+    <value>Cab {0} is assigned to you</value>
   </data>
   <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
     <value>Completed (Total cost : {0})</value>

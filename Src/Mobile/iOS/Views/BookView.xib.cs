@@ -29,6 +29,7 @@ using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -111,9 +112,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection'}}"},                
-                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}}"},       
+                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}, 'Hidden': {'Path': 'HideDestination'}}"},       
                 { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
-                { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
+                { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'}, 'Hidden': {'Path': 'HideDestination'}}"},             
                 { mapView, @"{
 'Pickup':{'Path':'Pickup.Model'},
 'Dropoff':{'Path':'Dropoff.Model'},
@@ -125,9 +126,21 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}, 'Hidden':{'Path':'ShowEstimate', 'Converter':'BoolInverter'}}" },              
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
                 { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
-                { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookNow'}}" }                  
+                { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookNow'}}" },
+                { _bottomAction.BookLaterButton , "{'Hidden': {'Path': 'DisableFutureBooking'}}" },
+
+                { backBtn , "{'TouchUpInside': {'Path': 'ClosePanelCommand'},'Hidden': {'Path': 'Panel.MenuIsOpen', 'Converter': 'BoolInverter'}}" }        
             });
 
+            if (ViewModel.HideDestination)
+            {
+                var heightToCut = 76f;
+
+                headerBackgroundView.IncrementHeight(-heightToCut);
+                mapView.SetY(headerBackgroundView.Frame.Bottom);
+                mapView.IncrementHeight(heightToCut);
+            }
+             
             this.View.ApplyAppFont ();
             ViewModel.Load();
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
@@ -21,31 +20,14 @@ namespace apcurium.MK.Common.Configuration.Impl
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             modelBuilder.ComplexType<PayPalServerSettings>();
-            modelBuilder.Entity<ServerPaymentSettings>()
-                        .Map(m =>
-                                 {
-                                     m.Properties(x => new
-                                                           {
-                                                               x.PayPalServerSettings
-                                                           });
-                                     m.ToTable("PayPalServerSettings", SchemaName);
-                                 })
-                        .Map(m =>
-                                 {
-                                     m.Properties(x => new
-                                     {
-                                         x.BraintreeServerSettings,
-                                     });
-                                     m.ToTable("ServerPaymentSettings", SchemaName);
-                                 });
-               
+            modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
             
             base.OnModelCreating(modelBuilder);
         }
 
         public T Find<T>(Guid id) where T : class
         {
-            return this.Set<T>().Find(id);
+            return Set<T>().Find(id);
         }
 
         public IQueryable<T> Query<T>() where T : class
@@ -55,12 +37,12 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public void Save<T>(T entity) where T : class
         {
-            var entry = this.Entry(entity);
+            var entry = Entry(entity);
 
-            if (entry.State == System.Data.Entity.EntityState.Detached)
-                this.Set<T>().Add(entity);
+            if (entry.State == EntityState.Detached)
+                Set<T>().Add(entity);
 
-            this.SaveChanges();
+            SaveChanges();
         }
     }
 }

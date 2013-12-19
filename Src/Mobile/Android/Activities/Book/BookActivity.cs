@@ -47,6 +47,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
 
+			var bigButton = FindViewById<View>(Resource.Id.BigButtonTransparent);
+			bigButton.Click -= MainSettingsButtonOnClick;
+			bigButton.Click += MainSettingsButtonOnClick;
+
             var headerLayoutMenu = FindViewById<HeaderedLayout>(Resource.Id.HeaderLayoutMenu);
             var titleText = headerLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
             titleText.Text = GetString(Resource.String.View_BookSettingMenu);

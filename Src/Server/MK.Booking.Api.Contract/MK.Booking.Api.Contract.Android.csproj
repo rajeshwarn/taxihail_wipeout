@@ -73,10 +73,12 @@
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizePaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
+    <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />

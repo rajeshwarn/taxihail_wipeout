@@ -23,7 +23,6 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchSdkVersion>6.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
@@ -91,7 +90,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer: Daniel Boissonneault (ZRU68U8SWS)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -111,6 +110,7 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
     <DebugType>none</DebugType>
@@ -796,5 +796,7 @@
     <BundleResource Include="Assets\CreditCard\paypal%402x.png" />
     <BundleResource Include="Assets\pin_cluster%402x.png" />
     <BundleResource Include="Assets\pin_cluster.png" />
+    <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
+    <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
   </ItemGroup>
 </Project>

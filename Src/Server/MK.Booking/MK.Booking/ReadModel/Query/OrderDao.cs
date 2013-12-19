@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Common.Entity;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -56,26 +57,39 @@ namespace apcurium.MK.Booking.ReadModel.Query
                                   on order.Id equals status.OrderId into statusOrder
                                   from status in statusOrder.DefaultIfEmpty()
 
+                                  join rating in context.Set<RatingScoreDetails>()
+                                  on order.Id equals rating.OrderId into ratingOrder
+                                  from rating in ratingOrder.DefaultIfEmpty()
 
-                                  select new { order, account, payment, status };
+                                  select new { order, account, payment, status, rating };
+                
+                OrderDetailWithAccount details = null;
 
                 foreach (var joinedLine in joinedLines)
                 {
-                    var details = new OrderDetailWithAccount();
-                    AutoMapper.Mapper.Map(joinedLine.account, details);
-                    AutoMapper.Mapper.Map(joinedLine.order, details);
-                    if (joinedLine.payment != null)
+                    if (details == null || details.IBSOrderId != joinedLine.order.IBSOrderId)
                     {
-                        AutoMapper.Mapper.Map(joinedLine.payment, details);
+                        if (details != null)
+                            list.Add(details);
+                        details = new OrderDetailWithAccount();
+                        AutoMapper.Mapper.Map(joinedLine.account, details);
+                        AutoMapper.Mapper.Map(joinedLine.order, details);
+                        if (joinedLine.payment != null)
+                        {
+                            AutoMapper.Mapper.Map(joinedLine.payment, details);
+                        }
+
+                        if (joinedLine.status != null)
+                        {
+                            AutoMapper.Mapper.Map(joinedLine.status, details);
+                        }
                     }
 
-                    if (joinedLine.status != null)
-                    {
-                        AutoMapper.Mapper.Map(joinedLine.status, details);
-                    }
+                    if (joinedLine.rating != null)
+                        details.Rating[joinedLine.rating.Name] = joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
 
-                    list.Add(details);
                 }
+                list.Add(details);
             }
             return list;
         }

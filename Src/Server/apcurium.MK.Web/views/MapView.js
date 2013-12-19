@@ -5,8 +5,24 @@
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
             this.cityZoomLevel = 12;
+            var self = this;                      
+                this.interval = window.setInterval(function () {                    
+                    self.refresh();
+            }, 5000);
+
         },
         
+        refresh: function () {
+            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position });            
+            var self = this;
+            this.availableVehicles.fetch({
+                success: function (response) {
+                    self.availableVehicles = response;
+                    self.updateAvailableVehiclesPosition();                    
+                }
+            });                 
+        },
+
         setModel: function(model, centerMapOnAddressChange) {
             if(this.model) {
                 this.model.off(null, null, this);
@@ -44,8 +60,10 @@
                     if(!isAssigned && model.get('vehicleLatitude') && model.get('vehicleLongitude') )
                     {
                         // Center the map on the taxi the first time we have coordinates
+                        this._bounds = new google.maps.LatLngBounds();
                         isAssigned = true;
                         this.centerMap(new google.maps.LatLng(model.get('vehicleLatitude'), model.get('vehicleLongitude')));
+                        self.centerMapAroundVehicleAndPickup();
                     }
                 }, self);
             }(this)));
@@ -89,9 +107,14 @@
             label.bindTo('position', this._vehicleMarker, 'position');
             label.bindTo('text', this._vehicleMarker, 'text');
             label.bindTo('visible', this._vehicleMarker, 'visible');
+            
+            this._availableVehiclePins = {};
+
+            this._bounds = new google.maps.LatLngBounds();
 
             this._pickupPin = new google.maps.Marker({
                 position: this._map.getCenter(),
+                zIndex: 99999,
                 map: this._map,
                 icon: 'assets/img/pin_green.png',
                 visible: false
@@ -110,13 +133,20 @@
                 visible: false
             });
 
-            var onmapchanged = function() {
-                var $container = $(target.getMap().getDiv()),
-                    x = $container.width()/2 ,
-                    y = $container.height() * 3 / 4,
+
+            // rename, remove under
+            var $container = $(target.getMap().getDiv());
+
+            this._mapSize = new google.maps.Point($container.width(), $container.height());
+
+            this._mapSizeWithPadding = new google.maps.Point($container.width() * 3 / 4, $container.height() * 2 / 3);
+
+            var onmapchanged = function () {
+                var $_container = $(target.getMap().getDiv()),
+                    x = $_container.width() / 2,
+                    y = $_container.height() * 3 / 4,
                     projection = target.getProjection(),
                     position = projection.fromContainerPixelToLatLng(new google.maps.Point(x, y));
-
                 target.set('position', position);
             };
 
@@ -140,6 +170,7 @@
         centerMap: function (location) {
             
             var projection = this._target.getProjection();
+            
             if (projection) {
                 //map ready center now
                 this.centerFromProjection(projection, location);
@@ -163,15 +194,111 @@
 
         updateVehiclePosition: function(orderStatus) {
             var hasVehicle = orderStatus && orderStatus.hasVehicle();
+            
             if (!hasVehicle) {
                 this._vehicleMarker.setVisible(false);
             } else {
                 this._vehicleMarker.setPosition(new google.maps.LatLng(orderStatus.get('vehicleLatitude'), orderStatus.get('vehicleLongitude')));
                 this._vehicleMarker.setVisible(true);
                 this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
+                this.centerMapAroundVehicleAndPickup();                
             }
         },
 
+        centerMapAroundVehicleAndPickup: function()
+        {
+            var p1 = this._vehicleMarker.position;
+            var p2 = this._pickupPin.position;
+            
+            this._bounds = new google.maps.LatLngBounds();
+            this._bounds.extend(this._pickupPin.position);
+            this._bounds.extend(this._vehicleMarker.position);                
+            this._map.fitBounds(this._bounds);
+            var zoom = this.readjustZoomAfterFitBounds(this._bounds, { height: this._mapSizeWithPadding.y, width: this._mapSizeWithPadding.x });
+            this._map.setZoom(zoom);
+
+            var projection = this._target.getProjection();
+
+            var point1 = projection.fromLatLngToContainerPixel(this._pickupPin.position);
+            var point2 = projection.fromLatLngToContainerPixel(this._vehicleMarker.position);
+
+            var topLeft = new google.maps.Point(this._mapSize.x / 3, 0);
+            var bottomRight = new google.maps.Point(this._mapSize.x / 3 * 2, this._mapSize.y / 2.5);
+
+            function inRect(p1, r1, r2) {
+                if (p1.x > r1.x && p1.x < r2.x && p1.y > r1.y && p1.y < r2.y)
+                {                    
+                    return true;
+                } else { return false; }
+            }
+            
+            console.log(this._mapSize.y * (5 / 6));
+
+            if (inRect(point1, topLeft, bottomRight))
+            {
+                if (point2.y < this._mapSize.y * (5 / 6))
+                {
+                    this._map.panBy(0, -(bottomRight.y - point1.y)); // -200 on y
+                }                
+            }
+
+            if (inRect(point2, topLeft, bottomRight)) {
+
+                if (point1.y < this._mapSize.y * (5 / 6)) {
+                    
+                    this._map.panBy(0, -(bottomRight.y - point2.y)); // -200 on y
+                }                
+            }
+        },
+
+        testic: function()
+        {
+
+        },
+
+        updateAvailableVehiclesPosition: function () {
+
+            // TODO: Used underscore lib to proceed in MapView, should use a view inside AvailableVehicleCollection if it's possible to avoid this dynamic/not managed marker approach (new marker etc)
+
+            // Get vehicle backbone models as simple objects for underscore query purposes
+            var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });
+
+            // Get all existing available vehicle pin ID to manage them
+            var _pins = _.map(this._availableVehiclePins, function (e) { return (e.metadata) });
+
+            var self = this;
+
+            _.each(_vehicles, function (_vehicle) {
+                if (self._availableVehiclePins.hasOwnProperty(_vehicle.vehicleNumber)==false) {
+
+                    // Add a new marker on the map
+                    self._availableVehiclePins[_vehicle.vehicleNumber] = new google.maps.Marker({
+                        position: new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude),
+                        map: self._map,
+                        icon: 'assets/img/nearby_cab.png',
+                        metadata: _vehicle.vehicleNumber
+                    });
+                    self.updatePickup();
+                } else {
+
+                    // Refresh existing marker on the map
+                    var _car = self._availableVehiclePins[_vehicle.vehicleNumber];
+
+                    // Verify that vehicle position changed to avoid flicker, or check if vehicle was previously unavailable
+                    if (_vehicle.longitude.toFixed(4) != _car.position.lng().toFixed(4) || _vehicle.latitude.toFixed(4) != _car.position.lat().toFixed(4) || (_car.map != self._map)) {
+                        _car.position = new google.maps.LatLng(_vehicle.latitude, _vehicle.longitude);
+                        _car.setMap(self._map);
+                        self.updatePickup();
+                    }                    
+                }
+            });
+            
+            // Remove unused markers on the map
+            _.each(_.difference(_pins, _.map(_vehicles, function (e) { return (e.vehicleNumber) })), function (_removedVehicle) {
+                self._availableVehiclePins[_removedVehicle].setMap(null);
+            });
+        },
+        
         updatePickup: function() {
             if(this._pickupPin) {
                 this._pickupPin.setVisible(this.model.isValidAddress('pickupAddress'));
@@ -214,6 +341,33 @@
                 TaxiHail.geocoder.geocode(position.lat(), position.lng())
                     .done(this.geolocdone);
             }
+        },
+        readjustZoomAfterFitBounds: function (bounds, mapDim) {
+
+            var WORLD_DIM = { height: 256, width: 256 };
+            var ZOOM_MAX = 21;
+
+            function latRad(lat) {
+                var sin = Math.sin(lat * Math.PI / 180);
+                var radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+                return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+            }
+
+            function zoom(mapPx, worldPx, fraction) {
+                return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+            }
+                
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+
+            var latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+            var lngDiff = ne.lng() - sw.lng();
+            var lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+            var latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+            var lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+            return Math.min(latZoom, lngZoom, ZOOM_MAX);
         }
     });
 

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.IO;
 using System.Threading;
+using apcurium.MK.Booking.ConfigTool.ServiceClient;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
@@ -10,9 +11,14 @@ namespace apcurium.MK.Booking.ConfigTool
         [STAThread]
         static int Main(string[] args)
         {
+
 			Console.WriteLine("Starting");
             try
             {
+
+                var c = new CompanyServiceClient();
+                var companies =  c.GetCompanies();
+
 
 				var fullPath = Path.GetFullPath(PathConverter.Convert(ToolSettings.Default.RootDirectory));
                 var directories = Directory.GetDirectories(fullPath);
@@ -21,28 +27,26 @@ namespace apcurium.MK.Booking.ConfigTool
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Cannot find the config and src folder in : " + fullPath + Environment.NewLine +
-                                      "Press any key to exit...");
-                    //Console.ReadKey();
+                                      "Press any key to exit...");                    
                     return 1;
                 }
 
-                var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");
-                var configDirectories = Directory.GetDirectories(configRootFolder).Where(name => !Path.GetFileName(name).ToLower().Equals("common"));
-                var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
+                var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");                                
+                var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");                
                 var common = Directory.GetDirectories(configRootFolder).Single(name => Path.GetFileName(name).ToLower().Equals("common"));
+                
+				var config = companies.Select(company => new AppConfig( company.CompanyKey ,company, src, Path.Combine(configRootFolder, company.CompanyKey ) , common)).ToArray();
 
-                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src, common)).ToArray();
-
-                if (args.Length > 0)
+				if (args.Length >= 2)
                 {
                     var configSelected = config.FirstOrDefault(x => x.Name == args[0]);
+					var serviceUrl = args[1];
                     if(configSelected != null)
                     {
-                        configSelected.Apply();
+						configSelected.Apply(serviceUrl);
                     }else
                     {
-                        Console.WriteLine("Invalid config selected. Press any key to exit...");
-                        //Console.ReadKey();
+                        Console.WriteLine("Invalid config selected. Press any key to exit...");                        
                         return 1;
                     }
                 }
@@ -53,21 +57,23 @@ namespace apcurium.MK.Booking.ConfigTool
 
                     for (int i = 0; i < config.Count(); i++)
                     {
-                        Console.WriteLine(i.ToString() + " - " + config.ElementAt(i).Name);
+						Console.WriteLine(i.ToString() + " - " + config.ElementAt(i).Name + " - " + config.ElementAt(i).Company.CompanyName );
                     }
                     Console.WriteLine("");
                     Console.WriteLine("Enter the config number:");
                     var selectedText = Console.ReadLine();
+                    int selected = int.Parse(selectedText);
 
-                    int selected;
+					Console.WriteLine("Enter the server url:");
+					var url = Console.ReadLine();
 
-                    if (int.TryParse(selectedText, out selected) && selected >= 0 && selected < config.Count())
+					if (selected > 0 && !string.IsNullOrWhiteSpace(url))
                     {
-                        config.ElementAt(selected).Apply();
+						config.ElementAt(selected).Apply(url);
                     }
                     else
                     {
-                        Console.WriteLine("Invalid config selected. Press any key to exit...");
+                        Console.WriteLine("Invalid config selected or bad service url. Press any key to exit...");
                         //Console.ReadKey();
                         return 1;
                     }

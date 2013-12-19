@@ -42,23 +42,11 @@ namespace DatabaseInitializer
                 var connectionString = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName));
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
-                //Init or Update
-                bool isUpdate;
-                if (args.Length > 1)
-                {
-                    isUpdate = args[1].ToUpperInvariant() == "U";
-                }
-                else
-                {
-                    Console.WriteLine("[C]reate (drop existing) or [U]pdate database ?");
-                    isUpdate = Console.ReadLine().ToUpperInvariant() == "U";
-                }
-
                 //SQL Instance name
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-                if (args.Length > 2)
+                if (args.Length > 1)
                 {
-                    sqlInstanceName = args[2];
+                    sqlInstanceName = args[1];
                 }
                 else
                 {
@@ -79,15 +67,17 @@ namespace DatabaseInitializer
                 
                 IDictionary<string, string> settingsInDb = null;
 
+                var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
-
                     oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
                 creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
                 creatorDb.CreateSchemas(connectionString);
+
+                Console.WriteLine("Add user for IIS...");
 
                 ////add user for IIS IIS APPPOOL\MyCompany
                 if (companyName != "MKWebDev")
@@ -127,6 +117,8 @@ namespace DatabaseInitializer
                 var appSettings = new Dictionary<string, string>();
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
+
+                Console.WriteLine("Loading settings...");
                 if (isUpdate)
                 {
                     settingsInDb.ForEach(setting =>
@@ -154,13 +146,13 @@ namespace DatabaseInitializer
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
                 
-                
 
 
 
 
                 if (isUpdate)
                 {
+                    Console.WriteLine("Playing events...");
                     //migrate events
                     var migrators = container.ResolveAll<IEventsMigrator>();
                     foreach (var eventsMigrator in migrators)
@@ -180,7 +172,27 @@ namespace DatabaseInitializer
                     }
 
                     CreateDefaultRules(connectionString, configurationManager, commandBus);
+                    Console.WriteLine("Done playing events...");
 
+                    var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
+                    var admin = accounts.GetAll().FirstOrDefault(x => x.Email == "taxihail@apcurium.com");
+
+                    if (admin != null)
+                    {
+                        commandBus.Send(new AddRoleToUserAccount
+                        {
+                            AccountId = admin.Id,
+                            RoleName = RoleName.SuperAdmin,
+                        });
+
+
+                        commandBus.Send(new ConfirmAccount
+                        {
+                            AccountId = admin.Id,
+                            ConfimationToken = admin.ConfirmationToken
+                        });
+
+                    }
                 }
                 else
                 {
@@ -189,6 +201,7 @@ namespace DatabaseInitializer
                     CreateDefaultTariff(configurationManager, commandBus);
                     CreateDefaultRules(connectionString, configurationManager, commandBus);
 
+                    Console.WriteLine("Calling ibs...");
                     //Get default settings from IBS
                     var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
                     var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
@@ -214,6 +227,7 @@ namespace DatabaseInitializer
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     appSettings.Clear();
 
+                    Console.WriteLine("Register normal account...");
                     //Register normal account
                     var registerAccountCommand = new RegisterAccount
                                                       {
@@ -248,7 +262,7 @@ namespace DatabaseInitializer
 
 
                     //Register admin account
-
+                    Console.WriteLine("Register admin account...");
                     var registerAdminAccountCommand = new RegisterAccount
                     {
                         Id = Guid.NewGuid(),

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new OrderGenerator(() => new BookingDbContext(dbName));
+            this.sut = new OrderGenerator(() => new BookingDbContext(dbName), new Logger());
         }
     }
 

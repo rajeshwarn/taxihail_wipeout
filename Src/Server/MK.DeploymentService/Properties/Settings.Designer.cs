@@ -43,19 +43,19 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http:\\\\customer.taxihail.com\\api\\")]
-        public string CustomerPortalUrl {
+        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
+        public string ServerName {
             get {
-                return ((string)(this["CustomerPortalUrl"]));
+                return ((string)(this["ServerName"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
-        public string ServerName {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://customer.taxihail.com/api/")]
+        public string CustomerPortalUrl {
             get {
-                return ((string)(this["ServerName"]));
+                return ((string)(this["CustomerPortalUrl"]));
             }
         }
     }

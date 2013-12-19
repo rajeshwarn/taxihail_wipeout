@@ -13,12 +13,26 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using System.Text.RegularExpressions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>, IMvxServiceConsumer<IAccountService>
     {
         IAccountService _accountService;
+
+#region Const and ReadOnly
+        private const string Visa = "Visa";
+        private const string MasterCard = "MasterCard";
+        private const string Amex = "Amex";
+		private const string Credit_Card_Generic = "Credit Card Generic";
+        private const string VisaElectron = "Visa Electron";
+        private readonly string[] VisaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
+        private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
+        private const string MasterPattern = "^5[1-5][0-9]{14}$";
+        private const string AmexPattern = "^3[47][0-9]{13}$";
+#endregion
+
 
         public class DummyVisa
         {
@@ -41,11 +55,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CreditCardCategory = 0;
 
             CreditCardCompanies = new List<ListItem>();
-            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0 });
-            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
-            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
-            CreditCardCompanies.Add ( new ListItem { Display = "Visa Electron", Id = 3 });
-            CreditCardType = 0;
+            CreditCardCompanies.Add (new ListItem { Display = Visa, Id = 0 });
+            CreditCardCompanies.Add ( new ListItem { Display = MasterCard, Id = 1 });
+            CreditCardCompanies.Add ( new ListItem { Display = Amex, Id = 2 });
+            CreditCardCompanies.Add ( new ListItem { Display = VisaElectron, Id = 3 });
+			CreditCardCompanies.Add ( new ListItem { Display = Credit_Card_Generic, Id = 4 });
+
+			CreditCardType = (int)CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
 
             ExpirationYears = new List<ListItem>();
             for (int i = 0; i <= 15; i++)
@@ -70,10 +86,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
 			if(ConfigurationManager.GetPaymentSettings().PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.Braintree)
 			{
-				Data.CardNumber = DummyVisa.BraintreeNumber;
+				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
 			else{
-				Data.CardNumber = DummyVisa.CmtNumber;
+				CreditCardNumber = DummyVisa.CmtNumber;
 			}
 			Data.CCV = DummyVisa.AvcCvvCvv2+"";
 
@@ -83,7 +99,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif            
         }
 
+#region Properties
         public CreditCardInfos Data { get; set; }
+
+
+        public string CreditCardNumber
+        {
+            get{ return Data.CardNumber;}
+            set
+            {
+                Data.CardNumber = value;
+
+                Regex visaRgx = new Regex(VisaPattern, RegexOptions.IgnoreCase);
+                MatchCollection matches = visaRgx.Matches(Data.CardNumber);
+
+                if (matches.Count > 0)
+                {
+                    if (VisaElectronFirstNumbers.Any(x => Data.CardNumber.StartsWith(x)) && Data.CardNumber.Count() == 16)
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == VisaElectron).Id;
+                    else
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == Visa).Id;
+                }
+                else
+                {
+
+                    Regex masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
+                    matches = masterRgx.Matches(Data.CardNumber);
+                    if (matches.Count > 0)
+                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
+                    else
+                    {
+                        Regex amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
+                        matches = amexRgx.Matches(Data.CardNumber);
+                        if (matches.Count > 0)
+                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Amex).Id;
+                        else
+							this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
+                    }
+                }
+                FirePropertyChanged("CreditCardNumber");
+            }
+        }
 
 		int _creditCardCategory;
 		public int CreditCardCategory {
@@ -107,9 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         int _creditCardType;
         public int CreditCardType {
-            get {
-                return _creditCardType;
-            }
+            get {return _creditCardType;}
             set {
                 _creditCardType = value;
                 FirePropertyChanged("CreditCardType");
@@ -121,14 +175,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string CreditCardTypeName { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                return type == null ? null : type.Display;
+				return type == null ? null : type.Display;
             }
         }
 
         public string CreditCardImagePath { 
             get {
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
-                return type == null ? null : type.Image;
+				return type == null ? null : type.Image;
             }
         }
 
@@ -188,6 +242,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
 
+#endregion
+
+#region Private Methods
         private void AddCrediCard ()
         {
 			Data.FriendlyName = CreditCardCategoryName;
@@ -260,6 +317,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             return (sum % 10 == 0);
         }
+
+#endregion
 
     }
 }

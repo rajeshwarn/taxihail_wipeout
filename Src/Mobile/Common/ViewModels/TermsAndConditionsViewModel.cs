@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                 return GetCommand(() => { 
                     ReturnResult(false);
-                    Console.WriteLine("Rejected T&C");
 				});
 			}
 		}
@@ -43,7 +42,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return GetCommand (() =>
 				{
                     ReturnResult(true);
-                    Console.WriteLine("Accept T&C");
 				});
 
 			}			

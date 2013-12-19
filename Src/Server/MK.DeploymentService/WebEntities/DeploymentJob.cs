@@ -19,7 +19,6 @@ namespace CustomerPortal.Web.Entities
         public bool ServerSide { get; set; }
         [Display(Name = "Database")]
         public bool Database { get; set; }
-        public bool Create { get; set; }
         public bool ClientSide { get; set; }
         public bool Android { get; set; }
         public bool CallBox { get; set; }
@@ -27,11 +26,16 @@ namespace CustomerPortal.Web.Entities
         public bool IosAppStore { get; set; }
         public DateTime Date { get; set; }
         public string Details { get; set; }
+
+		public string ServerUrl {
+			get;
+			set;
+		}
+
         public DeploymentJob()
         {
             ServerSide = true;
             Database = false;
-            Create = false;
             ClientSide = false;
             Android = false;
             CallBox = false;

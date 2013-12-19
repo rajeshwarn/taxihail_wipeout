@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.ReadModel
             PaymentInformation = new PaymentInformationDetails();
             PickupAddress = new Address();
             DropOffAddress = new Address();
+            Rating = new Dictionary<string, string>();
         }
 
         public Guid Id { get; set; }
@@ -94,6 +96,6 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
 
-
+        public Dictionary<string, string> Rating {get;set;}
     }
 }

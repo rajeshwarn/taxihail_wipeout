@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Data.SqlTypes;
+using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -22,10 +23,12 @@ namespace apcurium.MK.Booking.EventHandlers
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
+        private ILogger _logger;
 
-        public OrderGenerator(Func<BookingDbContext> contextFactory)
+        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
+            _logger = logger;
         }
 
         public void Handle(OrderCreated @event)
@@ -49,16 +52,24 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
 
                 // Create an empty OrderStatusDetail row
-                context.Save(new OrderStatusDetail
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
                 {
-                    OrderId = @event.SourceId,
-                    AccountId = @event.AccountId,
-                    IBSOrderId = @event.IBSOrderId,
-                    Status = OrderStatus.Created,
-                    IBSStatusDescription = "Processing your order",
-                    PickupDate = @event.PickupDate,
-                    Name = @event.Settings != null ? @event.Settings.Name : null
-                });
+                    _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderStatusDetail
+                    {
+                        OrderId = @event.SourceId,
+                        AccountId = @event.AccountId,
+                        IBSOrderId = @event.IBSOrderId,
+                        Status = OrderStatus.Created,
+                        IBSStatusDescription = "Processing your order",
+                        PickupDate = @event.PickupDate,
+                        Name = @event.Settings != null ? @event.Settings.Name : null
+                    });
+                }
             }
 
         }
@@ -180,8 +191,15 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int)@event.Status.Status;
-                context.Save(order);
+                if (order != null)
+                {
+                    order.Status = (int) @event.Status.Status;
+                    context.Save(order);
+                }
+                else
+                {
+                    _logger.LogMessage("Order Status without existing Order : " + @event.SourceId);
+                }
 
                 context.SaveChanges();
             }

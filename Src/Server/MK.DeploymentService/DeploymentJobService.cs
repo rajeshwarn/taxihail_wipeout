@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Xml;
 using System.Xml.Linq;
 using CustomerPortal.Web.Entities;
 using DeploymentServiceTools;
-using Microsoft.Build.Exceptions;
 using Microsoft.Build.Framework;
-
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using Microsoft.Web.Administration;
@@ -61,15 +57,15 @@ namespace MK.DeploymentService
             }
         }
 
-        private DeploymentJob job;
+        private DeploymentJob _job;
         //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
-            job = new DeploymentJobServiceClient().GetNext();
+            var job = new DeploymentJobServiceClient().GetNext();
 
             if (job == null) return;
 
-           
+            _job = job;
             try
             {
 
@@ -80,17 +76,17 @@ namespace MK.DeploymentService
                 Log("Source Folder = " + sourceDirectory);
 
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
-                if (job.Server.Role == EnvironmentRole.BuildServer )
+                if (_job.Server.Role == EnvironmentRole.BuildServer )
                 {
-                    taxiRepo.FetchSource(job.Revision.Commit, str => Log(str));
+                    taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
                     Build(sourceDirectory);
                 }
 
                 //build server and deploy
-                if (job.ServerSide || job.Create || job.Database)
+                if (_job.ServerSide || _job.Database)
                 {
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
-                    if (job.Server.Role != EnvironmentRole.BuildServer)
+                    if (_job.Server.Role != EnvironmentRole.BuildServer)
                     {
                         packagesDirectory = Properties.Settings.Default.DeployFolder;
                     }
@@ -112,8 +108,21 @@ namespace MK.DeploymentService
         private string CleanAndUnZip(string packagesDirectory)
         {
             Log("Get the binaries and unzip it");
-            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(job));
-            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(job.Revision.Tag));
+
+            
+            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(_job));
+            if (File.Exists(packageFile))
+            {
+                Log("Delete existing local package");
+                File.Delete(packageFile);
+            }
+
+            Log("Getting the binaries from server");
+            var client = new PackagesServiceClient();
+            client.GetPackage(GetZipFileName(_job), packageFile);
+            Log("Done getting the binaries from server");
+
+            var unzipDirectory = Path.Combine(packagesDirectory, MakeValidFileName(_job.Revision.Tag));
 
             if (Directory.Exists(unzipDirectory))
             {
@@ -147,19 +156,10 @@ namespace MK.DeploymentService
 
             _logger.Debug(details);
 
-            if (job != null)
+            if (_job != null)
             {
-                new DeploymentJobServiceClient().UpdateStatus(job.Id, details, status);
+                new DeploymentJobServiceClient().UpdateStatus(_job.Id, details, status);
             }
-
-
-            //if (status.HasValue)
-            //{
-            //    job.Status  = status.Value.ToString();
-            //}
-            //job.Details += details + "\n";
-
-           // dbContext.SaveChanges();
         }
 
 
@@ -209,25 +209,23 @@ namespace MK.DeploymentService
 
             Log("Zip Web directory and move it to the drop folder");
             //compress data
-            var fileName = GetZipFileName(job);
+            var fileName = GetZipFileName(_job);
 
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }
 
+            
             var packageDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\");
-            var zipProcess = ProcessEx.GetProcess(@"C:\Program Files\7-Zip\7z", string.Format("a -tzip {0} *", fileName), packageDir);
-            using (var exeProcess = Process.Start(zipProcess))
-            {
-                var output = ProcessEx.GetOutput(exeProcess);
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during Zip Process" + output);
-                }
-            }
 
-            File.Copy(Path.Combine(packageDir, fileName), Path.Combine(Properties.Settings.Default.DropFolder, fileName), true);
+            ZipFile.CreateFromDirectory(packageDir, fileName);
+            
+            Log("Uploading package to server...");
+            new PackagesServiceClient().UploadPackage(fileName);
+            Log("Done uploading package to server...");
+
+            
             Log("Finished");
         }
 
@@ -250,7 +248,7 @@ namespace MK.DeploymentService
         private void DeployTaxiHail(string packagesDirectory)
         {
             Log(String.Format("Deploying"));
-            var companyName = job.Company.CompanyKey;
+            var companyName = _job.Company.CompanyKey;
             var iisManager = new ServerManager();
             var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
             if (appPool == null)
@@ -264,7 +262,7 @@ namespace MK.DeploymentService
             }
             if (appPool.State == ObjectState.Started) appPool.Stop();
 
-            if (job.Database)
+            if (_job.Database)
             {
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName);
@@ -272,7 +270,7 @@ namespace MK.DeploymentService
 
 
             Log("Deploying Server");
-            DeployServer(companyName, packagesDirectory, iisManager);
+            DeployServer(_job.Company.Id, companyName, packagesDirectory, iisManager);
 
             appPool.Start();
         }
@@ -281,33 +279,35 @@ namespace MK.DeploymentService
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
-            foreach (var setting in job.Company.Settings)
+            foreach (var setting in _job.Company.CompanySettings)
             {
                 if ((setting.Key != "IBS.WebServicesUrl") &&
                     (setting.Key != "IBS.WebServicesUserName") &&
                     (setting.Key != "IBS.WebServicesPassword"))
                 {
-                    jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                    jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value ?? ""));
                 }
             }
 
 
-            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.Company.IBS.ServiceUrl ));
-            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.Company.IBS.Username));
-            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.Company.IBS.Password));
+            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ?? ""));
+            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username ?? ""));
+            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(_job.Company.IBS.Password ?? ""));
 
             var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName + ".json";
             var stringBuilder = new StringBuilder();
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
-            var deployDB = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   string.Format("{0} {1} {2}", companyName, job.Create ? "C" : "U",
-                                                   job.Server.SqlServerInstance), null, true);
+           
+            var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
+            Log("Calling DB tool with : " + exeArgs);
+            var deployDb = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                                                   exeArgs, null, true);
 
             
 
-            using (var exeProcess = Process.Start(deployDB))
+            using (var exeProcess = Process.Start(deployDb))
             {
                 exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
                 var output = ProcessEx.GetOutput(exeProcess);
@@ -326,14 +326,14 @@ namespace MK.DeploymentService
             Log(e.Data);
         }
 
-        private void DeployServer(string companyName, string packagesDirectory, ServerManager iisManager)
+        private void DeployServer(string companyId, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             Log("Deploying IIS");
 
-            var revision = job.Revision.Commit;
+            var revision = _job.Revision.Commit;
 
-            var subFolder = job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
-            var targetWeDirectory = Path.Combine(job.Server.WebSitesFolder, companyName, subFolder);
+            var subFolder = _job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
+            var targetWeDirectory = Path.Combine(_job.Server.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
 
@@ -354,16 +354,22 @@ namespace MK.DeploymentService
             }
 
             var configuration = webApp.GetWebConfiguration();
-            var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+            var section =
+                configuration.GetSection("connectionStrings")
+                    .GetCollection()
+                    .First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
             var connSting = section.Attributes["connectionString"];
-            connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+            connSting.Value =
+                string.Format(
+                    "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",
+                    companyName);
 
             //log4net comn
             var document = XDocument.Load(targetWeDirectory + "log4net.xml");
 
             var atttribute = (from XElement e in document.Descendants("appender")
-                              where e.Attribute("name").Value == "Courriel"
-                              select e).FirstOrDefault();
+                where e.Attribute("name").Value == "Courriel"
+                select e).FirstOrDefault();
 
             if (atttribute != null)
             {
@@ -374,9 +380,97 @@ namespace MK.DeploymentService
 
             document.Save(targetWeDirectory + "log4net.xml");
 
+            DeployTheme(companyId, companyName, targetWeDirectory);
+
             iisManager.CommitChanges();
 
             Log("Deploying IIS Finished");
+        }
+
+        private void DeployTheme(string companyId, string companyName, string targetWeDirectory)
+        {
+            try
+            {
+                var themeFolder = Path.Combine(targetWeDirectory, @"themes\" + companyName);
+                Log("Checking if default theme exist : " + themeFolder);
+                if (!Directory.Exists(themeFolder))
+                {
+                    Log("Copying default theme");
+                    var defaultThemeFolder = Path.Combine(targetWeDirectory, @"themes\TaxiHail");
+                    DirectoryCopy(defaultThemeFolder, themeFolder, true);
+                }
+
+                Log("Getting web theme from cutsomer portal");
+                var service = new CompanyServiceClient();
+                using (var zip = new ZipArchive(service.GetCompanyFiles(companyId, "webtheme")))
+                {
+                    foreach (var entry in zip.Entries)
+                    {
+                        Log("Theme file : " + entry.Name);
+                        if (entry.FullName.EndsWith(".less", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\less", entry.Name), true);
+                        }
+
+                        if (entry.FullName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\localization", entry.Name), true);
+                        }
+
+                        if (entry.FullName.EndsWith(".handlebars", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\templates", entry.Name), true);
+                        }
+
+                        if (entry.FullName.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(themeFolder + "\\img", entry.Name), true);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Log("Warning, cannot copy theme : " + ex.Message );
+            }
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location. 
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
 
         public void Stop()

@@ -262,6 +262,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool DisableFutureBooking
+        {
+            get
+            {
+                return Config.GetSetting("Client.DisableFutureBooking", false);
+            }
+        }
+
+        public bool HideDestination
+        {
+            get
+            {
+                return Config.GetSetting("Client.HideDestination", false);
+            }
+        }
+        
         private void NewOrder()
         {
             RequestMainThreadAction(() =>
@@ -350,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _showEstimate = true;
         public bool ShowEstimate
         {
-            get { return _showEstimate; }
+			get { return _showEstimate && !HideDestination; }
             private set
             {
                 _showEstimate = value;
@@ -541,6 +557,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Order.PickupDate = null;
                     ProcessOrder();
 
+                });
+            }
+        }
+
+        public IMvxCommand ClosePanelCommand
+        {
+            get
+            {
+                return GetCommand(() => {
+                    Panel.MenuIsOpen = false;
                 });
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using apcurium.MK.Common.Extensions;
 using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
@@ -59,10 +60,10 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
 #endif
             // Push notifications
-            var appleCert = File.ReadAllBytes(certificatePath);
 
-            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.GetSetting("APNS.CertificatePassword"));
-            var androidSettings = new GcmPushChannelSettings(_configurationManager.GetSetting("GCM.SenderId"), _configurationManager.GetSetting("GCM.APIKey"), _configurationManager.GetSetting("GCM.PackageName"));
+            var test = _configurationManager.GetSetting("GCM.SenderId");
+            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _configurationManager.GetSetting("GCM.PackageName"));
 
             //Wire up the events
             _push.Events.OnDeviceSubscriptionExpired += Events_OnDeviceSubscriptionExpired;
@@ -73,8 +74,13 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.Events.OnChannelCreated += Events_OnChannelCreated;
             _push.Events.OnChannelDestroyed += Events_OnChannelDestroyed;
 
+             _push.StartGoogleCloudMessagingPushService(androidSettings);
+
+            // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
+            var appleCert = File.ReadAllBytes(certificatePath);                       
+            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.GetSetting("APNS.CertificatePassword"));
             _push.StartApplePushService(appleSettings);
-            _push.StartGoogleCloudMessagingPushService(androidSettings);
+
         }
 
         private void SendAndroidNotification(string alert, IDictionary<string, object> data, string registrationId)
@@ -115,7 +121,13 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
 		void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
 		{
-            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + notificationFailureException.Message + " -> " + notification.ToString());
+            var message = notificationFailureException.Message;
+		    var details = notificationFailureException as NotificationFailureException;
+		    if (details != null)
+		    {
+		        message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
+		    }
+            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + message + " -> " + notification.ToString());
 		}
 
 		void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)

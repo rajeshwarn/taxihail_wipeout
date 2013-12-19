@@ -74,7 +74,9 @@
                     this.isActive = false;
                     defer.reject();
                     
-                }), { maximumAge: 60000, timeout: 1000, enableHighAccuracy: false },this);
+                }), { maximumAge: 60000, timeout: 1000, enableHighAccuracy: false }, this);
+                // IE fallback
+                window.setTimeout(defer.reject, 5000);
             }
             else {
                 window.setTimeout(defer.reject, 1);

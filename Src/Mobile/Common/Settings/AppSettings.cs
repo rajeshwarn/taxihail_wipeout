@@ -15,20 +15,19 @@ namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
-
         private AppSettingsData _data;
 
         public AppSettings ()
         {
-            using (var stream = this.GetType().Assembly.GetManifestResourceStream(this.GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) {
-                using (StreamReader reader = new StreamReader(stream)) {
-                    
+            using (var stream = this.GetType().Assembly.GetManifestResourceStream(this.GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
+			{
+                using (StreamReader reader = new StreamReader(stream)) 
+				{
                     string serializedData = reader.ReadToEnd ();
                     _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
                 }
             }
         }
-
 
         public bool ErrorLogEnabled {
             get { return true; }
@@ -40,26 +39,12 @@ namespace apcurium.MK.Booking.Mobile.Settings
                 return  Path.Combine (path, "errorlog.txt"); 
             }
         }
-
-        public string SiteUrl {
-            get { return _data.SiteUrl; }
-        }
-        
     
-        public int[] InvalidProviderIds {
-            get { return new int[0]; }
-        }
-
         public string ApplicationName { get { return _data.ApplicationName; } }
 
-        public string DefaultServiceUrl {
-            get { return "http://services.taxihail.com/{0}/api/"; }
+		public string DefaultServiceUrl { get { return "http://services.taxihail.com/{0}/api/"; } }
 
-        }
-
-        public bool CanChangeServiceUrl {
-            get { return _data.CanChangeServiceUrl; }
-        }
+		public bool CanChangeServiceUrl { get { return _data.CanChangeServiceUrl; } }
 
         public string ServiceUrl {
             get {
@@ -75,7 +60,6 @@ namespace apcurium.MK.Booking.Mobile.Settings
                 } else {
                     return url;
                 }
-
             }
             set {
                 if (CanChangeServiceUrl) {
@@ -89,9 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
                         TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
                     }
                 }
-
             }
-
         }
 
         public bool TwitterEnabled {
@@ -129,6 +111,5 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string FacebookAppId {
             get { return _data.FacebookAppId; }
         }
-
     }
 }

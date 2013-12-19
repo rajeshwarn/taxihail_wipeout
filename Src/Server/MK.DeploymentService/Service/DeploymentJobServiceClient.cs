@@ -4,10 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using CustomerPortal.Web.Entities;
 using MK.DeploymentService.Properties;
+using System.Net;
 
 
 namespace MK.DeploymentService.Service
@@ -17,30 +20,41 @@ namespace MK.DeploymentService.Service
 
         public DeploymentJob GetNext()
         {
+
             var url = GetUrl();
 
-            using (var client = new HttpClient())
+
+
+            
+
+            using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
             {
-                client.BaseAddress = new Uri(url);
-                return
-                    client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next")
-                        .Result.Content.ReadAsAsync<DeploymentJob>()
-                        .Result;
+                client.BaseAddress = new Uri(url);                
+                var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
+                if (r.IsSuccessStatusCode)
+                {
+                    return r.Content.ReadAsAsync<DeploymentJob>()
+                            .Result;
+                }
+                else
+                {
+                    return null;
+                }
 
             }
-
-            //    var client = new JsonServiceClient(url) { Timeout = new TimeSpan(0, 0, 2, 0, 0) };
-
-            //return client.Get<DeploymentJob>(@"deployments/" + Settings.Default.ServerName + @"/next");
+            
         }
+
+
+
 
         private static string GetUrl()
         {
             var url = Settings.Default.CustomerPortalUrl;
 
-//#if DEBUG
+#if DEBUG
             url = "http://localhost:2287/api/";
-//#endif
+#endif
             return url;
         }
 
@@ -49,10 +63,10 @@ namespace MK.DeploymentService.Service
         {
             var url = GetUrl();
 
-            using (var client = new HttpClient())
+            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
             {
                 client.BaseAddress = new Uri(url);
-                
+
                 var d = new JobStatusDetails();
                 d.Details = details;
                 d.Status = status;

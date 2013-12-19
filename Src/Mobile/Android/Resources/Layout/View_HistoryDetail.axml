@@ -116,7 +116,8 @@
                     android:text="@string/DestinationViewDestinationLabel"
                     android:layout_width="100dp"
                     android:gravity="right"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    local:MvxBind="{'Visibility':{'Path':'HideDestination', 'Converter':'InvertedVisibility'}}" />
                 <TextView
                     android:id="@+id/DestinationTxt"
                     style="@style/DetailText"
@@ -125,7 +126,7 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Destination Non specifie"
-                    local:MvxBind="{'Text':{'Path':'DestinationTxt'}}" />
+                    local:MvxBind="{'Text':{'Path':'DestinationTxt'}, 'Visibility':{'Path':'HideDestination', 'Converter':'InvertedVisibility'}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

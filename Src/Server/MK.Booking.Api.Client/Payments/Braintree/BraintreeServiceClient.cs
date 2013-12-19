@@ -46,13 +46,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         {
             return Client.Post(new PreAuthorizePaymentBraintreeRequest()
                 {
-                    Amount = (decimal) amount,
+                    Amount = (decimal)amount,
                     Meter = (decimal)meterAmount,
                     Tip = (decimal)tipAmount,
                     CardToken = cardToken,
                     OrderId = orderId,
                 });
-
         }
 
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
@@ -61,6 +60,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 {
                     TransactionId = transactionId,
                 });
+        }
+
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        {
+            return Client.Post(new PreAuthorizeAndCommitPaymentBraintreeRequest
+            {
+                Amount = (decimal)amount,
+                MeterAmount = (decimal)meterAmount,
+                TipAmount = (decimal)tipAmount,
+                CardToken = cardToken,
+                OrderId = orderId
+            });
         }
 
         public void ResendConfirmationToDriver(Guid orderId)

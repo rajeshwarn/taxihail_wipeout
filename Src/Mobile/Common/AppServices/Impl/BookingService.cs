@@ -20,6 +20,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Maps;
+using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -89,13 +91,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
+		public bool CallIsEnabled
+		{
+			get{
+
+				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+			}
+
+		}
+
         private void HandleCreateOrderError (Exception ex, CreateOrder order)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var title = appResource.GetString ("ErrorCreatingOrderTitle");
 
+			string message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall");
 
-            var message = appResource.GetString ("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+			if (CallIsEnabled)
+			{
+				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+			}
 
 
             try {
@@ -103,12 +118,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     if (((WebServiceException)ex).ErrorCode ==ErrorCode.CreateOrder_RuleDisable.ToString ()) {
                         message = ((WebServiceException)ex).ErrorMessage;
                     } else {
-                        var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
-                        var errorMessage = appResource.GetString (messageKey);
-                        if(errorMessage != messageKey)
-                        {
-                            message = errorMessage;
-                        }
+                        
+						var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
+						var errorMessage = appResource.GetString (messageKey);
+						if(errorMessage != messageKey)
+						{
+							message = errorMessage;
+						}
+
+						if ( !CallIsEnabled )
+						{
+							messageKey += "_NoCall";
+							errorMessage = appResource.GetString (messageKey);
+							if(errorMessage != messageKey)
+							{
+								message = errorMessage;
+							}
+						}
+
+                       
                     }
                 }
             } catch {
@@ -117,10 +145,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            string err = string.Format (message, settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
+			if (CallIsEnabled)
+			{
+				string err = string.Format(message, settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, Config.GetSetting("DefaultPhoneNumber")), "Cancel", delegate
+				{			
+				});
+			}
+			else
+			{
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+			}
 
-            TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, err, "Call", () => CallCompany (settings.ApplicationName, Config.GetSetting("DefaultPhoneNumber")), "Cancel", delegate {
-            });
+
         }
 
         private void CallCompany (string name, string number)
@@ -222,10 +259,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
+            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<Direction.TarifMode>("Direction.TarifMode", Direction.TarifMode.AppTarif);            
+            DirectionInfo directionInfo = new DirectionInfo();
+            
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
+                if (tarifMode != Direction.TarifMode.AppTarif)
+                {
+                    directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
+                }
 
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);
+                if (tarifMode == Direction.TarifMode.AppTarif || (tarifMode == Direction.TarifMode.Both && directionInfo.Price == 0d))
+                {
+                    directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
+                }            
 
                 return directionInfo ?? new DirectionInfo();
             }
@@ -237,13 +284,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
+            
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {
                 var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
 
-                if (estimatedFare.Price.HasValue)
-                {
+                var willShowFare = estimatedFare.Price.HasValue && estimatedFare.Price.Value > 0;                                
+
+                if (estimatedFare.Price.HasValue && willShowFare)
+                {                    
                     var maxEstimate = Config.GetSetting<double>("Client.MaxFareEstimate", 100);
                     if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && appResource.GetString("EstimatePriceOver100").HasValue()))
                     {

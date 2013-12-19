@@ -30,13 +30,9 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidLinkSkip>
-    </AndroidLinkSkip>
-    <AndroidStoreUncompressedFileExtensions>
-    </AndroidStoreUncompressedFileExtensions>
+    <AndroidSigningStorePass>mkTaxiHailDemoCallbox0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK.TaxiHailDemoCallbox</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkTaxiHailDemoCallbox0001.</AndroidSigningKeyPass>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,9 +44,9 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mk303Taxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK303Taxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mk303Taxi0001.</AndroidSigningKeyPass>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
@@ -71,7 +67,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Mono.Facebook">
+      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -92,9 +92,6 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Facebook">
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
     </Reference>
     <Reference Include="SocialNetworks.Services.MonoDroid">
       <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>

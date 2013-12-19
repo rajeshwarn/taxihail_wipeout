@@ -5,17 +5,15 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppSettings
 	{
-        string ApplicationName {get;}
-
-        int[] InvalidProviderIds { get; }
+        string ApplicationName {get;}		        
         string ServiceUrl { get; set; }
         
         bool ErrorLogEnabled{ get; }
-        bool CanChangeServiceUrl { get; }
-                
-        string ErrorLog{ get; }
-        string SiteUrl{ get; }
-        string DefaultServiceUrl{ get; }
+		string ErrorLog{ get; }
+
+        bool CanChangeServiceUrl { get; }                
+        
+		string DefaultServiceUrl{ get; }
 
         bool TwitterEnabled{ get; }       
         string TwitterConsumerKey{ get; }
@@ -27,9 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         bool FacebookEnabled { get; }
         string FacebookAppId{ get; }
-
-
-
 	}
 }
 

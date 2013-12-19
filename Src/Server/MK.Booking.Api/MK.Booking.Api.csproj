@@ -133,6 +133,7 @@
     <Compile Include="Services\Payment\CmtPaymentService.cs" />
     <Compile Include="Services\Payment\PaymentService.cs" />
     <Compile Include="Services\Payment\PayPalService.cs" />
+    <Compile Include="Services\PushNotificationAdministrationService.cs" />
     <Compile Include="Services\ValidateOrderService.cs" />
     <Compile Include="Services\RuleActivateService.cs" />
     <Compile Include="Services\RuleDeactivateService.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
+    <Compile Include="Services\IbsFareService.cs" />
     <Compile Include="Validation\AvailableVehiclesValidator.cs" />
     <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />

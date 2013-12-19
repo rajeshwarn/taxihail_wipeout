@@ -112,6 +112,10 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+
+
+
+
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/apcuriumLogoLayout"

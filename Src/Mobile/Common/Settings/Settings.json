@@ -1,23 +1,18 @@
 {
-   "ApplicationName" : "TaxiHail",
+   "ApplicationName" : "TaxiHail", 
+   "ServiceUrl" : "http://test.taxihail.biz:8181/taxihaildemo/api/",   
    "CanChangeServiceUrl" : "true",   
+   "DisabledTutorialSlides" : "",
    "ErrorLog" : "",   
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
-   "SupportEmail" : "techsupport@apcurium.com",
    "ServiceUrlTest" : "http://services.taxihail.com/taxihaildemo/api/",
-   "ServiceUrl" : "http://192.168.12.122/apcurium.MK.Web/api/",   
-   "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://api.twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://api.twitter.com/oauth/authorize",
    "TwitterCallback" : "http://www.taxihail.com/oauth",
    "TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
    "TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
    "TwitterEnabled" : "true",
-   "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token",
-   "AndroidSigningKeyAlias" : "MKTaxiHail",
-   "AndroidSigningKeyPassStorePass" : "mkt0001.",   
-   "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
-   "Package" : "com.apcurium.MK.TaxiHailDemo"   
+   "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token"  
 }

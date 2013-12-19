@@ -83,6 +83,9 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
+    <Compile Include="Requests\IbsFareRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\PushNotificationAdministrationRequest.cs" />
     <Compile Include="Requests\RuleActivateRequest.cs" />
     <Compile Include="Requests\RuleDeactivateRequest.cs" />
     <Compile Include="Requests\RuleRequest.cs" />
@@ -154,6 +158,7 @@
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />

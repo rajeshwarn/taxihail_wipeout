@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.IO;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
+using apcurium.MK.Booking.ConfigTool.ServiceClient;
+using CustomerPortal.Web.Entities;
+using Newtonsoft.Json;
+using Internals;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
@@ -12,13 +15,14 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-        public AppConfig(string name, string configDirectoryPath, string srcDirectoryPath, string commonDirectoryPath)
+		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath, string commonDirectoryPath)
         {
             Name = name;
-            ConfigDirectoryPath = configDirectoryPath;
+            Company = company;
             SrcDirectoryPath = srcDirectoryPath;
             CommonDirectoryPath = commonDirectoryPath;
-            Init();
+			ConfigDirectoryPath = configDirectoryPath;
+
         }
 
         private void Init()
@@ -38,7 +42,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigFile(this){ Source=@"navBar@2x.png", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Drawable-hdpi\navBar.png" },
 					
                     new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package + "CallBox" },
-				new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName + " CallBox" },
+				    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName + " CallBox" },
 					
                     new ConfigXmlNamespace(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package + "CallBox"},
 					
@@ -52,7 +56,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
                     new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
 					
-				new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Values\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName + " CallBox" },               
+				    new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Values\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName + " CallBox" },               
 
                     new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\public.keystore" },
 
@@ -111,18 +115,21 @@ namespace apcurium.MK.Booking.ConfigTool
 	                
 
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
-				new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
+				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.ApplicationName  },
 	                	
 					/* open app from browser settings */
-				new ConfigSource(this) { Source = @"Mobile\Android\Activities\SplashActivity.cs", ToReplace = "TaxiHailDemo", ReplaceWith = Config.ApplicationName},
+				    new ConfigSource(this) { Source = @"Mobile\Android\Activities\SplashActivity.cs", ToReplace = "TaxiHailDemo", ReplaceWith = Config.ApplicationName},
 
 					/* notification */
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.C2D_MESSAGE" },
-				new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[@android:name=""com.apcurium.MK.TaxiHailDemo.permission.C2D_MESSAGE""]", Attribute="android:name", SetterAtt = ( app, att )=> att.Value = Config.ApplicationName + ".permission.C2D_MESSAGE" },
+				    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.C2D_MESSAGE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
+					{
+						att.Value = Config.ApplicationName + ".permission.C2D_MESSAGE";
+					}},
 					new ConfigMultiXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application/receiver/intent-filter/category", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
 	                
 	                
-				new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
+				    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
                     new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },                                                                          
 
                     new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package },
@@ -164,7 +171,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\iOS\Assets\pin_destination.png" },
                     new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\iOS\Assets\pin_destination@2x.png" },
 
-				new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.ApplicationName },
+				    new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.ApplicationName },
                     new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },
                     new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
                     {
@@ -192,10 +199,10 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 if (_config == null)
                 {
-                    using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "Settings.json"), FileMode.Open))
-                    {
-                        _config = JsonSerializer.DeserializeFromStream(typeof(AppConfigFile), file) as AppConfigFile;
-                    }
+
+					var json = File.ReadAllText(Path.Combine(ConfigDirectoryPath, "AllSettings.json"));
+					_config = JsonConvert.DeserializeObject<AppConfigFile> (json);
+                    
                 }
                 return _config;
 
@@ -209,14 +216,23 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string Name { get; private set; }
 
-        public string ConfigDirectoryPath { get; private set; }
+        public Company Company { get; private set; }
 
         public string SrcDirectoryPath { get; private set; }
 
         public string CommonDirectoryPath { get; private set; }
 
-        public void Apply ()
-		{
+        public string ConfigDirectoryPath { get; set; }
+
+		string _serviceUrl;
+
+        public void Apply (string serviceUrl)
+        {
+			_serviceUrl = serviceUrl;
+            GetFiles();
+
+            Init();
+
 			var errorsList = new List<string> ();
 			foreach (var config in _configs) {
 				try {
@@ -233,5 +249,60 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+		void CreateConfigFile (string fileName, Func<CompanySetting,bool> predicate)
+		{
+			var newFile = File.CreateText (fileName);
+			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value ?? "");
+
+			dict["ServiceUrl"] = _serviceUrl;
+
+			newFile.Write (JsonConvert.SerializeObject (dict));
+
+			newFile.Close ();
+
+			newFile.Dispose ();
+		}
+
+        private string GetFiles()
+        {
+			var tempPath = ConfigDirectoryPath;
+            if ( Directory.Exists(tempPath))
+            {
+                Directory.Delete( tempPath, true  );
+            }
+
+            Directory.CreateDirectory(tempPath);
+
+            var service = new CompanyServiceClient();
+            var stream = service.GetCompanyFiles(Company.Id , "assets");
+            var zipFile = Path.Combine(tempPath, "out.zip");
+            using (Stream file = File.OpenWrite(zipFile))
+            {
+                CopyStream(stream, file);
+            }
+
+			using (var unzip = new Unzip(zipFile))
+			{
+				unzip.ExtractToDirectory(tempPath);
+			}
+
+            File.Delete( zipFile );
+
+
+			CreateConfigFile (Path.Combine (tempPath, "settings.json"), s => s.IsClientSetting);
+			CreateConfigFile (Path.Combine (tempPath, "allSettings.json"), s => true);
+
+            return tempPath;
+        }        
+            
+        public static void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[8 * 1024];
+            int len;
+            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+        }        
     }
 }

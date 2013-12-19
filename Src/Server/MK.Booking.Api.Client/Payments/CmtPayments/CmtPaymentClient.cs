@@ -90,9 +90,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                     CardToken = cardToken,
                     OrderId = orderId
                 });
-
         }
-
 
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
@@ -100,6 +98,18 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 {
                     TransactionId = transactionId,
                 });
+        }
+
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        {
+            return Client.Post(new PreAuthorizeAndCommitPaymentCmtRequest
+            {
+                Amount = amount,
+                MeterAmount = meterAmount,
+                TipAmount = tipAmount,
+                CardToken = cardToken,
+                OrderId = orderId
+            });
         }
 
         public void ResendConfirmationToDriver(Guid orderId)

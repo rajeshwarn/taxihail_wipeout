@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MK.DeploymentService.Mobile</RootNamespace>
     <AssemblyName>MK.DeploymentService.Mobile</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -43,30 +44,25 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\ConfigTool\Libraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Mono.Http" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\..\ConfigTool\Libraries\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DeploymentJobService.cs" />
     <Compile Include="PetaPoco.cs" />
-    <Compile Include="..\MK.ConfigurationManager\Entities\Company.cs">
-      <Link>Entities\Company.cs</Link>
-    </Compile>
-    <Compile Include="..\MK.ConfigurationManager\Entities\ConfigurationProperty.cs">
-      <Link>Entities\ConfigurationProperty.cs</Link>
-    </Compile>
-    <Compile Include="..\MK.ConfigurationManager\Entities\DeploymentJob.cs">
-      <Link>Entities\DeploymentJob.cs</Link>
-    </Compile>
-    <Compile Include="..\MK.ConfigurationManager\Entities\IBSServer.cs">
-      <Link>Entities\IBSServer.cs</Link>
-    </Compile>
-    <Compile Include="..\MK.ConfigurationManager\Entities\TaxiHailEnvironment.cs">
-      <Link>Entities\TaxiHailEnvironment.cs</Link>
-    </Compile>
     <Compile Include="..\MK.ConfigurationManager\Entities\KeyAttribute.cs">
       <Link>FakeAttributes\KeyAttribute.cs</Link>
     </Compile>
@@ -77,6 +73,46 @@
     <Compile Include="..\MK.ConfigurationManager\Entities\AppVersion.cs">
       <Link>Entities\AppVersion.cs</Link>
     </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\AppStatus.cs">
+      <Link>WebEntities\AppStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Company.cs">
+      <Link>WebEntities\Company.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\CompanyIdGenerator.cs">
+      <Link>WebEntities\CompanyIdGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\DeploymentJob.cs">
+      <Link>WebEntities\DeploymentJob.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Environment.cs">
+      <Link>WebEntities\Environment.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\IBSSettings.cs">
+      <Link>WebEntities\IBSSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\JobStatusDetails.cs">
+      <Link>WebEntities\JobStatusDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Revision.cs">
+      <Link>WebEntities\Revision.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\StoreCredentials.cs">
+      <Link>WebEntities\StoreCredentials.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\StoreSettings.cs">
+      <Link>WebEntities\StoreSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\UnitOfLength.cs">
+      <Link>WebEntities\UnitOfLength.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.DeploymentService\WebEntities\Version.cs">
+      <Link>WebEntities\Version.cs</Link>
+    </Compile>
+    <Compile Include="Services\CustomerPortalRepository.cs" />
+    <Compile Include="Services\DeploymentJobServiceClient.cs" />
+    <Compile Include="WebEntities\CompanySetting.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -93,5 +129,10 @@
       <Project>{78A8B275-4004-4586-893B-607EC1F98F26}</Project>
       <Name>DeploymentServiceTools</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="WebEntities\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 </Project>

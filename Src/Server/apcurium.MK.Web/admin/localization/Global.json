@@ -47,6 +47,10 @@
 	"confirmEmailError" : "Error: Check that the email address exists in the system",
 	"disableEmailSuccess" : "User has correctly been disabled." ,
 	"disableEmailError" : "Error: Check that the email address exists in the system",
+	"sendPushNotificationSuccess" : "Message has correctly been sent." ,
+	"sendPushNotificationErrorNoDevice" : "Error: Couldn't send the message to the user, no device in user account",		
+	"sendPushNotificationErrorNoAccount" : "Error: Couldn't send the message, no account with this email address",		
+	"sendPushNotificationErrorHandleDirectory" : "Error: Message couldn't be sent, please retry",			
 	"Default": "Default",
 
 	"/******* Begin settings Aliases *******/":"",
@@ -63,6 +67,7 @@
 	"Client.ShowPassengerName": "Show passenger name",
 	"Client.ShowPassengerNumber": "Show passenger number",
 	"Client.ShowPassengerPhone": "Show passenger phone",	
+	"Client.DisabledTutorialSlides": "Disabled tutorial slides (ex: 1,2)",
 	"DefaultBookingSettings.ChargeTypeId": "Charge type id",
 	"DefaultBookingSettings.NbPassenger": "Passengers number",
 	"DefaultBookingSettings.ProviderId": "Provider Id",

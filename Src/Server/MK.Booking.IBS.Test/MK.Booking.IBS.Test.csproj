@@ -40,7 +40,7 @@
       <HintPath>..\Libraries\MK.Booking.IBS.WebServices.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\MK.Booking\MK.Booking.Test\bin\Debug\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

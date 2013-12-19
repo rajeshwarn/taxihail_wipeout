@@ -34,6 +34,8 @@ namespace apcurium.MK.Web
         protected string EstimateEnabled { get; private set; }
         protected string EstimateWarningEnabled { get; private set; }        
         protected string DestinationIsRequired { get; private set; }
+        protected string DirectionTarifMode { get; private set; }
+        protected bool DirectionNeedAValidTarif { get; private set; }
         protected bool ShowPassengerNumber { get; private set; }
         protected string ReferenceData { get; private set; }
 
@@ -50,6 +52,9 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
+
+            DirectionTarifMode = config.GetSetting("Direction.TarifMode");
+            DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
 
             ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
 

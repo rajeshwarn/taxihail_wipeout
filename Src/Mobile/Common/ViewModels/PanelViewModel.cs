@@ -30,17 +30,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _parent = parent;
             _accountService = this.GetService<IAccountService> ();
 
-            InitializeAsync();
+        
         }
 
-        private async void InitializeAsync()
-        {
-            var canCall = Task.Run(() => !ConfigurationManager.GetSetting("Client.HideCallDispatchButton").TryToParse(true));
-            var canReportProblem = Task.Run(() => !ConfigurationManager.GetSetting("Client.HideReportProblem").TryToParse(true));
-
-            this.CanCall = await canCall;
-            this.CanReportProblem = await canReportProblem;
-        }
+        
 
 
 
@@ -142,26 +135,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private bool _canCall = true;
+        
         public bool CanCall
         {
-            get { return _canCall; }
-            private set
-            {
-                _canCall = value;
-                FirePropertyChanged(() => CanCall);
-            }
+            get
+			{
+				return !ConfigurationManager.GetSetting("Client.HideCallDispatchButton", false);
+			}
         }
 
-        private bool _canReportProblem = true;
+        
         public bool CanReportProblem
         {
-            get { return _canReportProblem; }
-            private set
-            {
-                _canReportProblem = value;
-                FirePropertyChanged(() => CanReportProblem);
-            }
+            get { 
+				return !ConfigurationManager.GetSetting("Client.HideReportProblem", false);
+			}            
         }
 
         public IMvxCommand Call {

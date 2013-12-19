@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
-            ((GradientButton)btnBook).SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
+			((GradientButton)btnBook).SetTitle(Resources.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             if ( !ViewModel.ShowRingCodeField )

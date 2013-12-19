@@ -49,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblNameOnCard.Text = Resources.GetValue("CreditCardName");
             lblCardNumber.Text = Resources.GetValue("CreditCardNumber");
             lblCardCategory.Text = Resources.GetValue("CreditCardCategory");
-            lblTypeCard.Text = Resources.GetValue("CreditCardType");
             lblExpMonth.Text = Resources.GetValue("CreditCardExpMonth");
             lblExpYear.Text = Resources.GetValue("CreditCardExpYear");
             lblSecurityCode.Text = Resources.GetValue("CreditCardCCV");
@@ -60,13 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
             ViewModel.CreditCardCompanies[3].Image = "Assets/CreditCard/visa_electron.png";
+			ViewModel.CreditCardCompanies[4].Image = "Assets/CreditCard/credit_card_generic.png";
 
 
             ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
                 ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); });
-
-            ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
-                ViewModel.CreditCardType =  x.Id.GetValueOrDefault(); });
 
             ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
                 ViewModel.ExpirationYear = x.Id;
@@ -75,12 +72,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ((ModalTextField)pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
                 ViewModel.ExpirationMonth = x.Id;
             });
-                       
+
             this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
-                { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
+				{ txtCardNumber, "{'Text': {'Path': 'CreditCardNumber', 'Mode': 'TwoWay' }, 'ImageLeftSource': {'Path': 'CreditCardImagePath'}}" }, 
                 { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
-                { pickerCreditCardType, "{'Text': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }, 'LeftImagePath' : {'Path': 'CreditCardImagePath'}}" }, 
                 { pickerExpirationMonth, "{'Text': {'Path': 'ExpirationMonthDisplay'}}" }, 
                 { pickerExpirationYear, "{'Text': {'Path': 'ExpirationYear' }}" }, 
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }

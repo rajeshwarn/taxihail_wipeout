@@ -42,6 +42,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\..\packages\CsvHelper.2.2.2\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
@@ -97,6 +100,10 @@
     </Reference>
     <Reference Include="PushSharp.WindowsPhone">
       <HintPath>..\..\packages\PushSharp.1.0.18\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -162,7 +169,9 @@
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
@@ -194,6 +203,11 @@
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Resources\DynamicResources.cs" />
+    <Compile Include="Resources\TaxiHailNYC.Designer.cs">
+      <DependentUpon>TaxiHailNYC.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Resources\Global.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -207,6 +221,7 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Serialization\CsvCustomSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Email\Images\header-gradient.png">
@@ -237,7 +252,9 @@
     <None Include="MK.Booking.psproj">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
@@ -262,6 +279,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Global.Designer.cs</LastGenOutput>
