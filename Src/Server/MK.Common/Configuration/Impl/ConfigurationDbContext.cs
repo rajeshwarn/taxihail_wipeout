@@ -21,24 +21,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             modelBuilder.ComplexType<PayPalServerSettings>();
-            modelBuilder.Entity<ServerPaymentSettings>()
-                        .Map(m =>
-                                 {
-                                     m.Properties(x => new
-                                                           {
-                                                               x.PayPalServerSettings
-                                                           });
-                                     m.ToTable("PayPalServerSettings", SchemaName);
-                                 })
-                        .Map(m =>
-                                 {
-                                     m.Properties(x => new
-                                     {
-                                         x.BraintreeServerSettings,
-                                     });
-                                     m.ToTable("ServerPaymentSettings", SchemaName);
-                                 });
-               
+            modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
             
             base.OnModelCreating(modelBuilder);
         }
