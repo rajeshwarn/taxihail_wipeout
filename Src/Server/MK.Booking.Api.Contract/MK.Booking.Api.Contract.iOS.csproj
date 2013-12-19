@@ -133,6 +133,8 @@
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
+    <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

@@ -27,16 +27,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
         {
-            return new PaymentSettingsResponse()
-                {
-                    ClientPaymentSettings = _configurationDao.GetPaymentSettings()
-                };
+            return new PaymentSettingsResponse
+            {
+                ClientPaymentSettings = _configurationDao.GetPaymentSettings()
+            };
         }
 
         public ServerPaymentSettingsResponse Get(ServerPaymentSettingsRequest request)
         {
             var settings = _configurationDao.GetPaymentSettings();
-            return new ServerPaymentSettingsResponse()
+            return new ServerPaymentSettingsResponse
             {
                 ServerPaymentSettings = settings
             };
@@ -49,16 +49,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 throw new ArgumentException("Please Select a payment setting");
             }
-            _commandBus.Send(new UpdatePaymentSettings()
-                {
-                    ServerPaymentSettings = request.ServerPaymentSettings,
-                });
-        }
 
+            _commandBus.Send(new UpdatePaymentSettings { ServerPaymentSettings = request.ServerPaymentSettings });
+        }
 
         public TestServerPaymentSettingsResponse Post(TestPayPalProductionSettingsRequest request)
         {
-            var response = new TestServerPaymentSettingsResponse()
+            var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
                 Message = "Paypal Production Credentials are invalid\n"
@@ -68,13 +65,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, false))
                 {
-                    return new TestServerPaymentSettingsResponse()
-                        {
-                            IsSuccessful = true,
-                            Message = "Paypal Production Credentials are valid\n"
-                        };
+                    return new TestServerPaymentSettingsResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Paypal Production Credentials are valid\n"
+                    };
                 }
-            
             }
             catch (Exception e)
             {
@@ -85,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public TestServerPaymentSettingsResponse Post(TestPayPalSandboxSettingsRequest request)
         {
-            var response = new TestServerPaymentSettingsResponse()
+            var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
                 Message = "Paypal Sandbox Credentials are invalid\n"
@@ -95,13 +91,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 if (PayPalService.TestClient(_configurationManager, RequestContext, request.Credentials, true))
                 {
-                    return new TestServerPaymentSettingsResponse()
+                    return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
                         Message = "Paypal Sandbox Credentials are valid\n"
                     };
                 }
-
             }
             catch (Exception e)
             {
@@ -112,21 +107,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public TestServerPaymentSettingsResponse Post(TestBraintreeSettingsRequest request)
         {
-            var response = new TestServerPaymentSettingsResponse()
-                {
-                    IsSuccessful = false,
-                    Message = "Braintree Settings are invalid\n"
-                };
+            var response = new TestServerPaymentSettingsResponse
+            {
+                IsSuccessful = false,
+                Message = "Braintree Settings are invalid\n"
+            };
             
             try
             {
                 if (BraintreePaymentService.TestClient(request.BraintreeServerSettings, request.BraintreeClientSettings))
                 {
-                 return new TestServerPaymentSettingsResponse()
-                     {
-                         IsSuccessful = true,
-                         Message = "Braintree Settings are valid\n"
-                     };   
+                    return new TestServerPaymentSettingsResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Braintree Settings are valid\n"
+                    };   
                 }
             }
             catch (Exception e)
@@ -139,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public TestServerPaymentSettingsResponse Post(TestCmtSettingsRequest request)
         {
-            var response = new TestServerPaymentSettingsResponse()
+            var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
                 Message = "CMT Settings are invalid\n"
@@ -147,12 +142,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
 
                 if (CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate))
                 {
-                    return new TestServerPaymentSettingsResponse()
+                    return new TestServerPaymentSettingsResponse
                         {
                             IsSuccessful = true,
                             Message = "CMT Settings are valid\n"

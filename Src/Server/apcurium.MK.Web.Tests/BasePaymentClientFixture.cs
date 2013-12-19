@@ -106,7 +106,8 @@ namespace apcurium.CMT.Web.Tests
                     Id = orderId,
                     IBSOrderId = 1234,
                     CreatedDate = DateTime.Now,
-                    PickupDate = DateTime.Now
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
                 });
                 context.SaveChanges();
             }
@@ -120,7 +121,6 @@ namespace apcurium.CMT.Web.Tests
             var response = client.PreAuthorize(token, amount, meter,tip, orderId);
 
             Assert.True(response.IsSuccessfull);
-
         }
 
         [Test]
@@ -134,13 +134,15 @@ namespace apcurium.CMT.Web.Tests
                     Id = orderId,
                     IBSOrderId = 1234,
                     CreatedDate = DateTime.Now,
-                    PickupDate = DateTime.Now
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
                 });
                 context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
                 {
                     OrderId = orderId,
                     VehicleNumber = "vehicle",
                     PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
                 });
                 context.SaveChanges();
             }
@@ -162,7 +164,6 @@ namespace apcurium.CMT.Web.Tests
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
-
         [Test]
         public void when_authorized_a_credit_card_payment_and_resending_confirmation()
         {
@@ -174,13 +175,15 @@ namespace apcurium.CMT.Web.Tests
                     Id = orderId,
                     IBSOrderId = 1234,
                     CreatedDate = DateTime.Now,
-                    PickupDate = DateTime.Now
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
                 });
                 context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
                 {
                     OrderId = orderId,
                     VehicleNumber = "vehicle",
                     PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
                 });
                 context.SaveChanges();
             }
@@ -216,6 +219,43 @@ namespace apcurium.CMT.Web.Tests
                 Assert.AreEqual(GetProvider(), payement.Provider);
 
             }
+        }
+
+        [Test]
+        public void when_preauthorizing_and_capturing_a_credit_card_payment()
+        {
+            var orderId = Guid.NewGuid();
+            using (var context = ContextFactory.Invoke())
+            {
+                context.Set<OrderDetail>().Add(new OrderDetail
+                {
+                    Id = orderId,
+                    IBSOrderId = 1234,
+                    CreatedDate = DateTime.Now,
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
+                });
+                context.Set<OrderStatusDetail>().Add(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    VehicleNumber = "vehicle",
+                    PickupDate = DateTime.Now,
+                    AccountId = TestAccount.Id
+                });
+                context.SaveChanges();
+            }
+
+            var client = GetPaymentClient();
+
+            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
+
+            const double amount = 31.50;
+            const double meter = 21.25;
+            const double tip = 10.25;
+
+            var authorization = client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
+
+            Assert.True(authorization.IsSuccessfull, authorization.Message);
         }
 
         protected abstract PaymentProvider GetProvider();

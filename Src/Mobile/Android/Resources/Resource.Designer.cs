@@ -1801,6 +1801,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0701c1
 			public const int AccountDisabled = 2131165633;
 			
+			// aapt resource value: 0x7f0701dc
+			public const int AccountDisabled_NoCall = 2131165660;
+			
 			// aapt resource value: 0x7f0701c0
 			public const int AccountNotActivated = 2131165632;
 			
@@ -2776,6 +2779,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700c3
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1002 = 2131165379;
 			
+			// aapt resource value: 0x7f0701de
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall = 2131165662;
+			
 			// aapt resource value: 0x7f0700c4
 			public const int ServiceErrorCreateOrder_CannotCreateInIbs_7000 = 2131165380;
 			
@@ -2805,6 +2811,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070026
 			public const int ServiceError_ErrorCreatingOrderMessage = 2131165222;
+			
+			// aapt resource value: 0x7f0701dd
+			public const int ServiceError_ErrorCreatingOrderMessage_NoCall = 2131165661;
 			
 			// aapt resource value: 0x7f070115
 			public const int SettingViewLoginInfo = 2131165461;

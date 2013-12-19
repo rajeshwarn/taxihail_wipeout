@@ -179,32 +179,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var paypal = this.GetService<IPayPalExpressCheckoutService>();
                 paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
 					.ToObservable()
-                // Always Hide progress indicator
-						.Do(_ => MessageService.ShowProgress(false), _ => MessageService.ShowProgress(false))
-						.Subscribe(checkoutUrl =>
-                {
-
-                    var @params = new Dictionary<string, string>()
-                    {
- { "url", checkoutUrl },
-                    };
-                    this.RequestSubNavigate<PayPalViewModel, bool>(@params, success =>
-                    {
-                        if (success)
+                    // Always Hide progress indicator
+					.Do(_ => MessageService.ShowProgress(false), _ => MessageService.ShowProgress(false))
+					.Subscribe(checkoutUrl => {
+                        var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
+                        RequestSubNavigate<PayPalViewModel, bool>(@params, success =>
                         {
-                            ShowPayPalPaymentConfirmation();
-                            PaymentService.SetPaymentFromCache(Order.Id, Amount);
-
-                        }
-                        else
-                        {
-                            MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
-                        }
-                    });
-                }, error =>
-                {
-
-                });
+                            if (success)
+                            {
+                                ShowPayPalPaymentConfirmation();
+                                PaymentService.SetPaymentFromCache(Order.Id, Amount);
+                            }
+                            else
+                            {
+                                MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
+                            }
+                        });
+                }, error => { });
             }
         }
 
@@ -212,32 +203,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (CanProceedToPayment())
             {
-                //  MessageService.ShowMessage( 
                 using (MessageService.ShowProgress ())
                 {
-
-                    var preAuthResponse = PaymentService.PreAuthorize(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
-
-                    if (!preAuthResponse.IsSuccessfull)
+                    var response = PaymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+                    if (!response.IsSuccessfull)
                     {
                         MessageService.ShowProgress(false);
                         MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
                         return;
                     }
-                    // Give the backend some time to proccess the previous command
-                    Thread.Sleep(500); //todo <- waiting needlessly
 
-                    var response = PaymentService.CommitPreAuthorized(preAuthResponse.TransactionId);
-                    if (!response.IsSuccessfull)
-                    {
-                        MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.TaxiServerDownMessage);
-                    }
-                    else
-                    {
-                        PaymentService.SetPaymentFromCache(Order.Id, Amount);
-
-                        ShowCreditCardPaymentConfirmation(response.AuthorizationCode);	
-                    }
+                    PaymentService.SetPaymentFromCache(Order.Id, Amount);
+                    ShowCreditCardPaymentConfirmation(response.AuthorizationCode);
                 }
             }
         }

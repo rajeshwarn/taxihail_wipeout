@@ -2,38 +2,20 @@
 using SocialNetworks.Services;
 #endif
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.Data;
-using MK.Booking.Api.Client;
-using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Security;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
-using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -118,9 +100,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
             return GetClient().CommitPreAuthorized(transactionId);
-
-
         }
+
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        {
+            return GetClient().PreAuthorizeAndCommit(cardToken, amount, meterAmount, tipAmount, orderId);
+        }   
     }
 }
 
