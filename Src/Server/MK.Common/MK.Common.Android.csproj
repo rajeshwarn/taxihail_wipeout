@@ -54,6 +54,7 @@
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\Rule.cs" />

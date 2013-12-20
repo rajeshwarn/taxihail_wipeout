@@ -81,6 +81,7 @@
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />

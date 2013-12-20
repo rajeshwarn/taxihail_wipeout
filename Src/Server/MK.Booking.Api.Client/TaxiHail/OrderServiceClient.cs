@@ -61,6 +61,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
+        public OrderPairingDetail GetOrderPairing(Guid orderId)
+        {
+            var req = string.Format("/account/orders/{0}/pairing", orderId);
+            var result = Client.Get<OrderPairingDetail>(req);
+            return result;
+        }
+
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
             var req = string.Format("/account/orders/status/active");
@@ -81,7 +88,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Common.Entity.OrderRatings GetOrderRatings(Guid orderId)
         {
             var req = string.Format("/ratings/{0}", orderId);
-
             return Client.Get<Common.Entity.OrderRatings>(req);
         }
         
@@ -98,7 +104,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 return Client.Post<OrderValidationResult>(req, order);
             }
         }
-
-
     }
 }

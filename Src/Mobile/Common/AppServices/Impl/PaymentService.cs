@@ -105,9 +105,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return GetClient().PreAuthorizeAndCommit(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
-        public PairingResponse Pair(string medallion, string driverId, string customerId, string customerName, double latitude, double longitude, bool autoCompletePayment, int? autoTipPercentage, double? autoTipAmount)
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
-            throw new NotImplementedException();
+            return GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+        }
+
+        public BasePaymentResponse Unpair(Guid orderId)
+        {
+            return GetClient().Unpair(orderId);
         }
     }
 }

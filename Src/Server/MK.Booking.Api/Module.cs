@@ -72,8 +72,8 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
-
-
+            Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
+            
             Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
             Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>()

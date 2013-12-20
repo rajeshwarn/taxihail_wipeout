@@ -1,12 +1,10 @@
 ﻿using System;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Net;
 using System.IO;
@@ -85,19 +83,22 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
 
-        public PairingResponse Pair(string medallion, string driverId, string customerId, string customerName, double latitude, double longitude, bool autoCompletePayment, int? autoTipPercentage, double? autoTipAmount)
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
             return Client.Post(new PairingRidelinqCmtRequest
             {
+                OrderId = orderId,
+                CardToken = cardToken,
                 AutoTipAmount = autoTipAmount,
-                AutoTipPercentage = autoTipPercentage,
-                AutoCompletePayment = autoCompletePayment,
-                CustomerId = customerId,
-                CustomerName = customerName,
-                DriverId = driverId,
-                Latitude = latitude,
-                Longitude = longitude,
-                Medallion = medallion
+                AutoTipPercentage = autoTipPercentage
+            });
+        }
+
+        public BasePaymentResponse Unpair(Guid orderId)
+        {
+            return Client.Post(new UnpairingRidelinqCmtRequest
+            {
+                OrderId = orderId
             });
         }
 
