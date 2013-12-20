@@ -46,6 +46,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			base.OnCreate(bundle);
 			_touchMap.OnCreate(bundle);
 
+			var errorCode = GooglePlayServicesUtil.IsGooglePlayServicesAvailable(this.ApplicationContext);
+			if (errorCode == ConnectionResult.ServiceMissing
+			    || errorCode == ConnectionResult.ServiceVersionUpdateRequired
+			    || errorCode == ConnectionResult.ServiceDisabled)
+			{
+				ViewModel.GooglePlayServicesNotAvailable.Execute();
+				var dialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, this, 0);
+				dialog.Show();
+				dialog.DismissEvent += (s,e) => Finish();
+			}
+			else
+			{
+				InitMap();
+			}
+
+		}
+
+		private void InitMap()
+		{
 			try
 			{
 				MapsInitializer.Initialize(this.ApplicationContext);
@@ -54,14 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			catch (GooglePlayServicesNotAvailableException e)
 			{
 				Logger.LogError(e);
-                ViewModel.GooglePlayServicesNotAvailable.Execute(new Action(() => {
-                    StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=com.google.android.gms")));
-                }));
 			}
-
 		}
-
-
 
 
 
