@@ -54,6 +54,27 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         }
 
         [Test]
+        public void when_paymentmode_changed_from_cmt_to_ridelinq()
+        {
+            var newSettings = new ServerPaymentSettings()
+            {
+                PaymentMode = PaymentMethod.RideLinqCmt
+            };
+
+            sut.When(new UpdatePaymentSettings()
+            {
+                ServerPaymentSettings = newSettings
+            });
+
+
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = sut.ThenHasOne<PaymentSettingUpdated>();
+            sut.ThenHasNo<PaymentModeChanged>();
+
+            Assert.AreEqual(_companyId, evt.SourceId);
+        }
+
+        [Test]
         public void when_paymentsettings_updated_successfully()
         {
             var key = Guid.NewGuid().ToString();

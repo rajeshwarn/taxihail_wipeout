@@ -335,16 +335,21 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdatePaymentSettings(UpdatePaymentSettings command)
         {
-            if (PaymentMode != command.ServerPaymentSettings.PaymentMode)
+            if (PaymentMode != command.ServerPaymentSettings.PaymentMode && !GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMode, command.ServerPaymentSettings.PaymentMode))
             {
-                Update(new PaymentModeChanged()
-                { });
+                Update(new PaymentModeChanged());
             }
 
-            Update(new PaymentSettingUpdated()
+            Update(new PaymentSettingUpdated
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
+        }
+
+        private bool GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMethod original, PaymentMethod newMethod)
+        {
+            return ((original == PaymentMethod.Cmt || original == PaymentMethod.RideLinqCmt) &&
+                    (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
         }
 
         protected PaymentMethod PaymentMode { get; set; }

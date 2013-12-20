@@ -65,6 +65,7 @@
   <select name="paymentMode"  class="settingsBox">
     <option value="None">{{localize "None"}}</option>
     <option value="Cmt">{{localize "CMT Payments"}}</option>
+    <option value="RideLinqCmt">{{localize "CMT RideLinQ Payments"}}</option>
     <option value="Braintree">{{localize "Braintree Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
@@ -121,11 +122,17 @@
       <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
     
-    <label class="control-label settingsLabel" >{{{localize "Server Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Payment Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.baseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
 
-    <label class="control-label settingsLabel" >{{{localize "Server Sandbox Url"}}}</label>
+    <label class="control-label settingsLabel" >{{{localize "Server Mobile Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.mobileBaseUrl" value="{{cmtPaymentSettings.mobileBaseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Server Payment Sandbox Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxBaseUrl" value="{{cmtPaymentSettings.sandboxBaseUrl}}" />
+
+    <label class="control-label settingsLabel" >{{{localize "Server Mobile Sandbox Url"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.sandboxMobileBaseUrl" value="{{cmtPaymentSettings.sandboxMobileBaseUrl}}" />
 
     <label class="control-label settingsLabel" >{{{localize "Consumer Secret Key"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.consumerSecretKey" value="{{cmtPaymentSettings.consumerSecretKey}}" />

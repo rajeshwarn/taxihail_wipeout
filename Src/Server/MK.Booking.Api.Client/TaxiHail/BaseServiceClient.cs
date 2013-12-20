@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using MK.Booking.Api.Client;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 #if !CLIENT
@@ -22,7 +21,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _url = url;
             _sessionId = sessionId;
             _userAgent = userAgent;
-
         }
 
         protected ServiceClientBase Client
@@ -37,7 +35,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
 			var client = new JsonServiceClient(_url) {Timeout = new TimeSpan(0, 0, 2, 0, 0)};
 
-
             var uri = new Uri(_url);
             if (!string.IsNullOrEmpty(_sessionId))
             {
@@ -45,7 +42,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
                 client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
             }
-
 
             client.LocalHttpWebRequestFilter = request => request.UserAgent = _userAgent;
             return client;

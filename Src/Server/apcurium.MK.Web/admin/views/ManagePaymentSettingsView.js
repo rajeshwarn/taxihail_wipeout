@@ -134,34 +134,36 @@
             
             this.$("[name = acceptChange]").removeAttr("checked");
 
-            var method = this.$("[name=paymentMode]").val();
+            var newPaymentMode = this.$("[name=paymentMode]").val();
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
 
-
-            if (this.model.toJSON().serverPaymentSettings.paymentMode != method) {
-                this.warningDiv.show();
-                this.onAcceptPaymentModeChange();
+            var method = this.model.toJSON().serverPaymentSettings.paymentMode;
+            if (newPaymentMode != method) {
+                if ((newPaymentMode == "Cmt" && method == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && method == "Cmt")) {
+                    this.warningDiv.hide();
+                    this.saveButton.removeAttr('disabled');
+                } else {
+                    this.warningDiv.show();
+                    this.onAcceptPaymentModeChange();
+                }
             } else {
                 this.warningDiv.hide();
-
                 this.saveButton.removeAttr('disabled');
             }
 
-            if (method == "Cmt") {
+            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt") {
                 btDiv.hide();
                 cmtDiv.show();
             }
-            else if (method == "Braintree") {
+            else if (newPaymentMode == "Braintree") {
                 btDiv.show();
                 cmtDiv.hide();
             } else {
                 btDiv.hide();
                 cmtDiv.hide();
             }
-            
-
         }
     });
 

@@ -7,26 +7,26 @@ using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
-    public class CmtPaymentServiceClient : BaseServiceClient
+    public class CmtMobileServiceClient : BaseServiceClient
     {
-        public CmtPaymentServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
+        public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
             : base(cmtSettings.IsSandbox
-                    ? cmtSettings.SandboxBaseUrl
-                    : cmtSettings.BaseUrl, sessionId,userAgent)            
+                       ? cmtSettings.SandboxMobileBaseUrl
+                       : cmtSettings.MobileBaseUrl, sessionId, userAgent)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
-            
-			ConsumerKey = cmtSettings.CustomerKey;
-			ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
+
+            ConsumerKey = cmtSettings.CustomerKey;
+            ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
             //todo - Bug accept all certificates
             ServicePointManager.ServerCertificateValidationCallback = (p1, p2, p3, p4) => true;
         }
 
-		protected string ConsumerKey { get; private set; }
+        protected string ConsumerKey { get; private set; }
         protected string ConsumerSecretKey { get; private set; }
-        
+
         private void SignRequest(WebRequest request)
         {
             var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                                                                request.Method,
                                                                request.RequestUri,
                                                                null);
-            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);         
+            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
         }
 
         public T Get<T>(IReturn<T> request)
