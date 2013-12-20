@@ -74,6 +74,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
+        public PairingResponse Pair(string medallion, string driverId, string customerId, string customerName, double latitude, double longitude, bool autoCompletePayment, int? autoTipPercentage, double? autoTipAmount)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ResendConfirmationToDriver(Guid orderId)
         {
             Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });

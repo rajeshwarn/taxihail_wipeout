@@ -125,6 +125,9 @@
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\TripRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PayPal\" />

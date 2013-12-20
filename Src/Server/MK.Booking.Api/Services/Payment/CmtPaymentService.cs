@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -25,7 +29,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         readonly IOrderPaymentDao  _orderPaymentDao;
         readonly IOrderDao _orderDao;
         readonly IConfigurationManager _configurationManager;
-        private readonly CmtPaymentServiceClient Client;
+        private readonly CmtPaymentServiceClient CmtPaymentServiceClient;
+        private readonly CmtMobileServiceClient CmtMobileServiceClient;
 
         public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao, IConfigurationManager configurationManager)
         {
@@ -34,12 +39,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _orderDao = orderDao;
 
             _configurationManager = configurationManager;
-            Client = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "Test");
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
+            CmtMobileServiceClient = new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)
         {
-            var response = Client.Delete(new TokenizeDeleteRequest
+            var response = CmtPaymentServiceClient.Delete(new TokenizeDeleteRequest
             {
                 CardToken = request.CardToken
             });
@@ -70,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
                     };
 
-                var response = Client.Post(request);
+                var response = CmtPaymentServiceClient.Post(request);
 
                 var isSuccessful = response.ResponseCode == 1;
                 if (isSuccessful)
@@ -128,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
                 };
 
-                var authResponse = Client.Post(authRequest);
+                var authResponse = CmtPaymentServiceClient.Post(authRequest);
                 message = authResponse.ResponseMessage;
 
                 if (authResponse.ResponseCode == 1)
@@ -152,7 +158,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Thread.Sleep(500);
 
                     // commit transaction
-                    var captureResponse = Client.Post(new CaptureRequest
+                    var captureResponse = CmtPaymentServiceClient.Post(new CaptureRequest
                     {
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                         TransactionId = transactionId.ToLong(),
@@ -196,8 +202,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var payment = _orderPaymentDao.FindByTransactionId(request.TransactionId);
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
-                
-                var response = Client.Post(new CaptureRequest
+
+                var response = CmtPaymentServiceClient.Post(new CaptureRequest
                     {
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                         TransactionId = request.TransactionId.ToLong(),
@@ -228,6 +234,102 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         IsSuccessfull = false,
                         Message = e.Message,
                     };
+            }
+        }
+
+        public PairingResponse Post(PairingRidelinqCmtRequest request)
+        {
+            try
+            {
+                // send pairing request
+                var response = CmtMobileServiceClient.Post(new PairingRequest
+                {
+                    AutoTipAmount = request.AutoTipAmount,
+                    AutoTipPercentage = request.AutoTipPercentage,
+                    AutoCompletePayment = request.AutoCompletePayment,
+                    CallbackUrl = "", // todo wait for confirmation of what we will receive at this callback
+                    CustomerId = request.CustomerId,
+                    CustomerName = request.CustomerName,
+                    DriverId = request.DriverId,
+                    Latitude = request.Latitude,
+                    Longitude = request.Longitude,
+                    Medallion = request.Medallion
+                });
+
+                // fetch trip until 
+                try
+                {
+                    var watch = new Stopwatch();
+                    watch.Start();
+                    var trip = GetTrip(response.PairingToken);
+                    while (trip == null)
+                    {
+                        Thread.Sleep(2000);
+                        trip = GetTrip(response.PairingToken);
+
+                        if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                        {
+                            throw new TimeoutException("Could not be paired with vehicle");
+                        }
+                    }
+
+                    // todo send a command to save the pairing state for this order
+                    return new PairingResponse
+                    {
+                        IsSuccessfull = true,
+                        Message = "Success",
+                        PairingToken = response.PairingToken,
+                        PairingCode = response.PairingCode,
+                        Medallion = response.Medallion,
+                        TripId = response.TripId,
+                        DriverId = response.DriverId
+                    };
+                }
+                catch (Exception e)
+                {
+                    return new PairingResponse
+                    {
+                        IsSuccessfull = false,
+                        Message = e.Message
+                    };
+                }
+            }
+            catch (WebException e)
+            {
+                var x = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
+
+                return new PairingResponse
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        private Trip GetTrip(string pairingToken)
+        {
+            try
+            {
+                var trip = CmtMobileServiceClient.Get(new TripRequest{ Token = pairingToken });
+                if (trip != null)
+                {
+                    //ugly fix for deserilization problem in datetime on the device for IOS
+                    if (trip.StartTime.HasValue)
+                    {
+                        trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
+                    }
+
+                    if (trip.EndTime.HasValue)
+                    {
+                        trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
+                    }
+                }
+
+                return trip;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

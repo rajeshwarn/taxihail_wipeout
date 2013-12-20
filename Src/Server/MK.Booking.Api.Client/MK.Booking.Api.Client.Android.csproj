@@ -78,9 +78,12 @@
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
+    <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
     <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
     <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
