@@ -6,6 +6,8 @@ using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
+using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -30,10 +32,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
         readonly IConfigurationManager _configurationManager;
+        private readonly ILogger _logger;
         private readonly CmtPaymentServiceClient CmtPaymentServiceClient;
         private readonly CmtMobileServiceClient CmtMobileServiceClient;
 
-        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configurationManager)
+        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger)
         {
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
@@ -41,6 +44,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _accountDao = accountDao;
 
             _configurationManager = configurationManager;
+            _logger = logger;
             CmtPaymentServiceClient = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
             CmtMobileServiceClient = new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
         }
@@ -251,12 +255,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request
+
+                // Determine the root path to the app 
+                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
                 var response = CmtMobileServiceClient.Post(new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    CallbackUrl = "", // todo wait for confirmation of what we will receive at this callback
+                    CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
@@ -364,6 +371,33 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
+        public void Post(CallbackRequest request)
+        {
+            try
+            {
+                if(request == null) throw new Exception("Received callback but couldn't cast to CallbackRequest/Trip");
+
+                if (request.Type == "TRIP")
+                {
+                    // this is the end of trip event
+                    var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
+                    
+                    Post(new PreAuthorizeAndCommitPaymentCmtRequest
+                        {
+                            OrderId = request.OrderId,
+                            Amount = request.Fare + request.Tip,
+                            MeterAmount = request.Fare,
+                            TipAmount = request.Tip,
+                            CardToken = orderPairingDetail.TokenOfCardToBeUsedForPayment
+                        });
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+            }
+        }
+
         private Trip GetTrip(string pairingToken)
         {
             try
@@ -391,4 +425,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
     }
+
+
 }
