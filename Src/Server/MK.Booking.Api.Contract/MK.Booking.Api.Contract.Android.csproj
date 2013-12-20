@@ -78,6 +78,7 @@
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\CommitPreauthorizedPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\DeleteTokenizedCreditcardCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizePaymentCmtRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
     <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />

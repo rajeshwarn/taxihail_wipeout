@@ -165,6 +165,7 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\Trip.cs" />
     <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
     <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />

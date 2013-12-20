@@ -93,6 +93,7 @@
     <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
     <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\TripRequest.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
     <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />

@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Client
         PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId);
         CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId);
         CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId);
+        PairingResponse Pair(string medallion, string driverId, string customerId, string customerName, double latitude, double longitude, bool autoCompletePayment, int? autoTipPercentage, double? autoTipAmount);
 	}
 }
 

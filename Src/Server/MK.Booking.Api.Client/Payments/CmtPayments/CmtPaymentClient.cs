@@ -31,11 +31,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             _logger = logger;
             _userAgent = userAgent;
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent);
-            CmtMobileServiceClient = new CmtMobileServiceClient(cmtSettings, null, userAgent);
         }
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
-        private CmtMobileServiceClient CmtMobileServiceClient { get; set; }
 
         public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
@@ -87,9 +85,20 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
 
-        public PairingResponse Pair(PairingRidelinqCmtRequest request)
+        public PairingResponse Pair(string medallion, string driverId, string customerId, string customerName, double latitude, double longitude, bool autoCompletePayment, int? autoTipPercentage, double? autoTipAmount)
         {
-            return Pair(CmtMobileServiceClient, request);
+            return Client.Post(new PairingRidelinqCmtRequest
+            {
+                AutoTipAmount = autoTipAmount,
+                AutoTipPercentage = autoTipPercentage,
+                AutoCompletePayment = autoCompletePayment,
+                CustomerId = customerId,
+                CustomerName = customerName,
+                DriverId = driverId,
+                Latitude = latitude,
+                Longitude = longitude,
+                Medallion = medallion
+            });
         }
 
         private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient, string accountNumber, DateTime expiryDate)
@@ -116,47 +125,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 var x = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
 
                 return new TokenizedCreditCardResponse
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message
-                };
-            }
-        }
-
-        private static PairingResponse Pair(CmtMobileServiceClient cmtMobileServiceClient, PairingRidelinqCmtRequest request)
-        {
-            try
-            {
-                var response = cmtMobileServiceClient.Post(new PairingRequest
-                {
-                    AutoTipAmount = request.AutoTipAmount,
-                    AutoTipPercentage = request.AutoTipPercentage,
-                    AutoCompletePayment = request.AutoCompletePayment,
-                    CallbackUrl = "", // todo wait for confirmation of what we receive
-                    CustomerId = request.CustomerId,
-                    CustomerName = request.CustomerName,
-                    DriverId = request.DriverId,
-                    Latitude = request.Latitude,
-                    Longitude = request.Longitude,
-                    Medallion = request.Medallion
-                });
-
-                return new PairingResponse
-                {
-                    IsSuccessfull = true,
-                    Message = "Success",
-                    PairingToken = response.PairingToken,
-                    PairingCode = response.PairingCode,
-                    Medallion = response.Medallion,
-                    TripId = response.TripId,
-                    DriverId = response.DriverId
-                };
-            }
-            catch (WebException e)
-            {
-                var x = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
-
-                return new PairingResponse
                 {
                     IsSuccessfull = false,
                     Message = e.Message
