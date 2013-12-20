@@ -135,6 +135,9 @@
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
+    <Compile Include="Resources\Payments\PairingResponse.cs" />
+    <Compile Include="Resources\Payments\Cmt\Trip.cs" />
+    <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

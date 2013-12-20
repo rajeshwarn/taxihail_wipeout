@@ -63,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 case PaymentMethod.Braintree:
                     return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);;
-
+				
+				case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
                     return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
 
