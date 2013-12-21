@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
 
-                var order = context.Set<OrderDetail>().Single(o=>o.Id == payment.OrderId);
+                var order = context.Set<OrderDetail>().SingleOrDefault(o=>o.Id == payment.OrderId);
                 if (order == null)
                 {
                     Console.WriteLine("Order {0} not found for payment {1}", payment.OrderId, payment.PaymentId);
