@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace MK.Booking.IBS.Test.OrderFixture
@@ -19,26 +18,24 @@ namespace MK.Booking.IBS.Test.OrderFixture
         {
             Sut = new WebOrder7Service {Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
             _accountId = CreateIBSAccount();
-
-
         }
 
         [Test]
         public void when_creating_an_order()
         {
             var order = new TBookOrder_7();
-            order.ServiceProviderID = MobileKnowledgeProviderId;
+            order.ServiceProviderID = TheChauffeurGroupProviderId;
             order.AccountID = _accountId;
-            var pickupDateTime = DateTime.Now;
+            var pickupDateTime = DateTime.Now.AddMinutes(5);
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
-            order.PickupAddress = new TWEBAddress { StreetPlace = "LHR", Longitude = -0.438100, Latitude = 51.481100 };
+            order.PickupAddress = new TWEBAddress { StreetPlace = "5252, rue ferrier, Montreal, H4P2H5", Latitude = 45.498068, Longitude = -73.656916 };
             order.DropoffAddress = new TWEBAddress { StreetPlace = " ", Longitude = 0.00, Latitude = 0.00 };
             order.Note = "This is a test";
-            order.Phone = "9056667777";
-            order.ContactPhone = "9056667777";
+            order.Phone = "5146543024";
+            order.ContactPhone = "5146543024";
             order.OrderDate = order.PickupDate;
-            order.VehicleTypeID = 7;
+            order.VehicleTypeID = 1;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
 
