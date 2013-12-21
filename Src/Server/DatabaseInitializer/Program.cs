@@ -145,10 +145,6 @@ namespace DatabaseInitializer
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
 
-                
-
-
-
 
                 if (isUpdate)
                 {
@@ -192,6 +188,14 @@ namespace DatabaseInitializer
                             ConfimationToken = admin.ConfirmationToken
                         });
 
+                    }
+
+                    //for dev company, delete old database to prevent keeping too many databases
+                    if (companyName == "MKWebDev")
+                    {
+#if DEBUG
+                        creatorDb.DropDatabase(connStringMaster, oldDatabase);
+#endif
                     }
                 }
                 else
