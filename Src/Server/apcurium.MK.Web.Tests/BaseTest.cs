@@ -1,45 +1,39 @@
 ﻿using System.Data.Entity;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using log4net.Config;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
+using ServiceStack.Common.Extensions;
 
 namespace apcurium.MK.Web.Tests
 {
     public class BaseTest
     {
-        static readonly AppHost _appHost;
-
-        //staging url : http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/
+        static readonly AppHost AppHost;
         protected string BaseUrl { get { return "http://localhost:6901/"; } }
-        //protected string BaseUrl { get { return "http://192.168.12.114/apcurium.MK.Web/api/"; } }
-        
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }
         protected string TestAdminAccountPassword { get { return "password1"; } }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
-
         protected AccountServiceClient AccountService { get { return new AccountServiceClient(BaseUrl, SessionId, "Test", GetFakePaymentClient()); } }
-
-
         protected DummyConfigManager DummyConfigManager { get { return new DummyConfigManager(); } }
-
         static BaseTest()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));
+#pragma warning disable 618
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-            _appHost = new AppHost();
-            _appHost.Init();
+#pragma warning restore 618
+            AppHost = new AppHost();
+            AppHost.Init();
         }
 
         protected IPaymentServiceClient GetFakePaymentClient()
@@ -48,7 +42,7 @@ namespace apcurium.MK.Web.Tests
         }
         public virtual void TestFixtureSetup()
         {
-            _appHost.Start(BaseUrl);
+            AppHost.Start(BaseUrl);
 
             TestAccount = AccountService.GetTestAccount(0);
         }
@@ -57,13 +51,11 @@ namespace apcurium.MK.Web.Tests
         {
             var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
-           
-           
         }
 
         public virtual void TestFixtureTearDown()
         {
-            _appHost.Stop();
+            AppHost.Stop();
         }
 
         protected  string GetTempEmail()
@@ -109,6 +101,20 @@ namespace apcurium.MK.Web.Tests
             SessionId = authResponse.SessionId;
 
             return AccountService.GetMyAccount();
+        }
+
+        protected async Task<int> GetProviderId()
+        {
+            var referenceDataClient = new ReferenceDataServiceClient(BaseUrl, SessionId, "Test");
+            var data = await referenceDataClient.GetReferenceData();
+            return data.CompaniesList.First().Id.Value;
+        }
+
+        protected async Task<int> GetVehiculeId()
+        {
+            var referenceDataClient = new ReferenceDataServiceClient(BaseUrl, SessionId, "Test");
+            var data = await referenceDataClient.GetReferenceData();
+            return data.VehiclesList.First().Id.Value;
         }
         
     }

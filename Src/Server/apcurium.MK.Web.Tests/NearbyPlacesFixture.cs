@@ -90,7 +90,12 @@ namespace apcurium.MK.Web.Tests
                                 {
                                     Id = orderId,
                                     PickupAddress = address,
-                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 18, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
+                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = Provider.MobileKnowledgeProviderId, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" },
+                                    Estimate = new CreateOrder.RideEstimate
+                                    {
+                                        Distance = 3,
+                                        Price = 10
+                                    }
                                 });
             var order = sut.GetOrder(orderId);
 

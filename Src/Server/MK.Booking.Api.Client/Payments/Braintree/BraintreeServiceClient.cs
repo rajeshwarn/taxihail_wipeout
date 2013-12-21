@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         {
             var braintree = new BraintreeEncrypter(ClientKey);
             var encryptedNumber = braintree.Encrypt(creditCardNumber);
-            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy"));
+            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
             var encryptedCvv = braintree.Encrypt(cvv);
 
             return Client.Post(new TokenizeCreditCardBraintreeRequest()

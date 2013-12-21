@@ -36,17 +36,22 @@ namespace apcurium.MK.Web.Tests
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
-
+            var providerId = Provider.MobileKnowledgeProviderId;
+            
             //Act
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
                 PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),                   
-                
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Distance = 3,
+                    Price = 10
+                }
             };
-            order.Settings = new BookingSettings{ ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 17, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 7, ProviderId = providerId, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
             orderService.CreateOrder(order);
 
             //Assert
@@ -86,7 +91,12 @@ namespace apcurium.MK.Web.Tests
                                    Passengers = 6,
                                    NumberOfTaxi = 1,
                                    Name = "Joe Smith"
-                               }
+                               },
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Distance = 3,
+                    Price = 10
+                }
 
             };
             orderService.CreateOrder(order);
@@ -130,7 +140,11 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
-
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Distance = 3,
+                    Price = 10
+                }
             };
             order.Settings = new BookingSettings
             {
