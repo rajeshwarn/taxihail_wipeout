@@ -68,6 +68,17 @@ namespace DatabaseInitializer
                 IDictionary<string, string> settingsInDb = null;
 
                 var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
+
+                //for dev company, delete old database to prevent keeping too many databases
+                if (companyName == "MKWebDev"
+                    && isUpdate)
+                {
+#if DEBUG
+                    creatorDb.DropDatabase(connStringMaster, companyName);
+                    isUpdate = false;
+#endif
+                }
+
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
@@ -188,14 +199,6 @@ namespace DatabaseInitializer
                             ConfimationToken = admin.ConfirmationToken
                         });
 
-                    }
-
-                    //for dev company, delete old database to prevent keeping too many databases
-                    if (companyName == "MKWebDev")
-                    {
-#if DEBUG
-                        creatorDb.DropDatabase(connStringMaster, oldDatabase);
-#endif
                     }
                 }
                 else
