@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Booking.Api.Serialization;
 using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
@@ -18,7 +19,7 @@ using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Common.IoC;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 using ServiceStack.Common.Web;
-using apcurium.MK.Booking.Serialization;
+
 namespace apcurium.MK.Web
 {
     public class MkWebAppHost : AppHostBase
@@ -97,8 +98,7 @@ namespace apcurium.MK.Web
             });
 
 
-            ContentTypeFilters.Register("text/x-csv",
-    CsvCustomSerializer.SerializeToStream, CsvCustomSerializer.DeserializeFromStream);
+            ContentTypeFilters.Register("text/x-csv", CsvCustomSerializer.SerializeToStream, CsvCustomSerializer.DeserializeFromStream);
             ResponseFilters.Add((req, res, dto) =>
             {
                 if (req.ResponseContentType == "text/x-csv")

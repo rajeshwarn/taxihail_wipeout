@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ServiceStack.ServiceHost;
 using CsvHelper;
+using ServiceStack.ServiceHost;
 
-namespace apcurium.MK.Booking.Serialization
+namespace apcurium.MK.Booking.Api.Serialization
 {
     public class CsvCustomSerializer
     {

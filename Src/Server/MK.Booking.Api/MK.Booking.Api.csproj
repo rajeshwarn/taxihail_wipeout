@@ -49,6 +49,9 @@
     <Reference Include="Braintree-2.27.0">
       <HintPath>..\packages\Braintree.2.27.0\lib\Braintree-2.27.0.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.3.0\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -118,6 +121,7 @@
     <Compile Include="Security\CustomTwitterAuthProvider.cs" />
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
+    <Compile Include="Serialization\CsvCustomSerializer.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\AdminEnableAccountService.cs" />
