@@ -1,7 +1,5 @@
 ﻿using System.Data.Entity;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -11,7 +9,6 @@ using apcurium.MK.Web.SelfHost;
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using log4net.Config;
-using ServiceStack.Common.Extensions;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -102,20 +99,5 @@ namespace apcurium.MK.Web.Tests
 
             return AccountService.GetMyAccount();
         }
-
-        protected async Task<int> GetProviderId()
-        {
-            var referenceDataClient = new ReferenceDataServiceClient(BaseUrl, SessionId, "Test");
-            var data = await referenceDataClient.GetReferenceData();
-            return data.CompaniesList.First().Id.Value;
-        }
-
-        protected async Task<int> GetVehiculeId()
-        {
-            var referenceDataClient = new ReferenceDataServiceClient(BaseUrl, SessionId, "Test");
-            var data = await referenceDataClient.GetReferenceData();
-            return data.VehiclesList.First().Id.Value;
-        }
-        
     }
 }

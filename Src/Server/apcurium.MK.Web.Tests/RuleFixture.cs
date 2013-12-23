@@ -351,7 +351,7 @@ namespace apcurium.MK.Web.Tests
 
             var validation = ValidateOrder(null);
 
-            Assert.IsTrue(validation.HasWarning);
+            Assert.IsFalse(validation.HasWarning);
         }
 
 

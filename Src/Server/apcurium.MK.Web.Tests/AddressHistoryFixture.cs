@@ -3,15 +3,12 @@ using System.Linq;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
     internal class AddressHistoryFixture : BaseTest
     {
-        private Guid _knownAddressId = Guid.NewGuid();
-
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -36,7 +33,7 @@ namespace apcurium.MK.Web.Tests
             //Arrange
             var newAccount = CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            var providerId = Provider.MobileKnowledgeProviderId;
+            const int providerId = Provider.MobileKnowledgeProviderId;
             
             //Act
             var order = new CreateOrder
@@ -104,7 +101,7 @@ namespace apcurium.MK.Web.Tests
 
             //Act
             Guid addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveAddress()
+            sut.AddFavoriteAddress(new SaveAddress
             {
                 Id = addressId,
                 Address = new Address
