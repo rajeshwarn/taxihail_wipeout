@@ -60,11 +60,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps", "MK.Booki
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.ConfigurationManager", "MK.ConfigurationManager\MK.ConfigurationManager.csproj", "{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.DeploymentService", "MK.DeploymentService\MK.DeploymentService.csproj", "{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PopularAddressLoader", "PopularAddressLoader\PopularAddressLoader.csproj", "{06F75950-7D90-4C7C-B710-D56CCE3B4F36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.PayPal", "MK.Booking.PayPal\MK.Booking.PayPal.csproj", "{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}"
 EndProject
@@ -75,8 +71,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentServiceTools", "DeploymentServiceTools\DeploymentServiceTools.csproj", "{78A8B275-4004-4586-893B-607EC1F98F26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.Test", "MK.Booking.IBS.Test\MK.Booking.IBS.Test.csproj", "{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.MigrateIIS", "MK.MigrateIIS\MK.MigrateIIS.csproj", "{D7D0714A-6E03-4C99-8B99-499129C8C678}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -292,15 +286,6 @@ Global
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|x86.ActiveCfg = Release|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -310,15 +295,6 @@ Global
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|x86.ActiveCfg = Release|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36}.Release|x86.ActiveCfg = Release|Any CPU
 		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -367,15 +343,6 @@ Global
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|x86.ActiveCfg = Release|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D7D0714A-6E03-4C99-8B99-499129C8C678}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -403,11 +370,8 @@ Global
 		{9B7899D1-3D82-4359-B062-12828A96A29B} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 		{51717880-85AA-4BCB-AE92-8EDF27E37DFB} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
-		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
-		{06F75950-7D90-4C7C-B710-D56CCE3B4F36} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 		{78A8B275-4004-4586-893B-607EC1F98F26} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
-		{D7D0714A-6E03-4C99-8B99-499129C8C678} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35
