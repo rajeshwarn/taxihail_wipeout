@@ -7,8 +7,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
     [TestFixture]
     public class given_no_order
     {
-        private const int TheChauffeurGroupProviderId = 17;
-        private const int MobileKnowledgeProviderId = 18;
+        private const int TheChauffeurGroupProviderId = 18;
 
         protected WebOrder7Service Sut;
         private int _accountId;
@@ -16,7 +15,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
         [SetUp]
         public void Setup()
         {
-            Sut = new WebOrder7Service {Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
+            Sut = new WebOrder7Service {Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebOrder7"};
             _accountId = CreateIBSAccount();
         }
 
@@ -39,7 +38,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
 
-            var orderService = new WebOrder7Service { Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebOrder7" };
+            var orderService = new WebOrder7Service { Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebOrder7" };
             var orderId = orderService.SaveBookOrder_7("taxi", "test", order);
 
             Assert.Greater(orderId, 0);
@@ -50,7 +49,7 @@ namespace MK.Booking.IBS.Test.OrderFixture
         {
             var service = new WebAccount3Service
             {
-                Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebAccount3"
+                Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebAccount3"
             };
 
             var account = new TBookAccount3

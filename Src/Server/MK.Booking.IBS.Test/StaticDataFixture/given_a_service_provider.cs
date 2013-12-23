@@ -5,7 +5,6 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
     [TestFixture]
     public class given_a_service_provider
     {
-        private const int TheChauffeurGroupProviderId = 17;
         private const int MobileKnowledgeProviderId = 18;
         protected StaticDataservice Sut { get; private set; }
 
@@ -14,7 +13,7 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
         {
             Sut = new StaticDataservice
                       {
-                          Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IStaticData"
+                          Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IStaticData"
                       };
         }
 
@@ -23,8 +22,8 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
         [Test]
         public void when_no_zone_exists_for_coordinates()
         {
-            var zone = Sut.GetCompanyZoneByGPS("taxi", "test", TheChauffeurGroupProviderId, 43.566900, -79.574300);
-
+            var zone = Sut.GetCompanyZoneByGPS("taxi", "test", MobileKnowledgeProviderId, 43.0, -78);
+            
             Assert.AreEqual(" ", zone);
         }
 
@@ -33,7 +32,7 @@ namespace MK.Booking.IBS.Test.StaticDataFixture
         {
             var zone = Sut.GetCompanyZoneByGPS("taxi", "test", MobileKnowledgeProviderId, 43.566900, -79.574300);
 
-            Assert.AreEqual("701", zone);
+            Assert.AreEqual("  4", zone);
 
         }
     }
