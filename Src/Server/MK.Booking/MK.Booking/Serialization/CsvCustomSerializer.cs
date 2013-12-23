@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ServiceStack.ServiceHost;
 using CsvHelper;
 
@@ -11,22 +9,16 @@ namespace apcurium.MK.Booking.Serialization
 {
     public class CsvCustomSerializer
     {
-        static CsvCustomSerializer()
-        {
-        }
-
         public static void SerializeToStream<T>(IRequestContext requestContext, T response, Stream stream)
         {
             if (response is List<Dictionary<string, string>>)
             {
                 var responseSpe = response as List<Dictionary<string, string>>;
-                SerializeDictionaryToStream(requestContext, responseSpe, stream);
+                SerializeDictionaryToStream(responseSpe, stream);
             }
-
         }
 
-
-        private static void SerializeDictionaryToStream(IRequestContext requestContext, List<Dictionary<string, string>> response, Stream stream)
+        private static void SerializeDictionaryToStream(List<Dictionary<string, string>> response, Stream stream)
         {
             if (response == null) return;
 
@@ -62,7 +54,6 @@ namespace apcurium.MK.Booking.Serialization
                 }
             }
         }
-
   
         public static object DeserializeFromStream(Type type, Stream stream)
         {

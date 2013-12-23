@@ -9,7 +9,6 @@ using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Common.Configuration;
 using log4net.Config;
-using PostSharp.Aspects.Dependencies;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web

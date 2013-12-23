@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.PostSharp", "MK.Booking.PostSharp\MK.Booking.PostSharp.csproj", "{900A116F-10D3-465D-AB3F-22518848D472}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.WebServices", "MK.Booking.IBS.WebServices\MK.Booking.IBS.WebServices.csproj", "{7B223D35-2D7D-44B4-9EA9-A64E1AED5C65}"

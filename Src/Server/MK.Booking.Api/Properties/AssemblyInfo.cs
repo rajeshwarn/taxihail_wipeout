@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using PostSharp.Toolkit.Diagnostics;
+
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -36,5 +35,3 @@ using PostSharp.Toolkit.Diagnostics;
 [assembly: AssemblyVersion("1.4.32")]
 [assembly: AssemblyFileVersion("1.4.32")]
 
-//[assembly: Log] 
-//[assembly: Log(AttributeTargetMembers="regex:get_.*|set_.*" , OnEntryOptions = LogOptions.IncludeParameterValue, OnSuccessOptions = LogOptions.IncludeReturnValue)]
