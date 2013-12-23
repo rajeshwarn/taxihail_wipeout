@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Web;
 using System.Web.Optimization;
 
 namespace apcurium.MK.Web.Optimization
@@ -15,8 +12,8 @@ namespace apcurium.MK.Web.Optimization
             var content = new StringBuilder("TaxiHail.resources = {};");
             foreach (var file in response.Files)
             {
-                content.Append("TaxiHail.resources['" + file.Name.Replace(".json", "") + "'] = ");
-                using (var reader = file.OpenText())
+                content.Append("TaxiHail.resources['" + file.VirtualFile.Name.Replace(".json", "") + "'] = ");
+                using (var reader = new StreamReader(file.VirtualFile.Open(), Encoding.UTF8))
                 {
                     content.Append(reader.ReadToEnd() + ';');
                 }

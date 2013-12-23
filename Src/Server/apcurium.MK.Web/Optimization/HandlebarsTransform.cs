@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Web;
 using System.Web.Optimization;
 
 namespace apcurium.MK.Web.Optimization
@@ -16,8 +12,9 @@ namespace apcurium.MK.Web.Optimization
             var content = new StringBuilder("Handlebars.templates = {};");
             foreach (var file in response.Files)
             {
-                content.Append("Handlebars.templates['" + file.Name.Replace(".handlebars", "") + "'] = '");
-                using(var reader = file.OpenText())
+// ReSharper disable once PossibleNullReferenceException
+                content.Append("Handlebars.templates['" + file.VirtualFile.Name.Replace(".handlebars", "") + "'] = '");
+                using(var reader = new StreamReader(file.VirtualFile.Open(), Encoding.UTF8))
                 {
                     content.Append(reader.ReadToEnd().Replace("\\", "\\\\").Replace("'", "\\'").Replace("\r", "\\r").Replace("\n", "\\n") + "';");
                 }
