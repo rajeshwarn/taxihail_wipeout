@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -109,7 +110,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 var response = cmtPaymentServiceClient.Post(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
-                    ExpiryDate = expiryDate.ToString("yyMM")
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
                 });
 
                 return new TokenizedCreditCardResponse
