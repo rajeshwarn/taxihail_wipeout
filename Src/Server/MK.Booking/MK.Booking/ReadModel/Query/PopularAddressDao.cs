@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
@@ -17,7 +16,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<PopularAddressDetails> GetAll()
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<PopularAddressDetails>().ToList();
             }
@@ -25,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public PopularAddressDetails FindById(Guid id)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<PopularAddressDetails>().SingleOrDefault(c => c.Id == id);
             }

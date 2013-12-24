@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Infrastructure.Messaging.Handling;
-using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -21,48 +22,97 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<RoleAddedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>
     {
+        private readonly IConfigurationManager _configurationManager;
         private readonly Func<BookingDbContext> _contextFactory;
-        private IConfigurationManager _configurationManager;
+
         public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IConfigurationManager configurationManager)
         {
             _configurationManager = configurationManager;
             _contextFactory = contextFactory;
         }
 
+        public void Handle(AccountConfirmed @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = true;
+                account.DisabledByAdmin = false;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AccountDisabled @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = false;
+                account.DisabledByAdmin = true;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AccountPasswordReset @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Password = @event.Password;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AccountPasswordUpdated @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Password = @event.Password;
+                context.Save(account);
+            }
+        }
+
         public void Handle(AccountRegistered @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var account = new AccountDetail
-                                 {
-                                     Name = @event.Name,
-                                     Email = @event.Email,
-                                     Password = @event.Password,
-                                     Phone = @event.Phone,
-                                     Id = @event.SourceId,
-                                     IBSAccountId = @event.IbsAcccountId,
-                                     FacebookId = @event.FacebookId,
-                                     TwitterId = @event.TwitterId,
-                                     Language = @event.Language,
-                                     CreationDate = @event.EventDate,
-                                     ConfirmationToken = @event.ConfirmationToken,
-                                     IsConfirmed = @event.AccountActivationDisabled
-                                 };
+                {
+                    Name = @event.Name,
+                    Email = @event.Email,
+                    Password = @event.Password,
+                    Phone = @event.Phone,
+                    Id = @event.SourceId,
+                    IBSAccountId = @event.IbsAcccountId,
+                    FacebookId = @event.FacebookId,
+                    TwitterId = @event.TwitterId,
+                    Language = @event.Language,
+                    CreationDate = @event.EventDate,
+                    ConfirmationToken = @event.ConfirmationToken,
+                    IsConfirmed = @event.AccountActivationDisabled
+                };
 
                 if (@event.IsAdmin)
                 {
-                    account.Roles |= (int)Roles.Admin;
+                    account.Roles |= (int) Roles.Admin;
                 }
 
-                var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
+                int nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
+                account.Settings = new BookingSettings
+                {
+                    Name = account.Name,
+                    NumberOfTaxi = 1,
+                    Passengers = nbPassenger,
+                    Phone = account.Phone
+                };
 
                 context.Save(account);
-                var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
-                                             select a).ToList();
-                
+                List<DefaultAddressDetails> defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
+                    select a).ToList();
+
                 //add default company favorite address
-                defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails()
+                defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails
                 {
                     AccountId = account.Id,
                     Apartment = c.Apartment,
@@ -79,31 +129,9 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(AccountConfirmed @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.IsConfirmed = true;
-                account.DisabledByAdmin = false;
-                context.Save(account);
-            }
-        }
-
-        public void Handle(AccountDisabled @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.IsConfirmed = false;
-                account.DisabledByAdmin = true;
-                context.Save(account);
-            }
-        }
-
         public void Handle(AccountUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Name = @event.Name;
@@ -114,32 +142,34 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(BookingSettingsUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                var settings = account.Settings ?? new BookingSettings();
+                BookingSettings settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
                 settings.ChargeTypeId = @event.ChargeTypeId;
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                if (settings.ChargeTypeId ==
+                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
                 {
                     settings.ChargeTypeId = null;
                 }
 
 
-                if (settings.VehicleTypeId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                if (settings.VehicleTypeId ==
+                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
                 {
                     settings.VehicleTypeId = null;
                 }
 
-                if (settings.ProviderId == ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                if (settings.ProviderId ==
+                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
                 {
                     settings.ProviderId = null;
                 }
-
 
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
@@ -151,52 +181,9 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        private int? ParseToNullable(string val)
-        {
-            int result;
-            if (int.TryParse(val, out result))
-            {
-                return result;
-            }
-            else
-            {
-                return default(int?);
-            }
-        }
-
-        public void Handle(AccountPasswordReset @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Password = @event.Password;
-                context.Save(account);
-            }
-        }
-        public void Handle(AccountPasswordUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Password = @event.Password;
-                context.Save(account);
-            }
-        }
-
-        public void Handle(RoleAddedToUserAccount @event)
-        {
-            using(var context= _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Roles |= (int)Enum.Parse(typeof (Roles), @event.RoleName);
-
-                context.Save(account);
-            }
-        }
-
         public void Handle(PaymentProfileUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.DefaultCreditCard;
@@ -204,7 +191,26 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(account);
             }
         }
+
+        public void Handle(RoleAddedToUserAccount @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Roles |= (int) Enum.Parse(typeof (Roles), @event.RoleName);
+
+                context.Save(account);
+            }
+        }
+
+        private int? ParseToNullable(string val)
+        {
+            int result;
+            if (int.TryParse(val, out result))
+            {
+                return result;
+            }
+            return default(int?);
+        }
     }
 }
-
-

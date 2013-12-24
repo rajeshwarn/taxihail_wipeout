@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.ReadModel
     {
         public OrderDetailWithAccount()
         {
-
             PaymentInformation = new PaymentInformationDetails();
             PickupAddress = new Address();
             DropOffAddress = new Address();
@@ -17,7 +16,7 @@ namespace apcurium.MK.Booking.ReadModel
         }
 
         public Guid Id { get; set; }
-        
+
         public Guid AccountId { get; set; }
 
         public string Email { get; set; }
@@ -35,7 +34,7 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime CreatedDate { get; set; }
 
         public int? IBSOrderId { get; set; }
-       
+
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
@@ -74,13 +73,11 @@ namespace apcurium.MK.Booking.ReadModel
         public string DriverLastName { get; set; }
 
 
-        public  decimal? PaymentMeterAmount  { get; set; }
+        public decimal? PaymentMeterAmount { get; set; }
 
-        public  decimal? PaymentTipAmount { get; set; }
+        public decimal? PaymentTipAmount { get; set; }
 
-        public  decimal? PaymentTotalAmount { get; set; }
-
-        
+        public decimal? PaymentTotalAmount { get; set; }
 
 
         public string CardToken { get; set; }
@@ -96,6 +93,6 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
 
-        public Dictionary<string, string> Rating {get;set;}
+        public Dictionary<string, string> Rating { get; set; }
     }
 }

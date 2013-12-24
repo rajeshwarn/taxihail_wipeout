@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -21,13 +19,13 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AppSettingsAddedOrUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (ConfigurationDbContext context = _contextFactory.Invoke())
             {
-                var settings = context.Query<AppSetting>().ToList();
+                List<AppSetting> settings = context.Query<AppSetting>().ToList();
 
                 foreach (var appSetting in @event.AppSettings)
                 {
-                    var setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
+                    AppSetting setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
 
                     if (setting != null)
                     {

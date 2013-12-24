@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Domain
 {
     public class Company : EventSourced
     {
+        private readonly Dictionary<RuleCategory, Guid> _defaultRules = new Dictionary<RuleCategory, Guid>();
         private Guid? _defaultTariffId;
-
-        private Dictionary<RuleCategory, Guid> _defaultRules = new Dictionary<RuleCategory, Guid>();
 
 
         public Company(Guid id)
             : base(id)
         {
             RegisterHandlers();
-            this.Update(new CompanyCreated
+            Update(new CompanyCreated
             {
                 SourceId = id,
             });
@@ -32,8 +31,10 @@ namespace apcurium.MK.Booking.Domain
             : base(id)
         {
             RegisterHandlers();
-            this.LoadFrom(history);
+            LoadFrom(history);
         }
+
+        protected PaymentMethod PaymentMode { get; set; }
 
         private void RegisterHandlers()
         {
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Domain
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new DefaultFavoriteAddressAdded
+            Update(new DefaultFavoriteAddressAdded
             {
                 Address = address
             });
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Domain
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new DefaultFavoriteAddressUpdated()
+            Update(new DefaultFavoriteAddressUpdated
             {
                 Address = address
             });
@@ -93,7 +94,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void RemoveDefaultFavoriteAddress(Guid addressId)
         {
-            this.Update(new DefaultFavoriteAddressRemoved
+            Update(new DefaultFavoriteAddressRemoved
             {
                 AddressId = addressId
             });
@@ -103,7 +104,7 @@ namespace apcurium.MK.Booking.Domain
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new PopularAddressAdded
+            Update(new PopularAddressAdded
             {
                 Address = address
             });
@@ -140,11 +141,11 @@ namespace apcurium.MK.Booking.Domain
             if (name.IsNullOrEmpty())
                 throw new ArgumentException("Rating name cannot be null or empty");
 
-            Update(new RatingTypeAdded()
-                       {
-                           Name = name,
-                           RatingTypeId = ratingTypeId
-                       });
+            Update(new RatingTypeAdded
+            {
+                Name = name,
+                RatingTypeId = ratingTypeId
+            });
         }
 
         public void UpdateRatingType(string name, Guid ratingTypeId)
@@ -152,7 +153,7 @@ namespace apcurium.MK.Booking.Domain
             if (name.IsNullOrEmpty())
                 throw new ArgumentException("Rating name cannot be null or empty");
 
-            Update(new RatingTypeUpdated()
+            Update(new RatingTypeUpdated
             {
                 Name = name,
                 RatingTypeId = ratingTypeId
@@ -167,14 +168,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded)
+        public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator,
+            double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded)
         {
             if (_defaultTariffId.HasValue)
             {
                 throw new InvalidOperationException("Only one default tariff can be created");
             }
 
-            this.Update(new TariffCreated
+            Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Default,
@@ -185,15 +187,14 @@ namespace apcurium.MK.Booking.Domain
                 MarginOfError = timeAdustmentFactor,
                 PassengerRate = pricePerPassenger,
             });
-
         }
 
 
-
-
-        public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger,double kilometerIncluded, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator,
+            double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
+            DateTime startTime, DateTime endTime)
         {
-            this.Update(new TariffCreated
+            Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Recurring,
@@ -209,9 +210,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DateTime startTime, DateTime endTime)
+        public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator,
+            double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DateTime startTime,
+            DateTime endTime)
         {
-            this.Update(new TariffCreated
+            Update(new TariffCreated
             {
                 TariffId = tariffId,
                 Type = TariffType.Day,
@@ -226,9 +229,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator,
+            double timeAdustmentFactor, decimal pricePerPassenger, double kilometerIncluded, DayOfTheWeek daysOfTheWeek,
+            DateTime startTime, DateTime endTime)
         {
-            this.Update(new TariffUpdated
+            Update(new TariffUpdated
             {
                 TariffId = tariffId,
                 Name = name,
@@ -245,40 +250,47 @@ namespace apcurium.MK.Booking.Domain
 
         public void DeleteTariff(Guid tariffId)
         {
-            if (tariffId == this._defaultTariffId)
+            if (tariffId == _defaultTariffId)
             {
                 throw new InvalidOperationException("Cannot delete default tariff");
             }
-            this.Update(new TariffDeleted
+            Update(new TariffDeleted
             {
                 TariffId = tariffId
             });
-
         }
 
-        
-        public void CreateRule(Guid ruleId, string name, string message, string zoneList,  RuleType type, RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority, bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo)
+
+        public void CreateRule(Guid ruleId, string name, string message, string zoneList, RuleType type,
+            RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking, int priority,
+            bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
+            DateTime? activeTo)
         {
             /*if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
             {
                 throw new InvalidOperationException(string.Format("Only one default rule of type {0} can be created", category.ToString()));
             }*/
 
-            if ((type == RuleType.Default) && message.IsNullOrEmpty() )
+            if ((type == RuleType.Default) && message.IsNullOrEmpty())
             {
-                throw new InvalidOperationException(string.Format("Missing message for default rule", category.ToString()));
+                throw new InvalidOperationException(string.Format("Missing message for default rule",
+                    category.ToString()));
             }
-            else if ((type == RuleType.Recurring ) && (Params.Get( message, name ).Any( s => s.IsNullOrEmpty() ) || (daysOfTheWeek == DayOfTheWeek.None) || (!startTime.HasValue) || (!endTime.HasValue) )  )
+            if ((type == RuleType.Recurring) &&
+                (Params.Get(message, name).Any(s => s.IsNullOrEmpty()) || (daysOfTheWeek == DayOfTheWeek.None) ||
+                 (!startTime.HasValue) || (!endTime.HasValue)))
             {
                 throw new InvalidOperationException("Missing message for recurrring rule");
             }
-            else if ((type == RuleType.Date) && (Params.Get(message, name).Any(s => s.IsNullOrEmpty()) || (!activeFrom.HasValue) || (!activeFrom.HasValue)))
+            if ((type == RuleType.Date) &&
+                (Params.Get(message, name).Any(s => s.IsNullOrEmpty()) || (!activeFrom.HasValue) ||
+                 (!activeFrom.HasValue)))
             {
                 throw new InvalidOperationException("Missing message for date rule");
             }
 
-            
-            this.Update(new RuleCreated
+
+            Update(new RuleCreated
             {
                 RuleId = ruleId,
                 Type = type,
@@ -296,13 +308,13 @@ namespace apcurium.MK.Booking.Domain
                 ActiveTo = activeTo,
                 Priority = /*type == RuleType.Default ? 0 :*/ priority,
             });
-
         }
 
-        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool appliedToCurrentBooking, bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+        public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool appliedToCurrentBooking,
+            bool appliesToFutureBooking, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
+            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
         {
-
-            this.Update(new RuleUpdated
+            Update(new RuleUpdated
             {
                 RuleId = ruleId,
                 Name = name,
@@ -318,16 +330,15 @@ namespace apcurium.MK.Booking.Domain
                 ActiveTo = activeTo,
                 Priority = priority,
             });
-
         }
 
         public void DeleteRule(Guid ruleId)
         {
-           /* if (_defaultRules.ContainsValue( ruleId ) )
+            /* if (_defaultRules.ContainsValue( ruleId ) )
             {
                 throw new InvalidOperationException("Cannot delete default tariff");
             }*/
-            this.Update(new RuleDeleted
+            Update(new RuleDeleted
             {
                 RuleId = ruleId
             });
@@ -335,7 +346,8 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdatePaymentSettings(UpdatePaymentSettings command)
         {
-            if (PaymentMode != command.ServerPaymentSettings.PaymentMode && !GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMode, command.ServerPaymentSettings.PaymentMode))
+            if (PaymentMode != command.ServerPaymentSettings.PaymentMode &&
+                !GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMode, command.ServerPaymentSettings.PaymentMode))
             {
                 Update(new PaymentModeChanged());
             }
@@ -352,28 +364,25 @@ namespace apcurium.MK.Booking.Domain
                     (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
         }
 
-        protected PaymentMethod PaymentMode { get; set; }
-
         public void ActivateRule(Guid ruleId)
-        {            
+        {
             Update(new RuleActivated
             {
                 RuleId = ruleId
             });
-
         }
 
         public void DeactivateRule(Guid ruleId)
-        {            
-            this.Update(new RuleDeactivated
+        {
+            Update(new RuleDeactivated
             {
                 RuleId = ruleId
             });
-
         }
 
 
-        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
+        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
+            double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
             {
@@ -395,7 +404,7 @@ namespace apcurium.MK.Booking.Domain
         {
             if (@event.Type == TariffType.Default)
             {
-                this._defaultTariffId = @event.TariffId;
+                _defaultTariffId = @event.TariffId;
             }
         }
 
@@ -412,8 +421,6 @@ namespace apcurium.MK.Booking.Domain
                     _defaultRules[@event.Category] = @event.RuleId;
                 }
             }
-
-            
         }
 
 
@@ -421,6 +428,5 @@ namespace apcurium.MK.Booking.Domain
         {
             // Do nothing
         }
-
     }
 }

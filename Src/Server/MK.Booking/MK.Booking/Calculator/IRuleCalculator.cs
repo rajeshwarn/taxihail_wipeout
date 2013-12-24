@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.Calculator

@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
 using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Common;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
-    public class PushNotificationService: IPushNotificationService
+    public class PushNotificationService : IPushNotificationService
     {
-        readonly IConfigurationManager _configurationManager;
-        readonly ILogger _logger;
-        readonly PushService _push;
-        private bool _started = false;
+        private readonly IConfigurationManager _configurationManager;
+        private readonly ILogger _logger;
+        private readonly PushService _push;
+        private bool _started;
 
         public PushNotificationService(IConfigurationManager configurationManager, ILogger logger)
         {
@@ -29,7 +28,8 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         }
 
 
-        public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
+        public void Send(string alert, IDictionary<string, object> data, string deviceToken,
+            PushNotificationServicePlatform platform)
         {
             EnsureStarted();
 
@@ -53,17 +53,19 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _started = true;
 
 #if DEBUG
-            var production = false;
-            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
+            bool production = false;
+            string certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
 #else
             var production = true;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
 #endif
             // Push notifications
 
-            var test = _configurationManager.GetSetting("GCM.SenderId");
-            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
-            var androidSettings = new GcmPushChannelSettings(test, apiKey, _configurationManager.GetSetting("GCM.PackageName"));
+            string test = _configurationManager.GetSetting("GCM.SenderId");
+            string apiKey = _configurationManager.GetSetting("GCM.APIKey");
+            var androidSettings = new GcmPushChannelSettings(test, apiKey,
+                _configurationManager.GetSetting("GCM.PackageName"));
 
             //Wire up the events
             _push.Events.OnDeviceSubscriptionExpired += Events_OnDeviceSubscriptionExpired;
@@ -74,13 +76,13 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.Events.OnChannelCreated += Events_OnChannelCreated;
             _push.Events.OnChannelDestroyed += Events_OnChannelDestroyed;
 
-             _push.StartGoogleCloudMessagingPushService(androidSettings);
+            _push.StartGoogleCloudMessagingPushService(androidSettings);
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
-            var appleCert = File.ReadAllBytes(certificatePath);                       
-            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.GetSetting("APNS.CertificatePassword"));
+            byte[] appleCert = File.ReadAllBytes(certificatePath);
+            var appleSettings = new ApplePushChannelSettings(production, appleCert,
+                _configurationManager.GetSetting("APNS.CertificatePassword"));
             _push.StartApplePushService(appleSettings);
-
         }
 
         private void SendAndroidNotification(string alert, IDictionary<string, object> data, string registrationId)
@@ -96,11 +98,11 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void SendAppleNotification(string alert, IDictionary<string, object> data, string deviceToken)
         {
-            var notification = NotificationFactory.Apple()
-                                                  .ForDeviceToken(deviceToken)
-                                                  .WithAlert(alert)
-                                                  .WithSound("default");
-            foreach (var key in data.Keys)
+            AppleNotification notification = NotificationFactory.Apple()
+                .ForDeviceToken(deviceToken)
+                .WithAlert(alert)
+                .WithSound("default");
+            foreach (string key in data.Keys)
             {
                 notification.WithCustomItem(key, new[] {data[key]});
             }
@@ -108,46 +110,48 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.QueueNotification(notification);
         }
 
-        void Events_OnDeviceSubscriptionIdChanged(PlatformType platform, string oldDeviceInfo, string newDeviceInfo, Notification notification)
-		{
-			//Currently this event will only ever happen for Android GCM
+        private void Events_OnDeviceSubscriptionIdChanged(PlatformType platform, string oldDeviceInfo,
+            string newDeviceInfo, Notification notification)
+        {
+            //Currently this event will only ever happen for Android GCM
             _logger.LogMessage("Device Registration Changed:  Old-> " + oldDeviceInfo + "  New-> " + newDeviceInfo);
-		}
+        }
 
-		void Events_OnNotificationSent(Notification notification)
-		{
-            _logger.LogMessage("Sent: " + notification.Platform.ToString() + " -> " + notification.ToString());
-		}
+        private void Events_OnNotificationSent(Notification notification)
+        {
+            _logger.LogMessage("Sent: " + notification.Platform + " -> " + notification);
+        }
 
-		void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
-		{
-            var message = notificationFailureException.Message;
-		    var details = notificationFailureException as NotificationFailureException;
-		    if (details != null)
-		    {
-		        message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
-		    }
-            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + message + " -> " + notification.ToString());
-		}
+        private void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
+        {
+            string message = notificationFailureException.Message;
+            var details = notificationFailureException as NotificationFailureException;
+            if (details != null)
+            {
+                message = details.ErrorStatusCode + " " + details.ErrorStatusDescription;
+            }
+            _logger.LogMessage("Failure: " + notification.Platform + " -> " + message + " -> " + notification);
+        }
 
-		void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)
-		{
+        private void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)
+        {
             _logger.LogError(exception);
-		}
+        }
 
-		void Events_OnDeviceSubscriptionExpired(PlatformType platform, string deviceInfo, Notification notification)
-		{
-            _logger.LogMessage("Device Subscription Expired: " + platform.ToString() + " -> " + deviceInfo);
-		}
+        private void Events_OnDeviceSubscriptionExpired(PlatformType platform, string deviceInfo,
+            Notification notification)
+        {
+            _logger.LogMessage("Device Subscription Expired: " + platform + " -> " + deviceInfo);
+        }
 
-		void Events_OnChannelDestroyed(PlatformType platformType, int newChannelCount)
-		{
-            _logger.LogMessage("Channel Destroyed for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
-		}
+        private void Events_OnChannelDestroyed(PlatformType platformType, int newChannelCount)
+        {
+            _logger.LogMessage("Channel Destroyed for: " + platformType + " Channel Count: " + newChannelCount);
+        }
 
-		void Events_OnChannelCreated(PlatformType platformType, int newChannelCount)
-		{
-            _logger.LogMessage("Channel Created for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
-		}
+        private void Events_OnChannelCreated(PlatformType platformType, int newChannelCount)
+        {
+            _logger.LogMessage("Channel Created for: " + platformType + " Channel Count: " + newChannelCount);
+        }
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
+using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Domain
 {
-    public class PayPalPayment: EventSourced
+    public class PayPalPayment : EventSourced
     {
+        private decimal _amount;
         private bool _cancelled;
         private bool _completed;
         private Guid _orderId;
         private string _token;
-        private decimal _amount;
 
         protected PayPalPayment(Guid id)
             : base(id)
@@ -20,18 +20,18 @@ namespace apcurium.MK.Booking.Domain
             Handles<PayPalExpressCheckoutPaymentCancelled>(OnPayPalExpressCheckoutPaymentCancelled);
             Handles<PayPalExpressCheckoutPaymentCompleted>(OnPayPalExpressCheckoutPaymentCompleted);
         }
-        
+
         public PayPalPayment(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
-        {               
-            this.LoadFrom(history);
+        {
+            LoadFrom(history);
         }
 
         public PayPalPayment(Guid id, Guid orderId, string token, decimal amount, decimal meter, decimal tip) : this(id)
         {
-            if(token == null) throw new InvalidOperationException("token cannot be null");
+            if (token == null) throw new InvalidOperationException("token cannot be null");
 
-            this.Update(new PayPalExpressCheckoutPaymentInitiated
+            Update(new PayPalExpressCheckoutPaymentInitiated
             {
                 OrderId = orderId,
                 Token = token,
@@ -44,13 +44,13 @@ namespace apcurium.MK.Booking.Domain
         public void Cancel()
         {
             if (_completed) throw new InvalidOperationException("Payment is completed");
-            this.Update(new PayPalExpressCheckoutPaymentCancelled());
+            Update(new PayPalExpressCheckoutPaymentCancelled());
         }
 
         public void Complete(string transactionId, string payerId)
         {
-            if(_cancelled) throw new InvalidOperationException("Payment is cancelled");
-            this.Update(new PayPalExpressCheckoutPaymentCompleted
+            if (_cancelled) throw new InvalidOperationException("Payment is cancelled");
+            Update(new PayPalExpressCheckoutPaymentCompleted
             {
                 PayPalPayerId = payerId,
                 TransactionId = transactionId,
@@ -62,12 +62,12 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPayPalExpressCheckoutPaymentCancelled(PayPalExpressCheckoutPaymentCancelled obj)
         {
-            this._cancelled = true;
+            _cancelled = true;
         }
 
         private void OnPayPalExpressCheckoutPaymentCompleted(PayPalExpressCheckoutPaymentCompleted obj)
         {
-            this._completed = true;
+            _completed = true;
         }
 
         private void OnPayPalExpressCheckoutPaymentInitiated(PayPalExpressCheckoutPaymentInitiated obj)

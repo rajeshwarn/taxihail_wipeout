@@ -1,9 +1,9 @@
 ﻿using System;
-using apcurium.MK.Common.Enumeration;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -20,30 +20,11 @@ namespace apcurium.MK.Booking.EventHandlers
         }
 
 
-        public void Handle(PayPalExpressCheckoutPaymentInitiated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var detail = new OrderPaymentDetail()
-                                 {
-                                     PaymentId = @event.SourceId,
-                                     Amount = @event.Amount,
-                                     Meter = @event.Meter,
-                                     Tip = @event.Tip,
-                                     OrderId = @event.OrderId,
-                                     PayPalToken =  @event.Token,
-                                     Provider = PaymentProvider.PayPal,
-                                     Type = PaymentType.PayPal
-                                 };
-                context.Save(detail);
-            }
-        }
-
         public void Handle(PayPalExpressCheckoutPaymentCancelled @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
-                var detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                OrderPaymentDetail detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
                 if ((detail == null) || (detail.Type != PaymentType.PayPal))
                 {
                     throw new InvalidOperationException("Payment not found");
@@ -55,9 +36,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
-                var detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                OrderPaymentDetail detail = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
                 if ((detail == null) || (detail.Type != PaymentType.PayPal))
                 {
                     throw new InvalidOperationException("Payment not found");
@@ -67,6 +48,25 @@ namespace apcurium.MK.Booking.EventHandlers
                 detail.AuthorizationCode = @event.PayPalPayerId;
                 detail.TransactionId = @event.TransactionId;
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(PayPalExpressCheckoutPaymentInitiated @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var detail = new OrderPaymentDetail
+                {
+                    PaymentId = @event.SourceId,
+                    Amount = @event.Amount,
+                    Meter = @event.Meter,
+                    Tip = @event.Tip,
+                    OrderId = @event.OrderId,
+                    PayPalToken = @event.Token,
+                    Provider = PaymentProvider.PayPal,
+                    Type = PaymentType.PayPal
+                };
+                context.Save(detail);
             }
         }
     }

@@ -6,7 +6,6 @@ namespace apcurium.MK.Booking.ReadModel
 {
     public class OrderDetail
     {
-
         public OrderDetail()
         {
             //required by EF
@@ -18,7 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         [Key]
         public Guid Id { get; set; }
-        
+
         public Guid AccountId { get; set; }
 
         public DateTime PickupDate { get; set; }
@@ -26,7 +25,7 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime CreatedDate { get; set; }
 
         public int? IBSOrderId { get; set; }
-       
+
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
@@ -53,6 +52,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? EstimatedFare { get; set; }
 
-        public string UserAgent  { get; set; }
+        public string UserAgent { get; set; }
     }
 }

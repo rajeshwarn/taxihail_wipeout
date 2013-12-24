@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -10,6 +7,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         [Key]
         public Guid Id { get; set; }
+
         public Guid OrderId { get; set; }
         public Guid RatingTypeId { get; set; }
         public string Name { get; set; }

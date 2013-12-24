@@ -1,36 +1,38 @@
-﻿using Infrastructure.Messaging.Handling;
+﻿using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
-using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
+using AutoMapper;
+using Infrastructure.EventSourcing;
+using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public partial class AccountCommandHandler : ICommandHandler<RegisterAccount>,
-                                                 ICommandHandler<ConfirmAccount>,
-                                                 ICommandHandler<EnableAccountByAdmin>,
-                                                 ICommandHandler<DisableAccountByAdmin>,
-                                                 ICommandHandler<ResetAccountPassword>,
-                                                 ICommandHandler<UpdateAccount>,
-                                                 ICommandHandler<UpdateBookingSettings>,
-                                                 ICommandHandler<RegisterFacebookAccount>,
-                                                 ICommandHandler<RegisterTwitterAccount>,
-                                                 ICommandHandler<UpdateAccountPassword>,
-                                                 ICommandHandler<AddRoleToUserAccount>,
-                                                 ICommandHandler<AddCreditCard>,
-                                                 ICommandHandler<RemoveCreditCard>,
-                                                 ICommandHandler<DeleteAllCreditCards>,
-                                                 ICommandHandler<RegisterDeviceForPushNotifications>,
-                                                 ICommandHandler<UnregisterDeviceForPushNotifications>,
-                                                 ICommandHandler<AddFavoriteAddress>,
-                                                 ICommandHandler<RemoveFavoriteAddress>,
-                                                 ICommandHandler<UpdateFavoriteAddress>,
-                                                 ICommandHandler<RemoveAddressFromHistory>
+    public class AccountCommandHandler : ICommandHandler<RegisterAccount>,
+        ICommandHandler<ConfirmAccount>,
+        ICommandHandler<EnableAccountByAdmin>,
+        ICommandHandler<DisableAccountByAdmin>,
+        ICommandHandler<ResetAccountPassword>,
+        ICommandHandler<UpdateAccount>,
+        ICommandHandler<UpdateBookingSettings>,
+        ICommandHandler<RegisterFacebookAccount>,
+        ICommandHandler<RegisterTwitterAccount>,
+        ICommandHandler<UpdateAccountPassword>,
+        ICommandHandler<AddRoleToUserAccount>,
+        ICommandHandler<AddCreditCard>,
+        ICommandHandler<RemoveCreditCard>,
+        ICommandHandler<DeleteAllCreditCards>,
+        ICommandHandler<RegisterDeviceForPushNotifications>,
+        ICommandHandler<UnregisterDeviceForPushNotifications>,
+        ICommandHandler<AddFavoriteAddress>,
+        ICommandHandler<RemoveFavoriteAddress>,
+        ICommandHandler<UpdateFavoriteAddress>,
+        ICommandHandler<RemoveAddressFromHistory>
     {
-        private readonly IEventSourcedRepository<Account> _repository;
         private readonly IPasswordService _passwordService;
+        private readonly IEventSourcedRepository<Account> _repository;
 
         public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService)
         {
@@ -38,93 +40,65 @@ namespace apcurium.MK.Booking.CommandHandlers
             _passwordService = passwordService;
         }
 
-        public void Handle(RegisterAccount command)
+        public void Handle(AddCreditCard command)
         {
-            var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled, command.IsAdmin);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(ConfirmAccount command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.ConfirmAccount(command.ConfimationToken);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UpdateAccount command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.Update(command.Name);
-            _repository.Save(account, command.Id.ToString());
-            
-        }
-
-        public void Handle(ResetAccountPassword command)
-        {
-            var account = _repository.Find(command.AccountId);
-            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            account.ResetPassword(newPassword);
-            _repository.Save(account, command.Id.ToString());
-        }
-        
-        public void Handle(UpdateBookingSettings command)
-        {
-            var account = _repository.Find(command.AccountId);
-
-            var settings = new BookingSettings();
-            AutoMapper.Mapper.Map(command, settings);
-
-            account.UpdateBookingSettings(settings);
-            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipPercent);
-
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(RegisterFacebookAccount command)
-        {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, facebookId:command.FacebookId, language:command.Language);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(RegisterTwitterAccount command)
-        {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UpdateAccountPassword command)
-        {
-            var account = _repository.Find(command.AccountId);
-            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            account.UpdatePassword(newPassword);
+            Account account = _repository.Find(command.AccountId);
+            account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName,
+                command.Last4Digits, command.Token);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(AddRoleToUserAccount command)
         {
-            var account = _repository.Find(command.AccountId);
+            Account account = _repository.Find(command.AccountId);
             account.AddRole(command.RoleName);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(AddCreditCard command)
+        public void Handle(ConfirmAccount command)
         {
-            var account = _repository.Find(command.AccountId);
-            account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName, command.Last4Digits, command.Token);
+            Account account = _repository.Find(command.AccountId);
+            account.ConfirmAccount(command.ConfimationToken);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(RemoveCreditCard command)
+        public void Handle(DeleteAllCreditCards command)
         {
-            var account = _repository.Find(command.AccountId);
-            account.RemoveCreditCard(command.CreditCardId);
+            foreach (Guid accountId in command.AccountIds)
+            {
+                Account account = _repository.Find(accountId);
+
+                account.RemoveAllCreditCards();
+                _repository.Save(account, command.Id.ToString());
+            }
+        }
+
+        public void Handle(DisableAccountByAdmin command)
+        {
+            Account account = _repository.Find(command.AccountId);
+            account.DisableAccountByAdmin();
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(EnableAccountByAdmin command)
+        {
+            Account account = _repository.Find(command.AccountId);
+            account.EnableAccountByAdmin();
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RegisterAccount command)
+        {
+            byte[] password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password,
+                command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled,
+                command.IsAdmin);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterDeviceForPushNotifications command)
         {
-            var account = _repository.Find(command.AccountId);
+            Account account = _repository.Find(command.AccountId);
 
             if (!string.IsNullOrEmpty(command.OldDeviceToken))
             {
@@ -135,51 +109,91 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
+        public void Handle(RegisterFacebookAccount command)
+        {
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
+                command.IbsAccountId, command.FacebookId, language: command.Language);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RegisterTwitterAccount command)
+        {
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email,
+                command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RemoveCreditCard command)
+        {
+            Account account = _repository.Find(command.AccountId);
+            account.RemoveCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(ResetAccountPassword command)
+        {
+            Account account = _repository.Find(command.AccountId);
+            byte[] newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            account.ResetPassword(newPassword);
+            _repository.Save(account, command.Id.ToString());
+        }
+
         public void Handle(UnregisterDeviceForPushNotifications command)
         {
-            var account = _repository.Find(command.AccountId);
+            Account account = _repository.Find(command.AccountId);
             account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
-        
-        public void Handle(EnableAccountByAdmin command)
+
+        public void Handle(UpdateAccount command)
         {
-            var account = _repository.Find(command.AccountId);
-            account.EnableAccountByAdmin();
+            Account account = _repository.Find(command.AccountId);
+            account.Update(command.Name);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DisableAccountByAdmin command)
+        public void Handle(UpdateAccountPassword command)
         {
-            var account = _repository.Find(command.AccountId);
-            account.DisableAccountByAdmin();
+            Account account = _repository.Find(command.AccountId);
+            byte[] newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            account.UpdatePassword(newPassword);
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(DeleteAllCreditCards command)
+        public void Handle(UpdateBookingSettings command)
         {
-            foreach (var accountId in command.AccountIds)
-            {
-                var account = _repository.Find(accountId);
-            
-                account.RemoveAllCreditCards();
-                _repository.Save(account, command.Id.ToString());
-            }
+            Account account = _repository.Find(command.AccountId);
+
+            var settings = new BookingSettings();
+            Mapper.Map(command, settings);
+
+            account.UpdateBookingSettings(settings);
+            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipPercent);
+
+            _repository.Save(account, command.Id.ToString());
         }
 
         #region Addresses
+
         public void Handle(AddFavoriteAddress command)
         {
-            var account = _repository.Get(command.AccountId);
+            Account account = _repository.Get(command.AccountId);
 
             account.AddFavoriteAddress(command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }
 
+        public void Handle(RemoveAddressFromHistory command)
+        {
+            Account account = _repository.Get(command.AccountId);
+            account.RemoveAddressFromHistory(command.AddressId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
         public void Handle(RemoveFavoriteAddress command)
         {
-            var account = _repository.Get(command.AccountId);
+            Account account = _repository.Get(command.AccountId);
 
             account.RemoveFavoriteAddress(command.AddressId);
 
@@ -188,19 +202,13 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(UpdateFavoriteAddress command)
         {
-            var account = _repository.Get(command.AccountId);
+            Account account = _repository.Get(command.AccountId);
 
             account.UpdateFavoriteAddress(command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }
 
-        public void Handle(RemoveAddressFromHistory command)
-        {
-            var account = _repository.Get(command.AccountId);
-            account.RemoveAddressFromHistory(command.AddressId);
-            _repository.Save(account, command.Id.ToString());
-        }
         #endregion
     }
 }

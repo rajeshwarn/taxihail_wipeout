@@ -1,12 +1,11 @@
 ﻿using System;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.ReadModel
 {
-    class ConfigurationDao : IConfigurationDao
+    internal class ConfigurationDao : IConfigurationDao
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 
@@ -17,12 +16,11 @@ namespace apcurium.MK.Booking.ReadModel
 
         public ServerPaymentSettings GetPaymentSettings()
         {
-            using (var context = _contextFactory.Invoke())
+            using (ConfigurationDbContext context = _contextFactory.Invoke())
             {
-                var settings = context.ServerPaymentSettings.Find(AppConstants.CompanyId);
+                ServerPaymentSettings settings = context.ServerPaymentSettings.Find(AppConstants.CompanyId);
                 return settings ?? new ServerPaymentSettings();
             }
         }
-    
     }
 }

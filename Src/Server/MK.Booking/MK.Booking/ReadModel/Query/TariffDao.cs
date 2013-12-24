@@ -10,13 +10,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public TariffDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
         public IList<TariffDetail> GetAll()
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<TariffDetail>().ToList();
             }

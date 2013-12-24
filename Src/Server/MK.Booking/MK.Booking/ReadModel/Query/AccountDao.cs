@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
@@ -10,13 +10,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public AccountDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
         public IList<AccountDetail> GetAll()
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().ToList();
             }
@@ -24,23 +24,23 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindById(Guid id)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
-                return context.Query<AccountDetail>().SingleOrDefault (c => c.Id == id);
+                return context.Query<AccountDetail>().SingleOrDefault(c => c.Id == id);
             }
         }
 
         public AccountDetail FindByEmail(string email)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
-                return context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == email.ToLower() );
+                return context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == email.ToLower());
             }
         }
 
         public AccountDetail FindByFacebookId(string id)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.FacebookId == id);
             }
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindByTwitterId(string id)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.TwitterId == id);
             }

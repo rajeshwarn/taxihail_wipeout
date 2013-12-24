@@ -7,6 +7,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         [Key]
         public Guid Id { get; set; }
+
         public Guid AccountId { get; set; }
 
         public bool IsHistoric { get; set; }
@@ -36,6 +37,5 @@ namespace apcurium.MK.Booking.ReadModel
         public string ZipCode { get; set; }
 
         public string State { get; set; }
-        
     }
 }

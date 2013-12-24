@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<RatingTypeDetail> GetAll()
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<RatingTypeDetail>().ToList();
             }
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public RatingTypeDetail GetById(Guid id)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Query<RatingTypeDetail>().SingleOrDefault(r => r.Id == id);
             }

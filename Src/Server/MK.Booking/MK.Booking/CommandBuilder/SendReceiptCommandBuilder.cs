@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Commands;
 
 namespace apcurium.MK.Booking.CommandBuilder
 {
     public static class SendReceiptCommandBuilder
     {
-        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, double? fare, double? toll, double? tip, double? tax,  OrderPaymentDetail orderPayment = null, CreditCardDetails creditCard = null)
+        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber,
+            double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
+            CreditCardDetails creditCard = null)
         {
-
-       
-            var command = new Commands.SendReceipt
+            var command = new SendReceipt
             {
                 Id = Guid.NewGuid(),
                 OrderId = order.Id,
@@ -35,7 +31,7 @@ namespace apcurium.MK.Booking.CommandBuilder
 
             if (orderPayment != null)
             {
-                command.CardOnFileInfo = new Commands.SendReceipt.CardOnFile(
+                command.CardOnFileInfo = new SendReceipt.CardOnFile(
                     orderPayment.Amount,
                     orderPayment.TransactionId,
                     orderPayment.AuthorizationCode,
@@ -50,6 +46,5 @@ namespace apcurium.MK.Booking.CommandBuilder
             }
             return command;
         }
-
     }
 }

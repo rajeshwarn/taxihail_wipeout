@@ -156,7 +156,7 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
-      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+      <Name>MK.Booking</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>

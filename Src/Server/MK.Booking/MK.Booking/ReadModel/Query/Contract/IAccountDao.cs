@@ -10,6 +10,5 @@ namespace apcurium.MK.Booking.ReadModel.Query
         AccountDetail FindByEmail(string email);
         AccountDetail FindByFacebookId(string id);
         AccountDetail FindByTwitterId(string id);
-
     }
 }

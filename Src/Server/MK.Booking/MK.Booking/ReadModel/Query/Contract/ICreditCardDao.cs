@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {

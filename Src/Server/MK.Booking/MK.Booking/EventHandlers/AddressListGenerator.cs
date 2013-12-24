@@ -1,25 +1,78 @@
 ﻿using System;
 using System.Linq;
-using AutoMapper;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using AutoMapper;
+using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>, IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>, IEventHandler<DefaultFavoriteAddressUpdated>
+    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>,
+        IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>,
+        IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>,
+        IEventHandler<DefaultFavoriteAddressUpdated>
         , IEventHandler<PopularAddressAdded>, IEventHandler<PopularAddressRemoved>, IEventHandler<PopularAddressUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
 
+        public void Handle(AddressRemovedFromHistory @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var address = context.Find<AddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    context.Set<AddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressAdded @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var address = new DefaultAddressDetails();
+                Mapper.Map(@event.Address, address);
+                context.Save(address);
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressRemoved @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    context.Set<DefaultAddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressUpdated @event)
+        {
+            using (BookingDbContext context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.Address.Id);
+                if (address != null)
+                {
+                    Mapper.Map(@event.Address, address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public void Handle(FavoriteAddressAdded @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var existingAddress = context.Find<AddressDetails>(@event.Address.Id);
                 if (existingAddress != null)
@@ -32,15 +85,16 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
                 var addressDetails = new AddressDetails();
                 addressDetails.AccountId = @event.SourceId;
-                AutoMapper.Mapper.Map(@event.Address, addressDetails);
+                Mapper.Map(@event.Address, addressDetails);
                 context.Save(addressDetails);
 
                 if (@event.Address != null)
                 {
-                    var aptEvent = @event.Address.Apartment ?? string.Empty;
-                    var ringCodeEvent = @event.Address.RingCode ?? string.Empty;
-                    var fullAddressEvent = @event.Address.FullAddress;
-                    var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x => x.IsHistoric)
+                    string aptEvent = @event.Address.Apartment ?? string.Empty;
+                    string ringCodeEvent = @event.Address.RingCode ?? string.Empty;
+                    string fullAddressEvent = @event.Address.FullAddress;
+                    AddressDetails identicalHistoricAddress =
+                        (from a in context.Query<AddressDetails>().Where(x => x.IsHistoric)
                             where a.AccountId == @event.SourceId
                             where (a.Apartment ?? string.Empty) == aptEvent
                             where a.FullAddress == fullAddressEvent
@@ -58,7 +112,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
         public void Handle(FavoriteAddressRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.AddressId);
                 if (address != null && !address.IsHistoric)
@@ -71,13 +125,13 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
         public void Handle(FavoriteAddressUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.Address.Id);
-                if(address != null)
+                if (address != null)
                 {
                     address.IsHistoric = false;
-                    AutoMapper.Mapper.Map(@event.Address, address);
+                    Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }
@@ -85,21 +139,21 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
         public void Handle(OrderCreated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
-                var identicalAddresses = from a in context.Query<AddressDetails>()
-                                         where a.AccountId == @event.AccountId
-                                         where (a.Apartment ?? string.Empty) == (@event.PickupAddress.Apartment ?? string.Empty)
-                                         where a.FullAddress == @event.PickupAddress.FullAddress
-                                         where (a.RingCode ?? string.Empty) == (@event.PickupAddress.RingCode ?? string.Empty)
-                                         where a.Latitude == @event.PickupAddress.Latitude
-                                         where a.Longitude == @event.PickupAddress.Longitude
-                                         select a;
+                IQueryable<AddressDetails> identicalAddresses = from a in context.Query<AddressDetails>()
+                    where a.AccountId == @event.AccountId
+                    where (a.Apartment ?? string.Empty) == (@event.PickupAddress.Apartment ?? string.Empty)
+                    where a.FullAddress == @event.PickupAddress.FullAddress
+                    where (a.RingCode ?? string.Empty) == (@event.PickupAddress.RingCode ?? string.Empty)
+                    where a.Latitude == @event.PickupAddress.Latitude
+                    where a.Longitude == @event.PickupAddress.Longitude
+                    select a;
 
                 if (!identicalAddresses.Any())
                 {
                     var address = new AddressDetails();
-                    AutoMapper.Mapper.Map(@event.PickupAddress, address);
+                    Mapper.Map(@event.PickupAddress, address);
                     address.Id = Guid.NewGuid();
                     address.AccountId = @event.AccountId;
                     address.IsHistoric = true;
@@ -108,58 +162,9 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             }
         }
 
-        public void Handle(AddressRemovedFromHistory @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<AddressDetails>(@event.AddressId);
-                if(address != null)
-                {
-                    context.Set<AddressDetails>().Remove(address);
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressAdded @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = new DefaultAddressDetails();
-                AutoMapper.Mapper.Map(@event.Address, address);
-                context.Save(address);
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressRemoved @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
-                if (address != null )
-                {
-                    context.Set<DefaultAddressDetails>().Remove(address);
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<DefaultAddressDetails>(@event.Address.Id);
-                if (address != null)
-                {
-                    AutoMapper.Mapper.Map(@event.Address, address);
-                    context.SaveChanges();
-                }
-            }
-        }
-
         public void Handle(PopularAddressAdded @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var address = new PopularAddressDetails();
                 Mapper.Map(@event.Address, address);
@@ -169,7 +174,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
         public void Handle(PopularAddressRemoved @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var address = context.Find<PopularAddressDetails>(@event.AddressId);
                 if (address != null)
@@ -182,7 +187,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
         public void Handle(PopularAddressUpdated @event)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 var address = context.Find<PopularAddressDetails>(@event.Address.Id);
                 if (address != null)

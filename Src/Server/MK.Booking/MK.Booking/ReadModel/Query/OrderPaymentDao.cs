@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public class OrderPaymentDao: IOrderPaymentDao
+    public class OrderPaymentDao : IOrderPaymentDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByTransactionId(string transactionId)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.TransactionId == transactionId);
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByOrderId(Guid orderId)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.OrderId == orderId);
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByPayPalToken(string token)
         {
-            using (var context = _contextFactory.Invoke())
+            using (BookingDbContext context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.PayPalToken == token);

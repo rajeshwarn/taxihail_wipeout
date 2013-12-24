@@ -9,7 +9,7 @@ using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Calculator
 {
     public class RuleCalculator : IRuleCalculator
-    { 
+    {
         private readonly IRuleDao _ruleDao;
 
         public RuleCalculator(IRuleDao ruleDao)
@@ -27,8 +27,7 @@ namespace apcurium.MK.Booking.Calculator
                 rules = FilterRulesByZone(rules, zoneGetterFunc());
             }
 
-            return GetMatching(rules,  pickupDate);
-
+            return GetMatching(rules, pickupDate);
         }
 
         public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> zoneGetterFunc)
@@ -41,16 +40,17 @@ namespace apcurium.MK.Booking.Calculator
             }
 
             return GetMatching(rules, pickupDate);
-
         }
 
         private IEnumerable<RuleDetail> FilterRulesByZone(IEnumerable<RuleDetail> rules, string zone)
         {
-            return rules.Where( r=> IsTrimmedNullOrEmpty(r.ZoneList) ||  //Get the rules without zones
-                    ( !IsTrimmedNullOrEmpty( zone ) && r.ZoneList.ToLower().Split( ',' ).Contains( zone.ToLower().Trim() ) ) );         // Zone is set and found in list         
+            return rules.Where(r => IsTrimmedNullOrEmpty(r.ZoneList) || //Get the rules without zones
+                                    (!IsTrimmedNullOrEmpty(zone) &&
+                                     r.ZoneList.ToLower().Split(',').Contains(zone.ToLower().Trim())));
+                // Zone is set and found in list         
         }
-        
-        private bool IsTrimmedNullOrEmpty( string value )
+
+        private bool IsTrimmedNullOrEmpty(string value)
         {
             return value.ToSafeString().Trim().IsNullOrEmpty();
         }
@@ -58,26 +58,25 @@ namespace apcurium.MK.Booking.Calculator
         private RuleDetail GetMatching(IEnumerable<RuleDetail> rulesList, DateTime pickupDate)
         {
             // Case 1: A rule exists for the specific date
-            var rulesDate = (from r in rulesList
-                        where r.Type == (int)RuleType.Date
-                        where IsDayMatch(r, pickupDate)
-                        select r);
+            IEnumerable<RuleDetail> rulesDate = (from r in rulesList
+                where r.Type == (int) RuleType.Date
+                where IsDayMatch(r, pickupDate)
+                select r);
 
             // Case 2: A rule exists for the day of the week            
-            var rulesRecuring = (from r in rulesList
-                        where r.Type == (int)RuleType.Recurring
-                        where IsRecurringMatch(r, pickupDate)
-                        select r);
-            
+            IEnumerable<RuleDetail> rulesRecuring = (from r in rulesList
+                where r.Type == (int) RuleType.Recurring
+                where IsRecurringMatch(r, pickupDate)
+                select r);
+
             // Case 3: return default
-            
-            var rulesDefault = (from r in rulesList
-                        where r.Type == (int) RuleType.Default
-                        select r);
+
+            IEnumerable<RuleDetail> rulesDefault = (from r in rulesList
+                where r.Type == (int) RuleType.Default
+                select r);
 
 
             return rulesDate.Concat(rulesRecuring).Concat(rulesDefault).OrderBy(r => r.Priority).FirstOrDefault();
-            
         }
 
 
@@ -92,14 +91,16 @@ namespace apcurium.MK.Booking.Calculator
 
         private bool IsRecurringMatch(RuleDetail rule, DateTime date)
         {
-            if (rule.Type == (int)RuleType.Recurring)
+            if (rule.Type == (int) RuleType.Recurring)
             {
                 // Represents the candidate date day of the week value in the DayOfTheWeek enum
-                var dayOfTheWeek = 1 << (int) date.DayOfWeek;
+                int dayOfTheWeek = 1 << (int) date.DayOfWeek;
 
-                var startTime = DateTime.MinValue.AddHours(rule.StartTime.Value.Hour).AddMinutes(rule.StartTime.Value.Minute);
-                var endTime = DateTime.MinValue.AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
-                var time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
+                DateTime startTime =
+                    DateTime.MinValue.AddHours(rule.StartTime.Value.Hour).AddMinutes(rule.StartTime.Value.Minute);
+                DateTime endTime =
+                    DateTime.MinValue.AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
+                DateTime time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
 
 
                 // Determine if the candidate date is between start time and end time
