@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookios">
+      <InstallationInProgress>False</InstallationInProgress>
       <Version>3.8.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
