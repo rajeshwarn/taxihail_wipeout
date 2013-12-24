@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using Microsoft.Practices.ServiceLocation;
+
+#endregion
 
 namespace apcurium.MK.Web.admin
 {
-    public partial class _default : apcurium.MK.Web.PageBase
+    public partial class _default : PageBase
     {
         protected string ApplicationKey { get; private set; }
         protected string ApplicationName { get; private set; }
@@ -25,7 +23,7 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
@@ -36,7 +34,7 @@ namespace apcurium.MK.Web.admin
             DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
             DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
-           
+
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
 
@@ -50,7 +48,7 @@ namespace apcurium.MK.Web.admin
 
             if (!base.UserSession.HasPermission(RoleName.Admin))
             {
-                this.Response.Redirect("~");
+                Response.Redirect("~");
             }
         }
 
@@ -62,6 +60,5 @@ namespace apcurium.MK.Web.admin
                 ? string.Empty
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
-
     }
 }

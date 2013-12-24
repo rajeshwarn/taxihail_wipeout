@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Hosting;
 using System.Web.Optimization;
 using apcurium.MK.Web.Optimization;
 
-namespace apcurium.MK.Web
+#endregion
+
+namespace apcurium.MK.Web.App_Start
 {
     public class BundleConfig
     {
@@ -87,6 +87,7 @@ namespace apcurium.MK.Web
                 .IncludeDirectory("~/templates", "*.handlebars");
 
             var themeTemplatesDirectory = "~/themes/" + applicationKey + "/templates";
+// ReSharper disable once AssignNullToNotNullAttribute
             if (Directory.Exists(HostingEnvironment.MapPath(themeTemplatesDirectory)))
             {
                 templateBundle.IncludeDirectory(themeTemplatesDirectory, "*.handlebars");
@@ -99,6 +100,7 @@ namespace apcurium.MK.Web
             var resourcesBundle = new Bundle("~/bundles/resources")
                 .IncludeDirectory("~/localization", "*.json");
             var themeLocalizationDirectory = "~/themes/" + applicationKey + "/localization";
+// ReSharper disable once AssignNullToNotNullAttribute
             if (Directory.Exists(HostingEnvironment.MapPath(themeLocalizationDirectory)))
             {
                 resourcesBundle.IncludeDirectory(themeLocalizationDirectory, "*.json");
@@ -203,7 +205,6 @@ namespace apcurium.MK.Web
             adminResourcesBundle.Transforms.Add(new ResourcesTransform());
             adminResourcesBundle.Transforms.Add(new JsMinify());
             bundles.Add(adminResourcesBundle);
-
         }
     }
 }

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Contract.Security
 
         public ILogger Logger { get; set; }
 
-        public int Priority
+        public new int Priority
         {
             get { return 100; }
         }
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Api.Contract.Security
             base.Execute(req, res, requestDto);
         }
 
-        public IHasRequestFilter Copy()
+        public override IHasRequestFilter Copy()
         {
             return this;
         }

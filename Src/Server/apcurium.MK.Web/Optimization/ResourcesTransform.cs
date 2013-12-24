@@ -1,10 +1,14 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
 using System.Text;
 using System.Web.Optimization;
 
+#endregion
+
 namespace apcurium.MK.Web.Optimization
 {
-    public class ResourcesTransform: IBundleTransform
+    public class ResourcesTransform : IBundleTransform
     {
         public void Process(BundleContext context, BundleResponse response)
         {
@@ -12,6 +16,7 @@ namespace apcurium.MK.Web.Optimization
             var content = new StringBuilder("TaxiHail.resources = {};");
             foreach (var file in response.Files)
             {
+// ReSharper disable once PossibleNullReferenceException
                 content.Append("TaxiHail.resources['" + file.VirtualFile.Name.Replace(".json", "") + "'] = ");
                 using (var reader = new StreamReader(file.VirtualFile.Open(), Encoding.UTF8))
                 {

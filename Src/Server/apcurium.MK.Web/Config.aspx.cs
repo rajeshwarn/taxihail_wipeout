@@ -1,44 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.Entity;
 using apcurium.MK.Booking.Database;
-using System.Data.SqlClient;
 using apcurium.MK.Common.Extensions;
+
+#endregion
+
 namespace apcurium.MK.Web
 {
-    public partial class Config : System.Web.UI.Page
+    public partial class Config : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-            LoginPanel.Visible = Session["IsAuth"] != true.ToString();
-            SettingsPanel.Visible = Session["IsAuth"] == true.ToString();
+            LoginPanel.Visible = (string) Session["IsAuth"] != true.ToString();
+            SettingsPanel.Visible = (string) Session["IsAuth"] == true.ToString();
 
-            if (Session["IsAuth"] == true.ToString())
+            if ((string) Session["IsAuth"] == true.ToString())
             {
                 var datatable = new DataTable();
 
-                var includeKeys = new[] {   "DefaultBookingSettings.ChargeTypeId" ,"DefaultBookingSettings.NbPassenger"
-                                            ,"DefaultBookingSettings.ProviderId","DefaultBookingSettings.VehicleTypeId"
-                                            ,"Direction.FlateRate","Direction.RatePerKm"
-                                            ,"Email.NoReply","DefaultBookingSettings.NbPassenger"
-                                            ,"IBS.AutoDispatch","IBS.WebServicesPassword"
-                                            ,"IBS.WebServicesUrl","IBS.WebServicesUserName"
-                                            ,"Smtp.Credentials.Password","Smtp.Credentials.Username"
-                                            ,"Smtp.DeliveryMethod","Smtp.EnableSsl"
-                                            ,"Smtp.Host","Smtp.Port"
-                                            ,"Smtp.UseDefaultCredentials","TaxiHail.SiteName"};
+                var includeKeys = new[]
+                {
+                    "DefaultBookingSettings.ChargeTypeId", "DefaultBookingSettings.NbPassenger"
+                    , "DefaultBookingSettings.ProviderId", "DefaultBookingSettings.VehicleTypeId"
+                    , "Direction.FlateRate", "Direction.RatePerKm"
+                    , "Email.NoReply", "DefaultBookingSettings.NbPassenger"
+                    , "IBS.AutoDispatch", "IBS.WebServicesPassword"
+                    , "IBS.WebServicesUrl", "IBS.WebServicesUserName"
+                    , "Smtp.Credentials.Password", "Smtp.Credentials.Username"
+                    , "Smtp.DeliveryMethod", "Smtp.EnableSsl"
+                    , "Smtp.Host", "Smtp.Port"
+                    , "Smtp.UseDefaultCredentials", "TaxiHail.SiteName"
+                };
 
 
                 var connectionString = new BookingDbContext("DbContext.Booking").Database.Connection.ConnectionString;
                 var keys = includeKeys.Select(k => string.Format("'{0}'", k));
 
-                using (var adapter = new SqlDataAdapter("select * from Config.AppSettings where [key] in (" + keys.JoinBy(", ") + ")", connectionString))
+                using (
+                    var adapter =
+                        new SqlDataAdapter(
+                            "select * from Config.AppSettings where [key] in (" + keys.JoinBy(", ") + ")",
+                            connectionString))
                 {
                     adapter.Fill(datatable);
                 }
@@ -50,8 +58,12 @@ namespace apcurium.MK.Web
 
         protected void cmdLogin_Click(object sender, EventArgs e)
         {
-            if ((txtUsername.Text == "taxihailconfiguser") && (txtPassword.Text == "taxihail@123456."))
+
+// ReSharper disable LocalizableElement
+            if ((txtUsername.Text == "taxihailconfiguser") 
+                    && (txtPassword.Text == "taxihail@123456."))
             {
+// ReSharper restore LocalizableElement
                 Session["IsAuth"] = true.ToString();
                 Response.Redirect("config.aspx");
             }
@@ -65,8 +77,8 @@ namespace apcurium.MK.Web
             {
                 if (ri.ItemType == ListItemType.Item || ri.ItemType == ListItemType.AlternatingItem)
                 {
-                    var label = (Label)ri.FindControl("KeyLabel");
-                    var value = (TextBox)ri.FindControl("ValueText");
+                    var label = (Label) ri.FindControl("KeyLabel");
+                    var value = (TextBox) ri.FindControl("ValueText");
                     if ((label != null) && (value != null))
                     {
                         using (var conn = new SqlConnection(connectionString))
@@ -74,7 +86,9 @@ namespace apcurium.MK.Web
                             conn.Open();
                             using (var command = conn.CreateCommand())
                             {
-                                command.CommandText = "update Config.AppSettings set [Value] = '" + value.Text.Replace("'", "''") + "' where [key] ='" + label.Text.Replace("'", "''") + "'";
+                                command.CommandText = "update Config.AppSettings set [Value] = '" +
+                                                      value.Text.Replace("'", "''") + "' where [key] ='" +
+                                                      label.Text.Replace("'", "''") + "'";
                                 command.ExecuteNonQuery();
                             }
                             conn.Close();
@@ -93,20 +107,18 @@ namespace apcurium.MK.Web
                 }
                 conn.Close();
             }
-
         }
 
 
-        public static System.Web.UI.Control FindControlIterative(System.Web.UI.Control root, string clientID)
+        public static Control FindControlIterative(Control root, string clientID)
         {
-
             foreach (Control control in root.Controls)
             {
                 if (control.ClientID == clientID)
                 {
                     return control;
                 }
-                else if (control.HasControls())
+                if (control.HasControls())
                 {
                     var ctl = FindControlIterative(control, clientID);
                     if (ctl != null)
@@ -116,16 +128,11 @@ namespace apcurium.MK.Web
                 }
             }
             return null;
-
-
         }
 
         protected void cmdRedirect_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Api/ReferenceData");
         }
-
-
-
     }
 }

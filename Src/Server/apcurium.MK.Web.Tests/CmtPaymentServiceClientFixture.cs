@@ -18,15 +18,6 @@ namespace apcurium.MK.Web.Tests
 
         }
 
-        private DummyConfigManager DummyConfigManager { get; set; }
-
-        [SetUp]
-        public void Setup()
-        {
-            DummyConfigManager = new DummyConfigManager();
-        }
-
-
         protected override IPaymentServiceClient GetPaymentClient()
         {
             return new CmtPaymentClient(BaseUrl, SessionId, new CmtPaymentSettings(), new Logger(), "Test");

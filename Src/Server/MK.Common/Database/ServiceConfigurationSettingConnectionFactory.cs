@@ -3,6 +3,7 @@
 using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
@@ -11,10 +12,12 @@ namespace apcurium.MK.Common.Database
     public class ServiceConfigurationSettingConnectionFactory : IDbConnectionFactory
     {
         private readonly IDbConnectionFactory _parent;
+        private readonly Logger _logger;
 
         public ServiceConfigurationSettingConnectionFactory(IDbConnectionFactory parent)
         {
-            this._parent = parent;
+            _parent = parent;
+            _logger = new Logger();
         }
 
         public DbConnection CreateConnection(string nameOrConnectionString)
@@ -32,6 +35,7 @@ namespace apcurium.MK.Common.Database
                 }
                 catch (ConfigurationErrorsException e)
                 {
+                    _logger.LogError(e);
                 }
             }
 
