@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class SearchLocationsFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -21,12 +27,6 @@ namespace apcurium.MK.Web.Tests
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
-        }
-
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
         }
 
         [Test]

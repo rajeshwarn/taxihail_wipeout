@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿#region
+
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
-     [TestFixture]
+    [TestFixture]
     public class ApplicationInfoFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -22,24 +28,16 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        [SetUp]
-        public override void Setup()
+
+        [Test]
+        public void GetInfo()
         {
-            base.Setup();
+            var client = new ApplicationInfoServiceClient(BaseUrl, null, "Test");
+            var appInfo = client.GetAppInfoAsync();
+
+
+            Assert.AreEqual(GetType().Assembly.GetName().Version.ToString(), appInfo.Result.Version);
+            Assert.AreEqual("Dev", appInfo.Result.SiteName);
         }
-
-
-         [Test]
-         public void GetInfo()
-         {
-             var client = new ApplicationInfoServiceClient(BaseUrl, null, "Test");
-             var appInfo = client.GetAppInfoAsync();
-
-
-             Assert.AreEqual(this.GetType().Assembly.GetName().Version.ToString(), appInfo.Result.Version);
-             Assert.AreEqual("Dev", appInfo.Result.SiteName);
-             
-
-         }
     }
 }

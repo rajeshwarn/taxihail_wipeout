@@ -1,15 +1,28 @@
-﻿
+﻿#region
+
 using System;
-using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Enumeration;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    public class PushNotificationRegistrationFixture: BaseTest
+    public class PushNotificationRegistrationFixture : BaseTest
     {
-        readonly string _knownDeviceToken = Guid.NewGuid().ToString();
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+            CreateAndAuthenticateTestAdminAccount();
+            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
+            sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android);
+        }
+
+        private readonly string _knownDeviceToken = Guid.NewGuid().ToString();
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -20,16 +33,6 @@ namespace apcurium.MK.Web.Tests
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
-        }
-
-        [SetUp]
-        public override void Setup()
-        {
-
-            base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
-            var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
-            sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android);
         }
 
         [Test]

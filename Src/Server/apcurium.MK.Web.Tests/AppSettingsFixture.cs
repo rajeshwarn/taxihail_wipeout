@@ -1,20 +1,18 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Text;
-using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using NUnit.Framework;
+using ServiceStack.Text;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     public class AppSettingsFixture : BaseTest
     {
-
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -33,10 +31,10 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-            sut.AddOrUpdateAppSettings(new ConfigurationsRequest()
-                    {
-                        AppSettings = new Dictionary<string, string> { { "Key.DefaultSetupWeb", "Value.DefaultSetupWeb" } }
-                    });
+            sut.AddOrUpdateAppSettings(new ConfigurationsRequest
+            {
+                AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWeb"}}
+            });
         }
 
         //[Test]
@@ -57,9 +55,9 @@ namespace apcurium.MK.Web.Tests
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
             sut.AddOrUpdateAppSettings(new ConfigurationsRequest
-                   {
-                       AppSettings = new Dictionary<string, string> { { "Key.DefaultSetupWeb", "Value.DefaultSetupWebUpdated" } }
-                   });
+            {
+                AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWebUpdated"}}
+            });
         }
 
         //[Test] //No more invalid data with AddOrUpdate
@@ -80,7 +78,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void TestDictionarySerialization()
         {
-            var dict = new Dictionary<string, string> { { "key", "value" } };
+            var dict = new Dictionary<string, string> {{"key", "value"}};
 
             var serialization = JsonSerializer.SerializeToString(dict);
             var desrializedDict = JsonSerializer.DeserializeFromString<Dictionary<string, string>>(serialization);

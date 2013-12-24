@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class GeolocFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -21,32 +27,6 @@ namespace apcurium.MK.Web.Tests
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
-        }
-
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
-        [Test]
-        public void DefaultLocationIsAnAddress()
-        {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var address = sut.DefaultLocation();
-
-            Assert.IsNotNull(address);
-            Assert.AreEqual(45.516667, address.Latitude);
-            Assert.AreEqual(-73.65, address.Longitude);
-        }
-
-        [Test]
-        public void BasicNameSearch()
-        {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search("11 hines");
-            Assert.True(addresses.Count() == 1);
-            Assert.True(addresses.ElementAt(0).FullAddress.Contains( "11" ));
         }
 
         [Test]
@@ -63,13 +43,33 @@ namespace apcurium.MK.Web.Tests
             StringAssert.Contains("H2S", address.ZipCode);
         }
 
-    
+
         [Test]
         public void BasicCoordinateSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search( 45.5062, -73.5726);
-            Assert.True(addresses.Count() >= 1);            
+            var addresses = sut.Search(45.5062, -73.5726);
+            Assert.True(addresses.Count() >= 1);
+        }
+
+        [Test]
+        public void BasicNameSearch()
+        {
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
+            var addresses = sut.Search("11 hines");
+            Assert.True(addresses.Count() == 1);
+            Assert.True(addresses.ElementAt(0).FullAddress.Contains("11"));
+        }
+
+        [Test]
+        public void DefaultLocationIsAnAddress()
+        {
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
+            var address = sut.DefaultLocation();
+
+            Assert.IsNotNull(address);
+            Assert.AreEqual(45.516667, address.Latitude);
+            Assert.AreEqual(-73.65, address.Longitude);
         }
 
 
@@ -88,8 +88,8 @@ namespace apcurium.MK.Web.Tests
         public void SearchMiddleField()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search(45.5364, -73.6103);                     
-                        
+            var addresses = sut.Search(45.5364, -73.6103);
+
 
             Assert.True(addresses.Count() >= 1);
 

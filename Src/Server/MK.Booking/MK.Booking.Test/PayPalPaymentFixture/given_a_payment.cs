@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
 {
     [TestFixture]
     public class given_a_payment
     {
-        private EventSourcingTestHelper<PayPalPayment> sut;
-        private Guid _orderId;
-        private Guid _paymentId;
-
         [SetUp]
         public void Setup()
         {
             _orderId = Guid.NewGuid();
             _paymentId = Guid.NewGuid();
 
-            sut = new EventSourcingTestHelper<PayPalPayment>();
-            sut.Setup(new PayPalPaymentCommandHandler(this.sut.Repository));
-            sut.Given(new PayPalExpressCheckoutPaymentInitiated
+            _sut = new EventSourcingTestHelper<PayPalPayment>();
+            _sut.Setup(new PayPalPaymentCommandHandler(_sut.Repository));
+            _sut.Given(new PayPalExpressCheckoutPaymentInitiated
             {
                 SourceId = _paymentId,
                 OrderId = _orderId,
@@ -36,36 +32,37 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             });
         }
 
+        private EventSourcingTestHelper<PayPalPayment> _sut;
+        private Guid _orderId;
+        private Guid _paymentId;
+
         [Test]
         public void when_cancelling_the_payment()
         {
-            sut.When(new CancelPayPalExpressCheckoutPayment
+            _sut.When(new CancelPayPalExpressCheckoutPayment
             {
                 PaymentId = _paymentId,
             });
 
-            var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentCancelled>();
-
+            var @event = _sut.ThenHasSingle<PayPalExpressCheckoutPaymentCancelled>();
         }
 
         [Test]
         public void when_completing_the_payment()
         {
-            sut.When(new CompletePayPalExpressCheckoutPayment
+            _sut.When(new CompletePayPalExpressCheckoutPayment
             {
                 PaymentId = _paymentId,
                 PayPalPayerId = "payerid",
                 TransactionId = "the transaction"
             });
 
-            var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentCompleted>();
+            var @event = _sut.ThenHasSingle<PayPalExpressCheckoutPaymentCompleted>();
             Assert.AreEqual("payerid", @event.PayPalPayerId);
             Assert.AreEqual("the transaction", @event.TransactionId);
             Assert.AreEqual("the token", @event.Token);
             Assert.AreEqual(12.34m, @event.Amount);
             Assert.AreEqual(_orderId, @event.OrderId);
-            
-
         }
     }
 }

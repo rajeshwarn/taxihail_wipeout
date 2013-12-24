@@ -1,36 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class CompanyDefaultFavoriteAddressFixture : BaseTest
     {
-        private Guid _knownAddressId = Guid.NewGuid();
-
-        [TestFixtureSetUp]
-        public override void TestFixtureSetup()
-        {
-            base.TestFixtureSetup();
-        }
-
-        [TestFixtureTearDown]
-        public override void TestFixtureTearDown()
-        {
-            base.TestFixtureTearDown();
-        }
-
         [SetUp]
         public override void Setup()
         {
-
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
@@ -45,6 +32,20 @@ namespace apcurium.MK.Web.Tests
                     Longitude = -73.558064
                 }
             });
+        }
+
+        private Guid _knownAddressId = Guid.NewGuid();
+
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
         }
 
         [Test]
@@ -89,6 +90,28 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void GetAddressList()
+        {
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
+
+            var addresses = sut.GetDefaultFavoriteAddresses();
+
+            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
+            Assert.IsNotNull(knownAddress);
+        }
+
+        [Test]
+        public void RemoveAddress()
+        {
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
+
+            sut.RemoveDefaultFavoriteAddress(_knownAddressId);
+
+            var addresses = sut.GetDefaultFavoriteAddresses();
+            Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
+        }
+
+        [Test]
         public void UpdateAddress()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
@@ -117,7 +140,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Le Manoir playboy", address.BuildingName);
             Assert.AreEqual(12, address.Latitude);
             Assert.AreEqual(34, address.Longitude);
-
         }
 
         [Test]
@@ -130,41 +152,17 @@ namespace apcurium.MK.Web.Tests
                 {
                     Id = _knownAddressId,
                     Address = new Address
-                {
-                    FriendlyName =
-                        "Chez François Cuvelier",
-                    Apartment = "3939",
-                    FullAddress =
-                        "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    Latitude = double.NaN,
-                    Longitude = double.NaN
-                }
+                    {
+                        FriendlyName =
+                            "Chez François Cuvelier",
+                        Apartment = "3939",
+                        FullAddress =
+                            "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        Latitude = double.NaN,
+                        Longitude = double.NaN
+                    }
                 }));
-
-        }
-
-
-        [Test]
-        public void RemoveAddress()
-        {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-
-            sut.RemoveDefaultFavoriteAddress(_knownAddressId);
-
-            var addresses = sut.GetDefaultFavoriteAddresses();
-            Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
-        }
-
-        [Test]
-        public void GetAddressList()
-        {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-
-            var addresses = sut.GetDefaultFavoriteAddresses();
-
-            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
-            Assert.IsNotNull(knownAddress);
         }
     }
 }

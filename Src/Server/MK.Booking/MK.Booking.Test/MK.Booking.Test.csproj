@@ -79,7 +79,7 @@
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
     <Compile Include="AccountFixture\given_one_account_for_credit_card.cs" />
-    <Compile Include="AutoMapperFixture\ValidateProfile.cs" />
+    <Compile Include="AutoMapperFixture\given_validate_profile.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_a_default_address.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_a_popular_address.cs" />
     <Compile Include="CompanyFixture\given_a_company_with_a_tariff.cs" />

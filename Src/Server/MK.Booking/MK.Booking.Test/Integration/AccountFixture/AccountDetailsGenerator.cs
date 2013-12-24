@@ -1,48 +1,38 @@
-﻿// ==============================================================================================================
-// Microsoft patterns & practices
-// CQRS Journey project
-// ==============================================================================================================
-// ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
-// with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software distributed under the License is 
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and limitations under the License.
-// ==============================================================================================================
+﻿#region
 
-using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using apcurium.MK.Booking.Common.Tests;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using Infrastructure.Messaging;
+using Moq;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Infrastructure.Messaging;
-    using Moq;
-    using EventHandlers;
-    using Database;
-    using Events;
-    using ReadModel;
-    using apcurium.MK.Booking.IBS.Impl;
-    using apcurium.MK.Common.Diagnostic;
-    using apcurium.MK.Booking.Common.Tests;
-
+// ReSharper disable once InconsistentNaming
     public class given_a_view_model_generator : given_a_read_model_database
     {
-        protected AccountDetailsGenerator sut;
-        protected List<ICommand> commands = new List<ICommand>();
+        protected List<ICommand> Commands = new List<ICommand>();
+        protected AccountDetailsGenerator Sut;
 
         public given_a_view_model_generator()
         {
             var bus = new Mock<ICommandBus>();
             bus.Setup(x => x.Send(It.IsAny<Envelope<ICommand>>()))
-                .Callback<Envelope<ICommand>>(x => this.commands.Add(x.Body));
+                .Callback<Envelope<ICommand>>(x => Commands.Add(x.Body));
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
-                .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
+                .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName), new TestConfigurationManager());
+            Sut = new AccountDetailsGenerator(() => new BookingDbContext(DbName), new TestConfigurationManager());
         }
     }
 
@@ -54,24 +44,24 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         {
             var accountId = Guid.NewGuid();
 
-            this.sut.Handle(new AccountRegistered
-                                {
-                                    SourceId = accountId,
-                                    Name = "Bob",                                    
-                                    Email = "bob.smith@acpurium.com",
-                                    Password = new byte[1] {1},
-                                    IbsAcccountId = 666,
-                                    FacebookId = "FacebookId",
-                                    TwitterId = "TwitterId",
-                                    Language = "fr"
-                                });
+            Sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                Password = new byte[] {1},
+                IbsAcccountId = 666,
+                FacebookId = "FacebookId",
+                TwitterId = "TwitterId",
+                Language = "fr"
+            });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<AccountDetail>(accountId);
 
                 Assert.NotNull(dto);
-                Assert.AreEqual("Bob", dto.Name);                
+                Assert.AreEqual("Bob", dto.Name);
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual(1, dto.Password.Length);
                 Assert.AreEqual(666, dto.IBSAccountId);
@@ -88,18 +78,50 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         {
             var accountId = Guid.NewGuid();
 
-            this.sut.Handle(new AccountRegistered
+            Sut.Handle(new AccountRegistered
             {
                 SourceId = accountId,
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<AccountDetail>(accountId);
 
                 Assert.NotNull(dto);
-                Assert.AreEqual(false, dto.IsConfirmed );
-                Assert.AreEqual(false, dto.DisabledByAdmin );
+                Assert.AreEqual(false, dto.IsConfirmed);
+                Assert.AreEqual(false, dto.DisabledByAdmin);
+            }
+        }
+
+        [Test]
+        public void when_account_registered_then_account_settings_populated()
+        {
+            var accountId = Guid.NewGuid();
+
+            Sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                Phone = "555.555.2525",
+                Password = new byte[] {1},
+                IbsAcccountId = 666
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(dto.Settings.Name, dto.Name);
+                Assert.AreEqual(dto.Settings.Phone, dto.Phone);
+
+                var config = new TestConfigurationManager();
+                Assert.IsNull(dto.Settings.ChargeTypeId);
+                Assert.AreEqual(dto.Settings.Passengers.ToString(CultureInfo.InvariantCulture),
+                    config.GetSetting("DefaultBookingSettings.NbPassenger"));
+                Assert.IsNull(dto.Settings.VehicleTypeId);
+                Assert.IsNull(dto.Settings.ProviderId);
             }
         }
 
@@ -108,7 +130,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         {
             var accountId = Guid.NewGuid();
 
-            this.sut.Handle(new AccountRegistered
+            Sut.Handle(new AccountRegistered
             {
                 SourceId = accountId,
                 Name = "Bob",
@@ -117,7 +139,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 IbsAcccountId = 666
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<AccountDetail>(accountId);
 
@@ -134,7 +156,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         {
             var accountId = Guid.NewGuid();
 
-            this.sut.Handle(new AccountRegistered
+            Sut.Handle(new AccountRegistered
             {
                 SourceId = accountId,
                 Name = "Bob",
@@ -143,7 +165,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 IbsAcccountId = 666
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<AccountDetail>(accountId);
 
@@ -154,39 +176,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(666, dto.IBSAccountId);
             }
         }
-
-        [Test]
-        public void when_account_registered_then_account_settings_populated()
-        {
-            var accountId = Guid.NewGuid();
-
-            this.sut.Handle(new AccountRegistered
-            {
-                SourceId = accountId,
-                Name = "Bob",
-                Email = "bob.smith@acpurium.com",
-                Phone = "555.555.2525",
-                Password = new byte[1] { 1 },
-                IbsAcccountId = 666
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual(dto.Settings.Name, dto.Name);
-                Assert.AreEqual(dto.Settings.Phone  , dto.Phone);
-
-                var config = new TestConfigurationManager();                
-                Assert.IsNull(dto.Settings.ChargeTypeId);
-                Assert.AreEqual(dto.Settings.Passengers.ToString(), config.GetSetting("DefaultBookingSettings.NbPassenger"));
-                Assert.IsNull(dto.Settings.VehicleTypeId);
-                Assert.IsNull(dto.Settings.ProviderId);
-                
-            }
-        }
-
     }
 
     [TestFixture]
@@ -196,149 +185,68 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
         public given_existing_account()
         {
-            this.sut.Handle(new AccountRegistered
-                                {
-                                    SourceId = _accountId,
-                                    Name = "Bob",                                    
-                                    Email = "bob.smith@acpurium.com",
-                                    Password = new byte[1] {1},
-                                    
-                                });
-
-        }
-
-        [Test]
-        public void when_account_confirmed_then_account_dto_updated()
-        {
-            this.sut.Handle(new AccountConfirmed
+            Sut.Handle(new AccountRegistered
             {
                 SourceId = _accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                Password = new byte[] {1},
             });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(_accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual(true, dto.IsConfirmed);
-                Assert.AreEqual(false, dto.DisabledByAdmin);
-            }
         }
-
-        [Test]
-        public void when_account_disabled_then_account_dto_updated()
-        {
-            this.sut.Handle(new AccountDisabled
-            {
-                SourceId = _accountId,
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(_accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual(false, dto.IsConfirmed);
-                Assert.AreEqual(true, dto.DisabledByAdmin);
-            }
-        }
-
-        [Test]
-        public void when_account_updated_then_account_dto_populated()
-        {
-            this.sut.Handle(new AccountUpdated
-                                {
-                                    SourceId = _accountId,
-                                    Name = "Robert",                                    
-                                });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(_accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual("Robert", dto.Name);                
-            }
-        }
-
-        [Test]
-        public void when_account_reset_password()
-        {
-            var service = new PasswordService();
-            this.sut.Handle(new AccountPasswordReset
-            {
-                SourceId = _accountId,
-                Password = service.EncodePassword("Yop", _accountId.ToString())
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(_accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
-            }
-        }
-
-        [Test]
-        public void when_account_updated_password()
-        {
-            var service = new PasswordService();
-            this.sut.Handle(new AccountPasswordUpdated
-            {
-                SourceId = _accountId,
-                Password = service.EncodePassword("Yop", _accountId.ToString())
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var dto = context.Find<AccountDetail>(_accountId);
-
-                Assert.NotNull(dto);
-                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
-            }
-        }
-
-
 
         [TestFixture]
         public class given_settings_account : given_a_view_model_generator
         {
-            private Guid _accountId = Guid.NewGuid();
+            private readonly Guid _accountId = Guid.NewGuid();
 
             public given_settings_account()
             {
-                this.sut.Handle(new AccountRegistered
-                                    {
-                                        SourceId = _accountId,
-                                        Name = "Bob",                                        
-                                        Email = "bob.smith@acpurium.com",
-                                        Password = new byte[1] {1}
-                                    });
+                Sut.Handle(new AccountRegistered
+                {
+                    SourceId = _accountId,
+                    Name = "Bob",
+                    Email = "bob.smith@acpurium.com",
+                    Password = new byte[] {1}
+                });
+            }
 
+            [Test]
+            public void when_account_granted_admin_access_then_account_dto_populated()
+            {
+                Sut.Handle(new RoleAddedToUserAccount
+                {
+                    SourceId = _accountId,
+                    RoleName = "Admin",
+                });
+
+                using (var context = new BookingDbContext(DbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+                    Assert.AreEqual(true, dto.IsAdmin);
+                }
             }
 
             [Test]
             public void when_settings_updated_then_account_dto_populated()
             {
-                this.sut.Handle(new BookingSettingsUpdated
-                                    {
-                                        SourceId = _accountId,
-                                        Name = "Robert",                                        
-                                        ChargeTypeId = 123,
-                                        NumberOfTaxi = 3,
-                                        Phone = "123",
-                                        Passengers = 3,
-                                        ProviderId = 85,
-                                        VehicleTypeId = 69
-                                    });
+                Sut.Handle(new BookingSettingsUpdated
+                {
+                    SourceId = _accountId,
+                    Name = "Robert",
+                    ChargeTypeId = 123,
+                    NumberOfTaxi = 3,
+                    Phone = "123",
+                    Passengers = 3,
+                    ProviderId = 85,
+                    VehicleTypeId = 69
+                });
 
-                using (var context = new BookingDbContext(dbName))
+                using (var context = new BookingDbContext(DbName))
                 {
                     var dto = context.Find<AccountDetail>(_accountId);
 
                     Assert.NotNull(dto);
-                    Assert.AreEqual("Robert", dto.Settings.Name);                    
+                    Assert.AreEqual("Robert", dto.Settings.Name);
                     Assert.AreEqual(123, dto.Settings.ChargeTypeId);
                     Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
                     Assert.AreEqual("123", dto.Settings.Phone);
@@ -351,7 +259,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             [Test]
             public void when_settings_updated_with_default_values_then_account_dto_populated()
             {
-                this.sut.Handle(new BookingSettingsUpdated
+                Sut.Handle(new BookingSettingsUpdated
                 {
                     SourceId = _accountId,
                     Name = "Robert",
@@ -363,30 +271,14 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     VehicleTypeId = 1
                 });
 
-                using (var context = new BookingDbContext(dbName))
+                using (var context = new BookingDbContext(DbName))
                 {
                     var dto = context.Find<AccountDetail>(_accountId);
 
                     Assert.NotNull(dto);
                     Assert.IsNull(dto.Settings.ChargeTypeId);
                     Assert.IsNull(dto.Settings.ProviderId);
-                    Assert.IsNull( dto.Settings.VehicleTypeId);
-                }
-            }
-
-            [Test]
-            public void when_account_granted_admin_access_then_account_dto_populated()
-            {
-                this.sut.Handle(new RoleAddedToUserAccount
-                {
-                    SourceId = _accountId,
-                    RoleName = "Admin",
-                });
-
-                using (var context = new BookingDbContext(dbName))
-                {
-                    var dto = context.Find<AccountDetail>(_accountId);
-                    Assert.AreEqual(true, dto.IsAdmin);
+                    Assert.IsNull(dto.Settings.VehicleTypeId);
                 }
             }
 
@@ -396,14 +288,14 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Guid? creditCardId = Guid.NewGuid();
                 int? defaultTipPercent = 15;
 
-                this.sut.Handle(new PaymentProfileUpdated
+                Sut.Handle(new PaymentProfileUpdated
                 {
                     SourceId = _accountId,
                     DefaultCreditCard = creditCardId,
                     DefaultTipPercent = defaultTipPercent
                 });
 
-                using (var context = new BookingDbContext(dbName))
+                using (var context = new BookingDbContext(DbName))
                 {
                     var dto = context.Find<AccountDetail>(_accountId);
 
@@ -412,7 +304,98 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(defaultTipPercent, dto.DefaultTipPercent);
                 }
             }
+        }
 
+        [Test]
+        public void when_account_confirmed_then_account_dto_updated()
+        {
+            Sut.Handle(new AccountConfirmed
+            {
+                SourceId = _accountId,
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, dto.IsConfirmed);
+                Assert.AreEqual(false, dto.DisabledByAdmin);
+            }
+        }
+
+        [Test]
+        public void when_account_disabled_then_account_dto_updated()
+        {
+            Sut.Handle(new AccountDisabled
+            {
+                SourceId = _accountId,
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(false, dto.IsConfirmed);
+                Assert.AreEqual(true, dto.DisabledByAdmin);
+            }
+        }
+
+        [Test]
+        public void when_account_reset_password()
+        {
+            var service = new PasswordService();
+            Sut.Handle(new AccountPasswordReset
+            {
+                SourceId = _accountId,
+                Password = service.EncodePassword("Yop", _accountId.ToString())
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
+            }
+        }
+
+        [Test]
+        public void when_account_updated_password()
+        {
+            var service = new PasswordService();
+            Sut.Handle(new AccountPasswordUpdated
+            {
+                SourceId = _accountId,
+                Password = service.EncodePassword("Yop", _accountId.ToString())
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
+            }
+        }
+
+        [Test]
+        public void when_account_updated_then_account_dto_populated()
+        {
+            Sut.Handle(new AccountUpdated
+            {
+                SourceId = _accountId,
+                Name = "Robert",
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual("Robert", dto.Name);
+            }
         }
     }
 }

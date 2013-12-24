@@ -1,26 +1,35 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
-using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class OrderStatusFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         private Guid _orderId;
-       
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
-            
-
             base.TestFixtureSetup();
 
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email,
+                TestAccountPassword);
 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, "Test");
@@ -52,24 +61,8 @@ namespace apcurium.MK.Web.Tests
 
         [TestFixtureTearDown]
         public override void TestFixtureTearDown()
-        {            
+        {
             base.TestFixtureTearDown();
-        }
-
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
-        [Test]
-        public void create_and_get_a_valid_order()
-        {
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            var data = sut.GetOrderStatus( _orderId);
-         
-            Assert.AreEqual(OrderStatus.Created, data.Status);
-            Assert.AreEqual("Joe Smith", data.Name);
         }
 
         [Test]
@@ -80,6 +73,16 @@ namespace apcurium.MK.Web.Tests
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
+        }
+
+        [Test]
+        public void create_and_get_a_valid_order()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+            var data = sut.GetOrderStatus(_orderId);
+
+            Assert.AreEqual(OrderStatus.Created, data.Status);
+            Assert.AreEqual("Joe Smith", data.Name);
         }
 
         [Test]

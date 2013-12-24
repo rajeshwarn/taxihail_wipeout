@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Enumeration;
-using NUnit.Framework;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
 {
@@ -28,10 +28,9 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 OrderId = orderId,
                 CardToken = t,
                 Provider = PaymentProvider.Braintree
-
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderPaymentDetail>(paymentId);
                 Assert.NotNull(dto);

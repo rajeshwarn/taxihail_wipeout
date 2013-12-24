@@ -1,33 +1,36 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Enumeration;
-using Infrastructure.Messaging;
-using Moq;
-using NUnit.Framework;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
+using Moq;
+using NUnit.Framework;
 
-namespace apcurium.MK.Booking.Test.Integration
+#endregion
+
+namespace apcurium.MK.Booking.Test.Integration.PayPalPaymentFixture
 {
+// ReSharper disable once InconsistentNaming
     public class given_a_view_model_generator : given_a_read_model_database
     {
-        protected PayPalExpressCheckoutPaymentDetailsGenerator sut;
-        protected List<ICommand> commands = new List<ICommand>();
+        protected List<ICommand> Commands = new List<ICommand>();
+        protected PayPalExpressCheckoutPaymentDetailsGenerator Sut;
 
         public given_a_view_model_generator()
         {
             var bus = new Mock<ICommandBus>();
             bus.Setup(x => x.Send(It.IsAny<Envelope<ICommand>>()))
-               .Callback<Envelope<ICommand>>(x => this.commands.Add(x.Body));
+                .Callback<Envelope<ICommand>>(x => Commands.Add(x.Body));
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
-               .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
+                .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new PayPalExpressCheckoutPaymentDetailsGenerator(() => new BookingDbContext(dbName));
+            Sut = new PayPalExpressCheckoutPaymentDetailsGenerator(() => new BookingDbContext(DbName));
         }
     }
 
@@ -39,16 +42,15 @@ namespace apcurium.MK.Booking.Test.Integration
         {
             var paymentId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
-            this.sut.Handle(new PayPalExpressCheckoutPaymentInitiated
+            Sut.Handle(new PayPalExpressCheckoutPaymentInitiated
             {
                 SourceId = paymentId,
                 Amount = 12.34m,
                 Token = "the token",
                 OrderId = orderId,
-                
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderPaymentDetail>(paymentId);
                 Assert.NotNull(dto);
@@ -64,12 +66,11 @@ namespace apcurium.MK.Booking.Test.Integration
     [TestFixture]
     public class given_a_payment : given_a_view_model_generator
     {
-        private Guid _paymentId;
         [SetUp]
         public void Setup()
         {
             _paymentId = Guid.NewGuid();
-            this.sut.Handle(new PayPalExpressCheckoutPaymentInitiated
+            Sut.Handle(new PayPalExpressCheckoutPaymentInitiated
             {
                 SourceId = _paymentId,
                 OrderId = Guid.NewGuid(),
@@ -78,16 +79,18 @@ namespace apcurium.MK.Booking.Test.Integration
             });
         }
 
+        private Guid _paymentId;
+
 
         [Test]
         public void when_payment_cancelled_then_dto_updated()
         {
-            this.sut.Handle(new PayPalExpressCheckoutPaymentCancelled
+            Sut.Handle(new PayPalExpressCheckoutPaymentCancelled
             {
                 SourceId = _paymentId,
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
@@ -101,14 +104,14 @@ namespace apcurium.MK.Booking.Test.Integration
         [Test]
         public void when_payment_completed_then_dto_updated()
         {
-            this.sut.Handle(new PayPalExpressCheckoutPaymentCompleted
+            Sut.Handle(new PayPalExpressCheckoutPaymentCompleted
             {
                 SourceId = _paymentId,
                 PayPalPayerId = "thepayer",
                 TransactionId = "thetransaction"
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
@@ -121,6 +124,4 @@ namespace apcurium.MK.Booking.Test.Integration
             }
         }
     }
-
-
 }

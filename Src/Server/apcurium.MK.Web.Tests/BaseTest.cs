@@ -6,7 +6,6 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Database;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;

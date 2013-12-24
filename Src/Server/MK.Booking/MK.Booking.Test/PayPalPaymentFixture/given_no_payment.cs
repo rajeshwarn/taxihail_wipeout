@@ -1,35 +1,37 @@
-﻿
+﻿#region
+
 using System;
-using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using NUnit.Framework;
 
-namespace apcurium.MK.Booking.Test
+#endregion
+
+namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
 {
     [TestFixture]
     public class given_no_payment
     {
-
-        private EventSourcingTestHelper<PayPalPayment> sut;
-
         [SetUp]
         public void Setup()
         {
-            sut = new EventSourcingTestHelper<PayPalPayment>();
-            this.sut.Setup(new PayPalPaymentCommandHandler(this.sut.Repository));
+            _sut = new EventSourcingTestHelper<PayPalPayment>();
+            _sut.Setup(new PayPalPaymentCommandHandler(_sut.Repository));
         }
+
+        private EventSourcingTestHelper<PayPalPayment> _sut;
 
         [Test]
         public void when_initiating_a_payment()
         {
             const string token = "Payment Token";
-            Guid orderId = Guid.NewGuid();
-            Guid paymentId = Guid.NewGuid();
-            decimal amount = 12.34m;
-            sut.When(new InitiatePayPalExpressCheckoutPayment
+            var orderId = Guid.NewGuid();
+            var paymentId = Guid.NewGuid();
+            var amount = 12.34m;
+            _sut.When(new InitiatePayPalExpressCheckoutPayment
             {
                 OrderId = orderId,
                 PaymentId = paymentId,
@@ -37,13 +39,12 @@ namespace apcurium.MK.Booking.Test
                 Amount = amount,
             });
 
-            var @event = sut.ThenHasSingle<PayPalExpressCheckoutPaymentInitiated>();
+            var @event = _sut.ThenHasSingle<PayPalExpressCheckoutPaymentInitiated>();
 
             Assert.AreEqual(paymentId, @event.SourceId);
             Assert.AreEqual(orderId, @event.OrderId);
             Assert.AreEqual(token, @event.Token);
             Assert.AreEqual(amount, @event.Amount);
         }
-        
     }
 }

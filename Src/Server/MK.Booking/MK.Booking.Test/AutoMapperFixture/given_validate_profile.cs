@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
+
+using apcurium.MK.Booking.IBS;
 using AutoMapper;
 using NUnit.Framework;
-using apcurium.MK.Booking.IBS;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.AutoMapperFixture
 {
     [TestFixture]
-    public class ValidateProfile
+    public class given_validate_profile
     {
         [Test]
         public void validate_ibs_profile()
@@ -19,7 +18,5 @@ namespace apcurium.MK.Booking.Test.AutoMapperFixture
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
         }
-
-       
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿#region
+
+using System.Configuration;
 using System.Data.Entity;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -10,11 +12,13 @@ using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
 
+#endregion
+
 namespace apcurium.MK.Web.SelfHost
 {
     public class Module
     {
-        public void Init(IUnityContainer container,ConnectionStringSettings connectionString)
+        public void Init(IUnityContainer container, ConnectionStringSettings connectionString)
         {
             RegisterInfrastructure(container, connectionString);
 
@@ -40,13 +44,16 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
             // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString, container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString,
+                container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
             // Repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor(connectionString.ConnectionString));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
+            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(),
+                new InjectionConstructor(connectionString.ConnectionString));
+            container.RegisterType(typeof (IEventSourcedRepository<>), typeof (SqlEventSourcedRepository<>),
+                new ContainerControlledLifetimeManager());
 
             // Command bus
             var commandBus = new SynchronousMemoryCommandBus();

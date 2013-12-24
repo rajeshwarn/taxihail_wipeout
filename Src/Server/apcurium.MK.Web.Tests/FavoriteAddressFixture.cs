@@ -1,39 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Web.SelfHost;
+using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    public class FavoriteAddressFixture: BaseTest
+    public class FavoriteAddressFixture : BaseTest
     {
-        private Guid _knownAddressId;
-
-        [TestFixtureSetUp]
-        public override void TestFixtureSetup()
-        {
-            base.TestFixtureSetup();
-        }
-
-        [TestFixtureTearDown]
-        public override void TestFixtureTearDown()
-        {
-            base.TestFixtureTearDown();
-        }
-
         [SetUp]
         public override void Setup()
         {
-            _knownAddressId  = Guid.NewGuid();
+            _knownAddressId = Guid.NewGuid();
             base.Setup();
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             sut.AddFavoriteAddress(new SaveAddress
@@ -49,6 +34,20 @@ namespace apcurium.MK.Web.Tests
             });
         }
 
+        private Guid _knownAddressId;
+
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
         [Test]
         public void AddAddress()
         {
@@ -56,9 +55,9 @@ namespace apcurium.MK.Web.Tests
 
             var addressId = Guid.NewGuid();
             sut.AddFavoriteAddress(new SaveAddress
-                                       {
-                                           Id = addressId,
-                                           Address = new Address
+            {
+                Id = addressId,
+                Address = new Address
                 {
                     FriendlyName = "Chez François Cuvelier",
                     Apartment = "3939",
@@ -68,7 +67,7 @@ namespace apcurium.MK.Web.Tests
                     Latitude = 45.515065,
                     Longitude = -73.558064
                 }
-                                       });
+            });
 
             var addresses = sut.GetFavoriteAddresses();
 
@@ -88,6 +87,28 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
             Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveAddress()));
+        }
+
+        [Test]
+        public void GetAddressList()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+
+            var addresses = sut.GetFavoriteAddresses();
+
+            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
+            Assert.IsNotNull(knownAddress);
+        }
+
+        [Test]
+        public void RemoveAddress()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
+
+            sut.RemoveFavoriteAddress(_knownAddressId);
+
+            var addresses = sut.GetFavoriteAddresses();
+            Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
@@ -119,7 +140,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Le Manoir", address.BuildingName);
             Assert.AreEqual(12, address.Latitude);
             Assert.AreEqual(34, address.Longitude);
-
         }
 
         [Test]
@@ -132,41 +152,17 @@ namespace apcurium.MK.Web.Tests
                 {
                     Id = _knownAddressId,
                     Address = new Address
-                {
-                    FriendlyName =
-                        "Chez François Cuvelier",
-                    Apartment = "3939",
-                    FullAddress =
-                        "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    Latitude = double.NaN,
-                    Longitude = double.NaN
-                }
+                    {
+                        FriendlyName =
+                            "Chez François Cuvelier",
+                        Apartment = "3939",
+                        FullAddress =
+                            "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        Latitude = double.NaN,
+                        Longitude = double.NaN
+                    }
                 }));
-
-        }
-
-
-        [Test]
-        public void RemoveAddress()
-        {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-
-            sut.RemoveFavoriteAddress(_knownAddressId);
-
-            var addresses = sut.GetFavoriteAddresses();
-            Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
-        }
-
-        [Test]
-        public void GetAddressList()
-        {
-            var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-
-            var addresses = sut.GetFavoriteAddresses();
-
-            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
-            Assert.IsNotNull(knownAddress);
         }
     }
 }

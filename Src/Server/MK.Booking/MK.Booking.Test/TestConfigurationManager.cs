@@ -1,12 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Newtonsoft.Json.Linq;
-using apcurium.MK.Common.Configuration;
+
+#endregion
 
 namespace apcurium.MK.Booking.Common.Tests
 {
@@ -26,36 +30,42 @@ namespace apcurium.MK.Booking.Common.Tests
             }
         }
 
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         public void Reset()
-        { }
+        {
+        }
 
         public T GetSetting<T>(string key, T defaultValue) where T : struct
         {
             var value = GetSetting(key);
             if (string.IsNullOrWhiteSpace(value)) return defaultValue;
             var converter = TypeDescriptor.GetConverter(defaultValue);
-            if (converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+            if (converter == null)
+                throw new InvalidOperationException("Type " + typeof (T).Name + " has no type converter");
             try
             {
-                return (T)converter.ConvertFromInvariantString(value);
+                return (T) converter.ConvertFromInvariantString(value);
             }
             catch
             {
-                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
+                Trace.WriteLine("Could not convert setting " + key + " to " + typeof (T).Name);
             }
             return defaultValue;
         }
 
         public IDictionary<string, string> GetSettings()
         {
-
             return _config;
-
-        }
-
-        public void SetSetting(string key, string value)
-        {
-            _config[key] = value;
         }
 
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
@@ -68,15 +78,9 @@ namespace apcurium.MK.Booking.Common.Tests
             return _config.ContainsKey(key) ? _config[key] : null;
         }
 
-        static public string AssemblyDirectory
+        public void SetSetting(string key, string value)
         {
-            get
-            {
-                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                var uri = new UriBuilder(codeBase);
-                var path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
+            _config[key] = value;
         }
     }
 }
