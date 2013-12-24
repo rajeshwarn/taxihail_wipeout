@@ -1,6 +1,10 @@
-﻿using System;
-using Infrastructure.Messaging;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -11,7 +15,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; set; }
         public string EmailAddress { get; set; }
         public int IBSOrderId { get; set; }
         public DateTime PickupDate { get; set; }
@@ -19,6 +22,7 @@ namespace apcurium.MK.Booking.Commands
         public Address DropOffAddress { get; set; }
         public BookingSettings Settings { get; set; }
         public string Note { get; set; }
+        public Guid Id { get; set; }
 
         public class BookingSettings
         {

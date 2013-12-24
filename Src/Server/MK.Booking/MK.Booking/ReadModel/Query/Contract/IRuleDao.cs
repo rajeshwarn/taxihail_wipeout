@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿#region
 
-namespace apcurium.MK.Booking.ReadModel.Query
+using System.Collections.Generic;
+
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface IRuleDao
     {

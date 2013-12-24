@@ -1,10 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -19,7 +24,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<OrderDetail> GetAll()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderDetail>().ToList();
             }
@@ -27,7 +32,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderDetail FindById(Guid id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderDetail>().SingleOrDefault(c => c.Id == id);
             }
@@ -35,7 +40,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<OrderDetail> FindByAccountId(Guid id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderDetail>().Where(c => c.AccountId == id).ToList();
             }
@@ -44,7 +49,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         public IList<OrderDetailWithAccount> GetAllWithAccountSummary()
         {
             var list = new List<OrderDetailWithAccount>();
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var joinedLines = from order in context.Set<OrderDetail>()
                     join account in context.Set<AccountDetail>()
@@ -93,9 +98,9 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<OrderStatusDetail> GetOrdersInProgress()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
-                List<OrderStatusDetail> currentOrders = (from order in context.Set<OrderStatusDetail>()
+                var currentOrders = (from order in context.Set<OrderStatusDetail>()
                     where order.Status != OrderStatus.Canceled
                           && order.Status != OrderStatus.Completed
                           && order.Status != OrderStatus.TimedOut
@@ -106,9 +111,9 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
-                List<OrderStatusDetail> currentOrders = (from order in context.Set<OrderStatusDetail>()
+                var currentOrders = (from order in context.Set<OrderStatusDetail>()
                     where order.AccountId == accountId
                     where order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Completed
                     select order).ToList();
@@ -118,7 +123,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderStatusDetail FindOrderStatusById(Guid orderId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == orderId);
             }
@@ -126,7 +131,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPairingDetail FindOrderPairingById(Guid orderId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<OrderPairingDetail>().SingleOrDefault(x => x.OrderId == orderId);
             }

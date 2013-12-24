@@ -1,6 +1,6 @@
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
-    public interface IIBSOrderService
+    public interface IIbsOrderService
     {
         void ConfirmExternalPayment(int orderId, decimal amount, string type, string provider, string transactionId,
             string authorizationCode);

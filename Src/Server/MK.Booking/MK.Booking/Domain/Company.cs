@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Commands;
@@ -8,6 +10,8 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -38,33 +42,33 @@ namespace apcurium.MK.Booking.Domain
 
         private void RegisterHandlers()
         {
-            Handles<DefaultFavoriteAddressAdded>(OnEventDoNothing);
-            Handles<DefaultFavoriteAddressRemoved>(OnEventDoNothing);
-            Handles<DefaultFavoriteAddressUpdated>(OnEventDoNothing);
+            Handles<DefaultFavoriteAddressAdded>(NoAction);
+            Handles<DefaultFavoriteAddressRemoved>(NoAction);
+            Handles<DefaultFavoriteAddressUpdated>(NoAction);
 
-            Handles<PopularAddressAdded>(OnEventDoNothing);
-            Handles<PopularAddressRemoved>(OnEventDoNothing);
-            Handles<PopularAddressUpdated>(OnEventDoNothing);
+            Handles<PopularAddressAdded>(NoAction);
+            Handles<PopularAddressRemoved>(NoAction);
+            Handles<PopularAddressUpdated>(NoAction);
 
-            Handles<CompanyCreated>(OnEventDoNothing);
-            Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
-            Handles<PaymentModeChanged>(OnEventDoNothing);
+            Handles<CompanyCreated>(NoAction);
+            Handles<AppSettingsAddedOrUpdated>(NoAction);
+            Handles<PaymentModeChanged>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
-            Handles<TariffUpdated>(OnEventDoNothing);
-            Handles<TariffDeleted>(OnEventDoNothing);
+            Handles<TariffUpdated>(NoAction);
+            Handles<TariffDeleted>(NoAction);
 
             Handles<RuleCreated>(OnRuleCreated);
-            Handles<RuleUpdated>(OnEventDoNothing);
-            Handles<RuleDeleted>(OnEventDoNothing);
-            Handles<RuleActivated>(OnEventDoNothing);
-            Handles<RuleDeactivated>(OnEventDoNothing);
+            Handles<RuleUpdated>(NoAction);
+            Handles<RuleDeleted>(NoAction);
+            Handles<RuleActivated>(NoAction);
+            Handles<RuleDeactivated>(NoAction);
 
 
-            Handles<RatingTypeAdded>(OnEventDoNothing);
-            Handles<RatingTypeHidded>(OnEventDoNothing);
-            Handles<RatingTypeUpdated>(OnEventDoNothing);
+            Handles<RatingTypeAdded>(NoAction);
+            Handles<RatingTypeHidded>(NoAction);
+            Handles<RatingTypeUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -266,15 +270,10 @@ namespace apcurium.MK.Booking.Domain
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
             DateTime? activeTo)
         {
-            /*if ((type == RuleType.Default) && _defaultRules.ContainsKey(category))
-            {
-                throw new InvalidOperationException(string.Format("Only one default rule of type {0} can be created", category.ToString()));
-            }*/
-
             if ((type == RuleType.Default) && message.IsNullOrEmpty())
             {
-                throw new InvalidOperationException(string.Format("Missing message for default rule",
-                    category.ToString()));
+                throw new InvalidOperationException(string.Format("Missing message for default rule - category {0}",
+                    category));
             }
             if ((type == RuleType.Recurring) &&
                 (Params.Get(message, name).Any(s => s.IsNullOrEmpty()) || (daysOfTheWeek == DayOfTheWeek.None) ||
@@ -334,10 +333,6 @@ namespace apcurium.MK.Booking.Domain
 
         public void DeleteRule(Guid ruleId)
         {
-            /* if (_defaultRules.ContainsValue( ruleId ) )
-            {
-                throw new InvalidOperationException("Cannot delete default tariff");
-            }*/
             Update(new RuleDeleted
             {
                 RuleId = ruleId
@@ -391,6 +386,7 @@ namespace apcurium.MK.Booking.Domain
 
             if (latitude < -90 || latitude > 90)
             {
+// ReSharper disable LocalizableElement
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
@@ -398,6 +394,7 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
+// ReSharper restore LocalizableElement
         }
 
         private void OnRateCreated(TariffCreated @event)
@@ -421,12 +418,6 @@ namespace apcurium.MK.Booking.Domain
                     _defaultRules[@event.Category] = @event.RuleId;
                 }
             }
-        }
-
-
-        private void OnEventDoNothing<T>(T @event) where T : VersionedEvent
-        {
-            // Do nothing
         }
     }
 }

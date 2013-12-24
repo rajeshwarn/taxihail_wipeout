@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;

@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using AutoMapper;
 using Infrastructure.Messaging;
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class RulesService : RestServiceBase<RuleRequest>
     {
         private readonly ICommandBus _commandBus;
-        private readonly apcurium.MK.Booking.ReadModel.Query.IRuleDao _dao;
+        private readonly IRuleDao _dao;
 
         public RulesService(IRuleDao dao, ICommandBus commandBus)
         {

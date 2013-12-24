@@ -1,4 +1,8 @@
-﻿using System.Net.Mail;
+﻿#region
+
+using System.Net.Mail;
+
+#endregion
 
 namespace apcurium.MK.Booking.Email
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;

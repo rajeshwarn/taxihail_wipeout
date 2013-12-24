@@ -1,15 +1,18 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
     public class CreditCardPayment : EventSourced
     {
         private decimal _amount;
-        private string _authorizationCode;
         private bool _isCaptured;
         private decimal _meter;
         private Guid _orderId;
@@ -79,7 +82,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
         {
             _isCaptured = true;
-            _authorizationCode = obj.AuthorizationCode;
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -8,6 +9,8 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -33,7 +36,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountConfirmed @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
@@ -44,7 +47,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountDisabled @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = false;
@@ -55,7 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountPasswordReset @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Password = @event.Password;
@@ -65,7 +68,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountPasswordUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Password = @event.Password;
@@ -75,7 +78,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountRegistered @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = new AccountDetail
                 {
@@ -98,7 +101,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                int nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
+                var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
@@ -108,7 +111,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 };
 
                 context.Save(account);
-                List<DefaultAddressDetails> defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
+                var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
                     select a).ToList();
 
                 //add default company favorite address
@@ -131,21 +134,20 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AccountUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Name = @event.Name;
-
                 context.Save(account);
             }
         }
 
         public void Handle(BookingSettingsUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
-                BookingSettings settings = account.Settings ?? new BookingSettings();
+                var settings = account.Settings ?? new BookingSettings();
                 settings.Name = @event.Name;
 
                 settings.ChargeTypeId = @event.ChargeTypeId;
@@ -183,7 +185,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PaymentProfileUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = @event.DefaultCreditCard;
@@ -194,23 +196,18 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RoleAddedToUserAccount @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Roles |= (int) Enum.Parse(typeof (Roles), @event.RoleName);
-
                 context.Save(account);
             }
         }
 
-        private int? ParseToNullable(string val)
+        private static int? ParseToNullable(string val)
         {
             int result;
-            if (int.TryParse(val, out result))
-            {
-                return result;
-            }
-            return default(int?);
+            return int.TryParse(val, out result) ? result : default(int?);
         }
     }
 }

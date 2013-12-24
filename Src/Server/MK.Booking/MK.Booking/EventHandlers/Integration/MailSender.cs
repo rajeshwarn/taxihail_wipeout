@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.Commands;
@@ -6,11 +8,14 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -22,21 +27,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationManager _configurationManager;
         private readonly Func<BookingDbContext> _contextFactory;
-
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IOrderPaymentDao _orderPaymentDao;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             IConfigurationManager configurationManager,
-            IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _configurationManager = configurationManager;
-            _orderPaymentDao = orderPaymentDao;
             _creditCardDao = creditCardDao;
         }
 
@@ -47,9 +48,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
-                bool sendDriverAssignedMail = _configurationManager.GetSetting(
+                var sendDriverAssignedMail = _configurationManager.GetSetting(
                     "Booking.DriverAssignedConfirmationEmail", false);
                 if (sendDriverAssignedMail && @event.Status.IBSStatusId == "wosASSIGNED")
                 {
@@ -91,13 +92,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private void SendReceipt(Guid orderId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(orderId);
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                    OrderPaymentDetail orderPayment =
+                    var orderPayment =
                         context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == orderStatus.OrderId);
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
 
@@ -107,13 +108,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
 
-                    SendReceipt command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                        orderStatus.VehicleNumber,
-                        Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
-                        card);
+                    if (orderPayment != null)
+                    {
+                        var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
+                            orderStatus.VehicleNumber,
+                            Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
+                            card);
 
 
-                    _commandBus.Send(command);
+                        _commandBus.Send(command);
+                    }
                 }
             }
         }

@@ -1,6 +1,10 @@
+#region
+
 using System;
 using System.Security.Cryptography;
 using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Security
 {
@@ -20,9 +24,9 @@ namespace apcurium.MK.Booking.Security
 
         public byte[] EncodePassword(string password, string salt)
         {
-            byte[] plainText = Encoding.Default.GetBytes(password + salt);
-            byte[] hashKey = Encoding.Default.GetBytes(HashKey);
-            KeyedHashAlgorithm keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
+            var plainText = Encoding.Default.GetBytes(password + salt);
+            var hashKey = Encoding.Default.GetBytes(HashKey);
+            var keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
 
             keyedHashAlgorithm.Key = hashKey;
 
@@ -32,10 +36,10 @@ namespace apcurium.MK.Booking.Security
         public string GeneratePassword()
         {
             _random = new Random(DateTime.Now.Second);
-            string strPass = "";
-            for (int x = 0; x <= 6; x++)
+            var strPass = "";
+            for (var x = 0; x <= 6; x++)
             {
-                int p = _random.Next(0, _strCharacters.Length);
+                var p = _random.Next(0, _strCharacters.Length);
                 strPass += _strCharacters[p];
             }
             return strPass;
@@ -45,15 +49,15 @@ namespace apcurium.MK.Booking.Security
         {
             try
             {
-                byte[] plainText = Encoding.Default.GetBytes(passwordSubmitted + salt);
-                byte[] hashKey = Encoding.Default.GetBytes(HashKey);
-                KeyedHashAlgorithm keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
+                var plainText = Encoding.Default.GetBytes(passwordSubmitted + salt);
+                var hashKey = Encoding.Default.GetBytes(HashKey);
+                var keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
 
                 keyedHashAlgorithm.Key = hashKey;
 
-                byte[] hashedPassword = keyedHashAlgorithm.ComputeHash(plainText);
+                var hashedPassword = keyedHashAlgorithm.ComputeHash(plainText);
 
-                byte[] dbValue = password;
+                var dbValue = password;
 
                 if (CompareBytesArray(hashedPassword, dbValue))
                 {
@@ -70,7 +74,7 @@ namespace apcurium.MK.Booking.Security
 
         private bool CompareBytesArray(byte[] a, byte[] b)
         {
-            bool result = true;
+            var result = true;
 
             if (a == null)
             {
@@ -87,7 +91,7 @@ namespace apcurium.MK.Booking.Security
             }
             else
             {
-                for (int i = 0; i < a.Length; i++)
+                for (var i = 0; i < a.Length; i++)
                 {
                     if (a[i] != b[i])
                     {

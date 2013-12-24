@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
             container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
-            container.RegisterType<IIBSOrderService, IBSOrderService>();
+            container.RegisterType<IIbsOrderService, IBSOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
             var mockIbsStatusUpdate = bool.Parse(container

@@ -1,7 +1,11 @@
+#region
+
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -18,7 +22,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CaptureCreditCardPayment command)
         {
-            CreditCardPayment payment = _repository.Get(command.PaymentId);
+            var payment = _repository.Get(command.PaymentId);
             payment.Capture(command.Provider, command.AuthorizationCode);
             _repository.Save(payment, command.Id.ToString());
         }

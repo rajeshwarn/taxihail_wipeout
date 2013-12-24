@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Hosting;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using apcurium.MK.Common.Configuration;
@@ -9,6 +11,8 @@ using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Common;
+
+#endregion
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
@@ -53,17 +57,17 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _started = true;
 
 #if DEBUG
-            bool production = false;
-            string certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            const bool production = false;
+            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
 #else
-            var production = true;
-            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
+            const bool production = true;
+            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
+                _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
 #endif
             // Push notifications
-
-            string test = _configurationManager.GetSetting("GCM.SenderId");
-            string apiKey = _configurationManager.GetSetting("GCM.APIKey");
+            var test = _configurationManager.GetSetting("GCM.SenderId");
+            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
             var androidSettings = new GcmPushChannelSettings(test, apiKey,
                 _configurationManager.GetSetting("GCM.PackageName"));
 
@@ -79,7 +83,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.StartGoogleCloudMessagingPushService(androidSettings);
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
-            byte[] appleCert = File.ReadAllBytes(certificatePath);
+            var appleCert = File.ReadAllBytes(certificatePath);
             var appleSettings = new ApplePushChannelSettings(production, appleCert,
                 _configurationManager.GetSetting("APNS.CertificatePassword"));
             _push.StartApplePushService(appleSettings);
@@ -98,11 +102,11 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void SendAppleNotification(string alert, IDictionary<string, object> data, string deviceToken)
         {
-            AppleNotification notification = NotificationFactory.Apple()
+            var notification = NotificationFactory.Apple()
                 .ForDeviceToken(deviceToken)
                 .WithAlert(alert)
                 .WithSound("default");
-            foreach (string key in data.Keys)
+            foreach (var key in data.Keys)
             {
                 notification.WithCustomItem(key, new[] {data[key]});
             }
@@ -124,7 +128,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
         private void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
         {
-            string message = notificationFailureException.Message;
+            var message = notificationFailureException.Message;
             var details = notificationFailureException as NotificationFailureException;
             if (details != null)
             {

@@ -1,7 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -16,7 +21,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<AddressDetails> GetAll()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AddressDetails>().ToList();
             }
@@ -24,7 +29,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AddressDetails FindById(Guid id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AddressDetails>().SingleOrDefault(c => c.Id == id);
             }
@@ -32,7 +37,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<AddressDetails> FindFavoritesByAccountId(Guid addressId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return
                     context.Query<AddressDetails>()
@@ -43,7 +48,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<AddressDetails> FindHistoricByAccountId(Guid addressId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return
                     context.Query<AddressDetails>()

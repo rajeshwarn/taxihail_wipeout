@@ -1,6 +1,7 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.SqlTypes;
-using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -9,6 +10,8 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -34,7 +37,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCancelled @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.Status = (int) OrderStatus.Canceled;
@@ -53,11 +56,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCompleted @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                OrderPaymentDetail payment =
-                    context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == @event.SourceId);
                 order.Status = (int) OrderStatus.Completed;
                 order.Fare = @event.Fare;
                 order.Tip = @event.Tip;
@@ -69,7 +70,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderCreated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Save(new OrderDetail
                 {
@@ -111,7 +112,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderPairedForRideLinqCmtPayment @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Save(new OrderPairingDetail
                 {
@@ -130,7 +131,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderRated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
                 {
@@ -139,7 +140,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Note = @event.Note,
                 });
 
-                foreach (RatingScore ratingScore in @event.RatingScores)
+                foreach (var ratingScore in @event.RatingScores)
                 {
                     context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
                     {
@@ -160,7 +161,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderRemovedFromHistory @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
@@ -178,7 +179,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderStatusChanged @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
                     ? (DateTime) SqlDateTime.MinValue
@@ -211,7 +212,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
                 if (orderPairingDetail != null)
@@ -224,7 +225,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(OrderVehiclePositionChanged @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderStatusDetail>(@event.SourceId);
                 order.VehicleLatitude = @event.Latitude;
@@ -236,7 +237,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(PaymentInformationSet @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.PaymentInformation.PayWithCreditCard = true;

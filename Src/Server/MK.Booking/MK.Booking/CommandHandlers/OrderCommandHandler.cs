@@ -1,9 +1,13 @@
-﻿using apcurium.MK.Booking.Commands;
+﻿#region
+
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -25,7 +29,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CancelOrder command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.Cancel();
             _repository.Save(order, command.Id.ToString());
         }
@@ -33,7 +37,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(ChangeOrderStatus command)
         {
-            Order order = _repository.Find(command.Status.OrderId);
+            var order = _repository.Find(command.Status.OrderId);
             order.ChangeStatus(command.Status);
 
             if (command.Status.Status == OrderStatus.Completed)
@@ -59,7 +63,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(PairForRideLinqCmtPayment command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.Pair(command.Medallion, command.DriverId, command.PairingToken, command.PairingCode,
                 command.TokenOfCardToBeUsedForPayment, command.AutoTipAmount, command.AutoTipPercentage);
             _repository.Save(order, command.Id.ToString());
@@ -67,21 +71,21 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RateOrder command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.RateOrder(command.Note, command.RatingScores);
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(RemoveOrderFromHistory command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.RemoveFromHistory();
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(UnpairForRideLinqCmtPayment command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.Unpair();
             _repository.Save(order, command.Id.ToString());
         }

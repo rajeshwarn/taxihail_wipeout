@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandBuilder
 {
@@ -17,7 +21,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Id = Guid.NewGuid(),
                 OrderId = order.Id,
                 EmailAddress = account.Email,
-                IBSOrderId = order.IBSOrderId.Value,
+                IBSOrderId = order.IBSOrderId ?? 0,
                 TransactionDate = order.PickupDate,
                 VehicleNumber = vehicleNumber,
                 Fare = fare.GetValueOrDefault(),

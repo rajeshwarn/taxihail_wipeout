@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.EventSourcing;
+﻿#region
+
+using System;
 using Infrastructure.Messaging;
-using apcurium.MK.Common.Configuration.Impl;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
@@ -14,8 +13,8 @@ namespace apcurium.MK.Booking.Events
         {
             Id = Guid.NewGuid();
         }
-        public Guid Id { get; private set; }
 
         public Guid[] AccountIds { get; set; }
+        public Guid Id { get; private set; }
     }
 }

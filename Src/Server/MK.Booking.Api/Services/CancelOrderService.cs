@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;

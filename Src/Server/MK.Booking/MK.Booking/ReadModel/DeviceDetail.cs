@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using apcurium.MK.Common.Enumeration;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {

@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {

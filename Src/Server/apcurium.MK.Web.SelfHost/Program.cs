@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;

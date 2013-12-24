@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
@@ -7,6 +9,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -19,24 +23,24 @@ namespace apcurium.MK.Booking.Domain
 
         protected Account(Guid id) : base(id)
         {
-            base.Handles<AccountRegistered>(OnAccountRegistered);
-            base.Handles<AccountConfirmed>(NoAction);
-            base.Handles<AccountDisabled>(NoAction);
-            base.Handles<AccountUpdated>(NoAction);
-            base.Handles<FavoriteAddressAdded>(OnAddressAdded);
-            base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
-            base.Handles<FavoriteAddressUpdated>(OnAddressUpdated);
-            base.Handles<AccountPasswordReset>(NoAction);
-            base.Handles<BookingSettingsUpdated>(NoAction);
-            base.Handles<AccountPasswordUpdated>(NoAction);
-            base.Handles<AddressRemovedFromHistory>(NoAction);
-            base.Handles<RoleAddedToUserAccount>(NoAction);
-            base.Handles<CreditCardAdded>(OnCreditCardAdded);
-            base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
-            base.Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
-            base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
-            base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
-            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
+            Handles<AccountRegistered>(OnAccountRegistered);
+            Handles<AccountConfirmed>(NoAction);
+            Handles<AccountDisabled>(NoAction);
+            Handles<AccountUpdated>(NoAction);
+            Handles<FavoriteAddressAdded>(OnAddressAdded);
+            Handles<FavoriteAddressRemoved>(OnAddressRemoved);
+            Handles<FavoriteAddressUpdated>(OnAddressUpdated);
+            Handles<AccountPasswordReset>(NoAction);
+            Handles<BookingSettingsUpdated>(NoAction);
+            Handles<AccountPasswordUpdated>(NoAction);
+            Handles<AddressRemovedFromHistory>(NoAction);
+            Handles<RoleAddedToUserAccount>(NoAction);
+            Handles<CreditCardAdded>(OnCreditCardAdded);
+            Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
+            Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
+            Handles<DeviceRegisteredForPushNotifications>(NoAction);
+            Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
 
@@ -231,6 +235,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void RemoveAllCreditCards()
+        {
+            Update(new AllCreditCardsRemoved());
+        }
+
         private void OnAllCreditCardsRemoved(AllCreditCardsRemoved obj)
         {
             _creditCardCount = 0;
@@ -333,6 +342,7 @@ namespace apcurium.MK.Booking.Domain
 
             if (latitude < -90 || latitude > 90)
             {
+// ReSharper disable LocalizableElement
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
@@ -340,6 +350,7 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
+// ReSharper restore LocalizableElement
         }
 
         public void EnableAccountByAdmin()
@@ -350,12 +361,6 @@ namespace apcurium.MK.Booking.Domain
         public void DisableAccountByAdmin()
         {
             Update(new AccountDisabled());
-        }
-
-
-        public void RemoveAllCreditCards()
-        {
-            Update(new AllCreditCardsRemoved());
         }
     }
 }

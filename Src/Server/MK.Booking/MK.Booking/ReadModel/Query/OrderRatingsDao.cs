@@ -1,8 +1,13 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -20,7 +25,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             OrderRatingDetails orderRatingDetails;
             List<RatingScoreDetails> ratingScoreDetails;
 
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 orderRatingDetails = context.Query<OrderRatingDetails>().SingleOrDefault(d => d.OrderId == orderId);
                 ratingScoreDetails = context.Query<RatingScoreDetails>().Where(d => d.OrderId == orderId).ToList();

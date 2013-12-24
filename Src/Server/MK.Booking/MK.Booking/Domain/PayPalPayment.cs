@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Events;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {

@@ -1,6 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -15,7 +20,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByTransactionId(string transactionId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.TransactionId == transactionId);
@@ -24,7 +29,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByOrderId(Guid orderId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.OrderId == orderId);
@@ -34,7 +39,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public OrderPaymentDetail FindByPayPalToken(string token)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Set<OrderPaymentDetail>()
                     .SingleOrDefault(x => x.PayPalToken == token);

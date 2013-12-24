@@ -5,7 +5,6 @@ using System.Text;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
@@ -27,7 +26,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new DeviceDetailsGenerator(() => new BookingDbContext(dbName), new TestConfigurationManager());
+            this.sut = new DeviceDetailsGenerator(() => new BookingDbContext(dbName));
         }
     }
 

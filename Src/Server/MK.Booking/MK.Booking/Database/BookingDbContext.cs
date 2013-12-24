@@ -1,9 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Database
 {
@@ -58,7 +61,7 @@ namespace apcurium.MK.Booking.Database
 
         public void Save<T>(T entity) where T : class
         {
-            DbEntityEntry<T> entry = Entry(entity);
+            var entry = Entry(entity);
 
             if (entry.State == EntityState.Detached)
                 Set<T>().Add(entity);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Mail;
@@ -7,6 +9,8 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -53,7 +57,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendAccountConfirmationEmail command)
         {
-            string template = _templateService.Find(AccountConfirmationTemplateName);
+            var template = _templateService.Find(AccountConfirmationTemplateName);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + AccountConfirmationTemplateName);
 
@@ -69,26 +73,26 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendAssignedConfirmation command)
         {
-            bool vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-            string templateName = vatEnabled
+            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
+            var templateName = vatEnabled
                 ? DriverAssignedWithVATTemplateName
                 : DriverAssignedTemplateName;
 
-            string template = _templateService.Find(templateName);
+            var template = _templateService.Find(templateName);
             if (template == null) throw new InvalidOperationException("Template not found: " + templateName);
 
-            CultureInfo priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
+            var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
-            double vatAmount = 0d;
-            double fareAmountWithoutVAT = command.Fare;
+            var vatAmount = 0d;
+            var fareAmountWithoutVAT = command.Fare;
             if (vatEnabled)
             {
                 fareAmountWithoutVAT = GetAmountWithoutVAT(command.Fare);
                 vatAmount = command.Fare - fareAmountWithoutVAT;
             }
 
-            bool hasDropOffAddress = command.DropOffAddress != null &&
-                                     !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
+            var hasDropOffAddress = command.DropOffAddress != null &&
+                                    !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
 
             var templateData = new
             {
@@ -121,12 +125,12 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendBookingConfirmationEmail command)
         {
-            string template = _templateService.Find(BookingConfirmationTemplateName);
+            var template = _templateService.Find(BookingConfirmationTemplateName);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + BookingConfirmationTemplateName);
 
-            bool hasDropOffAddress = command.DropOffAddress != null &&
-                                     !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
+            var hasDropOffAddress = command.DropOffAddress != null &&
+                                    !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
 
             var templateData = new
             {
@@ -163,7 +167,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendPasswordResetEmail command)
         {
-            string template = _templateService.Find(PasswordResetTemplateName);
+            var template = _templateService.Find(PasswordResetTemplateName);
             if (template == null)
                 throw new InvalidOperationException("Template not found: " + PasswordResetTemplateName);
 
@@ -178,20 +182,18 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(SendReceipt command)
         {
-            bool vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
-
-
-            string template = _templateService.Find(ReceiptTemplateName);
+            var vatEnabled = _configurationManager.GetSetting(VATEnabledSetting, false);
+            var template = _templateService.Find(ReceiptTemplateName);
 
             if (template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
 
-            CultureInfo priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
+            var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
 
-            bool isCardOnFile = command.CardOnFileInfo != null;
-            string cardOnFileAmount = "";
-            string cardNumber = "";
-            string cardOnFileTransactionId = "";
-            string cardOnFileAuthorizationCode = "";
+            var isCardOnFile = command.CardOnFileInfo != null;
+            var cardOnFileAmount = string.Empty;
+            var cardNumber = string.Empty;
+            var cardOnFileTransactionId = string.Empty;
+            var cardOnFileAuthorizationCode = string.Empty;
             if (isCardOnFile)
             {
                 cardOnFileAmount = command.CardOnFileInfo.Amount.ToString("C", priceFormat);
@@ -211,8 +213,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                 cardOnFileTransactionId = command.CardOnFileInfo.TransactionId;
             }
 
-            bool hasDropOffAddress = command.DropOffAddress != null &&
-                                     !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
+            var hasDropOffAddress = command.DropOffAddress != null &&
+                                    !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
 
             var templateData = new
             {
@@ -250,14 +252,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData,
             params KeyValuePair<string, string>[] embeddedIMages)
         {
-            string messageSubject = _templateService.Render(subjectTemplate, templateData);
-            string messageBody = _templateService.Render(bodyTemplate, templateData);
+            var messageSubject = _templateService.Render(subjectTemplate, templateData);
+            var messageBody = _templateService.Render(bodyTemplate, templateData);
 
             var mailMessage = new MailMessage(_configurationManager.GetSetting("Email.NoReply"), to, messageSubject,
                 null)
             {IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8};
 
-            AlternateView view = AlternateView.CreateAlternateViewFromString(messageBody, Encoding.UTF8, "text/html");
+            var view = AlternateView.CreateAlternateViewFromString(messageBody, Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);
 
             if (embeddedIMages != null)

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Braintree;

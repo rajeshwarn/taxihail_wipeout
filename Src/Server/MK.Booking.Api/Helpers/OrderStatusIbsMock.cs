@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.IBS;

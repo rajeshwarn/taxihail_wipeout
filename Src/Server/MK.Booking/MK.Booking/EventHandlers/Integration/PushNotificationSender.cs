@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
@@ -9,6 +11,8 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -26,19 +30,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _contextFactory = contextFactory;
             _pushNotificationService = pushNotificationService;
 
-            string applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
+            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
             _resources = new DynamicResources(applicationKey);
         }
 
         public void Handle(OrderStatusChanged @event)
         {
-            bool shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
-                                              @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
-                                              @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
+            var shouldSendPushNotification = @event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Arrived ||
+                                             @event.Status.IBSStatusId == VehicleStatuses.Common.Timeout;
 
             if (shouldSendPushNotification)
             {
-                string alert = string.Empty;
+                string alert;
                 switch (@event.Status.IBSStatusId)
                 {
                     case VehicleStatuses.Common.Assigned:
@@ -56,10 +60,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         throw new InvalidOperationException("No push notification for this order status");
                 }
 
-                using (BookingDbContext context = _contextFactory.Invoke())
+                using (var context = _contextFactory.Invoke())
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
-                    IQueryable<DeviceDetail> devices =
+                    var devices =
                         context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
                     var data = new Dictionary<string, object>();
                     if (@event.Status.IBSStatusId == VehicleStatuses.Common.Assigned ||
@@ -68,7 +72,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         data.Add("orderId", order.Id);
                     }
 
-                    foreach (DeviceDetail device in devices)
+                    foreach (var device in devices)
                     {
                         _pushNotificationService.Send(alert, data, device.DeviceToken, device.Platform);
                     }

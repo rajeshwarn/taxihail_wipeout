@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;

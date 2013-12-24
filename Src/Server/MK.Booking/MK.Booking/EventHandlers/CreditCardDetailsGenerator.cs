@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -23,7 +27,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(AllCreditCardsRemoved @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.RemoveWhere<CreditCardDetails>(cc => @event.SourceId == cc.AccountId);
                 context.SaveChanges();
@@ -32,7 +36,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardAdded @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var details = new CreditCardDetails();
                 Mapper.Map(@event, details);
@@ -42,7 +46,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardRemoved @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<CreditCardDetails>(@event.CreditCardId);
                 if (address != null)

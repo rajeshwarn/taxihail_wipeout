@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {

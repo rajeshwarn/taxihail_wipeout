@@ -1,7 +1,11 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {

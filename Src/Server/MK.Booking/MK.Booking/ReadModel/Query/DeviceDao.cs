@@ -1,7 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -16,7 +21,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IEnumerable<DeviceDetail> GetAll()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<DeviceDetail>().ToList();
             }
@@ -24,7 +29,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IEnumerable<DeviceDetail> FindByAccountId(Guid accountId)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<DeviceDetail>().Where(x => x.AccountId == accountId).ToList();
             }

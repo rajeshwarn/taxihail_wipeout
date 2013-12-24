@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Jobs;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.IoC;
 using Infrastructure.Messaging;
 using log4net;

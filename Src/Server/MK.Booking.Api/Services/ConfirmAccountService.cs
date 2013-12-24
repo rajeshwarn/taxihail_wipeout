@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;

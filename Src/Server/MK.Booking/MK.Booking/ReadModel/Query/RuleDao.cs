@@ -1,8 +1,13 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -17,7 +22,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<RuleDetail> GetAll()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<RuleDetail>().ToList();
             }
@@ -37,14 +42,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         private IList<RuleDetail> GetActiveRule(bool isFutureBooking, RuleCategory category)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
-                List<RuleDetail> rules = context.Query<RuleDetail>().Where(r => (r.Category == (int) category) &&
-                                                                                ((!isFutureBooking &&
-                                                                                  r.AppliesToCurrentBooking) ||
-                                                                                 (isFutureBooking &&
-                                                                                  r.AppliesToFutureBooking)) &&
-                                                                                r.IsActive)
+                var rules = context.Query<RuleDetail>().Where(r => (r.Category == (int) category) &&
+                                                                   ((!isFutureBooking &&
+                                                                     r.AppliesToCurrentBooking) ||
+                                                                    (isFutureBooking &&
+                                                                     r.AppliesToFutureBooking)) &&
+                                                                   r.IsActive)
                     .OrderBy(r => r.Priority).ToList();
 
                 return rules;

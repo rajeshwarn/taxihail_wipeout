@@ -3,7 +3,7 @@ using apcurium.MK.Booking.IBS;
 
 namespace apcurium.MK.Booking.Api.Payment
 {
-    public class IBSOrderService: IIBSOrderService
+    public class IBSOrderService: IIbsOrderService
     {
         readonly IBookingWebServiceClient _client;
 

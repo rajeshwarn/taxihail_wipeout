@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.SqlTypes;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -19,7 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(TariffCreated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Save(new TariffDetail
                 {
@@ -47,7 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(TariffDeleted @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var tariff = context.Find<TariffDetail>(@event.TariffId);
                 if (tariff != null)
@@ -60,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(TariffUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var tariff = context.Find<TariffDetail>(@event.TariffId);
                 tariff.Name = @event.Name;

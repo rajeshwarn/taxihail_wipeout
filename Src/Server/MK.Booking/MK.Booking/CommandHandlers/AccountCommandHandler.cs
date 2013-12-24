@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region
+
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
@@ -7,6 +8,8 @@ using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -42,7 +45,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddCreditCard command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.AddCreditCard(command.CreditCardCompany, command.CreditCardId, command.FriendlyName,
                 command.Last4Digits, command.Token);
             _repository.Save(account, command.Id.ToString());
@@ -50,24 +53,23 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddRoleToUserAccount command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.AddRole(command.RoleName);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(ConfirmAccount command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.ConfirmAccount(command.ConfimationToken);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(DeleteAllCreditCards command)
         {
-            foreach (Guid accountId in command.AccountIds)
+            foreach (var accountId in command.AccountIds)
             {
-                Account account = _repository.Find(accountId);
-
+                var account = _repository.Find(accountId);
                 account.RemoveAllCreditCards();
                 _repository.Save(account, command.Id.ToString());
             }
@@ -75,21 +77,21 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(DisableAccountByAdmin command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.DisableAccountByAdmin();
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(EnableAccountByAdmin command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.EnableAccountByAdmin();
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterAccount command)
         {
-            byte[] password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password,
                 command.IbsAccountId, command.ConfimationToken, command.Language, command.AccountActivationDisabled,
                 command.IsAdmin);
@@ -98,7 +100,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RegisterDeviceForPushNotifications command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
 
             if (!string.IsNullOrEmpty(command.OldDeviceToken))
             {
@@ -125,44 +127,44 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RemoveCreditCard command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.RemoveCreditCard(command.CreditCardId);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(ResetAccountPassword command)
         {
-            Account account = _repository.Find(command.AccountId);
-            byte[] newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            var account = _repository.Find(command.AccountId);
+            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.ResetPassword(newPassword);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UnregisterDeviceForPushNotifications command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateAccount command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
             account.Update(command.Name);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateAccountPassword command)
         {
-            Account account = _repository.Find(command.AccountId);
-            byte[] newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            var account = _repository.Find(command.AccountId);
+            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.UpdatePassword(newPassword);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateBookingSettings command)
         {
-            Account account = _repository.Find(command.AccountId);
+            var account = _repository.Find(command.AccountId);
 
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
@@ -177,35 +179,29 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddFavoriteAddress command)
         {
-            Account account = _repository.Get(command.AccountId);
-
+            var account = _repository.Get(command.AccountId);
             account.AddFavoriteAddress(command.Address);
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RemoveAddressFromHistory command)
         {
-            Account account = _repository.Get(command.AccountId);
+            var account = _repository.Get(command.AccountId);
             account.RemoveAddressFromHistory(command.AddressId);
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RemoveFavoriteAddress command)
         {
-            Account account = _repository.Get(command.AccountId);
-
+            var account = _repository.Get(command.AccountId);
             account.RemoveFavoriteAddress(command.AddressId);
-
             _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateFavoriteAddress command)
         {
-            Account account = _repository.Get(command.AccountId);
-
+            var account = _repository.Get(command.AccountId);
             account.UpdateFavoriteAddress(command.Address);
-
             _repository.Save(account, command.Id.ToString());
         }
 

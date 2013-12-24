@@ -6,7 +6,6 @@ using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;

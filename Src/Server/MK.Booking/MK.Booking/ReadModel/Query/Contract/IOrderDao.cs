@@ -1,8 +1,12 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.ReadModel.Query
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface IOrderDao
     {

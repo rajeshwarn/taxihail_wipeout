@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using apcurium.MK.Booking.ReadModel.Query.Contract;
+using AutoMapper;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;

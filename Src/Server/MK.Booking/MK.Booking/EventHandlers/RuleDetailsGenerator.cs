@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.SqlTypes;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -19,7 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RuleActivated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var rule = context.Find<RuleDetail>(@event.RuleId);
                 rule.IsActive = true;
@@ -29,7 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RuleCreated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Save(new RuleDetail
                 {
@@ -75,7 +79,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RuleDeactivated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var rule = context.Find<RuleDetail>(@event.RuleId);
                 rule.IsActive = false;
@@ -85,7 +89,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RuleDeleted @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var rule = context.Find<RuleDetail>(@event.RuleId);
                 if (rule != null)
@@ -98,7 +102,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(RuleUpdated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 var rule = context.Find<RuleDetail>(@event.RuleId);
                 rule.Name = @event.Name;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
@@ -6,6 +8,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -20,16 +24,16 @@ namespace apcurium.MK.Booking.Domain
         protected Order(Guid id)
             : base(id)
         {
-            base.Handles<OrderCreated>(OnOrderCreated);
-            base.Handles<OrderCancelled>(OnOrderCancelled);
-            base.Handles<OrderCompleted>(OnOrderCompleted);
-            base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
-            base.Handles<OrderRated>(OnOrderRated);
-            base.Handles<PaymentInformationSet>(NoAction);
-            base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
-            base.Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
-            base.Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
-            base.Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderCreated>(OnOrderCreated);
+            Handles<OrderCancelled>(OnOrderCancelled);
+            Handles<OrderCompleted>(OnOrderCompleted);
+            Handles<OrderRemovedFromHistory>(OnOrderRemoved);
+            Handles<OrderRated>(OnOrderRated);
+            Handles<PaymentInformationSet>(NoAction);
+            Handles<OrderStatusChanged>(OnOrderStatusChanged);
+            Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
+            Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)

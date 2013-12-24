@@ -2,6 +2,7 @@
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Resources;
 using apcurium.MK.Common.Configuration;
 using Infrastructure.Messaging;
@@ -23,9 +24,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IConfigurationManager _configurationManager;
-        private readonly IIBSOrderService _ibs;
+        private readonly IIbsOrderService _ibs;
 
-        public ResendPaymentConfirmationSevice(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao, IOrderPaymentDao orderPaymentDao, IConfigurationManager configurationManager, IIBSOrderService ibs)
+        public ResendPaymentConfirmationSevice(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao, IAccountDao accountDao, IOrderPaymentDao orderPaymentDao, IConfigurationManager configurationManager, IIbsOrderService ibs)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
             _orderDao = orderDao;

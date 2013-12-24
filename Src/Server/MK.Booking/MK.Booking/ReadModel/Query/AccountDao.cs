@@ -1,7 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -16,7 +21,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public IList<AccountDetail> GetAll()
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().ToList();
             }
@@ -24,7 +29,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindById(Guid id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.Id == id);
             }
@@ -32,7 +37,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindByEmail(string email)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == email.ToLower());
             }
@@ -40,7 +45,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindByFacebookId(string id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.FacebookId == id);
             }
@@ -48,7 +53,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindByTwitterId(string id)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.TwitterId == id);
             }

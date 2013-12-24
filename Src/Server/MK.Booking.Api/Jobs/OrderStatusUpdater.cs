@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Commands;

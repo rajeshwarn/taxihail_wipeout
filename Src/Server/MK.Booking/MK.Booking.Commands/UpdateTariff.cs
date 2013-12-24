@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.Messaging;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -14,7 +15,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; private set; }
         public Guid CompanyId { get; set; }
         public Guid TariffId { get; set; }
         public string Name { get; set; }
@@ -26,5 +26,6 @@ namespace apcurium.MK.Booking.Commands
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
+        public Guid Id { get; private set; }
     }
 }

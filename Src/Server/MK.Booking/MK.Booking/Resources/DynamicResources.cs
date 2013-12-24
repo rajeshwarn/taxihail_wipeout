@@ -1,6 +1,10 @@
-﻿using System.Dynamic;
+﻿#region
+
+using System.Dynamic;
 using System.Resources;
 using apcurium.MK.Common.Extensions;
+
+#endregion
 
 namespace apcurium.MK.Booking.Resources
 {
@@ -10,11 +14,11 @@ namespace apcurium.MK.Booking.Resources
 
         public DynamicResources(string applicationKey)
         {
-            string[] names = GetType().Assembly.GetManifestResourceNames();
-            string resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
+            var names = GetType().Assembly.GetManifestResourceNames();
+            var resourceName = "apcurium.MK.Booking.Resources." + applicationKey + ".resources";
 
             MissingResourceFile = names.None(n => n.ToLower() == resourceName.ToLower());
-                // resource files doesn't exist for all the customers
+            // resource files doesn't exist for all the customers
 
             _resources = new ResourceManager("apcurium.MK.Booking.Resources." + applicationKey, GetType().Assembly);
         }

@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Reflection;
+
+#endregion
 
 namespace apcurium.MK.Booking.Email
 {
@@ -10,16 +14,16 @@ namespace apcurium.MK.Booking.Email
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
                 var uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
+                var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
         }
 
         public string Find(string templateName)
         {
-            string path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".html");
+            var path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".html");
             if (File.Exists(path))
             {
                 return File.ReadAllText(path);

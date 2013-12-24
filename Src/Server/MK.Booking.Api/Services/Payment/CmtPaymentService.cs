@@ -7,6 +7,7 @@ using System.Threading;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;

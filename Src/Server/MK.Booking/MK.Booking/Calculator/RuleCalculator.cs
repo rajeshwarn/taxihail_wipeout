@@ -1,10 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+
+#endregion
 
 namespace apcurium.MK.Booking.Calculator
 {
@@ -47,7 +52,7 @@ namespace apcurium.MK.Booking.Calculator
             return rules.Where(r => IsTrimmedNullOrEmpty(r.ZoneList) || //Get the rules without zones
                                     (!IsTrimmedNullOrEmpty(zone) &&
                                      r.ZoneList.ToLower().Split(',').Contains(zone.ToLower().Trim())));
-                // Zone is set and found in list         
+            // Zone is set and found in list         
         }
 
         private bool IsTrimmedNullOrEmpty(string value)
@@ -57,26 +62,28 @@ namespace apcurium.MK.Booking.Calculator
 
         private RuleDetail GetMatching(IEnumerable<RuleDetail> rulesList, DateTime pickupDate)
         {
+            rulesList = rulesList.ToArray();
             // Case 1: A rule exists for the specific date
-            IEnumerable<RuleDetail> rulesDate = (from r in rulesList
+            var rulesDate = (from r in rulesList
                 where r.Type == (int) RuleType.Date
                 where IsDayMatch(r, pickupDate)
                 select r);
 
             // Case 2: A rule exists for the day of the week            
-            IEnumerable<RuleDetail> rulesRecuring = (from r in rulesList
+            var rulesRecuring = (from r in rulesList
                 where r.Type == (int) RuleType.Recurring
                 where IsRecurringMatch(r, pickupDate)
                 select r);
 
             // Case 3: return default
-
-            IEnumerable<RuleDetail> rulesDefault = (from r in rulesList
+            var rulesDefault = (from r in rulesList
                 where r.Type == (int) RuleType.Default
                 select r);
 
-
-            return rulesDate.Concat(rulesRecuring).Concat(rulesDefault).OrderBy(r => r.Priority).FirstOrDefault();
+            return rulesDate.Concat(rulesRecuring)
+                .Concat(rulesDefault)
+                .OrderBy(r => r.Priority)
+                .FirstOrDefault();
         }
 
 
@@ -94,25 +101,28 @@ namespace apcurium.MK.Booking.Calculator
             if (rule.Type == (int) RuleType.Recurring)
             {
                 // Represents the candidate date day of the week value in the DayOfTheWeek enum
-                int dayOfTheWeek = 1 << (int) date.DayOfWeek;
+                var dayOfTheWeek = 1 << (int) date.DayOfWeek;
 
-                DateTime startTime =
-                    DateTime.MinValue.AddHours(rule.StartTime.Value.Hour).AddMinutes(rule.StartTime.Value.Minute);
-                DateTime endTime =
-                    DateTime.MinValue.AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
-                DateTime time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
-
-
-                // Determine if the candidate date is between start time and end time
-                bool isInRange = time >= startTime && time < endTime;
-
-                if (isInRange)
+                if (rule.StartTime != null
+                    && rule.EndTime != null)
                 {
-                    // Now determine if the day of the week is correct
-                    if (startTime.Date == time.Date)
+                    var startTime =
+                        DateTime.MinValue.AddHours(rule.StartTime.Value.Hour).AddMinutes(rule.StartTime.Value.Minute);
+                    var endTime =
+                        DateTime.MinValue.AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
+                    var time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
+
+                    // Determine if the candidate date is between start time and end time
+                    var isInRange = time >= startTime && time < endTime;
+
+                    if (isInRange)
                     {
-                        // The candidate date is the same day defined for the rule
-                        return (rule.DaysOfTheWeek & dayOfTheWeek) == dayOfTheWeek;
+                        // Now determine if the day of the week is correct
+                        if (startTime.Date == time.Date)
+                        {
+                            // The candidate date is the same day defined for the rule
+                            return (rule.DaysOfTheWeek & dayOfTheWeek) == dayOfTheWeek;
+                        }
                     }
                 }
             }

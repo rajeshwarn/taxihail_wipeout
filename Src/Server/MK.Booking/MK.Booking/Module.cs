@@ -1,7 +1,8 @@
-﻿using System.Configuration;
+﻿#region
+
+using System.Configuration;
 using System.Net;
 using System.Net.Mail;
-using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -24,6 +25,8 @@ using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
+
+#endregion
 
 namespace apcurium.MK.Booking
 {

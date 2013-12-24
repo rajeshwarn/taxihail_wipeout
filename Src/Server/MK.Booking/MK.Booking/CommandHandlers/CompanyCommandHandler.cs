@@ -1,9 +1,13 @@
-﻿using apcurium.MK.Booking.Commands;
+﻿#region
+
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -38,26 +42,22 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(ActivateRule command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.ActivateRule(command.RuleId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(AddOrUpdateAppSettings command)
         {
-            Company company = _repository.Find(command.CompanyId);
+            var company = _repository.Find(command.CompanyId);
             company.AddOrUpdateAppSettings(command.AppSettings);
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(AddRatingType command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.AddRatingType(command.Name, command.RatingTypeId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -70,8 +70,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateRule command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
 
             company.CreateRule(command.RuleId,
                 command.Name,
@@ -94,7 +93,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateTariff command)
         {
-            Company company = _repository.Get(command.CompanyId);
+            var company = _repository.Get(command.CompanyId);
 
             if (command.Type == TariffType.Default)
             {
@@ -127,63 +126,49 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(DeactivateRule command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.DeactivateRule(command.RuleId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(DeleteRule command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.DeleteRule(command.RuleId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(DeleteTariff command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.DeleteTariff(command.TariffId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
-
         public void Handle(HideRatingType command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.HideRatingType(command.RatingTypeId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(UpdatePaymentSettings command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
-
+            var company = _repository.Get(command.CompanyId);
             company.UpdatePaymentSettings(command);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(UpdateRatingType command)
         {
-            Company company = _repository.Get(command.CompanyId);
-
+            var company = _repository.Get(command.CompanyId);
             company.UpdateRatingType(command.Name, command.RatingTypeId);
-
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(UpdateRule command)
         {
-            Company company = _repository.Get(command.CompanyId);
+            var company = _repository.Get(command.CompanyId);
 
             company.UpdateRule(command.RuleId,
                 command.Name,
@@ -204,7 +189,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(UpdateTariff command)
         {
-            Company company = _repository.Get(command.CompanyId);
+            var company = _repository.Get(command.CompanyId);
 
             company.UpdateTariff(command.TariffId, command.Name, command.FlatRate, command.KilometricRate,
                 command.MarginOfError, command.PassengerRate, command.KilometerIncluded, command.DaysOfTheWeek,
@@ -217,21 +202,21 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddPopularAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.AddPopularAddress(command.Address);
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(RemovePopularAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.RemovePopularAddress(command.AddressId);
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(UpdatePopularAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.UpdatePopularAddress(command.Address);
             _repository.Save(company, command.Id.ToString());
         }
@@ -242,21 +227,21 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddDefaultFavoriteAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.AddDefaultFavoriteAddress(command.Address);
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(RemoveDefaultFavoriteAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.RemoveDefaultFavoriteAddress(command.AddressId);
             _repository.Save(company, command.Id.ToString());
         }
 
         public void Handle(UpdateDefaultFavoriteAddress command)
         {
-            Company company = _repository.Get(AppConstants.CompanyId);
+            var company = _repository.Get(AppConstants.CompanyId);
             company.UpdateDefaultFavoriteAddress(command.Address);
             _repository.Save(company, command.Id.ToString());
         }

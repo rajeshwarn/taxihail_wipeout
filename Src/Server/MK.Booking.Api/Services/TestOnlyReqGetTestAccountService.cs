@@ -1,5 +1,6 @@
 ﻿using System;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;

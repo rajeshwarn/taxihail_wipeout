@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.ReadModel;

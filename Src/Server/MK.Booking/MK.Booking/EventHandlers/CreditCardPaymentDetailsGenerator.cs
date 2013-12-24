@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -22,14 +26,14 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
-                OrderPaymentDetail payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
+                var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
                 if (payment == null) throw new InvalidOperationException("Payment not found");
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
 
-                OrderDetail order = context.Set<OrderDetail>().Single(o => o.Id == payment.OrderId);
+                var order = context.Set<OrderDetail>().Single(o => o.Id == payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
                     order.Fare = Convert.ToDouble(payment.Meter);
@@ -46,7 +50,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
         public void Handle(CreditCardPaymentInitiated @event)
         {
-            using (BookingDbContext context = _contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 context.Save(new OrderPaymentDetail
                 {

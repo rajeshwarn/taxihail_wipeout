@@ -1,7 +1,11 @@
-﻿using apcurium.MK.Booking.Commands;
+﻿#region
+
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -20,19 +24,15 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CancelPayPalExpressCheckoutPayment command)
         {
-            PayPalPayment payment = _repository.Get(command.PaymentId);
-
+            var payment = _repository.Get(command.PaymentId);
             payment.Cancel();
-
             _repository.Save(payment, command.Id.ToString());
         }
 
         public void Handle(CompletePayPalExpressCheckoutPayment command)
         {
-            PayPalPayment payment = _repository.Get(command.PaymentId);
-
+            var payment = _repository.Get(command.PaymentId);
             payment.Complete(command.TransactionId, command.PayPalPayerId);
-
             _repository.Save(payment, command.Id.ToString());
         }
 
@@ -40,7 +40,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var payment = new PayPalPayment(command.PaymentId, command.OrderId, command.Token, command.Amount,
                 command.Meter, command.Tip);
-
             _repository.Save(payment, command.Id.ToString());
         }
     }

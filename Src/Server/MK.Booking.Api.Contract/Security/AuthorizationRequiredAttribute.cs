@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.CSharp.RuntimeBinder;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Contract.Security

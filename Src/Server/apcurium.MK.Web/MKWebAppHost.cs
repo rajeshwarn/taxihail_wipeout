@@ -1,5 +1,6 @@
 ﻿using System;
 using apcurium.MK.Booking.Api.Serialization;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;

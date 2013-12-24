@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
@@ -6,6 +8,8 @@ using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+
+#endregion
 
 namespace apcurium.MK.Booking.Email
 {
