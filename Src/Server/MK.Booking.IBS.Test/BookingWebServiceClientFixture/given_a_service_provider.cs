@@ -13,7 +13,7 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
         [Test]
         public void StaticDataservice_test()
         {
-            var profile = new IBSAutoMapperProfile();
+            var profile = new IbsAutoMapperProfile();
             Mapper.AddProfile(profile);
 
             var service = new BookingWebServiceClient(new FakeConfigurationManager(), new Logger(), null);

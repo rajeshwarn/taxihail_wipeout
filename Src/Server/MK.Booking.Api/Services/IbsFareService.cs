@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services
         public DirectionInfo Get(IbsFareRequest request)
         {
             // TODO: Adapt distance format
-            IBSFareEstimate fare = _bookingWebServiceClient.GetFareEstimate(request.PickupLatitude, request.PickupLongitude, request.DropoffLatitude, request.DropoffLongitude);
+            IbsFareEstimate fare = _bookingWebServiceClient.GetFareEstimate(request.PickupLatitude, request.PickupLongitude, request.DropoffLatitude, request.DropoffLongitude);
             return fare.FareEstimate != null ? new DirectionInfo() { Distance = (int)(fare.Distance * 1000), Price = fare.FareEstimate, FormattedDistance = FormatDistance((int)(fare.Distance * 1000)), FormattedPrice = FormatPrice(fare.FareEstimate) } : new DirectionInfo();
         }        
 

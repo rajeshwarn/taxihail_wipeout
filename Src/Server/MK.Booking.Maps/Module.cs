@@ -1,10 +1,9 @@
-﻿using apcurium.MK.Booking.Maps.Impl;
-using apcurium.MK.Common.Configuration;
+﻿#region
+
+using apcurium.MK.Booking.Maps.Impl;
 using Microsoft.Practices.Unity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Maps
 {
@@ -16,7 +15,7 @@ namespace apcurium.MK.Booking.Maps
             container.RegisterType<IPriceCalculator, PriceCalculator>();
             container.RegisterType<IDirections, Directions>();
             container.RegisterType<IGeocoding, Geocoding>();
-            container.RegisterType<IPlaces, Places>();            
+            container.RegisterType<IPlaces, Places>();
         }
     }
 }

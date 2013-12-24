@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace apcurium.MK.Booking.Maps
 {
     public interface IDirections
     {
-        Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng, DateTime? date = default(DateTime?));
+        Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng,
+            DateTime? date = default(DateTime?));
     }
 }

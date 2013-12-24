@@ -1,6 +1,10 @@
+#region
+
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
@@ -11,8 +15,9 @@ namespace apcurium.MK.Booking.Google.Resources
 
         public List<string> Types { get; set; }
 
-        public IEnumerable<AddressComponentType> AddressComponentTypes { get { return Types.Select(type => StringExtensions.ToEnum<AddressComponentType>(type, true, AddressComponentType.Unkown)); } }
-
-
+        public IEnumerable<AddressComponentType> AddressComponentTypes
+        {
+            get { return Types.Select(type => type.ToEnum(true, AddressComponentType.Unkown)); }
+        }
     }
 }

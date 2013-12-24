@@ -1,13 +1,16 @@
+#region
+
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
-using System.Collections.Generic;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
     public class PlaceTypes
     {
-
         public PlaceTypes(IConfigurationManager configManager)
         {
             var types = configManager.GetSetting("GeoLoc.PlacesTypes");

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Test.AutoMapperFixture
         [Test]
         public void validate_ibs_profile()
         {
-            var profile = new IBSAutoMapperProfile();
+            var profile = new IbsAutoMapperProfile();
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
         }

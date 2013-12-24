@@ -163,8 +163,8 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
 
-            var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
-            var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
+            var ibsPickupAddress = Mapper.Map<IbsAddress>(request.PickupAddress);
+            var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IbsAddress>(request.DropOffAddress) : (IbsAddress)null;
 
             var note = BuildNote(request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
             var fare = GetFare(request.Estimate);

@@ -1,36 +1,39 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+
+#endregion
+
 namespace apcurium.MK.Booking.IBS.Impl
 {
     public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
     {
-        protected override string GetUrl()
+        public AccountWebServiceClient(IConfigurationManager configManager, ILogger logger)
+            : base(configManager, logger)
         {
-            return base.GetUrl() + "IWebAccount3";
         }
 
-        public AccountWebServiceClient(IConfigurationManager configManager, ILogger logger) : base( configManager, logger )
+        public int CreateAccount(Guid accountId, string email, string firstName, string lastName, string phone)
         {
-
-        }
-        public int CreateAccount( Guid accountId, string email, string firstName, string lastName, string phone)
-        {
-            string password = ConfigManager.GetSetting("IBS.DefaultAccountPassword");
-            bool isSuccess = false;
-            int ibsAcccountId = 0;
+            var password = ConfigManager.GetSetting("IBS.DefaultAccountPassword");
+            var isSuccess = false;
+            var ibsAcccountId = 0;
             UseService(service =>
             {
-                var account = new TBookAccount3();
-                account.WEBID = accountId.ToString();
-                account.Address = new TWEBAddress() { };
-                account.Email2 = email;
-                account.Title = "";
-                account.FirstName = firstName;
-                account.LastName = lastName;
-                account.Phone = phone;
-                account.MobilePhone = phone;                
-                account.WEBPassword = password;
+                var account = new TBookAccount3
+                {
+                    WEBID = accountId.ToString(),
+                    Address = new TWEBAddress(),
+                    Email2 = email,
+                    Title = "",
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Phone = phone,
+                    MobilePhone = phone,
+                    WEBPassword = password
+                };
 
                 ibsAcccountId = service.SaveAccount3(UserNameApp, PasswordApp, account);
                 isSuccess = ibsAcccountId > 0;
@@ -42,6 +45,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 throw new InvalidOperationException();
             }
             return ibsAcccountId;
+        }
+
+        protected override string GetUrl()
+        {
+            return base.GetUrl() + "IWebAccount3";
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Infrastructure.EventSourcing;
+﻿#region
+
+using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
     public class AccountRegistered : VersionedEvent
     {
-        public AccountRegistered()
-        {
-            
-        }
-        public string Name { get; set; }  
+        public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public byte[] Password { get; set; }
@@ -20,5 +20,4 @@ namespace apcurium.MK.Booking.Events
         public bool IsAdmin { get; set; }
         public bool AccountActivationDisabled { get; set; }
     }
-    
 }

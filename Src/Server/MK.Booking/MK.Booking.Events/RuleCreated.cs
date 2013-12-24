@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.EventSourcing;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
@@ -20,12 +21,9 @@ namespace apcurium.MK.Booking.Events
         public DateTime? EndTime { get; set; }
         public DateTime? ActiveFrom { get; set; }
         public DateTime? ActiveTo { get; set; }
-        public int Priority { get; set; }        
+        public int Priority { get; set; }
         public RuleCategory Category { get; set; }
         public RuleType Type { get; set; }
         public bool IsActive { get; set; }
-
-
-
     }
 }

@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _resources = new DynamicResources(applicationKey);
         }
 
-        public void Update(IBSOrderInformation ibsStatus, OrderStatusDetail order)
+        public void Update(IbsOrderInformation ibsStatus, OrderStatusDetail order)
         {
             var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
                                 || order.VehicleLatitude != ibsStatus.VehicleLatitude

@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace apcurium.MK.Booking.IBS
 {
-    public class IBSAddress
+    public class IbsAddress
     {
         public Guid Id { get; set; }
 

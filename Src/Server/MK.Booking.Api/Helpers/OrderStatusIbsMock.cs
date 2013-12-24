@@ -23,9 +23,9 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             var orderStatus = base.GetOrderStatus(orderId, session);
 
-            var ibsInfo = new IBSOrderInformation
+            var ibsInfo = new IbsOrderInformation
                               {
-                                  IBSOrderId = 9999,
+                                  IbsOrderId = 9999,
                                   VehicleMake = "FakeMake",
                                   VehicleColor = "FakeColor",
                                   VehicleModel = "FakeModel",

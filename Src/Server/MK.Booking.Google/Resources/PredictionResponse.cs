@@ -1,8 +1,8 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
@@ -10,7 +10,5 @@ namespace apcurium.MK.Booking.Google.Resources
     {
         public List<Prediction> predictions { get; set; }
         public string status { get; set; }
-
-
     }
 }

@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
             Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
-            Mapper.CreateMap<Address, IBSAddress>()
+            Mapper.CreateMap<Address, IbsAddress>()
                 .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Api
     {
         protected override void Configure()
         {
-            this.CreateMap<IBSVehiclePosition, AvailableVehicle>();
+            this.CreateMap<IbsVehiclePosition, AvailableVehicle>();
         }
     }
 }
