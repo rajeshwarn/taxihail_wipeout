@@ -4,12 +4,14 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Database;
 using apcurium.MK.Common.Entity;
 
 #endregion
 
 namespace apcurium.MK.Booking.Database
 {
+    [DbConfigurationType(typeof(CustomDbConfiguration))]
     public class BookingDbContext : DbContext
     {
         public const string SchemaName = "Booking";
@@ -17,6 +19,7 @@ namespace apcurium.MK.Booking.Database
         public BookingDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -9,7 +9,6 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.SelfHost
 {
@@ -19,12 +18,12 @@ namespace apcurium.MK.Web.SelfHost
         {
             RegisterInfrastructure(container, connectionString);
 
-            new MK.Common.Module().Init(container);
-            new MK.Booking.Module().Init(container);
-            new MK.Booking.Google.Module().Init(container);
-            new MK.Booking.Maps.Module().Init(container);
-            new MK.Booking.IBS.Module().Init(container);
-            new MK.Booking.Api.Module().Init(container);
+            new Common.Module().Init(container);
+            new Booking.Module().Init(container);
+            new Booking.Google.Module().Init(container);
+            new Booking.Maps.Module().Init(container);
+            new Booking.IBS.Module().Init(container);
+            new Booking.Api.Module().Init(container);
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
@@ -32,9 +31,7 @@ namespace apcurium.MK.Web.SelfHost
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
-            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, connectionString);
+            container.RegisterInstance(Common.Module.MkConnectionString, connectionString);
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
 

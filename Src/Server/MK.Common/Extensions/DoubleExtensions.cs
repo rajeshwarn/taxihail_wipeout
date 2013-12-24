@@ -1,7 +1,8 @@
+#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -9,7 +10,7 @@ namespace apcurium.MK.Common.Extensions
     {
         public static double ToRad(this double number)
         {
-            return number * Math.PI / 180;
+            return number*Math.PI/180;
         }
     }
 }

@@ -1,39 +1,46 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+#endregion
+
 namespace apcurium.MK.Common.Extensions
 {
     /// <summary>
-    /// Provides Extensions Methods for IEnumerable.
+    ///     Provides Extensions Methods for IEnumerable.
     /// </summary>
     public static class EnumerableExtensions
-    {        
+    {
+        private static readonly Random Random = new Random();
 
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> items, Action<T> action)
         {
+            var forEach = items as T[] ?? items.ToArray();
             if (items != null)
             {
-                foreach (T item in items)
+                foreach (var item in forEach)
                 {
                     action(item);
                 }
             }
 
-            return items;
+            return forEach;
         }
-		
-		public static bool HasValue<T> (this IEnumerable<T> items)
-        {			
-            return  ( (items != null) && (items.Count() > 0 ) );
+
+        public static bool HasValue<T>(this IEnumerable<T> items)
+        {
+            return ((items != null) && (items.Any()));
         }
+
         public static bool None<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
             return !items.Any(predicate);
         }
 
-        public static bool IsEmpty<T>(this IEnumerable<T> items, Func<T, bool> predicate=null)
+        public static bool IsEmpty<T>(this IEnumerable<T> items, Func<T, bool> predicate = null)
         {
             if (predicate == null)
             {
@@ -42,10 +49,9 @@ namespace apcurium.MK.Common.Extensions
             return !items.Any(predicate);
         }
 
-        static Random random = new Random();
         public static T GetRandom<T>(this T[] items)
         {
-            var index = random.Next(0, items.Length);
+            var index = Random.Next(0, items.Length);
             return items[index];
         }
 
@@ -84,13 +90,14 @@ namespace apcurium.MK.Common.Extensions
 
         public static bool AreDistinct<T>(this IEnumerable<T> items)
         {
-            return items.Count() == items.Distinct().Count();
+            var enumerable = items as T[] ?? items.ToArray();
+            return enumerable.Count() == enumerable.Distinct().Count();
         }
 
-       	public static bool Length<T> (this IEnumerable<T> items, int length)
-        {			
-            return  ( (items.HasValue() ) && ( items.Count() == length ) );
+        public static bool Length<T>(this IEnumerable<T> items, int length)
+        {
+            var enumerable  = items as T[] ?? items.ToArray();
+            return ((enumerable.HasValue()) && (enumerable.Count() == length));
         }
-       
     }
 }

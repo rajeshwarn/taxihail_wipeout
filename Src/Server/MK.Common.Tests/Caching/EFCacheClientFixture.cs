@@ -11,7 +11,7 @@ namespace MK.Common.Tests.Caching
     public class EFCacheClientFixture
     {
         protected string dbName;
-        private EFCacheClient _sut;
+        private EfCacheClient _sut;
         private string knownCacheKey;
         private object knownCacheObject;
         private string expiredCacheKey;
@@ -20,7 +20,7 @@ namespace MK.Common.Tests.Caching
         [SetUp]
         public void Setup()
         {
-            this._sut = new EFCacheClient(() => new CachingDbContext(dbName));
+            this._sut = new EfCacheClient(() => new CachingDbContext(dbName));
             knownCacheKey = Guid.NewGuid().ToString();
             knownCacheObject = Guid.NewGuid();
             expiredCacheKey = Guid.NewGuid().ToString();

@@ -105,6 +105,7 @@
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
+    <Compile Include="Database\CustomDbConfiguration.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="DummyConfigurationManager.cs" />
@@ -125,7 +126,6 @@
     <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\RatingType.cs" />
-    <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
@@ -156,6 +156,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
+    <Compile Include="Database\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>

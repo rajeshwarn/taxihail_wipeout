@@ -1,26 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using MK.DeploymentService.Properties;
-using System.Net;
+
+#endregion
 
 namespace MK.DeploymentService.Service
 {
     public class PackagesServiceClient
     {
-
         public void UploadPackage(string filename)
         {
             var url = GetUrl();
 
 
-            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
+            using (
+                var client =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    }))
             {
                 client.BaseAddress = new Uri(url);
 
@@ -34,16 +38,21 @@ namespace MK.DeploymentService.Service
                     {
                         FileName = Path.GetFileName(filename)
                     };
+// ReSharper disable once UnusedVariable
                     var r = client.PostAsync("packages", packageContent).Result.IsSuccessStatusCode;
                 }
-
             }
         }
 
         public string[] GetPackageList()
         {
             var url = GetUrl();
-            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
+            using (
+                var client =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    }))
             {
                 client.BaseAddress = new Uri(url);
                 var packagesName =
@@ -52,7 +61,6 @@ namespace MK.DeploymentService.Service
                         .Result;
 
                 return packagesName;
-
             }
         }
 
@@ -60,7 +68,12 @@ namespace MK.DeploymentService.Service
         {
             var url = GetUrl();
 
-            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
+            using (
+                var client =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    }))
             {
                 client.BaseAddress = new Uri(url);
                 var r = client.GetAsync(@"packages/?fileName=" + HttpUtility.UrlEncode(fileName)).Result; // + ).Result;
@@ -68,19 +81,14 @@ namespace MK.DeploymentService.Service
                 {
                     Save(destinationFileName, stream);
                 }
-
             }
-
         }
-
-
 
 
         public void Save(string fileName, Stream file)
         {
-
             var path = Path.Combine(@"c:\temp\", fileName);
-            using (var fileStream = File.Create(path, (int)file.Length))
+            using (var fileStream = File.Create(path, (int) file.Length))
             {
                 var bytesInStream = new byte[file.Length];
                 file.Read(bytesInStream, 0, bytesInStream.Length);
@@ -92,6 +100,7 @@ namespace MK.DeploymentService.Service
 
         private static string GetUrl()
         {
+// ReSharper disable once RedundantAssignment
             var url = Settings.Default.CustomerPortalUrl;
 
 #if DEBUG
@@ -99,6 +108,5 @@ namespace MK.DeploymentService.Service
 #endif
             return url;
         }
-
     }
 }

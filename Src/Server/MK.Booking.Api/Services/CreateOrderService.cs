@@ -143,9 +143,9 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 OrderId = command.OrderId,
                 Status = OrderStatus.Created,
-                IBSOrderId = ibsOrderId,
-                IBSStatusId = "",
-                IBSStatusDescription = "Processing your order"
+                IbsOrderId = ibsOrderId,
+                IbsStatusId = "",
+                IbsStatusDescription = "Processing your order"
             };
         }
 

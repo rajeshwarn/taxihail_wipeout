@@ -1,16 +1,20 @@
-﻿using System.Configuration;
+﻿#region
+
+using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 
-namespace apcurium.MK.Common.Entity
+#endregion
+
+namespace apcurium.MK.Common.Database
 {
     public class ServiceConfigurationSettingConnectionFactory : IDbConnectionFactory
     {
-        private readonly IDbConnectionFactory parent;
+        private readonly IDbConnectionFactory _parent;
 
         public ServiceConfigurationSettingConnectionFactory(IDbConnectionFactory parent)
         {
-            this.parent = parent;
+            this._parent = parent;
         }
 
         public DbConnection CreateConnection(string nameOrConnectionString)
@@ -29,10 +33,9 @@ namespace apcurium.MK.Common.Entity
                 catch (ConfigurationErrorsException e)
                 {
                 }
-                
             }
 
-            return this.parent.CreateConnection(nameOrConnectionString);
+            return _parent.CreateConnection(nameOrConnectionString);
         }
 
         private static bool IsConnectionString(string connectionStringCandidate)

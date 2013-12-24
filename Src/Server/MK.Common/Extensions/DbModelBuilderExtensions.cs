@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -11,7 +10,7 @@ namespace apcurium.MK.Common.Extensions
     {
         public static void CreateTable<T>(this DbModelBuilder modelBuilder, string schemaName) where T : class
         {
-            modelBuilder.Entity<T>().ToTable(typeof(T).Name, schemaName);
+            modelBuilder.Entity<T>().ToTable(typeof (T).Name, schemaName);
         }
     }
 }

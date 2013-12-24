@@ -47,8 +47,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (details != null)
                 {
                     details.Status = OrderStatus.Canceled;
-                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
-                    details.IBSStatusDescription = "Order Cancelled";
+                    details.IbsStatusId = VehicleStatuses.Common.CancelledDone;
+                    details.IbsStatusDescription = "Order Cancelled";
                     context.Save(details);
                 }
             }
@@ -100,9 +100,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         OrderId = @event.SourceId,
                         AccountId = @event.AccountId,
-                        IBSOrderId = @event.IBSOrderId,
+                        IbsOrderId = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription = "Processing your order",
+                        IbsStatusDescription = "Processing your order",
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });

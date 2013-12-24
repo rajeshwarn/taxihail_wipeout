@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Collections.Generic;
+
+#endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
@@ -20,7 +24,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             string value;
 
             GetSettings().TryGetValue(key, out value);
-            
+
             return value;
         }
 
@@ -29,17 +33,19 @@ namespace apcurium.MK.Common.Configuration.Impl
             var value = GetSetting(key);
             if (string.IsNullOrWhiteSpace(value)) return defaultValue;
             var converter = TypeDescriptor.GetConverter(defaultValue);
-            if(converter == null) throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
+            if (converter == null)
+                throw new InvalidOperationException("Type " + typeof (T).Name + " has no type converter");
             try
             {
-                return (T)converter.ConvertFromInvariantString(value);
+                var convertFromInvariantString = converter.ConvertFromInvariantString(value);
+                if (convertFromInvariantString != null)
+                    return (T) convertFromInvariantString;
             }
             catch
             {
-                Trace.WriteLine("Could not convert setting " + key + " to " + typeof(T).Name);
+                Trace.WriteLine("Could not convert setting " + key + " to " + typeof (T).Name);
             }
             return defaultValue;
-
         }
 
         public IDictionary<string, string> GetSettings()
@@ -49,10 +55,11 @@ namespace apcurium.MK.Common.Configuration.Impl
                 return context.Query<AppSetting>().ToArray().ToDictionary(kv => kv.Key, kv => kv.Value);
             }
         }
-        
+
         public void Reset()
-{
-}
+        {
+        }
+
         public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
             using (var context = _contextFactory.Invoke())

@@ -14,7 +14,7 @@
 namespace Infrastructure.Sql.MessageLog
 {
     using System.Data.Entity;
-
+     [DbConfigurationType("apcurium.MK.Common.Database.CustomDbConfiguration, apcurium.MK.Common")]
     public class MessageLogDbContext : DbContext
     {
         public const string SchemaName = "MessageLog";

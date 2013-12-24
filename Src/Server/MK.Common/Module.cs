@@ -1,29 +1,36 @@
-﻿using System.Configuration;
-using System.Data.Entity;
-using Microsoft.Practices.Unity;
-using ServiceStack.CacheAccess;
+﻿#region
+
+using System.Configuration;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using Microsoft.Practices.Unity;
+using ServiceStack.CacheAccess;
+using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
+
+#endregion
 
 namespace apcurium.MK.Common
 {
     public class Module
     {
-        public const string MKConnectionString = "Mk.ConnectionString";
+        public const string MkConnectionString = "Mk.ConnectionString";
 
         public void Init(IUnityContainer container)
         {
-            Database.SetInitializer<ConfigurationDbContext>(null);
-            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
+            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(),
+                new InjectionConstructor(
+                    container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
 
             container.RegisterInstance<ILogger>(new Logger());
-            container.RegisterInstance<IConfigurationManager>(new Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
+            container.RegisterInstance<IConfigurationManager>(
+                new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
 
-            Database.SetInitializer<CachingDbContext>(null);
-            container.RegisterType<CachingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
-            container.RegisterInstance<ICacheClient>(new EFCacheClient(() => container.Resolve<CachingDbContext>()));
+            container.RegisterType<CachingDbContext>(new TransientLifetimeManager(),
+                new InjectionConstructor(
+                    container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
+            container.RegisterInstance<ICacheClient>(new EfCacheClient(() => container.Resolve<CachingDbContext>()));
         }
     }
 }

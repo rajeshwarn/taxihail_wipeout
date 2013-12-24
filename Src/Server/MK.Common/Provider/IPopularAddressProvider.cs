@@ -1,13 +1,14 @@
-using System;
+#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Common.Provider
 {
     public interface IPopularAddressProvider
     {
-         IEnumerable<Address> GetPopularAddresses();
+        IEnumerable<Address> GetPopularAddresses();
     }
 }

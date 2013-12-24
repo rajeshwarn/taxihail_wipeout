@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Tip = Convert.ToDecimal(preAuthorizeRequest.Tip),
                         Meter = Convert.ToDecimal(preAuthorizeRequest.Meter),
                         CardToken = preAuthorizeRequest.CardToken,
-                        Provider = PaymentProvider.CMT,
+                        Provider = PaymentProvider.Cmt,
                     });
                 }
 
@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Tip = Convert.ToDecimal(request.TipAmount),
                         Meter = Convert.ToDecimal(request.MeterAmount),
                         CardToken = request.CardToken,
-                        Provider = PaymentProvider.CMT,
+                        Provider = PaymentProvider.Cmt,
                     });
 
                     // wait for OrderPaymentDetail to be created
@@ -188,7 +188,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             PaymentId = paymentId,
                             AuthorizationCode = authorizationCode,
-                            Provider = PaymentProvider.CMT,
+                            Provider = PaymentProvider.Cmt,
                         });
                     }
                 }
@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     {
                         PaymentId = payment.PaymentId,
                         AuthorizationCode = response.AuthorizationCode,
-                        Provider = PaymentProvider.CMT,
+                        Provider = PaymentProvider.Cmt,
                     });
                 }
 
@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
                 if (orderStatusDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
-                if (orderStatusDetail.IBSOrderId == null)
+                if (orderStatusDetail.IbsOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);

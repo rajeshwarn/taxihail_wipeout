@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Common.Caching
 {
@@ -10,7 +11,6 @@ namespace apcurium.MK.Common.Caching
     {
         public CacheItem()
         {
-            
         }
 
         public CacheItem(string key, string value)
@@ -28,6 +28,7 @@ namespace apcurium.MK.Common.Caching
 
         [Key]
         public string Key { get; set; }
+
         public string Value { get; set; }
         public DateTime ExpiresAt { get; set; }
     }

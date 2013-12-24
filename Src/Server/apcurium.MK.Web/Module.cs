@@ -41,10 +41,8 @@ namespace apcurium.MK.Web
 
         private void RegisterInfrastructure(IUnityContainer container)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
             var connectionStringSettings = ConfigurationManager.ConnectionStrings["MKWeb"];
-            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, connectionStringSettings);
+            container.RegisterInstance(apcurium.MK.Common.Module.MkConnectionString, connectionStringSettings);
 
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);

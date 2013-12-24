@@ -16,6 +16,7 @@ namespace Infrastructure.Sql.BlobStorage
     using System.Data.Entity;
     using System.IO;
 
+    [DbConfigurationType("apcurium.MK.Common.Database.CustomDbConfiguration, apcurium.MK.Common")]
     public class BlobStorageDbContext : DbContext
     {
         public const string SchemaName = "BlobStorage";

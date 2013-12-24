@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Domain
         {
             if (status == null) throw new InvalidOperationException();
 
-            if (status.IBSStatusId != _ibsStatus)
+            if (status.IbsStatusId != _ibsStatus)
             {
                 Update(new OrderStatusChanged
                 {
@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
-            _ibsStatus = @event.Status.IBSStatusId;
+            _ibsStatus = @event.Status.IbsStatusId;
         }
 
         private void OnOrderCreated(OrderCreated obj)

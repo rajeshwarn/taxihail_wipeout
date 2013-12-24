@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         public void Update(IbsOrderInformation ibsStatus, OrderStatusDetail order)
         {
-            var statusChanged = (ibsStatus.Status.HasValue() && order.IBSStatusId != ibsStatus.Status)
+            var statusChanged = (ibsStatus.Status.HasValue() && order.IbsStatusId != ibsStatus.Status)
                                 || order.VehicleLatitude != ibsStatus.VehicleLatitude
                                 || order.VehicleLongitude != ibsStatus.VehicleLongitude;
 
@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
             }
 
-            order.IBSStatusDescription = description.HasValue()
+            order.IbsStatusDescription = description.HasValue()
                 ? description
                 : (string) _resources.GetString("OrderStatus_" + ibsStatus.Status);
 

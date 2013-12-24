@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
+using apcurium.MK.Common.Database;
+
+#endregion
 
 namespace apcurium.MK.Common.Caching
 {
-    public class CachingDbContext: DbContext
+    [DbConfigurationType(typeof(CustomDbConfiguration))]
+    public class CachingDbContext : DbContext
     {
         public const string SchemaName = "Cache";
 
@@ -25,17 +27,17 @@ namespace apcurium.MK.Common.Caching
 
         public CacheItem Find(string key)
         {
-            return this.Set<CacheItem>().Find(key);
+            return Set<CacheItem>().Find(key);
         }
 
         public void Save(CacheItem entity)
         {
-            var entry = this.Entry(entity);
+            var entry = Entry(entity);
 
-            if (entry.State == System.Data.Entity.EntityState.Detached)
-                this.Set<CacheItem>().Add(entity);
+            if (entry.State == EntityState.Detached)
+                Set<CacheItem>().Add(entity);
 
-            this.SaveChanges();
+            SaveChanges();
         }
     }
 }

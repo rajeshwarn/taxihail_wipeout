@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.IBS.Test
 {

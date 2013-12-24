@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.IBS
 
         public void Update(OrderStatusDetail orderStatusDetail)
         {
-            orderStatusDetail.IBSStatusId = Status;
+            orderStatusDetail.IbsStatusId = Status;
 
             orderStatusDetail.DriverInfos.FirstName = FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName = LastName.GetValue(orderStatusDetail.DriverInfos.LastName);

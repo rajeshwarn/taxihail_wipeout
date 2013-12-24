@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 Amount = amount,
                 OrderId = orderId,
                 CardToken = token,
-                Provider = PaymentProvider.CMT
+                Provider = PaymentProvider.Cmt
             });
 
             var @event = sut.ThenHasSingle<CreditCardPaymentInitiated>();

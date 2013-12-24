@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(),
                 new InjectionConstructor(
-                    container.Resolve<ConnectionStringSettings>(Common.Module.MKConnectionString).ConnectionString));
+                    container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
 
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));

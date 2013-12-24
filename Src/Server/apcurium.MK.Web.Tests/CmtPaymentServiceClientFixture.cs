@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
 
         protected override Common.Enumeration.PaymentProvider GetProvider()
         {
-            return Common.Enumeration.PaymentProvider.CMT;
+            return Common.Enumeration.PaymentProvider.Cmt;
         }
     }
 }

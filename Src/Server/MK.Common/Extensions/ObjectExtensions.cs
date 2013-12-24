@@ -1,15 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
     public static class ObjectExtensions
     {
-
-
-
         public static void Maybe<TInstance>(this TInstance instance, Action action)
         {
-            if (instance != null)
+            if (!Equals(instance, default(TInstance)))
             {
                 action();
             }
@@ -17,7 +18,7 @@ namespace apcurium.MK.Common.Extensions
 
         public static void Maybe<TInstance>(this TInstance instance, Action<TInstance> action)
         {
-            if (instance != null)
+            if (!Equals(instance, default(TInstance)))
             {
                 action(instance);
             }
@@ -26,17 +27,19 @@ namespace apcurium.MK.Common.Extensions
         public static void Maybe<TInstance>(this object instance, Action<TInstance> action)
             where TInstance : class
         {
-            Maybe<TInstance>(instance as TInstance, action);
+            Maybe(instance as TInstance, action);
         }
 
-        public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance, Func<TInstance, TResult> selector)
+        public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance,
+            Func<TInstance, TResult> selector)
         {
             return SelectOrDefault(instance, selector, default(TResult));
         }
 
-        public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance, Func<TInstance, TResult> selector, TResult defaultValue)
+        public static TResult SelectOrDefault<TInstance, TResult>(this TInstance instance,
+            Func<TInstance, TResult> selector, TResult defaultValue)
         {
-            return instance == null ? defaultValue : selector(instance);
+            return Equals(instance, default(TInstance)) ? defaultValue : selector(instance);
         }
     }
 }

@@ -1,6 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+
+#endregion
 
 namespace apcurium.MK.Common
 {
@@ -15,6 +20,8 @@ namespace apcurium.MK.Common
 
             AppSettings = dictionary;
         }
+
+        private IDictionary<string, string> AppSettings { get; set; }
 
         public void Reset()
         {
@@ -36,12 +43,10 @@ namespace apcurium.MK.Common
             return AppSettings;
         }
 
-        public ClientPaymentSettings GetPaymentSettings(bool force=true)
+        public ClientPaymentSettings GetPaymentSettings(bool force = true)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
-
-        private IDictionary<string, string> AppSettings { get; set; }
 
         public void AddOrSet(string key, string value)
         {

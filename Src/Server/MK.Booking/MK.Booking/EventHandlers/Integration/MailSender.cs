@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var sendDriverAssignedMail = _configurationManager.GetSetting(
                     "Booking.DriverAssignedConfirmationEmail", false);
-                if (sendDriverAssignedMail && @event.Status.IBSStatusId == "wosASSIGNED")
+                if (sendDriverAssignedMail && @event.Status.IbsStatusId == "wosASSIGNED")
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
                     var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);

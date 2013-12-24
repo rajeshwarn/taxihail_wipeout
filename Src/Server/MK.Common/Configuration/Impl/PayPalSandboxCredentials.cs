@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace apcurium.MK.Common.Configuration.Impl
+﻿namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalCredentials
     {
@@ -17,7 +14,5 @@ namespace apcurium.MK.Common.Configuration.Impl
         public string Username { get; set; }
         public string Password { get; set; }
         public string Signature { get; set; }
-
-
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using System.IO;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -10,7 +10,7 @@ namespace apcurium.MK.Common.Extensions
     {
         public static byte[] ReadBytes(this Stream stream)
         {
-            byte[] bytes = new byte[stream.Length];
+            var bytes = new byte[stream.Length];
 
             stream.Read(bytes, 0, bytes.Length);
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using Direction = apcurium.MK.Common.Entity.DirectionSetting;

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -12,7 +12,6 @@ namespace apcurium.MK.Common.Extensions
     {
         public static void RemoveAll<T>(this DbContext thisObj) where T : class
         {
-
             var table = thisObj.Set<T>();
 
             if (!table.Any())
@@ -26,7 +25,6 @@ namespace apcurium.MK.Common.Extensions
             {
                 table.Remove(entity);
             }
-
         }
 
         public static void RemoveWhere<T>(this DbContext thisObj, Func<T, bool> clause) where T : class
@@ -44,7 +42,6 @@ namespace apcurium.MK.Common.Extensions
             {
                 table.Remove(entity);
             }
-
         }
     }
 }

@@ -1,8 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
+#endregion
+
+// ReSharper disable once CheckNamespace
 namespace CustomerPortal.Web.Entities
 {
     public class Company
@@ -11,11 +16,11 @@ namespace CustomerPortal.Web.Entities
         {
             IBS = new IBSSettings();
             Store = new StoreSettings();
-			AppleAppStoreCredentials = new AppleStoreCredentials();
+            AppleAppStoreCredentials = new AppleStoreCredentials();
             GooglePlayCredentials = new StoreCredentials();
             Versions = new List<Version>();
             CompanySettings = new List<CompanySetting>();
-            
+
             LayoutRejected = new Dictionary<DateTime, string>();
         }
 
@@ -31,7 +36,7 @@ namespace CustomerPortal.Web.Entities
         [Display(Name = "Contact Name")]
         public string ProjectContactName { get; set; }
 
-        [Display(Name = "Contact Email Address")]        
+        [Display(Name = "Contact Email Address")]
         public string ProjectContactEmail { get; set; }
 
         [Display(Name = "Contact Telephone")]
@@ -44,29 +49,29 @@ namespace CustomerPortal.Web.Entities
 
         public Dictionary<DateTime, string> LayoutRejected { get; set; }
 
+// ReSharper disable once InconsistentNaming
         public IBSSettings IBS { get; set; }
         public StoreSettings Store { get; set; }
 
-		public AppleStoreCredentials AppleAppStoreCredentials { get; set; }
+        public AppleStoreCredentials AppleAppStoreCredentials { get; set; }
 
         public StoreCredentials GooglePlayCredentials { get; set; }
 
         public List<Version> Versions { get; set; }
 
-        public Entities.Version FindVersion(string number)
-        {
-            return Versions.FirstOrDefault(x => x.Number == number);
-        }
-        public Entities.Version FindVersionById(string versionId)
-        {
-            return Versions.FirstOrDefault(x => x.VersionId == versionId);
-        }
-
         public List<CompanySetting> CompanySettings { get; set; }
 
         [Obsolete]
-        public Dictionary<string,string> GraphicsPaths { get; set; }
+        public Dictionary<string, string> GraphicsPaths { get; set; }
 
+        public Version FindVersion(string number)
+        {
+            return Versions.FirstOrDefault(x => x.Number == number);
+        }
+
+        public Version FindVersionById(string versionId)
+        {
+            return Versions.FirstOrDefault(x => x.VersionId == versionId);
+        }
     }
-    
 }

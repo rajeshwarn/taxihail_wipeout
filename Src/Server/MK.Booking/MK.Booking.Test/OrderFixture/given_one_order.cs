@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Status = new OrderStatusDetail
                 {
                     OrderId = _orderId,
-                    IBSStatusId = Guid.NewGuid().ToString()
+                    IbsStatusId = Guid.NewGuid().ToString()
                 }
             });
 
@@ -157,7 +157,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var status = new OrderStatusDetail
             {
                 OrderId = _orderId,
-                IBSStatusId = Guid.NewGuid().ToString()
+                IbsStatusId = Guid.NewGuid().ToString()
             };
 
             this.sut.Given(new OrderStatusChanged
