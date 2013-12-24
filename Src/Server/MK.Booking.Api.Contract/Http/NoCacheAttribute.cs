@@ -2,7 +2,9 @@
 
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-
+#if CLIENT
+using System;
+#endif
 #endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Http

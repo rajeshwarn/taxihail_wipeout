@@ -260,14 +260,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						MessageService.ShowProgress(true);
 						var orderInfo = _bookingService.CreateOrder(Order);
 
-						if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0))
+							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
 
 						var orderCreated = new Order
 						{
 							CreatedDate = DateTime.Now, 
 							DropOffAddress = Order.DropOffAddress, 
-							IBSOrderId = orderInfo.IBSOrderId, 
+							IbsOrderId = orderInfo.IbsOrderId, 
 							Id = Order.Id, PickupAddress = Order.PickupAddress,
 							Note = Order.Note, 
 							PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,

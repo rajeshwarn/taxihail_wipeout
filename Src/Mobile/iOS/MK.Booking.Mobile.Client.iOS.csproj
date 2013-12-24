@@ -190,29 +190,44 @@
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="MonoTouch.Dialog-1" />
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
-    </Reference>
     <Reference Include="MonoTouch.FacebookConnect">
       <HintPath>..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
-      <HintPath>Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
-      <HintPath>Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json.MonoTouch">
-      <HintPath>Newtonsoft.Json.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.TaxiHail.Ios">
-      <HintPath>MvvmCross.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
-      <HintPath>Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleAnalytics">
       <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="MvvmCross.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\MvvmCross.TaxiHail.Ios.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Mobile">
+      <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -488,6 +503,7 @@
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Converters\OrderStatusToTextColorConverter_IOS.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -772,9 +788,9 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
-      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
-      <Name>System.Reactive</Name>
+    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
+      <Project>{7E04C0C7-C26E-4F5E-A634-A687757E76A1}</Project>
+      <Name>Newtonsoft_Json_MonoTouch</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -798,5 +814,17 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="xamarin.mobile">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>0.7.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

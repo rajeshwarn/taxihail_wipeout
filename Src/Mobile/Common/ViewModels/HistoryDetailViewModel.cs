@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private OrderStatusDetail _status = new OrderStatusDetail
             {
-                IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage")
+				IbsStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage")
             };
 
 		public OrderStatusDetail Status 
@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
+					return Order.IbsOrderId.HasValue ? Order.IbsOrderId.Value.ToString(CultureInfo.InvariantCulture) : "Error";
                 }
                 return null;
             }
@@ -276,8 +276,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return Task.Factory.StartNew(()=> {
                 HasRated = BookingService.GetOrderRating(OrderId).RatingScores.Any();
                 Status = BookingService.GetOrderStatus(OrderId);
-                IsCompleted = BookingService.IsStatusCompleted (Status.IBSStatusId);
-                IsDone = BookingService.IsStatusDone(Status.IBSStatusId);
+				IsCompleted = BookingService.IsStatusCompleted (Status.IbsStatusId);
+				IsDone = BookingService.IsStatusDone(Status.IbsStatusId);
                 
 				CanCancel = !IsCompleted;
 
@@ -314,13 +314,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					var orderStatus = new OrderStatusDetail
 					{ 
-						IBSOrderId = Order.IBSOrderId,
-						IBSStatusDescription = "Loading...",
-						IBSStatusId = "",
-						OrderId = OrderId,
-						Status = OrderStatus.Unknown,
-						VehicleLatitude = null,
-						VehicleLongitude = null
+							IbsOrderId = Order.IbsOrderId,
+							IbsStatusDescription = "Loading...",
+							IbsStatusId = "",
+							OrderId = OrderId,
+							Status = OrderStatus.Unknown,
+							VehicleLatitude = null,
+							VehicleLongitude = null
 					};
 					RequestNavigate<BookingStatusViewModel>(new {
 						order =  Order.ToJson(),

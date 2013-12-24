@@ -19,6 +19,7 @@ using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
 using Direction = apcurium.MK.Common.Entity.DirectionSetting;
+using apcurium.MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -80,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 orderDetail = service.CreateOrder (order);
             }, ex => HandleCreateOrderError (ex, order));
 
-            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0) {
+			if (orderDetail.IbsOrderId.HasValue && orderDetail.IbsOrderId > 0) {
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
@@ -204,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool IsCompleted (Guid orderId)
         {
             var status = GetOrderStatus (orderId);
-            return IsStatusCompleted (status.IBSStatusId);
+			return IsStatusCompleted (status.IbsStatusId);
         }
 
         public bool IsStatusTimedOut(string statusId)
@@ -250,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 if (tarifMode != Direction.TarifMode.AppTarif)
                 {
-                    directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
+					directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
                 }
 
                 if (tarifMode == Direction.TarifMode.AppTarif || (tarifMode == Direction.TarifMode.Both && directionInfo.Price == 0d))

@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 BookingService.GetLastOrderStatus().ContinueWith(t => 
                 {
-                    var isCompleted = BookingService.IsStatusCompleted(t.Result.IBSStatusId);
+						var isCompleted = BookingService.IsStatusCompleted(t.Result.IbsStatusId);
                     if (isCompleted)
                     {
                         BookingService.ClearLastOrder();

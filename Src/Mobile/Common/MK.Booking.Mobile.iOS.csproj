@@ -63,7 +63,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
     <Reference Include="ServiceStack.Text.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
@@ -73,20 +72,32 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json.MonoTouch">
-      <HintPath>..\iOS\Newtonsoft.Json.MonoTouch.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
@@ -264,7 +275,6 @@
     <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="ViewModels\IHaveViewModel.cs" />
-    <Compile Include="BindingConverter\OrderStatusToTextColorConverter_IOS.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
     <Compile Include="Infrastructure\IAnalyticsService.cs" />
@@ -301,9 +311,9 @@
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
-      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
-      <Name>System.Reactive</Name>
+    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
+      <Project>{7E04C0C7-C26E-4F5E-A634-A687757E76A1}</Project>
+      <Name>Newtonsoft_Json_MonoTouch</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -339,4 +349,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <XamarinComponentReference Include="rxforxamarin">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
 </Project>

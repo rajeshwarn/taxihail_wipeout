@@ -8,7 +8,6 @@ using System.Reflection;
 using System.IO;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Settings

@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         && value.VehicleLongitude.Value !=0 
                         && value.VehicleLatitude.Value !=0
                         && !string.IsNullOrEmpty(value.VehicleNumber) 
-                        && VehicleStatuses.ShowOnMapStatuses.Contains(value.IBSStatusId))
+						&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IbsStatusId))
                     {
                         coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
                     }   

@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
-using MK.Booking.Api.Client;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

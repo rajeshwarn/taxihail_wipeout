@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel()
                 {
-                    IBSOrderId = x.IBSOrderId,
+					IBSOrderId = x.IbsOrderId,
                     Id = x.Id,
                     CreatedDate = x.CreatedDate,
                     PickupAddress = x.PickupAddress,

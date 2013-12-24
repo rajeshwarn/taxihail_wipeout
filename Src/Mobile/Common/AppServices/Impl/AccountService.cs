@@ -7,7 +7,6 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
-using MK.Booking.Api.Client;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;

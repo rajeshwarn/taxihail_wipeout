@@ -82,11 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 InvokeOnMainThread(() => RefreshStatus());
             });
 
-#if MONOTOUCH
-			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
-#else
 			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
-#endif
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
 				.DisposeWith (Subscriptions);
 
@@ -183,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { 
                 var showVehicleInformation = Config.GetSetting<bool>("Client.ShowVehicleInformation", true);
 
-                return showVehicleInformation && ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
+				return showVehicleInformation && ( (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
 		
@@ -330,9 +326,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.VehicleNumber = vehicleNumber;
 				}
 
-				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
+				var isDone = BookingService.IsStatusDone (status.IbsStatusId);
 
-                if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				if(status.IbsStatusId.HasValue() && status.IbsStatusId.Equals(VehicleStatuses.Common.Scheduled) )
 				{
 					AddReminder(status);
 				}
@@ -342,15 +338,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
                 IsPayButtonVisible = false;
                 if (status != null) {
-                    StatusInfoText = status.IBSStatusDescription;                        
+					StatusInfoText = status.IbsStatusDescription;                        
                     this.OrderStatusDetail = status;
 
                     CenterMap ();
 
-					UpdatePayCancelButtons(status.IBSStatusId);
+					UpdatePayCancelButtons(status.IbsStatusId);
 
-                    if (OrderStatusDetail.IBSOrderId.HasValue) {
-						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
+					if (OrderStatusDetail.IbsOrderId.HasValue) {
+						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IbsOrderId.Value+"");
                     }
 
                     if (isDone) 
@@ -358,7 +354,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						GoToSummary();
                     }
 
-                    if (BookingService.IsStatusTimedOut (status.IBSStatusId))
+					if (BookingService.IsStatusTimedOut (status.IbsStatusId))
                     {
                         GoToBookingScreen();
                     }
@@ -398,11 +394,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void GoToBookingScreen(){
             if (!_waitingToNavigateAfterTimeOut)
             {
-#if MONOTOUCH
-                Observable.IntervalSafe(TimeSpan.FromSeconds(10))
-#else
-                Observable.Interval( TimeSpan.FromSeconds (10))
-#endif
+				Observable.Interval( TimeSpan.FromSeconds (10))
                     .Subscribe(unit => InvokeOnMainThread(() => {
                         _bookingService.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
@@ -415,7 +407,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void CenterMap ()
         {            
 			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
-            if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
+			if (OrderStatusDetail.IbsStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
                 MapCenter = new CoordinateViewModel[] 
 				{ 
@@ -447,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
-					if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
+						if ((OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Loaded)) {
                         MessageService.ShowMessage (Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
                         return;
                     }

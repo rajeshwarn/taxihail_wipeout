@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            if (!Order.IBSOrderId.HasValue)
+			if (!Order.IbsOrderId.HasValue)
             {
                 MessageService.ShowProgress(false);
                 MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);

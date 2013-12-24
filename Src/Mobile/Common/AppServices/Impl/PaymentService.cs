@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Api.Client.Payments.Fake;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;

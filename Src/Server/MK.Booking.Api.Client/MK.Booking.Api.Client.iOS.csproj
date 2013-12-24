@@ -53,7 +53,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
     <Reference Include="ServiceStack.Text.MonoTouch">
       <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
@@ -75,7 +74,7 @@
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
       <Name>MK.Booking.Api.Contract.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.Ios.csproj">
+    <ProjectReference Include="..\..\Mobile\Libraries\BrainTreeEncryption.Library\BrainTreeEncryption.Library.Ios.csproj">
       <Project>{630CB5BB-15F8-4413-A1AB-2A895507E299}</Project>
       <Name>BrainTreeEncryption.Library.Ios</Name>
     </ProjectReference>
