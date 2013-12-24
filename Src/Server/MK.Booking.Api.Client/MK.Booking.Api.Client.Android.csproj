@@ -121,10 +121,6 @@
       <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
       <Name>BraintreeEncryption.Library.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Mobile\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
-    </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

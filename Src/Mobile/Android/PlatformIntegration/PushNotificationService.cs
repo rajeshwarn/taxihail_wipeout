@@ -15,7 +15,6 @@ using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
-using Newtonsoft.Json;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
@@ -156,11 +155,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			//Create an intent to show ui
 			var uiIntent = new Intent (this, typeof(SplashActivity));
-			var launchData = JsonConvert.SerializeObject (new MvxShowViewModelRequest (
-				typeof(MvxNullViewModel),
-				new Dictionary<string, string>(),
-				true,
-				MvxRequestedBy.UserAction));
+		    var request = new MvxShowViewModelRequest(
+		        typeof (MvxNullViewModel),
+		        new Dictionary<string, string>(),
+		        true,
+		        MvxRequestedBy.UserAction);
+            var launchData = request.ToJson();
 			
 			uiIntent.PutExtra ("MvxLaunchData", launchData);
 			uiIntent.PutExtra ("orderId", orderId.ToString());

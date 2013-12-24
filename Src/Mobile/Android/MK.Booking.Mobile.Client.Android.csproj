@@ -668,10 +668,6 @@
       <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
       <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Italic.otf" />
@@ -738,7 +734,6 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

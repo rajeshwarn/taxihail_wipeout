@@ -311,10 +311,6 @@
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
-      <Project>{7E04C0C7-C26E-4F5E-A634-A687757E76A1}</Project>
-      <Name>Newtonsoft_Json_MonoTouch</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Settings\Settings.json" />
@@ -322,16 +318,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <EmbeddedResource Include="TermsAndConditionsContent\TermsAndConditions.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Style\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Navigation\" />
-    <Folder Include="ListViewStructure\" />
-    <Folder Include="Messages\" />
-    <Folder Include="TutorialContent\" />
-    <Folder Include="ViewModels\Payment\" />
-    <Folder Include="TermsAndConditionsContent\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />
@@ -351,7 +338,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
