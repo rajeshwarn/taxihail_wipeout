@@ -305,10 +305,6 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
-      <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
-      <Name>BraintreeEncryption.Library.Android</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx">

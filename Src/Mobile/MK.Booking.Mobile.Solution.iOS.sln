@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{BB96472A-B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetworks.Services.MonoTouch", "SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj", "{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainTreeEncryption.Library.Ios", "Libraries\BrainTreeEncryption.Library\BrainTreeEncryption.Library.Ios.csproj", "{630CB5BB-15F8-4413-A1AB-2A895507E299}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.iOS", "..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj", "{52A964D2-F9FE-47CD-9C50-781CCEC560ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Contract.iOS", "..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj", "{0C54E2DC-0852-4EED-A882-60B68FE41C8D}"
@@ -61,30 +59,6 @@ Global
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhone.Build.0 = Release|Any CPU
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|Any CPU.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|Any CPU.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|iPhone.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|iPhone.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AdHoc|iPhoneSimulator.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|Any CPU.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|Any CPU.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|iPhone.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|iPhone.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|Any CPU.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|iPhone.Build.0 = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{630CB5BB-15F8-4413-A1AB-2A895507E299}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{52A964D2-F9FE-47CD-9C50-781CCEC560ED}.AdHoc|Any CPU.ActiveCfg = AdHoc|Any CPU
 		{52A964D2-F9FE-47CD-9C50-781CCEC560ED}.AdHoc|Any CPU.Build.0 = AdHoc|Any CPU
 		{52A964D2-F9FE-47CD-9C50-781CCEC560ED}.AdHoc|iPhone.ActiveCfg = AdHoc|iPhone
@@ -243,7 +217,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031} = {BB96472A-B460-4A3A-851B-C2454D8EE8C7}
-		{630CB5BB-15F8-4413-A1AB-2A895507E299} = {BB96472A-B460-4A3A-851B-C2454D8EE8C7}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = iOS\MK.Booking.Mobile.Client.iOS.csproj
