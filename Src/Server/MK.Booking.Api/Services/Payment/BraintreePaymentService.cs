@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;

@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 
+#endregion
+
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders/{OrderId}/sendreceipt", "POST")]
+    [Route("/account/orders/{OrderId}/sendreceipt", "POST")]
     public class SendReceipt
     {
         public Guid OrderId { get; set; }
     }
 
-    public class SendReceiptResponse: IHasResponseStatus
+    public class SendReceiptResponse : IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
     }

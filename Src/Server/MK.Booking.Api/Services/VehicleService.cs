@@ -2,10 +2,10 @@
 
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using AutoMapper;
-using MK.Common.Android;
 using ServiceStack.ServiceInterface;
 
 #endregion

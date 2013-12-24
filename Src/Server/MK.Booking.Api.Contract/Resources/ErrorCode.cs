@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace apcurium.MK.Booking.Api.Contract.Resources
+﻿namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public enum ErrorCode
     {
         Ok,
+// ReSharper disable InconsistentNaming
         CreateAccount_AccountAlreadyExist,
         CreateOrder_InvalidPickupAddress,
         CreateOrder_CannotCreateInIbs,
@@ -26,5 +22,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         Rule_DuplicateName,
         Rule_InvalidPriority,
         ResetPassword_AccountNotFound
+ // ReSharper restore InconsistentNaming
     }
 }

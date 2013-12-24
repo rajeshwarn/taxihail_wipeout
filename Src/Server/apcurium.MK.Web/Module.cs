@@ -10,7 +10,6 @@ using Infrastructure.Messaging.InMemory;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
-using MK.Booking.Api.Client;
 using Microsoft.Practices.Unity;
 using PushSharp.Android;
 using PushSharp.Apple;

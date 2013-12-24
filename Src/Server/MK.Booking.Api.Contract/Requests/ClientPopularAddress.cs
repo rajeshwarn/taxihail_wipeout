@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
+using ServiceStack.ServiceHost;
 #if !CLIENT
 using apcurium.MK.Booking.ReadModel;
+
 #endif
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Route("/popularaddresses", "GET")]
     [Route("/admin/popularaddresses", "GET")]
-    public class ClientPopularAddress : BaseDTO
+    public class ClientPopularAddress : BaseDto
     {
-        
     }
 
 #if !CLIENT
@@ -21,13 +24,11 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
         public ClientPopularAddressResponse()
         {
-            
         }
 
         public ClientPopularAddressResponse(IEnumerable<PopularAddressDetails> collection)
-            :base(collection)
+            : base(collection)
         {
-            
         }
     }
 #endif

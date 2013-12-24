@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders/{OrderId}/cancel", "POST")]
-    public class CancelOrder : BaseDTO
+    [Route("/account/orders/{OrderId}/cancel", "POST")]
+    public class CancelOrder : BaseDto
     {
         public Guid OrderId { get; set; }
     }

@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Id = order.Id,
                 PickupDate = order.PickupDate,
                 CreatedDate = order.CreatedDate,
-                IBSOrderId = order.IBSOrderId,
+                IbsOrderId = order.IBSOrderId,
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 Settings = new BookingSettings

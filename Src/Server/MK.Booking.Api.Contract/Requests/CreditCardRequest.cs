@@ -1,12 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/creditcards", "GET,POST")]
-    [RestService("/account/creditcards/{CreditCardId}", "DELETE")]    
+    [Route("/account/creditcards", "GET,POST")]
+    [Route("/account/creditcards/{CreditCardId}", "DELETE")]
     public class CreditCardRequest
     {
         public Guid CreditCardId { get; set; }

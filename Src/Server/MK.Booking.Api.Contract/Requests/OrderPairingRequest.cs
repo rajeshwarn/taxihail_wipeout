@@ -1,15 +1,19 @@
-﻿using System;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Http;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
-using apcurium.MK.Booking.Api.Contract.Http;
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders/{OrderId}/pairing/", "GET")]
-    public class OrderPairingRequest : BaseDTO
+    [Route("/account/orders/{OrderId}/pairing/", "GET")]
+    public class OrderPairingRequest : BaseDto
     {
         public Guid OrderId { get; set; }
     }

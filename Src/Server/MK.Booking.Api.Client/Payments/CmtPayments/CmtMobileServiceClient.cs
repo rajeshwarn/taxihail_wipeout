@@ -1,9 +1,13 @@
+#region
+
 using System;
 using System.Net;
-using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Configuration.Impl;
+using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
@@ -11,8 +15,8 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
     {
         public CmtMobileServiceClient(CmtPaymentSettings cmtSettings, string sessionId, string userAgent)
             : base(cmtSettings.IsSandbox
-                       ? cmtSettings.SandboxMobileBaseUrl
-                       : cmtSettings.MobileBaseUrl, sessionId, userAgent)
+                ? cmtSettings.SandboxMobileBaseUrl
+                : cmtSettings.MobileBaseUrl, sessionId, userAgent)
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
@@ -30,12 +34,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         private void SignRequest(WebRequest request)
         {
             var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
-                                                               ConsumerSecretKey,
-                                                               "",
-                                                               "",
-                                                               request.Method,
-                                                               request.RequestUri,
-                                                               null);
+                ConsumerSecretKey,
+                "",
+                "",
+                request.Method,
+                request.RequestUri,
+                null);
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
         }
 

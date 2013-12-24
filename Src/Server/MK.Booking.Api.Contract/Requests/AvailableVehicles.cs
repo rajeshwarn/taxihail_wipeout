@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
-using ServiceStack.ServiceHost;
+﻿#region
+
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/vehicles/", "GET")]
+    [Route("/vehicles/", "GET")]
     public class AvailableVehicles : IReturn<AvailableVehiclesResponse>
     {
         public double Latitude { get; set; }
@@ -15,13 +19,11 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
         public AvailableVehiclesResponse()
         {
-            
         }
 
         public AvailableVehiclesResponse(IEnumerable<AvailableVehicle> list)
-            :base(list)
+            : base(list)
         {
-            
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
@@ -9,7 +9,8 @@ using ServiceStack.ServiceInterface.ServiceModel;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 #endif
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -17,8 +18,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #if !CLIENT
     [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
-    [RestService("/admin/tariffs", "GET, POST")]
-    [RestService("/admin/tariffs/{Id}", "PUT, DELETE")]
+    [Route("/admin/tariffs", "GET, POST")]
+    [Route("/admin/tariffs/{Id}", "PUT, DELETE")]
     public class Tariff
     {
         public Guid Id { get; set; }
@@ -34,9 +35,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public DateTime EndTime { get; set; }
     }
 
-    public class TariffResponse: IHasResponseStatus
+    public class TariffResponse : IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
     }
-    
 }

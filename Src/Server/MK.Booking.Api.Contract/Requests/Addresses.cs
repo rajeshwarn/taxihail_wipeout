@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/addresses", "GET")]    
-    public class Addresses { }
+    [Route("/account/addresses", "GET")]
+    public class Addresses
+    {
+    }
 }

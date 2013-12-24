@@ -1,29 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using System.Xml.Serialization;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Capture
 {
-    public class CaptureResponse:PaymentResponse
+    public class CaptureResponse : PaymentResponse
     {
-
         [XmlElement("transactionId")]
         public long TransactionId { get; set; }
 
         [XmlElement("authorizationCode")]
         public string AuthorizationCode { get; set; }
-        
+
 
         [XmlElement("captureDate")]
         public string CaptureDate { get; set; }
 
         [XmlElement("amount")]
+// ReSharper disable once InconsistentNaming
         public int _Amount { get; set; }
 
         [XmlIgnore]
-        public double Amount { get { return ((double)_Amount) / 100; } }
+        public double Amount
+        {
+            get { return ((double)_Amount) / 100; }
+        }
 
         [XmlElement("currencyCode")]
         public string CurrencyCode { get; set; }

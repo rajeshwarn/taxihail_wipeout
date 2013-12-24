@@ -1,24 +1,23 @@
-﻿using apcurium.MK.Booking.Api.Contract.Security;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    
-
     [Authenticate]
 #if !CLIENT
     [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
-    [RestService("/admin/rules", "GET, POST")]
-    [RestService("/admin/rules/{Id}", "PUT, DELETE")]
+    [Route("/admin/rules", "GET, POST")]
+    [Route("/admin/rules/{Id}", "PUT, DELETE")]
     public class RuleRequest
     {
         public Guid Id { get; set; }
@@ -42,5 +41,4 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
         public ResponseStatus ResponseStatus { get; set; }
     }
-
 }

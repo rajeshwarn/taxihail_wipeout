@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
@@ -10,4 +14,3 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? TipPercent { get; set; }
     }
 }
-

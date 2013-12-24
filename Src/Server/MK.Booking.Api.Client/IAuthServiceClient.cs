@@ -1,4 +1,8 @@
+#region
+
 using apcurium.MK.Booking.Api.Contract.Security;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -6,7 +10,7 @@ namespace apcurium.MK.Booking.Api.Client
     {
         void CheckSession();
         AuthenticationData Authenticate(string email, string password);
-        AuthenticationData AuthenticateTwitter (string twitterId);
-        AuthenticationData AuthenticateFacebook (string facebookId);
+        AuthenticationData AuthenticateTwitter(string twitterId);
+        AuthenticationData AuthenticateFacebook(string facebookId);
     }
 }

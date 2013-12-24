@@ -1,10 +1,13 @@
-﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/referencedata", "GET")]
-    public class ReferenceDataRequest : BaseDTO
+    [Route("/referencedata", "GET")]
+    public class ReferenceDataRequest : BaseDto
     {
         public bool WithoutFiltering { get; set; }
     }

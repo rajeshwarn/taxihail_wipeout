@@ -1,12 +1,14 @@
-﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
 
+using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/account/resetpassword/{EmailAddress}", "POST")]
-    public class ResetPassword : BaseDTO
-    { 
-        public string EmailAddress { get; set; } 
+    [Route("/account/resetpassword/{EmailAddress}", "POST")]
+    public class ResetPassword : BaseDto
+    {
+        public string EmailAddress { get; set; }
     }
 }

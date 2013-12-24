@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Common.Diagnostic;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Security
 {
@@ -12,12 +16,16 @@ namespace apcurium.MK.Booking.Api.Contract.Security
         public AuthorizationRequiredAttribute(ApplyTo applyTo, params string[] permissions)
             : base(applyTo, permissions)
         {
-
         }
 
         public IAccountDao AccountDao { get; set; }
 
         public ILogger Logger { get; set; }
+
+        public int Priority
+        {
+            get { return 100; }
+        }
 
         public override void Execute(IHttpRequest req, IHttpResponse res, object requestDto)
         {
@@ -27,7 +35,6 @@ namespace apcurium.MK.Booking.Api.Contract.Security
             {
                 var account = AccountDao.FindById(new Guid(authSession.UserAuthId));
                 authSession.Permissions = account.RoleNames.ToList();
-                
             }
             base.Execute(req, res, requestDto);
         }
@@ -35,11 +42,6 @@ namespace apcurium.MK.Booking.Api.Contract.Security
         public IHasRequestFilter Copy()
         {
             return this;
-        }
-
-        public int Priority
-        {
-            get { return 100; }
         }
     }
 }

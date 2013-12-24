@@ -1,17 +1,21 @@
-﻿using System;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
-    [RestService("/admin/popularaddresses", "POST")]
-    [RestService("/admin/popularaddresses/{Id}", "PUT, DELETE")]
-    public class PopularAddress : BaseDTO
+    [Route("/admin/popularaddresses", "POST")]
+    [Route("/admin/popularaddresses/{Id}", "PUT, DELETE")]
+    public class PopularAddress : BaseDto
     {
         public Guid Id { get; set; }
         public Address Address { get; set; }

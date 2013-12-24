@@ -1,11 +1,7 @@
-using System;
-
-namespace MK.Common.Android
+namespace apcurium.MK.Booking.Api.Contract.Requests.Messages
 {
-	public class SendMessageToDriverResponse
-	{
-
+    public class SendMessageToDriverResponse
+    {
         public bool Success { get; set; }
-	}
+    }
 }
-

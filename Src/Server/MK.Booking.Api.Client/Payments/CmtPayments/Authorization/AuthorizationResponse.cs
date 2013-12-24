@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
 {
-    public class AuthorizationResponse :PaymentResponse
+    public class AuthorizationResponse : PaymentResponse
     {
         public long TransactionId { get; set; }
 
@@ -17,9 +13,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
         public string CardType { get; set; }
 
         public string AuthorizationCode { get; set; }
-        
+
         public int Amount { get; set; }
-        
+
         public string CurrencyCode { get; set; }
 
         public string EmployeeId { get; set; }

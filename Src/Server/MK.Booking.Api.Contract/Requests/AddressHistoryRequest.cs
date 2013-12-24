@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/addresses/history/{AddressId}", "DELETE")]
-    [RestService("/account/addresses/history", "GET")]
-    public class AddressHistoryRequest : BaseDTO
+    [Route("/account/addresses/history/{AddressId}", "DELETE")]
+    [Route("/account/addresses/history", "GET")]
+    public class AddressHistoryRequest : BaseDto
     {
         public Guid AddressId { get; set; }
     }

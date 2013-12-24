@@ -1,15 +1,19 @@
+#region
+
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/ratings", "POST")]
-    [RestService("/ratings/{OrderId}", "GET")]
-    public class OrderRatingsRequest : BaseDTO
+    [Route("/ratings", "POST")]
+    [Route("/ratings/{OrderId}", "GET")]
+    public class OrderRatingsRequest : BaseDto
     {
         public Guid OrderId { get; set; }
         public string Note { get; set; }

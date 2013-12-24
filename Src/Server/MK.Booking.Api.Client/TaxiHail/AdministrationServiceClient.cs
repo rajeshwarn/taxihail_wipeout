@@ -1,14 +1,19 @@
+#region
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 
+#endregion
+
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AdministrationServiceClient : BaseServiceClient
     {
-        public AdministrationServiceClient(string url, string sessionId, string userAgent) : base(url, sessionId, userAgent)
+        public AdministrationServiceClient(string url, string sessionId, string userAgent)
+            : base(url, sessionId, userAgent)
         {
         }
 
@@ -40,38 +45,38 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void AddDefaultFavoriteAddress(DefaultFavoriteAddress address)
         {
             var req = string.Format("/admin/addresses");
-            var response = Client.Post<string>(req, address);
+            Client.Post<string>(req, address);
         }
 
         public void UpdateDefaultFavoriteAddress(DefaultFavoriteAddress address)
         {
             var req = string.Format("/admin/addresses/{0}", address.Id);
-            var response = Client.Put<string>(req, address);
+            Client.Put<string>(req, address);
         }
 
         public void RemoveDefaultFavoriteAddress(Guid addressId)
         {
             var req = string.Format("/admin/addresses/{0}", addressId);
-            var response = Client.Delete<string>(req);
+            Client.Delete<string>(req);
         }
 
 
         public void AddPopularAddress(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses");
-            var response = Client.Post<string>(req, address);
+            Client.Post<string>(req, address);
         }
 
         public void UpdatePopularAddress(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses/{0}", address.Id);
-            var response = Client.Put<string>(req, address);
+            Client.Put<string>(req, address);
         }
 
         public void RemovePopularAddress(Guid addressId)
         {
             var req = string.Format("/admin/popularaddresses/{0}", addressId);
-            var response = Client.Delete<string>(req);
+            Client.Delete<string>(req);
         }
 
         public IList<Address> GetPopularAddresses()
@@ -93,6 +98,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var req = string.Format("/settings");
             Client.Post<string>(req, appReq);
         }
-
     }
 }

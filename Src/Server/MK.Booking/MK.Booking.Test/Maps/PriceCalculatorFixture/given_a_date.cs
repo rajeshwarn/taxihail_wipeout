@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using apcurium.MK.Common.Diagnostic;
 using NUnit.Framework;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Maps.Impl;
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
     [TestFixture]
     public class given_a_day_tariff_ending_the_next_day
     {
-        private PriceCalculator sut;
+        private PriceCalculator _sut;
         private FakeTariffProvider _tariffProvider;
 
         [SetUp]
@@ -107,13 +107,13 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+            _sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
         }
 
         [Test]
         public void when_date_match_day_and_inside_time_period()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 21, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 18, 21, 0, 0));
 
             Assert.NotNull(tariff);
             Assert.AreEqual("Day tariff ending the next day", tariff.Name);
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_match_next_day_and_inside_time_period()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 1, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 19, 1, 0, 0));
 
             Assert.NotNull(tariff);
             Assert.AreEqual("Day tariff ending the next day", tariff.Name);
@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_match_day_but_before_start_time()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 19, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 18, 19, 0, 0));
 
             Assert.Null(tariff);
         }
@@ -139,7 +139,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_match_day_and_start_time_exactly()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 20, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 18, 20, 0, 0));
 
             Assert.NotNull(tariff);
             Assert.AreEqual("Day tariff ending the next day", tariff.Name);
@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_match_next_day_and_end_time_exactly()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 8, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 19, 8, 0, 0));
 
             Assert.Null(tariff);
         }
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_match_next_day_but_after_end_time()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 21, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 19, 21, 0, 0));
 
             Assert.Null(tariff);
         }
@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
         [Test]
         public void when_date_doesnt_match_day()
         {
-            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
+            var tariff = _sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
 
             Assert.Null(tariff);
         }
@@ -173,6 +173,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
     }
 
     [TestFixture]
+// ReSharper disable once InconsistentNaming
     public class given_a_recurring_tariff_ending_the_same_day
     {
         private PriceCalculator sut;
@@ -194,7 +195,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
                                                      {
                                                          tariff1
                                                      });
-            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
         }
 
         [Test]
@@ -270,7 +271,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
             {
                 tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
         }
 
         [Test]
@@ -357,7 +358,7 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
                                                          {
                                                              tariff1
                                                          });
-            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider, new Logger());
         }
 
         [Test]

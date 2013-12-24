@@ -1,18 +1,23 @@
-﻿using System.Collections.Generic;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/orders", "GET")]
-    public class AccountOrderListRequest { }
+    [Route("/account/orders", "GET")]
+    public class AccountOrderListRequest
+    {
+    }
 
     [NoCache]
-    public class AccountOrderListRequestResponse: List<Order>
+    public class AccountOrderListRequestResponse : List<Order>
     {
-        
     }
 }

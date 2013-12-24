@@ -1,4 +1,9 @@
-﻿using apcurium.MK.Booking.Api.Contract.Security;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Security;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Cmt
 {
@@ -15,30 +20,32 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
 
         public void CheckSession()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         #region IAuthServiceClient implementation
+
         public AuthenticationData Authenticate(string email, string password)
         {
-            var response = Client.Get<CmtAuthResponse>(string.Format("/auth?emailAddress={0}&password={1}", email, password));
+            var response =
+                Client.Get<CmtAuthResponse>(string.Format("/auth?emailAddress={0}&password={1}", email, password));
             return new AuthenticationData
-                       {
-                           SessionId = response.SessionToken,
-                           AccessTokenSecret = response.AccessTokenSecret,
-                           AccessToken = response.AccessToken,
-                           AccountId = response.AccountId
-                       };
-        }
-        
-        public AuthenticationData AuthenticateTwitter (string twitterId)
-        {
-            throw new System.NotImplementedException ();
+            {
+                SessionId = response.SessionToken,
+                AccessTokenSecret = response.AccessTokenSecret,
+                AccessToken = response.AccessToken,
+                AccountId = response.AccountId
+            };
         }
 
-        public AuthenticationData AuthenticateFacebook (string twitterId)
+        public AuthenticationData AuthenticateTwitter(string twitterId)
         {
-            throw new System.NotImplementedException ();
+            throw new NotImplementedException();
+        }
+
+        public AuthenticationData AuthenticateFacebook(string twitterId)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

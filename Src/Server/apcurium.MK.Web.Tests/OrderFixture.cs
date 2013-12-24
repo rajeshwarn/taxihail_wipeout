@@ -151,7 +151,7 @@ namespace apcurium.MK.Web.Tests
             var order = sut.GetOrder(_orderId);
             
             Assert.IsNotNull(order);
-            Assert.IsNotNull(order.IBSOrderId);
+            Assert.IsNotNull(order.IbsOrderId);
         }
 
         [Test]

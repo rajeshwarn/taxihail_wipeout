@@ -1,10 +1,14 @@
-﻿using ServiceStack.ServiceHost;
+﻿#region
+
 using apcurium.MK.Booking.Google.Resources;
+using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/searchlocation", "POST")]
-    public class SearchLocationsRequest : BaseDTO
+    [Route("/searchlocation", "POST")]
+    public class SearchLocationsRequest : BaseDto
     {
         public string Name { get; set; }
         public double? Lat { get; set; }

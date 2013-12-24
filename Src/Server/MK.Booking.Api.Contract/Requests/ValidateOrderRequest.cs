@@ -1,20 +1,20 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [Route("/account/orders/validate", "POST")]
     [Route("/account/orders/validate/{TestZone}", "POST")]
-    public class ValidateOrderRequest : BaseDTO
+    public class ValidateOrderRequest : BaseDto
     {
-
         public ValidateOrderRequest()
         {
             PickupAddress = new Address();
@@ -39,6 +39,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public BookingSettings Settings { get; set; }
 
         public PaymentSettings Payment { get; set; }
-
     }
 }
