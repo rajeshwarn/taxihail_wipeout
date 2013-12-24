@@ -169,7 +169,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
       <Project>{1a931a36-d855-4a7a-ad0f-1b35d76582f3}</Project>
-      <Name>MK.Booking.Api %28MK.Booking.Api\MK.Booking.Api%29</Name>
+      <Name>MK.Booking.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
       <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
@@ -193,11 +193,11 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
-      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+      <Name>MK.Booking</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Sql\Infrastructure.Sql\Infrastructure.Sql.csproj">
       <Project>{F038F286-5AEF-4341-83EC-9F72F42D06D6}</Project>

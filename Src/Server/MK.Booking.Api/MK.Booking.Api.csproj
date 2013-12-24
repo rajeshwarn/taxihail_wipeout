@@ -194,7 +194,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Client\MK.Booking.Api.Client.csproj">
       <Project>{304F8E9E-0E9C-40F4-81FB-E7558286C5C1}</Project>
@@ -226,7 +226,7 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
-      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+      <Name>MK.Booking</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
