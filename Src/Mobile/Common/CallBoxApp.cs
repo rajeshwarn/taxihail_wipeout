@@ -23,7 +23,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile

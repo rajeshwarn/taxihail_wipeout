@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				RequestNavigate<CallboxLoginViewModel>();
 			}
-			else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+			else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
 			{
 				RequestNavigate<CallboxOrderListViewModel>();
 			}
