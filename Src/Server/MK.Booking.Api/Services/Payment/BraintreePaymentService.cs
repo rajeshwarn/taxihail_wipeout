@@ -1,8 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Braintree;
@@ -10,13 +18,9 @@ using BraintreeEncryption.Library;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Booking.Commands;
+using Environment = Braintree.Environment;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -28,19 +32,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
     public class BraintreePaymentService : Service
     {
-        readonly ICommandBus _commandBus;
-        readonly IOrderPaymentDao _orderPaymentDao;
-        readonly IOrderDao _orderDao;
-        readonly IConfigurationManager _configurationManager;
+        private readonly ICommandBus _commandBus;
+        private readonly IOrderDao _orderDao;
+        private readonly IOrderPaymentDao _orderPaymentDao;
 
-        public BraintreePaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao, IConfigurationManager configurationManager)
+        public BraintreePaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao,
+            IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
             _orderDao = orderDao;
-            _configurationManager = configurationManager;
-            
-            BraintreeGateway = GetBraintreeGateway(((ServerPaymentSettings)_configurationManager.GetPaymentSettings()).BraintreeServerSettings);
+
+            BraintreeGateway =
+                GetBraintreeGateway(
+                    ((ServerPaymentSettings) configurationManager.GetPaymentSettings()).BraintreeServerSettings);
         }
 
         private BraintreeGateway BraintreeGateway { get; set; }
@@ -52,13 +57,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var dummyCreditCard = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Braintree).Visa;
 
             var braintreeEncrypter = new BraintreeEncrypter(braintreeClientSettings.ClientKey);
-            
+
             return TokenizedCreditCard(client, new TokenizeCreditCardBraintreeRequest
-                {
-                    EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
-                    EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2+""),
-                    EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy")),
-                }).IsSuccessfull;
+            {
+                EncryptedCreditCardNumber = braintreeEncrypter.Encrypt(dummyCreditCard.Number),
+                EncryptedCvv = braintreeEncrypter.Encrypt(dummyCreditCard.AvcCvvCvv2 + ""),
+                EncryptedExpirationDate = braintreeEncrypter.Encrypt(dummyCreditCard.ExpirationDate.ToString("MM/yyyy")),
+            }).IsSuccessfull;
         }
 
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
@@ -69,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardBraintreeRequest request)
         {
             BraintreeGateway.CreditCard.Delete(request.CardToken);
-            return new DeleteTokenizedCreditcardResponse()
+            return new DeleteTokenizedCreditcardResponse
             {
                 IsSuccessfull = true,
                 Message = "Success"
@@ -97,7 +102,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 };
 
                 var result = BraintreeGateway.Transaction.Sale(request);
-                bool isSuccessful = result.IsSuccess();
+                var isSuccessful = result.IsSuccess();
                 if (isSuccessful)
                 {
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -136,7 +141,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var isSuccessful = false;
-                var message = string.Empty;
+                string message;
                 var authorizationCode = string.Empty;
 
                 var orderDetail = _orderDao.FindById(request.OrderId);
@@ -161,7 +166,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     var transactionId = result.Target.Id;
                     var paymentId = Guid.NewGuid();
-                    
+
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
@@ -181,7 +186,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(transactionId);
                     message = settlementResult.Message;
 
-                    isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) && (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
+                    isSuccessful = settlementResult.IsSuccess() && (settlementResult.Target != null) &&
+                                   (settlementResult.Target.ProcessorAuthorizationCode.HasValue());
                     if (isSuccessful)
                     {
                         authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
@@ -221,7 +227,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 var result = BraintreeGateway.Transaction.SubmitForSettlement(request.TransactionId);
 
-                var isSuccessful = result.IsSuccess() && (result.Target != null) && (result.Target.ProcessorAuthorizationCode.HasValue());
+                var isSuccessful = result.IsSuccess() && (result.Target != null) &&
+                                   (result.Target.ProcessorAuthorizationCode.HasValue());
                 if (isSuccessful)
                 {
                     _commandBus.Send(new CaptureCreditCardPayment
@@ -249,17 +256,18 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, TokenizeCreditCardBraintreeRequest tokenizeRequest)
+        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client,
+            TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
             var request = new CustomerRequest
+            {
+                CreditCard = new CreditCardRequest
                 {
-                    CreditCard = new CreditCardRequest
-                        {
-                            Number = tokenizeRequest.EncryptedCreditCardNumber,
-                            ExpirationDate = tokenizeRequest.EncryptedExpirationDate,
-                            CVV = tokenizeRequest.EncryptedCvv
-                        }
-                };
+                    Number = tokenizeRequest.EncryptedCreditCardNumber,
+                    ExpirationDate = tokenizeRequest.EncryptedExpirationDate,
+                    CVV = tokenizeRequest.EncryptedCvv
+                }
+            };
 
             var result = client.Customer.Create(request);
 
@@ -267,21 +275,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var cc = customer.CreditCards.First();
             return new TokenizedCreditCardResponse
-                {
-                    CardOnFileToken = cc.Token,
-                    CardType = cc.CardType.ToString(),
-                    LastFour = cc.LastFour,
-                    IsSuccessfull = result.IsSuccess(),
-                    Message = result.Message,
-                };
+            {
+                CardOnFileToken = cc.Token,
+                CardType = cc.CardType.ToString(),
+                LastFour = cc.LastFour,
+                IsSuccessfull = result.IsSuccess(),
+                Message = result.Message,
+            };
         }
 
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
         {
-            var env = Braintree.Environment.SANDBOX;
+            var env = Environment.SANDBOX;
             if (!settings.IsSandbox)
             {
-                env = Braintree.Environment.PRODUCTION;
+                env = Environment.PRODUCTION;
             }
 
             return new BraintreeGateway

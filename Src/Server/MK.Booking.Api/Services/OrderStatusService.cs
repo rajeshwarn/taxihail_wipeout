@@ -1,28 +1,28 @@
-﻿using apcurium.MK.Booking.ReadModel.Query.Contract;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Helpers;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.ReadModel.Query;
-using System;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderStatusService : RestServiceBase<OrderStatusRequest>
+    public class OrderStatusService : Service
     {
-        private readonly IAccountDao _accountDao;
         private readonly OrderStatusHelper _orderStatusHelper;
 
-        public OrderStatusService(IAccountDao accountDao, OrderStatusHelper orderStatusHelper)
+        public OrderStatusService(OrderStatusHelper orderStatusHelper)
         {
-            _accountDao = accountDao;
             _orderStatusHelper = orderStatusHelper;
         }
 
-        public override object OnGet(OrderStatusRequest request)
+        public object Get(OrderStatusRequest request)
         {
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             AuthService.CurrentSessionFactory();
             var status = _orderStatusHelper.GetOrderStatus(request.OrderId, SessionAs<IAuthSession>());
 
@@ -30,10 +30,10 @@ namespace apcurium.MK.Booking.Api.Services
         }
     }
 
-    public class ActiveOrderStatusService : RestServiceBase<Contract.Requests.ActiveOrderStatusRequest>
+    public class ActiveOrderStatusService : Service
     {
-        private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
 
         public ActiveOrderStatusService(IOrderDao orderDao, IAccountDao accountDao)
         {
@@ -41,11 +41,11 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public override object OnGet(Contract.Requests.ActiveOrderStatusRequest request)
+        public object Get(ActiveOrderStatusRequest request)
         {
             var statuses = new ActiveOrderStatusRequestResponse();
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            
+
             foreach (var status in _orderDao.GetOrdersInProgressByAccountId(account.Id))
             {
                 statuses.Add(status);

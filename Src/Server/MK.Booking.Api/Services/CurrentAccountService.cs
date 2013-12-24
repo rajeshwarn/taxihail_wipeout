@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using AutoMapper;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.ServiceInterface.Auth;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Configuration;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CurrentAccountService : RestServiceBase<CurrentAccount>
+    public class CurrentAccountService : Service
     {
-
         public CurrentAccountService(IAccountDao dao, IConfigurationManager configurationManager)
         {
             Dao = dao;
@@ -26,16 +23,24 @@ namespace apcurium.MK.Booking.Api.Services
         protected IConfigurationManager ConfigurationManager { get; set; }
 
 
-        public override object OnGet(CurrentAccount request)
+        public object Get(CurrentAccount request)
         {
             var session = this.GetSession();
             var account = Dao.FindById(new Guid(session.UserAuthId));
 
             var currentAccount = Mapper.Map<CurrentAccountResponse>(account);
 
-            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? ParseToNullable(ConfigurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId"));
-            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? ParseToNullable(ConfigurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? ParseToNullable(ConfigurationManager.GetSetting("DefaultBookingSettings.ProviderId"));
+            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ??
+                                                   ParseToNullable(
+                                                       ConfigurationManager.GetSetting(
+                                                           "DefaultBookingSettings.ChargeTypeId"));
+            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ??
+                                                    ParseToNullable(
+                                                        ConfigurationManager.GetSetting(
+                                                            "DefaultBookingSettings.VehicleTypeId"));
+            currentAccount.Settings.ProviderId = account.Settings.ProviderId ??
+                                                 ParseToNullable(
+                                                     ConfigurationManager.GetSetting("DefaultBookingSettings.ProviderId"));
 
             return currentAccount;
         }
@@ -47,10 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return result;
             }
-            else
-            {
-                return default(int?);
-            }
+            return default(int?);
         }
     }
 }

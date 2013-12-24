@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceInterface;
 
+#endregion
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services.Maps
 {
     public class PlaceDetailService : Service
     {
-        private IPlaces _client;        
+        private readonly IPlaces _client;
 
         public PlaceDetailService(IPlaces client)
         {
@@ -24,11 +21,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public Address Get(PlaceDetailRequest request)
         {
-
             return _client.GetPlaceDetail(request.PlaceName, request.ReferenceId);
-            
-
         }
-
     }
 }

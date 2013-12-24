@@ -1,65 +1,67 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
-using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Diagnostic;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class PushNotificationAdministrationService : RestServiceBase<PushNotificationAdministrationRequest>
+    public class PushNotificationAdministrationService : Service
     {
         private readonly IAccountDao _dao;
         private readonly IDeviceDao _daoDevice;
+        private readonly ILogger _logger;
         private readonly IPushNotificationService _pushNotificationService;
-        readonly ILogger _logger;
-        public PushNotificationAdministrationService(IAccountDao Dao, IDeviceDao Device, IPushNotificationService pushNotificationService, ILogger logger)
+
+        public PushNotificationAdministrationService(IAccountDao dao, IDeviceDao device,
+            IPushNotificationService pushNotificationService, ILogger logger)
         {
-            _dao = Dao;
-            _daoDevice = Device;
+            _dao = dao;
+            _daoDevice = device;
             _logger = logger;
             _pushNotificationService = pushNotificationService;
         }
 
-        public override object OnPost(PushNotificationAdministrationRequest request)
+        public object Post(PushNotificationAdministrationRequest request)
         {
             var account = _dao.FindByEmail(request.EmailAddress);
 
             if (account == null)
             {
-                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");                
-            }                
-            
-            var devices = _daoDevice.FindByAccountId(account.Id);
-            
-            if (devices == null || !devices.Any())
-            {
-                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");                
+                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoAccount");
             }
-            
-            foreach (DeviceDetail device in devices)
+
+            var devices = _daoDevice.FindByAccountId(account.Id);
+
+            var deviceDetails = devices as DeviceDetail[] ?? devices.ToArray();
+            if (devices == null || !deviceDetails.Any())
+            {
+                throw new HttpError(HttpStatusCode.InternalServerError, "sendPushNotificationErrorNoDevice");
+            }
+
+            foreach (var device in deviceDetails)
             {
                 try
                 {
                     _pushNotificationService.Send(request.Message, new Dictionary<string, object>(), device.DeviceToken,
                         device.Platform);
-
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     _logger.LogError(e);
-                    throw new HttpError(HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message); 
+                    throw new HttpError(HttpStatusCode.InternalServerError, device.Platform + "-" + e.Message);
                 }
-            }            
+            }
 
             return new HttpResult(HttpStatusCode.OK);
         }

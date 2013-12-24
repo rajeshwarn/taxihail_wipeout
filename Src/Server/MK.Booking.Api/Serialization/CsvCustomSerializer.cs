@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using CsvHelper;
 using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Serialization
 {
@@ -26,13 +30,13 @@ namespace apcurium.MK.Booking.Api.Serialization
             {
                 var columns = response.OrderByDescending(x => x.Keys.Count).First();
                 string columnsName = null;
-               
+
                 foreach (var column in columns)
                 {
                     if (columnsName == null)
                         columnsName = "\"" + column.Key + "\"";
                     else
-                        columnsName += "," + "\""  + column.Key + "\"";
+                        columnsName += "," + "\"" + column.Key + "\"";
                 }
 
                 writer.WriteField(columnsName, false);
@@ -50,15 +54,13 @@ namespace apcurium.MK.Booking.Api.Serialization
                     }
                     writer.WriteField(columnValue, false);
                     writer.NextRecord();
-
                 }
             }
         }
-  
+
         public static object DeserializeFromStream(Type type, Stream stream)
         {
             throw new NotImplementedException();
         }
-
     }
 }

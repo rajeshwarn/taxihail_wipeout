@@ -1,21 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.ReadModel.Query;
+using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TestOnlyReqGetTestAdminAccountService: RestServiceBase<TestOnlyReqGetAdminTestAccount>
+    public class TestOnlyReqGetTestAdminAccountService : Service
     {
-
-        private ICommandBus _commandBus;
-        private IAccountDao _dao;
+        private readonly ICommandBus _commandBus;
+        private readonly IAccountDao _dao;
 
         public TestOnlyReqGetTestAdminAccountService(IAccountDao dao, ICommandBus commandBus)
         {
@@ -23,22 +26,26 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        protected string TestUserEmail { get { return "apcurium.testadmin{0}@apcurium.com"; } }
+        protected string TestUserEmail
+        {
+            get { return "apcurium.testadmin{0}@apcurium.com"; }
+        }
 
-        protected string TestUserPassword { get { return "password1"; } }
+        protected string TestUserPassword
+        {
+            get { return "password1"; }
+        }
 
 
-
-
-        public override object OnGet(TestOnlyReqGetAdminTestAccount request)
+        public object Get(TestOnlyReqGetAdminTestAccount request)
         {
             //This method can only be used for unit test.  
-            //if (!((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) == EndpointAttributes.Localhost))
-            //{
-            //    throw HttpError.NotFound("This method can only be called from the server");
-            //}
+            if ((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) != EndpointAttributes.Localhost)
+            {
+                throw HttpError.NotFound("This method can only be called from the server");
+            }
 
-            string testEmail = String.Format(TestUserEmail, request.Index);
+            var testEmail = String.Format(TestUserEmail, request.Index);
 
             var testAccount = _dao.FindByEmail(testEmail);
             if (testAccount != null)
@@ -47,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
 
-            var command = new Commands.RegisterAccount
+            var command = new RegisterAccount
             {
                 AccountId = Guid.NewGuid(),
                 Email = testEmail,
@@ -64,14 +71,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             Thread.Sleep(400);
             // Confirm account immediately
-            _commandBus.Send(new Commands.ConfirmAccount
+            _commandBus.Send(new ConfirmAccount
             {
-                 AccountId = command.AccountId,
-                 ConfimationToken = command.ConfimationToken
+                AccountId = command.AccountId,
+                ConfimationToken = command.ConfimationToken
             });
 
             return _dao.FindByEmail(testEmail);
         }
-
     }
 }

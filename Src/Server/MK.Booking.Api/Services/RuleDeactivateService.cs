@@ -1,22 +1,16 @@
-﻿using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
 using AutoMapper;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    
-
-    public class RuleDeactivateService : RestServiceBase<RuleDeactivateRequest>
+    public class RuleDeactivateService : Service
     {
         private readonly ICommandBus _commandBus;
 
@@ -26,19 +20,16 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-
-        public override object OnPost(RuleDeactivateRequest request)
-        {            
+        public object Post(RuleDeactivateRequest request)
+        {
             var command = Mapper.Map<DeactivateRule>(request);
-         
-            _commandBus.Send(  command );
-            
+
+            _commandBus.Send(command);
+
             return new
             {
                 Id = command.RuleId
             };
         }
-
-
     }
 }

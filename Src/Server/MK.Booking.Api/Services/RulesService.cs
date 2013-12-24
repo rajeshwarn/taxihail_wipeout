@@ -1,23 +1,23 @@
-﻿using apcurium.MK.Booking.Api.Contract.Requests;
+﻿#region
+
+using System.Linq;
+using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-
-    public class RulesService : RestServiceBase<RuleRequest>
+    public class RulesService : Service
     {
         private readonly ICommandBus _commandBus;
         private readonly IRuleDao _dao;
@@ -29,20 +29,19 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-
-        public override object OnGet(RuleRequest request)
+        public object Get(RuleRequest request)
         {
             return _dao.GetAll();
         }
 
-        public override object OnPost(RuleRequest request)
+        public object Post(RuleRequest request)
         {
             //Check if rate with same name already exists
-            if ( ( request.Type != Common.Entity.RuleType.Default ) && (_dao.GetAll().Any(x => x.Name == request.Name)))
+            if ((request.Type != RuleType.Default) && (_dao.GetAll().Any(x => x.Name == request.Name)))
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
             }
-            if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
+            if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int) request.Category))
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
             }
@@ -51,22 +50,26 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            
+
             return new
             {
                 Id = command.RuleId
             };
         }
 
-        public override object OnPut(RuleRequest request)
+        public object Put(RuleRequest request)
         {
             //Check if rate with same name already exists
-            if ( ( request.Type != Common.Entity.RuleType.Default ) && (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name)) )
+            if ((request.Type != RuleType.Default) &&
+                (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name)))
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_DuplicateName.ToString());
             }
             //if (_dao.GetAll().Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
-            if (_dao.GetAll().Where(x => x.Id != request.Id).Any(x => x.Priority == request.Priority && x.Category == (int)request.Category))
+            if (
+                _dao.GetAll()
+                    .Where(x => x.Id != request.Id)
+                    .Any(x => x.Priority == request.Priority && x.Category == (int) request.Category))
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rule_InvalidPriority.ToString());
             }
@@ -78,14 +81,13 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public override object OnDelete(RuleRequest request)
+        public object Delete(RuleRequest request)
         {
-            var command = new DeleteRule {CompanyId = AppConstants.CompanyId, RuleId= request.Id};
-            
+            var command = new DeleteRule {CompanyId = AppConstants.CompanyId, RuleId = request.Id};
+
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
-
     }
 }

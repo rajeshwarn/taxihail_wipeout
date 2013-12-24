@@ -1,18 +1,19 @@
+#region
+
 using System;
-using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderRatingsService : RestServiceBase<OrderRatingsRequest>
+    public class OrderRatingsService : Service
     {
         private readonly ICommandBus _commandBus;
-        protected IOrderRatingsDao Dao { get; set; }
 
         public OrderRatingsService(IOrderRatingsDao dao, ICommandBus commandBus)
         {
@@ -20,16 +21,23 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public override object OnGet(OrderRatingsRequest request)
+        protected IOrderRatingsDao Dao { get; set; }
+
+        public object Get(OrderRatingsRequest request)
         {
             var orderRatings = Dao.GetOrderRatingsByOrderId(request.OrderId);
 
             return orderRatings;
         }
 
-        public override object OnPost(OrderRatingsRequest request)
+        public object Post(OrderRatingsRequest request)
         {
-            var command = new RateOrder { Note = request.Note, OrderId = request.OrderId, RatingScores = request.RatingScores };
+            var command = new RateOrder
+            {
+                Note = request.Note,
+                OrderId = request.OrderId,
+                RatingScores = request.RatingScores
+            };
 
             _commandBus.Send(command);
 

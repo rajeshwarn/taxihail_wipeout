@@ -1,12 +1,16 @@
-﻿using System.Globalization;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Services
+#endregion
+
+namespace apcurium.MK.Booking.Api.Services.Maps
 {
-    public class DefaultGeoLocationService : RestServiceBase<DefaultGeoLocationRequest>
+    public class DefaultGeoLocationService : Service
     {
         private readonly IConfigurationManager _configurationManager;
 
@@ -15,20 +19,19 @@ namespace apcurium.MK.Booking.Api.Services
             _configurationManager = configurationManager;
         }
 
-        public override object OnGet(DefaultGeoLocationRequest request)
+        public object Get(DefaultGeoLocationRequest request)
         {
             var address = new Address
-                              {
-                                  Latitude =
-                                      double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLatitude"),
-                                                   CultureInfo.InvariantCulture),
-                                  Longitude =
-                                      double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLongitude"),
-                                                   CultureInfo.InvariantCulture)
-                              };
+            {
+                Latitude =
+                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLatitude"),
+                        CultureInfo.InvariantCulture),
+                Longitude =
+                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLongitude"),
+                        CultureInfo.InvariantCulture)
+            };
 
             return address;
         }
-         
     }
 }

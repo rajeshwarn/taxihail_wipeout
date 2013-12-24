@@ -1,26 +1,32 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
+using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Validation;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class SaveAddressService : RestServiceBase<SaveAddress> 
+    public class SaveAddressService : Service
     {
-        public IValidator<SaveAddress> Validator { get; set; }
-
         private readonly ICommandBus _commandBus;
+
         public SaveAddressService(ICommandBus commandBus)
         {
             _commandBus = commandBus;
         }
 
-        public override object OnPost(SaveAddress request)
+        public IValidator<SaveAddress> Validator { get; set; }
+
+        public object Post(SaveAddress request)
         {
             var result = Validator.Validate(request);
 
@@ -30,8 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var command = new AddFavoriteAddress();
-            
-            AutoMapper.Mapper.Map(request, command);
+
+            Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);
             command.Address.Id = request.Id == Guid.Empty ? Guid.NewGuid() : request.Id;
             _commandBus.Send(command);
@@ -39,7 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        public override object OnDelete(SaveAddress request)
+        public object Delete(SaveAddress request)
         {
             var command = new RemoveFavoriteAddress
             {
@@ -53,11 +59,11 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        public override object OnPut(SaveAddress request)
+        public object Put(SaveAddress request)
         {
             var command = new UpdateFavoriteAddress();
 
-            AutoMapper.Mapper.Map(request, command);
+            Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);
             command.Address.Id = request.Id;
 
@@ -65,6 +71,5 @@ namespace apcurium.MK.Booking.Api.Services
 
             return new HttpResult(HttpStatusCode.OK);
         }
-
     }
 }

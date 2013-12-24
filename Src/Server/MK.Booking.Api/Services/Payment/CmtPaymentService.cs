@@ -1,43 +1,46 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Net;
 using System.Threading;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
-using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Enumeration;
-using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Capture;
+using apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
+using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class CmtPaymentService : Service
     {
-        readonly ICommandBus _commandBus;
-        readonly IOrderPaymentDao  _orderPaymentDao;
-        readonly IOrderDao _orderDao;
+        private readonly CmtMobileServiceClient _cmtMobileServiceClient;
+        private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
         private readonly IAccountDao _accountDao;
-        readonly IConfigurationManager _configurationManager;
+        private readonly ICommandBus _commandBus;
+        private readonly IConfigurationManager _configurationManager;
         private readonly ILogger _logger;
-        private readonly CmtPaymentServiceClient CmtPaymentServiceClient;
-        private readonly CmtMobileServiceClient CmtMobileServiceClient;
+        private readonly IOrderDao _orderDao;
+        private readonly IOrderPaymentDao _orderPaymentDao;
 
-        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger)
+        public CmtPaymentService(ICommandBus commandBus, IOrderPaymentDao orderPaymentDao, IOrderDao orderDao,
+            IAccountDao accountDao, IConfigurationManager configurationManager, ILogger logger)
         {
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
@@ -46,13 +49,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             _configurationManager = configurationManager;
             _logger = logger;
-            CmtPaymentServiceClient = new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
-            CmtMobileServiceClient = new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null, "TaxiHail");
+            _cmtPaymentServiceClient =
+                new CmtPaymentServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
+                    "TaxiHail");
+            _cmtMobileServiceClient =
+                new CmtMobileServiceClient(configurationManager.GetPaymentSettings().CmtPaymentSettings, null,
+                    "TaxiHail");
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)
         {
-            var response = CmtPaymentServiceClient.Delete(new TokenizeDeleteRequest
+            var response = _cmtPaymentServiceClient.Delete(new TokenizeDeleteRequest
             {
                 CardToken = request.CardToken
             });
@@ -73,48 +80,48 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderDetail.IBSOrderId == null)
                     throw new HttpError(HttpStatusCode.BadRequest, "Order has no IBSOrderId");
 
-                var request =  new AuthorizationRequest
-                    {
-                        Amount = (int) (preAuthorizeRequest.Amount*100),
-                        CardOnFileToken = preAuthorizeRequest.CardToken,
-                        TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
-                        CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
-                        CustomerReferenceNumber =  orderDetail.IBSOrderId.ToString(),
-                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
-                    };
+                var request = new AuthorizationRequest
+                {
+                    Amount = (int) (preAuthorizeRequest.Amount*100),
+                    CardOnFileToken = preAuthorizeRequest.CardToken,
+                    TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
+                    CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
+                    CustomerReferenceNumber = orderDetail.IBSOrderId.ToString(),
+                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
+                };
 
-                var response = CmtPaymentServiceClient.Post(request);
+                var response = _cmtPaymentServiceClient.Post(request);
 
                 var isSuccessful = response.ResponseCode == 1;
                 if (isSuccessful)
                 {
                     _commandBus.Send(new InitiateCreditCardPayment
-                        {
-                            PaymentId = Guid.NewGuid(),
-                            TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),                            
-                            Amount = Convert.ToDecimal( preAuthorizeRequest.Amount ),
-                            OrderId = preAuthorizeRequest.OrderId,
-                            Tip = Convert.ToDecimal( preAuthorizeRequest.Tip),
-                            Meter = Convert.ToDecimal( preAuthorizeRequest.Meter),
-                            CardToken = preAuthorizeRequest.CardToken,
-                            Provider = PaymentProvider.CMT,
-                        });
+                    {
+                        PaymentId = Guid.NewGuid(),
+                        TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
+                        Amount = Convert.ToDecimal(preAuthorizeRequest.Amount),
+                        OrderId = preAuthorizeRequest.OrderId,
+                        Tip = Convert.ToDecimal(preAuthorizeRequest.Tip),
+                        Meter = Convert.ToDecimal(preAuthorizeRequest.Meter),
+                        CardToken = preAuthorizeRequest.CardToken,
+                        Provider = PaymentProvider.CMT,
+                    });
                 }
 
                 return new PreAuthorizePaymentResponse
-                    {
-                        IsSuccessfull = isSuccessful,
-                        Message = response.ResponseMessage,
-                        TransactionId = response.TransactionId.ToString(),
-                    };
+                {
+                    IsSuccessfull = isSuccessful,
+                    Message = response.ResponseMessage,
+                    TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
+                };
             }
             catch (Exception e)
             {
                 return new PreAuthorizePaymentResponse
-                    {
-                        IsSuccessfull = false,
-                        Message = e.Message,
-                    };
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message,
+                };
             }
         }
 
@@ -124,7 +131,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var isSuccessful = false;
                 var authorizationCode = string.Empty;
-                var message = string.Empty;
+                string message;
 
                 var orderDetail = _orderDao.FindById(request.OrderId);
                 if (orderDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
@@ -133,7 +140,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 var authRequest = new AuthorizationRequest
                 {
-                    Amount = (int)(request.Amount * 100),
+                    Amount = (int) (request.Amount*100),
                     CardOnFileToken = request.CardToken,
                     TransactionType = AuthorizationRequest.TransactionTypes.PreAuthorized,
                     CardReaderMethod = AuthorizationRequest.CardReaderMethods.Manual,
@@ -141,7 +148,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
                 };
 
-                var authResponse = CmtPaymentServiceClient.Post(authRequest);
+                var authResponse = _cmtPaymentServiceClient.Post(authRequest);
                 message = authResponse.ResponseMessage;
 
                 if (authResponse.ResponseCode == 1)
@@ -165,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Thread.Sleep(500);
 
                     // commit transaction
-                    var captureResponse = CmtPaymentServiceClient.Post(new CaptureRequest
+                    var captureResponse = _cmtPaymentServiceClient.Post(new CaptureRequest
                     {
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                         TransactionId = transactionId.ToLong(),
@@ -210,37 +217,37 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var payment = _orderPaymentDao.FindByTransactionId(request.TransactionId);
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
 
-                var response = CmtPaymentServiceClient.Post(new CaptureRequest
-                    {
-                        MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
-                        TransactionId = request.TransactionId.ToLong(),
-                    });
+                var response = _cmtPaymentServiceClient.Post(new CaptureRequest
+                {
+                    MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
+                    TransactionId = request.TransactionId.ToLong(),
+                });
 
                 var isSuccessful = response.ResponseCode == 1;
                 if (isSuccessful)
                 {
                     _commandBus.Send(new CaptureCreditCardPayment
-                        {
-                            PaymentId = payment.PaymentId,
-                            AuthorizationCode = response.AuthorizationCode,
-                            Provider = PaymentProvider.CMT,
-                        });
+                    {
+                        PaymentId = payment.PaymentId,
+                        AuthorizationCode = response.AuthorizationCode,
+                        Provider = PaymentProvider.CMT,
+                    });
                 }
 
                 return new CommitPreauthorizedPaymentResponse
-                    {
-                        IsSuccessfull = isSuccessful,
-                        Message = response.ResponseMessage,
-                        AuthorizationCode = response.AuthorizationCode,
-                    };
+                {
+                    IsSuccessfull = isSuccessful,
+                    Message = response.ResponseMessage,
+                    AuthorizationCode = response.AuthorizationCode,
+                };
             }
             catch (Exception e)
             {
                 return new CommitPreauthorizedPaymentResponse
-                    {
-                        IsSuccessfull = false,
-                        Message = e.Message,
-                    };
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message,
+                };
             }
         }
 
@@ -259,7 +266,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 // Determine the root path to the app 
                 var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
-                var response = CmtMobileServiceClient.Post(new PairingRequest
+                var response = _cmtMobileServiceClient.Post(new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
@@ -290,16 +297,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                 // send a command to save the pairing state for this order
                 _commandBus.Send(new PairForRideLinqCmtPayment
-                    {
-                        OrderId = request.OrderId,
-                        Medallion = response.Medallion,
-                        DriverId = response.DriverId.ToString(),
-                        PairingToken = response.PairingToken,
-                        PairingCode = response.PairingCode,
-                        TokenOfCardToBeUsedForPayment = request.CardToken,
-                        AutoTipAmount = request.AutoTipAmount,
-                        AutoTipPercentage = request.AutoTipPercentage
-                    });
+                {
+                    OrderId = request.OrderId,
+                    Medallion = response.Medallion,
+                    DriverId = response.DriverId.ToString(CultureInfo.InvariantCulture),
+                    PairingToken = response.PairingToken,
+                    PairingCode = response.PairingCode,
+                    TokenOfCardToBeUsedForPayment = request.CardToken,
+                    AutoTipAmount = request.AutoTipAmount,
+                    AutoTipPercentage = request.AutoTipPercentage
+                });
 
                 return new PairingResponse
                 {
@@ -330,7 +337,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (orderPairingDetail == null) throw new HttpError(HttpStatusCode.BadRequest, "Order not found");
 
                 // send unpairing request
-                var response = CmtMobileServiceClient.Delete(new UnpairingRequest
+                var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
                 {
                     PairingToken = orderPairingDetail.PairingToken
                 });
@@ -376,21 +383,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                if(request == null) throw new Exception("Received callback but couldn't cast to CallbackRequest/Trip");
+                if (request == null) throw new Exception("Received callback but couldn't cast to CallbackRequest/Trip");
 
                 if (request.Type == "TRIP")
                 {
                     // this is the end of trip event
                     var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
-                    
+
                     Post(new PreAuthorizeAndCommitPaymentCmtRequest
-                        {
-                            OrderId = request.OrderId,
-                            Amount = request.Fare + request.Tip,
-                            MeterAmount = request.Fare,
-                            TipAmount = request.Tip,
-                            CardToken = orderPairingDetail.TokenOfCardToBeUsedForPayment
-                        });
+                    {
+                        OrderId = request.OrderId,
+                        Amount = request.Fare + request.Tip,
+                        MeterAmount = request.Fare,
+                        TipAmount = request.Tip,
+                        CardToken = orderPairingDetail.TokenOfCardToBeUsedForPayment
+                    });
                 }
             }
             catch (Exception e)
@@ -403,7 +410,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var trip = CmtMobileServiceClient.Get(new TripRequest{ Token = pairingToken });
+                var trip = _cmtMobileServiceClient.Get(new TripRequest {Token = pairingToken});
                 if (trip != null)
                 {
                     //ugly fix for deserilization problem in datetime on the device for IOS
@@ -426,6 +433,4 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
     }
-
-
 }

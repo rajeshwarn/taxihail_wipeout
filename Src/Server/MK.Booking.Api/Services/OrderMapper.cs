@@ -1,7 +1,10 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
-using OrderStatus = apcurium.MK.Common.Entity.OrderStatus;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -9,20 +12,32 @@ namespace apcurium.MK.Booking.Api.Services
     {
         public Order ToResource(OrderDetail order)
         {
-            var resource = new Order();
-            resource.Id = order.Id;
-            resource.PickupDate = order.PickupDate;
-            resource.CreatedDate = order.CreatedDate;
-            resource.IBSOrderId = order.IBSOrderId;
-            resource.PickupAddress = order.PickupAddress;
-            resource.DropOffAddress = order.DropOffAddress;
-            resource.Settings = new BookingSettings { ChargeTypeId = order.Settings.ChargeTypeId, Name = order.Settings.Name, Phone = order.Settings.Phone, NumberOfTaxi = 1, Passengers = order.Settings.Passengers, ProviderId = order.Settings.ProviderId, VehicleTypeId = order.Settings.VehicleTypeId, LargeBags = order.Settings.LargeBags };
-            resource.Fare = order.Fare;
-            resource.Tip = order.Tip;
-            resource.Toll = order.Toll;
-            resource.Status = (OrderStatus)order.Status;
-            resource.IsRated = order.IsRated;
-            resource.TransactionId = order.TransactionId;
+            var resource = new Order
+            {
+                Id = order.Id,
+                PickupDate = order.PickupDate,
+                CreatedDate = order.CreatedDate,
+                IBSOrderId = order.IBSOrderId,
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.DropOffAddress,
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = order.Settings.ChargeTypeId,
+                    Name = order.Settings.Name,
+                    Phone = order.Settings.Phone,
+                    NumberOfTaxi = 1,
+                    Passengers = order.Settings.Passengers,
+                    ProviderId = order.Settings.ProviderId,
+                    VehicleTypeId = order.Settings.VehicleTypeId,
+                    LargeBags = order.Settings.LargeBags
+                },
+                Fare = order.Fare,
+                Tip = order.Tip,
+                Toll = order.Toll,
+                Status = (OrderStatus) order.Status,
+                IsRated = order.IsRated,
+                TransactionId = order.TransactionId
+            };
 
             return resource;
         }

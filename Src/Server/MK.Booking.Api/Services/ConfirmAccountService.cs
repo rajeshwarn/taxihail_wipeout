@@ -1,31 +1,32 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-using apcurium.MK.Booking.ReadModel.Query.Contract;
-using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfirmAccountService : RestServiceBase<ConfirmAccountRequest>
+    public class ConfirmAccountService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly ITemplateService _templateService;
-        private readonly IConfigurationManager _configurationManager;
         private readonly ICommandBus _commandBus;
+        private readonly IConfigurationManager _configurationManager;
+        private readonly ITemplateService _templateService;
 
-        public ConfirmAccountService(ICommandBus commandBus, IAccountDao accountDao, ITemplateService templateService, IConfigurationManager configurationManager)
+        public ConfirmAccountService(ICommandBus commandBus, IAccountDao accountDao, ITemplateService templateService,
+            IConfigurationManager configurationManager)
         {
             _accountDao = accountDao;
             _templateService = templateService;
@@ -33,10 +34,21 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
         }
 
-        public override object OnGet(ConfirmAccountRequest request)
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
+        public object Get(ConfirmAccountRequest request)
         {
             var account = _accountDao.FindByEmail(request.EmailAddress);
-            if(account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
 
             _commandBus.Send(new ConfirmAccount
             {
@@ -56,17 +68,6 @@ namespace apcurium.MK.Booking.Api.Services
             };
             var body = _templateService.Render(template, templateData);
             return new HttpResult(body, ContentType.Html);
-         }
-
-        static public string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
         }
     }
 }

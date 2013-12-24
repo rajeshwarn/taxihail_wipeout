@@ -1,14 +1,13 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using AutoMapper;
-using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
+using AutoMapper;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Providers
 {
@@ -20,7 +19,6 @@ namespace apcurium.MK.Booking.Api.Providers
         {
             _rateDao = rateDao;
         }
-
 
         public IEnumerable<Tariff> GetTariffs()
         {

@@ -1,32 +1,36 @@
-﻿using System;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
-using ServiceStack.CacheAccess;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using System.Collections.Generic;
-using apcurium.MK.Common.Configuration;
+using ServiceStack.CacheAccess;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ReferenceDataService : RestServiceBase<ReferenceDataRequest>
+    public class ReferenceDataService : Service
     {
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
         private readonly IConfigurationManager _configManager;
-        public const string CacheKey = "IBS.StaticData";
+        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
 
-        public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient, IConfigurationManager configManager)
+        public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient,
+            IConfigurationManager configManager)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _cacheClient = cacheClient;
             _configManager = configManager;
         }
 
-        public override object OnGet(ReferenceDataRequest request)
+        public object Get(ReferenceDataRequest request)
         {
             var result = _cacheClient.Get<ReferenceData>(CacheKey);
 
@@ -51,12 +55,12 @@ namespace apcurium.MK.Booking.Api.Services
             var companies = _staticDataWebServiceClient.GetCompaniesList();
             IList<ListItem> payments = new List<ListItem>();
             IList<ListItem> vehicles = new List<ListItem>();
-            
+
 
             foreach (var company in companies)
             {
                 payments.AddRange(_staticDataWebServiceClient.GetPaymentsList(company));
-                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));            
+                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();
@@ -64,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 CompaniesList = companies.Distinct(equalityComparer).ToArray(),
                 PaymentsList = payments.Distinct(equalityComparer).ToArray(),
-                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),                
+                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),
             };
 
             return result;
@@ -73,12 +77,14 @@ namespace apcurium.MK.Booking.Api.Services
         private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
         {
             var excludedVehicleTypeId = _configManager.GetSetting(settingName);
-            var excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+            var excluded = excludedVehicleTypeId.IsNullOrEmpty()
+                ? new int[0]
+                : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }
 
-        private class ListItemEqualityComparer: EqualityComparer<ListItem>
+        private class ListItemEqualityComparer : EqualityComparer<ListItem>
         {
             public override bool Equals(ListItem x, ListItem y)
             {

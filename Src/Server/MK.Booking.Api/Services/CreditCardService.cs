@@ -1,16 +1,20 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CreditCardService : RestServiceBase<CreditCardRequest> 
+    public class CreditCardService : Service
     {
         private readonly ICommandBus _bus;
         private readonly ICreditCardDao _dao;
@@ -21,28 +25,32 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
         }
 
-        public override object OnGet(CreditCardRequest request)
+        public object Get(CreditCardRequest request)
         {
             var session = this.GetSession();
             return _dao.FindByAccountId(new Guid(session.UserAuthId));
         }
 
-        public override object OnPost(CreditCardRequest request)
+        public object Post(CreditCardRequest request)
         {
             var session = this.GetSession();
             var command = new AddCreditCard {AccountId = new Guid(session.UserAuthId)};
-            AutoMapper.Mapper.Map(request, command);
+            Mapper.Map(request, command);
 
             _bus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        public override object OnDelete(CreditCardRequest request)
+        public object Delete(CreditCardRequest request)
         {
             var session = this.GetSession();
-            var command = new RemoveCreditCard { AccountId = new Guid(session.UserAuthId), CreditCardId = request.CreditCardId };
-           
+            var command = new RemoveCreditCard
+            {
+                AccountId = new Guid(session.UserAuthId),
+                CreditCardId = request.CreditCardId
+            };
+
             _bus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);

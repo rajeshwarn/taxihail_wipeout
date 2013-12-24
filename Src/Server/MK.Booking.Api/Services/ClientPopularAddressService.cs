@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using Infrastructure.Messaging;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Http;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common.Configuration;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ClientPopularAddressService : RestServiceBase<ClientPopularAddress>
+    public class ClientPopularAddressService : Service
     {
-        public IValidator<ClientPopularAddressService> Validator { get; set; }
 
-        private readonly ICommandBus _commandBus;
-        protected IPopularAddressDao Dao { get; set; }
-        private IConfigurationManager _configManager;
-
-        public ClientPopularAddressService(IPopularAddressDao dao, ICommandBus commandBus, IConfigurationManager configManager)
+        public ClientPopularAddressService(IPopularAddressDao dao)
         {
-            _commandBus = commandBus;
-            _configManager = configManager;
-            Dao = dao; 
+           
+            Dao = dao;
         }
 
-        public override object OnGet(ClientPopularAddress request)
+        public IValidator<ClientPopularAddressService> Validator { get; set; }
+        protected IPopularAddressDao Dao { get; set; }
+
+        public object Get(ClientPopularAddress request)
         {
             return new ClientPopularAddressResponse(Dao.GetAll());
         }
-
     }
 }

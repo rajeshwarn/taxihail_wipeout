@@ -1,41 +1,34 @@
-﻿using System;
-using System.Linq;
+﻿#region
+
 using System.Net;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Services
+#endregion
+
+namespace apcurium.MK.Booking.Api.Services.Maps
 {
-    public class NearbyPlacesService : RestServiceBase<NearbyPlacesRequest>
+    public class NearbyPlacesService : Service
     {
-        private IPlaces _client;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IPlaces _client;
 
-        public NearbyPlacesService(IPlaces client, IConfigurationManager configurationManager)
+        public NearbyPlacesService(IPlaces client)
         {
             _client = client;
-            _configurationManager = configurationManager;
         }
 
-        public override object OnGet(NearbyPlacesRequest request)
+        public object Get(NearbyPlacesRequest request)
         {
-            if (string.IsNullOrEmpty(request.Name) 
+            if (string.IsNullOrEmpty(request.Name)
                 && request.IsLocationEmpty())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
             }
 
             return _client.SearchPlaces(request.Name, request.Lat, request.Lng, request.Radius);
-           
         }
-
-     
-
     }
 }

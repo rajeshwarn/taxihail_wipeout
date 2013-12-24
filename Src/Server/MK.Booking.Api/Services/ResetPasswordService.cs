@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using System.Net;
-using System.Text;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Security;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ResetPasswordService : RestServiceBase<ResetPassword>
+    public class ResetPasswordService : Service
     {
-
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _dao;
 
@@ -28,16 +26,16 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
         }
 
-        public override object OnPost(ResetPassword request)
+        public object Post(ResetPassword request)
         {
             var user = _dao.FindByEmail(request.EmailAddress);
             if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
 
             // In case user is signed in, sign out user to force him to authenticate again
             base.RequestContext.Get<IHttpRequest>().RemoveSession();
-            
+
             var newPassword = new PasswordService().GeneratePassword();
-            var resetCommand = new Commands.ResetAccountPassword
+            var resetCommand = new ResetAccountPassword
             {
                 AccountId = user.Id,
                 Password = newPassword
