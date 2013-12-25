@@ -1,0 +1,42 @@
+<metadata>
+
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.DialogListener']/method[@name='onComplete']" name="argsType">DialogCompleteEventArgs</attr>
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.DialogListener']/method[@name='onError']" name="argsType">DialogErrorEventArgs</attr>
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.DialogListener']/method[@name='onFacebookError']" name="argsType">DialogFacebookErrorEventArgs</attr>
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.ServiceListener']/method[@name='onComplete']" name="argsType">ServiceCompleteEventArgs</attr>
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.ServiceListener']/method[@name='onError']" name="argsType">ServiceErrorEventArgs</attr>
+	<attr path="/api/package[@name='com.facebook.android']/interface[@name='Facebook.ServiceListener']/method[@name='onFacebookError']" name="argsType">ServiceFacebookErrorEventArgs</attr>
+
+	
+	<remove-node path="/api/package[@name='com.facebook']/class[@name='RequestAsyncTask']/method[@name='doInBackground']" />
+		<!--- 
+	<remove-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']" />
+		-->
+		
+		        <remove-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']/implements" />
+        <add-node path="/api/package[@name='com.facebook.model']/interface[@name='GraphObjectList']">
+      <implements name="java.util.Collection" name-generic-aware="java.util.Collection&lt;T&gt;" />
+        </add-node>
+        
+	<remove-node path="/api/package[@name='com.facebook.widget']/class[@name='GraphObjectAdapter']" />
+	<remove-node path="/api/package[@name='com.facebook']/class[@name='UiLifecycleHelper']" />
+		
+	<attr path="/api/package[@name='android.support.v4.app']/class[@name='FragmentActivity.FragmentTag']" name="managedName">FragmentTagClass</attr>
+	<attr path="/api/package[@name='com.facebook.android']" name="managedName">com.facebook.droid</attr>
+	
+	<attr path="/api/package[@name='com.facebook.widget']/class[@name='GraphObjectPagingLoader']" name="visibility">public</attr>
+
+	<attr path="/api/package[@name='com.facebook.widget']/class[@name='FacebookFragment']" name="visibility">public</attr>
+	<attr path="/api/package[@name='android.support.v4.content']/class[@name='ModernAsyncTask']" name="visibility">public</attr>
+	<attr path="/api/package[@name='android.support.v4.widget']/class[@name='CursorFilter']" name="visibility">public</attr>
+		
+	<attr path="/api/package[@name='com.facebook']/class[@name='RequestBatch']/method[@name='get']" name="managedReturn">Java.Lang.Object</attr>
+	<attr path="/api/package[@name='com.facebook']/class[@name='RequestBatch']/method[@name='remove']" name="managedReturn">Java.Lang.Object</attr>
+	<attr path="/api/package[@name='android.support.v4.content']/class[@name='CursorLoader']/method[@name='loadInBackground' and count(parameter)=0]" name="managedReturn">Java.Lang.Object</attr>
+
+	<!--- 
+	<attr path="/api/package[@name='com.facebook']/class[@name='RequestAsyncTask']/method[@name='doInBackground']/parameter[@name='p0']" name="type">Java.Lang.Object[]</attr>
+	-->
+
+	
+</metadata>
