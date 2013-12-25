@@ -49,15 +49,31 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
 		}
 
-        public void ShowMessage(string title, string message)
+        public Task ShowMessage(string title, string message)
         {
-			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
-	            var i = new Intent(Context, typeof(AlertDialogActivity));
-	            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-	            i.PutExtra("Title", title);
-	            i.PutExtra("Message", message);
-	            Context.StartActivity(i); 
-			});
+            var ownerId = Guid.NewGuid().ToString();
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+
+            dispatcher.RequestMainThreadAction(() =>{
+                var i = new Intent(Context, typeof(AlertDialogActivity));
+                i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+                i.PutExtra("Title", title);
+                i.PutExtra("Message", message);
+                i.PutExtra("OwnerId", ownerId );
+                Context.StartActivity(i); 
+            });
+
+            var tcs = new TaskCompletionSource<object>();
+            TinyMessageSubscriptionToken token = null;
+            token = messengerHub.Subscribe<ActivityCompleted>(a =>
+                {
+                    tcs.TrySetResult(null);
+                    messengerHub.Unsubscribe<ActivityCompleted>( token );
+                    token.Dispose();
+                }, a => a.OwnerId == ownerId );
+
+            return tcs.Task; 
         }
         
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)

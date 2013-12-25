@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
     public interface IMessageService
     {
-        void ShowMessage(string title, string message);
+		Task ShowMessage(string title, string message);
 		void ShowMessage(string title, string message, Action additionalAction );
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
