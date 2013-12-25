@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.ListViewCell2 xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listviencell1"
     android:layout_width="fill_parent"
     android:layout_height="50dip"

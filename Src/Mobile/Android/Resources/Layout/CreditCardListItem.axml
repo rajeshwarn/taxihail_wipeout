@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="50dip">
     <apcurium.mk.booking.mobile.client.controls.PictureListViewCell
@@ -9,7 +9,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:paddingLeft="15dip"
-        local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4DigitsWithStars&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />
+        local:MvxBind="{'TextLeft':{'Path':'CreditCardDetails.FriendlyName'}, 'TextRight':{'Path':'Last4DigitsWithStars'}, 'IsTop':{'Path':'IsFirst'}, 'IsBottom':{'Path':'IsLast'}, 'ShowAddSign':{'Path':'ShowPlusSign'}, 'Picture':{'Path':'Picture'}}" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,5 +17,5 @@
         android:layout_gravity="center_vertical|right"
         android:background="@drawable/delete_card_btn"
         android:focusable="false"
-        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsLast&apos;, &apos;Converter&apos; : &apos;InvertedVisibility&apos;}, &apos;Click&apos;:{&apos;Path&apos;:&apos;RemoveCreditCards&apos;}}" />
+        local:MvxBind="{'Visibility':{'Path':'IsLast', 'Converter' : 'InvertedVisibility'}, 'Click':{'Path':'RemoveCreditCards'}}" />
 </FrameLayout>

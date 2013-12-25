@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,6 +19,7 @@
     <DeployExternal>False</DeployExternal>
     <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <MandroidI18n />
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -33,13 +34,15 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="" />
       </CustomCommands>
     </CustomCommands>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -47,7 +50,6 @@
     <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
@@ -60,6 +62,7 @@
       </CustomCommands>
     </CustomCommands>
     <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -76,17 +79,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Mono.Facebook">
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Android.GoogleMaps" />
     <Reference Include="Mono.Android" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
-    </Reference>
-    <Reference Include="SocialNetworks.Services.MonoDroid">
-      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Android.Maps">
       <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
@@ -118,12 +114,23 @@
     <Reference Include="System.Reactive.Providers">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="GooglePlayServicesLib">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
+    </Reference>
+    <Reference Include="PushSharp.Client.MonoForAndroid">
+      <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
-    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
@@ -156,7 +163,6 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
-    <Compile Include="Helpers\CoordinatesHelper.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\Confirmation.cs" />
@@ -170,8 +176,6 @@
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
-    <Compile Include="MapUtitilties\PushPinOverlay.cs" />
-    <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
@@ -213,7 +217,6 @@
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="ListViewCell\BooleanCell.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="MapUtitilties\MapService.cs" />
     <Compile Include="Controls\ReclickableTabHost.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
@@ -378,6 +381,7 @@
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
+    <Compile Include="Activities\Book\BookingStatusActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -664,10 +668,6 @@
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Libraries\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
-      <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
-      <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Italic.otf" />
@@ -733,6 +733,10 @@
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
   </ItemGroup>
   <ItemGroup>
+    <XamarinComponentReference Include="googleplayservicesgingerbread">
+      <Version>13.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>
       <Visible>False</Visible>

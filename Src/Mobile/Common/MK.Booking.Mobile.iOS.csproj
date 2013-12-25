@@ -99,6 +99,9 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="SocialNetworks.Services.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\SocialNetworks.Services.MonoTouch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -298,10 +301,6 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
-      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
-      <Name>SocialNetworks.Services.MonoTouch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>

@@ -57,17 +57,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle), _negativeButtonTitle, (s, e) => SendMessage(_negativeButtonTitle), _neutralButtonTitle, (s, e) => SendMessage(_neutralButtonTitle));
             }
+			else if (_positiveButtonTitle.HasValue())
+            {
+                AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle));
+            }
             else
             {
-               // AlertDialogHelper.ShowAlert(this, _title, _message, () => Finish());
-                if (_positiveButtonTitle.HasValue())
-                {
-                    AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle));
-                }
-                else
-                {
-                    AlertDialogHelper.ShowAlert(this, _title, _message, () => SendMessage(_positiveButtonTitle));
-                }
+                AlertDialogHelper.ShowAlert(this, _title, _message, () => SendMessage(_positiveButtonTitle));
             }
         }
 
