@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var app = await GetAppInfoAsync();
                 isUpToDate = app.Version.StartsWith("1.4.");
             }
-            catch (Exception e)
+            catch
             {
                 isUpToDate = true;
             }

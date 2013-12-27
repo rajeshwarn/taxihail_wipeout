@@ -45,13 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             get { return TinyIoCContainer.Current.Resolve < IConfigurationManager>(); }
         }
-
-        protected ICacheService Cache
-        {
-            get { return TinyIoCContainer.Current.Resolve < ICacheService>(); }
-        }
-
-
+	
         [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
         {
@@ -418,7 +412,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             } catch (WebException ex) {
                 TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 return null;
-            } catch (Exception e) {
+			} catch{
                 if (showInvalidMessage) {
                     var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessageTitle");
                     var message = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessage");
@@ -579,9 +573,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var refData = GetReferenceData();
 
             var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
-			var paymentsEnabled = settings.IsPayInTaxiEnabled || settings.PayPalClientSettings.IsEnabled;
-			           
-            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
+		
+		    if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0, new ListItem
@@ -627,7 +620,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			    creditCard.Token = response.CardOnFileToken;       
 			
 			}
-			catch(Exception e)
+			catch
 			{
                 return false;
 			}

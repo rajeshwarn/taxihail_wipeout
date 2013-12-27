@@ -27,29 +27,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         IMvxServiceConsumer<IAppSettings>,
         IMvxServiceConsumer<ICacheService>
     {
-        protected IBookingService BookingService;
-        protected IAccountService AccountService;
-        protected IAppSettings AppSettings;
-        protected ICacheService CacheService;
-
-        public BaseCallboxViewModel()
-        {
-            AccountService = this.GetService<IAccountService>();
-            BookingService = this.GetService<IBookingService>();
-            AppSettings = this.GetService<IAppSettings>();
-            CacheService = this.GetService<ICacheService>();
-        }
-
-        public IMvxCommand Logout
+     
+		public IMvxCommand Logout
         {
             get
             {
                 return this.GetCommand(() => this.MessageService.ShowMessage(this.Resources.GetString("LogoutTitle"), this.Resources.GetString("LogoutMessage"), this.Resources.GetString("Yes"), () =>
-                                                                                                                            {
-                                                                                                                                Close();
-                                                                                                                                AccountService.SignOut();
-                                                                                                                                RequestNavigate<CallboxLoginViewModel>(true);
-                                                                                                                            }, this.Resources.GetString("No"), () => { }));
+					{}, this.Resources.GetString("No"), () => { }));
             }
         }
     }

@@ -52,14 +52,6 @@ namespace apcurium.MK.Booking.Mobile
 			
 		}
 
-		public IMvxCommand Cancel
-		{
-			get
-			{
-                return GetCommand(() => { Close(); });
-		    }
-	    }
-
 		private bool IsEmail(string inputEmail)
 		{
 			inputEmail = inputEmail.ToSafeString();
