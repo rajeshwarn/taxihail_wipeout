@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,7 +36,6 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -93,7 +92,6 @@
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
-    <Compile Include="BindingConverter\OrderStatusToTextColorConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -328,10 +326,7 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-    <Folder Include="Fakes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>

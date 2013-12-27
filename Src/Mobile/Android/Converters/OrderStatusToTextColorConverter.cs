@@ -2,7 +2,7 @@ using System;
 using Android.Graphics;
 using Cirrious.MvvmCross.Converters;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
     public class OrderStatusToTextColorConverter: MvxBaseValueConverter
 	{
