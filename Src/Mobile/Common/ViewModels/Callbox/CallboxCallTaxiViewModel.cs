@@ -6,19 +6,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
 	public class CallboxCallTaxiViewModel : BaseCallboxViewModel
 	{
-		public override void Load()
-		{
-			base.Load();
-		}
-
-		public IMvxCommand CallTaxi
+	    public IMvxCommand CallTaxi
 		{
 			get
 			{
-				return this.GetCommand(() => 
-					InvokeOnMainThread ( ()=>
+				return GetCommand(() => 
+					InvokeOnMainThread(()=>
 						{
-							this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
+							MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
 								Resources.GetString("BookTaxiPassengerName"), Resources.GetString("Ok"), 
 								s =>
 								{ 

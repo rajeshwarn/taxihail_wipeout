@@ -1,11 +1,9 @@
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Collections.ObjectModel;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
 using System.Globalization;
-using apcurium.MK.Common.Configuration;
 using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Entity;
@@ -17,7 +15,6 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
 {
     public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
     {
-
         CreditCards.CollectionChanged += (sender, e) => FirePropertyChanged(()=>HasCreditCards);
         LoadCreditCards();
         
@@ -58,7 +55,7 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
     
     public CreditCardDetails SelectedCreditCard {
         get{ 
-            return this.CreditCards.FirstOrDefault(x=>x.CreditCardId == SelectedCreditCardId);
+            return CreditCards.FirstOrDefault(x=>x.CreditCardId == SelectedCreditCardId);
         }
     }
     
@@ -79,10 +76,10 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
             FirePropertyChanged(()=>Tip);
         }
     }
+
+    private int _tip;
     
-    public int _tip { get; set; }
-    
-    public apcurium.MK.Common.Entity.ListItem<Guid>[] GetCreditCardListItems ()
+    public ListItem<Guid>[] GetCreditCardListItems ()
     {
         return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
     }
@@ -93,21 +90,17 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
                 
                 if(CreditCards.Count == 0)
                 {
-                    RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
-                                                                               {
-                        InvokeOnMainThread(()=>
-                                           {
-                            CreditCards.Add (new CreditCardDetails
-                                             {
-                                CreditCardCompany = newCreditCard.CreditCardCompany,
-                                CreditCardId = newCreditCard.CreditCardId,
-                                FriendlyName = newCreditCard.FriendlyName,
-                                Last4Digits = newCreditCard.Last4Digits
-                            });
-                            this.SelectedCreditCardId = newCreditCard.CreditCardId;
-                        });                                                                                         
-                        
-                    });
+                    RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
+                    {
+                        CreditCards.Add (new CreditCardDetails
+                        {
+                            CreditCardCompany = newCreditCard.CreditCardCompany,
+                            CreditCardId = newCreditCard.CreditCardId,
+                            FriendlyName = newCreditCard.FriendlyName,
+                            Last4Digits = newCreditCard.Last4Digits
+                        });
+                        SelectedCreditCardId = newCreditCard.CreditCardId;
+                    }));
                     
                 }else{
                     
@@ -115,10 +108,10 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
                     RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
                         if(result != default(Guid))
                         {
-                            this.SelectedCreditCardId = result;
+                            SelectedCreditCardId = result;
                             
                             //Reload credit cards in case the credit card list has changed (add/remove)
-                            this.LoadCreditCards();
+                            LoadCreditCards();
                         }
                     });
                 }

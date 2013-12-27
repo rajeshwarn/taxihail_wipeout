@@ -741,7 +741,7 @@ namespace TinyMessenger
                     return;
 
                 var currentlySubscribed = (from sub in currentSubscriptions
-                                           where object.ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
+                                           where ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
                                            select sub).ToList();
 
                 currentlySubscribed.ForEach(sub => currentSubscriptions.Remove(sub));

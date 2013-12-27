@@ -2,22 +2,14 @@ using System;
 using apcurium.MK.Booking.Mobile.AppServices;
 using ServiceStack.Text;
 using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
 using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
-using System.Threading;
-using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 
@@ -42,11 +34,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
-        }
-
-        public override void Start(bool firstStart)
-        {
-            base.Start(firstStart);
         }
 
         public bool IsPayPalEnabled
@@ -79,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => this.InvokeOnMainThread(delegate
+                return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
                     FirePropertyChanged(() => PayPalSelected);
@@ -91,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => this.InvokeOnMainThread(delegate
+                return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
                     FirePropertyChanged(() => PayPalSelected);

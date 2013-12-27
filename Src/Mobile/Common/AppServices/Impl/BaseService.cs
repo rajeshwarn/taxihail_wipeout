@@ -17,13 +17,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>();
-            return this.UseServiceClient<T>(service, action, errorHandler, method);
+            return UseServiceClient<T>(service, action, errorHandler, method);
         }
 
         protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>(name);
-			return this.UseServiceClient<T>(service, action, errorHandler, method);
+			return UseServiceClient<T>(service, action, errorHandler, method);
         }
 
         private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler, string method) where T : class

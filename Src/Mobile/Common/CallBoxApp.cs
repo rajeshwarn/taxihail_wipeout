@@ -36,20 +36,20 @@ namespace apcurium.MK.Booking.Mobile
 			                                                         "NotAuthenticated");
 			
 			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) =>
-			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), null),
+			                                                         new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), null),
 			                                                         "Authenticate");
 			
-			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c),null));
+			TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c),null));
 
-            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            TinyIoCContainer.Current.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
-            TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            TinyIoCContainer.Current.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
-            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             
-            TinyIoCContainer.Current.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            TinyIoCContainer.Current.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
-            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
+            TinyIoCContainer.Current.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
@@ -70,12 +70,12 @@ namespace apcurium.MK.Booking.Mobile
         private void InitialiseStartNavigation()
         {
             var startApplicationObject = new StartCallboxNavigation();
-            this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
+            this.RegisterServiceInstance(startApplicationObject);
         }
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
-            return new TinyIocViewModelLocator(); //base.CreateDefaultViewModelLocator();
+            return new TinyIocViewModelLocator();
         }
     }
 }

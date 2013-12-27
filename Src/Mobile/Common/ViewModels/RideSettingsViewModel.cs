@@ -1,19 +1,13 @@
 using System;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Common.Entity;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -25,12 +19,11 @@ namespace apcurium.MK.Booking.Mobile
 
         public RideSettingsViewModel(string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
         {
-        
         }
 
         public RideSettingsViewModel(BookingSettings bookingSettings)
         {
-            this._bookingSettings = bookingSettings;
+            _bookingSettings = bookingSettings;
             _accountService = this.GetService<IAccountService>();
 
             var refDataTask = _accountService.GetReferenceDataAsync();
@@ -50,8 +43,6 @@ namespace apcurium.MK.Booking.Mobile
                 FirePropertyChanged( ()=> Payments );
                 FirePropertyChanged( ()=> ChargeTypeId );
                 FirePropertyChanged( ()=> ChargeTypeName );
-
-
             });
 
         }
@@ -73,9 +64,6 @@ namespace apcurium.MK.Booking.Mobile
                 return setting.IsPayInTaxiEnabled;
             }
         }
-
-     
-
         public override void Restart()
         {
             base.Restart();
@@ -147,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile
 
                 if (!VehicleTypeId.HasValue)
                 {
-                    return base.Resources.GetString("NoPreference");
+                    return Resources.GetString("NoPreference");
                 }
 
                 if (Vehicles == null)
@@ -155,9 +143,7 @@ namespace apcurium.MK.Booking.Mobile
                     return null;
                 }
 
-
-
-                var vehicle = this.Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
+                var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
                 if (vehicle == null)
                     return null;
                 return vehicle.Display;
@@ -187,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 if (!ChargeTypeId.HasValue)
                 {
-                    return base.Resources.GetString("NoPreference");
+                    return Resources.GetString("NoPreference");
                 }
 
 
@@ -196,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile
                     return null;
                 }
                                 
-                var chargeType = this.Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
+                var chargeType = Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
                 if (chargeType == null)
                     return null;
                 return chargeType.Display; 
@@ -241,9 +227,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand<int?>(id =>
                 {
-
                     VehicleTypeId = id;
-
                 });
             }
 
@@ -263,9 +247,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand<int?>(id =>
                 {
-
                     ChargeTypeId = id;
-
                 });
             }
         }
@@ -315,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile
                 base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
                 return false;
             }
-            if (Phone.Count(x => Char.IsDigit(x)) < 10)
+            if (Phone.Count(Char.IsDigit) < 10)
             {
                 MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
                 return false;

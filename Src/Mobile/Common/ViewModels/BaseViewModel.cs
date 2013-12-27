@@ -2,7 +2,6 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client;
@@ -23,8 +22,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                  IMvxServiceConsumer<IAppResource>,
                                  IMvxServiceConsumer<IAppSettings>,
                                  IMvxServiceConsumer<IMessageService>,
-                                    IMvxServiceConsumer<ILogger>,
-                                    IMvxServiceConsumer<IConfigurationManager>,
+                                 IMvxServiceConsumer<ILogger>,
+                                 IMvxServiceConsumer<IConfigurationManager>,
                                  IMvxServiceConsumer<IPhoneService>
     {
         protected BaseViewModel()
@@ -36,9 +35,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Logger = this.GetService<ILogger>();
             Config = this.GetService<IConfigurationManager>();
             PhoneService = this.GetService<IPhoneService>();
-
-
-            Initialize();
         }
         
         public static Action NoAction = () => { };
@@ -85,17 +81,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
 				return TinyIoCContainer.Current.Resolve<IAppSettings> ();
 			}
-		}   
-
-
-
+		}
         protected IApplicationInfoService ApplicationInfoService{
             get{
                 return TinyIoCContainer.Current.Resolve<IApplicationInfoService> ();
             }
-        }
-
-            
+        } 
         protected IGeolocService GeolocService{
             get{
                 return TinyIoCContainer.Current.Resolve<IGeolocService> ();
@@ -134,36 +125,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return TinyIoCContainer.Current.Resolve<IConfigurationManager> ();
             }
         }
-        protected virtual void Initialize()
-        {
-        }
-
         public virtual void Load()
         {
-
         }
 
         public virtual void Start (bool firstStart = false)
         {
-            firstStart.ToString();
         }
 
         public virtual void Restart ()
         {
-            
         }
 
         public virtual void Stop ()
         {
-
         }
 
         public virtual void Unload ()
         {
-
         }
-
-
+        
         protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
             where TViewModel : BaseSubViewModel<TResult>
@@ -177,19 +158,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             parameterValues["messageId"] = messageId;
 
-            TinyMessageSubscriptionToken token = null;
-            token = MessengerHub.Subscribe<SubNavigationResultMessage<TResult>>(msg =>
-                                                                                    {
-                                                                                        if (token != null)
-                                                                                            MessengerHub
-                                                                                                .Unsubscribe
-                                                                                                <
-                                                                                                    SubNavigationResultMessage
-                                                                                                        <TResult>>(token);
 
-                                                                                        onResult(msg.Result);
-                                                                                    },
-                                                                                msg => msg.MessageId == messageId);
+
+            TinyMessageSubscriptionToken token = null;
+// ReSharper disable once RedundantAssignment
+            token = MessengerHub.Subscribe<SubNavigationResultMessage<TResult>>(msg =>
+                {
+// ReSharper disable AccessToModifiedClosure
+                    if (token != null)
+                        MessengerHub.Unsubscribe
+                            <SubNavigationResultMessage<TResult>>(token);
+// ReSharper restore AccessToModifiedClosure
+
+                    onResult(msg.Result);
+                },
+            msg => msg.MessageId == messageId);
 
             return RequestNavigate<TViewModel>(parameterValues);
         }
@@ -207,7 +190,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		readonly IDictionary<string, IMvxCommand> _commands = new Dictionary<string, IMvxCommand>();
 		protected IMvxCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
 		{
-			return _commands.ContainsKey(memberName)
+		    if (memberName == null)
+		    {
+		        throw new ArgumentNullException("memberName");
+		    }
+			return  _commands.ContainsKey(memberName)
 				? _commands[memberName]
 					: (_commands[memberName] = new MvxRelayCommand(execute, canExecute));
 

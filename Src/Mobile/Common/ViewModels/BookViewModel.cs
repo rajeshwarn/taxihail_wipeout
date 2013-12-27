@@ -1,5 +1,4 @@
 using System;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -19,8 +18,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
-using apcurium.Framework;
-using System.Reactive.Linq;
 using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -36,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
-         
+
+            Initialize();
         }
 
         public BookViewModel(string order)
@@ -49,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _useExistingOrder = true;
         }
 
-        protected async override void Initialize()
+        protected async void Initialize()
         {
 
             if (_initialized)
@@ -102,11 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var tutorialWasDisplayed = AppCacheService.Get<string>("TutorialWasDisplayed");
                 if (tutorialWasDisplayed.IsNullOrEmpty() || !tutorialWasDisplayed.SoftEqual( AccountService.CurrentAccount.Email ))
                 {
-                    Task.Run( () =>
-                    {
-                        //Thread.Sleep( 4000 );
-                        Pickup.RequestCurrentLocationCommand.Execute();            
-                    });
+                    Task.Run( () => Pickup.RequestCurrentLocationCommand.Execute());
                 }
                 else
                 {
@@ -214,10 +208,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     FirePropertyChanged(() => Dropoff);
                 });
 
-            bool isUserInitiated = sender is bool && (bool)sender;
+            var isUserInitiated = sender is bool && (bool)sender;
             if (!isUserInitiated)
             {
-                CenterMap(!isUserInitiated );
+                CenterMap(true);
             }
 
             Task.Factory.SafeStartNew(CalculateEstimate);
@@ -226,11 +220,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate() 
         {
-            _fareEstimate = this.Resources.GetString("EstimatingFare");
+            _fareEstimate = Resources.GetString("EstimatingFare");
 
             FirePropertyChanged(() => FareEstimate);
 
-            _fareEstimate = base.BookingService.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
+            _fareEstimate = BookingService.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
             
             FirePropertyChanged(() => FareEstimate);
         }
@@ -403,7 +397,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             { 
-                return AddressSelectionMode == AddressSelectionMode.DropoffSelection && (Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
+                return AddressSelectionMode == AddressSelectionMode.DropoffSelection 
+                                && (Dropoff != null) 
+                                && (Dropoff.Model != null) 
+                                && Dropoff.Model.HasValidCoordinate(); 
             }
         }
 
@@ -414,7 +411,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return GetCommand(async () =>
                 {
-                    if ( !Config.GetSetting<bool>( "Client.TutorialEnabled" , true )  )
+                    if ( !Config.GetSetting( "Client.TutorialEnabled" , true )  )
                     {
                         return;
                     }
@@ -434,7 +431,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => this.InvokeOnMainThread(delegate
+                return GetCommand(() => InvokeOnMainThread(delegate
                     {
                         // Close the menu if it was open
                         Panel.MenuIsOpen = false;
@@ -607,11 +604,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 
                 TinyMessageSubscriptionToken token = null;
+// ReSharper disable once RedundantAssignment
                 token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
                 {
+
+// ReSharper disable AccessToModifiedClosure
                     if (token != null)
-                    {
-                        MessengerHub.Unsubscribe<OrderConfirmed>(token);
+                    { MessengerHub.Unsubscribe<OrderConfirmed>(token);
+// ReSharper enable AccessToModifiedClosure
                     }
                     if (msg.IsCancelled)
                     {
@@ -664,7 +664,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private async void ObserveAvailableVehicles()
         {
             var subscription = new BooleanDisposable();
-            this.Subscriptions.Add(subscription);
+            Subscriptions.Add(subscription);
             do
             {
                 AvailableVehicles = await VehicleClient.GetAvailableVehiclesAsync(Pickup.Model.Latitude, Pickup.Model.Longitude);
@@ -672,18 +672,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             while(!subscription.IsDisposed);
         }
-
-        protected override bool CanClose()
-        {
-            return base.CanClose();
-        }
-
-        protected override void Close()
-        {
-            base.Close();
-        }
-
-       
 
     }
 }

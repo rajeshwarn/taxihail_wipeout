@@ -7,6 +7,7 @@ namespace apcurium.MK.Booking.Mobile
 {
     public class CultureProvider
     {
+        
         public static string FormatTime(DateTime date )
         {
             var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
@@ -41,15 +42,12 @@ namespace apcurium.MK.Booking.Mobile
         public static string CultureInfoString
         {
             get{
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
-                if (string.IsNullOrEmpty(culture) )
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
+                if (string.IsNullOrEmpty(culture))
                 {
                     return "en-US";
                 }
-                else
-                {
-                    return culture;                
-                }
+                return culture;
             }
         }
     }

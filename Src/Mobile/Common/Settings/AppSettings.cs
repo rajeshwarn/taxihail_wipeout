@@ -9,6 +9,7 @@ using System.IO;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public AppSettings ()
         {
-            using (var stream = this.GetType().Assembly.GetManifestResourceStream(this.GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
+            using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
                 using (StreamReader reader = new StreamReader(stream)) 
 				{
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get {
                 string url = "";
                 try {
-                    url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
+                    url = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
                 } catch {
                     return _data.ServiceUrl;
                 }
@@ -62,14 +63,14 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
             set {
                 if (CanChangeServiceUrl) {
-                    TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
+                    TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
 
                     if (string.IsNullOrEmpty (value)) {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
                     } else if (value.ToLower ().StartsWith ("http")) {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
                     } else {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
                     }
                 }
             }

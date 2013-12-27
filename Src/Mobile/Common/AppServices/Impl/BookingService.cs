@@ -236,17 +236,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
-            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<Direction.TarifMode>("Direction.TarifMode", Direction.TarifMode.AppTarif);            
+            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<DirectionSetting.TarifMode>("Direction.TarifMode", DirectionSetting.TarifMode.AppTarif);            
             DirectionInfo directionInfo = new DirectionInfo();
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-                if (tarifMode != Direction.TarifMode.AppTarif)
+                if (tarifMode != DirectionSetting.TarifMode.AppTarif)
                 {
 					directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
                 }
 
-                if (tarifMode == Direction.TarifMode.AppTarif || (tarifMode == Direction.TarifMode.Both && directionInfo.Price == 0d))
+                if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
                 {
                     directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
@@ -335,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return ratingType;
         }
 
-        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating (Guid orderId)
+        public OrderRatings GetOrderRating (Guid orderId)
         {
             var orderRate = new OrderRatings ();
             UseServiceClient<OrderServiceClient> (service =>
@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderRate;
         }
 
-        public void SendRatingReview (Common.Entity.OrderRatings orderRatings)
+        public void SendRatingReview (OrderRatings orderRatings)
         {
             var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));

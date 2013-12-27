@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
@@ -11,7 +10,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Entity;
 
@@ -72,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var sendReceiptAvailable =  ConfigurationManager.GetSetting<bool>("Client.SendReceiptAvailable",false);
+                var sendReceiptAvailable =  ConfigurationManager.GetSetting("Client.SendReceiptAvailable",false);
                 return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
             }
         }
@@ -116,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool HasRated
         {
             get {
-                var ratingEnabled = Config.GetSetting<bool>( "Client.RatingEnabled", false );  
+                var ratingEnabled = Config.GetSetting( "Client.RatingEnabled", false );  
                 return ratingEnabled && _hasRated;
             }
             set { 
@@ -126,20 +124,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        private bool _showRateButton;
         public bool ShowRateButton
         {
             get
             {
-                    var ratingEnabled = Config.GetSetting<bool>( "Client.RatingEnabled", false );                
+                    var ratingEnabled = Config.GetSetting( "Client.RatingEnabled", false );                
                     return ratingEnabled && IsDone && !HasRated;
             }
-            set
-            {
-                _showRateButton = value; 
-                FirePropertyChanged(()=>ShowRateButton);
-            }
-
         }
 
         private bool _canCancel;
@@ -244,10 +235,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		protected override void Initialize ()
-		{
-		}
-
 		public override void Load ()
         {
 			base.Load ();
@@ -257,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
-			if (orderRated.Content == this.OrderId) {
+			if (orderRated.Content == OrderId) {
 				LoadStatus();
 			}
         }
@@ -336,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
+                    if (GuidExtensions.HasValue(OrderId))
                     {
                         TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
                         MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
@@ -364,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
+                    if (GuidExtensions.HasValue(OrderId))
                     {
                         BookingService.SendReceipt(OrderId);
                     }

@@ -1,11 +1,5 @@
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Common.Entity;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using System;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
@@ -15,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class UpdatePasswordViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
     {
-		private IAccountService _accountService;		
+		private readonly IAccountService _accountService;		
 
 		public UpdatePasswordViewModel()
         {
@@ -62,7 +56,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public bool CanUpdatePassword { 
-			get { return !CurrentPassword.IsNullOrEmpty() && !NewPassword.IsNullOrEmpty() && NewPassword.Length >= 6 && NewPassword.Length <= 10 && NewPasswordIsConfirmed; }
+			get { return !CurrentPassword.IsNullOrEmpty() 
+                            && !NewPassword.IsNullOrEmpty() 
+                            && NewPassword.Length >= 6 
+                            && NewPassword.Length <= 10 
+                            && NewPasswordIsConfirmed; }
 		}
 
         public IMvxCommand UpdateCommand
@@ -76,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
                         var title = Resources.GetString("View_UpdatePassword");
                         var msg = Resources.GetString("CreateAccountInvalidPassword");
-                        MessageService.ShowMessage(title, msg);;
+                        MessageService.ShowMessage(title, msg);
 						return;
 					}
                     MessageService.ShowProgress(true);
@@ -85,14 +83,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         _accountService.SignOut();							
                         var msg = Resources.GetString("ChangePasswordConfirmmation");
                         var title = Settings.ApplicationName;
-						MessageService.ShowMessage(title, msg, () => { 
-							RequestNavigate<LoginViewModel>(true); 
-						});
+						MessageService.ShowMessage(title, msg, () => RequestNavigate<LoginViewModel>(true));
                     }catch(Exception e)
                     {
                         var msg = Resources.GetString("ServiceError" + e.Message);
                         var title = Resources.GetString("ServiceErrorCallTitle");
-                        MessageService.ShowMessage(title, msg);;
+                        MessageService.ShowMessage(title, msg);
                     }finally{
                         MessageService.ShowProgress(false);
                     }					

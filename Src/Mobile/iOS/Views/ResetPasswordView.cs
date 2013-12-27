@@ -1,7 +1,7 @@
 
 using System;
 using System.Drawing;
-
+using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;

@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		private ObservableCollection<CallboxOrderViewModel> _orders;
 
-		public CallboxOrderListViewModel() : base()
+		public CallboxOrderListViewModel()
 		{
 			Orders = new ObservableCollection<CallboxOrderViewModel>();           
 			_orderToCreate = null;
@@ -70,9 +70,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 			_refreshTimer = Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(a => RefreshOrderStatus());                           
 
-			_token = this.MessengerHub.Subscribe<OrderDeleted>(orderId =>
+			_token = MessengerHub.Subscribe<OrderDeleted>(orderId =>
 				{
-					this.CancelOrder.Execute(orderId.Content);
+					CancelOrder.Execute(orderId.Content);
 				});
 
 			if (_orderToCreate != null )
@@ -95,17 +95,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						Orders.Clear();
 
-						if ( ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatus.Any( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
+					    var orderStatusDetails = orderStatus as OrderStatusDetail[] ?? orderStatus.ToArray();
+					    if ( ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.Any( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
 						{
-							Console.WriteLine ( "Clearing pending order" );
 							_orderToCreate = null;
 						}
-						else if (  ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatus.None( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
+						else if (  ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.None( os=>os.IbsOrderId == _orderToCreate.Order.IbsOrderId ) )
 						{
 							Orders.Add(_orderToCreate.Order);
 						}
 
-						Orders.AddRange(orderStatus.Select(status => new CallboxOrderViewModel()
+						Orders.AddRange(orderStatusDetails.Select(status => new CallboxOrderViewModel
 							{
 								OrderStatus = status,
 								CreatedDate = status.PickupDate,
@@ -115,7 +115,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 						if (  (!Orders.Any()) && ( _orderToCreate == null ) ) 
 						{
-							Console.WriteLine ( "Exiting pending order" );
 							RequestNavigate<CallboxCallTaxiViewModel>(true);
 							Close();
 						}
@@ -128,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						{
 							foreach (var order in Orders)
 							{
-								if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IbsStatusId) && !_orderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
+								if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IbsStatusId) && !_orderNotified.Any(c => c != null && c.Value.Equals(order.IbsOrderId)))
 								{
 									_orderNotified.Add(order.IbsOrderId);
 									OrderCompleted(this, null);
@@ -169,10 +168,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return this.GetCommand(() => this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
+				return GetCommand(() => MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
 					Resources.GetString("BookTaxiPassengerName"), 
 					Resources.GetString("Ok"), 
-					passengerName => CreateOrder(passengerName)));
+					CreateOrder));
 			}
 		}
 
@@ -180,10 +179,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return this.GetCommand<Guid>(orderId => 
-					this.MessageService.ShowMessage(this.Resources.GetString("CancelOrderTitle"), 
-						this.Resources.GetString("CancelOrderMessage"), 
-						this.Resources.GetString("Yes"), () => 
+				return GetCommand<Guid>(orderId => 
+					MessageService.ShowMessage(Resources.GetString("CancelOrderTitle"), 
+						Resources.GetString("CancelOrderMessage"), 
+						Resources.GetString("Yes"), () => 
 						{
 							MessageService.ShowProgress(true);
 
@@ -192,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								BookingService.CancelOrder(orderId);
 								RemoveOrderFromList(orderId);
 							}
-							catch (Exception ex)
+							catch
 							{
 								Thread.Sleep( 500 );
 								try
@@ -202,14 +201,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								}
 								catch 
 								{
-									MessageService.ShowMessage(this.Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Resources.GetString("ErrorCancellingOrderTitle"));
+									MessageService.ShowMessage(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), Resources.GetString("ErrorCancellingOrderTitle"));
 								}
 							}
 							finally
 							{
 								MessageService.ShowProgress(false);
 							}
-						}, this.Resources.GetString("No"), () => { }));
+						}, Resources.GetString("No"), () => { }));
 			}
 		}
 
@@ -217,14 +216,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
 
-			if ( (_orderToCreate != null) && ( _orderToCreate.Order != null ) && ( orderToRemove.IbsOrderId == _orderToCreate.Order.IbsOrderId ))
+			if (orderToRemove != null && ((_orderToCreate != null) && ( _orderToCreate.Order != null ) && (orderToRemove.IbsOrderId == _orderToCreate.Order.IbsOrderId )))
 			{
 				_orderToCreate = null;             
 			}
 			InvokeOnMainThread ( ()=>
 				{
 					Orders.Remove(orderToRemove) ;
-					if ( Orders.Count () ==  0 )
+					if (!Orders.Any())
 					{                                                   
 						RequestNavigate<CallboxCallTaxiViewModel>(true);
 						Close();
@@ -273,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 									if (orderInfo.IbsOrderId.HasValue && orderInfo.IbsOrderId > 0)
 									{
 										orderInfo.Name = newOrderCreated.Settings.Name;
-										var o = new CallboxOrderViewModel()
+										var o = new CallboxOrderViewModel
 										{
 											CreatedDate = DateTime.Now,
 											IbsOrderId = orderInfo.IbsOrderId,
@@ -295,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								}
 							});
 					}
-					catch (Exception ex)
+					catch
 					{
 						InvokeOnMainThread(() =>
 							{

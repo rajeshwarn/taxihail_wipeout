@@ -1,15 +1,12 @@
 using System;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Commands;
-using apcurium.Framework.Extensions;
 using System.Text.RegularExpressions;
-using TinyIoC;
+using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>, IMvxServiceConsumer<IAccountService>
 	{
@@ -42,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile
                      {
                         var msg = Resources.GetString("ServiceError" + e.Message);
                         var title = Resources.GetString("ServiceErrorCallTitle");
-                        MessageService.ShowMessage(title, msg);;
+                        MessageService.ShowMessage(title, msg);
                      }finally
 					 {
 						MessageService.ShowProgress(false);
@@ -55,12 +52,11 @@ namespace apcurium.MK.Booking.Mobile
 		private bool IsEmail(string inputEmail)
 		{
 			inputEmail = inputEmail.ToSafeString();
-			string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" + @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" + @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+			const string strRegex = @"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}" + @"\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\" + @".)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
 			var re = new Regex(strRegex);
 			if (re.IsMatch(inputEmail))
 				return (true);
-			else
-				return (false);
+		    return (false);
 		}
 	}
 }

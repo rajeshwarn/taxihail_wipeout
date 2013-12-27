@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxOrderViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
-        private IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
         public CallboxOrderViewModel()
         {
             _bookingService = this.GetService<IBookingService>();
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return this.GetCommand(() => this.MessengerHub.Publish<OrderDeleted>(new OrderDeleted(this, Id, null)));
+                return GetCommand(() => MessengerHub.Publish(new OrderDeleted(this, Id, null)));
             }
         }
 
@@ -56,14 +56,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     {
                         case "wosWAITING":
                             return ColorEnum.LightGray;
-                            break;
                         case "wosARRIVED":
                             return ColorEnum.Green;
-                            break;
                         case "wosASSIGNED":
                             return ColorEnum.Black;
-                            break;
-                    };
+                    }
                 }
                 return ColorEnum.LightGray;
             }

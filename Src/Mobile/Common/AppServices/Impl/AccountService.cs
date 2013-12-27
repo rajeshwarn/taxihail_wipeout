@@ -30,6 +30,7 @@ using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Net;
+using Position = apcurium.MK.Booking.Maps.Geo.Position;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -257,21 +258,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Address FindInAccountAddresses (double latitude, double longitude)
         {
-            Address found = GetAddresseInRange(GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 100);                   
+            Address found = GetAddresseInRange(GetFavoriteAddresses(), new Position(latitude, longitude), 100);                   
             if (found == null)
             {
-                found = GetAddresseInRange(GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(latitude, longitude), 75);
+                found = GetAddresseInRange(GetHistoryAddresses(), new Position(latitude, longitude), 75);
             }
             return found;
 
         }
 
-        private Address GetAddresseInRange (IEnumerable<Address> addresses, apcurium.MK.Booking.Maps.Geo.Position position, float range)
+        private Address GetAddresseInRange (IEnumerable<Address> addresses, Position position, float range)
         {             
             const double R = 6378137;
             
             var addressesInRange = from a in addresses
-                let distance = position.DistanceTo (new apcurium.MK.Booking.Maps.Geo.Position (a.Latitude, a.Longitude))
+                let distance = position.DistanceTo (new Position (a.Latitude, a.Longitude))
                     where distance <= range
                     orderby distance ascending
                     select a;
@@ -410,7 +411,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 
             } catch (WebException ex) {
-                TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+                TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 return null;
 			} catch{
                 if (showInvalidMessage) {

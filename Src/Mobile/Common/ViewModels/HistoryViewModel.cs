@@ -1,20 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
-using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Globalization;
@@ -77,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Task.Factory.StartNew(() =>
             {
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel()
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel
                 {
                     IBSOrderId = x.IBSOrderId,
                     Id = x.Id,
@@ -99,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			AccountService.GetHistoryOrders ().Subscribe(orders =>
 			{
 
-                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel()
+                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel
                 {
 					IBSOrderId = x.IbsOrderId,
                     Id = x.Id,
@@ -115,9 +106,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 HasOrders = orders.Any();
 
 			});
-
-
-           
 		}
 
 

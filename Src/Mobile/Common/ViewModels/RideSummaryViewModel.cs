@@ -17,10 +17,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            IsRatingButtonShown = Config.GetSetting<bool>( "Client.RatingEnabled", false );  
+            IsRatingButtonShown = Config.GetSetting( "Client.RatingEnabled", false );  
 
 		}
-        public override void Start(bool firstStart)
+        public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
             FirePropertyChanged(() => IsPayButtonShown);
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private bool _receiptSent { get; set; }
+	    private bool _receiptSent;
         public bool ReceiptSent 
         {
             get { return _receiptSent; }
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool IsSendReceiptButtonShown {
 			get{
-                var sendReceiptAvailable =  ConfigurationManager.GetSetting<bool>("Client.SendReceiptAvailable",false);
+                var sendReceiptAvailable =  ConfigurationManager.GetSetting("Client.SendReceiptAvailable",false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
              
 			}
@@ -102,29 +102,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public IMvxCommand NavigateToRatingPage {
 			get {
-				return new AsyncCommand (() =>
+				return new AsyncCommand (() => RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
 				{
-					RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
-					{
-						orderId = Order.Id.ToString (), 
-						canRate = true.ToString (CultureInfo.InvariantCulture), 
-						isFromStatus = true.ToString (CultureInfo.InvariantCulture)
-					}.ToStringDictionary(),_=>{
-						IsRatingButtonShown = false;
-					});
-				});
+				    orderId = Order.Id.ToString (), 
+				    canRate = true.ToString (CultureInfo.InvariantCulture), 
+				    isFromStatus = true.ToString (CultureInfo.InvariantCulture)
+				}.ToStringDictionary(),_=>{
+				                              IsRatingButtonShown = false;
+				}));
 			}
 		}
         public IMvxCommand ResendConfirmationCommand {
             get {
                 return new AsyncCommand (() =>
                 {
-                    var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
-
                     MessageService.ShowMessage( "Confirmation",
                         Resources.GetString("ConfirmationOfPaymentSent"));
-
-
                     PaymentService.ResendConfirmationToDriver( Order.Id );
 
                 });
@@ -133,15 +126,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public IMvxCommand PayCommand {
 			get {
-				return new AsyncCommand (() =>
-				{
-					RequestNavigate<ConfirmCarNumberViewModel>(
-					new 
-					{ 
-						order = Order.ToJson(),
-						orderStatus = OrderStatus.ToJson()
-					}, false, MvxRequestedBy.UserAction);
-				});
+				return new AsyncCommand (() => RequestNavigate<ConfirmCarNumberViewModel>(
+				    new 
+				    { 
+				        order = Order.ToJson(),
+				        orderStatus = OrderStatus.ToJson()
+				    }, false, MvxRequestedBy.UserAction));
 			}
 		}
 	}

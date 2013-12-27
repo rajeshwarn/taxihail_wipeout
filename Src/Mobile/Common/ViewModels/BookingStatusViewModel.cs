@@ -1,24 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Reactive;
-using System.Reactive.Subjects;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
 using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Configuration;
-using System.Globalization;
 using System.Reactive.Linq;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Reactive.Disposables;
@@ -26,7 +16,6 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using apcurium.MK.Common.Configuration.Impl;
 using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -35,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly IBookingService _bookingService;
         private int _refreshPeriod = 5; //in seconds
-        private bool _waitingToNavigateAfterTimeOut = false;
+	    private bool _waitingToNavigateAfterTimeOut;
 
 		public BookingStatusViewModel (string order, string orderStatus)
 		{
@@ -65,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CenterMap ();
         }
 
-		public override void Start (bool firstStart)
+		public override void Start (bool firstStart = false)
 		{
 			base.Start (firstStart);
 
@@ -79,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Factory.StartNew (() =>
             {
                 Thread.Sleep( 1000 );     
-                InvokeOnMainThread(() => RefreshStatus());
+                InvokeOnMainThread(RefreshStatus);
             });
 
 			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
@@ -116,13 +105,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 		
-		BookAddressViewModel dropoffViewModel;
+		BookAddressViewModel _dropoffViewModel;
 		public BookAddressViewModel Dropoff {
 			get {
-				return dropoffViewModel;
+				return _dropoffViewModel;
 			}
 			set {
-				dropoffViewModel = value;
+				_dropoffViewModel = value;
 				FirePropertyChanged (() => Dropoff); 
 			}
 		}
@@ -170,14 +159,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsCallTaxiVisible
         {
             get { 
-                    var showCallDriver = Config.GetSetting<bool>("Client.ShowCallDriver", false);
+                    var showCallDriver = Config.GetSetting("Client.ShowCallDriver", false);
                 return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
         }
 
         public bool IsDriverInfoAvailable
         {
             get { 
-                var showVehicleInformation = Config.GetSetting<bool>("Client.ShowVehicleInformation", true);
+                var showVehicleInformation = Config.GetSetting("Client.ShowVehicleInformation", true);
 
 				return showVehicleInformation && ( (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Arrived) ) 
                 && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
@@ -212,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
 
-		private string _statusInfoText { get; set; }
+	    private string _statusInfoText;
 		public string StatusInfoText {
 			get { return _statusInfoText; }
 			set {
@@ -296,34 +285,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void AddReminder (OrderStatusDetail status)
         {
             if (!HasSeenReminderPrompt(status.OrderId )
-				&& this.PhoneService.CanUseCalendarAPI())
+				&& PhoneService.CanUseCalendarAPI())
             {
                 SetHasSeenReminderPrompt(status.OrderId);
-                InvokeOnMainThread (() => 
-                {
-					MessageService.ShowMessage (Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () => 
-                    {
-						this.PhoneService.AddEventToCalendarAndReminder(Str.ReminderTitle, 
-						                                                Str.GetReminderDetails(Order.PickupAddress.FullAddress, Order.PickupDate),						              									 
-                                                                        Order.PickupAddress.FullAddress, 
-                                                                        Order.PickupDate, 
-                                                                        Order.PickupDate.AddHours(-2));
-                    }, Str.NoButtonText, () => { });
-                });
+                InvokeOnMainThread (() => MessageService.ShowMessage (Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () => PhoneService.AddEventToCalendarAndReminder(Str.ReminderTitle, 
+                    Str.GetReminderDetails(Order.PickupAddress.FullAddress, Order.PickupDate),						              									 
+                    Order.PickupAddress.FullAddress, 
+                    Order.PickupDate, 
+                    Order.PickupDate.AddHours(-2)), Str.NoButtonText, () => { }));
             }
         }
 		        
-		string vehicleNumber = null;
+		string _vehicleNumber;
         private void RefreshStatus ()
         {
             try {
                 var status = BookingService.GetOrderStatus (Order.Id);
 				if(status.VehicleNumber != null)
 				{
-					vehicleNumber = status.VehicleNumber;
+					_vehicleNumber = status.VehicleNumber;
 				}
 				else{
-					status.VehicleNumber = vehicleNumber;
+					status.VehicleNumber = _vehicleNumber;
 				}
 
 				var isDone = BookingService.IsStatusDone (status.IbsStatusId);
@@ -337,27 +320,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
                 IsPayButtonVisible = false;
-                if (status != null) {
-					StatusInfoText = status.IbsStatusDescription;                        
-                    this.OrderStatusDetail = status;
+                StatusInfoText = status.IbsStatusDescription;                        
+                OrderStatusDetail = status;
 
-                    CenterMap ();
+                CenterMap ();
 
-					UpdatePayCancelButtons(status.IbsStatusId);
+                UpdatePayCancelButtons(status.IbsStatusId);
 
-					if (OrderStatusDetail.IbsOrderId.HasValue) {
-						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IbsOrderId.Value+"");
-                    }
+                if (OrderStatusDetail.IbsOrderId.HasValue) {
+                    ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IbsOrderId.Value+"");
+                }
 
-                    if (isDone) 
-					{
-						GoToSummary();
-                    }
+                if (isDone) 
+                {
+                    GoToSummary();
+                }
 
-					if (BookingService.IsStatusTimedOut (status.IbsStatusId))
-                    {
-                        GoToBookingScreen();
-                    }
+                if (BookingService.IsStatusTimedOut (status.IbsStatusId))
+                {
+                    GoToBookingScreen();
                 }
             } catch (Exception ex) {
                 Logger.LogError (ex);
@@ -409,13 +390,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
 			if (OrderStatusDetail.IbsStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
 			{
-                MapCenter = new CoordinateViewModel[] 
+                MapCenter = new[] 
 				{ 
 					pickup,
 					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)                   
                 };
             } else {
-                MapCenter = new CoordinateViewModel[] { pickup };
+                MapCenter = new[] { pickup };
             }
         }
 

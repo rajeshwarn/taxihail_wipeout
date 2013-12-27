@@ -1,9 +1,4 @@
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Common.Entity;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

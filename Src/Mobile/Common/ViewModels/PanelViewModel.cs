@@ -1,50 +1,31 @@
 using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
-using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading.Tasks;
-using System.Threading;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>,IMvxServiceConsumer<ICacheService>
     {
-        readonly IAccountService _accountService;
-        private BookViewModel _parent;
+        private readonly IAccountService _accountService;
+        private readonly BookViewModel _parent;
         public PanelViewModel ( BookViewModel parent )
         {
             _parent = parent;
             _accountService = this.GetService<IAccountService> ();
-
-        
         }
-
-        
-
-
-
         public bool TutorialEnabled {
             get{
-                return Config.GetSetting<bool>("Client.TutorialEnabled", true);
+                return Config.GetSetting("Client.TutorialEnabled", true);
             }
         }
 
-                private bool _menuIsOpen = false;
-
+        private bool _menuIsOpen;
         public bool MenuIsOpen {
             get {
                 return _menuIsOpen;

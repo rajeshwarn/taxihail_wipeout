@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 		public BaseSubViewModel(string messageId)
 		{
-			this.MessageId = messageId;
+			MessageId = messageId;
 		}
 
 		protected string MessageId {

@@ -8,7 +8,6 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Threading.Tasks;
-using System.Threading;
 using apcurium.MK.Common.Configuration;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
 
 
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
+            if (TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
                  RequestNavigate<LoginViewModel> ();
             } 
             else if (_params.ContainsKey ("orderId"))
@@ -65,9 +64,6 @@ namespace apcurium.MK.Booking.Mobile
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
         }
-
-       
-
         public bool ApplicationCanOpenBookmarks
         {
             get { return true; }

@@ -1,11 +1,9 @@
-using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using apcurium.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
 using TinyMessenger;
@@ -19,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile
 {
     public class BookStreetNumberViewModel : BaseViewModel
     {
-        private string _ownerId;
+        private readonly string _ownerId;
         private TinyMessageSubscriptionToken _token;
         public BookStreetNumberViewModel (string ownerId, string address)
         {
@@ -52,10 +50,7 @@ namespace apcurium.MK.Booking.Mobile
                 {
                     return m;
                 }
-                else
-                {
-                    return 10;
-                }
+                return 10;
             }
 
         }

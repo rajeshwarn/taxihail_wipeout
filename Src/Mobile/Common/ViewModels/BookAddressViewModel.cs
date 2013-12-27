@@ -13,7 +13,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -162,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CancelCurrentLocation();
 
 
-                    if (Config.GetSetting<bool>( "Client.StreetNumberScreenEnabled", true )
+                    if (Config.GetSetting( "Client.StreetNumberScreenEnabled", true)
                         && Model.BookAddress.HasValue())
                     {
                         RequestNavigate<BookStreetNumberViewModel>(new

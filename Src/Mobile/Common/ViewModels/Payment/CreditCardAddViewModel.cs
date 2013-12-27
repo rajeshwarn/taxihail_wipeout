@@ -1,10 +1,10 @@
 using System;
+using System.Globalization;
 using System.Linq;
+using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.MvvmCross.Interfaces.Commands;
-
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.Framework.Extensions;
@@ -25,9 +25,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private const string Visa = "Visa";
         private const string MasterCard = "MasterCard";
         private const string Amex = "Amex";
-		private const string Credit_Card_Generic = "Credit Card Generic";
+		private const string CreditCardGeneric = "Credit Card Generic";
         private const string VisaElectron = "Visa Electron";
-        private readonly string[] VisaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
+        private readonly string[] _visaElectronFirstNumbers = { "4026", "417500", "4405", "4508", "4844", "4913", "4917" };
         private const string VisaPattern = "^4[0-9]{12}(?:[0-9]{3})?$";
         private const string MasterPattern = "^5[1-5][0-9]{14}$";
         private const string AmexPattern = "^3[47][0-9]{13}$";
@@ -48,43 +48,53 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Data = new CreditCardInfos();
             _accountService = this.GetService<IAccountService>();
 
-			CardCategories = new List<ListItem>();
-			CardCategories.Add (new ListItem{ Id = 0, Display = "Personal"} );
-			CardCategories.Add (new ListItem{ Id = 1, Display = "Work"});
-			CardCategories.Add (new ListItem{ Id = 2, Display = "Other"});
-			CreditCardCategory = 0;
+			CardCategories = new List<ListItem>
+			{
+			    new ListItem {Id = 0, Display = "Personal"},
+			    new ListItem {Id = 1, Display = "Work"},
+			    new ListItem {Id = 2, Display = "Other"}
+			};
+		    CreditCardCategory = 0;
 
-            CreditCardCompanies = new List<ListItem>();
-            CreditCardCompanies.Add (new ListItem { Display = Visa, Id = 0 });
-            CreditCardCompanies.Add ( new ListItem { Display = MasterCard, Id = 1 });
-            CreditCardCompanies.Add ( new ListItem { Display = Amex, Id = 2 });
-            CreditCardCompanies.Add ( new ListItem { Display = VisaElectron, Id = 3 });
-			CreditCardCompanies.Add ( new ListItem { Display = Credit_Card_Generic, Id = 4 });
-
-			CreditCardType = (int)CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
-
-            ExpirationYears = new List<ListItem>();
-            for (int i = 0; i <= 15; i++)
+            CreditCardCompanies = new List<ListItem>
             {
-                ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString() });
-            }
+                new ListItem {Display = Visa, Id = 0},
+                new ListItem {Display = MasterCard, Id = 1},
+                new ListItem {Display = Amex, Id = 2},
+                new ListItem {Display = VisaElectron, Id = 3},
+                new ListItem {Display = CreditCardGeneric, Id = 4}
+            };
 
-            ExpirationMonths = new List<ListItem>();
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("January"), Id = 1 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("February"), Id = 2 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("March"), Id = 3 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("April"), Id = 4 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("May"), Id = 5 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("June"), Id = 6 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("July"), Id = 7 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("August"), Id = 8 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("September"), Id = 9 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("October"), Id = 10 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("November"), Id = 11 });
-            ExpirationMonths.Add (new ListItem { Display = Resources.GetString("December"), Id = 12 });
+		    var id = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+		    if (id != null)
+		    {
+		        CreditCardType = (int)id;
+
+		        ExpirationYears = new List<ListItem>();
+		        for (int i = 0; i <= 15; i++)
+		        {
+		            ExpirationYears.Add (new ListItem { Id = DateTime.Today.AddYears(i).Year, Display = DateTime.Today.AddYears(i).Year.ToString(CultureInfo.InvariantCulture) });
+		        }
+
+		        ExpirationMonths = new List<ListItem>
+		        {
+		            new ListItem {Display = Resources.GetString("January"), Id = 1},
+		            new ListItem {Display = Resources.GetString("February"), Id = 2},
+		            new ListItem {Display = Resources.GetString("March"), Id = 3},
+		            new ListItem {Display = Resources.GetString("April"), Id = 4},
+		            new ListItem {Display = Resources.GetString("May"), Id = 5},
+		            new ListItem {Display = Resources.GetString("June"), Id = 6},
+		            new ListItem {Display = Resources.GetString("July"), Id = 7},
+		            new ListItem {Display = Resources.GetString("August"), Id = 8},
+		            new ListItem {Display = Resources.GetString("September"), Id = 9},
+		            new ListItem {Display = Resources.GetString("October"), Id = 10},
+		            new ListItem {Display = Resources.GetString("November"), Id = 11},
+		            new ListItem {Display = Resources.GetString("December"), Id = 12}
+		        };
+		    }
 
 #if DEBUG
-			if(ConfigurationManager.GetPaymentSettings().PaymentMode == apcurium.MK.Common.Configuration.Impl.PaymentMethod.Braintree)
+			if(ConfigurationManager.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
 			{
 				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
@@ -103,6 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public CreditCardInfos Data { get; set; }
 
 
+        //todo: refactorer le setter
         public string CreditCardNumber
         {
             get{ return Data.CardNumber;}
@@ -115,10 +126,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (matches.Count > 0)
                 {
-                    if (VisaElectronFirstNumbers.Any(x => Data.CardNumber.StartsWith(x)) && Data.CardNumber.Count() == 16)
-                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == VisaElectron).Id;
+                    if (_visaElectronFirstNumbers.Any(x => Data.CardNumber.StartsWith(x)) &&
+                        Data.CardNumber.Count() == 16)
+                    {
+                        var id = CreditCardCompanies.Find(x => x.Display == VisaElectron).Id;
+                        if (id != null)
+                        {
+                            CreditCardType = (int) id;
+                        }
+                    }
                     else
-                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == Visa).Id;
+                    {
+                        var id = CreditCardCompanies.Find(x => x.Display == Visa).Id;
+                        if (id != null)
+                        {
+                            CreditCardType = (int) id;
+                        }
+                    }
                 }
                 else
                 {
@@ -126,15 +150,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Regex masterRgx = new Regex(MasterPattern, RegexOptions.IgnoreCase);
                     matches = masterRgx.Matches(Data.CardNumber);
                     if (matches.Count > 0)
-                        this.CreditCardType = (int)this.CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
+                    {
+                        var id = CreditCardCompanies.Find(x=> x.Display == MasterCard).Id;
+                        if (id != null)
+                            CreditCardType = (int)id;
+                    }
                     else
                     {
                         Regex amexRgx = new Regex(AmexPattern, RegexOptions.IgnoreCase);
                         matches = amexRgx.Matches(Data.CardNumber);
                         if (matches.Count > 0)
-                            this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Amex).Id;
+                        {
+                            var id = CreditCardCompanies.Find(x => x.Display == Amex).Id;
+                            if (id != null)
+                                CreditCardType = (int)id;
+                        }
                         else
-							this.CreditCardType = (int)this.CreditCardCompanies.Find(x => x.Display == Credit_Card_Generic).Id;
+                        {
+                            var i = CreditCardCompanies.Find(x => x.Display == CreditCardGeneric).Id;
+                            if (i != null)
+                                CreditCardType = (int)i;
+                        }
                     }
                 }
                 FirePropertyChanged("CreditCardNumber");
@@ -299,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(char.IsDigit(cardNumber, i))
                 {
                     if(len == 16) return false; // number has too many digits
-                    number[len++] = byte.Parse(cardNumber[i].ToString(), null);
+                    number[len++] = byte.Parse(cardNumber[i].ToString(CultureInfo.InvariantCulture), null);
                 }
             }
 

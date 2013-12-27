@@ -3,12 +3,7 @@ using SocialNetworks.Services;
 #endif
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Commands;
 using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -16,11 +11,9 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
-using apcurium.Framework;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 
@@ -28,7 +21,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private IApplicationInfoService _applicationInfoService;
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
 		public event EventHandler LoginSucceeded; 
@@ -52,12 +44,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+        public LoginViewModel(IAccountService accountService, IPushNotificationService pushService)
         {
-            _applicationInfoService = applicationInfoService;
-			_accountService = accountService;		
+            _accountService = accountService;		
             _pushService = pushService;
-
             CheckVersion();
         }
 
@@ -159,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (account != null)
                 {
                     needToHideProgress = false;
-                    this.Password = string.Empty;
+                    Password = string.Empty;
                 
 
                     InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
@@ -255,8 +245,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             LoginSucess();
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        Logger.LogError(ex);
                     }
                     finally
                     {
@@ -422,8 +413,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 #endif
-
-			_applicationInfoService = null;     
 
             RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)

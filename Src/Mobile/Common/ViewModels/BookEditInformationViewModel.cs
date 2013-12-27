@@ -1,33 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
 using TinyIoC;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.DesignPatterns.Serialization;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookEditInformationViewModel : BaseSubViewModel<Order>, IMvxServiceConsumer<IAccountService>
+    public class BookEditInformationViewModel : BaseSubViewModel<Order>
     {
-        private IAccountService _accountService;
         public BookEditInformationViewModel(string messageId, string order)
             : base(messageId)
         {
-            _accountService = this.GetService<IAccountService>();
-
             Order = JsonSerializer.DeserializeFromString<Order>(order);
             RideSettings = new RideSettingsViewModel( Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => 
@@ -55,9 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.Settings.ChargeTypeId = id;
             FirePropertyChanged(() => ChargeType);
         }
-
-
-
         public int? VehicleTypeId
         {
             get { return Order.Settings.VehicleTypeId; }
@@ -68,10 +53,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return Order.Settings.ChargeTypeId; }
             set { SetChargeTypeId(value); }
         }
-
-
-
-
         public ListItem[] Vehicles
         {
             get
@@ -184,34 +165,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return buildingName;
             }
-            else
-            {
-                return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
-            }
+            return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
         }
 
         private string FormatDateTime(DateTime? pickupDate)
         {
-            var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
+            var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:ddd, MMM d}, {0:" + formatTime + "}";
             string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
             return result;
         }
-        public string CultureInfoString
-        {
-            get
-            {
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
-                if (culture.IsNullOrEmpty())
-                {
-                    return "en-US";
-                }
-                else
-                {
-                    return culture;
-                }
-            }
-        }
+       
         public bool ShowPassengerName
         {
             get

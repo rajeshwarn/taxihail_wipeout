@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.ViewModels;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
@@ -16,8 +12,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookRatingViewModel : BaseSubViewModel<OrderRated>
     {
         private List<RatingModel> _ratingList;
-
-
         public List<RatingModel> RatingList
         {
             get { return _ratingList; }
@@ -85,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookRatingViewModel(string messageId):base(messageId)
         {
-            RatingList = BookingService.GetRatingType().Select(c => new RatingModel() 
+            RatingList = BookingService.GetRatingType().Select(c => new RatingModel
 			{
 				RatingTypeId = c.Id, 
 				RatingTypeName = c.Name 
@@ -98,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public BookRatingViewModel (string messageId, string orderId, string canRate="false"):base(messageId)
 		{
 			var ratingTypes = BookingService.GetRatingType ();
-            RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) 
+            RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
 			{
 				RatingTypeId = c.Id, 
 				RatingTypeName = c.Name 
@@ -117,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 var orderRatings = BookingService.GetOrderRating(Guid.Parse(orderId));
                 Note = orderRatings.Note;
-                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false)
+                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
 				{
 					RatingTypeId = c.RatingTypeId,
 					Score = c.Score,
@@ -127,9 +121,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        void HandleRatingPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void HandleRatingPropertyChanged (object sender, PropertyChangedEventArgs e)
         {
-			this.CanSubmit = _ratingList.All(c => c.Score != 0);
+			CanSubmit = _ratingList.All(c => c.Score != 0);
         }
 
         public IMvxCommand RateOrder
@@ -140,13 +134,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if(_ratingList.All(c => c.Score != 0))
                     {
-                        var orderRating = new OrderRatings()
+                        var orderRating = new OrderRatings
                         {
-                            Note = this.Note,
-                            OrderId = this.OrderId,
+                            Note = Note,
+                            OrderId = OrderId,
                             RatingScores =
-                                this._ratingList.Select(
-                                    c => new RatingScore() 
+                                _ratingList.Select(
+                                    c => new RatingScore
 								{ 
 									RatingTypeId = c.RatingTypeId, 
 									Score = c.Score, 

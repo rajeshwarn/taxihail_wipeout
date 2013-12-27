@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Models
 
         public RatingModel(bool canRate=false)
         {
-            this.CanRating = canRate;
+            CanRating = canRate;
         }
 
         private enum RatingState { Mad = 1, Unhappy = 2, Neutral = 3, Happy = 4, Ecstatic = 5 }

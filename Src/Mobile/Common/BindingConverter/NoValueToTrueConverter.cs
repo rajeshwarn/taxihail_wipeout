@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Cirrious.MvvmCross.Converters;
@@ -11,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
     public class NoValueToTrueConverter : MvxBaseValueConverter, IMvxServiceConsumer<IMvxTextProvider>
     {
-        public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value == null)
             {

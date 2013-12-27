@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -19,12 +13,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if(!IsAddNew)
                 {
-                    return "\u2022\u2022\u2022\u2022 " + this.CreditCardDetails.Last4Digits;
+                    return "\u2022\u2022\u2022\u2022 " + CreditCardDetails.Last4Digits;
                 }
                 return "";
-            }
-            set{
-                this.Last4DigitsWithStars = value;
             }
         }
         public bool IsFirst { get; set; }
@@ -36,11 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
-                                      {
-
-                                          this.MessengerHub.Publish(new RemoveCreditCard(this,this.CreditCardDetails.CreditCardId));
-                                      });
+                return GetCommand(() => MessengerHub.Publish(new RemoveCreditCard(this,CreditCardDetails.CreditCardId)));
             }
         }
     }

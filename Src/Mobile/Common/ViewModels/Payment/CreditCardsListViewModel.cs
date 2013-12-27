@@ -2,11 +2,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.Data;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -24,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public ObservableCollection<CreditCardViewModel> CreditCards
         {
             get { return _creditCards; }
-            set { this._creditCards = value; FirePropertyChanged("CreditCards"); }
+            set { _creditCards = value; FirePropertyChanged("CreditCards"); }
         }
 
         private bool _hasCards;
@@ -48,7 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public CreditCardsListViewModel(string messageId):base(messageId)
         {
-            var accountService = this.GetService<IAccountService>();
             LoadCreditCards();
         }
 
@@ -69,9 +66,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            this.MessageService.ShowMessage(this.Resources.GetString("RemoveCreditCardTitle"),
-                this.Resources.GetString("RemoveCreditCardMessage"),
-                this.Resources.GetString("YesButton"),
+            MessageService.ShowMessage(Resources.GetString("RemoveCreditCardTitle"),
+                Resources.GetString("RemoveCreditCardMessage"),
+                Resources.GetString("YesButton"),
                 () =>
                 {
                     AccountService.RemoveCreditCard(creditCardId);
@@ -90,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Resources.GetString("CancelBoutton"),
+                Resources.GetString("CancelBoutton"),
                 () => { });
                                                                   
         }
@@ -104,18 +101,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     FriendlyName = Resources.GetString("AddCreditCardTitle"),
                 });
-                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => 
-				                                                                               {
-					return new CreditCardViewModel()
-                	{
-	                    CreditCardDetails = x,
-	                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
-	                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
-	                    IsFirst = x.Equals(creditCards.First()),
-	                    IsLast = x.Equals(creditCards.Last()),
-	                    Picture = x.CreditCardCompany,
-					};
-				}));
+                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel
+                {
+                    CreditCardDetails = x,
+                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
+                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
+                    IsFirst = x.Equals(creditCards.First()),
+                    IsLast = x.Equals(creditCards.Last()),
+                    Picture = x.CreditCardCompany,
+                }));
+                //todo utiliser une propriété calculée
                 HasCards = CreditCards.Any();
             });
         }
@@ -128,11 +123,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (creditCard.IsAddNew)
                     {
-                        this.NavigateToAddCreditCard.Execute();
+                        NavigateToAddCreditCard.Execute();
                     }
                     else
                     {
-                        this.SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardDetails.CreditCardId);
+                        SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardDetails.CreditCardId);
                     }
                 });
             }
@@ -146,9 +141,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     InvokeOnMainThread(()=>
                     {
-                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel()
+                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
                          {
-                             CreditCardDetails = new CreditCardDetails()
+                             CreditCardDetails = new CreditCardDetails
                              {
                                  CreditCardCompany = newCreditCard.CreditCardCompany,
                                  CreditCardId = newCreditCard.CreditCardId,
@@ -173,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand<Guid>(creditCardId => this.ReturnResult(creditCardId));
+                return GetCommand<Guid>(ReturnResult);
             }
         }
     }

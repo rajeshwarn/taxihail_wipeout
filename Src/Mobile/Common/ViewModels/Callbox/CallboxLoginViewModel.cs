@@ -3,12 +3,13 @@ using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
-        private IAccountService _accountService;
+        private readonly IAccountService _accountService;
 
         public CallboxLoginViewModel(IAccountService accountService)
         {
@@ -84,10 +85,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                 if (account != null)
                 {
-                    this.Password = string.Empty;
-					if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
+                    Password = string.Empty;
+					if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
                     {
-                        var active = _accountService.GetActiveOrdersStatus();
                         RequestNavigate<CallboxOrderListViewModel>(true);
                     }
                     else

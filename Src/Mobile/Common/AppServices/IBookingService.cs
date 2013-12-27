@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 using Address = apcurium.MK.Common.Entity.Address;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -50,9 +51,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 			    
 	    List<RatingType> GetRatingType();
 
-	    apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId);
+	    OrderRatings GetOrderRating(Guid orderId);
 
-	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
+	    void SendRatingReview(OrderRatings orderRatings);
 
     }
 }

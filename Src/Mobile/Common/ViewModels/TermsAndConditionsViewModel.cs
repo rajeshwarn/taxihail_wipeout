@@ -1,16 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Booking.Mobile.Client;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.Text;
 using apcurium.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -22,16 +13,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public TermsAndConditionsViewModel ( string messageId ) : base(messageId)
 		{
-
 		}
 
 		public IMvxCommand RejectTermsAndConditions
 		{
 			get
 			{
-                return GetCommand(() => { 
-                    ReturnResult(false);
-				});
+                return GetCommand(() => ReturnResult(false));
 			}
 		}
 
@@ -39,10 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand (() =>
-				{
-                    ReturnResult(true);
-				});
+				return GetCommand (() => ReturnResult(true));
 
 			}			
 		}

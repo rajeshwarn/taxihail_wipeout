@@ -1,28 +1,20 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using System.ComponentModel;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Client;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration;
 using System.Globalization;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,42 +23,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		IMvxServiceConsumer<IBookingService>,
 		IMvxServiceConsumer<ICacheService>
 	{
-		IBookingService _bookingService;
-		IAccountService _accountService;
+	    readonly IBookingService _bookingService;
 
 		public BookConfirmationViewModel(string order)
 		{
-			_accountService = this.GetService<IAccountService>();
 			_bookingService = this.GetService<IBookingService>();
 			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
 			RideSettings = new RideSettingsViewModel(Order.Settings);
-
-
-
-			RideSettings.OnPropertyChanged().Subscribe(p =>
-			{
-				FirePropertyChanged(() => RideSettings);
-			});
+            RideSettings.OnPropertyChanged().Subscribe(p => FirePropertyChanged(() => RideSettings));
 		}
 
-		void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-            
-		}
 
 		public override void Load()
 		{
-			base.Load();
-
-			Console.WriteLine("Opening confirmation view....");
-
+		    base.Load();
 			ShowWarningIfNecessary();
-
-
 			ShowFareEstimateAlertDialogIfNecessary();
-
-			Console.WriteLine("Done opening confirmation view....");
-
 		}
 
 		public string FareEstimate
@@ -101,12 +73,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public string OrderPassengerNumber
 		{
-			get { return Order.Settings.Passengers.ToString(); }
+			get { return Order.Settings.Passengers.ToString(CultureInfo.InvariantCulture); }
 		}
 
 		public string OrderLargeBagsNumber
 		{
-			get { return Order.Settings.LargeBags.ToString(); }
+			get { return Order.Settings.LargeBags.ToString(CultureInfo.InvariantCulture); }
 		}
 
 		public string OrderName
@@ -133,7 +105,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var ret = true;
+// ReSharper disable once RedundantAssignment
+                var ret = true;
 				try
 				{
 					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
@@ -150,6 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
@@ -167,6 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
@@ -184,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>()
+				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
 				{
 					{ "apt", Order.PickupAddress.Apartment },
 					{ "ringCode", Order.PickupAddress.RingCode },
@@ -282,7 +257,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Close();
 						MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 					}
-					catch (Exception ex)
+					catch
 					{
 						InvokeOnMainThread(() =>
 						{
@@ -336,6 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 
 				MessageService.ShowMessage(Resources.GetString("WarningTitle"), 
+// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
 					validationInfo.Message, Resources.GetString("ContinueButton"), () => validationInfo.ToString(), Resources.GetString("CancelBoutton"), () => RequestClose(this));
 			}
 		}
@@ -344,6 +320,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
@@ -402,53 +379,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatBuildingName(string buildingName)
 		{
-			if (buildingName.HasValue())
+		    if (buildingName.HasValue())
 			{
 				return buildingName;
 			}
-			else
-			{
-				return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
-			}
+		    return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
 		}
 
-		private string FormatDateTime(DateTime? pickupDate)
-		{
-			var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
-			string format = "{0:dddd, MMMM d}, {0:" + formatTime + "}";
-			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
-			return result;
-		}
-
-		private string FormatPrice(double? price)
-		{
-			if (price.HasValue)
+	    private string FormatPrice(double? price)
+	    {
+	        if (price.HasValue)
 			{
 				var culture = ConfigurationManager.GetSetting("PriceFormat");
 				return string.Format(new CultureInfo(culture), "{0:C}", price);
 			}
-			else
-			{
-				return "";
-			}
-
-		}
-
-		public string CultureInfoString
-		{
-			get
-			{
-				var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
-				if (culture.IsNullOrEmpty())
-				{
-					return "en-US";
-				}
-				else
-				{
-					return culture;
-				}
-			}
-		}
+	        return string.Empty;
+	    }
 	}
 }
 

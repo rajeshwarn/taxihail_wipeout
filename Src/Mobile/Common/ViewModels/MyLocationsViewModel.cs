@@ -10,27 +10,25 @@ using System.Linq;
 using System.Threading;
 using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Extensions;
+
 namespace apcurium.MK.Booking.Mobile
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-        private IAccountService _accountService;
-        protected override void Initialize ()
+        private readonly IAccountService _accountService;
+
+        public MyLocationsViewModel()
         {
-            base.Initialize ();
             _accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
         }
 
         public override void Start(bool firstStart = false)
         {
-            base.Start ();
-
+            base.Start (firstStart);
             LoadAllAddresses();
         }
-       
 
         private ObservableCollection<AddressViewModel> _allAddresses = new ObservableCollection<AddressViewModel>();
         public ObservableCollection<AddressViewModel> AllAddresses { 
@@ -68,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile
                 LoadFavoriteAddresses(),
                 LoadHistoryAddresses()
             };
-            return Task.Factory.ContinueWhenAll<AddressViewModel[]>(tasks, t => {
+            return Task.Factory.ContinueWhenAll(tasks, t => {
 
                 AllAddresses.Clear ();
                 AllAddresses.Add (new AddressViewModel{ Address =  new Address

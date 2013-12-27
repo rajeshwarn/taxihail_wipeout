@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsPlaceSearch{ get; set; }
 
-        private void OnSearchStart ()
+        private void OnSearchStart()
         {
             IsSearching = true;
             Logger.LogMessage ("OnSearchStarted");
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Disposable = null;
         }
 
-        private void OnSearch ()
+        private void OnSearch()
         {
             IsSearching = true;
 
@@ -80,9 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return SearchFavoriteAndHistoryAddresses().Concat(SearchGeocodeAddresses());                
             })
-            .Subscribe(addresses=>{
-                RefreshResults(addresses);
-            });
+            .Subscribe(RefreshResults);
 
         }
 
@@ -105,9 +103,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged (() => IsSearching);
             }
         }
-
-
-     
         protected IEnumerable<AddressViewModel> SearchPlaces ()
         {           
             var position = LocationService.BestPosition;
@@ -167,6 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 AddressViewModels.Clear ();                   
 
                 AddressViewModels.AddRange (result);
+                //todo: clarify this usage
                 BubbleSort (AddressViewModels);
                 AddressViewModels.ForEach (a => 
                 {

@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
-        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
+	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
 		public LocationDetailViewModel (string address)
 		{
