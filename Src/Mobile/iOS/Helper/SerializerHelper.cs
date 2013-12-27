@@ -3,7 +3,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 
 namespace apcurium.MK.Booking.Mobile.Client

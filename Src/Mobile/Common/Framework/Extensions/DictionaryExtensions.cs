@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public static class DictionaryExtensions
     {
         public static TValue FindOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key,
-                                                        Func<TValue> factory)
+            Func<TValue> factory)
         {
             TValue value;
 
@@ -25,9 +25,10 @@ namespace apcurium.Framework.Extensions
             return GetValueOrDefault(dictionary, key, default(TValue));
         }
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key,
+            TValue defaultValue)
         {
-            var value = defaultValue;
+            TValue value = defaultValue;
 
             if (dictionary != null)
             {
@@ -38,7 +39,8 @@ namespace apcurium.Framework.Extensions
             return value;
         }
 
-        public static IEnumerable<TKey> RemoveKeys<TKey, TValue>(this IDictionary<TKey, TValue> items, IEnumerable<TKey> range)
+        public static IEnumerable<TKey> RemoveKeys<TKey, TValue>(this IDictionary<TKey, TValue> items,
+            IEnumerable<TKey> range)
         {
             return range.Where(k => items.Remove(k)).ToList();
         }

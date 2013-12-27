@@ -2,7 +2,6 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Models;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

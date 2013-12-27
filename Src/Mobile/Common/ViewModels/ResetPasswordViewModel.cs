@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;

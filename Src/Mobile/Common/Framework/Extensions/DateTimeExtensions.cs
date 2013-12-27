@@ -1,7 +1,6 @@
 ﻿using System;
-using apcurium.Framework.Extensions.ValueType;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public static class DateTimeExtensions
     {
@@ -18,29 +17,27 @@ namespace apcurium.Framework.Extensions
 
         public static DateTime AddWeekDays(this DateTime instance, int days)
         {
-            var sign = Math.Sign(days);
-            var unsignedDays = Math.Abs(days);
-            for (var i = 0; i < unsignedDays; i++)
+            int sign = Math.Sign(days);
+            int unsignedDays = Math.Abs(days);
+            for (int i = 0; i < unsignedDays; i++)
             {
                 do
                 {
                     instance = instance.AddDays(sign);
-                }
-                while (instance.IsWeekEnd());
+                } while (instance.IsWeekEnd());
             }
             return instance;
         }
 
         public static DateTime AddWeekDays(this DateTime instance, TimeSpan timeSpan)
         {
-            return AddWeekDays(instance,Convert.ToInt32( timeSpan.TotalDays));
+            return AddWeekDays(instance, Convert.ToInt32(timeSpan.TotalDays));
         }
 
 
-      
         public static DateTime AddWeeks(this DateTime dateTime, int weeks)
         {
-            return dateTime.AddDays(weeks * 7);
+            return dateTime.AddDays(weeks*7);
         }
     }
 }

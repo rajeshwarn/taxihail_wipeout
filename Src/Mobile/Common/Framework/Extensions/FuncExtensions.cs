@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public static class FuncExtensions
     {
@@ -39,19 +39,19 @@ namespace apcurium.Framework.Extensions
         public static Func<T, Null> ToFunc<T>(this Action<T> action)
         {
             return item =>
-                       {
-                           action(item);
-                           return null;
-                       };
+            {
+                action(item);
+                return null;
+            };
         }
 
         public static Func<T, T> ToInterceptor<T>(this Action<T> action)
         {
             return item =>
-                       {
-                           action(item);
-                           return item;
-                       };
+            {
+                action(item);
+                return item;
+            };
         }
 
         public static Func<Null, Null> ToFunc(this Action action)
@@ -62,10 +62,10 @@ namespace apcurium.Framework.Extensions
         public static Func<T, T> ToFunc<T>(this Action action)
         {
             return item =>
-                       {
-                           action();
-                           return item;
-                       };
+            {
+                action();
+                return item;
+            };
         }
 
         public static Func<U> ToFunc<T, U>(this Func<T> func)

@@ -5,11 +5,11 @@ using SocialNetworks.Services.OAuth;
 #endif
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Mvx;
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.Binding.Binders;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
-using MK.Booking.Mobile.Infrastructure.Practices;
 using Cirrious.MvvmCross.Binding.Android;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Converters;

@@ -1,12 +1,7 @@
-using System;
-
 namespace apcurium.MK.Booking.Mobile.Style
 {
     public class ColorDefinition
     {
-        public ColorDefinition()
-        {
-        }
 
         public int Red {
             get;

@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 using TinyIoC;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;

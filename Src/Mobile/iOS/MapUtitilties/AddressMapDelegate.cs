@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtilities

@@ -1,7 +1,5 @@
-using System;
 using System.IO;
 using ServiceStack.Text;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Style
 {
@@ -20,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Style
                 }
                 return _current;
             }
-
         }
 
         private static StyleManager LoadStyle()
@@ -40,12 +37,13 @@ namespace apcurium.MK.Booking.Mobile.Style
             
             using (var stream = typeof(StyleManager).Assembly.GetManifestResourceStream( resourceName))
             {
-                using (var reader = new StreamReader(stream))
-                {
+                if (stream != null)
+                    using (var reader = new StreamReader(stream))
+                    {
                     
-                    string serializedData = reader.ReadToEnd();
-                    result = JsonSerializer.DeserializeFromString<StyleManager>(serializedData);
-                }
+                        string serializedData = reader.ReadToEnd();
+                        result = JsonSerializer.DeserializeFromString<StyleManager>(serializedData);
+                    }
             }
 
             return result;

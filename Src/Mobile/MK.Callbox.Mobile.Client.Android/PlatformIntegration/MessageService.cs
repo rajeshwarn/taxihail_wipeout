@@ -4,6 +4,7 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;

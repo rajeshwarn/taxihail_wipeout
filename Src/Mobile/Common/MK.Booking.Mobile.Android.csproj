@@ -138,11 +138,9 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppContext.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
-    <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
@@ -167,9 +165,6 @@
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
-    <Compile Include="Practices\Bootstrapper.cs" />
-    <Compile Include="Practices\IModule.cs" />
-    <Compile Include="Practices\ServiceLocator.cs" />
     <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -217,7 +212,6 @@
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
-    <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
@@ -232,7 +226,7 @@
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
     <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
-    <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
@@ -240,10 +234,10 @@
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
-    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
-    <Compile Include="Extensions\IObservableExtensions.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Cirrious.MvvmCross.Converters;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
 	public class EnumToBoolConverter: MvxBaseValueConverter
 	{

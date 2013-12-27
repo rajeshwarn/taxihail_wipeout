@@ -11,8 +11,6 @@ using Android.Views;
 using Android.Widget;
 using System.Text.RegularExpressions;
 using TinyIoC;
-
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.AppServices;

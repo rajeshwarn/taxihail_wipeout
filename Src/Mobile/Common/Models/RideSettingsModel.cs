@@ -1,15 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Models
 {
     public class RideSettingsModel
     {

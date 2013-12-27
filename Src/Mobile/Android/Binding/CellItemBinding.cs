@@ -1,13 +1,7 @@
 using System;
 using Cirrious.MvvmCross.Binding.Android.Target;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Android.Widget;
-using Cirrious.MvvmCross.Binding.Android;
-using Cirrious.MvvmCross.Binding;
-using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
 using Cirrious.MvvmCross.Binding.Interfaces;
-using apcurium.MK.Booking.Mobile.Client.Adapters;
-using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -22,8 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
         private readonly ListViewCell2 _control;
         private CellItemBindingProperty _property;
-		private object _currentValue;
-		
+
         public CellItemBinding(ListViewCell2 control, CellItemBindingProperty property)
 		{
 			_control = control;

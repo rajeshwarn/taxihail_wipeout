@@ -57,18 +57,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         // What fraction (1/x) of the screen the user must swipe to indicate a page change
         private static int FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE = 4;
         private static int INVALID_SCREEN = -1;
-        /*
-         * Velocity of a swipe (in density-independent pixels per second) to force a swipe to the
-         * next/previous screen. Adjusted into mDensityAdjustedSnapVelocity on init.
-         */
-        private static int SNAP_VELOCITY_DIP_PER_SECOND = 600;
         // Argument to getVelocity for units to give pixels per second (1 = pixels per millisecond).
         private static int VELOCITY_UNIT_PIXELS_PER_SECOND = 1000;
         private static int TOUCH_STATE_REST = 0;
         private static int TOUCH_STATE_HORIZONTAL_SCROLLING = 1;
         private static int TOUCH_STATE_VERTICAL_SCROLLING = -1;
         private int mCurrentScreen;
-        private int mDensityAdjustedSnapVelocity;
+        private int mDensityAdjustedSnapVelocity = 0;
         private bool mFirstLayout = true;
         private float mLastMotionX;
         private float mLastMotionY;

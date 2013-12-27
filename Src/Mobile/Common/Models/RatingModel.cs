@@ -1,11 +1,11 @@
 using System;
-using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Models
 {
+    //todo remove unused private field
     public class RatingModel : BaseViewModel
     {
         public Guid RatingTypeId { get; set; }

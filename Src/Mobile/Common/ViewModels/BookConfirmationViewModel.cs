@@ -1,12 +1,11 @@
 using System;
-using System.ComponentModel;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 using System;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 

@@ -1,6 +1,5 @@
 using Cirrious.MvvmCross.Converters.Visibility;
 using apcurium.MK.Booking.Mobile.BindingConverter;
-using BindingConverter;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {

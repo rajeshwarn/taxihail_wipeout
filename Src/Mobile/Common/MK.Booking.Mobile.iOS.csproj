@@ -105,28 +105,22 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Practices\Bootstrapper.cs" />
-    <Compile Include="Practices\IModule.cs" />
-    <Compile Include="Practices\ServiceLocator.cs" />
+    <Compile Include="Extensions\DisposableExtensions.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
+    <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
-    <Compile Include="Infrastructure\IAppContext.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
-    <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
-    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
-    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
-    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
     <Compile Include="AppServices\IAccountService.cs" />
     <Compile Include="AppServices\IBookingService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
-    <Compile Include="AppServices\ModuleService.cs" />
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
@@ -210,7 +204,6 @@
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
-    <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
@@ -246,7 +239,6 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Data\TutorialContent.cs" />
-    <Compile Include="Extensions\IDisposableExtensions.cs" />
     <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
@@ -254,12 +246,10 @@
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
-    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="Extensions\IObservableExtensions.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="ViewModels\Payment\Strings.Base.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />

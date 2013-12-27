@@ -1,6 +1,6 @@
 using System;
 
-namespace apcurium.Framework.Extensions.ValueType
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 {
     public class EnumSupport<T> : ValueSupport<T>
     {
@@ -8,7 +8,7 @@ namespace apcurium.Framework.Extensions.ValueType
 
         public EnumSupport()
         {
-            var type = Enum.GetUnderlyingType(typeof (T));
+            Type type = Enum.GetUnderlyingType(typeof (T));
 
             support = ValueSupport.Get(type);
         }

@@ -1,27 +1,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
-using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using System.Threading.Tasks;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.BindingConverter;
 using System.Drawing;
-using System.Threading;
-using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client

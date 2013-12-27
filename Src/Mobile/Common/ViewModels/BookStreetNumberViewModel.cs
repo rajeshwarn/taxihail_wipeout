@@ -1,8 +1,8 @@
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
-using apcurium.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;

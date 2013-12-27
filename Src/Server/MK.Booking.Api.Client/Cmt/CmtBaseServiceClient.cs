@@ -9,11 +9,8 @@ using ServiceStack.Text;
 
 #endregion
 
-#if !CLIENT
-#else
+#if CLIENT
 using ServiceStack.Common.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
-
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.Cmt

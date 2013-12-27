@@ -1,4 +1,4 @@
-using System;
+using apcurium.MK.Booking.Mobile.Messages;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels

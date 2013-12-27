@@ -1,31 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
-
 using System.Diagnostics;
-
-using apcurium.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class TouchGesture :UIGestureRecognizer
     {
-
-         private Stopwatch _stopWatch;
+        private Stopwatch _stopWatch;
 
         public event EventHandler TouchBegin;
 
-        public TouchGesture ()  : base()
+        public TouchGesture ()
         {
             Initialize();                       
         }
-
-                    
-
         public TouchGesture (IntPtr handle) : base(handle)
         {
             Initialize();

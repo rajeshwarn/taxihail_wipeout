@@ -1,13 +1,4 @@
-using System;
-using System.IO;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using MonoTouch.EventKit;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

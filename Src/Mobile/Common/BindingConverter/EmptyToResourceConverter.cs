@@ -1,11 +1,11 @@
 using System;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Converters;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
 	public class EmptyToResourceConverter: MvxBaseValueConverter, IMvxServiceConsumer<IAppResource>
 	{
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile
 			if(string.IsNullOrEmpty((string)parameter)) {
 				return null;
 			}
-			return this.GetService<IAppResource>().GetString(parameter.ToString());
+			return this.GetService().GetString(parameter.ToString());
 		}
 	}
 }

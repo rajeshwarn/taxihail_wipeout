@@ -1,7 +1,5 @@
-using System;
-
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.Foundation;
-using apcurium.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

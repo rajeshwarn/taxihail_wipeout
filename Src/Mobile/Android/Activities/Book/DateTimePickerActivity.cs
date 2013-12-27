@@ -61,13 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 return new DateTime(now.Year, now.Month, now.Day, now.Hour + 1,  0, 0 );
             }
-            else
-            {
-                return new DateTime(now.Year, now.Month, now.Day, now.Hour,  i, 0 );
-            }
-
-
-            DateTime.Now.AddMinutes(TIME_PICKER_INTERVAL);
+            return new DateTime(now.Year, now.Month, now.Day, now.Hour,  i, 0 );
         }
         private void TimeOnClick(object sender, EventArgs e)
         {

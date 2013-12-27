@@ -7,7 +7,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Util;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Callbox.Mobile.Client.Helpers;
 

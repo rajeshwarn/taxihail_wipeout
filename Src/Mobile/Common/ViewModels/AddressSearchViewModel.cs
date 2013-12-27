@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
@@ -10,7 +9,6 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
 using System.ComponentModel;

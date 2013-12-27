@@ -1,5 +1,4 @@
 using System;
-using System.Reactive;
 using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
@@ -27,10 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
             {
                 Start();
             }
-            return Positions.Where(p =>
-            {
-                return p.Error <= maxAccuracy;
-            }).Take(timeout).Take(1);
+            return Positions.Where(p => p.Error <= maxAccuracy).Take(timeout).Take(1);
         }
 
         public abstract Position LastKnownPosition { get; }
@@ -68,11 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
             if((falseIfBetter.Time - trueIfBetter.Time).Duration() > ValidCoordinateTime)            
             {
-                Console.WriteLine("IsBetterThan : too old");
                 return false;
             }
 
-            Console.WriteLine( string.Format("IsBetterThan current error {0}, other error {1}", trueIfBetter.Error, falseIfBetter.Error) );
+// ReSharper disable once LocalizableElement
+            Console.WriteLine("IsBetterThan current error {0}, other error {1}", trueIfBetter.Error, falseIfBetter.Error);
             return trueIfBetter.Error < falseIfBetter.Error;
         }
     }

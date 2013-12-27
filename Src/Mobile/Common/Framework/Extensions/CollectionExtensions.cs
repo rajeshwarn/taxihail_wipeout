@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     /// <summary>
-    /// Provides Extensions Methods for ICollection.
+    ///     Provides Extensions Methods for ICollection.
     /// </summary>
     public static class CollectionExtensions
     {
         /// <summary>
-        /// Adds a new item with the default constructor
+        ///     Adds a new item with the default constructor
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="items"></param>
@@ -18,7 +18,7 @@ namespace apcurium.Framework.Extensions
         public static T AddNew<T>(this ICollection<T> items)
             where T : new()
         {
-            T item = new T();
+            var item = new T();
 
             items.Add(item);
 
@@ -26,7 +26,7 @@ namespace apcurium.Framework.Extensions
         }
 
         /// <summary>
-        /// Adds the items of the specified collection to the end of the ICollection.
+        ///     Adds the items of the specified collection to the end of the ICollection.
         /// </summary>
         /// <typeparam name="T">The type of the items.</typeparam>
         /// <param name="collection">Collection in which to insert items.</param>
@@ -37,7 +37,7 @@ namespace apcurium.Framework.Extensions
         }
 
         /// <summary>
-        /// Removes items in a collection that are identified with a predicate.
+        ///     Removes items in a collection that are identified with a predicate.
         /// </summary>
         /// <typeparam name="T">the type of the items</typeparam>
         /// <param name="collection">Collection in which to remove items.</param>
@@ -52,7 +52,7 @@ namespace apcurium.Framework.Extensions
 
 
         /// <summary>
-        /// Replaces the items in a collection with a new set of items.
+        ///     Replaces the items in a collection with a new set of items.
         /// </summary>
         /// <typeparam name="T">The type of items.</typeparam>
         /// <param name="collection">The collection who's content will be replaced.</param>
@@ -76,13 +76,15 @@ namespace apcurium.Framework.Extensions
             }
         }
 
-        
-        public static void AddRangeDistinct<T>(this ICollection<T> collection, IEnumerable<T> items, IEqualityComparer<T> comparer)
+
+        public static void AddRangeDistinct<T>(this ICollection<T> collection, IEnumerable<T> items,
+            IEqualityComparer<T> comparer)
         {
             AddRangeDistinct(collection, items, comparer.Equals);
         }
 
-        public static void AddRangeDistinct<T>(this ICollection<T> collection, IEnumerable<T> items, Func<T, T, bool> predicate)
+        public static void AddRangeDistinct<T>(this ICollection<T> collection, IEnumerable<T> items,
+            Func<T, T, bool> predicate)
         {
             items.ForEach(item => collection.AddDistinct(item, predicate));
         }
@@ -90,7 +92,7 @@ namespace apcurium.Framework.Extensions
         public static T FindOrCreate<T>(this ICollection<T> collection, Func<T, bool> predicate, Func<T> factory)
             where T : class
         {
-            var value = collection.FirstOrDefault(predicate);
+            T value = collection.FirstOrDefault(predicate);
 
             if (value == null)
             {

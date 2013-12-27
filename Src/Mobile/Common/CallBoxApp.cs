@@ -1,8 +1,8 @@
+using apcurium.MK.Booking.Mobile.Mvx;
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using MK.Booking.Mobile.Infrastructure.Mvx;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client;

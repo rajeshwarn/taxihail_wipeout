@@ -47,9 +47,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 				Context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();
 			}
-			catch (Android.Content.ActivityNotFoundException ex)
+			catch
 			{
-
 				Toast.MakeText(Context, resource.GetString("NoMailClient"), ToastLength.Short).Show();
 			}
 		}

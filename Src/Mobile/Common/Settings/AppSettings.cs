@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
-using System.Reflection;
 using System.IO;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Extensions;
 using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Settings
@@ -21,12 +16,13 @@ namespace apcurium.MK.Booking.Mobile.Settings
         {
             using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
-                using (StreamReader reader = new StreamReader(stream)) 
-				{
-                    string serializedData = reader.ReadToEnd ();
-                    _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
-                }
-            }
+			    if (stream != null)
+			        using (var reader = new StreamReader(stream)) 
+			        {
+			            string serializedData = reader.ReadToEnd ();
+			            _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
+			        }
+			}
         }
 
         public bool ErrorLogEnabled {
@@ -48,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public string ServiceUrl {
             get {
-                string url = "";
+                string url;
                 try {
                     url = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
                 } catch {
@@ -57,9 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
                 if (string.IsNullOrEmpty (url)) {
                     
                     return _data.ServiceUrl;
-                } else {
-                    return url;
                 }
+                return url;
             }
             set {
                 if (CanChangeServiceUrl) {

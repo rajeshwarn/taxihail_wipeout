@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-
-namespace apcurium.Framework.Extensions.ValueType
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 {
     public static class ValueSupport
     {
@@ -17,16 +16,16 @@ namespace apcurium.Framework.Extensions.ValueType
             //        { typeof(Int32), new Int32Support() },
             //        { typeof(Byte), new ByteSupport() }
             //    });
-            support = new Dictionary<Type, IValueSupport>()
-                {
-                    { typeof(Int32), new Int32Support() },
-                    { typeof(Byte), new ByteSupport() }
-                };
+            support = new Dictionary<Type, IValueSupport>
+            {
+                {typeof (Int32), new Int32Support()},
+                {typeof (Byte), new ByteSupport()}
+            };
         }
 
         public static IValueSupport<T> Get<T>()
         {
-            var type = typeof (T);
+            Type type = typeof (T);
 
             if (type.IsEnum)
             {

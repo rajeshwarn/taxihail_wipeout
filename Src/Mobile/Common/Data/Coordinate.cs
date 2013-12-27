@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 
 namespace apcurium.MK.Booking.Mobile.Data
 {
@@ -22,18 +17,15 @@ namespace apcurium.MK.Booking.Mobile.Data
                 {
                     return CoordinatePrecision.Fine;
                 }
-                else if (acc <= (int)CoordinatePrecision.Medium)
+                if (acc <= (int)CoordinatePrecision.Medium)
                 {
                     return CoordinatePrecision.Medium;
                 }
-                else if (acc <= (int)CoordinatePrecision.Coarse)
+                if (acc <= (int)CoordinatePrecision.Coarse)
                 {
                     return CoordinatePrecision.Coarse;
                 }
-                else
-                {
-                    return CoordinatePrecision.BallPark;
-                }
+                return CoordinatePrecision.BallPark;
             }
         }
 
@@ -47,23 +39,17 @@ namespace apcurium.MK.Booking.Mobile.Data
                 {
                     return CoordinateRefreshTime.ALongTimeAgo;
                 }
-                else
+                var time = new DateTime(RefreshTimeInTicks);
+                var refreshSpan = DateTime.Now.Subtract(time);
+                if (refreshSpan <= TimeSpan.FromMinutes(2))
                 {
-                    var time = new DateTime(RefreshTimeInTicks);
-                    var refreshSpan = DateTime.Now.Subtract(time);
-                    if (refreshSpan <= TimeSpan.FromMinutes(2))
-                    {
-                        return CoordinateRefreshTime.Recently;
-                    }
-                    else if (refreshSpan <= TimeSpan.FromMinutes(10))
-                    {
-                        return CoordinateRefreshTime.NotRecently;
-                    }
-                    else
-                    {
-                        return CoordinateRefreshTime.ALongTimeAgo;
-                    }
+                    return CoordinateRefreshTime.Recently;
                 }
+                if (refreshSpan <= TimeSpan.FromMinutes(10))
+                {
+                    return CoordinateRefreshTime.NotRecently;
+                }
+                return CoordinateRefreshTime.ALongTimeAgo;
             }
         }
         

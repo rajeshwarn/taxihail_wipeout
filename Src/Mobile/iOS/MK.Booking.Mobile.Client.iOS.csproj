@@ -345,7 +345,6 @@
     <Compile Include="Controls\DateTimePicker.cs" />
     <Compile Include="Controls\BarButtonItem.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
-    <Compile Include="PlatformIntegration\AddressBookService.cs" />
     <Compile Include="Views\RefineAddressView.cs">
       <DependentUpon>RefineAddressView.xib</DependentUpon>
     </Compile>

@@ -9,10 +9,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.Framework.Extensions;
 using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     /// <summary>
-    /// Provides Extensions Methods for IEnumerable.
+    ///     Provides Extensions Methods for IEnumerable.
     /// </summary>
     public static class EnumerableExtensions
     {
@@ -78,9 +78,9 @@ namespace apcurium.Framework.Extensions
 
         public static int IndexOf<T>(this IEnumerable<T> items, T item, Func<T, T, bool> predicate)
         {
-            var index = 0;
+            int index = 0;
 
-            foreach (var instance in items)
+            foreach (T instance in items)
             {
                 if (predicate(item, instance))
                 {
@@ -98,7 +98,7 @@ namespace apcurium.Framework.Extensions
             return items.Count() == items.Distinct().Count();
         }
 
-       
+
         public static TResult SingleOrDefault<T, TResult>(this IEnumerable<T> items, Func<T, TResult> selector)
         {
             T result = items.SingleOrDefault();

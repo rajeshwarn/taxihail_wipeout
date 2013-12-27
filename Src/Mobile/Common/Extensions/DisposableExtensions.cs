@@ -3,7 +3,7 @@ using System.Reactive.Disposables;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
-    public static class IDisposableExtensions
+    public static class DisposableExtensions
     {
 		public static void DisposeWith(this IDisposable disposable, CompositeDisposable composite)
         {
@@ -22,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
                 disposable.Dispose();
             }
             composite.Clear();
-
 
         }
     }

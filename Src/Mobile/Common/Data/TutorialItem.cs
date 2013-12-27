@@ -1,20 +1,12 @@
-using System;
-
 namespace apcurium.MK.Booking.Mobile.Data
 {
     public class TutorialItem
     {
-        public TutorialItem ()
-        {
-        }
-
         public int Position
         {
             get;
             set;
         }
-
-
         public string TopTitle {
             get;
             set;
@@ -38,9 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Data
             get;
             set;
         }
-
-
-
             
     }
 }

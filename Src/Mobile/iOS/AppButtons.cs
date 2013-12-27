@@ -1,9 +1,8 @@
 using System;
 using System.Linq;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client

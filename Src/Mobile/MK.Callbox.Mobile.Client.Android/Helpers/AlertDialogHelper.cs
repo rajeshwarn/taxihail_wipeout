@@ -2,7 +2,7 @@ using System;
 using Android.App;
 using Android.Content;
 using Android.Widget;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Helpers
 {

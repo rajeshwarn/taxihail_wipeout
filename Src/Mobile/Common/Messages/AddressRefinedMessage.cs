@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {

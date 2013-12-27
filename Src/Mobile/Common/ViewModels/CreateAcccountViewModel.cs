@@ -1,8 +1,8 @@
 using System;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.Framework.Extensions;
 using System.Text.RegularExpressions;
 using System.Linq;
 using TinyIoC;

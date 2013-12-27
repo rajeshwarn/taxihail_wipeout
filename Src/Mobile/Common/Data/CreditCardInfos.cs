@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Data
         public string CreditCardCompany { get; set; }
         public string ExpirationMonth { get; set; }        
         public string ExpirationYear { get; set; }        
+// ReSharper disable once InconsistentNaming
         public string CCV { get; set; }        
     }
 }

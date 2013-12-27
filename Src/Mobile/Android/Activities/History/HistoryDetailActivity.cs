@@ -3,7 +3,6 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;

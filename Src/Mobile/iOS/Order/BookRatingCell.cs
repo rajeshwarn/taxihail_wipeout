@@ -1,13 +1,9 @@
-
 using System;
-using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.ObjCRuntime;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

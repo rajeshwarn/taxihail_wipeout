@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
-    public static class IObservableExtensions
+    internal static class ObservableExtensions
     {
         public static T FirstOrDefaultCatchAll<T>(this IObservable<T> thisObservable)
         {
@@ -14,9 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
                 return default(T);
             }
         }
-
-
-
     }
 }
 

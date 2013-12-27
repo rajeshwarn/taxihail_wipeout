@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public static class StringBuilderExtensions
     {

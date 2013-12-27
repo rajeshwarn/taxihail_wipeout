@@ -11,7 +11,6 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using TinyIoC;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Client.ListViewCell;
 using apcurium.MK.Booking.Mobile.AppServices;

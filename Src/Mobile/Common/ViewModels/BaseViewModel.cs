@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;

@@ -1,6 +1,4 @@
-using System;
-
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.Style
 {
 	public class FontDefinition
 	{

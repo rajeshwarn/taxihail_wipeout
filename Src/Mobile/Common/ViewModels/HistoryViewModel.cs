@@ -2,14 +2,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Globalization;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,22 +30,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatDateTime(DateTime date )
         {
-            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+            var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
             string result = string.Format(format, date) ;
             return result;
         }
-        public string CultureInfoString
-        {
-            get{
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
-                if ( culture.IsNullOrEmpty() )
-                {
-                    return "en-US";
-                }
-                return culture;
-            }
-        }
+       
         private bool _hasOrders;
         public bool HasOrders {
             get {

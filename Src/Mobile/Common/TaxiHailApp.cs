@@ -1,10 +1,8 @@
+using apcurium.MK.Booking.Mobile.Mvx;
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using MK.Booking.Mobile.Infrastructure.Mvx;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -17,22 +15,13 @@ using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.Google.Impl;
 using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
-using Cirrious.MvvmCross.Interfaces.Platform.Location;
-using System;
-using ServiceStack.Text;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Payments;
-using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -67,16 +56,16 @@ namespace apcurium.MK.Booking.Mobile
             
             container.Register<IAccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent,c.Resolve<IPaymentService>()));
 
-            container.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
-            container.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
-            container.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
-            container.Register<PushNotificationRegistrationServiceClient>((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
-            container.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
             container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             
-            container.Register<ApplicationInfoServiceClient>((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
             container.Register<IConfigurationManager>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger>(), c.Resolve<IPackageInfo>().UserAgent));
 
@@ -101,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<ITariffProvider, TariffProvider>();
             // ***** PayPal *****
             container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
-            container.Register<PayPalServiceClient> ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
             container.Register<IPaymentService>((c, p) =>
 			{
@@ -195,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile
         private void InitializeStartNavigation(IDictionary<string, string> @params)
         {
             var startApplicationObject = new StartNavigation(@params);
-            this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
+            this.RegisterServiceInstance(startApplicationObject);
         }
 
 

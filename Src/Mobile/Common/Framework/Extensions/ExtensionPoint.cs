@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public class ExtensionPoint<T> : IExtensionPoint<T>
     {
@@ -29,7 +29,7 @@ namespace apcurium.Framework.Extensions
             get { return value; }
         }
 
-		
+
         public Type ExtendedType
         {
             // TODO: value might not be null

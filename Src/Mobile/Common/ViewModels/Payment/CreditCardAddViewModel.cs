@@ -1,13 +1,13 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
