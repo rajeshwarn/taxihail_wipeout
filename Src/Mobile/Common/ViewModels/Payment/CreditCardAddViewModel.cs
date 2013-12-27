@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>, IMvxServiceConsumer<IAccountService>
     {
-        IAccountService _accountService;
+	    readonly IAccountService _accountService;
 
 #region Const and ReadOnly
         private const string Visa = "Visa";

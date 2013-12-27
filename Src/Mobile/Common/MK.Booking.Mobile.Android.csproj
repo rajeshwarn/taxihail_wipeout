@@ -88,7 +88,6 @@
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
     <Compile Include="AppServices\Impl\TutorialService.cs" />
-    <Compile Include="AppServices\ISocialNetworksService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
@@ -178,10 +177,6 @@
     <Compile Include="AppServices\IBookingService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
-    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
-    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
-    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
-    <Compile Include="AppServices\ModuleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />

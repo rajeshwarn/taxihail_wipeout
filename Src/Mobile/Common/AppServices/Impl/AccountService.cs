@@ -5,13 +5,9 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.Data;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using ServiceStack.ServiceClient.Web;
 
 #if IOS
@@ -24,7 +20,6 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
@@ -36,12 +31,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class AccountService : BaseService, IAccountService
     {
-
-        private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
-        private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
-        private const string _refDataCacheKey = "Account.ReferenceData";
-
-
+        private const string FavoriteAddressesCacheKey = "Account.FavoriteAddresses";
+        private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
+        private const string RefDataCacheKey = "Account.ReferenceData";
         protected IConfigurationManager Config
         {
             get { return TinyIoCContainer.Current.Resolve < IConfigurationManager>(); }
@@ -50,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
         {
-            var cached = Cache.Get<ReferenceData>(_refDataCacheKey);
+            var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
 
             if (cached == null)
             {
@@ -68,12 +60,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<ReferenceData> GetReferenceDataAsync()
         {
-            var cached = Cache.Get<ReferenceData>(_refDataCacheKey);
+            var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
 
             if (cached == null)
             {
                 var refData = UseServiceClient<ReferenceDataServiceClient, ReferenceData>(service => service.GetReferenceData());
-                Cache.Set(_refDataCacheKey, await refData, DateTime.Now.AddHours(1));
+                Cache.Set(RefDataCacheKey, await refData, DateTime.Now.AddHours(1));
                 return await refData;
 
             }
@@ -82,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearReferenceData()
         {
-            Cache.Clear(_refDataCacheKey);
+            Cache.Clear(RefDataCacheKey);
         }
 
         public void ResendConfirmationEmail (string email)
@@ -93,11 +85,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void ClearCache ()
         {
             var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
-
-
-            
-            Cache.Clear (_historyAddressesCacheKey);
-            Cache.Clear (_favoriteAddressesCacheKey);
+            Cache.Clear (HistoryAddressesCacheKey);
+            Cache.Clear (FavoriteAddressesCacheKey);
             Cache.Clear ("AuthenticationData");
             Cache.ClearAll ();
             TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
@@ -135,32 +124,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void RefreshCache (bool reload)
         {
-            Cache.Clear (_historyAddressesCacheKey);
-            Cache.Clear (_favoriteAddressesCacheKey);
+            Cache.Clear (HistoryAddressesCacheKey);
+            Cache.Clear (FavoriteAddressesCacheKey);
 
             if (reload) {
-                GetFavoriteAddresses ();
-                GetHistoryAddresses ();
+                GetFavoriteAddresses();
+                GetHistoryAddresses();
             }
         }
 
-        public IEnumerable<Address> GetHistoryAddresses ()
+        public IEnumerable<Address> GetHistoryAddresses()
         {
-            var cached = Cache.Get<Address[]> (_historyAddressesCacheKey);
+            var cached = Cache.Get<Address[]> (HistoryAddressesCacheKey);
             if (cached != null) {
                 return cached;
-            } else {
-
-                IEnumerable<Address> result = new Address[0];
-                UseServiceClient<IAccountServiceClient> (service =>
-                {
-                    result = service.GetHistoryAddresses (CurrentAccount.Id);
-                }
-                );
-
-                Cache.Set (_historyAddressesCacheKey, result.ToArray ());
-                return result;
             }
+            IEnumerable<Address> result = new Address[0];
+            UseServiceClient<IAccountServiceClient> (service =>
+            {
+                result = service.GetHistoryAddresses (CurrentAccount.Id);
+            });
+
+            Cache.Set(HistoryAddressesCacheKey, result.ToArray());
+            return result;
         }
 
         public Task<Order[]> GetHistoryOrders ()
@@ -202,24 +188,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetFavoriteAddresses ()
         {
-            var cached = Cache.Get<Address[]> (_favoriteAddressesCacheKey);
+            var cached = Cache.Get<Address[]> (FavoriteAddressesCacheKey);
 
             if (cached != null) {
                 return cached;
-            } else {
-
-                IEnumerable<Address> result = new Address[0];
-                UseServiceClient<IAccountServiceClient> (service =>
-                {
-                    result = service.GetFavoriteAddresses ();
-                }
-                );
-                Cache.Set (_favoriteAddressesCacheKey, result.ToArray ());
-                return result;
             }
+            IEnumerable<Address> result = new Address[0];
+            UseServiceClient<IAccountServiceClient> (service =>
+            {
+                result = service.GetFavoriteAddresses ();
+            }
+                );
+            Cache.Set (FavoriteAddressesCacheKey, result.ToArray ());
+            return result;
         }
 
-        private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare)
+        private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare) where T : class
         {
             var cached = Cache.Get<T[]> (key);
 
@@ -227,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 var found = cached.SingleOrDefault (c => compare (updated, c));
                 if (found == null) {
-                    T[] newList = new T[cached.Length + 1];
+                    var newList = new T[cached.Length + 1];
                     Array.Copy (cached, newList, cached.Length);
                     newList [cached.Length] = updated;
 
@@ -238,39 +222,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     Cache.Set (key, cached);
                 }
             }
-
-
         }
 
-        private bool RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
+        private void RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
         {
             var cached = Cache.Get<T[]> (key);
 
             if ((cached != null) && (cached.Length > 0)) {
                 var list = new List<T> (cached);
                 var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
-                var removed = list.Remove (toDelete);
+                list.Remove (toDelete);
                 Cache.Set (key, list.ToArray ());
-                return removed;
             }
-            return false;
         }
 
         public Address FindInAccountAddresses (double latitude, double longitude)
         {
-            Address found = GetAddresseInRange(GetFavoriteAddresses(), new Position(latitude, longitude), 100);                   
-            if (found == null)
-            {
-                found = GetAddresseInRange(GetHistoryAddresses(), new Position(latitude, longitude), 75);
-            }
+            var found = GetAddresseInRange(GetFavoriteAddresses(), new Position(latitude, longitude), 100) ??
+                            GetAddresseInRange(GetHistoryAddresses(), new Position(latitude, longitude), 75);
             return found;
 
         }
 
         private Address GetAddresseInRange (IEnumerable<Address> addresses, Position position, float range)
-        {             
-            const double R = 6378137;
-            
+        {
             var addressesInRange = from a in addresses
                 let distance = position.DistanceTo (new Position (a.Latitude, a.Longitude))
                     where distance <= range
@@ -335,11 +310,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
         public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
-            string response = null;
-            response = UseServiceClient<IAccountServiceClient> (service => {                     
-                service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
-            }, ex => {
-                throw ex; });
+            string response = UseServiceClient<IAccountServiceClient> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }), ex => { throw ex; });
 
             return response;
         }
@@ -400,8 +371,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             Account data = null;
 
             try {
-                Cache.Clear (_historyAddressesCacheKey);
-                Cache.Clear (_favoriteAddressesCacheKey);
+                Cache.Clear (HistoryAddressesCacheKey);
+                Cache.Clear (FavoriteAddressesCacheKey);
 
                 var service = TinyIoCContainer.Current.Resolve<IAccountServiceClient> ("Authenticate");
                 var account = service.GetMyAccount ();
@@ -450,12 +421,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool Register (RegisterAccount data, out string error)
         {
-
             bool isSuccess = false;
+            string lError;
 
-            string lError = "";
-
-            data.AccountId = Guid.NewGuid ();
+            data.AccountId = Guid.NewGuid();
             data.Language = TinyIoCContainer.Current.Resolve<IAppResource> ().CurrentLanguageCode;
 
             try {
@@ -476,10 +445,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void DeleteFavoriteAddress (Guid addressId)
         {
-            if (addressId.HasValue ()) {
+            if (addressId.HasValue()) {
                 var toDelete = addressId;
                 
-                RemoveFromCacheArray<Address> (_favoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
+                RemoveFromCacheArray<Address> (FavoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
                 UseServiceClient<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
             }
@@ -490,7 +459,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (addressId.HasValue ()) {
                 var toDelete = addressId;
 
-                RemoveFromCacheArray<Address> (_historyAddressesCacheKey, toDelete, (id, a) => a.Id == id);
+                RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, toDelete, (id, a) => a.Id == id);
 
                 UseServiceClient<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
@@ -506,9 +475,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (address.IsHistoric) {
                 address.IsHistoric = false;
-                RemoveFromCacheArray<Address> (_historyAddressesCacheKey, address.Id, (id, a) => a.Id == id);
+                RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, address.Id, (id, a) => a.Id == id);
             }
-            UpdateCacheArray (_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
+            UpdateCacheArray (FavoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
 
             UseServiceClient<IAccountServiceClient> (service =>
@@ -536,10 +505,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetCompaniesList ()
         {
             var refData = GetReferenceData();
-
-
-
-            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
+            if (!Config.GetSetting("Client.HideNoPreference", false)
                 && refData.CompaniesList != null)
             {
                 refData.CompaniesList.Insert(0, new ListItem
@@ -556,7 +522,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var refData = GetReferenceData();
 
-            if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
+            if (!Config.GetSetting("Client.HideNoPreference", false)
                 && refData.VehiclesList != null)
             {
                 refData.VehiclesList.Insert(0, new ListItem
@@ -572,10 +538,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             var refData = GetReferenceData();
-
-            var settings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetPaymentSettings ();
 		
-		    if (!Config.GetSetting<bool>("Client.HideNoPreference", false)
+		    if (!Config.GetSetting("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0, new ListItem
@@ -636,9 +600,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Token = creditCard.Token
             };
             
-            UseServiceClient<IAccountServiceClient> (client => {               
-                client.AddCreditCard (request); 
-            }, ex => {
+            UseServiceClient<IAccountServiceClient> (client => client.AddCreditCard (request), ex => {
                 throw ex; });  
 
 			return true;

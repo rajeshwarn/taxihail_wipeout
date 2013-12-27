@@ -13,9 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class RideSettingsModel
     {
-        private IEnumerable<ListItem> _companyList;
-        private IEnumerable<ListItem> _vehicleTypeList;
-        private IEnumerable<ListItem> _chargeTypeList;
+        private readonly IEnumerable<ListItem> _companyList;
+        private readonly IEnumerable<ListItem> _vehicleTypeList;
+        private readonly IEnumerable<ListItem> _chargeTypeList;
 
         public RideSettingsModel(BookingSettings data, IEnumerable<ListItem> companyList, IEnumerable<ListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
         {

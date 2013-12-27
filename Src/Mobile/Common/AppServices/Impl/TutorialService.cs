@@ -3,7 +3,6 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
 
@@ -42,38 +41,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             
             using (var stream = typeof(TutorialContent).Assembly.GetManifestResourceStream( resourceName)) {
-                using (var reader = new StreamReader(stream)) {
+                if (stream != null)
+                    using (var reader = new StreamReader(stream)) {
                     
-                    string serializedData = reader.ReadToEnd ();
-                    result = JsonSerializer.DeserializeFromString<TutorialContent> (serializedData);
-                }
+                        string serializedData = reader.ReadToEnd ();
+                        result = JsonSerializer.DeserializeFromString<TutorialContent> (serializedData);
+                    }
             }
 
             var disabledSlidesString = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.DisabledTutorialSlides");
 			if (!string.IsNullOrWhiteSpace(disabledSlidesString))
 			{
-				try
-				{
-					var disabledSlides = disabledSlidesString
-						.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries)
-						.Select(x => int.Parse(x));
+				var disabledSlides = disabledSlidesString
+					.Split(new []{','}, StringSplitOptions.RemoveEmptyEntries)
+					.Select(int.Parse);
 
-					if (disabledSlides.Count() > 0)
-					{
-						var listOfSlides = result.Items.ToList();
-						foreach (var disabledSlide in disabledSlides)
-						{
-							var disabledItem = listOfSlides.FirstOrDefault(x => x.Position == disabledSlide);
-							if (disabledItem != null)
-							{
-								listOfSlides.Remove(disabledItem);
-							}
-						}
-						result.Items = listOfSlides.ToArray();
-					}
-				}
-				catch
+				var slides = disabledSlides as int[] ?? disabledSlides.ToArray();
+				if (slides.Any())
 				{
+					if (result != null)
+					{
+					    var listOfSlides = result.Items.ToList();
+					    foreach (var disabledSlide in slides)
+					    {
+					        var disabledItem = listOfSlides.FirstOrDefault(x => x.Position == disabledSlide);
+					        if (disabledItem != null)
+					        {
+					            listOfSlides.Remove(disabledItem);
+					        }
+					    }
+					    result.Items = listOfSlides.ToArray();
+					}
 				}
 			}
 

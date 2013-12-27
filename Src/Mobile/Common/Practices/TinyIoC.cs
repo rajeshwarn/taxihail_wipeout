@@ -171,7 +171,7 @@ namespace TinyIoC
 
     public static class TypeExtensions
     {
-        private static SafeDictionary<GenericMethodCacheKey, MethodInfo> _genericMethodCache;
+        private static readonly SafeDictionary<GenericMethodCacheKey, MethodInfo> _genericMethodCache;
 
         static TypeExtensions()
         {
@@ -579,8 +579,8 @@ namespace TinyIoC
         /// </summary>
         public sealed class RegisterOptions
         {
-            private TinyIoCContainer _Container;
-            private TypeRegistration _Registration;
+            private readonly TinyIoCContainer _Container;
+            private readonly TypeRegistration _Registration;
 
             public RegisterOptions(TinyIoCContainer container, TypeRegistration registration)
             {
@@ -2252,7 +2252,7 @@ namespace TinyIoC
         {
             private readonly Type registerType;
 
-            private Func<TinyIoCContainer, NamedParameterOverloads, object> _factory;
+            private readonly Func<TinyIoCContainer, NamedParameterOverloads, object> _factory;
 
             public override bool AssumeConstruction { get { return true; } }
 
@@ -2310,7 +2310,7 @@ namespace TinyIoC
         {
             private readonly Type registerType;
 
-            private WeakReference _factory;
+            private readonly WeakReference _factory;
 
             public override bool AssumeConstruction { get { return true; } }
 
@@ -2377,7 +2377,7 @@ namespace TinyIoC
         {
             private readonly Type registerType;
             private readonly Type registerImplementation;
-            private object _instance;
+            private readonly object _instance;
 
             public override bool AssumeConstruction { get { return true; } }
 
@@ -2706,7 +2706,7 @@ namespace TinyIoC
         #region Type Registrations
         public sealed class TypeRegistration
         {
-            private int _hashCode;
+            private readonly int _hashCode;
 
             public Type Type { get; private set; }
             public string Name { get; private set; }
@@ -2756,7 +2756,7 @@ namespace TinyIoC
             RegisterDefaultTypes();
         }
 
-        TinyIoCContainer _Parent;
+        readonly TinyIoCContainer _Parent;
         private TinyIoCContainer(TinyIoCContainer parent)
             : this()
         {

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
-        private AppSettingsData _data;
+        private readonly AppSettingsData _data;
 
         public AppSettings ()
         {

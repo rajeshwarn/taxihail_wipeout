@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Threading;
-using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Runtime.CompilerServices;
@@ -17,13 +13,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>();
-            return UseServiceClient<T>(service, action, errorHandler, method);
+            return UseServiceClient(service, action, errorHandler, method);
         }
 
         protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where T : class
         {
 			var service = TinyIoCContainer.Current.Resolve<T>(name);
-			return UseServiceClient<T>(service, action, errorHandler, method);
+			return UseServiceClient(service, action, errorHandler, method);
         }
 
         private string UseServiceClient<T>(T service, Action<T> action, Action<Exception> errorHandler, string method) where T : class
@@ -38,16 +34,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch (Exception ex)
             {   
-                ILogger logger = null;
-                if (TinyIoCContainer.Current.TryResolve<ILogger> ( out logger)) {
-                    TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
-				if (errorHandler == null)
-				{
-                        TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
-				}
-				else
-				{
-                        errorHandler (ex);
+                ILogger logger;
+                if (TinyIoCContainer.Current.TryResolve( out logger)) 
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
+				    if (errorHandler == null)
+				    {
+                      TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+				    }
+				    else
+				    {
+                       errorHandler (ex);
                     }                 
                 }
 				return ex.Message;

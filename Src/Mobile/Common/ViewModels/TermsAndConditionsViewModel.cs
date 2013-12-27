@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;

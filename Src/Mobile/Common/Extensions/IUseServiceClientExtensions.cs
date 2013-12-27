@@ -1,14 +1,15 @@
 using System;
+using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
-	public static class IUseServiceClientExtensions
+	public static class UseServiceClientExtensions
 	{
 		public static string UseServiceClient<T>(this IUseServiceClient service, Action<T> action, Action<Exception> errorHandler = null) where T : class
 		{
-			return IUseServiceClientExtensions.UseServiceClient<T>(service, null, action, errorHandler);
+			return UseServiceClient(service, null, action, errorHandler);
 		}
 
 		public static string UseServiceClient<T>(this IUseServiceClient service, string name, Action<T> action, Action<Exception> errorHandler = null ) where T : class

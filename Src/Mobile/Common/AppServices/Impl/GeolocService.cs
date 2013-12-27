@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
-using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Diagnostic;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -67,11 +63,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude);
             }
-            else
-            {
-                return new DirectionInfo();
-            }
+            return new DirectionInfo();
         }
+
         public DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
         {
 
@@ -99,19 +93,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             var favAddresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
-            if (favAddresses.Count() > 0)
+            var items = favAddresses as Address[] ?? favAddresses.ToArray();
+            if (items.Any())
             {
-                addresses.AddRange(favAddresses);
+                addresses.AddRange(items);
             }
 
             var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
 
 
-            if (historic.Count() > 0)
+            var hists = historic as Address[] ?? historic.ToArray();
+            if (hists.Any())
             {
 
-                foreach (var hist in historic)
+                foreach (var hist in hists)
                 {
+// ReSharper disable once AccessToForEachVariableInClosure
                     if (addresses.None(a => a.IsSame(hist)))
                     {
                         addresses.Add(hist);

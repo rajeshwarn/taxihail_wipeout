@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
  using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {

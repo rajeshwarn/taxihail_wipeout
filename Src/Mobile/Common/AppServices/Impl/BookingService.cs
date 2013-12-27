@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
@@ -71,23 +69,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<OrderServiceClient> (service =>
             {
                 orderDetail = service.CreateOrder (order);
-            }, ex => HandleCreateOrderError (ex, order));
+            }, HandleCreateOrderError);
 
 			if (orderDetail.IbsOrderId.HasValue && orderDetail.IbsOrderId > 0) {
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
-            ThreadPool.QueueUserWorkItem (o =>
-            {
-                TinyIoCContainer.Current.Resolve<IAccountService> ().RefreshCache (true);
-            });
+            ThreadPool.QueueUserWorkItem (o => TinyIoCContainer.Current.Resolve<IAccountService> ().RefreshCache (true));
 
             return orderDetail;
         }
 
 		public bool CallIsEnabled { get{ return !Config.GetSetting("Client.HideCallDispatchButton", false); } }
 
-        private void HandleCreateOrderError (Exception ex, CreateOrder order)
+        private void HandleCreateOrderError (Exception ex)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var title = appResource.GetString ("ErrorCreatingOrderTitle");
@@ -96,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (CallIsEnabled)
 			{
-				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage");
 			}
 
             try {
@@ -123,8 +118,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						}
                     }
                 }
-            } catch {
-
+            } catch (Exception exe)
+            {
+                Logger.LogError(exe);
             }
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
@@ -347,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void SendRatingReview (OrderRatings orderRatings)
         {
-            var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
 

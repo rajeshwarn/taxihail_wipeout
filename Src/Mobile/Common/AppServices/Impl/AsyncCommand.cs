@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.Core;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
+    //todo changer emplacement de cette classe
     public class AsyncCommand : IMvxCommand, IDisposable
     {
         private Func<bool> _canExecute;
