@@ -64,11 +64,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.PayPal", "MK.Boo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.PayPal.Test", "MK.Booking.PayPal.Test\MK.Booking.PayPal.Test.csproj", "{9B7899D1-3D82-4359-B062-12828A96A29B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainTreeEncryption.Library.net", "..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj", "{62593C52-2D25-4345-ACDD-27124CDEA6DB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeploymentServiceTools", "DeploymentServiceTools\DeploymentServiceTools.csproj", "{78A8B275-4004-4586-893B-607EC1F98F26}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS.Test", "MK.Booking.IBS.Test\MK.Booking.IBS.Test.csproj", "{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainTreeEncryption.Library.net", "..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj", "{62593C52-2D25-4345-ACDD-27124CDEA6DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -312,16 +312,6 @@ Global
 		{9B7899D1-3D82-4359-B062-12828A96A29B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B7899D1-3D82-4359-B062-12828A96A29B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9B7899D1-3D82-4359-B062-12828A96A29B}.Release|x86.ActiveCfg = Release|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|x86.ActiveCfg = Release|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78A8B275-4004-4586-893B-607EC1F98F26}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -341,14 +331,24 @@ Global
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CB2AF07A-7C69-4BA1-8B05-3CD1C10061B4}.Release|x86.ActiveCfg = Release|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B5786D07-5888-4DF5-B295-3FEA593F3BFE} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
-		{62593C52-2D25-4345-ACDD-27124CDEA6DB} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
+		{62593C52-2D25-4345-ACDD-27124CDEA6DB} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{20AEA350-AD91-4053-A8B5-582E13ED43AA} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
 		{1D5CC591-D706-4F4E-B4BD-805A191999D7} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
 		{BAF90740-9220-4BB0-B857-1E5927E464E9} = {853645BA-A2C2-4E59-B65E-70A64FB59904}

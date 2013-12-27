@@ -138,7 +138,7 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
+    <ProjectReference Include="..\..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
       <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
       <Name>BrainTreeEncryption.Library.net</Name>
     </ProjectReference>

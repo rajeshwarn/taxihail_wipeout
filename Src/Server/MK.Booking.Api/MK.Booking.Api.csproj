@@ -188,8 +188,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
-      <Project>{62593C52-2D25-4345-ACDD-27124CDEA6DB}</Project>
+    <ProjectReference Include="..\..\Mobile\Libraries\SourceCode\BrainTreeEncryption.Library\BrainTreeEncryption.Library.net.csproj">
+      <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
       <Name>BrainTreeEncryption.Library.net</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">

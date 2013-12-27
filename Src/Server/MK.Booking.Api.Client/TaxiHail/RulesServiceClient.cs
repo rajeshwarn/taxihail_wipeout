@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void UpdateRule(Rule rule)
         {
             var req = string.Format("/admin/rules/" + rule.Id);
-            var response = Client.Put<string>(req, rule);
+            Client.Put<string>(req, rule);
         }
 
 
