@@ -41,14 +41,6 @@ namespace apcurium.MK.Booking.Mobile
 				return (false);
 		}
 
-		public IMvxCommand Cancel
-		{
-			get
-			{
-                return GetCommand(() => { Close(); });
-			}
-		}
-
 		public IMvxCommand CreateAccount
 		{
 			get

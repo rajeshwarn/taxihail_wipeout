@@ -35,16 +35,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
                                                                                            && info.DropOffAddress.HasValidCoordinate () ) ) ;
         }
-
-        protected ILogger Logger {
-            get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
-        }
-
-        protected ICacheService Cache {
-            get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
-        }
-
-        protected IConfigurationManager Config {
+	
+		protected IConfigurationManager Config {
             get { return TinyIoCContainer.Current.Resolve<IConfigurationManager> (); }
         }
 
