@@ -75,7 +75,7 @@ namespace MK.DeploymentService
             {
                 Log("Starting", JobStatus.Inprogress);
 
-                var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
+                var sourceDirectory = Path.Combine(Path.GetPathRoot(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System)), "mktaxi");
 
                 Log("Source Folder = " + sourceDirectory);
 
