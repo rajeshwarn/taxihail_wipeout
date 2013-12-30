@@ -100,34 +100,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PostSharp.3.1.27\lib\net20\PostSharp.dll</HintPath>
     </Reference>
-    <Reference Include="PushSharp">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Android, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="PushSharp.Apple, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Apple.dll</HintPath>
-    </Reference>
-    <Reference Include="PushSharp.Blackberry">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Blackberry.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Common">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Windows">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Windows.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.WindowsPhone">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
