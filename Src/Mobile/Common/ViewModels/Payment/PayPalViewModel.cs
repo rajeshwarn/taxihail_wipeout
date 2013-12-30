@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -16,14 +17,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			base.Load ();
 			// Show progress indicator while loading first request
-			MessageService.ShowProgress (true);
+            this.Services().Message.ShowProgress(true);
 		}
 
 		private bool _webViewLoadFinishedOnce;
 		public void WebViewLoadFinished ()
 		{
 			if (!_webViewLoadFinishedOnce) {
-				MessageService.ShowProgress (false);
+                this.Services().Message.ShowProgress(false);
 				_webViewLoadFinishedOnce = true;
 			}
 		}

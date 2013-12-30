@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using Params = System.Collections.Generic.Dictionary<string, string>;
@@ -15,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
         public bool TutorialEnabled {
             get{
-                return Config.GetSetting("Client.TutorialEnabled", true);
+                return this.Services().Config.GetSetting("Client.TutorialEnabled", true);
             }
         }
 
@@ -38,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                 {
                     MenuIsOpen = false;
-                    AccountService.SignOut ();         
+                    this.Services().Account.SignOut();         
                     RequestNavigate<LoginViewModel> (true);
 
                     RequestClose( _parent );
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<RideSettingsViewModel> (new { bookingSettings=  AccountService.CurrentAccount.Settings.ToJson()  });
+                    RequestNavigate<RideSettingsViewModel>(new { bookingSettings = this.Services().Account.CurrentAccount.Settings.ToJson() });
                 });
             }
         }
@@ -104,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if ( TutorialEnabled )
                     {
                         MenuIsOpen = false;
-                        MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                        this.Services().Message.ShowDialogActivity(typeof(TutorialViewModel));
                     }
                 });
             }
@@ -115,15 +116,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
 			{
-				return !ConfigurationManager.GetSetting("Client.HideCallDispatchButton", false);
+                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
         }
 
         
         public bool CanReportProblem
         {
-            get { 
-				return !ConfigurationManager.GetSetting("Client.HideReportProblem", false);
+            get {
+                return !this.Services().Config.GetSetting("Client.HideReportProblem", false);
 			}            
         }
 
@@ -132,11 +133,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    Action call = () => { PhoneService.Call (Config.GetSetting( "DefaultPhoneNumber" )); };
-                    MessageService.ShowMessage (string.Empty, 
-                                                Config.GetSetting( "DefaultPhoneNumberDisplay" ), 
-                                               Resources.GetString ("CallButton"), 
-                                               call, Resources.GetString ("CancelBoutton"), 
+                    Action call = () => { this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")); };
+                    this.Services().Message.ShowMessage(string.Empty,
+                                                this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
+                                               this.Services().Resources.GetString("CallButton"),
+                                               call, this.Services().Resources.GetString("CancelBoutton"), 
                                                () => {});
                 });
             }
@@ -147,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    InvokeOnMainThread( ()=> PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Config.GetSetting( "Client.SupportEmail" ) , Resources.GetString ("TechSupportEmailTitle")) );
+                    InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(this.Services().Settings.ErrorLog, this.Services().Config.GetSetting("Client.SupportEmail"), this.Services().Resources.GetString("TechSupportEmailTitle")));
                 });
             }
         }

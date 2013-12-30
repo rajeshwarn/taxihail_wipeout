@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public HistoryViewModel()
         {
             HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
-            _orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
             LoadOrders ();
         }
         public ObservableCollection<OrderViewModel> Orders
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void LoadOrders ()
 		{
-			AccountService.GetHistoryOrders ().Subscribe(orders =>
+            this.Services().Account.GetHistoryOrders().Subscribe(orders =>
 			{
 
                 Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel
@@ -108,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Unload ()
         {
             base.Unload ();
-            MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
+            this.Services().MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
         }
 
     }

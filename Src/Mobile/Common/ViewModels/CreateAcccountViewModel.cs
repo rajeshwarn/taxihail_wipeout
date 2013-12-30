@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
@@ -44,35 +45,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!IsEmail(Data.Email))
 					{
-						MessageService.ShowMessage(Resources.GetString("ResetPasswordInvalidDataTitle"), Resources.GetString("ResetPasswordInvalidDataMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ResetPasswordInvalidDataTitle"), this.Services().Resources.GetString("ResetPasswordInvalidDataMessage"));
 						return;
 					}
 					
 					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
-						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountEmptyField"));
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("CreateAccountEmptyField"));
 						return;
 					}
 					
 					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length < 6 || Data.Password.Length > 10)))
 					{
-						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountInvalidPassword"));
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("CreateAccountInvalidPassword"));
 						return;
 					}
 					
 					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
 					{
-						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("InvalidPhoneErrorMessage"));
 						return;
 					}
                     Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
 
-                    MessageService.ShowProgress(true);
+                    this.Services().Message.ShowProgress(true);
 
 					try
 					{
-                        var showTermsAndConditions = ConfigurationManager.GetSetting("Client.ShowTermsAndConditions", false);
+                        var showTermsAndConditions = this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false);
                         if( showTermsAndConditions && !_termsAndConditionsApproved )
                         {
                             RequestSubNavigate<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
@@ -80,16 +81,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
 
 						string error;
-						
-                        var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
+
+                        var setting = this.Services().Config.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-						var result = AccountService.Register(Data, out error);
+                        var result = this.Services().Account.Register(Data, out error);
 						if (result)
 						{
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-								MessageService.ShowMessage(Resources.GetString("AccountActivationTitle"), Resources.GetString("AccountActivationMessage"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("AccountActivationTitle"), this.Services().Resources.GetString("AccountActivationMessage"));
 							}
                             ReturnResult(Data);
 						}
@@ -97,21 +98,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (error.Trim().IsNullOrEmpty())
 							{
-								error = Resources.GetString("CreateAccountErrorNotSpecified");
+                                error = this.Services().Resources.GetString("CreateAccountErrorNotSpecified");
 							}
-							if (Resources.GetString("ServiceError" + error) != "ServiceError" + error)
+                            if (this.Services().Resources.GetString("ServiceError" + error) != "ServiceError" + error)
 							{
-								MessageService.ShowMessage(Resources.GetString("CreateAccountErrorTitle"), Resources.GetString("CreateAccountErrorMessage") + " " + Resources.GetString("ServiceError" + error));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountErrorTitle"), this.Services().Resources.GetString("CreateAccountErrorMessage") + " " + this.Services().Resources.GetString("ServiceError" + error));
 							}
 							else
 							{
-								MessageService.ShowMessage(Resources.GetString("CreateAccountErrorTitle"), Resources.GetString("CreateAccountErrorMessage") + " " + error);
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountErrorTitle"), this.Services().Resources.GetString("CreateAccountErrorMessage") + " " + error);
 							}
 						}
 					}
 					finally
 					{
-						MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
 					}
 				}
 			);

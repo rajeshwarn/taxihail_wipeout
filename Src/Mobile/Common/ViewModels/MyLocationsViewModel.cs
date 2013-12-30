@@ -62,8 +62,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 AllAddresses.Clear ();
                 AllAddresses.Add (new AddressViewModel{ Address =  new Address
                     {
-                        FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
-                        FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
+                        FriendlyName = this.Services().Resources.GetString("LocationAddFavoriteTitle"),
+                        FullAddress = this.Services().Resources.GetString("LocationAddFavoriteSubtitle"),
                     }, IsAddNew = true, ShowPlusSign=true});
 
 
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = AccountService.GetFavoriteAddresses().ToList();
+                var adrs = this.Services().Account.GetFavoriteAddresses().ToList();
              
                 return adrs.Select(a => new AddressViewModel
                 { 
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Task<AddressViewModel[]> LoadHistoryAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = AccountService.GetHistoryAddresses();
+                var adrs = this.Services().Account.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,

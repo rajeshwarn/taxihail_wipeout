@@ -151,9 +151,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
             result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
             return result;
         }
 
@@ -163,14 +163,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return buildingName;
             }
-            return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
+            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
         }
 
         private string FormatDateTime(DateTime? pickupDate)
         {
             var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:ddd, MMM d}, {0:" + formatTime + "}";
-            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : this.Services().Resources.GetString("TimeNow");
             return result;
         }
        
@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerName"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
                 }
                 catch (Exception)
                 {
@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerPhone"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
                 }
                 catch (Exception)
                 {
@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerNumber"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
                 }
                 catch (Exception)
                 {

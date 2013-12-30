@@ -4,8 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -72,23 +72,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		        ExpirationMonths = new List<ListItem>
 		        {
-		            new ListItem {Display = Resources.GetString("January"), Id = 1},
-		            new ListItem {Display = Resources.GetString("February"), Id = 2},
-		            new ListItem {Display = Resources.GetString("March"), Id = 3},
-		            new ListItem {Display = Resources.GetString("April"), Id = 4},
-		            new ListItem {Display = Resources.GetString("May"), Id = 5},
-		            new ListItem {Display = Resources.GetString("June"), Id = 6},
-		            new ListItem {Display = Resources.GetString("July"), Id = 7},
-		            new ListItem {Display = Resources.GetString("August"), Id = 8},
-		            new ListItem {Display = Resources.GetString("September"), Id = 9},
-		            new ListItem {Display = Resources.GetString("October"), Id = 10},
-		            new ListItem {Display = Resources.GetString("November"), Id = 11},
-		            new ListItem {Display = Resources.GetString("December"), Id = 12}
+		            new ListItem {Display = this.Services().Resources.GetString("January"), Id = 1},
+		            new ListItem {Display = this.Services().Resources.GetString("February"), Id = 2},
+		            new ListItem {Display = this.Services().Resources.GetString("March"), Id = 3},
+		            new ListItem {Display = this.Services().Resources.GetString("April"), Id = 4},
+		            new ListItem {Display = this.Services().Resources.GetString("May"), Id = 5},
+		            new ListItem {Display = this.Services().Resources.GetString("June"), Id = 6},
+		            new ListItem {Display = this.Services().Resources.GetString("July"), Id = 7},
+		            new ListItem {Display = this.Services().Resources.GetString("August"), Id = 8},
+		            new ListItem {Display = this.Services().Resources.GetString("September"), Id = 9},
+		            new ListItem {Display = this.Services().Resources.GetString("October"), Id = 10},
+		            new ListItem {Display = this.Services().Resources.GetString("November"), Id = 11},
+		            new ListItem {Display = this.Services().Resources.GetString("December"), Id = 12}
 		        };
 		    }
 
 #if DEBUG
-			if(ConfigurationManager.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
+            if (this.Services().Config.GetPaymentSettings().PaymentMode == PaymentMethod.Braintree)
 			{
 				CreditCardNumber = DummyVisa.BraintreeNumber;
 			}
@@ -285,21 +285,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                    Data.ExpirationYear, 
                                    Data.CCV).Any (x => x.IsNullOrEmpty ())) 
             {
-				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardRequiredFields"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreditCardErrorTitle"), this.Services().Resources.GetString("CreditCardRequiredFields"));
 				return;
             }
 
             if (!IsValidate (Data.CardNumber)) {
-				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardInvalidCrediCardNUmber"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreditCardErrorTitle"), this.Services().Resources.GetString("CreditCardInvalidCrediCardNUmber"));
 				return;
             }
 
             try
             {
-                MessageService.ShowProgress(true);
+                this.Services().Message.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
                 Data.CreditCardId = Guid.NewGuid();
-                if(AccountService.AddCreditCard(Data))
+                if (this.Services().Account.AddCreditCard(Data))
 				{		
 
 					Data.CardNumber = null;
@@ -307,14 +307,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ReturnResult(Data);
 				}
-				else{					
-					MessageService.ShowMessage ( "Validation", "Cannot validate the credit card.");
+				else{
+                    this.Services().Message.ShowMessage("Validation", "Cannot validate the credit card.");
 				}
 
             }
             finally {
-                CacheService.Clear("Account.CreditCards");
-                MessageService.ShowProgress(false);
+                this.Services().Cache.Clear("Account.CreditCards");
+                this.Services().Message.ShowProgress(false);
             }
         }
 

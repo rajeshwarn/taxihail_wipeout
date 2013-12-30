@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
@@ -99,8 +100,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
         protected IEnumerable<AddressViewModel> SearchPlaces ()
-        {           
-            var position = LocationService.BestPosition;
+        {
+            var position = this.Services().Location.BestPosition;
 
             if (position == null) {
                 return Enumerable.Empty<AddressViewModel> ();
@@ -113,8 +114,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected IEnumerable<AddressViewModel> SearchFavoriteAndHistoryAddresses ()
         {
-            var addresses = AccountService.GetFavoriteAddresses ();
-            var historicAddresses = AccountService.GetHistoryAddresses ();
+            var addresses = this.Services().Account.GetFavoriteAddresses();
+            var historicAddresses = this.Services().Account.GetHistoryAddresses();
 
             Func<Address, bool> predicate = c => true;
 
@@ -136,16 +137,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var searchText = Criteria.ToSafeString();
 
             Logger.LogMessage ("Starting SearchAddresses : " + searchText);
-            var position = LocationService.BestPosition;
+            var position = this.Services().Location.BestPosition;
 
             Address[] addresses;
 
             if (position == null) {
                 Logger.LogMessage ("No Position SearchAddresses : " + searchText);
-                addresses = GeolocService.SearchAddress (searchText);                
+                addresses = this.Services().Geoloc.SearchAddress(searchText);                
             } else {
                 Logger.LogMessage ("Position SearchAddresses : " + searchText);
-                addresses = GeolocService.SearchAddress(searchText, position.Latitude, position.Longitude);
+                addresses = this.Services().Geoloc.SearchAddress(searchText, position.Latitude, position.Longitude);
             }
             return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToArray ();
         }
@@ -216,23 +217,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 placeAddress.FullAddress = address.Address.FullAddress;
                             }
                             RequestClose (this);
-                            InvokeOnMainThread (() => MessengerHub.Publish (new AddressSelected (this, placeAddress, _ownerId, true)));
+                            InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, placeAddress, _ownerId, true)));
                         } else if (address.Address.AddressType == "localContact") {
 
-                            var addresses = GeolocService.SearchAddress (address.Address.FullAddress);
+                            var addresses = this.Services().Geoloc.SearchAddress(address.Address.FullAddress);
                             if (addresses.Any()) {
                                 RequestClose (this);
-                            InvokeOnMainThread (() => MessengerHub.Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId, true)));
+                                InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId, true)));
                             } else {
-                                    
-                                var title = Resources.GetString ("LocalContactCannotBeResolverTitle");
-                                var msg = Resources.GetString ("LocalContactCannotBeResolverMessage");
-                                MessageService.ShowMessage (title, msg);
+
+                                var title = this.Services().Resources.GetString("LocalContactCannotBeResolverTitle");
+                                var msg = this.Services().Resources.GetString("LocalContactCannotBeResolverMessage");
+                                this.Services().Message.ShowMessage(title, msg);
                             }
                         } else {
                             RequestClose (this);
-                                
-                        InvokeOnMainThread (() => MessengerHub.Publish (new AddressSelected (this, address.Address, _ownerId, true)));
+
+                            InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, address.Address, _ownerId, true)));
                         }
                     }));
             }

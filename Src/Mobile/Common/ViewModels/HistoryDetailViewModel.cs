@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _status = new OrderStatusDetail
             {
-                IbsStatusDescription = Resources.GetString("LoadingMessage")
+                IbsStatusDescription = this.Services().Resources.GetString("LoadingMessage")
             };
         }
 
@@ -72,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var sendReceiptAvailable =  ConfigurationManager.GetSetting("Client.SendReceiptAvailable",false);
+                var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (Status != null) && Status.FareAvailable && sendReceiptAvailable;
             }
         }
@@ -107,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool RebookIsAvailable {
 			get {
-				var setting = ConfigurationManager.GetSetting("Client.HideRebookOrder");
+                var setting = this.Services().Config.GetSetting("Client.HideRebookOrder");
 				return IsCompleted && !bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 			}
 		}
@@ -116,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool HasRated
         {
             get {
-                var ratingEnabled = Config.GetSetting( "Client.RatingEnabled", false );  
+                var ratingEnabled = this.Services().Config.GetSetting("Client.RatingEnabled", false);  
                 return ratingEnabled && _hasRated;
             }
             set { 
@@ -130,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                    var ratingEnabled = Config.GetSetting( "Client.RatingEnabled", false );                
+                var ratingEnabled = this.Services().Config.GetSetting("Client.RatingEnabled", false);                
                     return ratingEnabled && IsDone && !HasRated;
             }
         }
@@ -200,7 +201,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return Config.GetSetting("Client.HideDestination", false);
+                return this.Services().Config.GetSetting("Client.HideDestination", false);
 			}
 		}
 
@@ -214,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-                           : Resources.GetString("ConfirmDestinationNotSpecified");
+                           : this.Services().Resources.GetString("ConfirmDestinationNotSpecified");
             }
         }
 
@@ -252,7 +253,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadOrder() 
 		{
 			return Task.Factory.StartNew(() => {
-				Order = AccountService.GetHistoryOrder(OrderId);
+                Order = this.Services().Account.GetHistoryOrder(OrderId);
 			});
 		}
 
@@ -261,10 +262,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadStatus ()
 		{
 			return Task.Factory.StartNew(()=> {
-                HasRated = BookingService.GetOrderRating(OrderId).RatingScores.Any();
-                Status = BookingService.GetOrderStatus(OrderId);
-				IsCompleted = BookingService.IsStatusCompleted (Status.IbsStatusId);
-				IsDone = BookingService.IsStatusDone(Status.IbsStatusId);
+                HasRated = this.Services().Booking.GetOrderRating(OrderId).RatingScores.Any();
+                Status = this.Services().Booking.GetOrderStatus(OrderId);
+                IsCompleted = this.Services().Booking.IsStatusCompleted(Status.IbsStatusId);
+                IsDone = this.Services().Booking.IsStatusDone(Status.IbsStatusId);
                 
 				CanCancel = !IsCompleted;
 
@@ -285,10 +286,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					            	                    {														
 															orderId = OrderId, 
 															canRate = canRate.ToString()
-														}.ToStringDictionary(),_=>
-														{
-														RefreshOrderStatus(_);
-														});
+														}.ToStringDictionary(),RefreshOrderStatus);
                                                });
             }
         }
@@ -325,8 +323,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (GuidExtensions.HasValue(OrderId))
                     {
-                        BookingService.RemoveFromHistory(OrderId);
-                        MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
+                        this.Services().Booking.RemoveFromHistory(OrderId);
+                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
                         Close();
                     }
                 });
@@ -353,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (GuidExtensions.HasValue(OrderId))
                     {
-                        BookingService.SendReceipt(OrderId);
+                        this.Services().Booking.SendReceipt(OrderId);
                     }
                     RequestClose(this);
                 });
@@ -364,10 +362,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => MessageService.ShowMessage(string.Empty, Resources.GetString("StatusConfirmCancelRide"), Resources.GetString("YesButton"), () =>
+                return GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Resources.GetString("StatusConfirmCancelRide"), 
+                                                                                                   this.Services().Resources.GetString("YesButton"), () =>
                 {
-                        
-                    var isSuccess = BookingService.CancelOrder(OrderId);
+
+                    var isSuccess = this.Services().Booking.CancelOrder(OrderId);
 
                     if(isSuccess)
                     {
@@ -375,27 +374,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("StatusConfirmCancelRideErrorTitle"), Resources.GetString("StatusConfirmCancelRideError")));
+                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("StatusConfirmCancelRideErrorTitle"), 
+                                                                                            this.Services().Resources.GetString("StatusConfirmCancelRideError")));
                     }
                 },
-                    Resources.GetString("NoButton"), () => { })); 
+                    this.Services().Resources.GetString("NoButton"), () => { })); 
             }
         }
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            var result = date.HasValue ? date.Value.ToShortDateString() : Resources.GetString("DateToday");
+            var result = date.HasValue ? date.Value.ToShortDateString() : this.Services().Resources.GetString("DateToday");
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : Resources.GetString("TimeNow");
+            result += time.HasValue ? time.Value.ToShortTimeString() : this.Services().Resources.GetString("TimeNow");
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            var result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            var result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
             return result;
         }
     }

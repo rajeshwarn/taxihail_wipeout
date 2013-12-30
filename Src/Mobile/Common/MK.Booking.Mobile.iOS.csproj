@@ -108,6 +108,7 @@
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
+    <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />

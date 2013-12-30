@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 
@@ -23,22 +24,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!IsEmail(Email))
 					{
-						MessageService.ShowMessage(Resources.GetString("ResetPasswordInvalidDataTitle"), Resources.GetString("ResetPasswordInvalidDataMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ResetPasswordInvalidDataTitle"), 
+                                                                    this.Services().Resources.GetString("ResetPasswordInvalidDataMessage"));
 						return;
-					}				
-					
-					MessageService.ShowProgress(true);
+					}
+
+                    this.Services().Message.ShowProgress(true);
 					try{
-                        AccountService.ResetPassword(Email);
+                        this.Services().Account.ResetPassword(Email);
                         RequestClose( this );
                      }catch(Exception e)
                      {
-                        var msg = Resources.GetString("ServiceError" + e.Message);
-                        var title = Resources.GetString("ServiceErrorCallTitle");
-                        MessageService.ShowMessage(title, msg);
+                         var msg = this.Services().Resources.GetString("ServiceError" + e.Message);
+                         var title = this.Services().Resources.GetString("ServiceErrorCallTitle");
+                         this.Services().Message.ShowMessage(title, msg);
                      }finally
 					 {
-						MessageService.ShowProgress(false);
+                         this.Services().Message.ShowProgress(false);
 					 }
 				});
 			}

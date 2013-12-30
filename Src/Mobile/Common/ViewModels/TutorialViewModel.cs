@@ -1,5 +1,5 @@
 using System.Linq;
-using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -14,10 +14,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _tutorialItemsList =value; FirePropertyChanged(()=>TutorialItemsList); }
         }
 
-        public TutorialViewModel(ITutorialService tutorialService)
+        public TutorialViewModel()
         {
-            var service = tutorialService;
-            TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
+            
+            TutorialItemsList = this.Services().Tutorial.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
         }
 
     }

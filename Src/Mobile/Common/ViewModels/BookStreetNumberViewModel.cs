@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 FirePropertyChanged(() => StreetNumberOrBuildingName);
             }
-            _token = MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _ownerId);
+            _token = this.Services().MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _ownerId);
         }
 
         public int NumberOfCharAllowed
@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get{
 
 
-                var max = CacheService.Get<string>("Client.NumberOfCharInRefineAddress");
-                Task.Factory.SafeStartNew( () => CacheService.Set( "Client.NumberOfCharInRefineAddress", ConfigurationManager.GetSetting( "Client.NumberOfCharInRefineAddress" )));
+                var max = this.Services().Cache.Get<string>("Client.NumberOfCharInRefineAddress");
+                Task.Factory.SafeStartNew(() => this.Services().Cache.Set("Client.NumberOfCharInRefineAddress", this.Services().Config.GetSetting("Client.NumberOfCharInRefineAddress")));
                 int m;
                 if ( int.TryParse( max , out m ) )
                 {
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                  {
-                    MessengerHub.Unsubscribe<AddressSelected> ( _token );
+                     this.Services().MessengerHub.Unsubscribe<AddressSelected>(_token);
                     _token.Dispose ();
                     _token = null;
 
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                                   {
-                    MessengerHub.Unsubscribe<AddressSelected> ( _token );
+                    this.Services().MessengerHub.Unsubscribe<AddressSelected>(_token);
                     _token.Dispose ();
                     _token = null; 
                     RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
@@ -110,8 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                                   {
-
-                    MessengerHub.Publish(new AddressSelected(this, null,_ownerId,false));                                                        
+                    this.Services().MessengerHub.Publish(new AddressSelected(this, null, _ownerId, false));                                                        
                     RequestClose( this );
                 });
             }
@@ -131,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => 
                 {
                     Model.UpdateStreetOrNumberBuildingName(StreetNumberOrBuildingName);
-                    MessengerHub.Publish(new AddressSelected(this, Model,_ownerId,true));                    
+                    this.Services().MessengerHub.Publish(new AddressSelected(this, Model, _ownerId, true));                    
                 });
             }
         }

@@ -1,3 +1,5 @@
+using apcurium.MK.Booking.Mobile.Extensions;
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AboutUsViewModel : BaseViewModel
@@ -11,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AboutUsViewModel()
         {
-			Uri = Config.GetSetting("Client.AboutUsUrl");
+            Uri = this.Services().Config.GetSetting("Client.AboutUsUrl");
         }
     }
 }

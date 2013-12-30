@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Interfaces.Commands;
@@ -20,18 +21,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingSettings = bookingSettings;
 
 
-            var refDataTask = AccountService.GetReferenceDataAsync();
+            var refDataTask = this.Services().Account.GetReferenceDataAsync();
 
             refDataTask.ContinueWith(result =>
                                      {
-                var v = AccountService.GetVehiclesList();
+                var v = this.Services().Account.GetVehiclesList();
                 _vehicules = v == null ? new ListItem[0] : v.ToArray();
                 FirePropertyChanged( ()=> Vehicles );
                 FirePropertyChanged( ()=> VehicleTypeId );
                 FirePropertyChanged( ()=> VehicleTypeName );
 
 
-                var p = AccountService.GetPaymentsList();
+                var p = this.Services().Account.GetPaymentsList();
                 _payments = p == null ? new ListItem[0] : p.ToArray();
 
                 FirePropertyChanged( ()=> Payments );
@@ -45,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var setting = ConfigurationManager.GetPaymentSettings();
+                var setting = this.Services().Config.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
             }
         }
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                var setting = ConfigurationManager.GetPaymentSettings();
+                var setting = this.Services().Config.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
         }
@@ -72,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = AccountService.CurrentAccount;
+                    var account = this.Services().Account.CurrentAccount;
                     var paymentInformation = new PaymentInformation
                     {
                         CreditCardId = account.DefaultCreditCard,
@@ -129,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (!VehicleTypeId.HasValue)
                 {
-                    return Resources.GetString("NoPreference");
+                    return this.Services().Resources.GetString("NoPreference");
                 }
 
                 if (Vehicles == null)
@@ -167,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (!ChargeTypeId.HasValue)
                 {
-                    return Resources.GetString("NoPreference");
+                    return this.Services().Resources.GetString("NoPreference");
                 }
 
 
@@ -276,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (ValidateRideSettings())
                     {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-                        AccountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+                        this.Services().Account.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
                         Close();
                     }
                 });
@@ -288,12 +289,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (string.IsNullOrEmpty(Name) 
                 || string.IsNullOrEmpty(Phone))
             {
-                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), this.Services().Resources.GetString("UpdateBookingSettingsEmptyField"));
                 return false;
             }
             if (Phone.Count(Char.IsDigit) < 10)
             {
-                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), this.Services().Resources.GetString("InvalidPhoneErrorMessage"));
                 return false;
             }
 

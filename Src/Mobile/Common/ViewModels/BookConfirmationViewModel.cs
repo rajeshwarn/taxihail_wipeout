@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var ret = true;
 				try
 				{
-					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerName"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
 				}
 				catch (Exception)
 				{
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerPhone"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
 				}
 				catch (Exception)
 				{
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerNumber"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
 				}
 				catch (Exception)
 				{
@@ -220,8 +220,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.Id = Guid.NewGuid();
 					try
 					{
-						MessageService.ShowProgress(true);
-						var orderInfo = BookingService.CreateOrder(Order);
+                        this.Services().Message.ShowProgress(true);
+                        var orderInfo = this.Services().Booking.CreateOrder(Order);
 
 							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
@@ -243,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						            orderStatus = orderInfo.ToJson()
 						        });	
 						Close();
-						MessengerHub.Publish(new OrderConfirmed(this, Order, false));
+                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 					}
 					catch
 					{
@@ -251,18 +251,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (CallIsEnabled)
 							{
-								var err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), Settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
-								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
+                                var err = string.Format(this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), err);
 							}
 							else
 							{
-								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), Resources.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall"));
 							}
 						});
 					}
 					finally
 					{
-						MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
 					}                         
 				}); 
                
@@ -274,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 
-				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
 
 		}
@@ -286,20 +286,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return GetCommand(() =>
 				{
 					Close();
-					MessengerHub.Publish(new OrderConfirmed(this, Order, true));
+                    this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));
 				});            
 			}
 		}
 
 		private async void ShowWarningIfNecessary()
 		{
-			var validationInfo = await BookingService.ValidateOrder(Order);
+            var validationInfo = await this.Services().Booking.ValidateOrder(Order);
 			if (validationInfo.HasWarning)
 			{
 
-				MessageService.ShowMessage(Resources.GetString("WarningTitle"), 
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningTitle"), 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-					validationInfo.Message, Resources.GetString("ContinueButton"), () => validationInfo.ToString(), Resources.GetString("CancelBoutton"), () => RequestClose(this));
+                    validationInfo.Message, this.Services().Resources.GetString("ContinueButton"), () => validationInfo.ToString(), this.Services().Resources.GetString("CancelBoutton"), () => RequestClose(this));
 			}
 		}
 
@@ -312,7 +312,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowEstimate"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowEstimate"));
 				}
 				catch (Exception)
 				{
@@ -326,17 +326,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (ShowEstimate)
 			{
-				var estimateEnabled = ConfigurationManager.GetSetting("Client.ShowEstimateWarning", true);
+                var estimateEnabled = this.Services().Config.GetSetting("Client.ShowEstimateWarning", true);
 
 				if (estimateEnabled &&
-				                CacheService.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
+                                this.Services().Cache.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
 				                Order.DropOffAddress.HasValidCoordinate())
 				{
-					MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
+                    this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningEstimateTitle"), this.Services().Resources.GetString("WarningEstimate"),
 						"Ok", delegate
 					{
 					},
-						Resources.GetString("WarningEstimateDontShow"), () => CacheService.Set("WarningEstimateDontShow", "yes"));
+                        this.Services().Resources.GetString("WarningEstimateDontShow"), () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
 				}
 			}
 		}
@@ -359,9 +359,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-			string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
 			result += @" / ";
-			result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
 			return result;
 		}
 
@@ -371,14 +371,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return buildingName;
 			}
-		    return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
+            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
 		}
 
 	    private string FormatPrice(double? price)
 	    {
 	        if (price.HasValue)
 			{
-				var culture = ConfigurationManager.GetSetting("PriceFormat");
+                var culture = this.Services().Config.GetSetting("PriceFormat");
 				return string.Format(new CultureInfo(culture), "{0:C}", price);
 			}
 	        return string.Empty;

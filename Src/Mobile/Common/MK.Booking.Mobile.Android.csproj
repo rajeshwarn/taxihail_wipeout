@@ -264,6 +264,7 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
+    <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

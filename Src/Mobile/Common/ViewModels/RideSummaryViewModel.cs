@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
@@ -17,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            IsRatingButtonShown = Config.GetSetting( "Client.RatingEnabled", false );  
+            IsRatingButtonShown = this.Services().Config.GetSetting( "Client.RatingEnabled", false );  
 
 		}
         public override void Start(bool firstStart = false)
@@ -55,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool IsPayButtonShown{
 			get{
-				var setting = ConfigurationManager.GetPaymentSettings ();
+                var setting = this.Services().Config.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+                return isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
 			}
 		}
 
@@ -65,15 +66,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-                var setting = ConfigurationManager.GetPaymentSettings();
+                var setting = this.Services().Config.GetPaymentSettings();
                 var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+                return isPayEnabled && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
 
 		public bool IsSendReceiptButtonShown {
 			get{
-                var sendReceiptAvailable =  ConfigurationManager.GetSetting("Client.SendReceiptAvailable",false);
+                var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
              
 			}
@@ -94,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get {
 				return new AsyncCommand (() =>
 				{
-					BookingService.SendReceipt (Order.Id);
+                    this.Services().Booking.SendReceipt(Order.Id);
                     ReceiptSent = true;
 				});
 			}
@@ -116,9 +117,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return new AsyncCommand (() =>
                 {
-                    MessageService.ShowMessage( "Confirmation",
-                        Resources.GetString("ConfirmationOfPaymentSent"));
-                    PaymentService.ResendConfirmationToDriver( Order.Id );
+                    this.Services().Message.ShowMessage("Confirmation",
+                        this.Services().Resources.GetString("ConfirmationOfPaymentSent"));
+                    this.Services().Payment.ResendConfirmationToDriver(Order.Id);
 
                 });
             }

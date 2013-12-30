@@ -1,4 +1,5 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.Commands;
 
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-                return GetCommand(() => MessengerHub.Publish(new RemoveCreditCard(this,CreditCardDetails.CreditCardId)));
+                return GetCommand(() => this.Services().MessengerHub.Publish(new RemoveCreditCard(this, CreditCardDetails.CreditCardId)));
             }
         }
     }

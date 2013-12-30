@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 
 
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var message = new SubNavigationResultMessage<TResult>(this, MessageId, result);		
 			Close();
-            MessengerHub.Publish(message);
+            this.Services().MessengerHub.Publish(message);
 		}
 	}
 }

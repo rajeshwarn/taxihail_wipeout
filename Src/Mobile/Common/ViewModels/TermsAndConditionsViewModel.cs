@@ -1,17 +1,14 @@
-using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class TermsAndConditionsViewModel : BaseSubViewModel<bool>
-
 	{
-        private readonly ITermsAndConditionsService _termsAndConditionsService;
 
-        public TermsAndConditionsViewModel ( string messageId , ITermsAndConditionsService termsAndConditionsService) : base(messageId)
+        public TermsAndConditionsViewModel (string messageId ) : base(messageId)
         {
-            _termsAndConditionsService = termsAndConditionsService;
         }
 
         public IMvxCommand RejectTermsAndConditions
@@ -37,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             { 
                 if (_text.IsNullOrEmpty())
                 {
-                    _text = _termsAndConditionsService.GetText();
+                    _text = this.Services().Terms.GetText();
                 }
                 return @_text; 
             } 

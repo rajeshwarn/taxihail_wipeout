@@ -32,8 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _getAddress = getAddress;
             _setAddress = setAddress;
             _id = Guid.NewGuid().ToString();
-            _searchingTitle = Resources.GetString("AddressSearchingText");
-            MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
+            _searchingTitle = this.Services().Resources.GetString("AddressSearchingText");
+            this.Services().MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
 
         public string AddressLine2
@@ -120,12 +120,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (!token.IsCancellationRequested)
                         {
                             IsExecuting = true;
-                            var accountAddress = AccountService.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
+                            var accountAddress = this.Services().Account.FindInAccountAddresses(coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null)
                             {
                                 return new[] { accountAddress};
                             }
-                            return GeolocService.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
+                            return this.Services().Geoloc.SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
                         }
                         return null;
 
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CancelCurrentLocation();
 
 
-                    if (Config.GetSetting( "Client.StreetNumberScreenEnabled", true)
+                    if (this.Services().Config.GetSetting("Client.StreetNumberScreenEnabled", true)
                         && Model.BookAddress.HasValue())
                     {
                         RequestNavigate<BookStreetNumberViewModel>(new
@@ -239,7 +239,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     (address.AddressType != "place") && (address.AddressType != "popular"))
                     // This should only be true when using an address from a version smaller than 1.3                    
                 {
-                    var a = GeolocService.SearchAddress(address.FullAddress);
+                    var a = this.Services().Geoloc.SearchAddress(address.FullAddress);
                     if (a.Any())
                     {
                         address = a.First();
@@ -298,21 +298,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CancelCurrentLocationCommand.Execute ();
 
-                    if ( !LocationService.IsLocationServicesEnabled )
+                    if (!this.Services().Location.IsLocationServicesEnabled)
                     {
-                        MessageService.ShowMessage (Resources.GetString ("LocationServiceErrorTitle"),Resources.GetString ("LocationServiceErrorMessage") );
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("LocationServiceErrorTitle"), this.Services().Resources.GetString("LocationServiceErrorMessage"));
                         return ;
                     }
 
                     IsExecuting = true;
                     var positionSet = false;
-                    if(LocationService.BestPosition != null)
-                    {                        
-                        InvokeOnMainThread(()=>SearchAddressForCoordinate(LocationService.BestPosition ));
+                    if (this.Services().Location.BestPosition != null)
+                    {
+                        InvokeOnMainThread(() => SearchAddressForCoordinate(this.Services().Location.BestPosition));
                         return;
                     }
 
-                    LocationService.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
+                    this.Services().Location.GetNextPosition(TimeSpan.FromSeconds(6), 50).Subscribe(
                     pos=>
                     {
                         positionSet =true;
@@ -326,13 +326,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             InvokeOnMainThread(() =>
                                 {
-                                    if (LocationService.BestPosition == null)
+                                    if (this.Services().Location.BestPosition == null)
                                     {
-                                        MessageService.ShowToast("Cant find location, please try again",ToastDuration.Short);
+                                        this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
                                     }
                                     else
                                     {
-                                        SearchAddressForCoordinate(LocationService.BestPosition);    
+                                        SearchAddressForCoordinate(this.Services().Location.BestPosition);    
                                     }
                                     
                                 });
@@ -348,7 +348,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsExecuting = true;
             Logger.LogMessage("Start Call SearchAddress : " + p.Latitude.ToString(CultureInfo.InvariantCulture) + ", " + p.Longitude.ToString(CultureInfo.InvariantCulture));
 
-            var accountAddress = await Task.Run(() => AccountService.FindInAccountAddresses(p.Latitude, p.Longitude));
+            var accountAddress = await Task.Run(() => this.Services().Account.FindInAccountAddresses(p.Latitude, p.Longitude));
             if (accountAddress != null)
             {
                 Logger.LogMessage("Address found in account");
@@ -356,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                var address = await Task.Run(() => GeolocService.SearchAddress(p.Latitude, p.Longitude));
+                var address = await Task.Run(() => this.Services().Geoloc.SearchAddress(p.Latitude, p.Longitude));
                 Logger.LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
                 if (address.Any())
                 {

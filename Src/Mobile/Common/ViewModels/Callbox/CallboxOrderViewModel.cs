@@ -2,6 +2,7 @@ using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -29,13 +30,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return GetCommand(() => MessengerHub.Publish(new OrderDeleted(this, Id, null)));
+				return GetCommand(() => this.Services().MessengerHub.Publish(new OrderDeleted(this, Id, null)));
             }
         }
 
         public bool CanBeCancelled
         {
-			get { return !BookingService.IsCallboxStatusCompleted(OrderStatus.IbsStatusId); }
+			get { return !this.Services().Booking.IsCallboxStatusCompleted(OrderStatus.IbsStatusId); }
         }
 
         public ColorEnum TextColor

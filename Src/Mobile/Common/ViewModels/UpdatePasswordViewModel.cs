@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Extensions;
 using System;
@@ -62,25 +63,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!CanUpdatePassword)
 					{
-                        var title = Resources.GetString("View_UpdatePassword");
-                        var msg = Resources.GetString("CreateAccountInvalidPassword");
-                        MessageService.ShowMessage(title, msg);
+                        var title = this.Services().Resources.GetString("View_UpdatePassword");
+                        var msg = this.Services().Resources.GetString("CreateAccountInvalidPassword");
+                        this.Services().Message.ShowMessage(title, msg);
 						return;
 					}
-                    MessageService.ShowProgress(true);
+                    this.Services().Message.ShowProgress(true);
                     try{
-                        AccountService.UpdatePassword(AccountService.CurrentAccount.Id, CurrentPassword, NewPassword);
-                        AccountService.SignOut();							
-                        var msg = Resources.GetString("ChangePasswordConfirmmation");
-                        var title = Settings.ApplicationName;
-						MessageService.ShowMessage(title, msg, () => RequestNavigate<LoginViewModel>(true));
+                        this.Services().Account.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
+                        this.Services().Account.SignOut();
+                        var msg = this.Services().Resources.GetString("ChangePasswordConfirmmation");
+                        var title = this.Services().Settings.ApplicationName;
+                        this.Services().Message.ShowMessage(title, msg, () => RequestNavigate<LoginViewModel>(true));
                     }catch(Exception e)
                     {
-                        var msg = Resources.GetString("ServiceError" + e.Message);
-                        var title = Resources.GetString("ServiceErrorCallTitle");
-                        MessageService.ShowMessage(title, msg);
+                        var msg = this.Services().Resources.GetString("ServiceError" + e.Message);
+                        var title = this.Services().Resources.GetString("ServiceErrorCallTitle");
+                        this.Services().Message.ShowMessage(title, msg);
                     }finally{
-                        MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
                     }					
 
 				});
