@@ -1,5 +1,4 @@
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Extensions;
 using System;
 
@@ -54,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             && NewPasswordIsConfirmed; }
 		}
 
-        public IMvxCommand UpdateCommand
+        public AsyncCommand UpdateCommand
         {
             get
             {

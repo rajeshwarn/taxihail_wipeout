@@ -1,7 +1,5 @@
 using System;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
 
@@ -33,10 +31,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SignOut
+        public AsyncCommand SignOut
         {
             get {
-                return new MvxRelayCommand(() =>
+                return new AsyncCommand(() =>
                 {
                     MenuIsOpen = false;
                     this.Services().Account.SignOut();         
@@ -47,7 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToOrderHistory {
+        public AsyncCommand NavigateToOrderHistory
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -57,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToMyLocations
+        public AsyncCommand NavigateToMyLocations
         {
             get {
                 return GetCommand(() =>
@@ -81,7 +80,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToUpdateProfile {
+        public AsyncCommand NavigateToUpdateProfile
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -91,13 +91,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToAboutUs {
+        public AsyncCommand NavigateToAboutUs
+        {
             get {
                 return GetCommand(() => RequestNavigate<AboutUsViewModel>());
             }
         }
 
-        public IMvxCommand NavigateToTutorial {
+        public AsyncCommand NavigateToTutorial
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -128,7 +130,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}            
         }
 
-        public IMvxCommand Call {
+        public AsyncCommand Call
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -143,7 +146,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ReportProblem {
+        public AsyncCommand ReportProblem
+        {
             get {
                 return GetCommand(() =>
                 {

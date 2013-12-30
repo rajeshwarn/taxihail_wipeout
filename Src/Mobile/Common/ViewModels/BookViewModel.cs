@@ -1,7 +1,5 @@
 using System;
 using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading.Tasks;
@@ -397,7 +395,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		private bool _canShowTutorial = true;
-        public IMvxCommand ShowTutorial
+        public AsyncCommand ShowTutorial
         {
             get
             {
@@ -419,7 +417,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ActivatePickup
+        public AsyncCommand ActivatePickup
         {
             get
             {
@@ -441,8 +439,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }));
             }
         }
-        
-        public IMvxCommand ActivateDropoff
+
+        public AsyncCommand ActivateDropoff
         {
             get
             {
@@ -505,7 +503,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Factory.SafeStartNew(CalculateEstimate);
         }
 
-        public IMvxCommand PickupDateSelectedCommand
+        public AsyncCommand<DateTime?> PickupDateSelectedCommand
         {
             get
             {
@@ -531,7 +529,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand BookNow
+        public AsyncCommand BookNow
         {
             get
             {
@@ -545,7 +543,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ClosePanelCommand
+        public AsyncCommand ClosePanelCommand
         {
             get
             {
@@ -555,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public IMvxCommand GooglePlayServicesNotAvailable
+        public AsyncCommand GooglePlayServicesNotAvailable
 		{
 			get
 			{
@@ -627,11 +625,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Order.Estimate.Price = estimate.Price;
 
                 var serialized = Order.ToJson();
-                RequestNavigate<BookConfirmationViewModel>(new {order = serialized}, false, MvxRequestedBy.UserAction);
+                RequestNavigate<BookConfirmationViewModel>(new {order = serialized});
 			}
         }
 
-        public IMvxCommand NavigateToRateOrder
+        public AsyncCommand NavigateToRateOrder
         {
             get
             {

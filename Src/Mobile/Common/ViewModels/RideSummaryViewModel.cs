@@ -1,12 +1,9 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using System.Globalization;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -91,7 +88,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand SendReceiptCommand {
+        public AsyncCommand SendReceiptCommand
+        {
 			get {
 				return new AsyncCommand (() =>
 				{
@@ -101,7 +99,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand NavigateToRatingPage {
+        public AsyncCommand NavigateToRatingPage
+        {
 			get {
 				return new AsyncCommand (() => RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
 				{
@@ -113,7 +112,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}));
 			}
 		}
-        public IMvxCommand ResendConfirmationCommand {
+        public AsyncCommand ResendConfirmationCommand
+        {
             get {
                 return new AsyncCommand (() =>
                 {
@@ -125,14 +125,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public IMvxCommand PayCommand {
+        public AsyncCommand PayCommand
+        {
 			get {
 				return new AsyncCommand (() => RequestNavigate<ConfirmCarNumberViewModel>(
 				    new 
 				    { 
 				        order = Order.ToJson(),
 				        orderStatus = OrderStatus.ToJson()
-				    }, false, MvxRequestedBy.UserAction));
+				    }));
 			}
 		}
 	}

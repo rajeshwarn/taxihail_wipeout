@@ -2,8 +2,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -275,7 +273,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			});
 		}
 
-        public IMvxCommand NavigateToRatingPage
+        public AsyncCommand NavigateToRatingPage
         {
             get
             {
@@ -291,7 +289,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToOrderStatus
+        public AsyncCommand NavigateToOrderStatus
         {
             get
             {
@@ -315,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand DeleteOrder
+        public AsyncCommand DeleteOrder
         {
             get
             {
@@ -331,25 +329,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand RebookOrder
+        public AsyncCommand RebookOrder
         {
             get
             {
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-                    RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
+                    RequestNavigate<BookViewModel>(new { order = serialized }, true);
                 });
             }
         }
 
-        public IMvxCommand SendReceipt
+        public AsyncCommand SendReceipt
         {
             get
             {
                 return GetCommand(() =>
                 {
-                    if (GuidExtensions.HasValue(OrderId))
+                    if (OrderId.HasValue())
                     {
                         this.Services().Booking.SendReceipt(OrderId);
                     }
@@ -358,7 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-         public IMvxCommand CancelOrder
+        public AsyncCommand CancelOrder
         {
             get
             {

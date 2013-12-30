@@ -1,6 +1,5 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -21,8 +20,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return OrderStatus.VehicleNumber;
 			}
 		}
-             
-		public IMvxCommand ConfirmTaxiNumber 
+
+        public AsyncCommand ConfirmTaxiNumber 
 		{
 			get {
 				return GetCommand (() =>

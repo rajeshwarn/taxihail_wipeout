@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -34,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToLocationDetailPage{
+        public AsyncCommand<AddressViewModel> NavigateToLocationDetailPage
+        {
             get{
                 return GetCommand<AddressViewModel>(a =>
                 {

@@ -1,8 +1,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
@@ -104,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Address Model { get { return _getAddress(); } set { _setAddress(value); } }
 
-        public IMvxCommand SearchCommand
+        public AsyncCommand<Address> SearchCommand
         {
             get
             {
@@ -151,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand PickAddress
+        public AsyncCommand PickAddress
         {
             get
             {
@@ -208,11 +206,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CancelCurrentLocationCommand
+        //todo il sert a quoi le param?
+        public AsyncCommand<string> CancelCurrentLocationCommand
         {
             get
             {
-                return new MvxRelayCommand<string>(_ => CancelCurrentLocation());
+                return new AsyncCommand<string>(_ => CancelCurrentLocation());
             }
         }
 
@@ -282,16 +281,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public IMvxCommand ClearPositionCommand
+        public AsyncCommand ClearPositionCommand
         {
             get
             {
-
                 return GetCommand(ClearAddress);
             }
         }
 
-        public IMvxCommand RequestCurrentLocationCommand {
+        public AsyncCommand RequestCurrentLocationCommand
+        {
             get {
                 return GetCommand(() =>
                 {

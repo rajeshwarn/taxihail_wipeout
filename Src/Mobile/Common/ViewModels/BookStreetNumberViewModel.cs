@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 using TinyMessenger;
 
@@ -79,7 +78,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToSearch {
+        public AsyncCommand NavigateToSearch
+        {
             get {
                 return GetCommand(() =>
                  {
@@ -93,7 +93,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToPlaces {
+        public AsyncCommand NavigateToPlaces
+        {
             get {
                 return GetCommand(() =>
                                   {
@@ -106,7 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand DeleteAddressCommand {
+        public AsyncCommand DeleteAddressCommand
+        {
             get {
                 return GetCommand(() =>
                                   {
@@ -123,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             RequestClose(this);
         }
 
-        public IMvxCommand SaveCommand
+        public AsyncCommand SaveCommand
         {
             get
             {

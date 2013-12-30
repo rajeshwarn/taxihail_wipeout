@@ -1,10 +1,8 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
@@ -47,6 +45,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public virtual void Unload ()
         {
         }
+
+        protected void RequestNavigate<T>(object param, bool clearTop) where T : IMvxViewModel
+        {
+            RequestNavigate<T>(param, clearTop, MvxRequestedBy.UserAction);
+        }
         
         protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
@@ -76,18 +79,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return RequestNavigate<TViewModel>(parameterValues);
         }
 
-        protected IMvxCommand GetCommand(Action action)
+        protected AsyncCommand GetCommand(Action action)
         {
             return new AsyncCommand(action);
         }
 
-        protected IMvxCommand GetCommand<T>(Action<T> action)
+        protected AsyncCommand<T> GetCommand<T>(Action<T> action)
         {
             return new AsyncCommand<T>(action);
         }
 
-		readonly IDictionary<string, IMvxCommand> _commands = new Dictionary<string, IMvxCommand>();
-		protected IMvxCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
+        readonly IDictionary<string, AsyncCommand> _commands = new Dictionary<string, AsyncCommand>();
+        protected AsyncCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
 		{
 		    if (memberName == null)
 		    {
@@ -95,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 			return  _commands.ContainsKey(memberName)
 				? _commands[memberName]
-					: (_commands[memberName] = new MvxRelayCommand(execute, canExecute));
+                    : (_commands[memberName] = new AsyncCommand(execute, canExecute));
 
 		}
     }

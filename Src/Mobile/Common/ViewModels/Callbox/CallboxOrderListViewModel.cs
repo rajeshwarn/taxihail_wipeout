@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.ServiceClient.Web;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -162,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			_isClosed = true;
 		}
 
-		public IMvxCommand CallTaxi
+		public AsyncCommand CallTaxi
 		{
 			get
 			{
@@ -173,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			}
 		}
 
-		public IMvxCommand CancelOrder
+        public AsyncCommand<Guid> CancelOrder
 		{
 			get
 			{

@@ -2,8 +2,6 @@ using System;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
@@ -16,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public string Email { get; set; }
 
-		public IMvxCommand ResetPassword
+		public AsyncCommand ResetPassword
 		{
 			get
 			{

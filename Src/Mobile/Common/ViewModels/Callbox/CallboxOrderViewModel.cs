@@ -1,5 +1,4 @@
 using System;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -26,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             get { return IbsOrderId.ToString(); }
         }
 
-        public IMvxCommand CancelOrder
+        public AsyncCommand CancelOrder
         {
             get
             {

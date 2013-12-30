@@ -1,7 +1,6 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -24,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public bool ShowPlusSign { get; set; }
         public bool IsAddNew { get; set; }
         public string Picture { get; set; }
-        public IMvxCommand RemoveCreditCards
+        public AsyncCommand RemoveCreditCards
         {
             get
             {

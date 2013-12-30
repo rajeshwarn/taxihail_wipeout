@@ -1,5 +1,3 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
-
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RefineAddressViewModel : BaseSubViewModel<RefineAddressViewModel>
@@ -67,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SaveCommand
+        public AsyncCommand SaveCommand
         {
             get
             {

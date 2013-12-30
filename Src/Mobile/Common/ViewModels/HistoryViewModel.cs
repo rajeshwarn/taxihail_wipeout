@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -97,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 
-        public IMvxCommand NavigateToHistoryDetailPage
+        public AsyncCommand<OrderViewModel> NavigateToHistoryDetailPage
         {
             get
             {

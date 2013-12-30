@@ -8,7 +8,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -89,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SignInCommand
+        public AsyncCommand SignInCommand
         {
             get
             {
@@ -172,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ResetPassword
+        public AsyncCommand ResetPassword
         {
             get
             {
@@ -186,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SignUp
+        public AsyncCommand SignUp
         {
             get
             {

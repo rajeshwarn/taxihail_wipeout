@@ -3,7 +3,6 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -216,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SetVehiculeType
+        public AsyncCommand<int?> SetVehiculeType
         {
             get
             {
@@ -228,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        public IMvxCommand NavigateToUpdatePassword
+        public AsyncCommand NavigateToUpdatePassword
         {
             get
             {
@@ -236,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SetChargeType
+        public AsyncCommand<int?> SetChargeType
         {
             get
             {
@@ -255,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SetCompany
+        public AsyncCommand<int?> SetCompany
         {
             get
             {
@@ -268,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SaveCommand
+        public AsyncCommand SaveCommand
         {
             get
             {

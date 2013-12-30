@@ -1,5 +1,4 @@
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -30,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
 
         //todo : declare command in basesubviewmodel and refactor the Finish pattern in other viewmodels
-		public IMvxCommand Finish
+        public AsyncCommand<bool> Finish
 		{
 			get{
 				return GetCommand<bool>(ReturnResult);

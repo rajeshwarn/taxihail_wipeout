@@ -1,5 +1,3 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using System;
 using apcurium.MK.Booking.Mobile.Extensions;
 
@@ -7,7 +5,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
 	public class CallboxCallTaxiViewModel : BaseCallboxViewModel
 	{
-	    public IMvxCommand CallTaxi
+	    public AsyncCommand CallTaxi
 		{
 			get
 			{
@@ -20,8 +18,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								{ 
 									try
 									{
-                            							RequestClose( this );
-										RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);                                                        
+                            			RequestClose( this );
+										RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s }, true);                                                        
 									}
 									catch( Exception e )
 									{

@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -83,8 +82,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
-    
-        public IMvxCommand NavigateToCreditCardsList {
+
+        public AsyncCommand NavigateToCreditCardsList
+        {
             get {
                 return GetCommand (()=>{
                 

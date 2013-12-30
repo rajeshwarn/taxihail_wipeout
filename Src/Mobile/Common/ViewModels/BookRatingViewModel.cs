@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
@@ -127,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CanSubmit = _ratingList.All(c => c.Score != 0);
         }
 
-        public IMvxCommand RateOrder
+        public AsyncCommand RateOrder
         {
             get
             {

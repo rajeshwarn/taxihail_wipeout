@@ -2,7 +2,6 @@ using System;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
@@ -143,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand NavigateToRefineAddress
+        public AsyncCommand NavigateToRefineAddress
 		{
 			get
 			{
@@ -169,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand NavigateToEditInformations
+        public AsyncCommand NavigateToEditInformations
 		{
 			get
 			{
@@ -208,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand ConfirmOrderCommand
+        public AsyncCommand ConfirmOrderCommand
 		{
 			get
 			{
@@ -279,7 +278,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-		public IMvxCommand CancelOrderCommand
+        public AsyncCommand CancelOrderCommand
 		{
 			get
 			{

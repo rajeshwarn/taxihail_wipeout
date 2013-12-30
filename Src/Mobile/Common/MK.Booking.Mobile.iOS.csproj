@@ -105,6 +105,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="AsyncCommand.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
@@ -241,7 +242,6 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Data\TutorialContent.cs" />
-    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />

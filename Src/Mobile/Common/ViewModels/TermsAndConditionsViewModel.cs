@@ -1,6 +1,5 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -11,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        public IMvxCommand RejectTermsAndConditions
+        public AsyncCommand RejectTermsAndConditions
 		{
 			get
 			{
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand AcceptTermsAndConditions
+        public AsyncCommand AcceptTermsAndConditions
 		{
 			get
 			{

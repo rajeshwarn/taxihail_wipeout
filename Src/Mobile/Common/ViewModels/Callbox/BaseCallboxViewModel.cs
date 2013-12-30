@@ -1,4 +1,3 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -6,7 +5,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     public abstract class BaseCallboxViewModel : BaseViewModel
     {
      
-		public IMvxCommand Logout
+		public AsyncCommand Logout
         {
             get
             {

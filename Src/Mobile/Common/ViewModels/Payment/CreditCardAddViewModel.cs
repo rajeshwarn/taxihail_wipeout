@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -266,11 +265,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public List<ListItem> ExpirationMonths { get; set; }
 
-		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<object>(item => {
+        public AsyncCommand<object> SetCreditCardCompanyCommand
+        {
+            get { return GetCommand<object>(item => {
 					Data.CreditCardCompany = item.ToSafeString();	
 		}); } }
 
-        public IMvxCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
+        public AsyncCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
 
 #endregion
 

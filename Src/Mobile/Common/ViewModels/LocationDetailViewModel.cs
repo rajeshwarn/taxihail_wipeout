@@ -1,7 +1,5 @@
 using System;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -109,7 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public IMvxCommand ValidateAddress {
+        public AsyncCommand ValidateAddress
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -141,7 +140,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _validateAddressCancellationTokenSource.Cancel();
         }
 
-        public IMvxCommand SaveAddress {
+        public AsyncCommand SaveAddress
+        {
             get {
 
                 return GetCommand(() =>
@@ -177,7 +177,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand DeleteAddress {
+        public AsyncCommand DeleteAddress
+        {
             get {
                 return GetCommand(() =>
                 {
@@ -203,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         }
 
-		public IMvxCommand RebookOrder
+        public AsyncCommand RebookOrder
 		{
             get
             {
@@ -214,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                  var account = this.Services().Account.CurrentAccount;
                  order.Settings = account.Settings;
                  var serialized = JsonSerializer.SerializeToString(order);
-				 RequestNavigate<BookViewModel>(new { order = serialized }, true, MvxRequestedBy.UserAction);
+				 RequestNavigate<BookViewModel>(new { order = serialized }, true);
 				});
 			}
 		}

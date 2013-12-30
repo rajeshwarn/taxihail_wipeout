@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
@@ -44,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
         }
 
-        public IMvxCommand SignInCommand
+        public AsyncCommand SignInCommand
         {
             get
             {

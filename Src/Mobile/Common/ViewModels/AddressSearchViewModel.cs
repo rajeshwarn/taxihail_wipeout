@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
 using apcurium.MK.Common.Extensions;
@@ -201,7 +200,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             AddressViewModels.Clear ();
         }
 
-        public IMvxCommand RowSelectedCommand {
+        public AsyncCommand<AddressViewModel> RowSelectedCommand
+        {
             get {
                 return GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
                     {
@@ -239,7 +239,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CloseViewCommand {
+        public AsyncCommand CloseViewCommand
+        {
             get { return GetCommand (() => RequestClose (this)); }
         }
 

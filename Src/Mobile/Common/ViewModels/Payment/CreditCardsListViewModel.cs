@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -113,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             });
         }
 
-        public IMvxCommand NavigateToAddOrSelect
+        public AsyncCommand<CreditCardViewModel> NavigateToAddOrSelect
         {
             get
             {
@@ -131,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public IMvxCommand NavigateToAddCreditCard
+        public AsyncCommand NavigateToAddCreditCard
         {
             get
             {
@@ -162,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public IMvxCommand SelectCreditCardAndBackToSettings
+        public AsyncCommand<Guid> SelectCreditCardAndBackToSettings
         {
             get
             {

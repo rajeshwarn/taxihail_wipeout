@@ -7,7 +7,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -63,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool PaymentSelectorToggleIsVisible { get; set; }
 
-        public IMvxCommand UsePayPal
+        public AsyncCommand UsePayPal
         {
             get
             {
@@ -75,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public IMvxCommand UseCreditCard
+        public AsyncCommand UseCreditCard
         {
             get
             {
@@ -120,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             private set;
         }
 
-        public IMvxCommand ConfirmOrderCommand
+        public AsyncCommand ConfirmOrderCommand
         {
             get
             {

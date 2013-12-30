@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    return (false);
 		}
 
-		public IMvxCommand CreateAccount
+        public AsyncCommand CreateAccount
 		{
 			get
 			{

@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
@@ -135,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
 
 
-        public IMvxCommand SaveCommand
+        public AsyncCommand SaveCommand
         {
             get
             {

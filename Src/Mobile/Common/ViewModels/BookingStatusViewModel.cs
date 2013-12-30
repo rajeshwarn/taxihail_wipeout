@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Reactive.Linq;
@@ -11,7 +10,6 @@ using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -238,7 +236,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public IMvxCommand CallTaxi
+        public AsyncCommand CallTaxi
         {
             get { 
 				return GetCommand(() =>
@@ -393,7 +391,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#region Commands
 
-        public IMvxCommand NewRide {
+        public AsyncCommand NewRide
+        {
             get {
                 return GetCommand(() => this.Services().Message.ShowMessage(Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                 {
@@ -404,7 +403,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CancelOrder {
+        public AsyncCommand CancelOrder
+        {
             get {
                 return GetCommand (() =>
                 {
@@ -439,30 +439,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public IMvxCommand PayForOrderCommand 
+        public AsyncCommand PayForOrderCommand 
 		{
 			get {
-				return GetCommand (() =>
-					{ 
-#if DEBUG
-#else
-                        if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
-                            Message.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
-                            return;
-                       }
-#endif
-
-						RequestNavigate<ConfirmCarNumberViewModel>(
-						new 
-						{ 
-							order = Order.ToJson(),
-							orderStatus = OrderStatusDetail.ToJson()
-						}, false, MvxRequestedBy.UserAction);
-					});
+				return GetCommand (() => RequestNavigate<ConfirmCarNumberViewModel>(
+				    new 
+				    { 
+				        order = Order.ToJson(),
+				        orderStatus = OrderStatusDetail.ToJson()
+				    }));
 			}
 		}
 
-        public IMvxCommand CallCompany {
+        public AsyncCommand CallCompany
+        {
             get {
                 return GetCommand (() =>
                 {
@@ -476,7 +466,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-       public IMvxCommand ResendConfirmationToDriver {
+        public AsyncCommand ResendConfirmationToDriver
+        {
             get {
                 return GetCommand (() =>
                                    {
