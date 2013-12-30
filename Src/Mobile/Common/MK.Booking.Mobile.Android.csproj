@@ -52,9 +52,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Cirrious.MvvmCross.Android.Maps">
-      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Android">
       <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
     </Reference>
