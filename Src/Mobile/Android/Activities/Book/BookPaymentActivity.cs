@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Activities;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using Android.Views.InputMethods;

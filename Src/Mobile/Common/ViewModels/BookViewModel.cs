@@ -3,9 +3,7 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.AppServices;
 using System.Threading.Tasks;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -14,7 +12,6 @@ using System.Threading;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
@@ -24,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookViewModel : BaseViewModel
     {
+        private readonly IPushNotificationService _pushNotificationService;
+        private readonly IPackageInfo _packageInfo;
         private bool _initialized;
 
         private IEnumerable<CoordinateViewModel> _mapCenter;
@@ -31,8 +30,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool _useExistingOrder;
 
-        public BookViewModel()
+        public BookViewModel(IPushNotificationService pushNotificationService, IPackageInfo packageInfo)
         {
+            _pushNotificationService = pushNotificationService;
+            _packageInfo = packageInfo;
 
             Initialize();
         }
@@ -57,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Panel = new PanelViewModel(this);
 
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AppActivated>(_ => AppActivated());
+            MessengerHub.Subscribe<AppActivated>(_ => AppActivated());
 
-            var showEstimate = Task.Run(() =>  Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate")));
+            var showEstimate = Task.Run(() =>  Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowEstimate")));
 
             try
             {
@@ -154,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         void SetupPushNotification()
         {
-            InvokeOnMainThread(()=> TinyIoCContainer.Current.Resolve<IPushNotificationService>().RegisterDeviceForPushNotifications(force: true));
+            InvokeOnMainThread(() => _pushNotificationService.RegisterDeviceForPushNotifications(true));
         }
 
 
@@ -196,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             await Task.Delay(2000);
             if (AccountService.CurrentAccount != null)
             {
-                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync();
+                ApplicationInfoService.CheckVersionAsync();
             }
         }
 
@@ -243,16 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new CultureInfo(CultureInfo).DateTimeFormat.LongTimePattern.ToLower().Contains("tt");
-            }
-        }
-
-        public string CultureInfo
-        {
-            get
-            {
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
-                return culture.IsNullOrEmpty() ? "en-US" : culture;
+                return new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.LongTimePattern.ToLower().Contains("tt");
             }
         }
 
@@ -495,14 +487,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void UpdateServerInfo()
         {
-            var serverInfo = await TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
-            var appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-            var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
+            var serverInfo = await ApplicationInfoService.GetAppInfoAsync();
+            var appVersion = _packageInfo.Version;
+            var versionFormat = Resources.GetString("Version");
 
             var version = string.Format(versionFormat, appVersion);
             if (serverInfo != null)
             {
-                var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
+                var serverVersionFormat = Resources.GetString("ServerInfo");
                 version += " " + string.Format(serverVersionFormat, serverInfo.SiteName, serverInfo.Version);
             }
             Panel.Version = version;
@@ -527,7 +519,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     else
                     {
                         Order.PickupDate = date;
-                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, Order.PickupDate)));
+                        InvokeOnMainThread(() => MessengerHub.Publish(new DateTimePicked(this, Order.PickupDate)));
 
                         if (date.HasValue)
                         {
@@ -584,7 +576,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (!isValid)
                 {
                     Order.PickupDate = null;
-                    var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
+                    var destinationIsRequired = ConfigurationManager.GetSetting("Client.DestinationIsRequired", false);
                     if ( destinationIsRequired )
                     {
                         InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfoWhenDestinationIsRequired")));

@@ -1,20 +1,16 @@
 using System;
 using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ResetPasswordViewModel : BaseSubViewModel<string>, IMvxServiceConsumer<IAccountService>
+    public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
-        readonly IAccountService _accountService;
+        
 
         public ResetPasswordViewModel (string messageId) : base(messageId)
 		{
-            _accountService = this.GetService<IAccountService>();
 		}
 
 		public string Email { get; set; }
@@ -33,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					
 					MessageService.ShowProgress(true);
 					try{
-                        _accountService.ResetPassword(Email);
+                        AccountService.ResetPassword(Email);
                         RequestClose( this );
                      }catch(Exception e)
                      {

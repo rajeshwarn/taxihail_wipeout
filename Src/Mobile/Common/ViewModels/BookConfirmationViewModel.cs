@@ -3,32 +3,21 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Configuration;
 using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookConfirmationViewModel : BaseViewModel,
-		IMvxServiceConsumer<IAccountService>,
-		IMvxServiceConsumer<IBookingService>,
-		IMvxServiceConsumer<ICacheService>
+	public class BookConfirmationViewModel : BaseViewModel
 	{
-	    readonly IBookingService _bookingService;
-
-		public BookConfirmationViewModel(string order)
+        public BookConfirmationViewModel(string order)
 		{
-			_bookingService = this.GetService<IBookingService>();
-			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
-			RideSettings = new RideSettingsViewModel(Order.Settings);
+	        Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
+            RideSettings = new RideSettingsViewModel(Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => FirePropertyChanged(() => RideSettings));
 		}
 
@@ -108,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerName"));
 				}
 				catch (Exception)
 				{
@@ -126,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerPhone"));
 				}
 				catch (Exception)
 				{
@@ -144,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerNumber"));
 				}
 				catch (Exception)
 				{
@@ -232,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					try
 					{
 						MessageService.ShowProgress(true);
-						var orderInfo = _bookingService.CreateOrder(Order);
+						var orderInfo = BookingService.CreateOrder(Order);
 
 							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
@@ -260,10 +249,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						InvokeOnMainThread(() =>
 						{
-							var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 							if (CallIsEnabled)
 							{
-								var err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
+								var err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), Settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
 								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
 							}
 							else
@@ -305,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void ShowWarningIfNecessary()
 		{
-			var validationInfo = await _bookingService.ValidateOrder(Order);
+			var validationInfo = await BookingService.ValidateOrder(Order);
 			if (validationInfo.HasWarning)
 			{
 
@@ -315,7 +303,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private bool _showEstimate
+        //todo refactorer ça, avec un getdefault value
+		private bool ShowEstimate
 		{
 			get
 			{
@@ -323,7 +312,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate"));
+					ret = Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowEstimate"));
 				}
 				catch (Exception)
 				{
@@ -335,19 +324,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void ShowFareEstimateAlertDialogIfNecessary()
 		{
-			if (_showEstimate)
+			if (ShowEstimate)
 			{
-				var estimateEnabled = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.ShowEstimateWarning", true);
+				var estimateEnabled = ConfigurationManager.GetSetting("Client.ShowEstimateWarning", true);
 
 				if (estimateEnabled &&
-				                this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
+				                CacheService.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
 				                Order.DropOffAddress.HasValidCoordinate())
 				{
 					MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
 						"Ok", delegate
 					{
 					},
-						Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
+						Resources.GetString("WarningEstimateDontShow"), () => CacheService.Set("WarningEstimateDontShow", "yes"));
 				}
 			}
 		}

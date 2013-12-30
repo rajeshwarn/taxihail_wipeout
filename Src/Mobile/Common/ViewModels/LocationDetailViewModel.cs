@@ -1,11 +1,9 @@
 using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Entity;
-using TinyIoC;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
@@ -188,9 +186,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 
                     try {
                         if (_address.IsHistoric) {
-                            TinyIoCContainer.Current.Resolve<IAccountService> ().DeleteHistoryAddress (_address.Id);
+                            AccountService.DeleteHistoryAddress (_address.Id);
                         } else {
-                            TinyIoCContainer.Current.Resolve<IAccountService> ().DeleteFavoriteAddress (_address.Id);
+                            AccountService.DeleteFavoriteAddress(_address.Id);
                         }
                         Close ();
                     } catch (Exception ex) {

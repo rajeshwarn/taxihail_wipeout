@@ -9,12 +9,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
-        private readonly IAccountService _accountService;
-
-        public CallboxLoginViewModel(IAccountService accountService)
-        {
-            _accountService = accountService;
-        }
 
         public override void Load()
         {
@@ -55,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 return GetCommand(() =>
                                       {
-                                          _accountService.ClearCache();
+                                          AccountService.ClearCache();
                                           SignIn();
                                       });
             }
@@ -71,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                 try
                 {
-                    account = _accountService.GetAccount(Email, Password);
+                    account = AccountService.GetAccount(Email, Password);
                 }
                 catch (Exception e)
                 {
@@ -86,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     Password = string.Empty;
-					if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
+					if (AccountService.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
                     {
                         RequestNavigate<CallboxOrderListViewModel>(true);
                     }

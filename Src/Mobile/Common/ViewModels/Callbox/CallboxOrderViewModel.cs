@@ -1,20 +1,12 @@
 using System;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
-    public class CallboxOrderViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
+    public class CallboxOrderViewModel : BaseViewModel
     {
-        private readonly IBookingService _bookingService;
-        public CallboxOrderViewModel()
-        {
-            _bookingService = this.GetService<IBookingService>();
-        }
         public Guid Id { get; set; }
 
         public int? IbsOrderId { get; set; }
@@ -43,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         public bool CanBeCancelled
         {
-			get { return !_bookingService.IsCallboxStatusCompleted(OrderStatus.IbsStatusId); }
+			get { return !BookingService.IsCallboxStatusCompleted(OrderStatus.IbsStatusId); }
         }
 
         public ColorEnum TextColor

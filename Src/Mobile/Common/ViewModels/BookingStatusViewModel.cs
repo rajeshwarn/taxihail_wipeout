@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Cirrious.MvvmCross.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -20,9 +16,8 @@ using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
+	public class BookingStatusViewModel : BaseViewModel
     {
-		private readonly IBookingService _bookingService;
         private int _refreshPeriod = 5; //in seconds
 	    private bool _waitingToNavigateAfterTimeOut;
 
@@ -32,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;			
             _waitingToNavigateAfterTimeOut = false;
-			_bookingService = this.GetService<IBookingService>();
 		}
 	
 		public override void Load ()
@@ -58,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start (firstStart);
 
-            var periodInSettings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.OrderStatus.ClientPollingInterval");
+            var periodInSettings = ConfigurationManager.GetSetting ("Client.OrderStatus.ClientPollingInterval");
             int periodInSettingsValue;
             if(int.TryParse(periodInSettings, out periodInSettingsValue))
             {
@@ -377,7 +371,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				Observable.Interval( TimeSpan.FromSeconds (10))
                     .Subscribe(unit => InvokeOnMainThread(() => {
-                        _bookingService.ClearLastOrder();
+                        BookingService.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
                         RequestNavigate<BookViewModel>(clearTop: true);
                         RequestClose(this);
@@ -404,15 +398,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand NewRide {
             get {
-                return GetCommand (() =>
+                return GetCommand (() => MessageService.ShowMessage (Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                 {
-                    MessageService.ShowMessage (Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
-                    {
-                        BookingService.ClearLastOrder ();
-                        RequestNavigate<BookViewModel> (clearTop: true);
-                    },
-                    Str.NoButtonText, NoAction);                    
-                });
+                    BookingService.ClearLastOrder ();
+                    RequestNavigate<BookViewModel> (clearTop: true);
+                },
+                    Str.NoButtonText, NoAction));
             }
         }
 
@@ -425,31 +416,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
                     }
 
-                    MessageService.ShowMessage ("", Str.StatusConfirmCancelRide, Str.YesButtonText, ()=>
+                    MessageService.ShowMessage ("", Str.StatusConfirmCancelRide, Str.YesButtonText, ()=> Task.Factory.SafeStartNew ( () =>
                     {
-                        Task.Factory.SafeStartNew ( () =>
+                        try 
                         {
-	                        try 
-	                        {
-	                            MessageService.ShowProgress (true);
+                            MessageService.ShowProgress (true);
 
-	                            var isSuccess = BookingService.CancelOrder (Order.Id);      
-	                            if (isSuccess) 
-	                            {
-									_bookingService.ClearLastOrder();
-	                                RequestNavigate<BookViewModel> (clearTop: true);
-	                            } 
-	                            else 
-	                            {
-	                                MessageService.ShowMessage (Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
-	                            }
-	                        } 
-	                        finally 
-	                        {
-	                            MessageService.ShowProgress (false);
-	                        }     
-                        });
-                    },Str.NoButtonText, () => { });
+                            var isSuccess = BookingService.CancelOrder (Order.Id);      
+                            if (isSuccess) 
+                            {
+                                BookingService.ClearLastOrder();
+                                RequestNavigate<BookViewModel> (clearTop: true);
+                            } 
+                            else 
+                            {
+                                MessageService.ShowMessage (Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
+                            }
+                        } 
+                        finally 
+                        {
+                            MessageService.ShowProgress (false);
+                        }     
+                    }),Str.NoButtonText, () => { });
                 });
             }
         }

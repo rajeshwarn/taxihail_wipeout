@@ -1,25 +1,25 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
-using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentViewModel : BaseSubViewModel<object>, IMvxServiceConsumer<IPayPalExpressCheckoutService>
+    public class PaymentViewModel : BaseSubViewModel<object>
     {
-        public PaymentViewModel(string order, string orderStatus, string messageId) : base(messageId)
+        private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
+
+        public PaymentViewModel(string order, string orderStatus, string messageId,IPayPalExpressCheckoutService palExpressCheckoutService) : base(messageId)
         {
-            ConfigurationManager.GetPaymentSettings(false);
+            _palExpressCheckoutService = palExpressCheckoutService;
+            ConfigurationManager.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
             OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         Order Order { get; set; }
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
         OrderStatusDetail OrderStatus { get; set; }
 
         public bool PayPalSelected { get; set; }
@@ -160,11 +161,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void PayPalFlow()
         {
-            if (CanProceedToPayment(requireCreditCard: false))
+            if (CanProceedToPayment(false))
             {
                 MessageService.ShowProgress(true);
-                var paypal = this.GetService<IPayPalExpressCheckoutService>();
-                paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
+
+                _palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
 					.ToObservable()
                     // Always Hide progress indicator
 					.Do(_ => MessageService.ShowProgress(false), _ => MessageService.ShowProgress(false))

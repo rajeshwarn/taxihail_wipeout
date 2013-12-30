@@ -2,19 +2,16 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using TinyMessenger;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class CreditCardsListViewModel : BaseSubViewModel<Guid>,
-        IMvxServiceConsumer<IAccountService>
+    public class CreditCardsListViewModel : BaseSubViewModel<Guid>
     {
         private TinyMessageSubscriptionToken _removeCreditCardToken;
         private ObservableCollection<CreditCardViewModel> _creditCards;

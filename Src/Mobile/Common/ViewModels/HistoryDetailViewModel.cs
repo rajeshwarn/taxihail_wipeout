@@ -4,10 +4,7 @@ using System.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
@@ -18,6 +15,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
+        public HistoryDetailViewModel()
+        {
+            _status = new OrderStatusDetail
+            {
+                IbsStatusDescription = Resources.GetString("LoadingMessage")
+            };
+        }
+
         private Guid _orderId;
         public Guid OrderId
         {
@@ -49,10 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 		}
 
-        private OrderStatusDetail _status = new OrderStatusDetail
-            {
-				IbsStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage")
-            };
+        private OrderStatusDetail _status;
 
 		public OrderStatusDetail Status 
         {
@@ -210,11 +212,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return null;
                 }
-
-                var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-                           : resources.GetString("ConfirmDestinationNotSpecified");
+                           : Resources.GetString("ConfirmDestinationNotSpecified");
             }
         }
 
@@ -325,7 +325,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (GuidExtensions.HasValue(OrderId))
                     {
-                        TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
+                        BookingService.RemoveFromHistory(OrderId);
                         MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
                         Close();
                     }
@@ -364,45 +364,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
+                return GetCommand(() => MessageService.ShowMessage(string.Empty, Resources.GetString("StatusConfirmCancelRide"), Resources.GetString("YesButton"), () =>
                 {
-                    var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
-                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
-                    messageService.ShowMessage(string.Empty, resources.GetString("StatusConfirmCancelRide"), resources.GetString("YesButton"), () =>
-                    {
-                        var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
-                        var isSuccess = bookingService.CancelOrder(OrderId);
+                        
+                    var isSuccess = BookingService.CancelOrder(OrderId);
 
-                        if(isSuccess)
-                        {
-                            LoadStatus();
-                        }
-                        else
-                        {
-                            InvokeOnMainThread(() => messageService.ShowMessage(resources.GetString("StatusConfirmCancelRideErrorTitle"), resources.GetString("StatusConfirmCancelRideError")));
-                        }
-                    },
-                    resources.GetString("NoButton"), () => { });                          
-                }); 
+                    if(isSuccess)
+                    {
+                        LoadStatus();
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("StatusConfirmCancelRideErrorTitle"), Resources.GetString("StatusConfirmCancelRideError")));
+                    }
+                },
+                    Resources.GetString("NoButton"), () => { })); 
             }
         }
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
-            string result = date.HasValue ? date.Value.ToShortDateString() :  resources.GetString("DateToday");
+            var result = date.HasValue ? date.Value.ToShortDateString() : Resources.GetString("DateToday");
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : resources.GetString("TimeNow");
+            result += time.HasValue ? time.Value.ToShortTimeString() : Resources.GetString("TimeNow");
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
-            string result = apt.HasValue() ? apt : resources.GetString("ConfirmNoApt");
+            var result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
             return result;
         }
     }

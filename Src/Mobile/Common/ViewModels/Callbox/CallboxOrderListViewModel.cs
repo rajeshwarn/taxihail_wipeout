@@ -5,10 +5,8 @@ using System.Linq;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.ServiceClient.Web;
-using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -298,8 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						InvokeOnMainThread(() =>
 							{
-								var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-								string err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, Config.GetSetting( "DefaultPhoneNumberDisplay" ));
+								string err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), Settings.ApplicationName, Config.GetSetting( "DefaultPhoneNumberDisplay" ));
 								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
 							});
 					}

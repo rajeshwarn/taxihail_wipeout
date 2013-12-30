@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                                
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
-            _dateTimePicker = new DateTimePicker (ViewModel.CultureInfo);
+            _dateTimePicker = new DateTimePicker (CultureProvider.CultureInfoString);
             _dateTimePicker.ShowPastDate = false;
 
             _onDateTimePicked = () => _dateTimePicker.Hide ();

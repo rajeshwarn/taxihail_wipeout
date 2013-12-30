@@ -10,6 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Client.ListViewCell;

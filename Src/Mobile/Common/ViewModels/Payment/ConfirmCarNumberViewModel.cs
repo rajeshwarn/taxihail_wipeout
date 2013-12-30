@@ -1,10 +1,9 @@
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Text;
 using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class ConfirmCarNumberViewModel : BaseViewModel
 	{

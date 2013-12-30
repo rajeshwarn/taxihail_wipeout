@@ -4,7 +4,6 @@ using System.Linq;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
@@ -301,7 +300,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if ( !LocationService.IsLocationServicesEnabled )
                     {
-                        MessageService.ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
+                        MessageService.ShowMessage (Resources.GetString ("LocationServiceErrorTitle"),Resources.GetString ("LocationServiceErrorMessage") );
                         return ;
                     }
 

@@ -1,8 +1,8 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class CreditCardViewModel : BaseViewModel
     {

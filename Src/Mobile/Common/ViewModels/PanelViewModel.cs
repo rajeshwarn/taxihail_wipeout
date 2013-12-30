@@ -1,23 +1,17 @@
 using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>,IMvxServiceConsumer<ICacheService>
+    public class PanelViewModel : BaseViewModel
     {
-        private readonly IAccountService _accountService;
         private readonly BookViewModel _parent;
-        public PanelViewModel ( BookViewModel parent )
+        public PanelViewModel (BookViewModel parent)
         {
             _parent = parent;
-            _accountService = this.GetService<IAccountService> ();
         }
         public bool TutorialEnabled {
             get{
@@ -44,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                 {
                     MenuIsOpen = false;
-                    _accountService.SignOut ();         
+                    AccountService.SignOut ();         
                     RequestNavigate<LoginViewModel> (true);
 
                     RequestClose( _parent );
@@ -91,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<RideSettingsViewModel> (new { bookingSettings=  _accountService.CurrentAccount.Settings.ToJson()  });
+                    RequestNavigate<RideSettingsViewModel> (new { bookingSettings=  AccountService.CurrentAccount.Settings.ToJson()  });
                 });
             }
         }

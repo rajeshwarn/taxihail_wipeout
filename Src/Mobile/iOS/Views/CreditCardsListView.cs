@@ -1,7 +1,7 @@
 
 using System;
 using System.Drawing;
-
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;

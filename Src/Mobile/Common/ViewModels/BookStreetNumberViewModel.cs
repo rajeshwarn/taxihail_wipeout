@@ -1,19 +1,15 @@
 using System.Linq;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Common.Entity;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 using TinyMessenger;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Extensions;
-using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookStreetNumberViewModel : BaseViewModel
     {
@@ -42,9 +38,9 @@ namespace apcurium.MK.Booking.Mobile
         {
             get{
 
-                    
-                var max =  TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>( "Client.NumberOfCharInRefineAddress");
-                Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
+
+                var max = CacheService.Get<string>("Client.NumberOfCharInRefineAddress");
+                Task.Factory.SafeStartNew( () => CacheService.Set( "Client.NumberOfCharInRefineAddress", ConfigurationManager.GetSetting( "Client.NumberOfCharInRefineAddress" )));
                 int m;
                 if ( int.TryParse( max , out m ) )
                 {

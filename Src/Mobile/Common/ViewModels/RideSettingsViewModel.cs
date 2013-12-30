@@ -1,21 +1,15 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Common.Entity;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class RideSettingsViewModel: BaseViewModel,
-        IMvxServiceConsumer<IAccountService>
+    public class RideSettingsViewModel: BaseViewModel
     {
         private readonly BookingSettings _bookingSettings;
-        private readonly IAccountService _accountService;
 
         public RideSettingsViewModel(string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
         {
@@ -24,20 +18,20 @@ namespace apcurium.MK.Booking.Mobile
         public RideSettingsViewModel(BookingSettings bookingSettings)
         {
             _bookingSettings = bookingSettings;
-            _accountService = this.GetService<IAccountService>();
 
-            var refDataTask = _accountService.GetReferenceDataAsync();
+
+            var refDataTask = AccountService.GetReferenceDataAsync();
 
             refDataTask.ContinueWith(result =>
                                      {
-                var v = _accountService.GetVehiclesList();
+                var v = AccountService.GetVehiclesList();
                 _vehicules = v == null ? new ListItem[0] : v.ToArray();
                 FirePropertyChanged( ()=> Vehicles );
                 FirePropertyChanged( ()=> VehicleTypeId );
                 FirePropertyChanged( ()=> VehicleTypeName );
 
 
-                var p = _accountService.GetPaymentsList();
+                var p = AccountService.GetPaymentsList();
                 _payments = p == null ? new ListItem[0] : p.ToArray();
 
                 FirePropertyChanged( ()=> Payments );
@@ -78,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = _accountService.CurrentAccount;
+                    var account = AccountService.CurrentAccount;
                     var paymentInformation = new PaymentInformation
                     {
                         CreditCardId = account.DefaultCreditCard,
@@ -282,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile
                     if (ValidateRideSettings())
                     {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-                        _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+                        AccountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
                         Close();
                     }
                 });
@@ -294,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile
             if (string.IsNullOrEmpty(Name) 
                 || string.IsNullOrEmpty(Phone))
             {
-                base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
+                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
                 return false;
             }
             if (Phone.Count(Char.IsDigit) < 10)

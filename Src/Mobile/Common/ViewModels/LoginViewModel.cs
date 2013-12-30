@@ -3,27 +3,23 @@ using SocialNetworks.Services;
 #endif
 using System;
 using System.Collections.Generic;
-using TinyIoC;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.Text;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
-		public event EventHandler LoginSucceeded; 
+        public event EventHandler LoginSucceeded; 
 
 #if SOCIAL_NETWORKS
 		readonly IFacebookService _facebookService;
@@ -44,9 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IAccountService accountService, IPushNotificationService pushService)
+        public LoginViewModel(IPushNotificationService pushService)
         {
-            _accountService = accountService;		
             _pushService = pushService;
             CheckVersion();
         }
@@ -67,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             await Task.Delay(2000);
             if (AccountService.CurrentAccount != null)
             {
-                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync();
+                ApplicationInfoService.CheckVersionAsync();
             }
         }
 
@@ -100,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    _accountService.ClearCache();
+                    AccountService.ClearCache();
                     SignIn();
                 });
             }
@@ -123,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var account = default(Account);
                 try
                 {
-                    account = _accountService.GetAccount(Email, Password);                 
+                    account = AccountService.GetAccount(Email, Password);                 
                 }
                 catch (Exception e)
                 {
@@ -133,8 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
 						if ( CallIsEnabled )
 						{
-                        	var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-                        	var companyName = settings.ApplicationName;
+                        	var companyName = Settings.ApplicationName;
                         	var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
                         	message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
 						}
@@ -222,22 +216,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try
                     {
                         Thread.Sleep(1500);
-                        var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                         Account account;
                         if (facebookId.HasValue() || twitterId.HasValue())
                         {
                             if (facebookId.HasValue())
                             {
-                                account = service.GetFacebookAccount(facebookId);
+                                account = AccountService.GetFacebookAccount(facebookId);
                             }
                             else
                             {
-                                account = service.GetTwitterAccount(twitterId);
+                                account = AccountService.GetTwitterAccount(twitterId);
                             }
                         }
                         else
                         {
-                            account = service.GetAccount(data.Email, data.Password);
+                            account = AccountService.GetAccount(data.Email, data.Password);
                         }
 
                         if (account != null)
@@ -401,10 +394,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetServerUrl(string serverUrl)
         {
-            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
-            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
-            TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
-            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+            Settings.ServiceUrl = serverUrl;
+            ApplicationInfoService.ClearAppInfo();
+            AccountService.ClearReferenceData();
+            Config.Reset();
         }
 
         private void LoginSucess()

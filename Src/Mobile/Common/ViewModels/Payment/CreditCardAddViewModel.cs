@@ -1,25 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Common.Configuration.Impl;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Common;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Data;
-using System.Collections.Generic;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>, IMvxServiceConsumer<IAccountService>
+	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>
     {
-	    readonly IAccountService _accountService;
 
 #region Const and ReadOnly
         private const string Visa = "Visa";
@@ -46,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public CreditCardAddViewModel (string messageId) : base(messageId)
         {
             Data = new CreditCardInfos();
-            _accountService = this.GetService<IAccountService>();
 
 			CardCategories = new List<ListItem>
 			{
@@ -305,7 +299,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 MessageService.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
                 Data.CreditCardId = Guid.NewGuid();
-                if(_accountService.AddCreditCard(Data))
+                if(AccountService.AddCreditCard(Data))
 				{		
 
 					Data.CardNumber = null;
@@ -319,7 +313,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             }
             finally {
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.CreditCards");
+                CacheService.Clear("Account.CreditCards");
                 MessageService.ShowProgress(false);
             }
         }

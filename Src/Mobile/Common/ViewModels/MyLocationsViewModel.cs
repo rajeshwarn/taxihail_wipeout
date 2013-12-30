@@ -1,28 +1,19 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using apcurium.MK.Booking.Mobile.AppServices;
-using TinyIoC;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Mobile.Extensions;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-        private readonly IAccountService _accountService;
-
-        public MyLocationsViewModel()
-        {
-            _accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
-        }
 
         public override void Start(bool firstStart = false)
         {
@@ -103,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = _accountService.GetFavoriteAddresses().ToList();
+                var adrs = AccountService.GetFavoriteAddresses().ToList();
              
                 return adrs.Select(a => new AddressViewModel
                 { 
@@ -119,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile
         private Task<AddressViewModel[]> LoadHistoryAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = _accountService.GetHistoryAddresses();
+                var adrs = AccountService.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,

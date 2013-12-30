@@ -3,9 +3,7 @@ using System.Globalization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using ServiceStack.Text;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 
@@ -182,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerName"));
                 }
                 catch (Exception)
                 {
@@ -197,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerPhone"));
                 }
                 catch (Exception)
                 {
@@ -212,7 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+                    return Boolean.Parse(ConfigurationManager.GetSetting("Client.ShowPassengerNumber"));
                 }
                 catch (Exception)
                 {

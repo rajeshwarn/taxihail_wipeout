@@ -1,15 +1,12 @@
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using System.Text.RegularExpressions;
-using System.Linq;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
 using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
@@ -87,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile
                         var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
+						var result = AccountService.Register(Data, out error);
 						if (result)
 						{
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)

@@ -1,21 +1,20 @@
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TermsAndConditionsViewModel : BaseSubViewModel<bool>,                 
-        IMvxServiceConsumer<ITermsAndConditionsService>
+    public class TermsAndConditionsViewModel : BaseSubViewModel<bool>
 
 	{
+        private readonly ITermsAndConditionsService _termsAndConditionsService;
 
-        public TermsAndConditionsViewModel ( string messageId ) : base(messageId)
-		{
-		}
+        public TermsAndConditionsViewModel ( string messageId , ITermsAndConditionsService termsAndConditionsService) : base(messageId)
+        {
+            _termsAndConditionsService = termsAndConditionsService;
+        }
 
-		public IMvxCommand RejectTermsAndConditions
+        public IMvxCommand RejectTermsAndConditions
 		{
 			get
 			{
@@ -38,8 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             { 
                 if (_text.IsNullOrEmpty())
                 {
-                    var service = this.GetService<ITermsAndConditionsService>();
-                    _text = service.GetText();
+                    _text = _termsAndConditionsService.GetText();
                 }
                 return @_text; 
             } 
