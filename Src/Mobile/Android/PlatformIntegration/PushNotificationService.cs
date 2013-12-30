@@ -2,26 +2,35 @@ using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Util;
 using Android.Content;
-using GCMSharp.Client;
 using Android.App;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using System.Text;
 using apcurium.MK.Common.Enumeration;
-using System.Dynamic.Utils;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using PushSharp.Client;
 using ServiceStack.Text;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices;
-using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Common.Configuration;
+
+//VERY VERY VERY IMPORTANT NOTE!!!!
+// Your package name MUST NOT start with an uppercase letter.
+// Android does not allow permissions to start with an upper case letter
+// If it does you will get a very cryptic error in logcat and it will not be obvious why you are crying!
+// So please, for the love of all that is kind on this earth, use a LOWERCASE first letter in your Package Name!!!!
+[assembly: Permission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")] //, ProtectionLevel = Android.Content.PM.Protection.Signature)]
+[assembly: UsesPermission(Name = "@PACKAGE_NAME@.permission.C2D_MESSAGE")]
+[assembly: UsesPermission(Name = "com.google.android.c2dm.permission.RECEIVE")]
+
+//GET_ACCOUNTS is only needed for android versions 4.0.3 and below
+[assembly: UsesPermission(Name = "android.permission.GET_ACCOUNTS")]
+[assembly: UsesPermission(Name = "android.permission.INTERNET")]
+[assembly: UsesPermission(Name = "android.permission.WAKE_LOCK")]
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -38,15 +47,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void RegisterDeviceForPushNotifications (bool force = false)
 		{
 			//Check to ensure everything's setup right
-			GCMSharp.Client.GCMRegistrar.CheckDevice(_context);
-			GCMSharp.Client.GCMRegistrar.CheckManifest(_context);
-
-			if (force) {
-				GCMSharp.Client.GCMRegistrar.ClearRegistrationId(_context);
-			}
+			PushClient.CheckDevice(_context);
+            PushClient.CheckManifest(_context);
 			
 			//Get the stored latest registration id
-			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(_context);
+            var registrationId = PushClient.GetRegistrationId(_context);
 			
 			
 			bool registered = !string.IsNullOrEmpty(registrationId);
@@ -58,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				
 				//Call to register
                 var registerIdDebug =  _configManager.GetSetting( "GCM.SenderId" );
-                GCMSharp.Client.GCMRegistrar.Register(_context, registerIdDebug);
+                PushClient.Register(_context, registerIdDebug);
 			}
 			else {
 				Log.Info(TAG, "Already registered");
@@ -71,29 +76,33 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 	}
 
-	//You must subclass this!
-	public class SampleBroadcastReceiver : GCMBroadcastReceiver<GCMIntentService>
-	{
-		//IMPORTANT: Change this to your own Sender ID!
-		//The SENDER_ID is your Google API Console App Project ID.
-		//  Be sure to get the right Project ID from your Google APIs Console.  It's not the named project ID that appears in the Overview,
-		//  but instead the numeric project id in the url: eg: https://code.google.com/apis/console/?pli=1#project:785671162406:overview
-		//  where 785671162406 is the project id, which is the SENDER_ID to use!
-        //public const string SENDER_ID = "385816297456"; 
-		
-		public const string TAG = "PushSharp-GCM";
-	}
+    //You must subclass this!
+    [BroadcastReceiver(Permission = GCMConstants.PERMISSION_GCM_INTENTS)]
+    [IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_MESSAGE }, Categories = new string[] { "@PACKAGE_NAME@" })]
+    [IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_REGISTRATION_CALLBACK }, Categories = new string[] { "@PACKAGE_NAME@" })]
+    [IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_LIBRARY_RETRY }, Categories = new string[] { "@PACKAGE_NAME@" })]
+    public class PushHandlerBroadcastReceiver : PushHandlerBroadcastReceiverBase<PushHandlerService>
+    {
+        //IMPORTANT: Change this to your own Sender ID!
+        //The SENDER_ID is your Google API Console App Project ID.
+        //  Be sure to get the right Project ID from your Google APIs Console.  It's not the named project ID that appears in the Overview,
+        //  but instead the numeric project id in the url: eg: https://code.google.com/apis/console/?pli=1#project:785671162406:overview
+        //  where 785671162406 is the project id, which is the SENDER_ID to use!
+        public static string[] SENDER_IDS = new string[] { "785671162406" };
+
+        public const string TAG = "PushSharp-GCM";
+    }
 	
 	[Service] //Must use the service tag
-	public class GCMIntentService : GCMBaseIntentService,
+	public class PushHandlerService : PushHandlerServiceBase,
 		IUseServiceClient
 	{
-        public GCMIntentService() : base(TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("GCM.SenderId")) { }
+        public PushHandlerService() : base(TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("GCM.SenderId")) { }
 		
         
 		protected override void OnRegistered (Context context, string registrationId)
 		{
-			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Registered: " + registrationId);
+            Log.Verbose(PushHandlerBroadcastReceiver.TAG, "GCM Registered: " + registrationId);
 			//Send back to the server
 			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
 			                                                                 {
@@ -104,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		protected override void OnUnRegistered (Context context, string registrationId)
 		{
-			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
+            Log.Verbose(PushHandlerBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
 			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
 			                                                                 {
 				service.Unregister(registrationId);
@@ -114,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		protected override void OnMessage (Context context, Intent intent)
 		{
-			Log.Info(SampleBroadcastReceiver.TAG, "GCM Message Received!");
+            Log.Info(PushHandlerBroadcastReceiver.TAG, "GCM Message Received!");
 			
 			var msg = new StringBuilder();
 			
@@ -138,14 +147,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		protected override bool OnRecoverableError (Context context, string errorId)
 		{
-			Log.Warn(SampleBroadcastReceiver.TAG, "Recoverable Error: " + errorId);
+            Log.Warn(PushHandlerBroadcastReceiver.TAG, "Recoverable Error: " + errorId);
 			
 			return base.OnRecoverableError (context, errorId);
 		}
 		
 		protected override void OnError (Context context, string errorId)
 		{
-			Log.Error(SampleBroadcastReceiver.TAG, "GCM Error: " + errorId);
+            Log.Error(PushHandlerBroadcastReceiver.TAG, "GCM Error: " + errorId);
 		}
 		
 		void createNotification (string title, string desc, Guid orderId)

@@ -11,9 +11,9 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 
-namespace GCMSharp.Client
+namespace PushSharp.Client
 {
-	public class GCMRegistrar
+	public class PushClient
 	{
 		const string TAG = "GCMRegistrar";
 		const string BACKOFF_MS = "backoff_ms";
@@ -196,6 +196,7 @@ namespace GCMSharp.Client
 				Log.Verbose(TAG, "App version changed from " + oldVersion + " to " + newVersion + "; resetting registration id");
 				
 				ClearRegistrationId(context);
+				registrationId = string.Empty;
 			}
 
 			return registrationId;
@@ -208,7 +209,7 @@ namespace GCMSharp.Client
 			return !string.IsNullOrEmpty(registrationId);
 		}
 
-		public static string ClearRegistrationId(Context context)
+		internal static string ClearRegistrationId(Context context)
 		{
 			return SetRegistrationId(context, "");
 		}
