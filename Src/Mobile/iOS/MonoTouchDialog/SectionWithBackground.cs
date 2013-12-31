@@ -1,8 +1,7 @@
-using System;
-using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {
     public class SectionWithBackground : Section
     {

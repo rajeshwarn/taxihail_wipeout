@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register("TextView")]
     public class TextView : UITextView 
     {
-        private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
+        private readonly UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
         private UITextView _placeholder;
         public TextView ()
         {
@@ -31,18 +31,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             BackgroundColor = UIColor.Clear;
             TextColor = UIColor.FromRGB(64, 64, 64);
             Font = AppStyle.NormalTextFont;
-            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height );
+            Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height );
 
             _placeholder = CreatePlaceholder();
-            this.AddSubview(_placeholder);
+            AddSubview(_placeholder);
 
-            this.Changed += HandleTextChanged;
+            Changed += HandleTextChanged;
         }
 
         #region Placeholder
         private UITextView CreatePlaceholder()
         {
-            var placeholder = new UITextView(new RectangleF(0,0,this.Bounds.Width, this.Bounds.Height) );
+            var placeholder = new UITextView(new RectangleF(0,0,Bounds.Width, Bounds.Height) );
             placeholder.BackgroundColor = UIColor.Clear;
             placeholder.Layer.BorderColor = UIColor.Clear.CGColor;
             placeholder.Layer.BorderWidth = 0f;
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void HandleTextChanged (object sender, EventArgs e)
         {
-            SetPlaceholder(this.Text.Length == 0);
+            SetPlaceholder(Text.Length == 0);
         }
 
         public string Placeholder { 
@@ -73,17 +73,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         #endregion
 
-        public override void Draw(System.Drawing.RectangleF frame)
+        public override void Draw(RectangleF frame)
         {
             
             // General Declarations
             var context = UIGraphics.GetCurrentContext();
             
             // Color Declarations
-            UIColor color = UIColor.FromRGBA(0.00f, 0.00f, 0.00f, 1.00f);
-            UIColor color3 = color.ColorWithAlpha(0.6f);
-            UIColor wColor = UIColor.FromRGBA(1.00f, 1.00f, 1.00f, 1.00f);
-            UIColor color2 = wColor.ColorWithAlpha(0.2f);
+            var color = UIColor.FromRGBA(0.00f, 0.00f, 0.00f, 1.00f);
+            var color3 = color.ColorWithAlpha(0.6f);
+            var wColor = UIColor.FromRGBA(1.00f, 1.00f, 1.00f, 1.00f);
+            var color2 = wColor.ColorWithAlpha(0.2f);
             
             
             // Shadow Declarations

@@ -1,23 +1,14 @@
-using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using MonoTouch.CoreLocation;
-using System.Threading.Tasks;
-using System.Threading;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
-using System.Diagnostics;
-using MonoTouch.Foundation;
-using System.Reactive.Linq;
 using Cirrious.MvvmCross.Touch.ExtensionMethods;
+using MonoTouch.CoreLocation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class LocationService : AbstractLocationService
     {
-        private CLLocationManager _locationManager;
-        private LocationManagerDelegate _locationDelegate;
-        private static ILogger LoggerService {get{ return TinyIoCContainer.Current.Resolve<ILogger>();}}
-                
+        private readonly CLLocationManager _locationManager;
+        private readonly LocationManagerDelegate _locationDelegate;
+
         public override bool IsLocationServicesEnabled
         {
             get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
@@ -50,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (_locationManager.Location != null) {
                 
-                _locationDelegate.BestPosition = new Position()
+                _locationDelegate.BestPosition = new Position
                 {
                     Error = (float)_locationManager.Location.HorizontalAccuracy,
                     Time = _locationManager.Location.Timestamp.ToDateTimeUtc(),

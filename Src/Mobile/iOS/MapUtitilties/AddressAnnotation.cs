@@ -1,8 +1,7 @@
-using System;
-using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
+using MonoTouch.MapKit;
 
-namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
+namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
 	public enum AddressAnnotationType
 	{
@@ -15,11 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 	}
 	public class AddressAnnotation : MKAnnotation
 	{
-			/// <summary>
-		/// Need this constructor to set the fields, since the public
-		/// interface of this class is all READ-ONLY
-		/// <summary>
-		public AddressAnnotation (CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s) : base()
+		
+		public AddressAnnotation (CLLocationCoordinate2D coord, AddressAnnotationType type, string t, string s)
 		{
 			AddressType = type;
 			_coordinate = coord;
@@ -29,8 +25,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 		}
 		
 		private CLLocationCoordinate2D _coordinate;
-		private string _title, _subtitle;
-		public override CLLocationCoordinate2D Coordinate {
+		private readonly string _title;
+	    private readonly string _subtitle;
+
+	    public override CLLocationCoordinate2D Coordinate {
 			get { return _coordinate; }
 			set { _coordinate = value; }
 		}
@@ -62,8 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
                 return "Assets/nearby-cab.png";
             case AddressAnnotationType.NearbyTaxiCluster:
                 return "Assets/pin_cluster.png";
-            case AddressAnnotationType.Pickup:
-            default:
+                default:
                 return "Assets/pin_hail.png";
                 
             }

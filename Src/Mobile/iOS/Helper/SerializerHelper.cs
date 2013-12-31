@@ -1,12 +1,12 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 	public static class SerializerHelper
 	{
@@ -16,11 +16,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			try
 			{
-				string XmlizedString = null;
+				string XmlizedString;
 				using (var memoryStream = new MemoryStream ())
 				{
-					XmlSerializer xs = new XmlSerializer (typeof(T));
-					XmlTextWriter xmlTextWriter = new XmlTextWriter (memoryStream, Encoding.UTF8);
+					var xs = new XmlSerializer (typeof(T));
+					var xmlTextWriter = new XmlTextWriter (memoryStream, Encoding.UTF8);
 					xs.Serialize (xmlTextWriter, pObject);
 					XmlizedString = UTF8ByteArrayToString (((MemoryStream)xmlTextWriter.BaseStream).ToArray ());
 					return XmlizedString;
@@ -28,25 +28,27 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 			catch (Exception e)
 			{
-				System.Console.WriteLine (e);
+				Console.WriteLine (e);
 				return null;
 			}
 		}
 
 
 
+// ReSharper disable once InconsistentNaming
 		private static string UTF8ByteArrayToString (byte[] characters)
 		{
 			
-			UTF8Encoding encoding = new UTF8Encoding ();
-			string constructedString = encoding.GetString (characters);
+			var encoding = new UTF8Encoding ();
+			var constructedString = encoding.GetString (characters);
 			return (constructedString);
 		}
 
+// ReSharper disable once InconsistentNaming
 		private static byte[] StringToUTF8ByteArray (string pXmlString)
 		{
-			UTF8Encoding encoding = new UTF8Encoding ();
-			byte[] byteArray = encoding.GetBytes (pXmlString);
+			var encoding = new UTF8Encoding ();
+			var byteArray = encoding.GetBytes (pXmlString);
 			return byteArray;
 		}
 
@@ -56,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				try
 				{
-					XmlSerializer xs = new XmlSerializer (typeof(T));
+					var xs = new XmlSerializer (typeof(T));
 					using (var memoryStream = new MemoryStream (StringToUTF8ByteArray (pXmlizedString)))
 					{
 						//XmlTextWriter xmlTextWriter = new XmlTextWriter (memoryStream, Encoding.UTF8);

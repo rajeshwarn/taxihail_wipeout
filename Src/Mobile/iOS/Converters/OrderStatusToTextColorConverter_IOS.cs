@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Cirrious.MvvmCross.Converters;
 using MonoTouch.UIKit;
 
@@ -6,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
 	public class OrderStatusToTextColorConverter: MvxBaseValueConverter
 	{
-		public override object Convert (object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			var darkGray = 	new UIColor(050f/255f, 050f/255f, 050f/255f, 255f/255f);
 

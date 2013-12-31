@@ -1,14 +1,14 @@
-using System;
-using MonoTouch.UIKit;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public class BookViewActionsView : UIView
+    public sealed class BookViewActionsView : UIView
     {
         public BookViewActionsView ()
         {
-
             UserInteractionEnabled = true;
 
             RefreshCurrentLocationButton = AppButtons.CreateStandardButton( new RectangleF( 8,7,39,35 ) , "", AppStyle.ButtonColor.Black, "");
@@ -24,8 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             BookLaterButton = AppButtons.CreateStandardButton( new RectangleF( 273,7,39,35 ) , "", AppStyle.ButtonColor.Black, "");
             AddSubview ( BookLaterButton );
-            ((GradientButton)BookLaterButton).SetImage ("Assets/bookLaterIcon.png");                   
-
+            ((GradientButton)BookLaterButton).SetImage ("Assets/bookLaterIcon.png");  
 
         }
 

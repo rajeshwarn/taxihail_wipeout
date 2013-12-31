@@ -1,9 +1,8 @@
 using System;
-
-using GoogleAnalytics;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using GoogleAnalytics;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class GoogleAnalyticsService: IAnalyticsService
     {
@@ -15,11 +14,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public GoogleAnalyticsService (IAppSettings settings,IPackageInfo packageInfo)
         {
-            GoogleAnalytics.GAI.SharedInstance.TrackUncaughtExceptions = true;
-            GoogleAnalytics.GAI.SharedInstance.DispatchInterval = 20;
-            GoogleAnalytics.GAI.SharedInstance.Debug = true;// Optional: set debug to YES for extra debugging information.
+            GAI.SharedInstance.TrackUncaughtExceptions = true;
+            GAI.SharedInstance.DispatchInterval = 20;
+            GAI.SharedInstance.Debug = true;// Optional: set debug to YES for extra debugging information.
 
-            Tracker = GoogleAnalytics.GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
+            Tracker = GAI.SharedInstance.GetTracker (  "UA-44714416-1" );
             Tracker.AppName =  settings.ApplicationName.Replace( ' ' , '_' );
             Tracker.AppVersion = packageInfo.Version;
 

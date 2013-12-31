@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
     public class  TextViewDelegate :UITextViewDelegate
     {
-        private Action _onEndEdit;
+        private readonly Action _onEndEdit;
         public TextViewDelegate( Action onEndEdit )
         {
             _onEndEdit = onEndEdit;

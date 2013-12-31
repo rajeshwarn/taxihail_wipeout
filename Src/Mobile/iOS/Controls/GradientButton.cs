@@ -1,34 +1,35 @@
 using System;
-using System.Linq;
-using MonoTouch.UIKit;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
-using apcurium.MK.Common.Extensions;
+using MonoTouch.UIKit;
 
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register ("GradientButton")]
     public class GradientButton : UIButton
     {
         private bool _pressed;
-        private UIColor[] _colors = new UIColor[]
-            {
-                UIColor.FromRGB(240, 240, 240),
-                UIColor.FromRGB(222, 222, 222),
-                UIColor.FromRGB(200, 200, 200)
-            };
-		private UIColor[] _selectedColors = new UIColor[]
+        private UIColor[] _colors =
+        {
+            UIColor.FromRGB(240, 240, 240),
+            UIColor.FromRGB(222, 222, 222),
+            UIColor.FromRGB(200, 200, 200)
+        };
+		private UIColor[] _selectedColors =
 		{
-			UIColor.FromRGB(240, 240, 240),
-			UIColor.FromRGB(222, 222, 222),
-			UIColor.FromRGB(200, 200, 200)
+		    UIColor.FromRGB(240, 240, 240),
+		    UIColor.FromRGB(222, 222, 222),
+		    UIColor.FromRGB(200, 200, 200)
 		};
 
-        public UIRectCorner _roundedCorners = UIRectCorner.AllCorners;
-		private float[] _colorLocations = new float[] { 0f, 0.93f, 1f };
-		private float[] _selectedColorLocations = new float[] { 0f, 0.93f, 1f };
+        private UIRectCorner _roundedCorners = UIRectCorner.AllCorners;
+		private float[] _colorLocations = { 0f, 0.93f, 1f };
+		private float[] _selectedColorLocations = { 0f, 0.93f, 1f };
 		private float _strokeLineWidth = 1f;
         private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
         private UIColor _selectedStrokeLineColor;
@@ -36,15 +37,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         private string _title = "";
         private CGColor _titleColor = UIColor.FromRGB(101, 101, 101).CGColor;
         private CGColor _selectedTitleColor;
-        private UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.6f);
+        private readonly UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.6f);
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
-        private UIColor _textShadowColor = null;
-        private UIColor _selectedTextShadowColor = null;
+        private UIColor _textShadowColor;
+        private UIColor _selectedTextShadowColor;
         private UIImage _image;
         private UIImage _rightImage;
         private UIImage _selectedImage;
-        private Style.ShadowDefinition _innerShadow = null;
-        private Style.ShadowDefinition _dropShadow = null;
+        private ShadowDefinition _innerShadow;
+        private ShadowDefinition _dropShadow;
 
         public GradientButton(IntPtr handle) : base(  handle )
         {
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        public GradientButton(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect )
+        public GradientButton(RectangleF rect, float cornerRadius, ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect )
         {
 
 			buttonStyle.TextShadowColor.Maybe( c => _textShadowColor = UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha) );
@@ -94,17 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
         }
 
-        public override bool Selected
-        {
-            get
-            {
-                return base.Selected;
-            }
-            set
-            {
-                base.Selected = value;
-            }
-        }
         public void SetImage( string image )
         {
             if (image != null)
@@ -132,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public Style.ShadowDefinition DropShadow
+        public ShadowDefinition DropShadow
         {
             get{ return _dropShadow; }
             set
@@ -142,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public Style.ShadowDefinition InnerShadow
+        public ShadowDefinition InnerShadow
         {
             get{ return _innerShadow; }
             set
@@ -301,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool ContinueTracking(UITouch uitouch, UIEvent uievent)
         {
             var touch = uievent.AllTouches.AnyObject as UITouch;
-            if (Bounds.Contains (touch.LocationInView (this)))
+            if (touch != null && Bounds.Contains (touch.LocationInView (this)))
                 _pressed = true;
             else
                 _pressed = false;
@@ -369,7 +359,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         RectangleF DrawLeftImage (RectangleF rect)
         {
-            RectangleF imageRect = new RectangleF ();
+            var imageRect = new RectangleF ();
             if ((_image != null) && (!Selected || (_selectedImage == null))) {
                 var emptySpaceX = rect.Width - _image.Size.Width;
                 var emptySpaceY = rect.Height - _image.Size.Height;
@@ -407,13 +397,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             context.SaveState ();
             var data = NSString.FromData(_title, NSStringEncoding.UTF8).Encode(NSStringEncoding.MacOSRoman);
-            byte[] dataBytes = new byte[data.Length];            
-            System.Runtime.InteropServices.Marshal.Copy(data.Bytes, dataBytes, 0, Convert.ToInt32(data.Length));
-
-            context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
+            var dataBytes = new byte[data.Length];            
+            Marshal.Copy(data.Bytes, dataBytes, 0, Convert.ToInt32(data.Length));
+            context.SetFont(CGFont.CreateWithFontName(_titleFont.Name));
+            context.SetFontSize(_titleFont.PointSize);
             context.SetTextDrawingMode (CGTextDrawingMode.Fill);
-            var textColor = this.Selected ? (_selectedTitleColor ?? _titleColor) : _titleColor;
-            var shadowColor = this.Selected ? _selectedTextShadowColor : _textShadowColor;
+            var textColor = Selected ? (_selectedTitleColor ?? _titleColor) : _titleColor;
+            var shadowColor = Selected ? _selectedTextShadowColor : _textShadowColor;
             context.SetStrokeColor (textColor);
             if (shadowColor != null) {
                 context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, shadowColor.CGColor);
@@ -429,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             context.RestoreState ();
 
-            if (this.Selected) {
+            if (Selected) {
             }
         }
 

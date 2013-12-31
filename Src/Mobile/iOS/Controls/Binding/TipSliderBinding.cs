@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         
         
         
-        private TipSliderControl _control;
+        private readonly TipSliderControl _control;
         
         public TipSliderBinding(TipSliderControl control)
         {

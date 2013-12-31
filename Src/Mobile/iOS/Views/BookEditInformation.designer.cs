@@ -4,8 +4,9 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
-using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -16,28 +17,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.StackView contentStack { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
+		FormLabel lblApartment { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeType { get; set; }
+		FormLabel lblChargeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
+		FormLabel lblEntryCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+		FormLabel lblLargeBags { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+		FormLabel lblName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
+		FormLabel lblPassengers { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
+		FormLabel lblPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehiculeType { get; set; }
+		FormLabel lblVehiculeType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
@@ -49,22 +50,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtAprtment { get; set; }
+		TextField txtAprtment { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtEntryCode { get; set; }
+		TextField txtEntryCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtLargeBags { get; set; }
+		TextField txtLargeBags { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtName { get; set; }
+		TextField txtName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtNbPassengers { get; set; }
+		TextField txtNbPassengers { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtPhone { get; set; }
+		TextField txtPhone { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

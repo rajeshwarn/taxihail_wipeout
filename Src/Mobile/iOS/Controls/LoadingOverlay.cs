@@ -1,14 +1,14 @@
 using System;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-
 using System.Drawing;
-using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Localization;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using TinyIoC;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public enum LoadingOverlayPosition
     {
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         ActivityIndicator
     }
 
-    [MonoTouch.Foundation.Register("CAlertView")]
+    [Register("CAlertView")]
     public class CAlertView : UIAlertView
     {
 
@@ -55,38 +55,38 @@ namespace apcurium.MK.Booking.Mobile.Client
             _offset = offset;
         }
 
-        private bool setUpComplete = false;
+        private bool _setUpComplete;
 
         public override void Draw(RectangleF rect)
         {
-            if (setUpComplete == false)
+            if (_setUpComplete == false)
             {
-                switch (this.AlertViewType)
+                switch (AlertViewType)
                 {
                     case CAlertViewType.ProgressBar:
-                        if (this.ProgressView == null)
+                        if (ProgressView == null)
                         {
-                            this.ProgressView = new UIProgressView();
+                            ProgressView = new UIProgressView();
                             ProgressView.Style = UIProgressViewStyle.Default;
                             ProgressView.Progress = 0f;
                         }
 
-                        this.ProgressView.Frame = new RectangleF(
+                        ProgressView.Frame = new RectangleF(
                         30.0f,
                         rect.Height - 50f,
                         225.0f,
                         11f
                         );
-                        this.AddSubview(this.ProgressView);
+                        AddSubview(ProgressView);
                         break;
                     case CAlertViewType.ActivityIndicator:
                     
-                        if (this.ActivityIndicator == null)
+                        if (ActivityIndicator == null)
                         {
-                            this.ActivityIndicator = new UIActivityIndicatorView();
+                            ActivityIndicator = new UIActivityIndicatorView();
                             if (_offset.HasValue)
                             {
-                                this.ActivityIndicator.Frame = new RectangleF(
+                                ActivityIndicator.Frame = new RectangleF(
                                 139.0f - 18.0f,
                                 rect.Height - 63f - _offset.Value,
                                 37.0f,
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             }
                             else
                             {
-                                this.ActivityIndicator.Frame = new RectangleF(
+                                ActivityIndicator.Frame = new RectangleF(
                                 139.0f - 18.0f,
                                 rect.Height - 63f,
                                 37.0f,
@@ -103,22 +103,22 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 );
                             }
                         }
-                        if (this.ActivityIndicator != null)
+                        if (ActivityIndicator != null)
                         {
-                            this.AddSubview(this.ActivityIndicator);
-                            this.ActivityIndicator.StartAnimating();
+                            AddSubview(ActivityIndicator);
+                            ActivityIndicator.StartAnimating();
                         }
                         break;
                 }
-                setUpComplete = true;
+                _setUpComplete = true;
             }
             base.Draw(rect);
         }
 
         private void UpdateProgressBar()
         {
-            this.ProgressView.SetNeedsDisplay();
-            this.SetNeedsDisplay();
+            ProgressView.SetNeedsDisplay();
+            SetNeedsDisplay();
         }
 
         ///
@@ -126,15 +126,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         ///
         public void Update()
         {
-            if (this.ProgressView != null)
+            if (ProgressView != null)
             {
-                this.InvokeOnMainThread(UpdateProgressBar);
+                InvokeOnMainThread(UpdateProgressBar);
             }
         }
 
         public void Hide(bool animated)
         {
-            this.DismissWithClickedButtonIndex(0, animated);
+            DismissWithClickedButtonIndex(0, animated);
         }
         
     }
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         //private static LoadingOverlay _loading;
         private static CAlertView _loading;
-        private static readonly object _lock = new object();
+        private static readonly object Lock = new object();
 
         public static void StartAnimatingLoading(LoadingOverlayPosition position, string text, int? width, int? height)
         {
@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static void StartAnimatingLoading(LoadingOverlayPosition position, string text, int? width, int? height, Action canceled)
         {
 
-            lock (_lock)
+            lock (Lock)
             {
                 
                 UIApplication.SharedApplication.InvokeOnMainThread(() =>
@@ -205,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static void StopAnimatingLoading()
         {
-            lock (_lock)
+            lock (Lock)
             {
             
                 if (_loading != null)
@@ -216,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         UIApplication.SharedApplication.InvokeOnMainThread(() => _loading.Hide(false));
                         UIApplication.SharedApplication.InvokeOnMainThread(() => _loading.RemoveFromSuperview());
                     }
+// ReSharper disable once EmptyGeneralCatchClause
                     catch
                     {
                     
@@ -240,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public LoadingOverlay() : base()
+        public LoadingOverlay()
         {
             Initialize();
         }
@@ -272,15 +273,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             
             
-            this.Frame = new System.Drawing.RectangleF(x, y, Width, Height);
+            Frame = new RectangleF(x, y, Width, Height);
             Layer.CornerRadius = 5;
             BackgroundColor = UIColor.DarkGray;
             Hidden = false;
             if (_acitivty == null)
             {
                 _acitivty = new UIActivityIndicatorView();
-                _acitivty.Frame = new System.Drawing.RectangleF(8, 5, 20, 20);
-                this.AddSubview(_acitivty);
+                _acitivty.Frame = new RectangleF(8, 5, 20, 20);
+                AddSubview(_acitivty);
             }
             if (_label == null)
             {
@@ -291,11 +292,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 _label.Font = TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.English ? AppStyle.GetNormalFont(14) : AppStyle.GetNormalFont(12);
                 
-                _label.Frame = new System.Drawing.RectangleF(36, 4, 86, 21);
+                _label.Frame = new RectangleF(36, 4, 86, 21);
                 
                 
                 
-                this.AddSubview(_label);
+                AddSubview(_label);
             }
             
             if (text.HasValue())

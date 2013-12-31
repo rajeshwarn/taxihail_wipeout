@@ -1,19 +1,14 @@
-
-using System;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Controls;
+using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Views;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client.Views
+namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
     public partial class BookPaymentSettingsView : BaseViewController<PaymentViewModel>
     {
@@ -43,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
 
         double TotalAmount{
+// ReSharper disable once UnusedMember.Local
             get{
                 return CultureProvider.ParseCurrency(TotalAmountLabel.Text);
             }
@@ -77,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Resources.GetValue("View_PaymentCreditCardsOnFile");
 
-			AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green );  
+			AppButtons.FormatStandardButton(btConfirm, Resources.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green );  
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
@@ -136,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				ViewModel.TipAmount = TipAmountLabel.Text;//Todo ugly binding done in code behind
 			};
 
-            this.AddBindings(new Dictionary<object, string>() {         
+            this.AddBindings(new Dictionary<object, string> {         
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
                 { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
                 //{ TotalAmountLabel, new B("Text","Amount")},//See above
@@ -154,12 +150,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
             });
 			   
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
 		public override void ViewWillAppear (bool animated)
 		{
-			this.NavigationController.NavigationBarHidden = false;
+			NavigationController.NavigationBarHidden = false;
 			base.ViewWillAppear (animated);
 		}
 

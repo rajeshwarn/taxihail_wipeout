@@ -1,6 +1,4 @@
-using System;
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Navigation
 {
     public interface INavigationView
     {

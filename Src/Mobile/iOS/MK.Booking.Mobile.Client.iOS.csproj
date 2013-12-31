@@ -243,6 +243,14 @@
     <None Include="Assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Annotations.cs" />
+    <Compile Include="Order\BookRatingCell.cs" />
+    <Compile Include="Order\BookRatingCell.designer.cs">
+      <DependentUpon>BookRatingCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\AppConverters.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppStyle.cs" />
     <Compile Include="MainWindow.xib.designer.cs">
@@ -252,57 +260,39 @@
     <Compile Include="Helper\DeviceHardware.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
-    <Compile Include="Helper\ResourceHelper.cs" />
-    <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Helper\ThreadHelper.cs" />
-    <Compile Include="Helper\WebRequestHelper.cs" />
-    <Compile Include="Helper\XMLLinqHelper.cs" />
     <Compile Include="Localization\Resources.cs" />
-    <Compile Include="Localization\StandardMessages.cs" />
-    <Compile Include="Settings\LocationTableViewDataSource.cs" />
-    <Compile Include="Settings\LocationTableViewDelegate.cs" />
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
     <Compile Include="Controls\Binding\Binding.cs" />
-    <Compile Include="Controls\ISelectableViewController.cs" />
-    <Compile Include="Controls\IRefreshableViewController.cs" />
     <Compile Include="Settings\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
     <Compile Include="Settings\AboutUsView.xib.designer.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ShinnyButton.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Controls\VerticalButtonBar.cs" />
     <Compile Include="Controls\Background.cs" />
     <Compile Include="Controls\VerticalButton.cs" />
-    <Compile Include="Controls\ContactPicker.cs" />
     <Compile Include="Controls\GradientButton.cs" />
     <Compile Include="AppButtons.cs" />
-    <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\ConfirmationCall.cs" />
-    <Compile Include="Order\LocationDataExtension.cs" />
+    <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
     <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
     <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
-    <Compile Include="Controls\WindowDisplay.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
-    <Compile Include="Controls\AddressBar.cs" />
     <Compile Include="Controls\AnimatedArrowButton.cs" />
     <Compile Include="Controls\AnimatedWheelButton.cs" />
-    <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
-    <Compile Include="Controls\AddressBarButtons.cs" />
-    <Compile Include="Controls\AddressButton.cs" />
     <Compile Include="Views\BookView.xib.cs">
       <DependentUpon>BookView.xib</DependentUpon>
     </Compile>
@@ -341,9 +331,7 @@
     <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
-    <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Controls\DateTimePicker.cs" />
-    <Compile Include="Controls\BarButtonItem.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
     <Compile Include="Views\RefineAddressView.cs">
       <DependentUpon>RefineAddressView.xib</DependentUpon>
@@ -371,13 +359,7 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Order\RatingTableViewSource.cs" />
-    <Compile Include="Order\BookRatingCell.cs" />
-    <Compile Include="Order\BookRatingCell.designer.cs">
-      <DependentUpon>BookRatingCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Navigation\INavigationView.cs" />
-    <Compile Include="MonoTouchDialog\RightAlignedMvvmCrossEntryElement.cs" />
     <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
     <Compile Include="Views\HistoryTabView.xib.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
@@ -478,7 +460,6 @@
     <Compile Include="Views\Payments\TipSliderControl.cs" />
     <Compile Include="Views\Payments\DraggableButton.cs" />
     <Compile Include="Views\Payments\DraggedHandler.cs" />
-    <Compile Include="Extensions\UIButtonExtensions.cs" />
     <Compile Include="Views\Payments\ProgressBar.cs" />
     <Compile Include="Views\BookEditInformation.cs" />
     <Compile Include="Views\BookEditInformation.designer.cs">
@@ -520,9 +501,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Locations\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" />

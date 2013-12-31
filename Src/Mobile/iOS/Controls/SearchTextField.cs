@@ -1,23 +1,18 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreFoundation;
-using MonoTouch.Foundation;
 using System.Drawing;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("SearchTextField")]
     public class SearchTextField : TextField
     {
 
         private string _eventRaiseForText;
-        private bool _hasDelayedChangeEvent = false;
-
+        private bool _hasDelayedChangeEvent;
         public SearchTextField(IntPtr handle) : base(handle)
         {
             Initialize();
@@ -28,19 +23,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        private void Initialize()
+        private new void Initialize()
         {         
 
-            this.EditingChanged += delegate
+            EditingChanged += delegate
             {
                 CancelMoveMap();
                 
                 _moveMapCommand = new CancellationTokenSource();
                 
-                var t = new Task(() =>
-                {
-                    Thread.Sleep(700);
-                }, _moveMapCommand.Token);
+                var t = new Task(() => Thread.Sleep(700), _moveMapCommand.Token);
                 
                 t.ContinueWith(r =>
                 {
@@ -68,12 +60,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void OnTextChanged()
         {
-            if (_eventRaiseForText != this.Text)
+            if (_eventRaiseForText != Text)
             {
                 if (TextChangedCommand != null && TextChangedCommand.CanExecute())
                 {
                     _eventRaiseForText = Text;
-                    TextChangedCommand.Execute(this.Text);
+                    TextChangedCommand.Execute(Text);
                 }
                 else
                 {
@@ -106,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             set
             {
-                bool hasChanged = false;
+                var hasChanged = false;
                 if (base.Text != value)
                 {
                     hasChanged = true;

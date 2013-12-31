@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Client.MapUtilities;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using System.Drawing;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class StatusView : BaseViewController<BookingStatusViewModel>
     {
         #region Constructors
 
         public StatusView () 
-            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         
@@ -65,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
                 topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/backPickupDestination.png"));
 
-                viewLine.Frame = new System.Drawing.RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
+                viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
 
                 AppButtons.FormatStandardButton ((GradientButton)btnCallDriver, "", AppStyle.ButtonColor.Grey, "Assets/phone.png");
 
@@ -75,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton ((GradientButton)btnPay, Resources.StatusPayButton, AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton ((GradientButton)btnResend, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
-                this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, true);
+                NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, true);
                                 
                 View.BringSubviewToFront (bottomBar);
 
@@ -154,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
-                mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;
+                mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
             
@@ -162,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 Logger.LogError (ex);
             }
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         void UpdateCallButtonSize (RectangleF callFrame)

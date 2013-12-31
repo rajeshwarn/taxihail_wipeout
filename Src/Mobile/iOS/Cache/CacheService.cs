@@ -1,16 +1,15 @@
 using System;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using ServiceStack.Text;
 using MonoTouch.Foundation;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
     public class AppCacheService : CacheService ,  IAppCacheService
     {
-        
-        
         protected override string CacheKey
         {
             get
@@ -22,18 +21,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
     public class CacheService : ICacheService
     {
-
-        private const string _cacheKey = "MK.Booking.Cache";
-
-        public CacheService()
-        {
-        }
-
         protected virtual string CacheKey
         {
             get
             {
-                return _cacheKey;
+                return "MK.Booking.Cache";
             }
         }
 
@@ -82,29 +74,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             var serialized = JsonSerializer.SerializeToString(item);
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, CacheKey + key);               
         }
-
-
-//        public void Set<T>(string key, T obj)where T : class
-//        {
-//            var serialized = JsonSerializer.SerializeToString(obj);            
-//            NSUserDefaults.StandardUserDefaults.SetStringOrClear(serialized, _baseKey + key);               
-//        }
-
         public void Clear(string key)
         {
-            Console.WriteLine ( "-----------------------------------  Clear :" + CacheKey + key + " : " + this.GetType().ToString() );                        
+            Console.WriteLine ( "-----------------------------------  Clear :" + CacheKey + key + " : " + GetType());                        
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, CacheKey + key);               
         }
 
         private void ClearFullKey(string fullKey)
         {
-            Console.WriteLine ( "-----------------------------------  ClearFullKey :" + fullKey + " : " + this.GetType ().ToString() );            
+            Console.WriteLine ( "-----------------------------------  ClearFullKey :" + fullKey + " : " + GetType ());            
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, fullKey);               
         }
 
         public void ClearAll()
         {
-            Console.WriteLine ( "-----------------------------------  ClearAll :" + this.GetType ().ToString ());            
+            Console.WriteLine ( "-----------------------------------  ClearAll :" + GetType ());            
             var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
             keys.Where (k => k.ToString ().StartsWith(CacheKey)).ForEach (k => ClearFullKey( k.ToString() ) );
         }
@@ -115,12 +99,12 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         public CacheItem(T value)
         {
-            this.Value = value;
+            Value = value;
         }
         public CacheItem(T value, DateTime expireAt)
         {
-            this.Value = value;
-            this.ExpiresAt = expireAt;
+            Value = value;
+            ExpiresAt = expireAt;
         }
         
         public DateTime ExpiresAt { get; set; }

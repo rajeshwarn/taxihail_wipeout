@@ -4,9 +4,11 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("RefineAddressView")]
 	partial class RefineAddressView
@@ -18,10 +20,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtAptNumber { get; set; }
+		TextField txtAptNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtRingCode { get; set; }
+		TextField txtRingCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

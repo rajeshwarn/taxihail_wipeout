@@ -1,11 +1,11 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.ObjCRuntime;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.Foundation;
+using MonoTouch.ObjCRuntime;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Order
 {
 	public partial class BookRatingCell : MvxBindableTableViewCell
 	{
@@ -26,9 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// gives us a new cell back in MonoTouch again
 			var views = NSBundle.MainBundle.LoadNib("BookRatingCell", owner, null);
 			var cell2 = Runtime.GetNSObject( views.ValueAt(0) ) as BookRatingCell;
-			views = null;
-			cell2.Initialise();
-			return cell2;
+		    if (cell2 != null)
+		    {
+		        cell2.Initialise();
+		        return cell2;
+		    }
+		    return null;
 		}
 
 		
@@ -38,12 +41,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}		
 		
 		public BookRatingCell ()
-			: base(BindingText, MonoTouch.UIKit.UITableViewCellStyle.Default, Identifier)
+			: base(BindingText, UITableViewCellStyle.Default, Identifier)
 		{
 		}
 		
 		public BookRatingCell (string bindingText)
-			: base(bindingText, MonoTouch.UIKit.UITableViewCellStyle.Default, Identifier)
+			: base(bindingText, UITableViewCellStyle.Default, Identifier)
 		{
 		}
 		
@@ -101,6 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public IMvxCommand SetRateCommand {
 			get ;
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
 			set ;
 		}
 

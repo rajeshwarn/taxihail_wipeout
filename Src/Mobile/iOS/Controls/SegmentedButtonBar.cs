@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using MonoTouch.UIKit;
 using System.Drawing;
-using apcurium.MK.Common.Extensions;
 using System.Linq;
+using apcurium.MK.Common.Extensions;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	[Register ("SegmentedButtonBar")]
 	public class SegmentedButtonBar : UIView
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public SegmentedButton AddButton( string title, string tag )
 		{
-			var btnWidth = this.Frame.Width / (_buttons.Count + 1);
+			var btnWidth = Frame.Width / (_buttons.Count + 1);
 			var btn = new SegmentedButton( new RectangleF(_buttons.Count * btnWidth - (_buttons.Count == 0 ? 1 : 0), 0, btnWidth + 1, Frame.Height ), title ) { Tag2 = tag };
 
 			_buttons.ForEach( b => b.Value.Frame = new RectangleF( b.Key * btnWidth - (b.Key == 0 ? 1 : 0), 0, btnWidth + (b.Key == 0 || b.Key == _buttons.Count ? 1 : 0), Frame.Height ) );
@@ -49,12 +49,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var btn = sender as SegmentedButton;
 
-			btn.Pressed = true;
-			btn.SetNeedsDisplay();
-			_buttons.Values.Where( b => !b.Equals(btn) ).ForEach( bb => {
-				bb.Pressed = false;
-				bb.SetNeedsDisplay();
-			});
+		    if (btn != null)
+		    {
+		        btn.Pressed = true;
+		        btn.SetNeedsDisplay();
+		        _buttons.Values.Where( b => !b.Equals(btn) ).ForEach( bb => {
+		                                                                        bb.Pressed = false;
+		                                                                        bb.SetNeedsDisplay();
+		        });
+		    }
 		}
 
 		public void SetSelected( int index )

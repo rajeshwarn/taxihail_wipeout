@@ -2,12 +2,6 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.Foundation;
-using apcurium.MK.Booking.Mobile.Style;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Configuration;
-using System.Globalization;
-using MonoTouch.CoreGraphics;
-using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -31,9 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         void Initialize ()
         {
-            this.BackgroundColor = UIColor.Clear;
+            BackgroundColor = UIColor.Clear;
 
-            _tipPercentButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height))
+            _tipPercentButton = new SegmentedGradientButton(new RectangleF(Bounds.X, Bounds.Y, Bounds.Width / 2, Bounds.Height))
             {
                 IsLeftButton = true
             };
@@ -41,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _tipPercentButton.RoundedCorners = UIRectCorner.BottomLeft | UIRectCorner.TopLeft;
             _tipPercentButton.TouchUpInside += HandleTouchUpInside;
 
-            _tipAmountButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height))
+            _tipAmountButton = new SegmentedGradientButton(new RectangleF(Bounds.X + Bounds.Width / 2, Bounds.Y, Bounds.Width / 2, Bounds.Height))
             {
                 IsLeftButton = false
             };
@@ -49,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _tipAmountButton.RoundedCorners = UIRectCorner.BottomRight | UIRectCorner.TopRight;
             _tipAmountButton.TouchUpInside += HandleTouchUpInside;
 
-            this.AddSubviews(_tipPercentButton, _tipAmountButton);
+            AddSubviews(_tipPercentButton, _tipAmountButton);
 
             IsTipInPercent = true;
 
@@ -91,10 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         public TipButtonsValueChangedEventArgs (int buttonIndex)
         {
-            this.ButtonIndex = buttonIndex;
+            ButtonIndex = buttonIndex;
         }
 
         public int ButtonIndex {
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;
             private set;
         }

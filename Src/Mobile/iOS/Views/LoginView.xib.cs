@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
     {
@@ -21,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
         public LoginView () 
-            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new MvxRequestedBy()   ) )
         {
             
         }
@@ -38,10 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        public override void ViewWillAppear (bool animated)
-        {
-            base.ViewWillAppear (animated);
-        }
 
         #region INavigationView implementation
 
@@ -51,10 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #endregion
 
-        public override void ViewDidAppear (bool animated)
-        {
-            base.ViewDidAppear (animated);          
-        }
 
         public override void ViewDidLoad ()
         {
@@ -62,8 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client
              
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));                       
 
-            AppButtons.FormatStandardButton (btnSignIn, Resources.SignInButton, AppStyle.ButtonColor.Black, null);
-            AppButtons.FormatStandardButton (btnSignUp, Resources.SignUpButton, AppStyle.ButtonColor.Grey, null);          
+            AppButtons.FormatStandardButton (btnSignIn, Resources.SignInButton, AppStyle.ButtonColor.Black);
+            AppButtons.FormatStandardButton (btnSignUp, Resources.SignUpButton, AppStyle.ButtonColor.Grey);          
 
             ((TextField)txtEmail).PaddingLeft = 5;
             ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
@@ -115,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
             
             
-            this.AddBindings (new Dictionary<object, string> () {
+            this.AddBindings (new Dictionary<object, string> {
                 { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
                 { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
                 { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
@@ -131,14 +127,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
 
             ViewModel.Load ();
-            this.View.ApplyAppFont();           
+            View.ApplyAppFont();           
 
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)
         {
-            var popup = new UIAlertView (){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
-            popup.Title = "Server Url";
+            var popup = new UIAlertView {AlertViewStyle = UIAlertViewStyle.PlainTextInput, Title = "Server Url"};
             popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
 
             var cancelBtnIndex = popup.AddButton ("Cancel");
@@ -155,17 +150,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             };
             popup.Show ();
         }
-       
-        private void LoadBackgroundNavBar (UINavigationBar bar)
-        {
-            bar.TintColor = AppStyle.NavigationBarColor;  
-
-            //It might crash on iOS version smaller than 5.0
-            try {
-                bar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
-            } catch {
-            }
-        }       
 
         #endregion
     }

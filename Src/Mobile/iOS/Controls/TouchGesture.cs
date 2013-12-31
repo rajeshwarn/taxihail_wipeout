@@ -1,9 +1,9 @@
 using System;
+using System.Diagnostics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using System.Diagnostics;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TouchGesture :UIGestureRecognizer
     {
@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         private void Initialize()
         {
-            this.DelaysTouchesBegan = false;
-            this.DelaysTouchesEnded = false;    
+            DelaysTouchesBegan = false;
+            DelaysTouchesEnded = false;    
             _stopWatch = new Stopwatch ();
 
         }
@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         public bool UserIsTouching {
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;
             set;
         }
@@ -51,13 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             var r = _stopWatch.ElapsedMilliseconds;         
             return r;
             }
-            else
-            {
-                return long.MaxValue;
-            }
+            return long.MaxValue;
         }
-        
-        
+
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {                       
             UserIsTouching = true;

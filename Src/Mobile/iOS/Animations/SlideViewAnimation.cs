@@ -1,4 +1,3 @@
-using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 
@@ -7,8 +6,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Animations
 	public class SlideViewAnimation
 	{
 		private SizeF _offset;
-		private UIView _view;
-		private float _duration;
+		private readonly UIView _view;
+		private readonly float _duration;
 
 		public SlideViewAnimation ( UIView view, SizeF offset, float duration = 0.5f )
 		{

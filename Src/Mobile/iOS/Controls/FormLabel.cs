@@ -1,9 +1,9 @@
 using System;
-using MonoTouch.Foundation;
 using System.Drawing;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("FormLabel")]
     public class FormLabel : UILabel

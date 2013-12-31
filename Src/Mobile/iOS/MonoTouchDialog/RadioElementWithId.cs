@@ -1,17 +1,15 @@
-using System;
-using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
-using System.Drawing;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {
     public class RadioElementWithId<TId> : RadioElement where TId: struct
     {
-        string _image;
+        readonly string _image;
 
         public RadioElementWithId(TId? id, string caption, string image = null) : base( caption )
         {
-            this.Id = id;
+            Id = id;
             _image = image;
         }
        
@@ -37,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
         public TId? Id {
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;
             private set;
         }

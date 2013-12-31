@@ -4,18 +4,20 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Order
 {
 	[Register ("BookStreetNumberView")]
 	partial class BookStreetNumberView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnClear { get; set; }
+		GradientButton btnClear { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnPlaces { get; set; }
+		GradientButton btnPlaces { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblStreetNumber { get; set; }

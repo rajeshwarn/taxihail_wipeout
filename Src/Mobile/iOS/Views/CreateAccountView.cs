@@ -1,22 +1,22 @@
-
-using System;
+using System.Collections.Generic;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class CreateAccountView : BaseViewController<CreateAcccountViewModel>
     {
         #region Constructors
         
         public CreateAccountView () 
-            : base(new MvxShowViewModelRequest<CreateAcccountViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<CreateAcccountViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         
@@ -32,14 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         
 #endregion
 		
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();
-			
-            // Release any cached data, images, etc that aren't in use.
-        }
-		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -52,13 +44,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPassword.Text = Resources.GetValue("CreateAccountPassword");
             lblConfirmPassword.Text = Resources.GetValue("CreateAccountPasswordConfrimation");
 
-            base.DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
+            DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
             
             txtPassword.SecureTextEntry = true;
             txtConfirmPassword.SecureTextEntry = true;
 
             var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
-            AddButton(scrollView, 60, buttonsY, Resources.CreateAccountCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
+            AddButton(scrollView, 60, buttonsY, Resources.CreateAccountCreate, "CreateAccount", AppStyle.ButtonColor.Green);
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtName, "{'Text': {'Path': 'Data.Name', 'Mode': 'TwoWay' }}" },
@@ -70,17 +62,17 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { lblConfirmPassword, "{'Hidden': {'Path': 'HasSocialInfo'}}" },
             });
 
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SignUp"), true);
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SignUp"), true);
 
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 
         }
 		
        
         private void AddButton(UIView parent, float x, float y, string title, string command, AppStyle.ButtonColor bcolor)
         {
-            var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 200, 40), title, bcolor);
+            var btn = AppButtons.CreateStandardButton(new RectangleF(x, y, 200, 40), title, bcolor);
             btn.TextShadowColor = null;
             parent.AddSubview(btn);
             this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");              

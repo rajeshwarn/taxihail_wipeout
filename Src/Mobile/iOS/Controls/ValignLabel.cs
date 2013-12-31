@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override void DrawText (RectangleF rect)
         { 
-            RectangleF rErg = TextRectForBounds (rect, Lines); 
+            var rErg = TextRectForBounds (rect, Lines); 
             base.DrawText (rErg); 
         }
     
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override RectangleF TextRectForBounds (RectangleF rBounds, int nNumberOfLines)
         {
-            RectangleF rCalculated = base.TextRectForBounds (rBounds, nNumberOfLines); 
+            var rCalculated = base.TextRectForBounds (rBounds, nNumberOfLines); 
             if (_verticalAlignment != VerticalAlignments.Top) {    //no special handling for top
                 if (_verticalAlignment == VerticalAlignments.Bottom) { 
                     rBounds.Y += rBounds.Height - rCalculated.Height;    //move down by difference

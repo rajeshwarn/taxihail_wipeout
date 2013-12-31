@@ -1,10 +1,7 @@
-using System;
-using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -15,21 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         {
         }
 		
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();
-			
-            // Release any cached data, images, etc that aren't in use.
-        }
-		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
             ViewModel.Load();
 
 			// Hide navigation bar, full screen height is required for displaying paypal page
-			this.NavigationController.NavigationBarHidden = true;
+			NavigationController.NavigationBarHidden = true;
 
             webView.ShouldStartLoad = LoadHook;
 			var request = new NSUrlRequest (new NSUrl (ViewModel.Url));

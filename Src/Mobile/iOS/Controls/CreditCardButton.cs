@@ -2,7 +2,6 @@ using System;
 using MonoTouch.Foundation;
 using System.Drawing;
 using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -25,12 +24,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
+// ReSharper disable once NotAccessedField.Local
         private string _last4Digits = string.Empty;
+
+        [UsedImplicitly]
         public string Last4Digits {
             set {
                 _last4Digits = value ?? string.Empty;
 
-                TextField.RightView = new UILabel(new RectangleF(0,0,100,this.Bounds.Height))
+                TextField.RightView = new UILabel(new RectangleF(0,0,100,Bounds.Height))
                 {
                     Text = string.IsNullOrEmpty(value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value,
                     BackgroundColor = UIColor.Clear,
@@ -43,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        [UsedImplicitly]
         public string CreditCardCompany{
             set
             { 

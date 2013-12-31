@@ -1,6 +1,8 @@
 
 using System;
+using System.Drawing;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -31,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = appSettings.ApplicationName == "Thriev";
+            var isThriev = appSettings.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("BookEditInformation_Thriev", this, null);
@@ -78,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblPhone.Maybe(x => x.Text = Resources.GetValue ( "PassengerPhoneLabel" ));
 
 
-            scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
+            scrollView.ContentSize = new SizeF( 320, 700 );
 
             txtAprtment.Maybe(x => x.Ended += HandleTouchDown);
             txtEntryCode.Maybe(x => x.Ended += HandleTouchDown);
@@ -103,14 +105,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 Tuple.Create<object,string>(txtAprtment, "{'Text':{'Path':'Order.PickupAddress.Apartment'}}"),
                 Tuple.Create<object,string>(txtEntryCode, "{'Text':{'Path':'Order.PickupAddress.RingCode'}}"),
                 Tuple.Create<object,string>(pickerVehicleType, "{'Text':{'Path':'VehicleName'}}"),
-                Tuple.Create<object,string>(pickerChargeType, "{'Text':{'Path':'ChargeType'}}"),
+                Tuple.Create<object,string>(pickerChargeType, "{'Text':{'Path':'ChargeType'}}")
             }
             .Where(x=> x.Item1 != null )
             .ToDictionary(x=>x.Item1, x=>x.Item2);
 
             this.AddBindings(bindings);
               
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         void HandleTouchDown (object sender, EventArgs e)
@@ -123,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
+            NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
 
             var btnDone = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 if( ViewModel.SaveCommand.CanExecute() )
@@ -132,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
             });
 
-            this.NavigationItem.RightBarButtonItem = btnDone; 
+            NavigationItem.RightBarButtonItem = btnDone; 
             
         }
 

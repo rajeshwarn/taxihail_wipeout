@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return Order.Settings.ChargeTypeId; }
             set { SetChargeTypeId(value); }
         }
-        public ListItem[] Vehicles
+        public ListItem<int>[] Vehicles
         {
             get
             {
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public ListItem[] Payments
+        public ListItem<int>[] Payments
         {
             get
             {

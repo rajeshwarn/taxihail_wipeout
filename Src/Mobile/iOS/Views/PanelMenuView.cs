@@ -1,29 +1,22 @@
 using System;
+using System.ComponentModel;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Animations;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using apcurium.MK.Booking.Mobile.Client.Animations;
-using MonoTouch.MessageUI;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.IO;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
-using Cirrious.MvvmCross.Touch.Interfaces;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class PanelMenuView : UIViewController
     {
-        private UINavigationController _navController;
-        private UIView _viewToAnimate;
-        private PanelViewModel _viewModel;
+        private readonly UIView _viewToAnimate;
+        private readonly PanelViewModel _viewModel;
 
         public PanelMenuView (IntPtr handle) : base(handle)
         {
@@ -38,17 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        public PanelMenuView (UIView viewToAnimate, UINavigationController navController, PanelViewModel viewModel) 
+        public PanelMenuView (UIView viewToAnimate, PanelViewModel viewModel) 
             : this()
         {
-            _navController = navController;
             _viewToAnimate = viewToAnimate;
             _viewModel = viewModel;
-        }
-        
-        public override void DidReceiveMemoryWarning ()
-        {
-            base.DidReceiveMemoryWarning ();
         }
 
         public override void ViewDidLoad ()
@@ -64,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
 
             InitializeMenu ();  
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         private void InitializeMenu ()
@@ -124,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _viewModel.PropertyChanged += HandlePropertyChanged;
         }
 
-        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void HandlePropertyChanged (object sender, PropertyChangedEventArgs e)
         {
 
             if (e.PropertyName == "MenuIsOpen") {

@@ -1,27 +1,24 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Order;
 using MonoTouch.MapKit;
-using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Extensions;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Data;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Common.Entity;
 using System.Threading;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
 using System.Threading.Tasks;
 using apcurium.MK.Common;
-using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -56,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         public TouchMap()
-            : base()
         {
             Initialize();
         }
@@ -71,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {   
-           /// _cancelToken = new CancellationTokenSource();
+           // _cancelToken = new CancellationTokenSource();
 
             ShowsUserLocation = true;
             if (_pickupCenterPin == null) {
@@ -94,10 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public override void LayoutSubviews ()
         {
             base.LayoutSubviews ();
-
-
-
-            var p = this.ConvertCoordinate(this.CenterCoordinate,this);
+            var p = ConvertCoordinate(CenterCoordinate,this);
             _pickupCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57); //Image is 42 x 57           
             _dropoffCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
         }
@@ -111,7 +104,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     ExecuteMoveMapCommand();
                 }
             }
-            catch
+// ReSharper disable once EmptyGeneralCatchClause
+            catch (Exception)
             {
 
             }
@@ -145,10 +139,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _moveMapCommand = new CancellationTokenSource();
                                 
-            var t = new Task(() =>
-                             {
-                Thread.Sleep(500);
-            }, _moveMapCommand.Token );
+            var t = new Task(() => Thread.Sleep(500), _moveMapCommand.Token );
 
             t.ContinueWith(r =>
             {
@@ -192,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             set {
                 _addressSelectionMode = value;
-                if(_addressSelectionMode == Data.AddressSelectionMode.PickupSelection)
+                if(_addressSelectionMode == AddressSelectionMode.PickupSelection)
                 {
                     _pickupCenterPin.Hidden = false;
                     if(_pickupPin != null) RemoveAnnotation(_pickupPin);
@@ -201,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     ShowDropOffPin(Dropoff);
                     SetNeedsDisplay();
                 }
-                else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
+                else if(_addressSelectionMode == AddressSelectionMode.DropoffSelection)
                 {
                     _dropoffCenterPin.Hidden = false;
                     if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
@@ -228,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _pickup = value;
-                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                if(AddressSelectionMode == AddressSelectionMode.None)
                 {
                     ShowPickupPin(value);
                 }
@@ -241,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _dropoff = value;
-                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                if(AddressSelectionMode == AddressSelectionMode.None)
                 {
                     ShowDropOffPin(value);
                 }
@@ -260,7 +251,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private OrderStatusDetail _taxiLocation { get; set; }
+        private OrderStatusDetail _taxiLocation;
         
         private MKAnnotation _taxiLocationPin;
         
@@ -278,11 +269,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 
                 if ((value != null))
                 {
-                    CLLocationCoordinate2D coord = new CLLocationCoordinate2D(0,0);            
+                    var coord = new CLLocationCoordinate2D(0,0);            
                     if (value.VehicleLatitude.HasValue
                         && value.VehicleLongitude.HasValue
-                        && value.VehicleLongitude.Value !=0 
+// ReSharper disable CompareOfFloatsByEqualityOperator
+                        && value.VehicleLongitude.Value !=0
                         && value.VehicleLatitude.Value !=0
+// ReSharper restore CompareOfFloatsByEqualityOperator
                         && !string.IsNullOrEmpty(value.VehicleNumber) 
 						&& VehicleStatuses.ShowOnMapStatuses.Contains(value.IbsStatusId))
                     {
@@ -307,7 +300,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
-            if(adressesToDisplay == null || !adressesToDisplay.Any())
+            var coordinateViewModels = adressesToDisplay as CoordinateViewModel[] ?? adressesToDisplay.ToArray();
+            if(adressesToDisplay == null || !coordinateViewModels.Any())
             {
                 return;
             }
@@ -317,12 +311,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             double? deltaLng = null;
             CLLocationCoordinate2D center;
 
-            if (adressesToDisplay.Count() == 1)
+            if (coordinateViewModels.Count() == 1)
             {
-                double lat = adressesToDisplay.ElementAt(0).Coordinate.Latitude;
-                double lon = adressesToDisplay.ElementAt(0).Coordinate.Longitude;
+                var lat = coordinateViewModels.ElementAt(0).Coordinate.Latitude;
+                var lon = coordinateViewModels.ElementAt(0).Coordinate.Longitude;
 
-                if (adressesToDisplay.ElementAt(0).Zoom == ViewModels.ZoomLevel.DontChange)
+                if (coordinateViewModels.ElementAt(0).Zoom == ZoomLevel.DontChange)
                 {
                     region = Region;
                 }
@@ -337,10 +331,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
-                var minLat = adressesToDisplay.Min(a => a.Coordinate.Latitude);
-                var maxLat = adressesToDisplay.Max(a => a.Coordinate.Latitude);
-                var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
-                var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
+                var minLat = coordinateViewModels.Min(a => a.Coordinate.Latitude);
+                var maxLat = coordinateViewModels.Max(a => a.Coordinate.Latitude);
+                var minLon = coordinateViewModels.Min(a => a.Coordinate.Longitude);
+                var maxLon = coordinateViewModels.Max(a => a.Coordinate.Longitude);
 
                 deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
                 deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
@@ -379,7 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.SetRegion(region, animated);
         }
 
-        public override void SubviewAdded(MonoTouch.UIKit.UIView uiview)
+        public override void SubviewAdded(UIView uiview)
         {
             base.SubviewAdded(uiview);
 
@@ -402,13 +396,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
                 if (legalView != null)
                 {
-                    legalView.ToString();
                     legalView.Frame = new RectangleF(legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height);
-                    //legalView.Frame = 
                 }
             }
-
-            
         }
 
         private void ShowDropOffPin (Address address)
@@ -421,7 +411,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if(address == null)
                 return;
             var coords = address.GetCoordinate();
+// ReSharper disable CompareOfFloatsByEqualityOperator
             if (coords.Latitude != 0 && coords.Longitude != 0) {
+// ReSharper restore CompareOfFloatsByEqualityOperator
                 _dropoffPin = new AddressAnnotation (coords, AddressAnnotationType.Destination, Resources.DestinationMapTitle, address.Display ());
                 AddAnnotation (_dropoffPin);
             }
@@ -439,14 +431,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if(address == null)
                 return;
             var coords = address.GetCoordinate();
+// ReSharper disable CompareOfFloatsByEqualityOperator
             if (coords.Latitude != 0 && coords.Longitude != 0) {
+// ReSharper restore CompareOfFloatsByEqualityOperator
                 _pickupPin = new AddressAnnotation (coords, AddressAnnotationType.Pickup, Resources.PickupMapTitle, address.Display ());
                 AddAnnotation (_pickupPin);
             }
             if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
         }
 
-        private List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
+        private readonly List<MKAnnotation> _availableVehiclePushPins = new List<MKAnnotation> ();
         private void ShowAvailableVehicles(IEnumerable<AvailableVehicle> vehicles)
         {
             // remove currently displayed pushpins
@@ -481,18 +475,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             var result = new List<AvailableVehicle>();
 
-            var bounds =  this.Bounds;
+            var bounds =  Bounds;
             var clusterWidth = bounds.Width / numberOfColumns;
             var clusterHeight = bounds.Height / numberOfRows;
 
             var list = new List<AvailableVehicle>(vehicles);
 
-            for (int rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
-                for (int colIndex = 0; colIndex < numberOfColumns; colIndex++)
+            for (var rowIndex = 0; rowIndex < numberOfRows; rowIndex++)
+                for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
                 {
-                    var rect = new RectangleF(this.Bounds.X + colIndex * clusterWidth, this.Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
+                    var rect = new RectangleF(Bounds.X + colIndex * clusterWidth, Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
 
-                    var vehiclesInRect = list.Where(v => rect.Contains(this.ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
+                    var vehiclesInRect = list.Where(v => rect.Contains(ConvertCoordinate(new CLLocationCoordinate2D(v.Latitude, v.Longitude), this))).ToArray();
                     if (vehiclesInRect.Length > cellThreshold)
                     {
                         var clusterBuilder = new VehicleClusterBuilder();

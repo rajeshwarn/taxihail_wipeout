@@ -1,12 +1,12 @@
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 
-namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
+namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
 	public class AddressMapDelegate : MKMapViewDelegate
 	{
-		private bool _regionMovedActivated;
+		private readonly bool _regionMovedActivated;
 
 		public AddressMapDelegate (bool regionMovedActivated = true )
 		{
@@ -20,24 +20,21 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 			if (ann == null) 
 			{
 				return null;
-			} 
-			else 
-			{
-				PinAnnotationView anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
-				if (anv == null) 
-				{
-					anv = new PinAnnotationView (ann, "thislocation");	
-				} 
-				else 
-				{
-					anv.Annotation = ann;
-					anv.RefreshPinImage();
-				}
-
-				anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
-
-				return anv;
 			}
+		    var anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
+		    if (anv == null) 
+		    {
+		        anv = new PinAnnotationView (ann, "thislocation");	
+		    } 
+		    else 
+		    {
+		        anv.Annotation = ann;
+		        anv.RefreshPinImage();
+		    }
+
+		    anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
+
+		    return anv;
 		}
 
 		public override void RegionChanged (MKMapView mapView, bool animated)

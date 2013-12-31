@@ -1,25 +1,27 @@
-
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.BindingConverter;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Booking.Mobile.BindingConverter;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class HistoryDetailView : MvxBindingTouchViewController<HistoryDetailViewModel>
     {
         #region Constructors
 
 		public HistoryDetailView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
 		{
 		}
 		
@@ -38,8 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
-            this.NavigationItem.HidesBackButton = false;
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryDetail"), true);
+            NavigationItem.HidesBackButton = false;
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryDetail"), true);
 
             lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
             lblRequested.Text = Resources.HistoryDetailRequestedLabel;
@@ -59,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusActionCancelButton, AppStyle.ButtonColor.Red );
 
-			this.AddBindings(new Dictionary<object, string>()                            
+			this.AddBindings(new Dictionary<object, string>                          
             {
 				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
 
@@ -93,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ViewModel.Load();
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
 		void ReorderButtons()
@@ -113,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var i = 0;
 			foreach (var item in buttonList) {
 				if (!item.Hidden) {
-					var test = item.Title(UIControlState.Normal);
+					
 					item.Frame = new RectangleF(item.Frame.X, yPositionOfFirstButton + (deltaYBetweenButtons * i), item.Frame.Width, item.Frame.Height);
 					i++;
 				}

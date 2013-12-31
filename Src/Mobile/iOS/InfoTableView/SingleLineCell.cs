@@ -1,27 +1,16 @@
-using System;
 using System.Drawing;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Common.Extensions;
-using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-	public class SingleLineCell : UITableViewCell
+	public sealed class SingleLineCell : UITableViewCell
 	{
 		private UIImageView _rightImage;
 		private SingleLineItem _sectionItem;
 		
-		public SingleLineCell (IntPtr handle) : base(handle)
-		{		
-		}
-
-//		[Export("initWithCoder:")]
-//		public TwoLinesAddressCell (NSCoder coder) : base(coder)
-//		{			
-//		}
 		
 		public SingleLineCell (SingleLineItem data, string cellIdentifier) : base( UITableViewCellStyle.Default, new NSString(cellIdentifier)   )
 		{					
@@ -74,13 +63,10 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		{
 			if ( item != null )
 			{
-				if ( item != _sectionItem )
-				{								
-					_sectionItem = item;
-				}			
+                _sectionItem = item;		
 
 				Load ();
-				bool changed = false;
+				var changed = false;
 
 				if( ((CustomCellBackgroundView)BackgroundView).IsTop != (_sectionItem.Index == 0) )
 				{

@@ -1,11 +1,7 @@
-using System;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using System.Collections.Generic;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
@@ -25,7 +21,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 			}
 		}
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
 		public IMvxCommand SelectedCommand { get; set; }
+// ReSharper restore MemberCanBePrivate.Global
 
 	}
 }

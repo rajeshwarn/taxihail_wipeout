@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 using MonoTouch.UIKit;
 using System.Drawing;
 
@@ -6,7 +7,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TextFieldWithArrow: UIView
     {
-        UIImageView _rightArrow;
         TextField _textField;
         UIButton _button;
         UIImageView _leftImage;
@@ -23,26 +23,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         void Initialize ()
         {
-            this.BackgroundColor = UIColor.Clear;
+            BackgroundColor = UIColor.Clear;
 
-            _textField = new TextField(this.Bounds);
+            _textField = new TextField(Bounds);
             _textField.UserInteractionEnabled = false;
             _textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
 
-            _leftImage = new UIImageView(new Rectangle(5, 0, (int)0, (int)0));
+            _leftImage = new UIImageView(new Rectangle(5, 0, 0, 0));
 
-            var rightArrow = new UIImageView(new RectangleF(this.Frame.Width - 25, this.Frame.Height/2 - 7,9, 13));
+            var rightArrow = new UIImageView(new RectangleF(Frame.Width - 25, Frame.Height/2 - 7,9, 13));
             rightArrow.Image = UIImage.FromFile("Assets/Cells/rightArrow.png");
             
-            this._button = new UIButton(this.Bounds);
-            this.AddSubview(_textField);
-            this.AddSubview(rightArrow);
-            this.AddSubview(_button);
+            _button = new UIButton(Bounds);
+            AddSubview(_textField);
+            AddSubview(rightArrow);
+            AddSubview(_button);
         }
 
         public string Text {
             set {
-                this._textField.Text = value;
+                _textField.Text = value;
             }
         }
 

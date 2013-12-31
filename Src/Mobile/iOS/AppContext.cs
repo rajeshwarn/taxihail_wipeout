@@ -24,9 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             Window = window;
         }
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
         public UIWindow Window  { get; private set; }
             
-        
 		public UINavigationController Controller
         {
             get { return _controller; }

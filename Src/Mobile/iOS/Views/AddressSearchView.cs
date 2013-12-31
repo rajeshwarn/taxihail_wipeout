@@ -1,28 +1,23 @@
-using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Order;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Binding.Touch.Interfaces;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
-using System.Linq;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Interfaces;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using MonoTouch.AddressBook;
-using Xamarin.Contacts;
-using TinyIoC;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
 	{
-		private const string CELLID = "AdressCell";
+		private const string Cellid = "AdressCell";
 
 		const string CellBindingText = @"
                 {
@@ -36,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				}";
 		#region Constructors
         public AddressSearchView() 
-            : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
 
@@ -51,15 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         }	
 		#endregion
 
-     
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
-
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -72,13 +58,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var source = new BindableAddressTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
-                                new NSString(CELLID), 
+                                new NSString(Cellid), 
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 
-			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
+			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( Cellid, CellBindingText ); };
 
-            this.AddBindings(new Dictionary<object, string>(){			
+            this.AddBindings(new Dictionary<object, string>{			
                 {source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,				
                 {SearchTextField, "{'Text':{'Path':'Criteria'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
 			});
@@ -87,53 +73,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             AddressListView.Source = source;
 
             SearchTextField.ReturnKeyType = UIReturnKeyType.Done;
-            SearchTextField.ShouldReturn = delegate(UITextField textField)
-            {
+            SearchTextField.ShouldReturn = delegate {
 				return SearchTextField.ResignFirstResponder();
             };
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 		}
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SearchAddress"), true);
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SearchAddress"), true);
         
-            this.NavigationController.SetViewControllers(this.NavigationController.ViewControllers.Where ( v=> v.GetType () != typeof(  BookStreetNumberView ) ).ToArray (), false );
+            NavigationController.SetViewControllers(NavigationController.ViewControllers.Where ( v=> v.GetType () != typeof(  BookStreetNumberView ) ).ToArray (), false );
         }
-
-		public override void ViewDidUnload ()
-		{
-			base.ViewDidUnload ();
-			
-			// Clear any references to subviews of the main view in order to
-			// allow the Garbage Collector to collect them sooner.
-			//
-			// e.g. myOutlet.Dispose (); myOutlet = null;
-			
-			ReleaseDesignerOutlets ();
-		}
-		
-		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-		{
-			// Return true for supported orientations
-			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-		}
-//
-//		public string GetTitle()
-//        {
-//            return "";
-//        }
-//        
-//      	public bool IsTopView
-//        {
-//            get { return this.NavigationController.TopViewController is AddressSearchView; }
-//        }
-//
-//        public UIView GetTopView()
-//        {
-//            return null;
-//        }
 	}
 }
 

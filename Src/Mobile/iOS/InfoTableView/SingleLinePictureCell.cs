@@ -7,7 +7,7 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-    public class SingleLinePictureCell : MvxBindableTableViewCell
+    public sealed class SingleLinePictureCell : MvxBindableTableViewCell
     {
         private UIImageView _picture;
         private UILabel _rightText;
@@ -29,20 +29,20 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             Initialize ();
         }
         
-        public string LeftText { get { return this._leftText.Text ;}
-            set { this._leftText.Text = value; }
+        public string LeftText { get { return _leftText.Text ;}
+            set { _leftText.Text = value; }
         }
         
-        public string RightText { get { return this._rightText.Text; }
-            set { this._rightText.Text = value; }
+        public string RightText { get { return _rightText.Text; }
+            set { _rightText.Text = value; }
         }
 
         public string Picture{
             get{
-                return this._picture.Image.ToString();}
+                return _picture.Image.ToString();}
             set
             { 
-                this._picture.Image = UIImage.FromFile("Assets/CreditCard/"+value.ToLower()+".png");
+                _picture.Image = UIImage.FromFile("Assets/CreditCard/"+value.ToLower()+".png");
             }
         }
         
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         public bool IsAddNewCell {
             set {
                 ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;
-                this._rightText.TextColor = this._leftText.TextColor = value 
+                _rightText.TextColor = _leftText.TextColor = value 
                     ? AppStyle.CellAddTextColor 
                     : AppStyle.CellFirstLineTextColor;
             }
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             get{ return _deleteCommand;}
             set{
                 _deleteCommand = value;
-                    this.AddRemoveButton();
+                    AddRemoveButton();
             }
         }
         
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             _removeButton.BackgroundColor = UIColor.Clear;
             _removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
             _removeButton.SetImage(UIImage.FromFile("Assets/CreditCard/delete_card_btn.png"),UIControlState.Normal);
-            _removeButton.TouchUpInside += (object sender, EventArgs e) => {
+            _removeButton.TouchUpInside += (sender, e) => {
                 DeleteCommand.Execute();
             };
             AddSubview ( _removeButton ); 

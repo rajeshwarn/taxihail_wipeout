@@ -1,22 +1,22 @@
-
-using System;
-using System.Drawing;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Order
 {
     [NoHistory]
     public partial class BookStreetNumberView : MvxBindingTouchViewController<BookStreetNumberViewModel>
     {
         public BookStreetNumberView() 
-            : base(new MvxShowViewModelRequest<BookStreetNumberViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<BookStreetNumberViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         
@@ -48,13 +48,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStreetName.Font = AppStyle.BoldTextFont;
             lblStreetName.TextColor = AppStyle.DarkText;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
-            AppButtons.FormatStandardButton((GradientButton)btnPlaces, Resources.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
+            AppButtons.FormatStandardButton(btnPlaces, Resources.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
 
-            AppButtons.FormatStandardButton((GradientButton)btnClear, Resources.GetValue("DeleteAddressBt"), AppStyle.ButtonColor.Red, "Assets/Search/cancel.png", null);
+            AppButtons.FormatStandardButton(btnClear, Resources.GetValue("DeleteAddressBt"), AppStyle.ButtonColor.Red, "Assets/Search/cancel.png");
 
-            ((GradientButton)btnSearch).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-            ((GradientButton)btnPlaces).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-            ((GradientButton)btnClear).HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+            btnSearch.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+            btnPlaces.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+            btnClear.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
 
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();
@@ -71,12 +71,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 //return false;
             };
 
-            var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+            var button = new UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
             NavigationItem.RightBarButtonItem = button;
 
-            this.AddBindings(new Dictionary<object, string>() {
+            this.AddBindings(new Dictionary<object, string> {
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
                 { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},               
                 { btnPlaces, "{'TouchUpInside': {'Path': 'NavigateToPlaces'}}" },
@@ -85,13 +85,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
             
             ViewModel.Load();
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 		
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("StreetNumberTitle"), true);
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("StreetNumberTitle"), true);
         }
 
     }

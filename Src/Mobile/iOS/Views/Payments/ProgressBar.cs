@@ -1,23 +1,21 @@
-using System;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using MonoTouch.UIKit;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public class ProgressBar : UIView
+    public sealed class ProgressBar : UIView
     {
-        UIImageView _barStart;
-        UIImageView _barEnd;
-        UIImageView _barBody;
+        readonly UIImageView _barStart;
+        readonly UIImageView _barEnd;
+        readonly UIImageView _barBody;
 
-        float _barEndWidth;
-        float _barHeight;
-        float _topLeft;
+        readonly float _barHeight;
+        readonly float _topLeft;
 
         public ProgressBar (UIImage barEnd,UIImage barBody, RectangleF frame, bool isMinor = false): base(frame)
         {
-            _barEndWidth = barEnd.Size.Width;
+            float barEndWidth = barEnd.Size.Width;
 
             _topLeft= (frame.Height-barEnd.Size.Height)/2;
             _barHeight = barEnd.Size.Height;
@@ -26,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             _barEnd = new UIImageView(barEnd);
             _barBody = new UIImageView(barBody);
 
-            Resize(Frame.Width-_barEndWidth);
+            Resize(Frame.Width-barEndWidth);
 
             if(isMinor)
             {

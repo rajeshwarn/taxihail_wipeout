@@ -1,21 +1,19 @@
-
-using System;
-using System.Drawing;
-
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
-using System.Collections.Generic;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Order
 {
 	public partial class BookRatingView : MvxBindingTouchViewController<BookRatingViewModel>
 	{
 		public BookRatingView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
 		{
 		}
 		
@@ -29,13 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 		}
 		
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
 		
 		public override void ViewDidLoad ()
 		{
@@ -56,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return BookRatingCell.LoadFromNib(tableView);
 			};
 					
-			this.AddBindings(new Dictionary<object, string>()                            {
+			this.AddBindings(new Dictionary<object, string> {
 				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}, 'Enabled': {'Path': 'CanSubmit'}}"},                
 				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
@@ -66,29 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ratingTableView.Source = source;
 			ratingTableView.ReloadData();
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 
 		}
-		
-		public override void ViewDidUnload ()
-		{
-			base.ViewDidUnload ();
-			
-			// Clear any references to subviews of the main view in order to
-			// allow the Garbage Collector to collect them sooner.
-			//
-			// e.g. myOutlet.Dispose (); myOutlet = null;
-			
-			ReleaseDesignerOutlets ();
-		}
-		
-		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-		{
-			// Return true for supported orientations
-			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-		}
-
-
 	}
 }
 

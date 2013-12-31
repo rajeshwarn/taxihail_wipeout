@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -15,10 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     public class PackageInfo : IPackageInfo
     {
         private static string _userAgent;
-        public PackageInfo()
-        {
-
-        }
 
         public string Platform
         {
@@ -29,8 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get
             {                
-                NSObject nsVersion = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion");
-                string ver = nsVersion.ToString();
+                var nsVersion = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion");
+                var ver = nsVersion.ToString();
                 return ver;         
             }
         }

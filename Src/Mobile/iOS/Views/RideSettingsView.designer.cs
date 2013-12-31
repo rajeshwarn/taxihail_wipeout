@@ -4,9 +4,11 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("RideSettingsView")]
 	partial class RideSettingsView
@@ -45,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
+		FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField txtPassword { get; set; }

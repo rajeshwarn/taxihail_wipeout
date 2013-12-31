@@ -1,14 +1,14 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
 	public class Binding<T>
 	{
-		private UITextField _txt;
-		private T _data;
+		private readonly UITextField _txt;
+		private readonly T _data;
 		//private Func< T, string> _getValue;
-		private Action<T, string> _setValue;
+		private readonly Action<T, string> _setValue;
 		
 		public Binding ( UITextField txt, T data, Func< T, string> getValue, Action<T, string> setValue )
 		{

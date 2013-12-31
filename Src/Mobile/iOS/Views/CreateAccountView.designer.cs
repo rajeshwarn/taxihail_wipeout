@@ -4,39 +4,41 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("CreateAccountView")]
 	partial class CreateAccountView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblEmail { get; set; }
+		FormLabel lblEmail { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtEmail { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+		FormLabel lblName { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
+		FormLabel lblPhone { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassword { get; set; }
+		FormLabel lblPassword { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblConfirmPassword { get; set; }
+		FormLabel lblConfirmPassword { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtConfirmPassword { get; set; }

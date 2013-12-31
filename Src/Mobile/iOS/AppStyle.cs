@@ -1,3 +1,4 @@
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Style;
@@ -49,31 +50,34 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static string ButtonFontName { get { return BoldFontName; } }                
 
-        public static string BoldFontName { get { 
-                if (StyleManager.Current.UseCustomFonts) {
+        public static string BoldFontName { get
+        {
+            if (StyleManager.Current.UseCustomFonts) {
                     return StyleManager.Current.CustomBoldFont;
-                } else {
-                    return "HelveticaNeue-Bold"; 
                 }
-            } }
+            return "HelveticaNeue-Bold";
+        }
+        }
 
         
-        public static string RegularFontName { get { 
-                if (StyleManager.Current.UseCustomFonts) {
+        public static string RegularFontName { get
+        {
+            if (StyleManager.Current.UseCustomFonts) {
 
                     return StyleManager.Current.CustomRegularFont;
-                } else {
-                    return "HelveticaNeue"; 
                 }
-            } }
+            return "HelveticaNeue";
+        }
+        }
 
-        public static string ItalicFontName { get { 
-                if (StyleManager.Current.UseCustomFonts) {
+        public static string ItalicFontName { get
+        {
+            if (StyleManager.Current.UseCustomFonts) {
                     return StyleManager.Current.CustomItalicFont;
-                } else {
-                    return "HelveticaNeue-Italic"; 
                 }
-            } }
+            return "HelveticaNeue-Italic";
+        }
+        }
 
 
         public static UIFont CellFont { get { return UIFont.FromName (BoldFontName, CellFontSize); } }
@@ -155,8 +159,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             var f = new CTFont( font.Name, font.PointSize );
             var t = f.GetTraits ().SymbolicTraits;
 
-            bool isBold = false;
-            bool isItalic = false;
+            var isBold = false;
+            var isItalic = false;
 
             if ( ( t.HasValue ) && ( (t.Value & CTFontSymbolicTraits.Bold ) == CTFontSymbolicTraits.Bold ) )
             {
@@ -175,14 +179,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
             return GetBoldFont (font.PointSize );
             }
-            else if ( isItalic )
+            if ( isItalic )
             {
                 return GetItalicFont ( font.PointSize ) ;
             }
-            else
-            {
-                return GetNormalFont ( font.PointSize );
-            }
+            return GetNormalFont ( font.PointSize );
         }
 
 

@@ -1,28 +1,25 @@
-
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Dialog.Touch.Dialog;
-using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Touch.Interfaces;
-using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class TutorialView : MvxBindingTouchViewController<TutorialViewModel>, IMvxModalTouchView
     {
         #region Constructors
         
         public TutorialView () 
-            : base(new MvxShowViewModelRequest<TutorialViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<TutorialViewModel>( null, true, new MvxRequestedBy()   ) )
         {
             Initialize ();
         }
@@ -45,13 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
         
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();
-            // Release any cached data, images, etc that aren't in use.
-        }
-        
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -60,25 +50,25 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnClose.SetImage (UIImage.FromFile ("Assets/closeButton.png"), UIControlState.Normal);
             btnClose.SetTitle ("", UIControlState.Normal);
             View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.40f);
-            this.AddBindings (new Dictionary<object, string> (){ 
+            this.AddBindings (new Dictionary<object, string>{ 
                 { btnClose, "{'TouchUpInside':{'Path':'CloseCommand'}}"} 
             });
             
             CreatePanels (ViewModel.TutorialItemsList);
 
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         private void CreatePanels (TutorialItemModel[] listTutorial)
         {
             scrollview.Scrolled += ScrollViewScrolled;
-            int count = listTutorial.Length;
-            RectangleF scrollFrame = scrollview.Frame;
+            var count = listTutorial.Length;
+            var scrollFrame = scrollview.Frame;
             scrollFrame.Width = scrollFrame.Width * count;
             scrollview.ContentSize = scrollFrame.Size;
 
-            for (int i=0; i<count; i++) {
+            for (var i=0; i<count; i++) {
                 var view = new UIView ();
                 view.BackgroundColor = UIColor.Clear;
                 var image = new UIImageView (UIImage.FromFile ("Assets/Tutorial/" + listTutorial [i].ImageUri + ".png"));
@@ -91,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 labelBottom.Text = listTutorial [i].BottomText;
                 labelBottom.Font = AppStyle.GetNormalFont ( 16 );
                 labelBottom.Lines = 0;
-                labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 ); ;
+                labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 );
                 view.AddSubview (labelBottom);
 
 
@@ -146,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void ScrollViewScrolled (object sender, EventArgs e)
         {
-            double page = Math.Floor ((scrollview.ContentOffset.X - scrollview.Frame.Width / 2) / scrollview.Frame.Width) + 1;
+            var page = Math.Floor ((scrollview.ContentOffset.X - scrollview.Frame.Width / 2) / scrollview.Frame.Width) + 1;
 
             scrollview.ContentOffset = new PointF (scrollview.ContentOffset.X, 0);
 

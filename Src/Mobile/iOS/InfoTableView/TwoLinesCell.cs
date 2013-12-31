@@ -1,27 +1,19 @@
-using System;
 using System.Drawing;
-using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
-using MonoTouch.CoreGraphics;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-    public class TwoLinesCell : MvxBindableTableViewCell
+    public sealed class TwoLinesCell : MvxBindableTableViewCell
     {
         private UIImageView _arrowImage;
         //private UIImageView _plusSignImage;
         private bool _showPlusSign;
         private bool _showArrow;
-        private float _rowHeight = 44f;
         private string _icon;
-        public TwoLinesCell (IntPtr handle, string bindingText) : base(bindingText, handle)
-        {       
-        }
-        
+
         public TwoLinesCell (string cellIdentifier, string bindingText) : base( bindingText, UITableViewCellStyle.Subtitle, new NSString(cellIdentifier), UITableViewCellAccessory.None   )
         {                   
             SelectionStyle = UITableViewCellSelectionStyle.None;
@@ -38,8 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         public string SecondLine { get { return DetailTextLabel.Text; }
             set { DetailTextLabel.Text = value;}
         }
-        
-        public string test{get;set;}
         
         public bool ShowPlusSign { 
             get { return _showPlusSign; }
@@ -87,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         public bool IsAddNewCell {
             set {
                 ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;
-                this.TextLabel.TextColor = this.DetailTextLabel.TextColor = value 
+                TextLabel.TextColor = DetailTextLabel.TextColor = value 
                     ? AppStyle.CellAddTextColor 
                         : AppStyle.CellFirstLineTextColor;
             }

@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using apcurium.MK.Booking.Mobile.Client.Helper;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Client.Views;
 using MonoTouch.Foundation;
+using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -38,20 +45,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 
     public partial class AppDelegate : MvxApplicationDelegate, IMvxServiceConsumer<IMvxStartNavigation>
     {
-        private bool _callbackFromFB = false;
-        private bool _isStarting = false;
+        private bool _callbackFromFb;
+        private bool _isStarting;
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
             _isStarting = true;
-            ThreadHelper.ExecuteInThread (() => MonoTouch.ObjCRuntime.Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 
-            Background.Load (window, "Assets/background_full_nologo.png", false, 0, 0);          
+            Background.Load (window, "Assets/background_full_nologo.png", false);          
 
             AppContext.Initialize (window);
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
-                NSDictionary remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
-                if(remoteNotificationParams.ContainsKey(new NSString("orderId")))
+                var remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
+                if(remoteNotificationParams != null && remoteNotificationParams.ContainsKey(new NSString("orderId")))
                 {
                     @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
                 }
@@ -63,19 +70,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             window.MakeKeyAndVisible();
 
 
-			var start = this.GetService<IMvxStartNavigation>();
+			var start = this.GetService();
 			start.Start();     
 
 			window.RootViewController = AppContext.Current.Controller;
             return true;
         }
 
-        private void SetUIDefaults()
-        {
-            var buttonAtt = new UITextAttributes{ TextColor = AppStyle.LightCorporateColor, TextShadowColor = UIColor.Clear };
-            UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonAtt, UIControlState.Normal);
-
-        }
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
@@ -87,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+            ThreadHelper.ExecuteInThread ( () =>        Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
             Logger.LogMessage("OnActivated");
 
@@ -104,33 +105,33 @@ namespace apcurium.MK.Booking.Mobile.Client
                 JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
                 JsConfig.RegisterTypeForAot<PaymentMethod> ();
                 JsConfig.RegisterTypeForAot<InstantMessagingService>();
-                JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
-                JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponentType>();
+                JsConfig.RegisterTypeForAot< ResultStatus>();
+                JsConfig.RegisterTypeForAot<AddressComponentType>();
             } catch(NullReferenceException){
                 // In the Simulator, a NullReferenceException is mysteriously thrown
             }
 			JsConfig.RegisterTypeForAot<Coordinate>();
             JsConfig.RegisterTypeForAot<Contact>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponent>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Bounds>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.DirectionResult>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Distance>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Duration>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Event>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Geometry>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.GeoObj>();
-            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.GeoResult>();
+            JsConfig.RegisterTypeForAot<AddressComponent>();
+            JsConfig.RegisterTypeForAot<Bounds>();
+            JsConfig.RegisterTypeForAot<DirectionResult>();
+            JsConfig.RegisterTypeForAot<Distance>();
+            JsConfig.RegisterTypeForAot<Duration>();
+            JsConfig.RegisterTypeForAot<Event>();
+            JsConfig.RegisterTypeForAot<Geometry>();
+            JsConfig.RegisterTypeForAot<GeoObj>();
+            JsConfig.RegisterTypeForAot<GeoResult>();
 
 
 
-            if (!_callbackFromFB)
+            if (!_callbackFromFb)
             {    
 
 				if( !_isStarting &&  AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
 				{
 					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
                     model.Reset ();
-                    if ( model.AddressSelectionMode != Data.AddressSelectionMode.PickupSelection )
+                    if ( model.AddressSelectionMode != AddressSelectionMode.PickupSelection )
                     {
                         model.ActivatePickup.Execute ();
                     }
@@ -139,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             else
             {
-                _callbackFromFB = false;
+                _callbackFromFb = false;
             }           
 
             _isStarting = false;
@@ -168,8 +169,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             Console.WriteLine(url.ToString());
             if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId + TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName.ToLower().Replace( " ", string.Empty ) ))
             {
-                _callbackFromFB = true;
-                return (TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);
+                _callbackFromFb = true;
+                var facebookServiceMt = TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookServiceMT;
+                return facebookServiceMt != null && facebookServiceMt.HandleOpenURL(application, url);
             }
             return false;               
         }
@@ -182,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
         {
             var strFormat = new NSString("%@");
-            var dt = new NSString(MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new MonoTouch.ObjCRuntime.Class("NSString").Handle, new MonoTouch.ObjCRuntime.Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            var dt = new NSString(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new Class("NSString").Handle, new Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
             new PushNotificationService().SaveDeviceToken(dt);
         }
         

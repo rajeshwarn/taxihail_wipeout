@@ -1,8 +1,7 @@
-using System;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
+using MonoTouch.CoreGraphics;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public static class GraphicsUtil {
 		
@@ -20,12 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		/// </returns>
 		public static CGPath MakeRoundedRectPath2 (RectangleF rect, float radius)
 		{
-			float minx = rect.Left;
-			float midx = rect.Left + (rect.Width)/2;
-			float maxx = rect.Right;
-			float miny = rect.Top;
-			float midy = rect.Y+rect.Size.Height/2;
-			float maxy = rect.Bottom;
+			var minx = rect.Left;
+			var midx = rect.Left + (rect.Width)/2;
+			var maxx = rect.Right;
+			var miny = rect.Top;
+			var midy = rect.Y+rect.Size.Height/2;
+			var maxy = rect.Bottom;
 
 			var path = new CGPath ();
 			path.MoveToPoint (minx, midy);
@@ -40,14 +39,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void FillRoundedRect (CGContext ctx, RectangleF rect, float radius)
 		{
-				var p = GraphicsUtil.MakeRoundedRectPath2 (rect, radius);
+				var p = MakeRoundedRectPath2 (rect, radius);
 				ctx.AddPath (p);
 				ctx.FillPath ();
 		}
 
 		public static CGPath MakeRoundedPath1 (float size, float radius)
 		{
-			float hsize = size/2;
+			var hsize = size/2;
 			
 			var path = new CGPath ();
 			path.MoveToPoint (size, hsize);

@@ -1,7 +1,9 @@
 using System;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using MonoTouch.Foundation;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -21,15 +23,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void Initialize() {
         }
 
-        public override void WillMoveToSuperview (MonoTouch.UIKit.UIView newsuper)
+        public override void WillMoveToSuperview (UIView newsuper)
         {
             base.WillMoveToSuperview (newsuper);
-            base.Button.TouchUpInside -= HandleTouchUpInside;
-            base.Button.TouchUpInside += HandleTouchUpInside;
-
+            Button.TouchUpInside -= HandleTouchUpInside;
+            Button.TouchUpInside += HandleTouchUpInside;
         }
 
         public IMvxCommand NavigateCommand {
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;set;
         }
 

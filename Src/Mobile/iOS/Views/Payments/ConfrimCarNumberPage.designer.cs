@@ -4,6 +4,8 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
@@ -21,10 +23,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UIView Container { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblConfirmDriverInfo { get; set; }
+		FormLabel lblConfirmDriverInfo { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblConfirmDriverNotice { get; set; }
+		FormLabel lblConfirmDriverNotice { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

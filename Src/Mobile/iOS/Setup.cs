@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Cache;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Mvx;
 using Cirrious.MvvmCross.Application;
+using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Dialog.Touch;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using Cirrious.MvvmCross.Touch.Platform;
@@ -24,8 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class Setup
         : MvxTouchDialogBindingSetup
     {
-        IMvxTouchViewPresenter _presenter;
-        IDictionary<string, string> _options;
+        readonly IMvxTouchViewPresenter _presenter;
+        readonly IDictionary<string, string> _options;
 
         public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter, IDictionary<string, string> options)
             : base(applicationDelegate, presenter)
@@ -41,20 +46,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             var app = new TaxiHailApp(_options);
             return app;
         }
-        
-		protected override void InitializeApp ()
-		{
-			base.InitializeApp ();
-		}
 
-		protected override IEnumerable<System.Type> ValueConverterHolders {
+		protected override IEnumerable<Type> ValueConverterHolders {
 			get {
 				return new[] { typeof(AppConverters) };
 			}
 		}
 
-
-        protected override void FillTargetFactories (Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction.IMvxTargetBindingFactoryRegistry registry)
+        protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
         {
             base.FillTargetFactories (registry);
             registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));

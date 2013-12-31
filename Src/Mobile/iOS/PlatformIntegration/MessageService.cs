@@ -1,30 +1,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Touch.Views.Presenters;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
 	public class MessageService : IMessageService
 	{
-		public const string ACTION_SERVICE_MESSAGE = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
-		public const string ACTION_EXTRA_MESSAGE = "Mk_Taxi.ACTION_EXTRA_MESSAGE";
-		
-		public MessageService()
-		{
+		public const string ActionServiceMessage = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
+		public const string ActionExtraMessage = "Mk_Taxi.ActionExtraMessage";
 
-		}
-
-        #region IMessageService implementation
+	    #region IMessageService implementation
 
       
         #endregion
@@ -83,20 +78,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void ShowDialogActivity(Type type)
         {
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {
-                var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+                var presenter = TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
                 presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
             });
         }
 
         public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onItemSelected)
         {
-            var list = items.ToList();
-            var displayList = items.Select(displayNameSelector).ToArray();
+            var enumerable = items as T[] ?? items.ToArray();
+            var displayList = enumerable.Select(displayNameSelector).ToArray();
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {                               
                 LoadingOverlay.StopAnimatingLoading();
                 var av = new UIAlertView ( title, string.Empty, null, null, displayList );
-                av.Clicked += (object sender, UIButtonEventArgs e) => {
-                    onItemSelected(list[e.ButtonIndex]);
+                av.Clicked += (sender, e) => {
+                    onItemSelected(enumerable[e.ButtonIndex]);
                     av.Dispose();
                     };
                 av.Show (  );

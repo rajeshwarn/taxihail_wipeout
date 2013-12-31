@@ -1,27 +1,16 @@
-
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Threading.Tasks;
-using System.Threading;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class LocationsTabView : BaseViewController<MyLocationsViewModel>
 	{
@@ -37,13 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                    'IsAddNewCell': {'Path': 'IsAddNew'}
                 }";
 
-		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
-		public event EventHandler Canceled;
-		public event EventHandler LocationSelected;
 		#region Constructors
 
         public LocationsTabView () 
-            : base(new MvxShowViewModelRequest<MyLocationsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<MyLocationsViewModel>( null, true, new MvxRequestedBy()   ) )
         {
             Initialize();
         }
@@ -73,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationList"), true);
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationList"), true);
 
 			tableLocations.SectionHeaderHeight = 33;
             tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
@@ -93,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             tableLocations.Source = source;
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 		}
 
 		public override void ViewWillAppear (bool animated)

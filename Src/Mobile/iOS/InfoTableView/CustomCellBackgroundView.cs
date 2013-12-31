@@ -5,17 +5,17 @@ using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-	public class CustomCellBackgroundView : UIView
+	public sealed class CustomCellBackgroundView : UIView
 	{
 		private bool _isTop;
 		private bool _isBottom;
-		private float _cornerRadius = 3f;
-		private float _strokeSize = 1f;
-		private float _innerShadowTopBottomBlurRadius = 3f;
-		private float _innerShadowSidesBlurRadius = 2f;
-		private UIColor _strokeColor = UIColor.FromRGB( 133, 133, 133 );
-		private UIColor _selectedBackgroundColor = UIColor.FromRGBA( 233, 217, 219, 0.1f );
-		private UIColor _backgroundColor = AppStyle.CellBackgroundColor;
+	    private const float CornerRadius = 3f;
+	    private const float StrokeSize = 1f;
+	    private const float InnerShadowTopBottomBlurRadius = 3f;
+	    private const float InnerShadowSidesBlurRadius = 2f;
+	    private readonly UIColor _strokeColor = UIColor.FromRGB( 133, 133, 133 );
+		private readonly UIColor _selectedBackgroundColor = UIColor.FromRGBA( 233, 217, 219, 0.1f );
+		private readonly UIColor _backgroundColor = AppStyle.CellBackgroundColor;
 
 		public CustomCellBackgroundView(bool isTop, bool isBottom, RectangleF rect, bool isAddNewCell ) : base( rect )
 		{
@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 		}
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
 		public bool IsAddNewCell { get; set; }
 
 		public bool IsTop { 
@@ -44,34 +45,34 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 			var context = UIGraphics.GetCurrentContext();
 
-			context.SetLineWidth( _strokeSize );
+			context.SetLineWidth( StrokeSize );
 
 			UIBezierPath fillRectPath;
-			UIBezierPath strokePath = new UIBezierPath();
+			var strokePath = new UIBezierPath();
 			if( _isTop && _isBottom )
 			{
-				fillRectPath = UIBezierPath.FromRoundedRect( rect, _cornerRadius );
+				fillRectPath = UIBezierPath.FromRoundedRect( rect, CornerRadius );
 				strokePath = fillRectPath;
 			}
 			else if( _isTop )
 			{
-				fillRectPath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(_cornerRadius,_cornerRadius) );
+				fillRectPath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(CornerRadius,CornerRadius) );
 				strokePath.MoveTo( new PointF( rect.Left, rect.Bottom ));
-				strokePath.AddLineTo( new PointF( rect.Left, rect.Top + _cornerRadius ));
-				strokePath.AddArc( new PointF( rect.Left + _cornerRadius, rect.Top + _cornerRadius), _cornerRadius, (float)Math.PI, (float)(3*Math.PI/2), true );
-				strokePath.AddLineTo( new PointF( rect.Right - _cornerRadius, rect.Top ));
-				strokePath.AddArc( new PointF( rect.Right - _cornerRadius, rect.Top + _cornerRadius), _cornerRadius, (float)(3*Math.PI/2), 0, true );
+				strokePath.AddLineTo( new PointF( rect.Left, rect.Top + CornerRadius ));
+				strokePath.AddArc( new PointF( rect.Left + CornerRadius, rect.Top + CornerRadius), CornerRadius, (float)Math.PI, (float)(3*Math.PI/2), true );
+				strokePath.AddLineTo( new PointF( rect.Right - CornerRadius, rect.Top ));
+				strokePath.AddArc( new PointF( rect.Right - CornerRadius, rect.Top + CornerRadius), CornerRadius, (float)(3*Math.PI/2), 0, true );
 				strokePath.AddLineTo( new PointF( rect.Right, rect.Bottom ));
 				strokePath.AddLineTo( new PointF( rect.Left, rect.Bottom ));
 			}
 			else if( _isBottom )
 			{
-				fillRectPath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new SizeF(_cornerRadius,_cornerRadius) );
+				fillRectPath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new SizeF(CornerRadius,CornerRadius) );
 				strokePath.MoveTo( new PointF( rect.Right, rect.Top ));
-				strokePath.AddLineTo( new PointF( rect.Right, rect.Bottom - _cornerRadius ));
-				strokePath.AddArc( new PointF( rect.Right - _cornerRadius, rect.Bottom - _cornerRadius), _cornerRadius, 0, (float)(Math.PI/2), true );
-				strokePath.AddLineTo( new PointF( rect.Left + _cornerRadius, rect.Bottom ));
-				strokePath.AddArc( new PointF( rect.Left + _cornerRadius, rect.Bottom - _cornerRadius), _cornerRadius, (float)(Math.PI/2), (float)Math.PI, true );
+				strokePath.AddLineTo( new PointF( rect.Right, rect.Bottom - CornerRadius ));
+				strokePath.AddArc( new PointF( rect.Right - CornerRadius, rect.Bottom - CornerRadius), CornerRadius, 0, (float)(Math.PI/2), true );
+				strokePath.AddLineTo( new PointF( rect.Left + CornerRadius, rect.Bottom ));
+				strokePath.AddArc( new PointF( rect.Left + CornerRadius, rect.Bottom - CornerRadius), CornerRadius, (float)(Math.PI/2), (float)Math.PI, true );
 				strokePath.AddLineTo( new PointF( rect.Left, rect.Top) );
 			}
 			else
@@ -84,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 
 			//Fill
-            UIColor backgroundColor = UIColor.Clear;
+            var backgroundColor = UIColor.Clear;
             if (Superview is UITableViewCell)
             {
                 backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
@@ -94,15 +95,15 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
                 backgroundColor = ((UITableViewCell)Superview.Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
             }
 			backgroundColor.SetFill();
-			fillRectPath.LineWidth = _strokeSize;
+			fillRectPath.LineWidth = StrokeSize;
 			fillRectPath.Fill();
 
 			//Inner Shadow
 		    var roundedRectangleBorderRect = fillRectPath.Bounds;
-			roundedRectangleBorderRect.X -= _innerShadowSidesBlurRadius;
-			roundedRectangleBorderRect.Width += 2*_innerShadowSidesBlurRadius;
-			roundedRectangleBorderRect.Y -= _isTop ? _innerShadowTopBottomBlurRadius : 0;
-			roundedRectangleBorderRect.Height += _isBottom ? 2*_innerShadowTopBottomBlurRadius : 0;
+			roundedRectangleBorderRect.X -= InnerShadowSidesBlurRadius;
+			roundedRectangleBorderRect.Width += 2*InnerShadowSidesBlurRadius;
+			roundedRectangleBorderRect.Y -= _isTop ? InnerShadowTopBottomBlurRadius : 0;
+			roundedRectangleBorderRect.Height += _isBottom ? 2*InnerShadowTopBottomBlurRadius : 0;
 
             roundedRectangleBorderRect = RectangleF.Union(roundedRectangleBorderRect, fillRectPath.Bounds);
 			roundedRectangleBorderRect.X -= 1;
@@ -120,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 				var yOffset = 0;
                 context.SetShadowWithColor(
                     new SizeF(xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)),
-                    _innerShadowTopBottomBlurRadius,
+                    InnerShadowTopBottomBlurRadius,
 					_strokeColor.CGColor);
 
                 fillRectPath.AddClip();
@@ -133,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 			//Stroke
 			context.SaveState();
-            strokePath.LineWidth = _strokeSize;
+            strokePath.LineWidth = StrokeSize;
             _strokeColor.SetStroke();
             strokePath.AddClip();
             context.AddPath(strokePath.CGPath);

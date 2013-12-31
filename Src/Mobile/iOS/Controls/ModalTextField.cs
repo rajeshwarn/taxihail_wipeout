@@ -1,11 +1,13 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.MonoTouchDialog;
 using MonoTouch.Foundation;
 using System.Drawing;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 using Cirrious.MvvmCross.Dialog.Touch.Dialog;
 using apcurium.MK.Common.Entity;
-using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using System.Globalization;
@@ -33,8 +35,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.WillMoveToSuperview (newsuper);
 
-            base.Button.TouchUpInside -= HandleTouchUpInside;
-            base.Button.TouchUpInside += HandleTouchUpInside;
+            Button.TouchUpInside -= HandleTouchUpInside;
+            Button.TouchUpInside += HandleTouchUpInside;
         }
 
         void HandleTouchUpInside (object sender, EventArgs e)
@@ -62,15 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (listObservable != null)
             {
 
-                listObservable.Subscribe(_ =>
-                                         {
-
-                    Configure( title, getValues(), selectedId , onItemSelected );
-                });
+                listObservable.Subscribe(_ => Configure( title, getValues(), selectedId , onItemSelected ));
             }
 
             Configure( title, getValues(), selectedId , onItemSelected );
-
 
         }
 
@@ -83,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 
-            int selected = 0;
+            var selected = 0;
             var section = new SectionWithBackground(title);
             var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
 
