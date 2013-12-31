@@ -24,8 +24,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
     }
 	public class LoggerImpl : ILogger
 	{
-		private static Stack<Stopwatch> _watchs = new Stack<Stopwatch>();
-		
 		public void LogError(Exception ex)
 		{
 			

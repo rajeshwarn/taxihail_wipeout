@@ -25,15 +25,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-        private readonly ILogger _logger;
-        private readonly string _userAgent;
-
         public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, ILogger logger,
             string userAgent)
             : base(baseUrl, sessionId, userAgent)
-        {
-            _logger = logger;
-            _userAgent = userAgent;
+        {           
             CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent);
         }
 
