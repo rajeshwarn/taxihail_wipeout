@@ -1,17 +1,16 @@
-using System;
-using Android.Widget;
-using Android.Views.InputMethods;
 using Android.App;
 using Android.Content;
+using Android.Views.InputMethods;
+using Android.Widget;
 
-namespace Extensions
+namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
-	public static class EditTextExtensions
-	{
-		public static void HideKeyboard(this EditText thisControl, Activity parentActivity)
-		{			
-			((InputMethodManager)parentActivity.GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(thisControl.WindowToken,0);//Hide keyboard
-		}
-	}
+    public static class EditTextExtensions
+    {
+        public static void HideKeyboard(this EditText thisControl, Activity parentActivity)
+        {
+            ((InputMethodManager) parentActivity.GetSystemService(Context.InputMethodService)).HideSoftInputFromWindow(
+                thisControl.WindowToken, 0); //Hide keyboard
+        }
+    }
 }
-

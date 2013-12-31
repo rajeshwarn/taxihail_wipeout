@@ -1,26 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Diagnostics;
 using System.IO;
+using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using System.Reactive.Disposables;
+using Environment = Android.OS.Environment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
     public static class Logger
     {
-
         public static void LogError(Exception ex)
         {
             new LoggerImpl().LogError(ex);
@@ -31,12 +21,69 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             new LoggerImpl().LogMessage(message);
         }
     }
+
     public class LoggerImpl : ILogger
     {
+        public static readonly string BaseDir =
+            Path.Combine(Environment.ExternalStorageDirectory.ToString(), "TaxiHail");
+            //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+
+        public static readonly string LogFilename = Path.Combine(BaseDir, "log.txt");
+        private static bool _flushNextWrite;
+
         public void LogError(Exception ex)
         {
-
             LogError(ex, 0);
+        }
+
+
+        public void LogStack()
+        {
+            var stackTrace = new StackTrace(); // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames(); // get method calls (frames)
+
+            // write call stack method names
+            if (stackFrames != null)
+                foreach (var stackFrame in stackFrames)
+                {
+                    if (stackFrame.GetMethod().Name != "LogStack")
+                    {
+                        Write("Stack : " + stackFrame.GetMethod().Name); // write method name
+                    }
+                }
+        }
+
+        public string GetStack(int position)
+        {
+            var stackTrace = new StackTrace(); // get call stack
+            StackFrame[] stackFrames = stackTrace.GetFrames(); // get method calls (frames)
+
+            return stackFrames != null
+                ? stackFrames[position].GetMethod().Name
+                : "stack frame null";
+        }
+
+        public void LogMessage(string message, params object[] args)
+        {
+            if ((args != null) && (args.Length > 0))
+            {
+                message = string.Format(message, args);
+            }
+
+            Write("Message on " + DateTime.Now + " : " + message);
+        }
+
+
+        public IDisposable StartStopwatch(string message)
+        {
+            var w = new Stopwatch();
+            w.Start();
+            LogMessage("Start: " + message);
+            return Disposable.Create(() =>
+            {
+                w.Stop();
+                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds + " ms");
+            });
         }
 
         public void LogError(Exception ex, int indent)
@@ -48,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             }
             if (indent == 0)
             {
-                Write(indentStr + "Error on " + DateTime.Now.ToString());
+                Write(indentStr + "Error on " + DateTime.Now);
             }
 
 
@@ -57,67 +104,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
             if (ex.InnerException != null)
             {
+// ReSharper disable once RedundantAssignment
                 LogError(ex.InnerException, indent++);
             }
         }
 
-
-        public void LogStack()
-        {
-            StackTrace stackTrace = new StackTrace();           // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
-
-            // write call stack method names
-            foreach (StackFrame stackFrame in stackFrames)
-            {
-                if (stackFrame.GetMethod().Name != "LogStack")
-                {
-                    Write("Stack : " + stackFrame.GetMethod().Name);   // write method name
-                }
-            }
-
-        }
-
-        public string GetStack(int position)
-        {
-            StackTrace stackTrace = new StackTrace();           // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
-
-            return stackFrames[position].GetMethod().Name;        
-        }
-        
-        public void LogMessage(string message , params object[] args)
-        {
-            if ((args != null) && (args.Length > 0))
-            {
-                message = string.Format(message, args);
-            }
-
-            Write("Message on " + DateTime.Now.ToString() + " : " + message);
-
-
-        }
-
-       
-        public IDisposable StartStopwatch(string message)
-        {
-            var w = new Stopwatch();
-            w.Start();
-            LogMessage("Start: " + message);
-            return Disposable.Create (() => {
-                w.Stop();
-                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
-            });
-        }
-
-        public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "TaxiHail"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-
-        public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log.txt");
-
         private static void Write(string message)
         {
             try
-            {                
+            {
                 if (!Directory.Exists(BaseDir))
                 {
                     Directory.CreateDirectory(BaseDir);
@@ -134,9 +129,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             string user = @" N\A with version " + version;
 
             var msgToLog = message + " by :" + user + " with version " + version;
-            
+
             Console.WriteLine(msgToLog);
-            
+
             if (File.Exists(LogFilename) && _flushNextWrite)
             {
                 File.Delete(LogFilename);
@@ -146,12 +141,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
             try
             {
-               
-                if (File.Exists (LogFilename)) {
-                    var f = new FileInfo (LogFilename);
-                    var lenKb = f.Length / 1024;
-                    if (lenKb > 375) {
-                        File.Delete (LogFilename);
+                if (File.Exists(LogFilename))
+                {
+                    var f = new FileInfo(LogFilename);
+                    var lenKb = f.Length/1024;
+                    if (lenKb > 375)
+                    {
+                        File.Delete(LogFilename);
                     }
                 }
 
@@ -167,14 +163,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     fs.Close();
                 }
             }
+// ReSharper disable once EmptyGeneralCatchClause
             catch
             {
-
             }
-
         }
-
-        private static bool _flushNextWrite = false;
 
         internal static void FlushNextWrite()
         {

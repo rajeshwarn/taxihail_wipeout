@@ -1,13 +1,15 @@
 using Android.App;
 using Android.OS;
 
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Theme = "@android:style/Theme.Dialog")]
     public class ShowDialogActivity : Activity
     {
-        private bool _show;
         private ProgressDialog _progressDialog;
+        private bool _show;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -32,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 if (_progressDialog.IsShowing)
                 {
                     _progressDialog.Dismiss();
-                    this.Finish();
+                    Finish();
                 }
             }
         }
@@ -45,6 +47,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 _progressDialog.Dismiss();
             }
         }
-
     }
 }

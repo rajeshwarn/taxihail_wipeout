@@ -1,40 +1,29 @@
-using System;
-using Android.Views.Animations;
-using Android.Graphics;
 using Android.Views;
+using Android.Views.Animations;
 
-namespace SlidingPanel
+namespace apcurium.MK.Booking.Mobile.Client.Animations
 {
-	public sealed class SlideAnimation : Animation
-	{
-		private int _mEnd;
-		private int _mStart;
-		private int _mChange;
-		private View _mView;
+    public sealed class SlideAnimation : Animation
+    {
+        private readonly int _mChange;
+        private readonly int _mStart;
+        private readonly View _mView;
 
-		public SlideAnimation (View v, int marginStart, int marginEnd, IInterpolator i)
-		{
-			_mStart = marginStart;
-			_mEnd = marginEnd;
-			_mView = v;
+        public SlideAnimation(View v, int marginStart, int marginEnd, IInterpolator i)
+        {
+            _mStart = marginStart;
+            _mView = v;
 
-			_mChange = _mEnd - _mStart;
-			Interpolator = i;
-		}
+            _mChange = marginEnd - _mStart;
+            Interpolator = i;
+        }
+        protected override void ApplyTransformation(float interpolatedTime, Transformation t)
+        {
+            var change = _mChange*interpolatedTime;
 
+            _mView.ScrollTo((int) -(_mStart + change), 0);
 
-
-		protected override void ApplyTransformation (float interpolatedTime, Transformation t)
-		{
-			var change = _mChange * interpolatedTime;
-
-			_mView.ScrollTo((int) -(_mStart + change), 0);
-
-			base.ApplyTransformation(interpolatedTime, t);
-		}
-
-	}
-
-
+            base.ApplyTransformation(interpolatedTime, t);
+        }
+    }
 }
-

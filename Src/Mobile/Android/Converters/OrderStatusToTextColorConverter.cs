@@ -1,13 +1,15 @@
 using System;
+using System.Globalization;
 using Android.Graphics;
 using Cirrious.MvvmCross.Converters;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
-    public class OrderStatusToTextColorConverter: MvxBaseValueConverter
-	{
-		public override object Convert (object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-		{
+    public class OrderStatusToTextColorConverter : MvxBaseValueConverter
+    {
+        public override object Convert(object value, Type targetType, object parameter,
+            CultureInfo culture)
+        {
             var darkGray = new Color(50, 50, 50, 255);
 
             var green = new Color(0, 102, 0, 255); //Active : 006600
@@ -25,8 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
             if (name == "Completed") return navyBlue;
             if (name == "Removed") return darkRed;
 
-			throw new ArgumentException ("Unknown Enum member - please update this converter");
-		}
-	}
+            throw new ArgumentException("Unknown Enum member - please update this converter");
+        }
+    }
 }
-

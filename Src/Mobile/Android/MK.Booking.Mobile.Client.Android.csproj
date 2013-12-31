@@ -157,35 +157,22 @@
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
-    <Compile Include="Converter.cs" />
+    <Compile Include="Controls\UnderlineTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
-    <Compile Include="Helpers\Confirmation.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
-    <Compile Include="Helpers\SerializerHelper.cs" />
-    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
     <Compile Include="Helpers\WebRequestHelper.cs" />
-    <Compile Include="Helpers\XMLLinqHelper.cs" />
     <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
-    <Compile Include="Models\AddressItemListModel.cs" />
-    <Compile Include="Models\BookingModel.cs" />
-    <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\IconAction.cs" />
-    <Compile Include="Models\LocationModel.cs" />
-    <Compile Include="Models\LocationType.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
-    <Compile Include="Models\NavigationStrings.cs" />
-    <Compile Include="Models\OrderItemListModel.cs" />
-    <Compile Include="Models\ParentScreens.cs" />
-    <Compile Include="Models\RatingModel.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -195,10 +182,8 @@
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Services\MessageService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="TaxiMobileApp.cs" />
-    <Compile Include="Validation\EmailValidation.cs" />
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\ListStructure.cs" />
@@ -213,19 +198,16 @@
     <Compile Include="ListViewCell\SpinnerCell.cs" />
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
-    <Compile Include="ListViewCell\BooleanCell.cs" />
     <Compile Include="Models\Activities.cs" />
     <Compile Include="Controls\ReclickableTabHost.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
-    <Compile Include="Services\ErrorHandlingService.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\DropShadow.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
     <Compile Include="Controls\ListViewCell2.cs" />
     <Compile Include="Controls\SpinningSearch.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
-    <Compile Include="PlatformIntegration\AddressBookService.cs" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
     <AndroidResource Include="Resources\Drawable\pin_cab.png" />
@@ -260,9 +242,6 @@
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <Compile Include="Controls\UnderlineTextView.cs">
-      <DependentUpon>UnderlineTextView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\StyledButton.cs" />
     <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
       <SubType>Designer</SubType>
@@ -646,9 +625,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Localization\Mapper\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>

@@ -1,15 +1,15 @@
 using Android.App;
+using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
+
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-    [Activity(Label = "History", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class HistoryListActivity : BaseBindingActivity<HistoryViewModel> 
+    [Activity(Label = "History", Theme = "@android:style/Theme.NoTitleBar",
+        ScreenOrientation = ScreenOrientation.Portrait)]
+    public class HistoryListActivity : BaseBindingActivity<HistoryViewModel>
     {
         private ListView _listView;
 
@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
             get { return Resource.String.View_HistoryList; }
         }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

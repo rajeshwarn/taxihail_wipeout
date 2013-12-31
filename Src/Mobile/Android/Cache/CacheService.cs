@@ -1,40 +1,26 @@
 using System;
 using Android.App;
 using Android.Content;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
     public class CacheService : ICacheService
     {
-        private const string _cacheKey = "MK.Booking.Cache";
-
         protected virtual string CacheKey
         {
-            get
-            {
-                return _cacheKey;
-            }
+            get { return "MK.Booking.Cache"; }
         }
-
-
-
-        public CacheService()
-        {
-            
-        }
-
-
 
         public T Get<T>(string key) where T : class
         {
-
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
             var serialized = pref.GetString(key, null);
 
-            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
+                //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
             {
                 var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
                 if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
@@ -52,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
                 }
             }
 
-       
 
             return default(T);
         }
@@ -62,10 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             var item = new CacheItem<T>(obj, expiresAt);
             var serialized = JsonSerializer.SerializeToString(item);
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-            pref.Edit().PutString( key, serialized ).Commit();
+            pref.Edit().PutString(key, serialized).Commit();
         }
-
-
 
 
         public void Set<T>(string key, T obj) where T : class
@@ -73,17 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             Set(key, obj, DateTime.MaxValue);
         }
 
-        //public void Set<T>(string key, T obj)
-        //{
-        //    var serialized = JsonSerializer.SerializeToString(obj);
-        //    
-               
-        //}
 
         public void Clear(string key)
         {
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-            var serialized = pref.GetString( key , null );
+            var serialized = pref.GetString(key, null);
             if (serialized.HasValue())
             {
                 pref.Edit().Remove(key).Commit();
@@ -96,6 +73,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
             var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
             pref.Edit().Clear().Commit();
         }
-
     }
 }

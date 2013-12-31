@@ -5,66 +5,55 @@ using SocialNetworks.Services.OAuth;
 #endif
 using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Mvx;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.Binding.Binders;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Binding.Android;
-using Android.Content;
-using apcurium.MK.Booking.Mobile.Client.Converters;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
-using apcurium.MK.Booking.Mobile.Settings;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Client.Cache;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.Client.Activities.Account;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Android.Platform;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Android.Util;
-using apcurium.MK.Common.Configuration;
 using Android.App;
-
+using Android.Content;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Cache;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Mvx;
+using apcurium.MK.Booking.Mobile.Settings;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using Cirrious.MvvmCross.Application;
+using Cirrious.MvvmCross.Binding.Android;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class Setup
+    public class Setup
         : MvxBaseAndroidBindingSetup
     {
         public Setup(Context applicationContext)
             : base(applicationContext)
         {
-
-           
-
-
         }
 
         protected override void InitializeAdditionalPlatformServices()
         {
             base.InitializeAdditionalPlatformServices();
 
-			
-			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
-			
-			TinyIoC.TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
 
-                
-            TinyIoCContainer.Current.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>()));
+            TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
 
-			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));			
-            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));
+            TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
+
+
+            TinyIoCContainer.Current.Register<IAnalyticsService>(
+                (c, x) =>
+                    new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
+
+            TinyIoCContainer.Current.Register<IMessageService>(new MessageService(ApplicationContext));
+            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
-            TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(this.ApplicationContext));
+            TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(ApplicationContext));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
 
@@ -72,25 +61,28 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
 
-            
 
-			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-			TinyIoCContainer.Current.Register<IPushNotificationService>( (c,p)=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()));
+            TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
+            TinyIoCContainer.Current.Register<IPushNotificationService>(
+                (c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
 
 
             InitializeSocialNetwork();
         }
 
-		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
-		{
-			base.FillTargetFactories (registry);
-			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem", spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
-			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextLeftImage>("CreditCardNumber", (editTextLeftImage) => new EditTextCreditCardNumberBinding(editTextLeftImage)));
-            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsBottom)));
-            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop", cell => new CellItemBinding(cell, apcurium.MK.Booking.Mobile.Client.CellItemBindingProperty.IsTop)));
-			CustomBindingsLoader.Load(registry);
-		}
-
+        protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
+        {
+            base.FillTargetFactories(registry);
+            registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem",
+                spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<EditTextLeftImage>("CreditCardNumber",
+                editTextLeftImage => new EditTextCreditCardNumberBinding(editTextLeftImage)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom",
+                cell => new CellItemBinding(cell, CellItemBindingProperty.IsBottom)));
+            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop",
+                cell => new CellItemBinding(cell, CellItemBindingProperty.IsTop)));
+            CustomBindingsLoader.Load(registry);
+        }
 
 
 #if SOCIAL_NETWORKS
@@ -114,17 +106,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 #else
-		partial void InitializeSocialNetwork();
+        private void InitializeSocialNetwork()
+        {
+        }
 #endif
-        
+
         protected override MvxApplication CreateApp()
         {
             var app = new TaxiHailApp(_params);
             return app;
         }
 
-        
-                
+
         protected override void InitializeIoC()
         {
             TinyIoCServiceProviderSetup.Initialize();
@@ -132,13 +125,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         protected override IEnumerable<Type> ValueConverterHolders
         {
-            get { return new[] { typeof(AppConverters) }; }
+            get { return new[] {typeof (AppConverters)}; }
         }
 
-		private IDictionary<string, string> _params;
-		public void SetParams (IDictionary<string, string> @params)
-		{
-			this._params = @params;
-		}
+        private IDictionary<string, string> _params;
+
+        public void SetParams(IDictionary<string, string> @params)
+        {
+            _params = @params;
+        }
     }
 }

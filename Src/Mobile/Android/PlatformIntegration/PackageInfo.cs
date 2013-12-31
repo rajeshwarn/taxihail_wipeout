@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using Android.Content.PM;
-using Java.Security;
-using Android.Util;
+using Java.Lang;
+using String = System.String;
+using StringBuilder = System.Text.StringBuilder;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PackageInfo : IPackageInfo
     {
-        private static string _userAgent = null;
-        private Context _appContext;
+        private static string _userAgent;
+        private readonly Context _appContext;
 
         public PackageInfo(Context appContext)
         {
@@ -29,10 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public string Platform
         {
-            get
-            {
-                return "Android";
-            }
+            get { return "Android"; }
         }
 
         #endregion
@@ -50,16 +40,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get
             {
-
                 if (_userAgent == null)
                 {
                     try
                     {
-                        StringBuilder result = new StringBuilder(64);
+                        var result = new StringBuilder(64);
                         result.Append("Dalvik/");
 
 
-                        result.Append(Java.Lang.JavaSystem.GetProperty("java.vm.version")); // such as 1.1.0
+                        result.Append(JavaSystem.GetProperty("java.vm.version")); // such as 1.1.0
                         result.Append(" (Linux; U; Android ");
 
                         String version = Build.VERSION.Release; // "1.0" or "3.4b5"
@@ -83,17 +72,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         }
                         result.Append(")");
                         _userAgent = result.ToString();
-
                     }
                     catch
                     {
                         _userAgent = "";
                     }
                 }
-                
+
                 return _userAgent;
             }
-
         }
     }
 }

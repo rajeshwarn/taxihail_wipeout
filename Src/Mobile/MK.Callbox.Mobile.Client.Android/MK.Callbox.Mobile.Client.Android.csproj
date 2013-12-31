@@ -88,9 +88,6 @@
     <Reference Include="System.Reactive.Providers">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Android.Maps">
-      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Android">
       <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
     </Reference>

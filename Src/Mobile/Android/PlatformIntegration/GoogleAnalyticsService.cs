@@ -1,9 +1,9 @@
 using Android.Content;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
-
 using Exception = System.Exception;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -11,28 +11,27 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         #region IAnaliticsService implementation
 
-        public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings)
+        public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings, ILogger logger)
         {
-
-            try{
-
-            GAServiceManager.Instance.SetDispatchPeriod(20);
-
-            var g = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
-            g.SetDebug(true);
-
-            Tracker = g.GetTracker("UA-44714416-1");
-
-            Tracker.SetAppName(  settings.ApplicationName.Replace( ' ' , '_' ) );
-            Tracker.SetAppVersion(packageInfo.Version);
-            }
-            catch ( Exception ex )
+            try
             {
-                ex.ToString();
+                GAServiceManager.Instance.SetDispatchPeriod(20);
+
+                var g = Com.Google.Analytics.Tracking.Android.GoogleAnalytics.GetInstance(c);
+                g.SetDebug(true);
+
+                Tracker = g.GetTracker("UA-44714416-1");
+
+                Tracker.SetAppName(settings.ApplicationName.Replace(' ', '_'));
+                Tracker.SetAppVersion(packageInfo.Version);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex);
             }
         }
 
-        protected Tracker Tracker { get; set; }
+        private Tracker Tracker { get; set; }
 
         public void LogViewModel(string name)
         {
@@ -52,10 +51,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void LogException(string className, string methodName, Exception e, bool isFatal = false)
         {
             Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);
-
         }
 
         #endregion
     }
 }
-

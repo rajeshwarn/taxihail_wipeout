@@ -1,17 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Android.App;
-using Android.Content;
-using Android.Locations;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
+
+using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -22,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnResume()
         {
             base.OnResume();
-            
+
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
             if (txt != null)
             {
@@ -30,8 +22,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
     }
-	
-	public abstract class BaseBindingActivity<TViewModel> : MvxBindingActivityView<TViewModel> where TViewModel : BaseViewModel, IMvxViewModel
+
+    public abstract class BaseBindingActivity<TViewModel> : MvxBindingActivityView<TViewModel>
+        where TViewModel : BaseViewModel, IMvxViewModel
     {
         protected abstract int ViewTitleResourceId { get; }
 
@@ -41,33 +34,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnResume();
 
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-			if(txt!= null) txt.Text = GetString(ViewTitleResourceId);
+            if (txt != null) txt.Text = GetString(ViewTitleResourceId);
         }
 
-		protected override void OnStart ()
-		{
-			base.OnStart ();
-			ViewModel.Start();
-		}
+        protected override void OnStart()
+        {
+            base.OnStart();
+            ViewModel.Start();
+        }
 
-		protected override void OnRestart ()
-		{
-			base.OnRestart ();
-			ViewModel.Restart();
-		}
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            ViewModel.Restart();
+        }
 
-		protected override void OnStop ()
-		{
-			base.OnStop ();
-			ViewModel.Stop();
-		}
+        protected override void OnStop()
+        {
+            base.OnStop();
+            ViewModel.Stop();
+        }
 
-		protected override void OnDestroy ()
-		{
-			base.OnDestroy ();
-			ViewModel.Unload();
-		}
-
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ViewModel.Unload();
+        }
     }
 
     public abstract class BaseListActivity : ListActivity
@@ -83,7 +75,4 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             txt.Text = GetString(ViewTitleResourceId);
         }
     }
-
-    
-    
 }
