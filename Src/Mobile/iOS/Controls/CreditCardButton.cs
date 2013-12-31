@@ -24,13 +24,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-// ReSharper disable once NotAccessedField.Local
-        private string _last4Digits = string.Empty;
 
         [UsedImplicitly]
         public string Last4Digits {
             set {
-                _last4Digits = value ?? string.Empty;
 
                 TextField.RightView = new UILabel(new RectangleF(0,0,100,Bounds.Height))
                 {

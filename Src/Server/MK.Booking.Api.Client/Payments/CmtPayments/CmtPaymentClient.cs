@@ -132,8 +132,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             }
             catch (WebException e)
             {
-                var x = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
-
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessfull = false,

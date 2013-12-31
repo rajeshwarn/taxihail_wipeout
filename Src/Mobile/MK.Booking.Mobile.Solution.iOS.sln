@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.iOS", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.iOS", "..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj", "{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Client.iOS", "iOS\MK.Booking.Mobile.Client.iOS.csproj", "{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHail", "iOS\TaxiHail.csproj", "{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.iOS", "Common\MK.Booking.Mobile.iOS.csproj", "{43282000-6BF8-4D70-B7DB-833BA44E34BB}"
 EndProject
@@ -185,7 +185,7 @@ Global
 		{CF82F47F-A55D-45C6-B605-822458968E12}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = iOS\MK.Booking.Mobile.Client.iOS.csproj
+		StartupItem = iOS\TaxiHail.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None
