@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using System.Text.RegularExpressions;
 namespace apcurium.MK.Booking.IBS.Impl
 {
     public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
@@ -19,6 +21,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             string password = ConfigManager.GetSetting("IBS.DefaultAccountPassword");
             bool isSuccess = false;
             int ibsAcccountId = 0;
+
+            int resultParsing;
+
+            var queryNumberDigitInPhoneNumber = phone.Where(digit => int.TryParse(digit.ToString(), out resultParsing) == true);
+
+            string phoneClean = string.Join("", queryNumberDigitInPhoneNumber);
+
             UseService(service =>
             {
                 var account = new TBookAccount3();
@@ -28,8 +37,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 account.Title = "";
                 account.FirstName = firstName;
                 account.LastName = lastName;
-                account.Phone = phone;
-                account.MobilePhone = phone;                
+                account.Phone = phoneClean;
+                account.MobilePhone = phoneClean;               
                 account.WEBPassword = password;
 
                 ibsAcccountId = service.SaveAccount3(UserNameApp, PasswordApp, account);
