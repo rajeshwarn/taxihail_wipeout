@@ -63,6 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="No Card"
                 android:textSize="24dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -107,7 +108,7 @@
             android:layout_height="40dip"
             android:text="@string/CmtConfirmPayment"
             android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}"
+            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}, 'Clickable': {'Path': 'IsConfirmEnabled'}}"
             android:layout_gravity="bottom"
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="false"
