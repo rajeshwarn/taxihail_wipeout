@@ -161,6 +161,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        bool _isUnpairButtonVisible;
+        public bool IsUnpairButtonVisible
+        {
+            get
+            {
+                return _isUnpairButtonVisible;
+            }
+            set
+            {
+                _isUnpairButtonVisible = value;
+                FirePropertyChanged(() => IsUnpairButtonVisible);
+            }
+        }
+
         private string _confirmationNoTxt;
 		public string ConfirmationNoTxt {
 			get {
@@ -190,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool IsCallButtonVisible {
             get { return !bool.Parse (Config.GetSetting ("Client.HideCallDispatchButton")); }
 		}
-
+        
 		public bool VehicleDriverHidden
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
@@ -339,18 +353,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
-#endif
+#endif                                
                 IsPayButtonVisible = false;
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;
 
-                    CenterMap ();
-
+                    CenterMap ();                    
 					UpdatePayCancelButtons(status.IBSStatusId);
 
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
 						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
+                    }
+
+                    // TODO: Put the good timing / condition for Pair navigation
+                    //if (status.IBSStatusId.Equals(status.IBSStatusId.Equals(VehicleStatuses.Common.Arrived)) && !_bookingService.IsPaired(Order.Id))
+                    if (true)
+                    {
+                        GoToCmtPairScreen();
+                        return; //?
                     }
 
                     if (isDone) 
@@ -373,9 +394,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var setting = ConfigurationManager.GetPaymentSettings ();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
+            
+            // TODO: What is the company "IsCmtRideLinq enabled"?
+            
+            bool IsCmtRideLinqEnabled = true;
+            
+            IsUnpairButtonVisible = IsCmtRideLinqEnabled && _bookingService.IsPaired(Order.Id);
+
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded) 
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)                                
+                                && (!IsUnpairButtonVisible);
 			
             IsCancelButtonVisible = statusId == null ||
                                     statusId == VehicleStatuses.Common.Assigned 
@@ -394,6 +423,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}.ToStringDictionary());
 			RequestClose (this);
 		}
+
+        public void GoToCmtPairScreen()
+        {
+            RequestNavigate<ConfirmCmtPairingViewModel>(new
+            {
+                order = Order.ToJson(),
+                orderStatus = OrderStatusDetail.ToJson()
+            }.ToStringDictionary());
+            RequestClose(this);
+        }
+
 
         public void GoToBookingScreen(){
             if (!_waitingToNavigateAfterTimeOut)
@@ -529,6 +569,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-		#endregion
+
+
+       public IMvxCommand Unpair
+       {
+           get
+           {
+               return GetCommand(() =>
+               {
+                   // Use the server setting
+               });
+           }
+       }
+	    #endregion
     }
 }

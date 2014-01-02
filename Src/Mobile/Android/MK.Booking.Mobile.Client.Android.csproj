@@ -119,6 +119,7 @@
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
+    <Compile Include="Activities\Book\ConfirmCmtPairingActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -725,5 +726,10 @@
   </ProjectExtensions>
   <ItemGroup>
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCmtPair.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>
