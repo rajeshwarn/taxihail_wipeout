@@ -370,6 +370,7 @@
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
+    <Compile Include="Extensions\GoogleMapExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

@@ -222,12 +222,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             get { return _center; }
             set
             {
-                _center = value;                
+                bool centerWasNull = _center == null;
+                _center = value;
 				if(value!= null)
                 {
 					DeferWhenMapReady(() =>
 					{
-						SetZoom(value.ToArray());  
+                        // Do not animate the first time the location is set
+                        SetZoom(value.ToArray(), animate: !centerWasNull);  
 					});                
                 }
             }
@@ -291,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
-		private void SetZoom(CoordinateViewModel[] adressesToDisplay)
+        private void SetZoom(CoordinateViewModel[] adressesToDisplay, bool animate = true)
         {
 			if ( adressesToDisplay.Length == 1)
             {
@@ -300,11 +302,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 				if (adressesToDisplay[0].Zoom != ViewModels.ZoomLevel.DontChange)
 				{
-                    AnimateTo(lat, lon, 16);
+					Map.MoveTo(lat, lon, 16, animate);
 				}
 				else
 				{
-					AnimateTo(lat, lon);
+                    Map.MoveTo(lat, lon, animate);
 				}
                 return;
             }
@@ -326,11 +328,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
-                AnimateTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16);
+                Map.MoveTo((maxLat + minLat) / 2, (maxLon + minLon) / 2, 16, animate);
             }
             else
             {
-				Map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)));
+                Map.MoveTo(CameraUpdateFactory.NewLatLngBounds(new LatLngBounds(new LatLng(minLat, minLon), new LatLng(maxLat, maxLon)), DrawHelper.GetPixels(100)), animate);
             }
             PostInvalidateDelayed(100);
         }
@@ -459,18 +461,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			return rect.Contains(vehicleLocationInScreen.X, vehicleLocationInScreen.Y);
         }
-
-		private void AnimateTo(double lat, double lng, float zoom)
-		{
-			Map.AnimateCamera(CameraUpdateFactory.NewLatLngZoom(new LatLng(lat, lng), zoom));
-		}
-
-		private void AnimateTo(double lat, double lng)
-		{
-			Map.AnimateCamera(CameraUpdateFactory.NewLatLng(new LatLng(lat, lng)));
-		}
-
-
 
 		private void DeferWhenMapReady(Action action)
 		{
