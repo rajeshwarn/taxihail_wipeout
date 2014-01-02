@@ -86,13 +86,22 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
-            return Client.Post(new PairingRidelinqCmtRequest
+            try
             {
-                OrderId = orderId,
-                CardToken = cardToken,
-                AutoTipAmount = autoTipAmount,
-                AutoTipPercentage = autoTipPercentage
-            });
+                var response = Client.Post(new PairingRidelinqCmtRequest
+                {
+                    OrderId = orderId,
+                    CardToken = cardToken,
+                    AutoTipAmount = autoTipAmount,
+                    AutoTipPercentage = autoTipPercentage
+
+                });
+                return response;
+            }
+            catch (ServiceStack.ServiceClient.Web.WebServiceException e)
+            {                
+                return new PairingResponse() { IsSuccessfull = false };
+            }            
         }
 
         public BasePaymentResponse Unpair(Guid orderId)
@@ -111,6 +120,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 {
                     AccountNumber = accountNumber,
                     ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
+#if DEBUG
+                    ,ValidateAccountInformation = false
+#endif
                 });
 
                 return new TokenizedCreditCardResponse
