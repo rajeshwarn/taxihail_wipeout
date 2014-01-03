@@ -3997,6 +3997,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0194
 			public const int View_PaymentPreference = 2131362196;
 			
+			// aapt resource value: 0x7f0a01fb
+			public const int View_Payments_CmtRideLinqChangePaymentTitle = 2131362299;
+			
+			// aapt resource value: 0x7f0a01fa
+			public const int View_Payments_CmtRideLinqConfirmPairTitle = 2131362298;
+			
 			// aapt resource value: 0x7f0a01bd
 			public const int View_Payments_ConfirmCmtPairTitle = 2131362237;
 			
