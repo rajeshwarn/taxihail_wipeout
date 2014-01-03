@@ -337,111 +337,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
-    <Content Include="themes\BlackWhiteCab\img\cancel-icon.png" />
-    <Content Include="themes\BlackWhiteCab\img\location.png" />
-    <Content Include="themes\BlackWhiteCab\img\logo.png" />
-    <Content Include="themes\BluelineTaxi\img\logo.png" />
-    <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
-    <Content Include="themes\CasinoTaxi\img\logo.png" />
-    <Content Include="themes\CentralTaxiBelleville\img\logo.png" />
-    <Content Include="themes\CentralTaxiNiagara\img\logo.png" />
-    <Content Include="themes\CrownCabCompany\img\cancel-icon.png" />
-    <Content Include="themes\CrownCabCompany\img\location.png" />
-    <Content Include="themes\CrownCabCompany\img\Logo.png" />
-    <Content Include="themes\FourTwos\img\cancel-icon.png" />
-    <Content Include="themes\FourTwos\img\header-bg.png" />
-    <Content Include="themes\FourTwos\img\location.png" />
-    <Content Include="themes\FourTwos\img\Logo.png" />
-    <Content Include="themes\GreenYellowCab\img\cancel-icon.png" />
-    <Content Include="themes\GreenYellowCab\img\header-bg.png" />
-    <Content Include="themes\GreenYellowCab\img\location.png" />
-    <Content Include="themes\GreenYellowCab\img\Logo.png" />
-    <Content Include="themes\LacledeCab\img\logo.png" />
-    <Content Include="themes\LuxorCab\img\cancel-icon.png" />
-    <Content Include="themes\LuxorCab\img\location.png" />
-    <Content Include="themes\LuxorCab\img\logo.png" />
-    <Content Include="themes\MearsTaxi\img\cancel-icon.png" />
-    <Content Include="themes\MearsTaxi\img\location.png" />
-    <Content Include="themes\MearsTaxi\img\logo.png" />
-    <Content Include="themes\MetroTaxiCT\img\cancel-icon.png" />
-    <Content Include="themes\MetroTaxiCT\img\location.png" />
-    <Content Include="themes\MetroTaxiCT\img\logo.png" />
-    <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
-    <Content Include="themes\DispatchTaxi\img\location.png" />
-    <Content Include="themes\DispatchTaxi\img\logo.png" />
-    <Content Include="themes\DiamondCab\img\logo.png" />
-    <Content Include="themes\FreedomTaxi\img\logo.png" />
-    <Content Include="themes\MississaugaTaxi\img\logo.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\cancel-icon.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\location.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\logo.png" />
-    <Content Include="themes\Taxi303\img\logo.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\location.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
-    <Content Include="themes\BostonCab\img\cancel-icon.png" />
-    <Content Include="themes\BostonCab\img\header-bg.png" />
-    <Content Include="themes\BostonCab\img\location.png" />
-    <Content Include="themes\BostonCab\img\logo.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\cancel-icon.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
-    <Content Include="themes\BarrieTaxi\img\cancel-icon.png" />
-    <Content Include="themes\BarrieTaxi\img\location.png" />
-    <Content Include="themes\BarrieTaxi\img\logo.png" />
-    <Content Include="themes\FlashCab\img\logo.png" />
-    <Content Include="themes\Nawlins\img\logo.png" />
-    <Content Include="themes\TaxiHailNYC\img\logo.png" />
-    <Content Include="themes\Taxiworld\img\header-bg.png" />
-    <Content Include="themes\Taxiworld\img\logo.png" />
-    <Content Include="themes\Thriev\img\cancel-icon.png" />
-    <Content Include="themes\Thriev\img\location.png" />
-    <Content Include="themes\Thriev\img\logo.png" />
-    <Content Include="themes\VETaxi\img\cancel-icon.png" />
-    <Content Include="themes\VETaxi\img\location.png" />
-    <Content Include="themes\VETaxi\img\Logo.png" />
-    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
-    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
-    <Content Include="themes\VictoriaTaxi\img\location.png" />
-    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\header-bg.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\location.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\Logo.png" />
-    <Content Include="themes\YellowCabColumbus\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabColumbus\img\header-bg.png" />
-    <Content Include="themes\YellowCabColumbus\img\location.png" />
-    <Content Include="themes\YellowCabColumbus\img\Logo.png" />
-    <Content Include="themes\YellowCabJacksonville\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabJacksonville\img\location.png" />
-    <Content Include="themes\YellowCabJacksonville\img\logo.png" />
-    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
-    <Content Include="themes\YellowCabTampa\img\location.png" />
-    <Content Include="themes\YellowCabTampa\img\Logo.png" />
-    <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
-    <Content Include="themes\SanJoseForARide\img\location.png" />
-    <Content Include="themes\SanJoseForARide\img\logo.png" />
-    <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
-    <Content Include="themes\StLouisTaxi\img\location.png" />
-    <Content Include="themes\StLouisTaxi\img\Logo.png" />
-    <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
-    <Content Include="themes\StyleTransportation\img\location.png" />
-    <Content Include="themes\StyleTransportation\img\logo.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\cancel-icon.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\location.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
-    <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
-    <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
-    <Content Include="themes\WorcesterYellowCab\img\location.png" />
-    <Content Include="themes\WorcesterYellowCab\img\Logo.png" />
-    <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabSavannah\img\location.png" />
-    <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -467,10 +363,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\combined.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\style.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
     <Content Include="themes\TaxiHail\less\combined-responsive.less" />
     <Content Include="themes\TaxiHail\less\combined.less" />
     <Content Include="localization\OrderHistoryDetail.json" />
@@ -481,42 +373,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\templates\TariffItem.handlebars" />
-    <Content Include="themes\Taxiworld\less\combined-responsive.less" />
-    <Content Include="themes\Taxiworld\less\combined.less" />
-    <Content Include="themes\Taxiworld\less\style.less" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
     <Content Include="themes\TaxiHail\less\variables.less" />
     <Content Include="admin\templates\ManagePopularAddresses.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="themes\BarrieTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BarrieTaxi\less\combined.less" />
-    <Content Include="themes\BarrieTaxi\less\style.less" />
-    <Content Include="themes\BarrieTaxi\less\variables.less" />
-    <Content Include="themes\Taxi303\less\combined-responsive.less" />
-    <Content Include="themes\Taxi303\less\combined.less" />
-    <Content Include="themes\Taxi303\less\style.less" />
-    <Content Include="themes\Taxi303\less\variables.less" />
-    <Content Include="themes\FlashCab\less\combined-responsive.less" />
-    <Content Include="themes\FlashCab\less\combined.less" />
-    <Content Include="themes\FlashCab\less\style.less" />
-    <Content Include="themes\FlashCab\less\variables.less" />
-    <Content Include="themes\Nawlins\less\combined-responsive.less" />
-    <Content Include="themes\Nawlins\less\combined.less" />
-    <Content Include="themes\Nawlins\less\style.less" />
-    <Content Include="themes\Nawlins\less\variables.less" />
-    <Content Include="themes\FreedomTaxi\less\combined-responsive.less" />
-    <Content Include="themes\FreedomTaxi\less\combined.less" />
-    <Content Include="themes\FreedomTaxi\less\style.less" />
-    <Content Include="themes\FreedomTaxi\less\variables.less" />
-    <Content Include="themes\MississaugaTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MississaugaTaxi\less\combined.less" />
-    <Content Include="themes\MississaugaTaxi\less\style.less" />
-    <Content Include="themes\MississaugaTaxi\less\variables.less" />
-    <Content Include="themes\DiamondCab\less\combined-responsive.less" />
-    <Content Include="themes\DiamondCab\less\combined.less" />
-    <Content Include="themes\DiamondCab\less\style.less" />
-    <Content Include="themes\DiamondCab\less\variables.less" />
     <Content Include="admin\templates\ConfirmEmail.handlebars" />
     <Content Include="admin\localization\ConfirmEmail.json" />
     <Content Include="admin\templates\ManageRules.handlebars">
@@ -525,157 +386,12 @@
     <Content Include="admin\localization\ManageRules.json" />
     <Content Include="admin\templates\EditRule.handlebars" />
     <Content Include="admin\localization\EditRule.json" />
-    <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
-    <Content Include="themes\CasinoTaxi\less\combined.less" />
-    <Content Include="themes\CasinoTaxi\less\style.less" />
-    <Content Include="themes\CasinoTaxi\less\variables.less" />
-    <Content Include="themes\DispatchTaxi\less\combined-responsive.less" />
-    <Content Include="themes\DispatchTaxi\less\combined.less" />
-    <Content Include="themes\DispatchTaxi\less\style.less" />
-    <Content Include="themes\DispatchTaxi\less\variables.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\combined.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\style.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
     <Content Include="admin\templates\RuleItem.handlebars" />
     <Content Include="admin\localization\RuleItem.json" />
-    <Content Include="themes\MetroTaxiCT\less\combined-responsive.less" />
-    <Content Include="themes\MetroTaxiCT\less\combined.less" />
-    <Content Include="themes\MetroTaxiCT\less\style.less" />
-    <Content Include="themes\MetroTaxiCT\less\variables.less" />
-    <Content Include="themes\YellowCabJacksonville\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabJacksonville\less\combined.less" />
-    <Content Include="themes\YellowCabJacksonville\less\style.less" />
-    <Content Include="themes\YellowCabJacksonville\less\variables.less" />
     <Content Include="admin\templates\ManagePaymentSettings.handlebars" />
-    <Content Include="themes\Thriev\less\combined-responsive.less" />
-    <Content Include="themes\Thriev\less\combined.less" />
-    <Content Include="themes\Thriev\less\style.less" />
-    <Content Include="themes\Thriev\less\variables.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\style.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\variables.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\style.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\variables.less" />
-    <Content Include="themes\CrownCabCompany\less\combined-responsive.less" />
-    <Content Include="themes\CrownCabCompany\less\combined.less" />
-    <Content Include="themes\CrownCabCompany\less\style.less" />
-    <Content Include="themes\CrownCabCompany\less\variables.less" />
-    <Content Include="themes\FourTwos\less\combined-responsive.less" />
-    <Content Include="themes\FourTwos\less\combined.less" />
-    <Content Include="themes\FourTwos\less\style.less" />
-    <Content Include="themes\FourTwos\less\variables.less" />
-    <Content Include="themes\LacledeCab\less\combined-responsive.less" />
-    <Content Include="themes\LacledeCab\less\combined.less" />
-    <Content Include="themes\LacledeCab\less\style.less" />
-    <Content Include="themes\LacledeCab\less\variables.less" />
-    <Content Include="themes\LuxorCab\less\combined-responsive.less" />
-    <Content Include="themes\LuxorCab\less\combined.less" />
-    <Content Include="themes\LuxorCab\less\style.less" />
-    <Content Include="themes\LuxorCab\less\variables.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined-responsive.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\style.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\variables.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\style.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\variables.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined.less" />
-    <Content Include="themes\YellowCabColumbus\less\style.less" />
-    <Content Include="themes\YellowCabColumbus\less\variables.less" />
-    <Content Include="themes\Thriev\localization\Book.json" />
-    <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
-    <Content Include="themes\Thriev\templates\BookingConfirmation.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="themes\MearsTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MearsTaxi\less\combined.less" />
-    <Content Include="themes\MearsTaxi\less\style.less" />
-    <Content Include="themes\MearsTaxi\less\variables.less" />
-    <Content Include="themes\GreenYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\GreenYellowCab\less\combined.less" />
-    <Content Include="themes\GreenYellowCab\less\style.less" />
-    <Content Include="themes\GreenYellowCab\less\variables.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined-responsive.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined-responsive.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined.less" />
-    <Content Include="themes\BlackWhiteCab\less\style.less" />
-    <Content Include="themes\BlackWhiteCab\less\variables.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\style.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\variables.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\style.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\variables.less" />
-    <Content Include="themes\CrownCabCompany\less\combined-responsive.less" />
-    <Content Include="themes\CrownCabCompany\less\combined.less" />
-    <Content Include="themes\CrownCabCompany\less\style.less" />
-    <Content Include="themes\CrownCabCompany\less\variables.less" />
-    <Content Include="themes\FourTwos\less\combined-responsive.less" />
-    <Content Include="themes\FourTwos\less\combined.less" />
-    <Content Include="themes\FourTwos\less\style.less" />
-    <Content Include="themes\FourTwos\less\variables.less" />
-    <Content Include="themes\LacledeCab\less\combined-responsive.less" />
-    <Content Include="themes\LacledeCab\less\combined.less" />
-    <Content Include="themes\LacledeCab\less\style.less" />
-    <Content Include="themes\LacledeCab\less\variables.less" />
-    <Content Include="themes\LuxorCab\less\combined-responsive.less" />
-    <Content Include="themes\LuxorCab\less\combined.less" />
-    <Content Include="themes\LuxorCab\less\style.less" />
-    <Content Include="themes\LuxorCab\less\variables.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined-responsive.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\style.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\variables.less" />
-    <Content Include="themes\Thriev\less\combined-responsive.less" />
-    <Content Include="themes\Thriev\less\combined.less" />
-    <Content Include="themes\Thriev\less\style.less" />
-    <Content Include="themes\Thriev\less\variables.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\style.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\variables.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined.less" />
-    <Content Include="themes\YellowCabColumbus\less\style.less" />
-    <Content Include="themes\YellowCabColumbus\less\variables.less" />
-    <Content Include="themes\GreenYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\GreenYellowCab\less\combined.less" />
-    <Content Include="themes\GreenYellowCab\less\style.less" />
-    <Content Include="themes\GreenYellowCab\less\variables.less" />
-    <Content Include="themes\BluelineTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BluelineTaxi\less\combined.less" />
-    <Content Include="themes\BluelineTaxi\less\style.less" />
-    <Content Include="themes\BluelineTaxi\less\variables.less" />
-    <Content Include="themes\MearsTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MearsTaxi\less\combined.less" />
-    <Content Include="themes\MearsTaxi\less\style.less" />
-    <Content Include="themes\MearsTaxi\less\variables.less" />
-    <Content Include="themes\BlackWhiteCab\less\style.less" />
-    <Content Include="themes\BlackWhiteCab\less\variables.less" />
-    <Content Include="themes\BluelineTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BluelineTaxi\less\combined.less" />
-    <Content Include="themes\BluelineTaxi\less\style.less" />
-    <Content Include="themes\BluelineTaxi\less\variables.less" />
-    <Content Include="themes\VETaxi\less\combined-responsive.less" />
-    <Content Include="themes\VETaxi\less\combined.less" />
-    <Content Include="themes\VETaxi\less\style.less" />
-    <Content Include="themes\VETaxi\less\variables.less" />
     <Content Include="templates\GetTheApp.handlebars" />
     <Content Include="admin\localization\SendPushNotification.json" />
     <Content Include="admin\templates\SendPushNotification.handlebars" />
-    <Content Include="themes\TaxiHailNYC\less\combined-responsive.less" />
-    <Content Include="themes\TaxiHailNYC\less\combined.less" />
-    <Content Include="themes\TaxiHailNYC\less\style.less" />
-    <Content Include="themes\TaxiHailNYC\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -827,9 +543,6 @@
     <Content Include="assets\less\TaxiHail.less" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="localization\Home.json" />
     <Content Include="localization\Global.json" />
   </ItemGroup>
@@ -888,18 +601,6 @@
     <Content Include="assets\less\TaxiHail-popover.less" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="templates\AddFavorite.handlebars" />
     <Content Include="templates\AddressControl.handlebars" />
     <Content Include="templates\AddressItem.handlebars" />
@@ -935,82 +636,13 @@
     <Content Include="templates\UserAccount.handlebars" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\PublishProfiles\d.pubxml" />
-    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
-    <Content Include="themes\WorcesterYellowCab\less\style.less" />
-    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
-    <Content Include="themes\BostonCab\less\combined-responsive.less" />
-    <Content Include="themes\BostonCab\less\combined.less" />
-    <Content Include="themes\BostonCab\less\style.less" />
-    <Content Include="themes\BostonCab\less\variables.less" />
-    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
-    <Content Include="themes\VictoriaTaxi\less\combined.less" />
-    <Content Include="themes\VictoriaTaxi\less\style.less" />
-    <Content Include="themes\VictoriaTaxi\less\variables.less" />
-    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabTampa\less\combined.less" />
-    <Content Include="themes\YellowCabTampa\less\style.less" />
-    <Content Include="themes\YellowCabTampa\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\GrantAdminAccess.json" />
-    <Content Include="themes\StLouisTaxi\less\combined-responsive.less" />
-    <Content Include="themes\StLouisTaxi\less\combined.less" />
-    <Content Include="themes\StLouisTaxi\less\style.less" />
-    <Content Include="themes\StLouisTaxi\less\variables.less" />
-    <Content Include="themes\YellowCabSavannah\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabSavannah\less\combined.less" />
-    <Content Include="themes\YellowCabSavannah\less\style.less" />
-    <Content Include="themes\YellowCabSavannah\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\Global.json" />
