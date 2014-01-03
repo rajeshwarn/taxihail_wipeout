@@ -14,11 +14,11 @@ using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class ConfirmCmtPairingViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
+    public class CmtRideLinqConfirmPairViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
 	{
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
-        public ConfirmCmtPairingViewModel(string order, string orderStatus)
+        public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();                        
@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.Mobile
 
             if (PaymentPreferences.SelectedCreditCard == null)
             {
-                RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result =>
+                RequestSubNavigate<CreditCardsListViewModel, Guid>(
+                    null, result =>
                 {
                     if (result != default(Guid))
                     {
@@ -60,6 +61,11 @@ namespace apcurium.MK.Booking.Mobile
                     _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
                 }
                 return _paymentPreferences;
+            }
+
+            set
+            {
+                _paymentPreferences = value;
             }
         }
 
@@ -138,7 +144,8 @@ namespace apcurium.MK.Booking.Mobile
                     
                     PairingResponse pairingResponse = payment.Pair(Order.Id, PaymentPreferences.SelectedCreditCard.Token, PaymentPreferences.Tip, 0d);                    
                     
-                    // TODO: Should we handle [pairingResponse.IsSuccessfull = false] scenario?                         
+                    CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
+                        
                     RequestNavigate<BookingStatusViewModel>(new
                     {
                         order = Order.ToJson(),
@@ -154,17 +161,17 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() =>
                 {
-                    //RequestSubNavigate<PaymentCmtViewModel, object>(
-                    //new
-                    //{
-                    //    order = Order.ToJson(),
-                    //    orderStatus = OrderStatus.ToJson(),
-                    //}.ToStringDictionary(),
-                    //_ =>
-                    //{
-                    //});
-
-                    //RequestClose(this);
+                    RequestSubNavigate<CmtRideLinqChangePaymentViewModel, PaymentDetailsViewModel>(
+                        new
+                        {
+                            order = Order.ToJson(),
+                            orderStatus = OrderStatus.ToJson(),
+                        }.ToStringDictionary(), result =>
+                    {                                                
+                            PaymentPreferences = result;
+                            PaymentPreferences.LoadCreditCards();
+                            RefreshCreditCards();                        
+                    });
                 });
             }
         }
@@ -175,12 +182,16 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() =>
                 {
-                    //RequestNavigate<PaymentViewModel, object>( ...............                    
+                    CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), "canceled");
+
+                    RequestNavigate<BookingStatusViewModel>(new
+                    {
+                        order = Order.ToJson(),
+                        orderStatus = OrderStatus.ToJson()
+                    });                   
                 });
             }
         }
-
-
 	}
 }
 

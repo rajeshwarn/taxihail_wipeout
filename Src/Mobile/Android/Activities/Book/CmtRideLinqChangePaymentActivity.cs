@@ -16,8 +16,8 @@ using apcurium.MK.Booking.Mobile;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [Activity(Label = "ConfirmCmtPairingActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class ConfirmCmtPairingActivity : BaseBindingActivity<ConfirmCmtPairingViewModel>
+    [Activity(Label = "CmtRideLinqChangePaymentActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    public class CmtRideLinqChangePaymentActivity : BaseBindingActivity<CmtRideLinqChangePaymentViewModel>
     {
         protected override void OnStart()
         {
@@ -26,13 +26,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_Payments_ConfirmCmtPairTitle; }
+            get { return Resource.String.View_Payments_CmtRideLinqChangePaymentTitle; }
         }
 
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_Payments_ConfirmCmtPair);
+            SetContentView(Resource.Layout.View_Payments_CmtRideLinqChangePayment);
             ViewModel.Load();
         }
     }
