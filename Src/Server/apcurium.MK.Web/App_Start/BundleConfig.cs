@@ -158,6 +158,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/PaymentSettingsController.js",
                 "~/admin/controllers/DefaultAddressesController.js",
                 "~/admin/controllers/PopularAddressesController.js",
+                "~/admin/controllers/ExportController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -170,6 +171,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/GrantAdminAccessView.js",
                 "~/admin/views/ConfirmEmailView.js",
                 "~/admin/views/SendPushNotificationView.js",
+                "~/admin/views/ExportOrdersOrAccountsView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
                 "~/admin/views/ManageTariffsView.js",
