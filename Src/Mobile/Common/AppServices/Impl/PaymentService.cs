@@ -1,3 +1,6 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+#endif
 using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -59,6 +62,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
 
+            // TODO: Debug exclusively for RideLinqCmt
+#if DEBUG
+            settings.PaymentMode = PaymentMethod.RideLinqCmt;
+#endif
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:

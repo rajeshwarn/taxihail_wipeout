@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -63,6 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="No Card"
                 android:textSize="24dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -107,7 +108,7 @@
             android:layout_height="40dip"
             android:text="@string/CmtConfirmPayment"
             android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}"
+            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}, 'Clickable': {'Path': 'IsConfirmEnabled'}}"
             android:layout_gravity="bottom"
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="false"

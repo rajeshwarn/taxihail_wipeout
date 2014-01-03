@@ -1,11 +1,13 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+using SocialNetworks.Services.Entities;
+using SocialNetworks.Services.MonoDroid;
+#endif
 using System;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using SocialNetworks.Services;
-using SocialNetworks.Services.Entities;
-using SocialNetworks.Services.MonoDroid;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
@@ -38,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         public static LoginActivity TopInstance{get;set;}
 
         private ProgressDialog _progressDialog;
+
+#if SOCIAL_NETWORKS
         /// <summary>
         /// use for SSO when FB app is isntalled
         /// </summary>
@@ -56,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                        
             (ViewModel.FacebookService as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
+#endif
 
 		public LoginActivity ()
 		{

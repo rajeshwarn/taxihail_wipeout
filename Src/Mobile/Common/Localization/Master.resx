@@ -1446,4 +1446,10 @@
   <data name="View_Payments_ConfirmCmtPairTitle" xml:space="preserve">
     <value>Confirm payment information</value>
   </data>
+  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
+    <value>Update required</value>
+  </data>
+  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
+    <value>You need to update Google Play Services in order to use this application.</value>
+  </data>
 </root>
