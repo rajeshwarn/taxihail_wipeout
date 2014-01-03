@@ -1,10 +1,7 @@
-using System.Net;
 using System.Threading.Tasks;
-using MK.Common.Android;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

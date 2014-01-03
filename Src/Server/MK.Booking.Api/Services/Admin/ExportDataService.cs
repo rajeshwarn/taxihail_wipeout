@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
                     //return
-                    var testResult = orders.Where(x => x.CreatedDate != null).Select(x =>
+                    var testResult = orders.Select(x =>
                     {
                         var operatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
                         var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.ToSafeString();
