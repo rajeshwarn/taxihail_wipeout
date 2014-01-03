@@ -542,7 +542,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\ManageRules.json" />
-    <Content Include="admin\templates\EditRule.handlebars" />
+    <Content Include="admin\templates\EditRule.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\localization\EditRule.json" />
     <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
     <Content Include="themes\CasinoTaxi\less\combined.less" />
@@ -695,7 +697,9 @@
     <Content Include="themes\TaxiHailNYC\less\combined.less" />
     <Content Include="themes\TaxiHailNYC\less\style.less" />
     <Content Include="themes\TaxiHailNYC\less\variables.less" />
-    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars" />
+    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

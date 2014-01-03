@@ -14,7 +14,6 @@
 
         exportOrders: function () {
 
-            console.log("ExportController.ExportOrders()");
             return new TaxiHail.ExportOrdersOrAccountsView();
         }
     });
