@@ -31,461 +31,568 @@ using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
+    public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>, IMvxServiceConsumer<IPaymentService>
     {
-		private readonly IBookingService _bookingService;
+        private readonly IBookingService _bookingService;
+        private readonly IPaymentService _paymentService;
         private int _refreshPeriod = 5; //in seconds
         private bool _waitingToNavigateAfterTimeOut = false;
 
-		public BookingStatusViewModel (string order, string orderStatus)
-		{
-			Order = JsonSerializer.DeserializeFromString<Order> (order);
-			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-            IsCancelButtonVisible = true;			
-            _waitingToNavigateAfterTimeOut = false;
-			_bookingService = this.GetService<IBookingService>();
-		}
-	
-		public override void Load ()
+        public BookingStatusViewModel(string order, string orderStatus)
         {
-			base.Load ();
-
-			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
-
-            Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
-            {
-				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
-            };
-
-            Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address)
-            {
-				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
-            };
-
-            CenterMap ();
+            Order = JsonSerializer.DeserializeFromString<Order>(order);
+            OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);
+            IsCancelButtonVisible = true;
+            IsCurrentlyPairing = false;
+            _waitingToNavigateAfterTimeOut = false;
+            _bookingService = this.GetService<IBookingService>();
+            _paymentService = this.GetService<IPaymentService>();
         }
 
-		public override void Start (bool firstStart)
-		{
-			base.Start (firstStart);
+        public override void Load()
+        {
+            base.Load();
 
-            var periodInSettings = TinyIoCContainer.Current.Resolve<IConfigurationManager> ().GetSetting ("Client.OrderStatus.ClientPollingInterval");
+            StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
+
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address)
+            {
+                EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
+            };
+
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address)
+            {
+                EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
+            };
+
+            CenterMap();
+        }
+
+        public override void Start(bool firstStart)
+        {
+            base.Start(firstStart);
+
+            var periodInSettings = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.OrderStatus.ClientPollingInterval");
             int periodInSettingsValue;
-            if(int.TryParse(periodInSettings, out periodInSettingsValue))
+            if (int.TryParse(periodInSettings, out periodInSettingsValue))
             {
                 _refreshPeriod = periodInSettingsValue;
             }
 
-            Task.Factory.StartNew (() =>
+            Task.Factory.StartNew(() =>
             {
-                Thread.Sleep( 1000 );     
+                Thread.Sleep(1000);
                 InvokeOnMainThread(() => RefreshStatus());
             });
 
 #if MONOTOUCH
 			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
 #else
-			Observable.Interval( TimeSpan.FromSeconds (_refreshPeriod))
+            Observable.Interval(TimeSpan.FromSeconds(_refreshPeriod))
 #endif
-				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
-				.DisposeWith (Subscriptions);
+.Subscribe(unit => InvokeOnMainThread(RefreshStatus))
+                .DisposeWith(Subscriptions);
 
-		}
-		
-		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-		public override void Stop ()
-		{
-			base.Stop ();
-            Subscriptions.DisposeAll ();
-		}
+        }
 
-		#region Bindings
-		private IEnumerable<CoordinateViewModel> _mapCenter;
-		public IEnumerable<CoordinateViewModel> MapCenter {
-			get { return _mapCenter; }
-			private set {
-				_mapCenter = value;
-				FirePropertyChanged (() => MapCenter);
-			}
-		}
-		
-		BookAddressViewModel _pickupViewModel;
-		public BookAddressViewModel Pickup {
-			get {
-				return _pickupViewModel;
-			}
-			set {
-				_pickupViewModel = value;
-				FirePropertyChanged (() => Pickup); 
-			}
-		}
-		
-		BookAddressViewModel dropoffViewModel;
-		public BookAddressViewModel Dropoff {
-			get {
-				return dropoffViewModel;
-			}
-			set {
-				dropoffViewModel = value;
-				FirePropertyChanged (() => Dropoff); 
-			}
-		}
+        protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
+        public override void Stop()
+        {
+            base.Stop();
+            Subscriptions.DisposeAll();
+        }
 
-		bool _isPayButtonVisible;
-		public bool IsPayButtonVisible {
-			get{
-				return _isPayButtonVisible;
-			} set{
-				_isPayButtonVisible = value;
-				FirePropertyChanged (() => IsPayButtonVisible); 
-			}
-		}
+        #region Bindings
+        private IEnumerable<CoordinateViewModel> _mapCenter;
+        public IEnumerable<CoordinateViewModel> MapCenter
+        {
+            get { return _mapCenter; }
+            private set
+            {
+                _mapCenter = value;
+                FirePropertyChanged(() => MapCenter);
+            }
+        }
 
-		bool _isCancelButtonVisible;
-		public bool IsCancelButtonVisible{
-			get{
-				return _isCancelButtonVisible;
-			} set{
-				_isCancelButtonVisible = value;
-				FirePropertyChanged (() => IsCancelButtonVisible); 
-			}
-		}
-		
+        BookAddressViewModel _pickupViewModel;
+        public BookAddressViewModel Pickup
+        {
+            get
+            {
+                return _pickupViewModel;
+            }
+            set
+            {
+                _pickupViewModel = value;
+                FirePropertyChanged(() => Pickup);
+            }
+        }
+
+        BookAddressViewModel dropoffViewModel;
+        public BookAddressViewModel Dropoff
+        {
+            get
+            {
+                return dropoffViewModel;
+            }
+            set
+            {
+                dropoffViewModel = value;
+                FirePropertyChanged(() => Dropoff);
+            }
+        }
+
+        bool _isPayButtonVisible;
+        public bool IsPayButtonVisible
+        {
+            get
+            {
+                return _isPayButtonVisible;
+            }
+            set
+            {
+                _isPayButtonVisible = value;
+                FirePropertyChanged(() => IsPayButtonVisible);
+            }
+        }
+
+        bool _isCancelButtonVisible;
+        public bool IsCancelButtonVisible
+        {
+            get
+            {
+                return _isCancelButtonVisible;
+            }
+            set
+            {
+                _isCancelButtonVisible = value;
+                FirePropertyChanged(() => IsCancelButtonVisible);
+            }
+        }
+
         bool _isResendButtonVisible;
-        public bool IsResendButtonVisible{
-            get{
+        public bool IsResendButtonVisible
+        {
+            get
+            {
                 return _isResendButtonVisible;
-            } set{
+            }
+            set
+            {
                 _isResendButtonVisible = value;
-                FirePropertyChanged (() => IsResendButtonVisible); 
+                FirePropertyChanged(() => IsResendButtonVisible);
+            }
+        }
+
+        bool _isUnpairButtonVisible;
+        public bool IsUnpairButtonVisible
+        {
+            get
+            {
+                return _isUnpairButtonVisible;
+            }
+            set
+            {
+                _isUnpairButtonVisible = value;
+                FirePropertyChanged(() => IsUnpairButtonVisible);
             }
         }
 
         private string _confirmationNoTxt;
-		public string ConfirmationNoTxt {
-			get {
-				return _confirmationNoTxt;
-			}
-			set {
-				_confirmationNoTxt = value;
-				FirePropertyChanged (() => ConfirmationNoTxt);
-			}
-		}
+        public string ConfirmationNoTxt
+        {
+            get
+            {
+                return _confirmationNoTxt;
+            }
+            set
+            {
+                _confirmationNoTxt = value;
+                FirePropertyChanged(() => ConfirmationNoTxt);
+            }
+        }
         public bool IsCallTaxiVisible
         {
-            get { 
-                    var showCallDriver = Config.GetSetting<bool>("Client.ShowCallDriver", false);
-                return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue (); }
+            get
+            {
+                var showCallDriver = Config.GetSetting<bool>("Client.ShowCallDriver", false);
+                return showCallDriver && IsDriverInfoAvailable && OrderStatusDetail.DriverInfos.MobilePhone.HasValue();
+            }
         }
 
         public bool IsDriverInfoAvailable
         {
-            get { 
+            get
+            {
                 var showVehicleInformation = Config.GetSetting<bool>("Client.ShowVehicleInformation", true);
 
-                return showVehicleInformation && ( (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived) ) 
-                && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
+                return showVehicleInformation && ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived))
+                && (OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue());
+            }
         }
-		
-		public bool IsCallButtonVisible {
-            get { return !bool.Parse (Config.GetSetting ("Client.HideCallDispatchButton")); }
-		}
 
-		public bool VehicleDriverHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
-		}
-		public bool VehicleLicenceHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) || !IsDriverInfoAvailable; }
-		}
-		public bool VehicleTypeHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType) || !IsDriverInfoAvailable; }
-		}
-		public bool VehicleMakeHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake) || !IsDriverInfoAvailable; }
-		}
-		public bool VehicleModelHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel) || !IsDriverInfoAvailable; }
-		}
-		public bool VehicleColorHidden
-		{
-			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
-		}
+        public bool IsCallButtonVisible
+        {
+            get { return !bool.Parse(Config.GetSetting("Client.HideCallDispatchButton")); }
+        }
 
-		private string _statusInfoText { get; set; }
-		public string StatusInfoText {
-			get { return _statusInfoText; }
-			set {
-				_statusInfoText = value;
-				FirePropertyChanged (() => StatusInfoText);
-			}
-		}
+        public bool VehicleDriverHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
+        }
+        public bool VehicleLicenceHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleRegistration) || !IsDriverInfoAvailable; }
+        }
+        public bool VehicleTypeHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleType) || !IsDriverInfoAvailable; }
+        }
+        public bool VehicleMakeHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleMake) || !IsDriverInfoAvailable; }
+        }
+        public bool VehicleModelHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleModel) || !IsDriverInfoAvailable; }
+        }
+        public bool VehicleColorHidden
+        {
+            get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
+        }
 
-		public Address PickupModel {
-			get { return Pickup.Model; }
-			set {
-				Pickup.Model = value;
-				FirePropertyChanged (() => PickupModel);
-			}
-		}
+        private string _statusInfoText { get; set; }
+        public string StatusInfoText
+        {
+            get { return _statusInfoText; }
+            set
+            {
+                _statusInfoText = value;
+                FirePropertyChanged(() => StatusInfoText);
+            }
+        }
 
-		private Order _order;
-		public Order Order {
-			get { return _order; }
-			set {
-				_order = value;
-				FirePropertyChanged (() => Order);
-			}
-		}
-		
-		private OrderStatusDetail _orderStatusDetail;
-		public OrderStatusDetail OrderStatusDetail {
-			get { return _orderStatusDetail; }
-			set {
-				_orderStatusDetail = value;
-				FirePropertyChanged (() => OrderStatusDetail);
-				FirePropertyChanged (() => VehicleDriverHidden);
-				FirePropertyChanged (() => VehicleLicenceHidden);
-				FirePropertyChanged (() => VehicleTypeHidden);
-				FirePropertyChanged (() => VehicleMakeHidden);
-				FirePropertyChanged (() => VehicleModelHidden);
-				FirePropertyChanged (() => VehicleColorHidden);
-                FirePropertyChanged (() => IsDriverInfoAvailable);
-                FirePropertyChanged (() => IsCallTaxiVisible);
-			}
-		}
+        public Address PickupModel
+        {
+            get { return Pickup.Model; }
+            set
+            {
+                Pickup.Model = value;
+                FirePropertyChanged(() => PickupModel);
+            }
+        }
+
+        private Order _order;
+        public Order Order
+        {
+            get { return _order; }
+            set
+            {
+                _order = value;
+                FirePropertyChanged(() => Order);
+            }
+        }
+
+        private OrderStatusDetail _orderStatusDetail;
+        public OrderStatusDetail OrderStatusDetail
+        {
+            get { return _orderStatusDetail; }
+            set
+            {
+                _orderStatusDetail = value;
+                FirePropertyChanged(() => OrderStatusDetail);
+                FirePropertyChanged(() => VehicleDriverHidden);
+                FirePropertyChanged(() => VehicleLicenceHidden);
+                FirePropertyChanged(() => VehicleTypeHidden);
+                FirePropertyChanged(() => VehicleMakeHidden);
+                FirePropertyChanged(() => VehicleModelHidden);
+                FirePropertyChanged(() => VehicleColorHidden);
+                FirePropertyChanged(() => IsDriverInfoAvailable);
+                FirePropertyChanged(() => IsCallTaxiVisible);
+            }
+        }
 
         public IMvxCommand CallTaxi
         {
-            get { 
-				return GetCommand(() =>
+            get
+            {
+                return GetCommand(() =>
                 {
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
-						MessageService.ShowMessage (string.Empty, 
-						                            OrderStatusDetail.DriverInfos.MobilePhone, 
-						                            Str.CallButtonText, 
-						                            () => PhoneService.Call (OrderStatusDetail.DriverInfos.MobilePhone),
-						                            Str.CancelButtonText, 
-						                            () => {});   
+                        MessageService.ShowMessage(string.Empty,
+                                                    OrderStatusDetail.DriverInfos.MobilePhone,
+                                                    Str.CallButtonText,
+                                                    () => PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone),
+                                                    Str.CancelButtonText,
+                                                    () => { });
                     }
                     else
                     {
                         MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
                     }
-                }); 
-			}
+                });
+            }
         }
 
-		#endregion
+        #endregion
 
 
-        private bool HasSeenReminderPrompt( Guid orderId )
+        private bool HasSeenReminderPrompt(Guid orderId)
         {
-            var hasSeen = CacheService.Get<string>( "OrderReminderWasSeen." + orderId.ToString());
+            var hasSeen = CacheService.Get<string>("OrderReminderWasSeen." + orderId.ToString());
             return !string.IsNullOrEmpty(hasSeen);
         }
-        private void SetHasSeenReminderPrompt( Guid orderId )
+        private void SetHasSeenReminderPrompt(Guid orderId)
         {
-            CacheService.Set( "OrderReminderWasSeen." + orderId.ToString(), true.ToString() );                     
+            CacheService.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());
         }
 
 
 
 
-        private void AddReminder (OrderStatusDetail status)
+        private void AddReminder(OrderStatusDetail status)
         {
-            if (!HasSeenReminderPrompt(status.OrderId )
-				&& this.PhoneService.CanUseCalendarAPI())
+            if (!HasSeenReminderPrompt(status.OrderId)
+                && this.PhoneService.CanUseCalendarAPI())
             {
                 SetHasSeenReminderPrompt(status.OrderId);
-                InvokeOnMainThread (() => 
+                InvokeOnMainThread(() =>
                 {
-					MessageService.ShowMessage (Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () => 
+                    MessageService.ShowMessage(Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () =>
                     {
-						this.PhoneService.AddEventToCalendarAndReminder(Str.ReminderTitle, 
-						                                                Str.GetReminderDetails(Order.PickupAddress.FullAddress, Order.PickupDate),						              									 
-                                                                        Order.PickupAddress.FullAddress, 
-                                                                        Order.PickupDate, 
+                        this.PhoneService.AddEventToCalendarAndReminder(Str.ReminderTitle,
+                                                                        Str.GetReminderDetails(Order.PickupAddress.FullAddress, Order.PickupDate),
+                                                                        Order.PickupAddress.FullAddress,
+                                                                        Order.PickupDate,
                                                                         Order.PickupDate.AddHours(-2));
                     }, Str.NoButtonText, () => { });
                 });
             }
         }
-		        
-		string vehicleNumber = null;
-        private void RefreshStatus ()
+
+        string vehicleNumber = null;
+        private bool IsCurrentlyPairing = false;
+        private void RefreshStatus()
         {
-            try {
-                var status = BookingService.GetOrderStatus (Order.Id);
-				if(status.VehicleNumber != null)
-				{
-					vehicleNumber = status.VehicleNumber;
-				}
-				else{
-					status.VehicleNumber = vehicleNumber;
-				}
+            try
+            {
+                var setting = ConfigurationManager.GetPaymentSettings();
+                var status = BookingService.GetOrderStatus(Order.Id);
+                if (status.VehicleNumber != null)
+                {
+                    vehicleNumber = status.VehicleNumber;
+                }
+                else
+                {
+                    status.VehicleNumber = vehicleNumber;
+                }
 
-				var isDone = BookingService.IsStatusDone (status.IBSStatusId);
+                var isDone = BookingService.IsStatusDone(status.IBSStatusId);
 
-                if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
-				{
-					AddReminder(status);
-				}
+                if (status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled))
+                {
+                    AddReminder(status);
+                }
 
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
                 IsPayButtonVisible = false;
-                if (status != null) {
-                    StatusInfoText = status.IBSStatusDescription;                        
+                if (status != null)
+                {
+                    StatusInfoText = status.IBSStatusDescription;
                     this.OrderStatusDetail = status;
 
-                    CenterMap ();
+                    CenterMap();
 
-					UpdatePayCancelButtons(status.IBSStatusId);
+                    var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+                    var isPaired = (_bookingService.IsPaired(Order.Id) == true) ? true : false;
+                    var pairState = CacheService.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
+                    var isPairBypass = (pairState == "failed") || (pairState == "canceled") || (pairState == "unpaired");
+                    var IsCmtRideLinqEnabled = (setting.PaymentMode == PaymentMethod.RideLinqCmt);
 
-                    if (OrderStatusDetail.IBSOrderId.HasValue) {
-						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
+                    if (isLoaded && !isPaired && !IsCurrentlyPairing && !isPairBypass)
+                    {
+                        IsCurrentlyPairing = true;
+                        GoToCmtPairScreen();
+                        return;
                     }
 
-                    if (isDone) 
-					{
-						GoToSummary();
+                    UpdatePayCancelButtons(status.IBSStatusId);
+
+                    if (OrderStatusDetail.IBSOrderId.HasValue)
+                    {
+                        ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value + "");
                     }
 
-                    if (BookingService.IsStatusTimedOut (status.IBSStatusId))
+                    if (isDone)
+                    {
+                        GoToSummary();
+                    }
+
+                    if (BookingService.IsStatusTimedOut(status.IBSStatusId))
                     {
                         GoToBookingScreen();
                     }
                 }
-            } catch (Exception ex) {
-                Logger.LogError (ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
         }
 
-		void UpdatePayCancelButtons (string statusId)
-		{
-            var setting = ConfigurationManager.GetPaymentSettings ();
+        void UpdatePayCancelButtons(string statusId)
+        {
+            var setting = ConfigurationManager.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
-								||statusId == VehicleStatuses.Common.Loaded) 
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
-			
+            //bool IsCmtRideLinqEnabled = setting.PaymentMode == PaymentMethod.RideLinqCmt;
+            bool IsCmtRideLinqEnabled = true;
+
+            //var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
+            var isPaired = false;
+
+            IsUnpairButtonVisible = IsCmtRideLinqEnabled && isPaired;
+
+            IsPayButtonVisible = (statusId == VehicleStatuses.Common.Done
+                                || statusId == VehicleStatuses.Common.Loaded)
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)
+                                && (!IsCmtRideLinqEnabled);
+
             IsCancelButtonVisible = statusId == null ||
-                                    statusId == VehicleStatuses.Common.Assigned 
-                                || statusId == VehicleStatuses.Common.Waiting 
+                                    statusId == VehicleStatuses.Common.Assigned
+                                || statusId == VehicleStatuses.Common.Waiting
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
 
             IsResendButtonVisible = isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
-		}
+        }
 
-		public void GoToSummary(){
+        public void GoToSummary()
+        {
 
-			RequestNavigate<RideSummaryViewModel> (new {
-				order = Order.ToJson(),
-				orderStatus = OrderStatusDetail.ToJson()
-			}.ToStringDictionary());
-			RequestClose (this);
-		}
+            RequestNavigate<RideSummaryViewModel>(new
+            {
+                order = Order.ToJson(),
+                orderStatus = OrderStatusDetail.ToJson()
+            }.ToStringDictionary());
+            RequestClose(this);
+        }
 
-        public void GoToBookingScreen(){
+        public void GoToCmtPairScreen()
+        {
+            RequestNavigate<CmtRideLinqConfirmPairViewModel>(new
+            {
+                order = Order.ToJson(),
+                orderStatus = OrderStatusDetail.ToJson()
+            }.ToStringDictionary());
+            RequestClose(this);
+        }
+
+
+        public void GoToBookingScreen()
+        {
             if (!_waitingToNavigateAfterTimeOut)
             {
 #if MONOTOUCH
                 Observable.IntervalSafe(TimeSpan.FromSeconds(10))
 #else
-                Observable.Interval( TimeSpan.FromSeconds (10))
+                Observable.Interval(TimeSpan.FromSeconds(10))
 #endif
-                    .Subscribe(unit => InvokeOnMainThread(() => {
-                        _bookingService.ClearLastOrder();
-                        _waitingToNavigateAfterTimeOut = true;
-                        RequestNavigate<BookViewModel>(clearTop: true);
-                        RequestClose(this);
-                    }));
+.Subscribe(unit => InvokeOnMainThread(() =>
+{
+    _bookingService.ClearLastOrder();
+    _waitingToNavigateAfterTimeOut = true;
+    RequestNavigate<BookViewModel>(clearTop: true);
+    RequestClose(this);
+}));
             }
         }
 
-        private void CenterMap ()
-        {            
-			var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
-            if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue) 
-			{
+        private void CenterMap()
+        {
+            var pickup = CoordinateViewModel.Create(Pickup.Model.Latitude, Pickup.Model.Longitude, true);
+            if (OrderStatusDetail.IBSStatusId != VehicleStatuses.Common.Waiting && OrderStatusDetail.VehicleLatitude.HasValue && OrderStatusDetail.VehicleLongitude.HasValue)
+            {
                 MapCenter = new CoordinateViewModel[] 
 				{ 
 					pickup,
 					CoordinateViewModel.Create(OrderStatusDetail.VehicleLatitude.Value, OrderStatusDetail.VehicleLongitude.Value)                   
                 };
-            } else {
+            }
+            else
+            {
                 MapCenter = new CoordinateViewModel[] { pickup };
             }
         }
 
-		#region Commands
+        #region Commands
 
-        public IMvxCommand NewRide {
-            get {
-                return GetCommand (() =>
+        public IMvxCommand NewRide
+        {
+            get
+            {
+                return GetCommand(() =>
                 {
-                    MessageService.ShowMessage (Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
+                    MessageService.ShowMessage(Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                     {
-                        BookingService.ClearLastOrder ();
-                        RequestNavigate<BookViewModel> (clearTop: true);
+                        BookingService.ClearLastOrder();
+                        RequestNavigate<BookViewModel>(clearTop: true);
                     },
-                    Str.NoButtonText, NoAction);                    
+                    Str.NoButtonText, NoAction);
                 });
             }
         }
 
-        public IMvxCommand CancelOrder {
-            get {
-                return GetCommand (() =>
+        public IMvxCommand CancelOrder
+        {
+            get
+            {
+                return GetCommand(() =>
                 {
-					if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded)) {
-                        MessageService.ShowMessage (Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
+                    if ((OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Loaded))
+                    {
+                        MessageService.ShowMessage(Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
                         return;
                     }
 
-                    MessageService.ShowMessage ("", Str.StatusConfirmCancelRide, Str.YesButtonText, ()=>
+                    MessageService.ShowMessage("", Str.StatusConfirmCancelRide, Str.YesButtonText, () =>
                     {
-                        Task.Factory.SafeStartNew ( () =>
+                        Task.Factory.SafeStartNew(() =>
                         {
-	                        try 
-	                        {
-	                            MessageService.ShowProgress (true);
+                            try
+                            {
+                                MessageService.ShowProgress(true);
 
-	                            var isSuccess = BookingService.CancelOrder (Order.Id);      
-	                            if (isSuccess) 
-	                            {
-									_bookingService.ClearLastOrder();
-	                                RequestNavigate<BookViewModel> (clearTop: true);
-	                            } 
-	                            else 
-	                            {
-	                                MessageService.ShowMessage (Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
-	                            }
-	                        } 
-	                        finally 
-	                        {
-	                            MessageService.ShowProgress (false);
-	                        }     
+                                var isSuccess = BookingService.CancelOrder(Order.Id);
+                                if (isSuccess)
+                                {
+                                    _bookingService.ClearLastOrder();
+                                    RequestNavigate<BookViewModel>(clearTop: true);
+                                }
+                                else
+                                {
+                                    MessageService.ShowMessage(Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
+                                }
+                            }
+                            finally
+                            {
+                                MessageService.ShowProgress(false);
+                            }
                         });
-                    },Str.NoButtonText, () => { });
+                    }, Str.NoButtonText, () => { });
                 });
             }
         }
 
-		public IMvxCommand PayForOrderCommand 
-		{
-			get {
-				return GetCommand (() =>
-					{ 
+        public IMvxCommand PayForOrderCommand
+        {
+            get
+            {
+                return GetCommand(() =>
+                {
 #if DEBUG
 #else
                         if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
@@ -494,41 +601,63 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                        }
 #endif
 
-						RequestNavigate<ConfirmCarNumberViewModel>(
-						new 
-						{ 
-							order = Order.ToJson(),
-							orderStatus = OrderStatusDetail.ToJson()
-						}, false, MvxRequestedBy.UserAction);
-					});
-			}
-		}
-
-        public IMvxCommand CallCompany {
-            get {
-                return GetCommand (() =>
-                {                    
-                    MessageService.ShowMessage (string.Empty, 
-                                                Config.GetSetting( "DefaultPhoneNumberDisplay" ),
-                                               Str.CallButtonText, 
-                                                () => PhoneService.Call ( Config.GetSetting( "DefaultPhoneNumber" )),
-						                       Str.CancelButtonText, 
-                                               () => {});                    
+                    RequestNavigate<ConfirmCarNumberViewModel>(
+                    new
+                    {
+                        order = Order.ToJson(),
+                        orderStatus = OrderStatusDetail.ToJson()
+                    }, false, MvxRequestedBy.UserAction);
                 });
             }
         }
 
-       public IMvxCommand ResendConfirmationToDriver {
-            get {
-                return GetCommand (() =>
-                                   {
-                    if( PaymentService.GetPaymentFromCache(Order.Id).HasValue )
+        public IMvxCommand CallCompany
+        {
+            get
+            {
+                return GetCommand(() =>
+                {
+                    MessageService.ShowMessage(string.Empty,
+                                                Config.GetSetting("DefaultPhoneNumberDisplay"),
+                                               Str.CallButtonText,
+                                                () => PhoneService.Call(Config.GetSetting("DefaultPhoneNumber")),
+                                               Str.CancelButtonText,
+                                               () => { });
+                });
+            }
+        }
+
+        public IMvxCommand ResendConfirmationToDriver
+        {
+            get
+            {
+                return GetCommand(() =>
+                {
+                    if (PaymentService.GetPaymentFromCache(Order.Id).HasValue)
                     {
-                        PaymentService.ResendConfirmationToDriver( Order.Id );
+                        PaymentService.ResendConfirmationToDriver(Order.Id);
                     }
                 });
             }
         }
-		#endregion
+
+
+        public IMvxCommand Unpair
+        {
+            get
+            {
+                return GetCommand(() =>
+                {
+                    var status = BookingService.GetOrderStatus(Order.Id);
+                    if (status != null)
+                    {
+                        CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), "unpaired");
+                        _paymentService.Unpair(Order.Id);
+                        UpdatePayCancelButtons(status.IBSStatusId);
+                    }
+                });
+            }
+        }
+        #endregion
     }
 }

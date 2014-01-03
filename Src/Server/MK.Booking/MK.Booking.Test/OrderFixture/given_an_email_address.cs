@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
+using apcurium.MK.Common.Entity;
 using Moq;
 using NUnit.Framework;
 using apcurium.MK.Booking.CommandHandlers;
@@ -45,6 +46,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
+                PickupAddress = new Address
+                {
+                    FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
+                }
 
             });
 
@@ -72,6 +77,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 {
                     LastFour = "6578",
                     FriendlyName = "Home"
+                },
+                PickupAddress = new Address
+                {
+                    FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
                 }
 
             });
@@ -96,8 +105,11 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1231", "PayPal")
-
+                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1231", "PayPal"),
+                 PickupAddress = new Address
+                {
+                    FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"
+                }
 
             });
 

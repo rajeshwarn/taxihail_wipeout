@@ -183,6 +183,8 @@
     <Compile Include="ListViewStructure\SingleLineItem.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -312,16 +314,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
     <EmbeddedResource Include="TermsAndConditionsContent\TermsAndConditions.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Style\" />
-    <Folder Include="ViewModels\" />
-    <Folder Include="Navigation\" />
-    <Folder Include="ListViewStructure\" />
-    <Folder Include="Messages\" />
-    <Folder Include="TutorialContent\" />
-    <Folder Include="ViewModels\Payment\" />
-    <Folder Include="TermsAndConditionsContent\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />

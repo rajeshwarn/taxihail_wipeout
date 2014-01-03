@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     local:HideLogo="false"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -29,10 +29,12 @@
                 android:layout_weight="0"
                 android:layout_gravity="bottom">
                 <apcurium.mk.booking.mobile.client.controls.TouchMap
+                    local:mapType="normal"
+                    local:uiCompass="false"
+                    local:uiZoomControls="false"
                     android:id="@+id/mapStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:apiKey="@string/GoogleMapKey"
                     android:enabled="false"
                     local:MvxBind="{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'Center':{'Path':'MapCenter'} }"
                     android:clickable="true" />
@@ -74,6 +76,16 @@
                         android:layout_weight="0.5"
                         android:text="@string/ReSendConfirmationButton"
                         local:MvxBind="{'Click': {'Path': 'ResendConfirmationToDriver'}, 'Visibility':{'Path':'IsResendButtonVisible', 'Converter':'Visibility'}}" />
+                    <apcurium.mk.booking.mobile.client.controls.StyledButton
+                        local:ButtonStyle="Green"
+                        android:background="@drawable/green_button"
+                        android:id="@+id/UnpairBtn"
+                        style="@style/ButtonText"
+                        android:layout_width="180dip"
+                        android:layout_height="40dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/CmtRideLinqUnpair"
+                        local:MvxBind="{'Click': {'Path': 'Unpair'}, 'Visibility':{'Path':'IsUnpairButtonVisible', 'Converter':'Visibility'}}" />
                     <apcurium.mk.booking.mobile.client.controls.StyledButton
                         local:ButtonStyle="Black"
                         android:id="@+id/CallBtn"

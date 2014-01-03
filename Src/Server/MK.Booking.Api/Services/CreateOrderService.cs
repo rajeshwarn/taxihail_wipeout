@@ -123,11 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(emailCommand);
             }
 
-
             UpdateStatusAsync();
-            
-
-            
 
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
         }

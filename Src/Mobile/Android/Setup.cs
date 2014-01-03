@@ -1,3 +1,8 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+using SocialNetworks.Services.MonoDroid;
+using SocialNetworks.Services.OAuth;
+#endif
 using System;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Application;
@@ -18,10 +23,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Data;
-using SocialNetworks.Services.OAuth;
-using SocialNetworks.Services.MonoDroid;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
-using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
@@ -35,7 +37,7 @@ using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup
+	public partial class Setup
         : MvxBaseAndroidBindingSetup
     {
         public Setup(Context applicationContext)
@@ -90,6 +92,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 
+
+#if SOCIAL_NETWORKS
         public void InitializeSocialNetwork()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
@@ -109,6 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
+#else
+		partial void InitializeSocialNetwork();
+#endif
         
         protected override MvxApplication CreateApp()
         {

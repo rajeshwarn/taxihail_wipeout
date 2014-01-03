@@ -1,8 +1,10 @@
-using Android.App;
-using Android.OS;
+#if SOCIAL_NETWORKS
 using SocialNetworks.Services;
 using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services.OAuth;
+#endif
+using Android.App;
+using Android.OS;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;

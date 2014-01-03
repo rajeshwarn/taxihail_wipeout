@@ -46,6 +46,11 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate()
+                {
+                    Price = 10,
+                    Distance = 3
+                }
             };
 
             order.Settings = new BookingSettings
@@ -82,6 +87,11 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate()
+                {
+                    Price = 10,
+                    Distance = 3
+                }
             };
             sut.CreateOrder(order);
         }
@@ -107,6 +117,11 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate()
+                {
+                    Price = 10,
+                    Distance = 3
+                }
 
             };
             order.Settings = new BookingSettings
@@ -154,8 +169,6 @@ namespace apcurium.MK.Web.Tests
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             sut.CancelOrder(_orderId);
 
-
-
             OrderStatusDetail status = null;
             for (int i = 0; i < 10; i++)
             {
@@ -169,9 +182,6 @@ namespace apcurium.MK.Web.Tests
                     break;
                 }
             }
-
-            
-            
 
             Assert.AreEqual(OrderStatus.Canceled, status.Status);
             Assert.AreEqual(VehicleStatuses.Common.CancelledDone, status.IBSStatusId);

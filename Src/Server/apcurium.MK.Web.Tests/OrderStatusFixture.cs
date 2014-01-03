@@ -4,7 +4,6 @@ using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
@@ -40,6 +39,11 @@ namespace apcurium.MK.Web.Tests
                     Passengers = 6,
                     NumberOfTaxi = 1,
                     Name = "Joe Smith"
+                },
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Distance = 3,
+                    Price = 10
                 }
             };
 
@@ -68,8 +72,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Joe Smith", data.Name);
         }
 
-
-
         [Test]
         public void can_not_access_order_status_another_account()
         {
@@ -85,13 +87,9 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var data = sut.GetActiveOrdersStatus();
-
-
             Assert.AreEqual(true, data.Any());
             Assert.AreEqual(true, data.Any(x => x.OrderId == _orderId));
-            //Assert.AreEqual(null, data.First(x => x.OrderId == _orderId).IBSStatusId);
             Assert.AreEqual(OrderStatus.Created, data.First(x => x.OrderId == _orderId).Status);
-            
         }
     }
 }

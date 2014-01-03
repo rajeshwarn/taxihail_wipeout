@@ -1,333 +1,181 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="Tools\MK.MigrateIIS" Label="MK.MigrateIIS" Category="Project" />
-    <Node Id="Microsoft.Web.Administration 7.0.0.0" Label="Microsoft.Web.Administration 7.0.0.0" Category="Package" />
-    <Node Id="Tools\PopularAddressLoader" Label="PopularAddressLoader" Category="Project" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Tools\MK.DeploymentService" Label="MK.DeploymentService" Category="Project" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="Microsoft.Web.Administration 7.0.0.0" Label="Microsoft.Web.Administration 7.0.0.0" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Topshelf 3.0.2" Label="Topshelf 3.0.2" Category="Package" />
-    <Node Id="Tools\MK.ConfigurationManager" Label="MK.ConfigurationManager" Category="Project" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Rx-Core 2.1.30214.0" Label="Rx-Core 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Interfaces 2.1.30214.0" Label="Rx-Interfaces 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Linq 2.1.30214.0" Label="Rx-Linq 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Main 2.1.30214.0" Label="Rx-Main 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-PlatformServices 2.1.30214.0" Label="Rx-PlatformServices 2.1.30214.0" Category="Package" />
-    <Node Id="Tools\DatabaseInitializer" Label="DatabaseInitializer" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="apcurium.MK.Web" Label="apcurium.MK.Web" Category="Project" />
-    <Node Id="dotless 1.3.0.5" Label="dotless 1.3.0.5" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="Microsoft.AspNet.Web.Optimization 1.0.0" Label="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Package" />
-    <Node Id="Microsoft.Web.Infrastructure 1.0.0.0" Label="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="PostSharp 3.0.37" Label="PostSharp 3.0.37" Category="Package" />
-    <Node Id="PushSharp 1.0.18" Label="PushSharp 1.0.18" Category="Package" />
-    <Node Id="Rx-Core 2.1.30214.0" Label="Rx-Core 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Interfaces 2.1.30214.0" Label="Rx-Interfaces 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Linq 2.1.30214.0" Label="Rx-Linq 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-Main 2.1.30214.0" Label="Rx-Main 2.1.30214.0" Category="Package" />
-    <Node Id="Rx-PlatformServices 2.1.30214.0" Label="Rx-PlatformServices 2.1.30214.0" Category="Package" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="WebGrease 1.1.0" Label="WebGrease 1.1.0" Category="Package" />
-    <Node Id="MK.Common" Label="MK.Common" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="MK.Booking.Tests\MK.Booking.IBS.Test" Label="MK.Booking.IBS.Test" Category="Project" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="MK.Booking.Tests\apcurium.Payments.Web.Tests" Label="apcurium.Payments.Web.Tests" Category="Project" />
-    <Node Id="Braintree 2.23.1" Label="Braintree 2.23.1" Category="Package" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="MK.Booking.Tests\MK.Booking.PayPal.Test" Label="MK.Booking.PayPal.Test" Category="Project" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="MK.Booking.Tests\MK.Booking.Google.Tests" Label="MK.Booking.Google.Tests" Category="Project" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="MK.Booking.Tests\MK.Common.Tests" Label="MK.Common.Tests" Category="Project" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Label="apcurium.MK.Web.SelfHost" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="MK.Booking.Tests\apcurium.MK.Web.Tests" Label="apcurium.MK.Web.Tests" Category="Project" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="Moq 4.0.10827" Label="Moq 4.0.10827" Category="Package" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="MK.Booking.Tests\MK.Booking.Test" Label="MK.Booking.Test" Category="Project" />
-    <Node Id="AutoMapper 2.1.267" Label="AutoMapper 2.1.267" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="Moq 4.0.10827" Label="Moq 4.0.10827" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="NUnit 2.6.0.12054" Label="NUnit 2.6.0.12054" Category="Package" />
-    <Node Id="MK.Booking.Api\MK.Booking.Api.Client" Label="MK.Booking.Api.Client" Category="Project" />
-    <Node Id="Braintree 2.23.1" Label="Braintree 2.23.1" Category="Package" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="MK.Booking.Api\MK.Booking.Api.Contract" Label="MK.Booking.Api.Contract" Category="Project" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="MK.Booking.Api\MK.Booking.Api" Label="MK.Booking.Api" Category="Project" />
-    <Node Id="AutoMapper 2.1.267" Label="AutoMapper 2.1.267" Category="Package" />
-    <Node Id="Braintree 2.23.1" Label="Braintree 2.23.1" Category="Package" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="PostSharp 2.1.7.21" Label="PostSharp 2.1.7.21" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Package" />
-    <Node Id="ServiceStack 3.9.56" Label="ServiceStack 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Label="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Redis 3.9.57" Label="ServiceStack.Redis 3.9.57" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="MK.Booking\MK.Booking.Maps" Label="MK.Booking.Maps" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="Unity 2.1.505.2" Label="Unity 2.1.505.2" Category="Package" />
-    <Node Id="MK.Booking\MK.Booking.Google" Label="MK.Booking.Google" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="MK.Booking\MK.Booking.IBS" Label="MK.Booking.IBS" Category="Project" />
-    <Node Id="AutoMapper 2.1.267" Label="AutoMapper 2.1.267" Category="Package" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="PostSharp 3.0.37" Label="PostSharp 3.0.37" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Package" />
-    <Node Id="ServiceStack.Common 3.9.56" Label="ServiceStack.Common 3.9.56" Category="Package" />
-    <Node Id="ServiceStack.Text 3.9.56" Label="ServiceStack.Text 3.9.56" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="MK.Booking\MK.Booking" Label="MK.Booking" Category="Project" />
-    <Node Id="AutoMapper 2.1.267" Label="AutoMapper 2.1.267" Category="Package" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="log4net 2.0.0" Label="log4net 2.0.0" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Nustache 1.12.4.29" Label="Nustache 1.12.4.29" Category="Package" />
-    <Node Id="PostSharp 2.1.7.21" Label="PostSharp 2.1.7.21" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package" />
-    <Node Id="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Label="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Package" />
-    <Node Id="PushSharp 1.0.18" Label="PushSharp 1.0.18" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="Infrastructure\Infrastructure" Label="Infrastructure" Category="Project" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Infrastructure\Sql\Infrastructure.Sql" Label="Infrastructure.Sql" Category="Project" />
-    <Node Id="CommonServiceLocator 1.0" Label="CommonServiceLocator 1.0" Category="Package" />
-    <Node Id="EntityFramework 6.0.0-alpha2" Label="EntityFramework 6.0.0-alpha2" Category="Package" />
-    <Node Id="Newtonsoft.Json 5.0.6" Label="Newtonsoft.Json 5.0.6" Category="Package" />
-    <Node Id="Unity 2.1.505.0" Label="Unity 2.1.505.0" Category="Package" />
-    <Node Id="Unity.Interception 2.1.505.0" Label="Unity.Interception 2.1.505.0" Category="Package" />
+    <Node Id="AutoMapper 2.1.267" Category="Package" Bounds="1561.88631117025,187.433245096362,127.903333333333,25.96" Label="AutoMapper 2.1.267" />
+    <Node Id="Braintree 2.23.1" Category="Package" Bounds="2368.01806666667,131.473245096363,102.016666666667,25.96" Label="Braintree 2.23.1" />
+    <Node Id="CommonServiceLocator 1.0" Category="Package" Bounds="2045.16304324851,299.353245096363,164.676666666667,25.96" Label="CommonServiceLocator 1.0" />
+    <Node Id="EntityFramework 6.0.0-alpha2" Category="Package" Bounds="1355.45621117025,240.098048283815,176.43,25.96" Label="EntityFramework 6.0.0-alpha2" />
+    <Node Id="Infrastructure\Infrastructure" Category="Project" Bounds="1014.28290034359,131.473245096363,90.9933333333333,25.96" Label="Infrastructure" />
+    <Node Id="Infrastructure\Sql\Infrastructure.Sql" Category="Project" Bounds="1149.47736666667,75.5132450963625,109.94,25.96" Label="Infrastructure.Sql" />
+    <Node Id="MK.Booking.Api\MK.Booking.Api" Category="Project" Bounds="2193.89806666667,72.2180482838146,104.303333333333,25.96" Label="MK.Booking.Api" />
+    <Node Id="MK.Booking.Api\MK.Booking.Api.Client" Category="Project" Bounds="2328.2015,72.2180482838146,137.28,25.96" Label="MK.Booking.Api.Client" />
+    <Node Id="MK.Booking.Api\MK.Booking.Api.Contract" Category="Project" Bounds="1352.2709,0,152.11,25.96" Label="MK.Booking.Api.Contract" />
+    <Node Id="MK.Booking.Tests\MK.Booking.Google.Tests" Category="Project" Bounds="2495.4816,75.5132450963625,154.563333333334,25.96" Label="MK.Booking.Google.Tests" />
+    <Node Id="MK.Booking.Tests\MK.Booking.IBS.Test" Category="Project" Bounds="1534.381,19.5532450963627,127.373333333333,25.96" Label="MK.Booking.IBS.Test" />
+    <Node Id="MK.Booking.Tests\MK.Booking.PayPal.Test" Category="Project" Bounds="1691.75443333333,19.5532450963626,145.293333333333,25.96" Label="MK.Booking.PayPal.Test" />
+    <Node Id="MK.Booking.Tests\MK.Booking.Test" Category="Project" Bounds="1466.0109,75.5132450963625,108.326666666667,25.96" Label="MK.Booking.Test" />
+    <Node Id="MK.Booking.Tests\MK.Common.Tests" Category="Project" Bounds="1718.3411,75.5132450963626,118.706666666667,25.96" Label="MK.Common.Tests" />
+    <Node Id="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Category="Project" Bounds="1867.04786666667,72.2180482838146,163.8,25.96" Label="apcurium.MK.Web.SelfHost" />
+    <Node Id="MK.Booking.Tests\apcurium.MK.Web.Tests" Category="Project" Bounds="1289.41746666667,72.2180482838146,146.593333333333,25.96" Label="apcurium.MK.Web.Tests" />
+    <Node Id="MK.Booking.Tests\apcurium.Payments.Web.Tests" Category="Project" Bounds="2680.04503333333,75.5132450963626,180.053333333333,25.96" Label="apcurium.Payments.Web.Tests" />
+    <Node Id="MK.Booking\MK.Booking" Category="Project" Bounds="1604.33766666667,75.5132450963624,84.0033333333333,25.96" Label="MK.Booking" />
+    <Node Id="MK.Booking\MK.Booking.Google" Category="Project" Bounds="2500.03483333333,131.473245096363,125.146666666667,25.96" Label="MK.Booking.Google" />
+    <Node Id="MK.Booking\MK.Booking.IBS" Category="Project" Bounds="2060.84796666667,75.5132450963625,103.05,25.96" Label="MK.Booking.IBS" />
+    <Node Id="MK.Booking\MK.Booking.Maps" Category="Project" Bounds="2275.08671117025,187.433245096362,115.633333333333,25.96" Label="MK.Booking.Maps" />
+    <Node Id="MK.Common" Category="Project" Bounds="2104.89786666667,131.473245096363,89.29,25.96" Label="MK.Common" />
+    <Node Id="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Package" Bounds="326.21876152505,128.178048283815,238.463333333333,25.96" Label="Microsoft.AspNet.Web.Optimization 1.0.0" />
+    <Node Id="Microsoft.Web.Administration 7.0.0.0" Category="Package" Bounds="499.925746277377,296.058048283815,215.063333333333,25.96" Label="Microsoft.Web.Administration 7.0.0.0" />
+    <Node Id="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package" Bounds="0,184.138048283815,208.076666666667,25.96" Label="Microsoft.Web.Infrastructure 1.0.0.0" />
+    <Node Id="Moq 4.0.10827" Category="Package" Bounds="1187.8107,187.433245096362,98.6500000000001,25.96" Label="Moq 4.0.10827" />
+    <Node Id="NUnit 2.6.0.12054" Category="Package" Bounds="2224.18796666667,131.473245096363,113.83,25.96" Label="NUnit 2.6.0.12054" />
+    <Node Id="Newtonsoft.Json 5.0.6" Category="Package" Bounds="903.853833333333,187.433245096362,135.453333333333,25.96" Label="Newtonsoft.Json 5.0.6" />
+    <Node Id="Nustache 1.12.4.29" Category="Package" Bounds="1316.4608,184.138048283815,119.55,25.96" Label="Nustache 1.12.4.29" />
+    <Node Id="PostSharp 2.1.7.21" Category="Package" Bounds="882.762612944044,243.393245096362,116.843333333333,25.96" Label="PostSharp 2.1.7.21" />
+    <Node Id="PostSharp 3.0.37" Category="Package" Bounds="744.989179610711,243.393245096362,107.773333333333,25.96" Label="PostSharp 3.0.37" />
+    <Node Id="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package" Bounds="656.673733333333,187.433245096362,217.18,25.96" Label="PostSharp-Diagnostics-Toolkit 2.1.1.3" />
+    <Node Id="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Package" Bounds="1660.49766666667,131.473245096362,267.516666666667,25.96" Label="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" />
+    <Node Id="PushSharp 1.0.18" Category="Package" Bounds="1176.03736666667,131.473245096362,110.256666666667,25.96" Label="PushSharp 1.0.18" />
+    <Node Id="Rx-Core 2.1.30214.0" Category="Package" Bounds="225.51795091027,296.058048283814,125.24,25.96" Label="Rx-Core 2.1.30214.0" />
+    <Node Id="Rx-Interfaces 2.1.30214.0" Category="Package" Bounds="230.101516302459,352.018048283815,151.606666666667,25.96" Label="Rx-Interfaces 2.1.30214.0" />
+    <Node Id="Rx-Linq 2.1.30214.0" Category="Package" Bounds="256.3701,240.098048283815,122.743333333333,25.96" Label="Rx-Linq 2.1.30214.0" />
+    <Node Id="Rx-Main 2.1.30214.0" Category="Package" Bounds="376.673533333333,184.138048283815,126.91,25.96" Label="Rx-Main 2.1.30214.0" />
+    <Node Id="Rx-PlatformServices 2.1.30214.0" Category="Package" Bounds="38.5533333333317,240.098048283815,187.816666666667,25.96" Label="Rx-PlatformServices 2.1.30214.0" />
+    <Node Id="ServiceStack 3.9.56" Category="Package" Bounds="1316.29413333333,128.178048283815,119.716666666667,25.96" Label="ServiceStack 3.9.56" />
+    <Node Id="ServiceStack.Common 3.9.56" Category="Package" Bounds="2007.30127304947,243.393245096362,171.27,25.96" Label="ServiceStack.Common 3.9.56" />
+    <Node Id="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package" Bounds="1719.78974450358,187.433245096362,216.74,25.96" Label="ServiceStack.OrmLite.SqlServer 3.9.56" />
+    <Node Id="ServiceStack.Redis 3.9.57" Category="Package" Bounds="1966.52984450358,187.433245096362,150.836666666667,25.96" Label="ServiceStack.Redis 3.9.57" />
+    <Node Id="ServiceStack.Text 3.9.56" Category="Package" Bounds="2239.83980991517,299.353245096363,144.453333333333,25.96" Label="ServiceStack.Text 3.9.56" />
+    <Node Id="Tools\DatabaseInitializer" Category="Project" Bounds="1958.01443333333,131.473245096362,116.883333333333,25.96" Label="DatabaseInitializer" />
+    <Node Id="Tools\MK.ConfigurationManager" Category="Project" Bounds="934.470996090471,75.5132450963625,160.476666666667,25.96" Label="MK.ConfigurationManager" />
+    <Node Id="Tools\MK.DeploymentService" Category="Project" Bounds="801.425612567035,131.473245096362,142.59,25.96" Label="MK.DeploymentService" />
+    <Node Id="Tools\MK.MigrateIIS" Category="Project" Bounds="409.113533333334,240.098048283815,94.47,25.96" Label="MK.MigrateIIS" />
+    <Node Id="Tools\PopularAddressLoader" Category="Project" Bounds="1182.67746666667,16.2580482838146,139.593333333333,25.96" Label="PopularAddressLoader" />
+    <Node Id="Topshelf 3.0.2" Category="Package" Bounds="533.583633333333,187.433245096362,93.09,25.96" Label="Topshelf 3.0.2" />
+    <Node Id="Unity 2.1.505.0" Category="Package" Bounds="2147.36661117025,187.433245096363,97.7199999999998,25.96" Label="Unity 2.1.505.0" />
+    <Node Id="Unity 2.1.505.2" Category="Package" Bounds="2208.57137304947,243.393245096362,97.7199999999998,25.96" Label="Unity 2.1.505.2" />
+    <Node Id="Unity.Interception 2.1.505.0" Category="Package" Bounds="1466.0109,131.473245096363,164.486666666667,25.96" Label="Unity.Interception 2.1.505.0" />
+    <Node Id="WebGrease 1.1.0" Category="Package" Bounds="238.076766666667,184.138048283815,108.596666666667,25.96" Label="WebGrease 1.1.0" />
+    <Node Id="apcurium.MK.Web" Category="Project" Bounds="424.862566551898,-392.290886726066,117.176666666667,25.96" Label="apcurium.MK.Web" UseManualLocation="True" />
+    <Node Id="dotless 1.3.0.5" Category="Package" Bounds="676.925512567035,128.178048283815,94.5,25.96" Label="dotless 1.3.0.5" />
+    <Node Id="log4net 2.0.0" Category="Package" Bounds="1069.30726666667,187.433245096362,88.5033333333333,25.96" Label="log4net 2.0.0" />
   </Nodes>
   <Links>
-    <Link Source="Tools\MK.MigrateIIS" Target="Microsoft.Web.Administration 7.0.0.0" Category="Installed Package" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="Tools\PopularAddressLoader" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="Tools\MK.DeploymentService" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="Tools\MK.DeploymentService" Target="log4net 2.0.0" Category="Installed Package" />
-    <Link Source="Tools\MK.DeploymentService" Target="Microsoft.Web.Administration 7.0.0.0" Category="Installed Package" />
-    <Link Source="Tools\MK.DeploymentService" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="Tools\MK.DeploymentService" Target="Topshelf 3.0.2" Category="Installed Package" />
-    <Link Source="Rx-Core 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Linq 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-PlatformServices 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Tools\MK.ConfigurationManager" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="Tools\MK.ConfigurationManager" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="Tools\MK.ConfigurationManager" Target="Rx-Main 2.1.30214.0" Category="Installed Package" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="Tools\DatabaseInitializer" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="Tools\DatabaseInitializer" Target="log4net 2.0.0" Category="Installed Package" />
-    <Link Source="Tools\DatabaseInitializer" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="Tools\DatabaseInitializer" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package Dependency" />
-    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="WebGrease 1.1.0" Category="Package Dependency" />
-    <Link Source="PushSharp 1.0.18" Target="Newtonsoft.Json 5.0.6" Category="Package Dependency" />
-    <Link Source="Rx-Core 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Linq 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-PlatformServices 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="apcurium.MK.Web" Target="dotless 1.3.0.5" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="log4net 2.0.0" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="PostSharp 3.0.37" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="PushSharp 1.0.18" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="Rx-Main 2.1.30214.0" Category="Installed Package" />
-    <Link Source="apcurium.MK.Web" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Common" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Common" Target="ServiceStack.Common 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Common" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.IBS.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="Braintree 2.23.1" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="ServiceStack.Common 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.PayPal.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Google.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="ServiceStack.Common 3.9.56" Category="Installed Package" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="log4net 2.0.0" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="Moq 4.0.10827" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="AutoMapper 2.1.267" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="Moq 4.0.10827" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api.Client" Target="Braintree 2.23.1" Category="Installed Package" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api.Client" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api.Contract" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="PostSharp-Diagnostics-Toolkit 2.1.1.3" Target="PostSharp 2.1.7.21" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="log4net 2.0.0" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" />
-    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="AutoMapper 2.1.267" Category="Installed Package" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="Braintree 2.23.1" Category="Installed Package" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="ServiceStack 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="Unity 2.1.505.2" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking\MK.Booking.Maps" Target="Unity 2.1.505.2" Category="Installed Package" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking\MK.Booking.Google" Target="ServiceStack.Common 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking.Google" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="PostSharp-Diagnostics-Toolkit 2.1.1.3" Target="PostSharp 3.0.37" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="log4net 2.0.0" Category="Package Dependency" />
-    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking\MK.Booking.IBS" Target="AutoMapper 2.1.267" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking.IBS" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking.IBS" Target="ServiceStack.Common 3.9.56" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking.IBS" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="PostSharp-Diagnostics-Toolkit 2.1.1.3" Target="PostSharp 2.1.7.21" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package Dependency" />
-    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="log4net 2.0.0" Category="Package Dependency" />
-    <Link Source="PushSharp 1.0.18" Target="Newtonsoft.Json 5.0.6" Category="Package Dependency" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="MK.Booking\MK.Booking" Target="AutoMapper 2.1.267" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking" Target="Nustache 1.12.4.29" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking" Target="PushSharp 1.0.18" Category="Installed Package" />
-    <Link Source="MK.Booking\MK.Booking" Target="Unity 2.1.505.0" Category="Installed Package" />
-    <Link Source="Infrastructure\Infrastructure" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" />
-    <Link Source="Unity.Interception 2.1.505.0" Target="Unity 2.1.505.0" Category="Package Dependency" />
-    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" />
-    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" />
-    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="Unity.Interception 2.1.505.0" Category="Installed Package" />
+    <Link Source="Infrastructure\Infrastructure" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="999.637847943465,157.433245096362,39.6838225372474,25.1783469424481" />
+    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1240.79638671875,101.473243713379,139.846923828125,136.527137756348" />
+    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="1048.21252441406,101.473243713379,145.310302734375,87.7381362915039" />
+    <Link Source="Infrastructure\Sql\Infrastructure.Sql" Target="Unity.Interception 2.1.505.0" Category="Installed Package" Bounds="1259.41736666667,97.4404811705692,200.344736007461,32.6092714077386" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="AutoMapper 2.1.267" Category="Installed Package" Bounds="1698.69738769531,98.1780471801758,511.956176757813,91.687873840332" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="Braintree 2.23.1" Category="Installed Package" Bounds="2283.94070752816,98.1780482838146,88.6804335659917,30.3785281890138" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" Bounds="1920.39624023438,98.1780471801758,290.156982421875,32.3044509887695" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1424.05651855469,98.1780471801758,786.597045898438,27.3436965942383" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="2204.58276367188,98.1780471801758,34.891357421875,80.873664855957" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api.Client" Target="Braintree 2.23.1" Category="Installed Package" Bounds="2401.70115818173,98.1780482838145,9.30993743755016,24.8665612725111" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api.Client" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1424.06335449219,98.1780471801758,928.541870117188,27.3660049438477" />
+    <Link Source="MK.Booking.Api\MK.Booking.Api.Contract" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1411.95959472656,25.9599990844727,26.31396484375,98.3946304321289" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Google.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="2346.71450029017,101.473245096363,158.397753259983,30.391308904327" />
+    <Link Source="MK.Booking.Tests\MK.Booking.IBS.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="1661.10241699219,44.3804512023926,573.804809570313,84.2633934020996" />
+    <Link Source="MK.Booking.Tests\MK.Booking.PayPal.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="1837.04772949219,38.3583374023438,400.658813476563,89.9822387695313" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="AutoMapper 2.1.267" Category="Installed Package" Bounds="1567.77661132813,101.473243713379,68.9835205078125,77.1134872436523" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1445.7041015625,101.473243713379,49.06103515625,129.663185119629" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="Moq 4.0.10827" Category="Installed Package" Bounds="1295.04565429688,101.473243713379,208.599365234375,85.919563293457" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="1574.33752441406,97.4871368408203,660.552124023438,31.2103729248047" />
+    <Link Source="MK.Booking.Tests\MK.Booking.Test" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="1024.99243164063,96.4443969726563,441.018432617188,88.4826049804688" />
+    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1469.55334472656,101.473243713379,257.822509765625,133.458045959473" />
+    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="1837.04772949219,95.7832565307617,378.243286132813,38.6303024291992" />
+    <Link Source="MK.Booking.Tests\MK.Common.Tests" Target="ServiceStack.Common 3.9.56" Category="Installed Package" Bounds="1836.27355957031,100.484703063965,193.955322265625,140.798957824707" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1469.55334472656,97.9592437744141,399.369873046875,136.972045898438" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1424.0361328125,98.1780471801758,474.894653320313,27.2784652709961" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.SelfHost" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="1986.46179199219,98.1780471801758,171.861206054688,85.643913269043" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1395.68432617188,98.1780471801758,49.783447265625,132.921516418457" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="Moq 4.0.10827" Category="Installed Package" Bounds="1268.40832519531,98.1780471801758,71.956787109375,84.8378524780273" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="1408.50280761719,98.1780471801758,826.372436523438,30.5641250610352" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1365.83117348106,98.1780482838145,5.10272341328982,21.2487958978807" />
+    <Link Source="MK.Booking.Tests\apcurium.MK.Web.Tests" Target="log4net 2.0.0" Category="Installed Package" Bounds="1127.11901855469,98.1626281738281,164.99462890625,81.7659149169922" />
+    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="Braintree 2.23.1" Category="Installed Package" Bounds="2478.89721679688,100.811531066895,202.268310546875,33.0491561889648" />
+    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="NUnit 2.6.0.12054" Category="Installed Package" Bounds="2327.29565429688,101.473243713379,381.064697265625,27.161018371582" />
+    <Link Source="MK.Booking.Tests\apcurium.Payments.Web.Tests" Target="ServiceStack.Common 3.9.56" Category="Installed Package" Bounds="2186.44067382813,101.473243713379,561.510986328125,141.363090515137" />
+    <Link Source="MK.Booking\MK.Booking" Target="AutoMapper 2.1.267" Category="Installed Package" Bounds="1629.83726286948,101.473245096363,14.1244114722165,77.1072982099607" />
+    <Link Source="MK.Booking\MK.Booking" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1469.55334472656,101.473243713379,175.84912109375,133.458045959473" />
+    <Link Source="MK.Booking\MK.Booking" Target="Nustache 1.12.4.29" Category="Installed Package" Bounds="1411.99230957031,97.8080749511719,192.345336914063,82.4691772460938" />
+    <Link Source="MK.Booking\MK.Booking" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" Bounds="1680.64881034072,101.473245096363,70.8799768314666,26.815392699643" />
+    <Link Source="MK.Booking\MK.Booking" Target="PushSharp 1.0.18" Category="Installed Package" Bounds="1276.33337402344,101.473243713379,340.728515625,27.0968704223633" />
+    <Link Source="MK.Booking\MK.Booking" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="1675.61669921875,101.473243713379,462.886474609375,88.7544021606445" />
+    <Link Source="MK.Booking\MK.Booking.Google" Target="ServiceStack.Common 3.9.56" Category="Installed Package" Bounds="2186.880859375,157.433242797852,349.175537109375,85.9181823730469" />
+    <Link Source="MK.Booking\MK.Booking.Google" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="2253.75854492188,153.43571472168,246.2763671875,34.2295684814453" />
+    <Link Source="MK.Booking\MK.Booking.IBS" Target="AutoMapper 2.1.267" Category="Installed Package" Bounds="1698.69738769531,98.7786178588867,362.166137695313,91.0873031616211" />
+    <Link Source="MK.Booking\MK.Booking.IBS" Target="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Category="Installed Package" Bounds="1876.90757473389,97.5570150367482,183.940391932772,32.3569800140323" />
+    <Link Source="MK.Booking\MK.Booking.IBS" Target="ServiceStack.Common 3.9.56" Category="Installed Package" Bounds="2101.8330078125,101.473243713379,25.667724609375,134.261329650879" />
+    <Link Source="MK.Booking\MK.Booking.IBS" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="2148.70947265625,101.473243713379,53.45849609375,77.0067977905273" />
+    <Link Source="MK.Booking\MK.Booking.Maps" Target="Unity 2.1.505.2" Category="Installed Package" Bounds="2282.1667124392,213.393245096363,33.2308286904081,24.6395624278501" />
+    <Link Source="MK.Common" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1469.55334472656,157.433242797852,649.227661132813,77.498046875" />
+    <Link Source="MK.Common" Target="ServiceStack.Common 3.9.56" Category="Installed Package" Bounds="2105.68310546875,157.433242797852,38.7470703125,78.3028717041016" />
+    <Link Source="MK.Common" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="2160.37122627454,157.433245096362,19.261692343639,23.0890712604955" />
+    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="Microsoft.Web.Infrastructure 1.0.0.0" Category="Package Dependency" Bounds="192.110831787095,154.138048283814,174.148585124031,28.5442577175925" />
+    <Link Source="Microsoft.AspNet.Web.Optimization 1.0.0" Target="WebGrease 1.1.0" Category="Package Dependency" Bounds="336.334010315422,154.138048283814,73.6103821377576,26.9098687103246" />
+    <Link Source="PostSharp-Diagnostics-Toolkit 2.1.1.3" Target="PostSharp 2.1.7.21" Category="Package Dependency" Bounds="806.068749249708,213.393245096362,85.7339751129819,27.2718187206961" />
+    <Link Source="PostSharp-Diagnostics-Toolkit 2.1.1.3" Target="PostSharp 3.0.37" Category="Package Dependency" Bounds="773.06010978104,213.393245096362,13.3852378050985,22.2847611163355" />
+    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="PostSharp-Diagnostics-Toolkit 2.1.1.3" Category="Package Dependency" Bounds="840.768981933594,157.433242797852,872.682678222656,28.2818908691406" />
+    <Link Source="PostSharp-Diagnostics-Toolkit-Log4Net 2.1.1.3" Target="log4net 2.0.0" Category="Package Dependency" Bounds="1152.50659179688,157.433242797852,560.945068359375,26.7866363525391" />
+    <Link Source="PushSharp 1.0.18" Target="Newtonsoft.Json 5.0.6" Category="Package Dependency" Bounds="1040.58954063202,156.211635213417,136.031769621493,29.3250070805991" />
+    <Link Source="Rx-Core 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" Bounds="292.259007834096,322.018048283815,6.80131933304489,21.4219620293364" />
+    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" Bounds="299.213136245553,266.058048283815,11.661984093057,22.0446119249498" />
+    <Link Source="Rx-Linq 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" Bounds="334.793914794922,266.058044433594,26.0982055664063,81.2763977050781" />
+    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" Bounds="326.676239013672,210.098052978516,102.779052734375,82.4102783203125" />
+    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" Bounds="335.293029785156,210.098052978516,88.5741882324219,137.1923828125" />
+    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-Linq 2.1.30214.0" Category="Package Dependency" Bounds="354.314520554455,210.098048283815,57.4262316614132,26.257511422989" />
+    <Link Source="Rx-Main 2.1.30214.0" Target="Rx-PlatformServices 2.1.30214.0" Category="Package Dependency" Bounds="212.680150212536,208.587556166598,164.38927746489,29.8999501200821" />
+    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Core 2.1.30214.0" Category="Package Dependency" Bounds="168.570997786788,266.058048283815,74.9881891451638,26.955544866403" />
+    <Link Source="Rx-PlatformServices 2.1.30214.0" Target="Rx-Interfaces 2.1.30214.0" Category="Package Dependency" Bounds="149.336013793945,266.058044433594,104.631927490234,80.4844665527344" />
+    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" Bounds="1400.39599609375,154.138046264648,597.915649414063,97.6991577148438" />
+    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.OrmLite.SqlServer 3.9.56" Category="Package Dependency" Bounds="1435.1005859375,153.290451049805,277.155517578125,33.5577545166016" />
+    <Link Source="ServiceStack 3.9.56" Target="ServiceStack.Redis 3.9.57" Category="Package Dependency" Bounds="1415.33630371094,154.138046264648,569.869506835938,30.9889068603516" />
+    <Link Source="ServiceStack.Common 3.9.56" Target="ServiceStack.Text 3.9.56" Category="Package Dependency" Bounds="2143.76382919404,269.353245096363,108.754945013048,27.7731076082864" />
+    <Link Source="ServiceStack.OrmLite.SqlServer 3.9.56" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" Bounds="1889.5750293593,213.393245096362,133.14047214468,28.1389776583803" />
+    <Link Source="ServiceStack.Redis 3.9.57" Target="ServiceStack.Common 3.9.56" Category="Package Dependency" Bounds="2053.77493759137,213.393245096363,21.2730152027184,23.3473701220154" />
+    <Link Source="Tools\DatabaseInitializer" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1469.55334472656,153.443572998047,488.461059570313,81.4877166748047" />
+    <Link Source="Tools\DatabaseInitializer" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="1023.96600341797,157.433242797852,953.980651855469,27.5566253662109" />
+    <Link Source="Tools\DatabaseInitializer" Target="Unity 2.1.505.0" Category="Installed Package" Bounds="2058.15412063956,157.433245096362,87.7811847235716,27.3250327050522" />
+    <Link Source="Tools\DatabaseInitializer" Target="log4net 2.0.0" Category="Installed Package" Bounds="1152.55297851563,157.433242797852,825.393676757813,26.9104614257813" />
+    <Link Source="Tools\MK.ConfigurationManager" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="1054.50439453125,101.473243713379,326.138305664063,136.529655456543" />
+    <Link Source="Tools\MK.ConfigurationManager" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="979.818576508169,101.47306710083,29.8888536809869,77.5621475379126" />
+    <Link Source="Tools\MK.ConfigurationManager" Target="Rx-Main 2.1.30214.0" Category="Installed Package" Bounds="486.786712646484,95.3081970214844,447.684295654297,85.9300689697266" />
+    <Link Source="Tools\MK.DeploymentService" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="944.015625,151.637924194336,436.627075195313,86.3649749755859" />
+    <Link Source="Tools\MK.DeploymentService" Target="Microsoft.Web.Administration 7.0.0.0" Category="Installed Package" Bounds="613.867797851563,154.803314208984,187.580749511719,132.626403808594" />
+    <Link Source="Tools\MK.DeploymentService" Target="Newtonsoft.Json 5.0.6" Category="Installed Package" Bounds="895.651301253237,157.433245096362,45.1662517945578,25.5665216302953" />
+    <Link Source="Tools\MK.DeploymentService" Target="Topshelf 3.0.2" Category="Installed Package" Bounds="635.513410722557,157.433245096362,169.340084431086,32.3873236360816" />
+    <Link Source="Tools\MK.DeploymentService" Target="log4net 2.0.0" Category="Installed Package" Bounds="928.583396761934,157.433245096362,131.972305933258,30.6644317089035" />
+    <Link Source="Tools\MK.MigrateIIS" Target="Microsoft.Web.Administration 7.0.0.0" Category="Installed Package" Bounds="491.398448582565,266.058048283815,72.5691965471507,26.8744778549116" />
+    <Link Source="Tools\PopularAddressLoader" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="1256.87487792969,42.2180480957031,72.4735107421875,83.069953918457" />
+    <Link Source="Unity 2.1.505.0" Target="CommonServiceLocator 1.0" Category="Package Dependency" Bounds="2164.63403320313,213.393249511719,29.24267578125,81.0886535644531" />
+    <Link Source="Unity 2.1.505.2" Target="CommonServiceLocator 1.0" Category="Package Dependency" Bounds="2165.90476145478,269.353245096363,61.389167810747,26.4399132154614" />
+    <Link Source="Unity.Interception 2.1.505.0" Target="Unity 2.1.505.0" Category="Package Dependency" Bounds="1630.06884765625,155.97868347168,524.5703125,28.3803558349609" />
+    <Link Source="apcurium.MK.Web" Target="EntityFramework 6.0.0-alpha2" Category="Installed Package" Bounds="501.595642089844,-366.330902099609,891.310485839844,603.781143188477" />
+    <Link Source="apcurium.MK.Web" Target="Microsoft.AspNet.Web.Optimization 1.0.0" Category="Installed Package" Bounds="447.0534697312,-366.330897827148,35.4497460932108,485.532689937342" />
+    <Link Source="apcurium.MK.Web" Target="PostSharp 3.0.37" Category="Installed Package" Bounds="486.962463378906,-366.330902099609,249.658081054688,609.281127929688" />
+    <Link Source="apcurium.MK.Web" Target="PushSharp 1.0.18" Category="Installed Package" Bounds="501.980890422121,-366.330897827148,703.283440087378,492.640578346787" />
+    <Link Source="apcurium.MK.Web" Target="Rx-Main 2.1.30214.0" Category="Installed Package" Bounds="316.084533691406,-366.330902099609,163.192413330078,547.434265136719" />
+    <Link Source="apcurium.MK.Web" Target="ServiceStack 3.9.56" Category="Installed Package" Bounds="505.714040739179,-366.330897827148,840.400310586679,489.975887586903" />
+    <Link Source="apcurium.MK.Web" Target="dotless 1.3.0.5" Category="Installed Package" Bounds="489.454355316439,-366.330897827148,224.93964142121,486.340358865184" />
+    <Link Source="apcurium.MK.Web" Target="log4net 2.0.0" Category="Installed Package" Bounds="495.108032226563,-366.330902099609,582.646606445313,549.940475463867" />
   </Links>
   <Categories>
-    <Category Id="Project" />
+    <Category Id="Installed Package" />
     <Category Id="Package" />
+    <Category Id="Package Dependency" />
+    <Category Id="Project" />
   </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+  </Properties>
   <Styles>
     <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
       <Condition Expression="HasCategory('Project')" />

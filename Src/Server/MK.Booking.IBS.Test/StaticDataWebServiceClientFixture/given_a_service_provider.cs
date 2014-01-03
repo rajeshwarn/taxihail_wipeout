@@ -8,32 +8,7 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
     [TestFixture]
     public class given_a_service_provider
     {
-        private const int TheChauffeurGroupProviderId = 17;
-        private const int MobileKnowledgeProviderId = 18;
-
-        [Test]
-        public void when_no_zone_exists_for_coordinates()
-        {
-            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
-
-            var zone = sut.GetZoneByCoordinate(TheChauffeurGroupProviderId, 43.566900, -79.574300);
-
-            Assert.AreEqual(" ", zone);
-        }
-
-        [Test]
-        public void when_zone_exists_for_coordinates()
-        {
-            var config = new FakeConfigurationManager();
-
-            config.AddKey("IBS.ZoneByCompanyEnabled", true.ToString());
-
-            var sut = new StaticDataWebServiceClient(config , new Logger());
-
-            var zone = sut.GetZoneByCoordinate(MobileKnowledgeProviderId, 43.566900, -79.574300);
-
-            Assert.AreEqual("701", zone);
-        }
+        private const int TheChauffeurGroupProviderId = 18;
 
         [Test]
         public void get_vehicles_test()
@@ -41,25 +16,18 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
             var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
 
             var vehicles = sut.GetVehiclesList(new ListItem { Id = TheChauffeurGroupProviderId });
+
             Assert.Greater(vehicles.Length, 0);
         }
-        
    
         [Test]
         public void get_payments_test()
         {
             var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
 
-            var payments = sut.GetPaymentsList(new ListItem { Id = MobileKnowledgeProviderId });
+            var payments = sut.GetPaymentsList(new ListItem { Id = TheChauffeurGroupProviderId });
 
             Assert.Greater(payments.Length, 0);
-            
-            
         }
-
-        
-
-     
-       
     }
 }

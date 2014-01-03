@@ -1,3 +1,6 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+#endif
 using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -59,11 +62,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
 
+            // TODO: Debug exclusively for RideLinqCmt
+#if DEBUG
+            settings.PaymentMode = PaymentMethod.RideLinqCmt;
+#endif
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
                     return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);;
-
+				
+				case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
                     return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
 
@@ -102,7 +110,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return GetClient().PreAuthorizeAndCommit(cardToken, amount, meterAmount, tipAmount, orderId);
-        }   
+        }
+
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        {
+            return GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+        }
+
+        public BasePaymentResponse Unpair(Guid orderId)
+        {
+            return GetClient().Unpair(orderId);
+        }
     }
 }
 

@@ -108,6 +108,7 @@
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
+    <Compile Include="Entity\OrderPairingDetail.cs" />
   </ItemGroup>
   <ItemGroup />
   <ProjectExtensions>

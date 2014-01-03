@@ -66,7 +66,9 @@
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
+    <Compile Include="PairForRideLinqCmtPayment.cs" />
     <Compile Include="SendAssignedConfirmation.cs" />
+    <Compile Include="UnpairForRideLinqCmtPayment.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="ConfirmAccount.cs" />

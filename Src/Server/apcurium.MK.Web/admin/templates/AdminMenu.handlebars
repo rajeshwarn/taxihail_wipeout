@@ -9,9 +9,7 @@
     <li data-route="paymentSettings"><a href="#">{{localize "Payment Settings"}}</a></li>
     {{/if}}
     <li data-route="tariffs"><a href="#">Ride Estimates</a></li>
-    <li data-route="rules">
-      <a href="#">Booking Rules</a>
-    </li>
+    <li data-route="rules"><a href="#">Booking Rules</a></li>
     <li data-route="exclusions"><a href="#">IBS Exclusions</a></li>
     
     <li class="nav-header">{{localize "User Management"}}</li>
@@ -19,8 +17,8 @@
     <li data-route="confirmemail"><a href="#">{{localize "Enable Disable Account"}}</a></li>
     <li data-route="sendpushnotification"><a href="#">{{localize "Send Push Notifications"}}</a></li>
     <li class="nav-header">{{localize "Export"}}</li>
-    <li><a href="../api/admin/export/accounts?format=csv" target="_blank">{{localize "ExportAccounts"}}</a></li>
-    <li><a href="../api/admin/export/orders?format=x-csv" target="_blank">{{localize "ExportOrders"}}</a></li>
+    <li data-route="exportaccounts"><a href="#" >{{localize "ExportAccounts"}}</a></li>
+    <li data-route="exportorders"><a href="#">{{localize "ExportOrders"}}</a></li>
     <li class="nav-header">{{localize "Version"}}</li>
     <li>{{version}}</li>
   </ul>

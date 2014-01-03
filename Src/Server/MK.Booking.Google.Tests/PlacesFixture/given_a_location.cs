@@ -27,11 +27,6 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         {
             var places = sut.GetNearbyPlaces(Latitude, Longitude,  "en", false, 100);
 
-            if (!places.Any())
-            {
-                Assert.Inconclusive("no places returned");
-            }
-
             CollectionAssert.IsNotEmpty(places);
             Assert.NotNull(places.First().Name);
         }
@@ -39,13 +34,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [Test]
         public void when_searching_nearby_places_with_name()
         {
-            var places = sut.SearchPlaces(Latitude, Longitude, "museum", "en", false, 100, "en-US");
-
-
-            if (!places.Any())
-            {
-                Assert.Inconclusive("no places returned");
-            }
+            var places = sut.SearchPlaces(Latitude, Longitude, "restaurants", "en", false, 100, "ca");
 
             CollectionAssert.IsNotEmpty(places);
             Assert.NotNull(places.First().Name);

@@ -106,6 +106,7 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
+    <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />

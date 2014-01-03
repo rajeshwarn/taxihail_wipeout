@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Cmt;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using System.Net;
 using System.IO;
@@ -29,52 +29,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
         {
             _logger = logger;
             _userAgent = userAgent;
-            CmtClient = new CmtPaymentServiceClient(cmtSettings,null,userAgent);
-
+            CmtPaymentServiceClient = new CmtPaymentServiceClient(cmtSettings, null, userAgent);
         }
 
-        private CmtPaymentServiceClient CmtClient { get; set; }
+        private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
         public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            return Tokenize(CmtClient, accountNumber, expiryDate);
-        }
-
-        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtClient, string accountNumber, DateTime expiryDate)
-        {
-            try
-            {
-                
-            var response = cmtClient.Post(new TokenizeRequest
-                {
-                    AccountNumber = accountNumber,
-                    ExpiryDate = expiryDate.ToString("yyMM")
-                });
-
-            return new TokenizedCreditCardResponse()
-                {
-                    CardOnFileToken = response.CardOnFileToken,
-                    IsSuccessfull = response.ResponseCode == 1,
-                    Message = response.ResponseMessage,
-                    CardType = response.CardType,
-                    LastFour = response.LastFour,
-                };
-            }
-            catch(WebException e)
-            {
-                var x= new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
-
-                return new TokenizedCreditCardResponse()
-                {
-                    IsSuccessfull = false,
-                    Message = e.Message
-                };
-            }
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate);
         }
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            return Client.Delete(new DeleteTokenizedCreditcardCmtRequest()
+            return Client.Delete(new DeleteTokenizedCreditcardCmtRequest
                 {
                     CardToken = cardToken
                 });
@@ -82,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizePaymentCmtRequest()
+            return Client.Post(new PreAuthorizePaymentCmtRequest
                 {
                     Amount = amount,
                     Meter = meterAmount,
@@ -94,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
-            return Client.Post(new CommitPreauthorizedPaymentCmtRequest()
+            return Client.Post(new CommitPreauthorizedPaymentCmtRequest
                 {
                     TransactionId = transactionId,
                 });
@@ -117,10 +84,72 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
             Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
 
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        {
+            try
+            {
+                var response = Client.Post(new PairingRidelinqCmtRequest
+                {
+                    OrderId = orderId,
+                    CardToken = cardToken,
+                    AutoTipAmount = autoTipAmount,
+                    AutoTipPercentage = autoTipPercentage
+
+                });
+                return response;
+            }
+            catch (ServiceStack.ServiceClient.Web.WebServiceException e)
+            {                
+                return new PairingResponse() { IsSuccessfull = false };
+            }            
+        }
+
+        public BasePaymentResponse Unpair(Guid orderId)
+        {
+            return Client.Post(new UnpairingRidelinqCmtRequest
+            {
+                OrderId = orderId
+            });
+        }
+
+        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient, string accountNumber, DateTime expiryDate)
+        {
+            try
+            {
+                var response = cmtPaymentServiceClient.Post(new TokenizeRequest
+                {
+                    AccountNumber = accountNumber,
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
+#if DEBUG
+                    ,ValidateAccountInformation = false
+#endif
+                });
+
+                return new TokenizedCreditCardResponse
+                {
+                    CardOnFileToken = response.CardOnFileToken,
+                    IsSuccessfull = response.ResponseCode == 1,
+                    Message = response.ResponseMessage,
+                    CardType = response.CardType,
+                    LastFour = response.LastFour,
+                };
+            }
+            catch (WebException e)
+            {
+                var x = new StreamReader(e.Response.GetResponseStream()).ReadToEnd();
+
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessfull = false,
+                    Message = e.Message
+                };
+            }
+        }
+
         public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
         {
-            var cmtClient =  new CmtPaymentServiceClient(serverPaymentSettings,null, "test");
-            return Tokenize(cmtClient, number, date).IsSuccessfull;
+            var cmtPaymentServiceClient =  new CmtPaymentServiceClient(serverPaymentSettings, null, "test");
+            return Tokenize(cmtPaymentServiceClient, number, date).IsSuccessfull;
         }
     }
 }

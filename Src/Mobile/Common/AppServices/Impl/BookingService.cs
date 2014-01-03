@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +8,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -20,29 +18,22 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.Maps;
 using Direction = apcurium.MK.Common.Entity.DirectionSetting;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
-
         public bool IsValid (CreateOrder info)        
         {
             //InvalidBookinInfoWhenDestinationIsRequired
-
 
             var destinationIsRequired = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.DestinationIsRequired", false);
 
             return info.PickupAddress.BookAddress.HasValue () 
                 && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
                                                                                            && info.DropOffAddress.HasValidCoordinate () ) ) ;
-
         }
-
-
-
 
         protected ILogger Logger {
             get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
@@ -69,6 +60,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return validationResut;
             });
         }
+
+        public bool IsPaired(Guid orderId)
+        {
+            var isPaired = false;
+            UseServiceClient<OrderServiceClient>(service =>
+                {
+                    isPaired = service.GetOrderPairing(orderId) != null;
+                });
+            return isPaired;
+        }
+
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail ();
@@ -88,17 +90,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
 
             return orderDetail;
-
         }
 
-		public bool CallIsEnabled
-		{
-			get{
-
-				return !Config.GetSetting("Client.HideCallDispatchButton", false);
-			}
-
-		}
+		public bool CallIsEnabled { get{ return !Config.GetSetting("Client.HideCallDispatchButton", false); } }
 
         private void HandleCreateOrderError (Exception ex, CreateOrder order)
         {
@@ -111,7 +105,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
 			}
-
 
             try {
                 if (ex is WebServiceException) {
@@ -135,14 +128,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 								message = errorMessage;
 							}
 						}
-
-                       
                     }
                 }
             } catch {
 
             }
-
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
 			if (CallIsEnabled)
@@ -156,8 +146,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
 			}
-
-
         }
 
         private void CallCompany (string name, string number)
@@ -168,8 +156,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
             var r = new OrderStatusDetail ();
-
-
             UseServiceClient<OrderServiceClient>(service =>
                 {
                     r = service.GetOrderStatus(orderId);
@@ -180,7 +166,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool HasLastOrder {
             get{ return Cache.Get<string> ("LastOrderId").HasValue ();}
-		
         }
 
         public Task<OrderStatusDetail> GetLastOrderStatus ()
@@ -204,7 +189,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             task.ContinueWith (t => Logger.LogError (t.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
             return task;
-
         }
 
         public void ClearLastOrder ()
@@ -284,7 +268,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
-            
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {

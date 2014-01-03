@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
