@@ -183,7 +183,8 @@
     <Compile Include="ListViewStructure\SingleLineItem.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Cmt\ConfirmCmtPairingViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
