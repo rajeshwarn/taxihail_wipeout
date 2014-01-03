@@ -1,3 +1,6 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+#endif
 using System;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;

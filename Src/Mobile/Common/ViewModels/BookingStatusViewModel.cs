@@ -31,10 +31,9 @@ using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>, IMvxServiceConsumer<IPaymentService>
+	public class BookingStatusViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>
     {
 		private readonly IBookingService _bookingService;
-        private readonly IPaymentService _paymentService;
         private int _refreshPeriod = 5; //in seconds
         private bool _waitingToNavigateAfterTimeOut = false;
 
@@ -43,10 +42,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;			
-            IsCurrentlyPairing = false;
+            IsPairing = false;
             _waitingToNavigateAfterTimeOut = false;
 			_bookingService = this.GetService<IBookingService>();
-            _paymentService = this.GetService<IPaymentService>();
 		}
 	
 		public override void Load ()
@@ -335,11 +333,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 		        
 		string vehicleNumber = null;
-        private bool IsCurrentlyPairing = false;
+        private bool IsPairing = false;
         private void RefreshStatus ()
         {
             try {
-                var setting = ConfigurationManager.GetPaymentSettings();            
                 var status = BookingService.GetOrderStatus (Order.Id);
 				if(status.VehicleNumber != null)
 				{
@@ -366,17 +363,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap ();
 
-                    var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-                    var isPaired = (_bookingService.IsPaired(Order.Id) == true) ? true : false;
-                    var pairState = CacheService.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
-                    var isPairBypass = (pairState == "failed") || (pairState == "canceled") || (pairState == "unpaired");
-                    var IsCmtRideLinqEnabled = (setting.PaymentMode == PaymentMethod.RideLinqCmt);
+                    // TODO: Put the good timing / condition for Pair navigation
 
-                    if (isLoaded && !isPaired && !IsCurrentlyPairing && !isPairBypass)
+                    var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+                    var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
+                    
+                    if (isLoaded && !isPaired && !IsPairing)
                     {
-                        IsCurrentlyPairing = true;
-                        GoToCmtPairScreen();
-                        return;
+                        IsPairing = true;
+                        GoToCmtPairScreen();                        
                     }
                     
                     UpdatePayCancelButtons(status.IBSStatusId);
@@ -403,15 +398,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		void UpdatePayCancelButtons (string statusId)
 		{
             var setting = ConfigurationManager.GetPaymentSettings ();
-            var isCmtRideLinqEnabled = setting.PaymentMode == PaymentMethod.RideLinqCmt;            
-            var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled || isCmtRideLinqEnabled; // TODO: Is this RideLinq condition OK for production?
-            var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
-            
-            IsUnpairButtonVisible = isCmtRideLinqEnabled && isPaired;
+            var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-            IsPayButtonVisible = (statusId == VehicleStatuses.Common.Done
-                                || statusId == VehicleStatuses.Common.Loaded)
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue) && !isPaired;
+            //bool IsCmtRideLinqEnabled = setting.PaymentMode == PaymentMethod.RideLinqCmt;
+            bool IsCmtRideLinqEnabled = true;
+
+            //var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
+            var isPaired = false;
+          
+            IsUnpairButtonVisible = IsCmtRideLinqEnabled && isPaired;
+
+			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
+								||statusId == VehicleStatuses.Common.Loaded) 
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)
+                                && (!IsCmtRideLinqEnabled);
 			
             IsCancelButtonVisible = statusId == null ||
                                     statusId == VehicleStatuses.Common.Assigned 
@@ -433,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void GoToCmtPairScreen()
         {
-            RequestNavigate<CmtRideLinqConfirmPairViewModel>(new
+            RequestNavigate<ConfirmCmtPairingViewModel>(new
             {
                 order = Order.ToJson(),
                 orderStatus = OrderStatusDetail.ToJson()
@@ -584,13 +584,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
            {
                return GetCommand(() =>
                {
-                   var status = BookingService.GetOrderStatus(Order.Id);
-                   if (status != null)
-                   {
-                       CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), "unpaired");
-                       _paymentService.Unpair(Order.Id);
-                       UpdatePayCancelButtons(status.IBSStatusId);
-                   }
+                   // Use the server setting
                });
            }
        }

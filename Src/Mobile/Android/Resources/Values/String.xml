@@ -406,8 +406,7 @@
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="CmtRideLinqUnpair">Unpair</string>
-  <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm payment information</string>
-  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment information</string>
+  <string name="View_Payments_ConfirmCmtPairTitle">Confirm payment information</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
   <string name="November">Nov (11)</string>
@@ -457,6 +456,10 @@
   <string name="AccountDisabled_NoCall">Your account has been disabled.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage_NoCall">The order cannot be created.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">The specified Pickup address lies outside the regular service area.</string>
+  <string name="GooglePlayServicesNotAvailableTitle">Update required</string>
+  <string name="GooglePlayServicesNotAvailableMessage">You need to update Google Play Services in order to use this application.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">The order cannot be created because your account is currently inactive.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
   <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">The order cannot be created because your account is currently inactive.</string>
   <string name="CmtCancelPayment">Cancel</string>
