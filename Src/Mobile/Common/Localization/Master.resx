@@ -1443,9 +1443,12 @@
   <data name="CmtTipAmount" xml:space="preserve">
     <value>Tip Amount:</value>
   </data>
-  <data name="View_Payments_ConfirmCmtPairTitle" xml:space="preserve">
+  <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
     <value>Confirm payment information</value>
   </data>
+  <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
+    <value>Change payment information</value>
+  </data>  
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>
   </data>
