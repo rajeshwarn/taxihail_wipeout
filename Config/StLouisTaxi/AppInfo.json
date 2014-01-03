@@ -1,7 +1,0 @@
-{
-   "AndroidSigningKeyAlias" : "MKStLouisTaxi",
-   "AndroidSigningKeyPassStorePass" : "mkStLouisTaxi0001.",
-   "AppName" : "St.Louis Taxi",
-   "GoogleMapKey" : "0lx0CFUZu0f1x6vGx44JS6y4c-7UGrJAd6Ff27g",
-   "Package" : "com.apcurium.MK.StLouisTaxi"
-}

@@ -1,5 +1,0 @@
-deviceIdentifier	deviceName
-b505fbbfd7e21b05c4b882be05d874b3aafae73c	apcurium - Alex Proteau iPhone 4
-200de4b1c1a5f8cc6eec5b80bad0eb3005fef91d	apcurium - Alex Proteau iPad 3 Wi-Fi
-c2b38093674e70e9dd19cff8572efeb6e343321d	MKC - Travis Gray iPhone 3GS
-f62436c50dc25383dc275bac67d7ec7bd71cf167	MKC - Travis
