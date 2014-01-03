@@ -1,3 +1,6 @@
+#if SOCIAL_NETWORKS
+using SocialNetworks.Services;
+#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +16,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
-using SocialNetworks.Services;
 using apcurium.Framework;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
@@ -28,28 +30,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private IApplicationInfoService _applicationInfoService;
         readonly IAccountService _accountService;
-        readonly IFacebookService _facebookService;
-        readonly ITwitterService _twitterService;
         readonly IPushNotificationService _pushService;
-
 		public event EventHandler LoginSucceeded; 
-        public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+
+#if SOCIAL_NETWORKS
+		readonly IFacebookService _facebookService;
+		readonly ITwitterService _twitterService;
+		public IFacebookService FacebookService { get { return _facebookService; } }
+
+		public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+			:this(accountService, applicationInfoService, pushService)
+		{
+			_facebookService = facebookService;
+			_twitterService = twitterService;
+			_facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
+			_facebookService.ConnectionStatusChanged += HandleFbConnectionStatusChanged;
+
+			_twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
+			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
+		}
+
+#endif
+
+        public LoginViewModel(IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
         {
             _applicationInfoService = applicationInfoService;
 			_accountService = accountService;		
             _pushService = pushService;
 
             CheckVersion();
-            _facebookService = facebookService;
-            _twitterService = twitterService;
-            _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
-            _facebookService.ConnectionStatusChanged += HandleFbConnectionStatusChanged;
-
-            _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
-            _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
         }
-
-        public IFacebookService FacebookService { get { return _facebookService; } }
 
         public override void Load()
         {
@@ -260,6 +270,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		#if SOCIAL_NETWORKS
+
         public IMvxCommand LoginFacebook
         {
             get
@@ -279,32 +291,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand LoginTwitter
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                {
-                    if (_twitterService.IsConnected)
-                    {
-                        CheckTwitterAccount();
-                    }
-                    else
-                    {
-                        _twitterService.Connect();
-
-                    }
-                });
-            }
-        }
-
-        void HandleFbConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.FacebookStatus e)
-        {
-            if (e.IsConnected)
-            {
-                CheckFacebookAccount();
-            }
-        }
+		public IMvxCommand LoginTwitter
+		{
+			get
+			{
+				return new MvxRelayCommand(() =>
+				{
+					if (_twitterService.IsConnected)
+					{
+						CheckTwitterAccount();
+					}
+					else
+					{
+						_twitterService.Connect();
+					}
+				});
+			}
+		}
 
         private void CheckFacebookAccount()
         {
@@ -348,10 +351,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        private void Nothing()
-        { 
-        }
-
         private void CheckTwitterAccount()
         {
             MessageService.ShowProgress(true);
@@ -391,6 +390,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             );
         }
 
+
         void HandleTwitterConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.TwitterStatus e)
         {
             if (e.IsConnected)
@@ -398,6 +398,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CheckTwitterAccount();
             }
         }
+
+		void HandleFbConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.FacebookStatus e)
+		{
+			if (e.IsConnected)
+			{
+				CheckFacebookAccount();
+			}
+		}
+#endif
 
         public void SetServerUrl(string serverUrl)
         {
@@ -409,10 +418,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void LoginSucess()
         {
-            _applicationInfoService = null;     
+#if SOCIAL_NETWORKS
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
+#endif
 
+			_applicationInfoService = null;     
 
             RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)
