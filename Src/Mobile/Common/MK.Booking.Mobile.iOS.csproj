@@ -88,6 +88,9 @@
     <Reference Include="Newtonsoft.Json.MonoTouch">
       <HintPath>..\iOS\Newtonsoft.Json.MonoTouch.dll</HintPath>
     </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -333,4 +336,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <XamarinComponentReference Include="facebookios">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.8.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
 </Project>
