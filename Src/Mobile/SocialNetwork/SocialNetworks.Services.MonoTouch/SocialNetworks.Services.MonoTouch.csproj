@@ -100,11 +100,7 @@
     <Compile Include="TwitterServiceMonoTouch.cs" />
     <Compile Include="Entities\UserLike.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OAuth\" />
-    <Folder Include="FacebookHelpers\" />
-    <Folder Include="Assets\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\back.png" />
     <Content Include="Assets\back%402x.png" />
@@ -113,7 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookios">
-      <InstallationInProgress>False</InstallationInProgress>
       <Version>3.8.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

@@ -2,6 +2,7 @@ using System;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -114,16 +115,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			} );
 		}
 		
-		public static void Show ( string title, string message )
+		public static Task Show ( string title, string message )
 		{
-
+			var tcs = new TaskCompletionSource<object>();
             UIApplication.SharedApplication.InvokeOnMainThread( delegate
 			{					
                 LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView ( title, message, null, Resources.Close, null );
-				av.Show (  );
+				av.Dismissed += delegate {
+					tcs.TrySetResult(null);
+				};
+				av.Show ();
 				
-			} );
+			});
+			return tcs.Task;
 		}
 		
 		
