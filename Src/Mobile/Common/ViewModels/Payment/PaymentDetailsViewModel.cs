@@ -76,12 +76,21 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
         }
         set{
             _tip = value;
-            FirePropertyChanged(()=>Tip);
+            FirePropertyChanged(() => Tip);
+            FirePropertyChanged(() => TipInPercent);
         }
     }
     
     public int _tip { get; set; }
-    
+
+    public string TipInPercent
+    {
+        get
+        {
+            return _tip.ToString() + "%";
+        }        
+    }
+
     public apcurium.MK.Common.Entity.ListItem<Guid>[] GetCreditCardListItems ()
     {
         return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();

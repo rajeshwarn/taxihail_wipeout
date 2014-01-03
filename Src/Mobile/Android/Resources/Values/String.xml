@@ -406,7 +406,8 @@
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
   <string name="CmtRideLinqUnpair">Unpair</string>
-  <string name="View_Payments_ConfirmCmtPairTitle">Confirm payment information</string>
+  <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm payment information</string>
+  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment information</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
   <string name="November">Nov (11)</string>
