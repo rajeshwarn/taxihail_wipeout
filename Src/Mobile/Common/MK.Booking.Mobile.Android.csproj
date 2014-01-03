@@ -74,6 +74,9 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\Components\facebook-sdk-6.2.1\lib\android\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -271,6 +274,9 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
+    <Compile Include="AppServices\IFacebookService.cs" />
+    <Compile Include="AppServices\Impl\FacebookServiceBase.cs" />
+    <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -341,4 +347,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <XamarinComponentReference Include="facebook-sdk">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>6.2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
 </Project>

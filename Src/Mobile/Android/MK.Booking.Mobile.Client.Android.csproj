@@ -114,6 +114,9 @@
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\Components\facebook-sdk-6.2.1\lib\android\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -371,6 +374,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Extensions\GoogleMapExtensions.cs" />
+    <Compile Include="Services\FacebookService.cs" />
+    <Compile Include="Services\FacebookWebViewAuthActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -728,6 +733,10 @@
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservicesgingerbread">
       <Version>13.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="facebook-sdk">
+      <Version>6.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

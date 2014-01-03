@@ -32,9 +32,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
 		public event EventHandler LoginSucceeded; 
+		readonly IFacebookService _facebookService;
 
 #if SOCIAL_NETWORKS
-		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 		public IFacebookService FacebookService { get { return _facebookService; } }
 
@@ -309,7 +309,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private void CheckFacebookAccount()
+		private void CheckFacebookAccount()
         {
             MessageService.ShowProgress(true);
 
@@ -431,5 +431,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				LoginSucceeded(this, EventArgs.Empty);
 			}
         }
+
+		public async void OnFacebookLoginSucessful(string accessToken)
+		{
+			var userInfo = _facebookService.GetUserInfo(accessToken);
+
+
+		}
+
+		private void CheckFacebookAccount(string accessToken)
+		{
+			MessageService.ShowProgress(true);
+
+			_facebookService.GetUserInfos(info =>
+				{
+					var data = new RegisterAccount();
+					data.FacebookId = info.Id;
+					data.Email = info.Email;
+					data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+
+					try
+					{
+						var account = _accountService.GetFacebookAccount(data.FacebookId);
+						if (account == null)
+						{
+							DoSignUp(data);
+						}
+						else
+						{                                
+							Task.Factory.SafeStartNew(() =>
+								{
+									try
+									{
+										LoginSucess();
+									}
+									finally
+									{
+									}
+								});
+						}
+					}
+					finally
+					{
+						MessageService.ShowProgress(false);
+					}
+
+				}, () => MessageService.ShowProgress(false) );
+
+
+		}
+
     }
 }

@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
         public static LoginActivity TopInstance{get;set;}
 
+		FacebookService _facebookService;
+
         private ProgressDialog _progressDialog;
 
 #if SOCIAL_NETWORKS
@@ -62,6 +64,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         }
 #endif
 
+		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+		{
+			base.OnActivityResult(requestCode, resultCode, data);
+
+			switch (resultCode) {
+				case Result.Ok:
+
+					var accessToken = data.GetStringExtra("AccessToken");
+					ViewModel.OnFacebookLoginSucessfull(accessToken);
+					break;
+				case Result.Canceled:
+					string error = data.GetStringExtra ("Exception");
+					Alert ("Failed to Log In", "Reason:" + error, false, (res) => {} );
+					break;
+				default:
+					break;
+			}
+
+			_facebookService.GetUserInfo(requestCode, resultCode, data);
+		}
+
 		public LoginActivity ()
 		{
 			TopInstance = this;
@@ -75,17 +98,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         protected override void OnViewModelSet()
         {            
-
+			this._facebookService = new FacebookService("134284363380764", this);
 
             SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
                       
 
-            if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
-            {
+			if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
+			{
 				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
-            }
+			}
+			else
+			{
+				FindViewById<Button>(Resource.Id.FacebookButton).Click += (object sender, EventArgs e) => {
+					_facebookService.Connect("email");
+				};
+
+			}
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
             {
@@ -211,6 +241,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		public override void FinishFromChild (Activity child)
 		{
 			base.FinishFromChild (child);
+		}
+
+		public void Alert (string title, string message, bool CancelButton , Action<Result> callback)
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.SetTitle(title);
+			builder.SetMessage(message);
+
+			builder.SetPositiveButton("Ok", (sender, e) => {
+				callback(Result.Ok);
+			});
+
+			if (CancelButton) {
+				builder.SetNegativeButton("Cancel", (sender, e) => {
+					callback(Result.Canceled);
+				});
+			}
+
+			builder.Show();
 		}
 
 
