@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Reactive.Disposables;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -28,9 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
       
         #endregion
 
-		public void ShowMessage(string title, string message)
+		public Task ShowMessage(string title, string message)
 		{
-			MessageHelper.Show( title, message );
+			return MessageHelper.Show( title, message );
 		}
 
 		public void ShowMessage(string title, string message, Action additionalAction )
