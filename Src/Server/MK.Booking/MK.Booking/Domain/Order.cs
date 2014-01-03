@@ -11,7 +11,6 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Order : EventSourced
     {
-
         private OrderStatus _status;
 
         private bool _isRated;
@@ -30,6 +29,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PaymentInformationSet>(NoAction);
             base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
             base.Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
+            base.Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
+            base.Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -146,6 +147,25 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        public void Pair(string medallion, string driverId, string pairingToken, string pairingCode, string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
+        {
+            Update(new OrderPairedForRideLinqCmtPayment
+                {
+                    Medallion = medallion,
+                    DriverId = driverId,
+                    PairingToken = pairingToken,
+                    PairingCode = pairingCode,
+                    TokenOfCardToBeUsedForPayment = tokenOfCardToBeUsedForPayment,
+                    AutoTipAmount = autoTipAmount,
+                    AutoTipPercentage = autoTipPercentage
+                });
+        }
+
+        public void Unpair()
+        {
+            Update(new OrderUnpairedForRideLinqCmtPayment());
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             _ibsStatus = @event.Status.IBSStatusId;
@@ -181,7 +201,5 @@ namespace apcurium.MK.Booking.Domain
             this._vehicleLatitude = @event.Latitude;
             this._vehicleLongitude = @event.Longitude;
         }
-
-        
     }
 }

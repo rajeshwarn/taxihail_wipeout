@@ -84,6 +84,7 @@ namespace apcurium.CMT.Web.Tests
         }
 
         [Test]
+        [Ignore("Error 500 on the CMT Server")]
         public void when_deleting_a_tokenized_credit_card()
         {
             var client = GetPaymentClient();
@@ -190,7 +191,8 @@ namespace apcurium.CMT.Web.Tests
 
             var client = GetPaymentClient();
 
-            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
+            var tokenClient = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
+            var token = tokenClient.CardOnFileToken;
 
             const double amount = 12.75;
             const double meter = 11.25;

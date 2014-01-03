@@ -352,7 +352,6 @@ namespace apcurium.MK.Web.Tests
             var validation = ValidateOrder(null);
 
             Assert.IsFalse(validation.HasWarning);
-
         }
 
 
@@ -370,8 +369,6 @@ namespace apcurium.MK.Web.Tests
             var validation = ValidateOrder(null, "101");
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
-
-
         }
 
 
@@ -629,7 +626,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
             };
 
-            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 13, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = Provider.MobileKnowledgeProviderId, Phone = "514-555-12129", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             if (update != null)
             {
@@ -648,6 +645,12 @@ namespace apcurium.MK.Web.Tests
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate()
+                {
+                    Price = 10,
+                    Distance = 3
+                }
+
             };
 
             order.Settings = new BookingSettings

@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt
         public string Type { get; set; }
         public int TripId { get; set; }
         public int DriverId { get; set; }
+        public string Medallion { get; set; }
         public string PairingToken { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
@@ -26,11 +27,10 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt
         public int RateAtTripEnd { get; set; }
         public string RateChangeTime { get; set; }
         public double Distance { get; set; }
-        public int AutoTipPercentage { get; set; }
-        public int AutoTipAmount { get; set; }
+        public int? AutoTipPercentage { get; set; }
+        public int? AutoTipAmount { get; set; }
         public Toll[] TollHistory { get; set; }
 
-        // not present in API TPEP 2.0
         public bool AutoCompletePayment { get; set; }
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }

@@ -68,6 +68,22 @@ namespace DatabaseInitializer
                 IDictionary<string, string> settingsInDb = null;
 
                 var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
+
+                //for dev company, delete old database to prevent keeping too many databases
+                if (companyName == "MKWebDev"
+                    && isUpdate)
+                {
+#if DEBUG
+                    Console.WriteLine("Drop Existing Database? Y or N");
+                    var shouldDrop = args.Length > 2 ? args[2] : Console.ReadLine();
+                    if ("Y".Equals(shouldDrop, StringComparison.OrdinalIgnoreCase))
+                    {
+                        creatorDb.DropDatabase(connStringMaster, companyName);
+                        isUpdate = false;
+                    }
+#endif
+                }
+
                 if (isUpdate)
                 {
                     settingsInDb = configurationManager.GetSettings();
@@ -144,10 +160,6 @@ namespace DatabaseInitializer
 
                 //Save settings so that next calls to referenceDataService has the IBS Url
                 AddOrUpdateAppSettings(commandBus, appSettings);
-
-                
-
-
 
 
                 if (isUpdate)

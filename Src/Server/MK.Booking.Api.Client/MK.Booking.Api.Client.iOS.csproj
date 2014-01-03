@@ -128,6 +128,8 @@
     <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
     <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
     <Compile Include="Payments\CmtPayments\Pair\TripRequest.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\CmtUnpairingResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Pair\UnpairingRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PayPal\" />

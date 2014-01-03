@@ -13,5 +13,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
         IList<OrderStatusDetail> GetOrdersInProgress();
         IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId);
         OrderStatusDetail FindOrderStatusById(Guid orderId);
+        OrderPairingDetail FindOrderPairingById(Guid orderId);
     }
 }

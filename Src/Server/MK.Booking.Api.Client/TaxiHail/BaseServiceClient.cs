@@ -2,8 +2,7 @@ using System;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
-#if !CLIENT
-#else
+#if CLIENT
 using ServiceStack.Common.ServiceClient.Web;
 #endif
 

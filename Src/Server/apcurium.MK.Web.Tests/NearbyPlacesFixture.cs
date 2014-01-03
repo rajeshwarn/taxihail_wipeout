@@ -53,8 +53,8 @@ namespace apcurium.MK.Web.Tests
         public void when_searching_for_nearby_places_with_a_max_radius()
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-            var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 100);
-            var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 10);
+            var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, 100);
+            var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, 10);
 
             if (!greatRadius.Any() || !smallRadius.Any())
             {
@@ -90,51 +90,17 @@ namespace apcurium.MK.Web.Tests
                                 {
                                     Id = orderId,
                                     PickupAddress = address,
-                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = 18, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
+                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = Provider.MobileKnowledgeProviderId, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" },
+                                    Estimate = new CreateOrder.RideEstimate
+                                    {
+                                        Distance = 3,
+                                        Price = 10
+                                    }
                                 });
             var order = sut.GetOrder(orderId);
 
             Assert.NotNull(order);
             Assert.AreEqual(address.FullAddress, order.PickupAddress.FullAddress);
         }
-
-
-        //[Test]
-        //public void when_popular_addresses_nearby()
-        //{
-
-        //    CreatePopularPlaces("1234 fake street", "FakePlace" , Latitude, Longitude );
-
-        //    var sut = new MapsApiClient(new TestConfigurationManager(), new Logger());
-
-        //    var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-        //    var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, radius: 1000);
-
-        //    Assert.IsTrue( greatRadius.First().FriendlyName == "FakePlace");
-            
-        //    //greatRadius.Any();
-        //}
-
-        //private void CreatePopularPlaces(string fullAddress, string friendlyName, double latitude, double longitude)
-        //{
-
-        //    var account = CreateAndAuthenticateTestAdminAccount();
-        //    var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
-
-
-        //    var service = new PopularAddressesServiceClient(BaseUrl, SessionId, "Test");
-        //    service.Add(new PopularAddress { Id = Guid.NewGuid(), Address = new Address { FriendlyName = friendlyName, FullAddress = fullAddress, Latitude = latitude, Longitude = longitude } });
-
-
-        //}
-
-        //private void CreatePopularPlaces()
-        //{
-            
-        //    //
-                        
-        //}
-
-
     }
 }

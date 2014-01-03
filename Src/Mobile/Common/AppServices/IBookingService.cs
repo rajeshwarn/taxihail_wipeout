@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool HasLastOrder{get;}
 
+	    bool IsPaired(Guid orderId);
+
         OrderStatusDetail CreateOrder(CreateOrder info);
 
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);

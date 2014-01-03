@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         [Test]
         public void when_company_popular_address_updated_successfully()
         {
-            sut.When(new UpdatePopularAddress { Address = new Address { Id = _addressId, FriendlyName = "Chez Costo popular", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" } });
+            sut.When(new UpdatePopularAddress { Address = new Address { Id = _addressId, FriendlyName = "Chez Costo popular", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville", Latitude = 45.515065, Longitude = -73.558064 } });
 
             var evt = sut.ThenHasSingle<PopularAddressUpdated>();
             Assert.AreEqual(_addressId, evt.Address.Id);

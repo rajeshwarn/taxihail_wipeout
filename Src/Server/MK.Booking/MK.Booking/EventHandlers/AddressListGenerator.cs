@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = new PopularAddressDetails();
-                AutoMapper.Mapper.Map(@event.Address, address);
+                Mapper.Map(@event.Address, address);
                 context.Save(address);
             }
         }
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                 var address = context.Find<PopularAddressDetails>(@event.Address.Id);
                 if (address != null)
                 {
-                    AutoMapper.Mapper.Map(@event.Address, address);
+                    Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }

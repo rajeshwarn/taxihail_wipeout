@@ -127,5 +127,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public OrderPairingDetail FindOrderPairingById(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<OrderPairingDetail>().SingleOrDefault(x => x.OrderId == orderId);
+            }
+        }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data.Entity;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Database
@@ -18,7 +15,6 @@ namespace apcurium.MK.Booking.Database
             : base(nameOrConnectionString)
         {
         }
-
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -31,6 +27,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderStatusDetail>()
                 .HasKey(x => x.OrderId)
                 .ToTable("OrderStatusDetail",SchemaName);
+            modelBuilder.Entity<OrderPairingDetail>()
+                .HasKey(x => x.OrderId)
+                .ToTable("OrderPairingDetail", SchemaName);
 
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
             modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
@@ -45,8 +44,6 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<RatingScoreDetails>().ToTable("RatingScoreDetails", SchemaName);
             modelBuilder.Entity<CreditCardDetails>().ToTable("CreditCardDetails", SchemaName);            
             modelBuilder.Entity<OrderPaymentDetail>().ToTable("OrderPaymentDetail", SchemaName);
-
-
         }
 
         public T Find<T>(Guid id) where T : class
