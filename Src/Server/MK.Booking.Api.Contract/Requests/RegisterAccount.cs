@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/account/register", "POST")]
-    public class RegisterAccount : BaseDTO
+    [Route("/account/register", "POST")]
+    public class RegisterAccount : BaseDto
     {
         public Guid AccountId { get; set; }
 
@@ -14,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string FirstName { get; set; }
 
-        public string LastName { get; set; } 
+        public string LastName { get; set; }
 
         public string Password { get; set; }
 
@@ -29,6 +33,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public bool IsAdmin { get; set; }
 
         public bool AccountActivationDisabled { get; set; }
-
     }
 }

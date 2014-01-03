@@ -1,6 +1,6 @@
 using System;
-using MK.Booking.Api.Client.TaxiHail;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

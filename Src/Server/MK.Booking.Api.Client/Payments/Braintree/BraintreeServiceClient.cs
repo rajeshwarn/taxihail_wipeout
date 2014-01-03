@@ -1,20 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Requests.Braintree;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using BraintreeEncryption.Library;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
     public class BraintreeServiceClient : BaseServiceClient, IPaymentServiceClient
     {
-        
-        public BraintreeServiceClient(string url, string sessionId, string clientKey, string userAgent):base(url, sessionId,userAgent)
+        public BraintreeServiceClient(string url, string sessionId, string clientKey, string userAgent)
+            : base(url, sessionId, userAgent)
         {
-			ClientKey =clientKey;
-
+            ClientKey = clientKey;
         }
 
         protected string ClientKey { get; set; }
@@ -27,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
             var encryptedCvv = braintree.Encrypt(cvv);
 
-            return Client.Post(new TokenizeCreditCardBraintreeRequest()
+            return Client.Post(new TokenizeCreditCardBraintreeRequest
             {
                 EncryptedCreditCardNumber = encryptedNumber,
                 EncryptedExpirationDate = encryptedExpirationDate,
@@ -37,39 +40,41 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
         {
-            return Client.Delete(new DeleteTokenizedCreditcardBraintreeRequest()
-                {
-                    CardToken = cardToken,
-                });
+            return Client.Delete(new DeleteTokenizedCreditcardBraintreeRequest
+            {
+                CardToken = cardToken,
+            });
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount,
+            double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizePaymentBraintreeRequest()
-                {
-                    Amount = (decimal)amount,
-                    Meter = (decimal)meterAmount,
-                    Tip = (decimal)tipAmount,
-                    CardToken = cardToken,
-                    OrderId = orderId,
-                });
+            return Client.Post(new PreAuthorizePaymentBraintreeRequest
+            {
+                Amount = (decimal) amount,
+                Meter = (decimal) meterAmount,
+                Tip = (decimal) tipAmount,
+                CardToken = cardToken,
+                OrderId = orderId,
+            });
         }
 
         public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
         {
-            return Client.Post(new CommitPreauthorizedPaymentBraintreeRequest()
-                {
-                    TransactionId = transactionId,
-                });
+            return Client.Post(new CommitPreauthorizedPaymentBraintreeRequest
+            {
+                TransactionId = transactionId,
+            });
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount,
+            double meterAmount, double tipAmount, Guid orderId)
         {
             return Client.Post(new PreAuthorizeAndCommitPaymentBraintreeRequest
             {
-                Amount = (decimal)amount,
-                MeterAmount = (decimal)meterAmount,
-                TipAmount = (decimal)tipAmount,
+                Amount = (decimal) amount,
+                MeterAmount = (decimal) meterAmount,
+                TipAmount = (decimal) tipAmount,
                 CardToken = cardToken,
                 OrderId = orderId
             });
@@ -87,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public void ResendConfirmationToDriver(Guid orderId)
         {
-            Client.Post(new ResendPaymentConfirmationRequest { OrderId = orderId });
+            Client.Post(new ResendPaymentConfirmationRequest {OrderId = orderId});
         }
     }
 }

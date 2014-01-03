@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.Messaging;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -15,7 +16,6 @@ namespace apcurium.MK.Booking.Commands
             CardOnFileInfo = null; // must be null if not used - see email template
         }
 
-        public Guid Id { get; set; }
         public Guid OrderId { get; set; }
         public string EmailAddress { get; set; }
         public int IBSOrderId { get; set; }
@@ -28,8 +28,15 @@ namespace apcurium.MK.Booking.Commands
 
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
-        
+
         public CardOnFile CardOnFileInfo { get; set; } // OPTIONAL Null if not needed
+
+        public double TotalFare
+        {
+            get { return Fare + Toll + Tip + Tax; }
+        }
+
+        public Guid Id { get; set; }
 
         public class CardOnFile
         {
@@ -47,11 +54,6 @@ namespace apcurium.MK.Booking.Commands
             public string Company { get; set; }
             public string LastFour { get; set; }
             public string FriendlyName { get; set; }
-        }
-
-        public double TotalFare
-        {
-            get { return Fare + Toll + Tip + Tax; }
         }
     }
 }

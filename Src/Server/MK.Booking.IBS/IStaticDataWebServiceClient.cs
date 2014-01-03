@@ -1,4 +1,8 @@
-﻿using apcurium.MK.Common.Entity;
+﻿#region
+
+using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.IBS
 {
@@ -6,7 +10,7 @@ namespace apcurium.MK.Booking.IBS
     {
         ListItem[] GetCompaniesList();
         ListItem[] GetVehiclesList(ListItem company);
-        ListItem[] GetPaymentsList(ListItem company);        
+        ListItem[] GetPaymentsList(ListItem company);
         string GetZoneByCoordinate(int? providerId, double latitude, double longitude);
     }
 }

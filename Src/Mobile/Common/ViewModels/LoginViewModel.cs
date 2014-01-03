@@ -3,35 +3,22 @@ using SocialNetworks.Services;
 #endif
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Commands;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
-using apcurium.Framework;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private IApplicationInfoService _applicationInfoService;
-        readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
-		public event EventHandler LoginSucceeded; 
+        public event EventHandler LoginSucceeded; 
 
 #if SOCIAL_NETWORKS
 		readonly IFacebookService _facebookService;
@@ -52,12 +39,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+        public LoginViewModel(IPushNotificationService pushService)
         {
-            _applicationInfoService = applicationInfoService;
-			_accountService = accountService;		
             _pushService = pushService;
-
             CheckVersion();
         }
 
@@ -75,9 +59,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             //The 2 second delay is required because the view might not be created.
             await Task.Delay(2000);
-            if (AccountService.CurrentAccount != null)
+            if (this.Services().Account.CurrentAccount != null)
             {
-                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersionAsync();
+                this.Services().ApplicationInfo.CheckVersionAsync();
             }
         }
 
@@ -104,13 +88,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SignInCommand
+        public AsyncCommand SignInCommand
         {
             get
             {
                 return GetCommand(() =>
                 {
-                    _accountService.ClearCache();
+                    this.Services().Account.ClearCache();
                     SignIn();
                 });
             }
@@ -119,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get{
 
-				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
 
 		}
@@ -128,38 +112,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             bool needToHideProgress = true;
             try
             {
-                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
-                MessageService.ShowProgress(true);
+                Logger.LogMessage("SignIn with server {0}", this.Services().Settings.ServiceUrl);
+                this.Services().Message.ShowProgress(true);
                 var account = default(Account);
                 try
                 {
-                    account = _accountService.GetAccount(Email, Password);                 
+                    account = this.Services().Account.GetAccount(Email, Password);                 
                 }
                 catch (Exception e)
                 {
-                    var title = Resources.GetString("InvalidLoginMessageTitle");
-                    var message = Resources.GetString(e.Message);
+                    var title = this.Services().Resources.GetString("InvalidLoginMessageTitle");
+                    var message = this.Services().Resources.GetString(e.Message);
 
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
 						if ( CallIsEnabled )
 						{
-                        	var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-                        	var companyName = settings.ApplicationName;
-                        	var phoneNumber = Config.GetSetting( "DefaultPhoneNumberDisplay" );
-                        	message = string.Format(Resources.GetString(e.Message), companyName, phoneNumber);
+                            var companyName = this.Services().Settings.ApplicationName;
+                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
+                            message = string.Format(this.Services().Resources.GetString(e.Message), companyName, phoneNumber);
 						}
 						else 
 						{
-							message= Resources.GetString("AccountDisabled_NoCall");
+                            message = this.Services().Resources.GetString("AccountDisabled_NoCall");
 						}
-                    }                 
-                    MessageService.ShowMessage(title, message);
+                    }
+                    this.Services().Message.ShowMessage(title, message);
                 }
 
                 if (account != null)
                 {
                     needToHideProgress = false;
-                    this.Password = string.Empty;
+                    Password = string.Empty;
                 
 
                     InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
@@ -173,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             finally
                             {
                                 Thread.Sleep(1000);
-                                RequestMainThreadAction( () => MessageService.ShowProgress(false) );
+                                RequestMainThreadAction(() => this.Services().Message.ShowProgress(false));
                             }
                         });
 
@@ -183,12 +166,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (needToHideProgress)
                 {
-                    MessageService.ShowProgress(false);
+                    this.Services().Message.ShowProgress(false);
                 }
             }
         }
 
-        public IMvxCommand ResetPassword
+        public AsyncCommand ResetPassword
         {
             get
             {
@@ -202,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SignUp
+        public AsyncCommand SignUp
         {
             get
             {
@@ -232,22 +215,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try
                     {
                         Thread.Sleep(1500);
-                        var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                         Account account;
                         if (facebookId.HasValue() || twitterId.HasValue())
                         {
                             if (facebookId.HasValue())
                             {
-                                account = service.GetFacebookAccount(facebookId);
+                                account = this.Services().Account.GetFacebookAccount(facebookId);
                             }
                             else
                             {
-                                account = service.GetTwitterAccount(twitterId);
+                                account = this.Services().Account.GetTwitterAccount(twitterId);
                             }
                         }
                         else
                         {
-                            account = service.GetAccount(data.Email, data.Password);
+                            account = this.Services().Account.GetAccount(data.Email, data.Password);
                         }
 
                         if (account != null)
@@ -255,12 +237,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             LoginSucess();
                         }
                     }
-                    catch
+                    catch(Exception ex)
                     {
+                        Logger.LogError(ex);
                     }
                     finally
                     {
-                        MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
                     }
                 }
                 else
@@ -311,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CheckFacebookAccount()
         {
-            MessageService.ShowProgress(true);
+            Message.ShowProgress(true);
 
             _facebookService.GetUserInfos(info =>
             {
@@ -343,17 +326,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 finally
                 {
-                    MessageService.ShowProgress(false);
+                    Message.ShowProgress(false);
                 }
 
-            }, () => MessageService.ShowProgress(false) );
+            }, () => Message.ShowProgress(false) );
 
 
         }
 
         private void CheckTwitterAccount()
         {
-            MessageService.ShowProgress(true);
+            Message.ShowProgress(true);
 
             _twitterService.GetUserInfos(info =>
             {
@@ -384,7 +367,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 finally
                 {
-                    MessageService.ShowProgress(false);
+                    Message.ShowProgress(false);
                 }
             }
             );
@@ -410,10 +393,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetServerUrl(string serverUrl)
         {
-            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
-            TinyIoCContainer.Current.Resolve<IApplicationInfoService>().ClearAppInfo();
-            TinyIoCContainer.Current.Resolve<IAccountService>().ClearReferenceData();
-            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+            this.Services().Settings.ServiceUrl = serverUrl;
+            this.Services().ApplicationInfo.ClearAppInfo();
+            this.Services().Account.ClearReferenceData();
+            this.Services().Config.Reset();
         }
 
         private void LoginSucess()
@@ -422,8 +405,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 #endif
-
-			_applicationInfoService = null;     
 
             RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)

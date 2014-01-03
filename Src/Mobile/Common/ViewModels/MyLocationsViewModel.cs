@@ -1,36 +1,24 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using apcurium.MK.Booking.Mobile.AppServices;
-using TinyIoC;
 using System.Linq;
 using System.Threading;
-using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
-using ServiceStack.Text;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
-namespace apcurium.MK.Booking.Mobile
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
+
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-        private IAccountService _accountService;
-        protected override void Initialize ()
-        {
-            base.Initialize ();
-            _accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
-        }
 
         public override void Start(bool firstStart = false)
         {
-            base.Start ();
-
+            base.Start (firstStart);
             LoadAllAddresses();
         }
-       
 
         private ObservableCollection<AddressViewModel> _allAddresses = new ObservableCollection<AddressViewModel>();
         public ObservableCollection<AddressViewModel> AllAddresses { 
@@ -45,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand NavigateToLocationDetailPage{
+        public AsyncCommand<AddressViewModel> NavigateToLocationDetailPage
+        {
             get{
                 return GetCommand<AddressViewModel>(a =>
                 {
@@ -68,13 +57,13 @@ namespace apcurium.MK.Booking.Mobile
                 LoadFavoriteAddresses(),
                 LoadHistoryAddresses()
             };
-            return Task.Factory.ContinueWhenAll<AddressViewModel[]>(tasks, t => {
+            return Task.Factory.ContinueWhenAll(tasks, t => {
 
                 AllAddresses.Clear ();
                 AllAddresses.Add (new AddressViewModel{ Address =  new Address
                     {
-                        FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
-                        FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
+                        FriendlyName = this.Services().Resources.GetString("LocationAddFavoriteTitle"),
+                        FullAddress = this.Services().Resources.GetString("LocationAddFavoriteSubtitle"),
                     }, IsAddNew = true, ShowPlusSign=true});
 
 
@@ -105,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = _accountService.GetFavoriteAddresses().ToList();
+                var adrs = this.Services().Account.GetFavoriteAddresses().ToList();
              
                 return adrs.Select(a => new AddressViewModel
                 { 
@@ -121,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile
         private Task<AddressViewModel[]> LoadHistoryAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = _accountService.GetHistoryAddresses();
+                var adrs = this.Services().Account.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,

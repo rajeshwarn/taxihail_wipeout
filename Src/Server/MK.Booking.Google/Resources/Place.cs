@@ -1,7 +1,8 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
@@ -11,7 +12,7 @@ namespace apcurium.MK.Booking.Google.Resources
         public string Icon { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Formatted_Address { get; set; } 
+        public string Formatted_Address { get; set; }
         public float Rating { get; set; }
         public string Reference { get; set; }
         public List<string> Types { get; set; }

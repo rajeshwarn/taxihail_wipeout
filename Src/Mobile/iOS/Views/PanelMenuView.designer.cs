@@ -4,15 +4,17 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("PanelMenuView")]
 	partial class PanelMenuView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.PanelView panelView { get; set; }
+		PanelView panelView { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView menuView { get; set; }

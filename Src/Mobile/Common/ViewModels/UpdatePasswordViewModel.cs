@@ -1,28 +1,12 @@
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Common.Entity;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using System;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class UpdatePasswordViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
+    public class UpdatePasswordViewModel : BaseViewModel
     {
-		private IAccountService _accountService;		
-
-		public UpdatePasswordViewModel()
-        {
-            _accountService = this.GetService<IAccountService>();
-        }
-
-        private string _currentPassword;
+		private string _currentPassword;
         public string CurrentPassword
         {
 			get { return _currentPassword; }
@@ -62,10 +46,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		public bool CanUpdatePassword { 
-			get { return !CurrentPassword.IsNullOrEmpty() && !NewPassword.IsNullOrEmpty() && NewPassword.Length >= 6 && NewPassword.Length <= 10 && NewPasswordIsConfirmed; }
+			get { return !CurrentPassword.IsNullOrEmpty() 
+                            && !NewPassword.IsNullOrEmpty() 
+                            && NewPassword.Length >= 6 
+                            && NewPassword.Length <= 10 
+                            && NewPasswordIsConfirmed; }
 		}
 
-        public IMvxCommand UpdateCommand
+        public AsyncCommand UpdateCommand
         {
             get
             {
@@ -74,27 +62,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!CanUpdatePassword)
 					{
-                        var title = Resources.GetString("View_UpdatePassword");
-                        var msg = Resources.GetString("CreateAccountInvalidPassword");
-                        MessageService.ShowMessage(title, msg);;
+                        var title = this.Services().Resources.GetString("View_UpdatePassword");
+                        var msg = this.Services().Resources.GetString("CreateAccountInvalidPassword");
+                        this.Services().Message.ShowMessage(title, msg);
 						return;
 					}
-                    MessageService.ShowProgress(true);
+                    this.Services().Message.ShowProgress(true);
                     try{
-                        _accountService.UpdatePassword( _accountService.CurrentAccount.Id, CurrentPassword, NewPassword );                        
-                        _accountService.SignOut();							
-                        var msg = Resources.GetString("ChangePasswordConfirmmation");
-                        var title = Settings.ApplicationName;
-						MessageService.ShowMessage(title, msg, () => { 
-							RequestNavigate<LoginViewModel>(true); 
-						});
+                        this.Services().Account.UpdatePassword(this.Services().Account.CurrentAccount.Id, CurrentPassword, NewPassword);
+                        this.Services().Account.SignOut();
+                        var msg = this.Services().Resources.GetString("ChangePasswordConfirmmation");
+                        var title = this.Services().Settings.ApplicationName;
+                        this.Services().Message.ShowMessage(title, msg, () => RequestNavigate<LoginViewModel>(true));
                     }catch(Exception e)
                     {
-                        var msg = Resources.GetString("ServiceError" + e.Message);
-                        var title = Resources.GetString("ServiceErrorCallTitle");
-                        MessageService.ShowMessage(title, msg);;
+                        var msg = this.Services().Resources.GetString("ServiceError" + e.Message);
+                        var title = this.Services().Resources.GetString("ServiceErrorCallTitle");
+                        this.Services().Message.ShowMessage(title, msg);
                     }finally{
-                        MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
                     }					
 
 				});

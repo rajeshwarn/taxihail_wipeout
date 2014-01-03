@@ -1,18 +1,13 @@
-using System;
 using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Android.Widget;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-	public class CustomBindingsLoader
-	{
-		public static void Load(IMvxTargetBindingFactoryRegistry registry)
-		{
-			//registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(TextViewBinding), typeof(TextView), "Text"));
-			TipSliderBinding.Register(registry);
-			TextViewBinding.Register(registry);
-		}
-	}
+    public static class CustomBindingsLoader
+    {
+        public static void Load(IMvxTargetBindingFactoryRegistry registry)
+        {
+            TipSliderBinding.Register(registry);
+            TextViewBinding.Register(registry);
+        }
+    }
 }
-

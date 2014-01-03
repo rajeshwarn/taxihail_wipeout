@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using System.Reflection;
-using System.Text;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ApplicationInfoService : RestServiceBase<ApplicationInfoRequest>
+    public class ApplicationInfoService : Service
     {
-        
-        
         private readonly IConfigurationManager _configManager;
+
         public ApplicationInfoService(IConfigurationManager configManager)
-        {            
+        {
             _configManager = configManager;
         }
 
 
-        public override object OnGet(ApplicationInfoRequest request)
+        public object Get(ApplicationInfoRequest request)
         {
             var info = new ApplicationInfo
-                {
-                    Version = Assembly.GetAssembly(typeof(ApplicationInfoService)).GetName().Version.ToString(),
-                    SiteName =  _configManager.GetSetting("TaxiHail.SiteName")
-                };
+            {
+                Version = Assembly.GetAssembly(typeof (ApplicationInfoService)).GetName().Version.ToString(),
+                SiteName = _configManager.GetSetting("TaxiHail.SiteName")
+            };
             return info;
         }
-
-
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿// ReSharper disable once CheckNamespace
 namespace CustomerPortal.Web.Entities
 {
     public class JobStatusDetails
@@ -11,6 +6,5 @@ namespace CustomerPortal.Web.Entities
         public JobStatus? Status { get; set; }
 
         public string Details { get; set; }
-
     }
 }

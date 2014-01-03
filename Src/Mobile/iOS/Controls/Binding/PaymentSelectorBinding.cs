@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 			registry.RegisterFactory(new MvxCustomBindingFactory<PaymentSelector>("PayPalSelected", obj => new PaymentSelectorBinding(obj)));
 		}
 
-		private PaymentSelector _control;
+		private readonly PaymentSelector _control;
 
 		public PaymentSelectorBinding(PaymentSelector control)
 		{

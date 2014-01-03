@@ -1,51 +1,36 @@
+#region
+
 using System;
 using System.Collections.Generic;
-using BraintreeEncryption.Library;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
-using MK.Booking.Api.Client;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
-        private IPaymentServiceClient _paymentService;
+        private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, string userAgent, IPaymentServiceClient tokenizationService =null)
+        public AccountServiceClient(string url, string sessionId, string userAgent,
+            IPaymentServiceClient tokenizationService = null)
             : base(url, sessionId, userAgent)
         {
             _paymentService = tokenizationService;
         }
 
 
-        public Account GetMyAccount( )
+        public Account GetMyAccount()
         {
             var result = Client.Get<Account>("/account");
-            return result;
-        }
-        
-        public Account GetTestAccount(int index)
-        {
-            var result = Client.Get<Account>("/account/test/" + index);
-            return result;
-        }
-
-        public Account CreateTestAccount()
-        {
-            var result = Client.Get<Account>("/account/test/" + Guid.NewGuid());
-            return result;
-        }
-
-        public Account CreateTestAdminAccount()
-        {
-            var result = Client.Get<Account>("/account/test/admin/" + Guid.NewGuid());
             return result;
         }
 
         public void RegisterAccount(RegisterAccount account)
         {
-            Client.Post<Account>("/account/register", account);         
+            Client.Post<Account>("/account/register", account);
         }
 
         public void UpdateBookingSettings(BookingSettingsRequest settings)
@@ -88,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void ResetPassword(string emailAddress)
         {
             var req = string.Format("/account/resetpassword/{0}", emailAddress);
-            Client.Post<string>(req,null);
+            Client.Post<string>(req, null);
         }
 
         public string UpdatePassword(UpdatePassword updatePassword)
@@ -120,13 +105,28 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var req = string.Format("/account/creditcards/" + creditCardId);
             Client.Delete<string>(req);
-			if(!string.IsNullOrWhiteSpace(cardOnFileToken))
-			{
-            	_paymentService.ForgetTokenizedCard(cardOnFileToken);
-			}
+            if (!string.IsNullOrWhiteSpace(cardOnFileToken))
+            {
+                _paymentService.ForgetTokenizedCard(cardOnFileToken);
+            }
         }
 
-     
+        public Account GetTestAccount(int index)
+        {
+            var result = Client.Get<Account>("/account/test/" + index);
+            return result;
+        }
 
+        public Account CreateTestAccount()
+        {
+            var result = Client.Get<Account>("/account/test/" + Guid.NewGuid());
+            return result;
+        }
+
+        public Account CreateTestAdminAccount()
+        {
+            var result = Client.Get<Account>("/account/test/admin/" + Guid.NewGuid());
+            return result;
+        }
     }
 }

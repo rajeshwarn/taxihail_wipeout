@@ -1,6 +1,9 @@
-﻿using System;
-using Infrastructure.EventSourcing;
+﻿#region
+
 using apcurium.MK.Common.Entity;
+using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {

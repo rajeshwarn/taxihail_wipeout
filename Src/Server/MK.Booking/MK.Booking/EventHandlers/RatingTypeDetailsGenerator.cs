@@ -1,13 +1,18 @@
+#region
+
 using System;
 using System.Linq;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class RatingTypeDetailsGenerator : IEventHandler<RatingTypeAdded>, IEventHandler<RatingTypeHidded>, IEventHandler<RatingTypeUpdated>
+    public class RatingTypeDetailsGenerator : IEventHandler<RatingTypeAdded>, IEventHandler<RatingTypeHidded>,
+        IEventHandler<RatingTypeUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -22,12 +27,12 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 if (context.Query<RatingTypeDetail>().FirstOrDefault(x => x.Name == @event.Name) == null)
                 {
-                    context.Save(new RatingTypeDetail()
-                                 {
-                                     CompanyId = @event.SourceId,
-                                     Id = @event.RatingTypeId,
-                                     Name = @event.Name
-                                 });
+                    context.Save(new RatingTypeDetail
+                    {
+                        CompanyId = @event.SourceId,
+                        Id = @event.RatingTypeId,
+                        Name = @event.Name
+                    });
                 }
             }
         }

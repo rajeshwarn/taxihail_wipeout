@@ -1,59 +1,65 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.EventSourcing;
+
+#endregion
+
 namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
-        private int? _defaultTipPercent;
         private int _creditCardCount;
+        private int? _defaultTipPercent;
+
         protected Account(Guid id) : base(id)
         {
-            base.Handles<AccountRegistered>(OnAccountRegistered);
-            base.Handles<AccountConfirmed>(NoAction);
-            base.Handles<AccountDisabled>(NoAction);
-            base.Handles<AccountUpdated>(NoAction);
-            base.Handles<FavoriteAddressAdded>(OnAddressAdded);
-            base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
-            base.Handles<FavoriteAddressUpdated>(OnAddressUpdated);
-            base.Handles<AccountPasswordReset>(NoAction);
-            base.Handles<BookingSettingsUpdated>(NoAction);
-            base.Handles<AccountPasswordUpdated>(NoAction);
-            base.Handles<AddressRemovedFromHistory>(NoAction);
-            base.Handles<RoleAddedToUserAccount>(NoAction);
-            base.Handles<CreditCardAdded>(OnCreditCardAdded);
-            base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
-            base.Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
-            base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
-            base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
-            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
+            Handles<AccountRegistered>(OnAccountRegistered);
+            Handles<AccountConfirmed>(NoAction);
+            Handles<AccountDisabled>(NoAction);
+            Handles<AccountUpdated>(NoAction);
+            Handles<FavoriteAddressAdded>(OnAddressAdded);
+            Handles<FavoriteAddressRemoved>(OnAddressRemoved);
+            Handles<FavoriteAddressUpdated>(OnAddressUpdated);
+            Handles<AccountPasswordReset>(NoAction);
+            Handles<BookingSettingsUpdated>(NoAction);
+            Handles<AccountPasswordUpdated>(NoAction);
+            Handles<AddressRemovedFromHistory>(NoAction);
+            Handles<RoleAddedToUserAccount>(NoAction);
+            Handles<CreditCardAdded>(OnCreditCardAdded);
+            Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
+            Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
+            Handles<DeviceRegisteredForPushNotifications>(NoAction);
+            Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
-        {               
-            this.LoadFrom(history);
+        {
+            LoadFrom(history);
         }
 
-        public Account(Guid id, string name, string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
+        public Account(Guid id, string name, string phone, string email, byte[] password, int ibsAccountId,
+            string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0 || (password == null) )
+                || ibsAccountId == 0 || (password == null))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
-            this.Update(new AccountRegistered
+            Update(new AccountRegistered
             {
                 SourceId = id,
                 Name = name,
@@ -68,15 +74,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null, string twitterId = null, string language = null, bool isAdmin = false)
+        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null,
+            string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0 )
+                || ibsAccountId == 0)
             {
                 throw new InvalidOperationException("Missing required fields");
             }
-            this.Update(new AccountRegistered
+            Update(new AccountRegistered
             {
                 SourceId = id,
                 Name = name,
@@ -93,24 +100,26 @@ namespace apcurium.MK.Booking.Domain
         public void ConfirmAccount(string confirmationToken)
         {
             if (confirmationToken == null) throw new ArgumentNullException();
-            if(confirmationToken.Length == 0) throw new ArgumentException("Confirmation token cannot be an empty string");
-            if(confirmationToken != this._confirmationToken) throw new InvalidOperationException("Invalid confirmation token");
+            if (confirmationToken.Length == 0)
+                throw new ArgumentException("Confirmation token cannot be an empty string");
+            if (confirmationToken != _confirmationToken)
+                throw new InvalidOperationException("Invalid confirmation token");
 
-            this.Update(new AccountConfirmed());  
+            Update(new AccountConfirmed());
         }
-        
-        internal void Update( string name )
+
+        internal void Update(string name)
         {
             if (Params.Get(name).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new AccountUpdated
-            {                 
-                SourceId= Id,
-                Name = name,                
-            });        
+            Update(new AccountUpdated
+            {
+                SourceId = Id,
+                Name = name,
+            });
         }
 
         internal void ResetPassword(byte[] newPassword)
@@ -120,7 +129,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new AccountPasswordReset()
+            Update(new AccountPasswordReset
             {
                 SourceId = Id,
                 Password = newPassword
@@ -134,7 +143,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new AccountPasswordUpdated()
+            Update(new AccountPasswordUpdated
             {
                 SourceId = Id,
                 Password = newPassword
@@ -143,24 +152,24 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateBookingSettings(BookingSettings settings)
         {
-            this.Update(new BookingSettingsUpdated
+            Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
-                Name = settings.Name,                
+                Name = settings.Name,
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
                 Passengers = settings.Passengers,
                 Phone = settings.Phone,
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId
-            });  
+            });
         }
 
         public void AddFavoriteAddress(Address address)
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new FavoriteAddressAdded
+            Update(new FavoriteAddressAdded
             {
                 Address = address
             });
@@ -170,20 +179,20 @@ namespace apcurium.MK.Booking.Domain
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new FavoriteAddressUpdated()
+            Update(new FavoriteAddressUpdated
             {
-               Address = address
+                Address = address
             });
         }
 
         public void RemoveFavoriteAddress(Guid addressId)
         {
-            if(!_favoriteAddresses.Contains(addressId))
+            if (!_favoriteAddresses.Contains(addressId))
             {
                 throw new InvalidOperationException("Address does not exist in account");
             }
 
-            this.Update(new FavoriteAddressRemoved
+            Update(new FavoriteAddressRemoved
             {
                 AddressId = addressId
             });
@@ -191,13 +200,14 @@ namespace apcurium.MK.Booking.Domain
 
         public void RemoveAddressFromHistory(Guid addressId)
         {
-            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
+            Update(new AddressRemovedFromHistory {AddressId = addressId});
         }
 
 
-        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits, string token)
+        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits,
+            string token)
         {
-            this.Update(new CreditCardAdded
+            Update(new CreditCardAdded
             {
                 CreditCardCompany = creditCardCompany,
                 CreditCardId = creditCardId,
@@ -209,7 +219,7 @@ namespace apcurium.MK.Booking.Domain
             // Automatically set first credit card as default
             if (_creditCardCount == 1)
             {
-                this.Update(new PaymentProfileUpdated
+                Update(new PaymentProfileUpdated
                 {
                     DefaultCreditCard = creditCardId,
                     DefaultTipPercent = _defaultTipPercent
@@ -219,11 +229,17 @@ namespace apcurium.MK.Booking.Domain
 
         public void RemoveCreditCard(Guid creditCardId)
         {
-            this.Update(new CreditCardRemoved
+            Update(new CreditCardRemoved
             {
                 CreditCardId = creditCardId
             });
         }
+
+        public void RemoveAllCreditCards()
+        {
+            Update(new AllCreditCardsRemoved());
+        }
+
         private void OnAllCreditCardsRemoved(AllCreditCardsRemoved obj)
         {
             _creditCardCount = 0;
@@ -231,7 +247,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdatePaymentProfile(Guid? defaultCreditCard, int? defaultTipPercent)
         {
-            this.Update(new PaymentProfileUpdated
+            Update(new PaymentProfileUpdated
             {
                 DefaultCreditCard = defaultCreditCard,
                 DefaultTipPercent = defaultTipPercent
@@ -240,7 +256,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void AddRole(string rolename)
         {
-            this.Update(new RoleAddedToUserAccount
+            Update(new RoleAddedToUserAccount
             {
                 RoleName = rolename,
             });
@@ -253,10 +269,10 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing device token");
             }
 
-            this.Update(new DeviceRegisteredForPushNotifications
+            Update(new DeviceRegisteredForPushNotifications
             {
-                 DeviceToken = deviceToken,
-                 Platform = platform,
+                DeviceToken = deviceToken,
+                Platform = platform,
             });
         }
 
@@ -267,7 +283,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing device token");
             }
 
-            this.Update(new DeviceUnregisteredForPushNotifications
+            Update(new DeviceUnregisteredForPushNotifications
             {
                 DeviceToken = deviceToken,
             });
@@ -294,7 +310,6 @@ namespace apcurium.MK.Booking.Domain
             {
                 _favoriteAddresses.Add(@event.Address.Id);
             }
-
         }
 
         private void OnCreditCardAdded(CreditCardAdded obj)
@@ -309,16 +324,16 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
         {
-            this._defaultTipPercent = @event.DefaultTipPercent;
+            _defaultTipPercent = @event.DefaultTipPercent;
         }
 
 
         private void NoAction<T>(T @event) where T : VersionedEvent
         {
-            
         }
 
-        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
+        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
+            double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(p => p.IsNullOrEmpty()))
             {
@@ -327,6 +342,7 @@ namespace apcurium.MK.Booking.Domain
 
             if (latitude < -90 || latitude > 90)
             {
+// ReSharper disable LocalizableElement
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
@@ -334,22 +350,17 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
+// ReSharper restore LocalizableElement
         }
 
         public void EnableAccountByAdmin()
         {
-            this.Update(new AccountConfirmed());  
+            Update(new AccountConfirmed());
         }
 
         public void DisableAccountByAdmin()
         {
-            this.Update(new AccountDisabled());
-        }
-
-
-        public void RemoveAllCreditCards()
-        {
-            this.Update(new AllCreditCardsRemoved());
+            Update(new AccountDisabled());
         }
     }
 }

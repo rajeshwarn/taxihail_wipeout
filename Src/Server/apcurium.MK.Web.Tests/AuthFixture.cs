@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class AuthFixture : BaseTest
     {
-
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -38,22 +38,6 @@ namespace apcurium.MK.Web.Tests
 
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
-        public void when_user_sign_in_with_invalid_password()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.Authenticate(TestAccount.Email, "wrong password");
-        }
-
-        [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
-        public void when_user_sign_in_with_invalid_email()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
-        }
-
-        [Test]
         public void when_user_sign_in_with_facebook()
         {
             var account = GetNewFacebookAccount();
@@ -66,11 +50,37 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage"
+            )]
+        public void when_user_sign_in_with_invalid_email()
+        {
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+        }
+
+        [Test]
         public void when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
             Assert.Throws<WebServiceException>(() => sut
                 .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+        }
+
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage"
+            )]
+        public void when_user_sign_in_with_invalid_password()
+        {
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            sut.Authenticate(TestAccount.Email, "wrong password");
+        }
+
+        [Test]
+        public void when_user_sign_in_with_invalid_twitter_id()
+        {
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            Assert.Throws<WebServiceException>(() => sut
+                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
 
         [Test]
@@ -83,14 +93,6 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
             Assert.AreEqual(account.TwitterId, response.UserName);
-        }
-
-        [Test]
-        public void when_user_sign_in_with_invalid_twitter_id()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(() => sut
-                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }

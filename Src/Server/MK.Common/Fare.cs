@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace apcurium.MK.Common
 {
     public struct Fare
@@ -13,15 +9,15 @@ namespace apcurium.MK.Common
 
         public static Fare FromAmountInclTax(decimal amount, decimal taxRate)
         {
-            decimal amountExclTax = amount / (1 + taxRate/100);
-            decimal taxAmount = amount - amountExclTax;
+            var amountExclTax = amount/(1 + taxRate/100);
+            var taxAmount = amount - amountExclTax;
             return new Fare
-                       {
-                           AmountInclTax = amount,
-                           TaxRate = taxRate,
-                           AmountExclTax = amountExclTax,
-                           TaxAmount = taxAmount
-                       };
-        } 
+            {
+                AmountInclTax = amount,
+                TaxRate = taxRate,
+                AmountExclTax = amountExclTax,
+                TaxAmount = taxAmount
+            };
+        }
     }
 }

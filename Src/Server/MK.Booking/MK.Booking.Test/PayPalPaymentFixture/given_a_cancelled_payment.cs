@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
 {
     [TestFixture]
     public class given_a_cancelled_payment
     {
-        private EventSourcingTestHelper<PayPalPayment> sut;
-        private Guid _orderId;
-        private Guid _paymentId;
-
         [SetUp]
         public void Setup()
         {
@@ -26,7 +22,7 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             _paymentId = Guid.NewGuid();
 
             sut = new EventSourcingTestHelper<PayPalPayment>();
-            sut.Setup(new PayPalPaymentCommandHandler(this.sut.Repository));
+            sut.Setup(new PayPalPaymentCommandHandler(sut.Repository));
             sut.Given(new PayPalExpressCheckoutPaymentInitiated
             {
                 SourceId = _paymentId,
@@ -37,14 +33,17 @@ namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
             sut.Given(new PayPalExpressCheckoutPaymentCancelled {SourceId = _paymentId});
         }
 
+        private EventSourcingTestHelper<PayPalPayment> sut;
+        private Guid _orderId;
+        private Guid _paymentId;
+
         [Test]
         public void when_completing_the_payment()
         {
             Assert.Throws<InvalidOperationException>(() => sut.When(new CompletePayPalExpressCheckoutPayment
-                                                                        {
-                                                                            PaymentId = _paymentId,
-                                                                        }));
-
+            {
+                PaymentId = _paymentId,
+            }));
         }
     }
 }

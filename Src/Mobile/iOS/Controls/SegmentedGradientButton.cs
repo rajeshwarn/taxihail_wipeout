@@ -1,6 +1,4 @@
-using System;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Style;
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
@@ -10,21 +8,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register("SegmentedGradientButton")]
     public class SegmentedGradientButton: GradientButton
     {
-        public SegmentedGradientButton(IntPtr handle): base(handle)
-        {
-
-        }
-
+        
         public SegmentedGradientButton (RectangleF rect): base(rect)
         {
 
         }
 
-        private SegmentedGradientButton (RectangleF rect, float cornerRadius, ButtonStyle buttonStyle, string title, UIFont titleFont, string image)
-            : base(rect, cornerRadius, buttonStyle, title, titleFont, image)
-        {
-
-        }
 
         private bool _isLeftButton;
         public bool IsLeftButton {
@@ -40,13 +29,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        protected override void DrawStroke (MonoTouch.CoreGraphics.CGContext context, UIBezierPath roundedRectanglePath, RectangleF rect)
+        protected override void DrawStroke (CGContext context, UIBezierPath roundedRectanglePath, RectangleF rect)
         {
             if (Selected) {
                 base.DrawStroke (context, roundedRectanglePath, rect);
             } else {
                 context.SaveState ();
-                base.StrokeLineColor.SetStroke ();
+                StrokeLineColor.SetStroke ();
 
                 // Rect with radius, will be used to clip the entire view
                 float minx = rect.GetMinX () + 1, midx = rect.GetMidX (), maxx = rect.GetMaxX ();
@@ -57,14 +46,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (IsLeftButton) {
                     context.MoveTo (maxx - .5f, miny - .5f);
                     context.AddLineToPoint (midx - .5f, miny - .5f);
-                    context.AddArcToPoint (minx - .5f, miny - .5f, minx - .5f, midy - .5f, base.CornerRadius);
-                    context.AddArcToPoint (minx - .5f, maxy - .5f, midx - .5f, maxy - .5f, base.CornerRadius);
+                    context.AddArcToPoint (minx - .5f, miny - .5f, minx - .5f, midy - .5f, CornerRadius);
+                    context.AddArcToPoint (minx - .5f, maxy - .5f, midx - .5f, maxy - .5f, CornerRadius);
                     context.AddLineToPoint (maxx - .5f, maxy - .5f);
                 } else {
                     context.MoveTo (minx - .5f, miny - .5f);
                     context.AddLineToPoint (midx - .5f, miny - .5f);
-                    context.AddArcToPoint (maxx - .5f, miny - .5f, maxx - .5f, midy - .5f, base.CornerRadius);
-                    context.AddArcToPoint (maxx - .5f, maxy - .5f, midx - .5f, maxy - .5f, base.CornerRadius);
+                    context.AddArcToPoint (maxx - .5f, miny - .5f, maxx - .5f, midy - .5f, CornerRadius);
+                    context.AddArcToPoint (maxx - .5f, maxy - .5f, midx - .5f, maxy - .5f, CornerRadius);
                     context.AddLineToPoint (minx - .5f, maxy - .5f);
                 }
 

@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DE9A07FE-A2EE-4669-934E-FF6D1805D858}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>apcurium.MK.Callbox.Mobile.Client</RootNamespace>
+    <AssemblyName>MK.Callbox.Mobile.Client.Android</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidApplication>true</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
+    <MandroidI18n />
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>mkTaxiHailDemoCallbox0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK.TaxiHailDemoCallbox</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkTaxiHailDemoCallbox0001.</AndroidSigningKeyPass>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>mk303Taxi0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MK303Taxi</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mk303Taxi0001.</AndroidSigningKeyPass>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Providers">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\AlertDialogActivity.cs" />
+    <Compile Include="Activities\BaseActivity.cs" />
+    <Compile Include="Activities\CallTaxiActivity.cs" />
+    <Compile Include="Activities\BaseDialogActivity.cs" />
+    <Compile Include="Activities\EditTextDialogActivity.cs" />
+    <Compile Include="Activities\LoginActivity.cs" />
+    <Compile Include="Activities\OrderListActivity.cs" />
+    <Compile Include="Activities\SelectItemDialogActivity.cs" />
+    <Compile Include="Activities\SplashScreenActivity.cs" />
+    <Compile Include="AppFonts.cs" />
+    <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="Controls\HeaderedLayout.cs" />
+    <Compile Include="Controls\StyledButton.cs" />
+    <Compile Include="Controls\TextViewColor.cs" />
+    <Compile Include="Converters\AppConverters.cs" />
+    <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
+    <Compile Include="Converters\CoordinateConverter.cs" />
+    <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
+    <Compile Include="Diagnostic\ErrorHandler.cs" />
+    <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
+    <Compile Include="Helpers\AlertDialogHelper.cs" />
+    <Compile Include="Helpers\DrawHelper.cs" />
+    <Compile Include="Localization\ResourceManager.cs" />
+    <Compile Include="Messages\ActivityCompleted.cs" />
+    <Compile Include="PlatformIntegration\MessageService.cs" />
+    <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PhoneService.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="TaxiMobileApp.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\AppFont_Bold.otf" />
+    <AndroidAsset Include="Assets\AppFont_Italic.otf" />
+    <AndroidAsset Include="Assets\AppFont_Medium.otf" />
+    <AndroidAsset Include="Assets\AppFont_Regular.otf" />
+    <None Include="Resources\AboutResources.txt" />
+    <AndroidResource Include="Resources\Layout\View_Login.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Control_HeaderedLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_CallTaxi.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_OrderList.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Control_OrderCell.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\Main.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Values\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
+    <AndroidResource Include="Resources\Values\Styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\main_settings.png" />
+    <AndroidResource Include="Resources\Drawable\Logo.png" />
+    <AndroidResource Include="Resources\Drawable\background.png" />
+    <AndroidResource Include="Resources\Drawable\backPickupDestination.png">
+      <DependentUpon>background.png</DependentUpon>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\navBar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\main_settings.png" />
+    <AndroidResource Include="Resources\Drawable\black_button.xml" />
+    <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
+    <AndroidResource Include="Resources\Drawable\gray_button.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\newBlackButton.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
+    <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
+    <AndroidResource Include="Resources\Drawable\server_button.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\email_cell.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
+    <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Values\Color.xml" />
+    <AndroidResource Include="Resources\Drawable\background_logo.png" />
+    <AndroidResource Include="Resources\Drawable\background_empty.png" />
+    <AndroidResource Include="Resources\Drawable\orderListBackground.xml" />
+    <AndroidResource Include="Resources\Raw\vehicle.mp3" />
+    <AndroidResource Include="Resources\Drawable\red_button.xml" />
+    <AndroidResource Include="Resources\Drawable\navBar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
+      <Name>MK.Common.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
+      <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
+      <Name>MK.Booking.Mobile.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Localization\Mapper\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+     Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy FileWidth="120" TabsToSpaces="False" EolMarker="Windows" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+</Project>

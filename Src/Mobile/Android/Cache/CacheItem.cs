@@ -6,12 +6,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
     {
         public CacheItem(T value)
         {
-            this.Value = value;
+            Value = value;
         }
+
         public CacheItem(T value, DateTime expireAt)
         {
-            this.Value = value;
-            this.ExpiresAt = expireAt;
+            Value = value;
+            ExpiresAt = expireAt;
         }
 
         public DateTime ExpiresAt { get; set; }

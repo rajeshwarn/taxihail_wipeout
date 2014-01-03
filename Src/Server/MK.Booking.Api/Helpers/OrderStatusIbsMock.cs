@@ -1,19 +1,23 @@
-﻿using System;
-using ServiceStack.ServiceInterface.Auth;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceInterface.Auth;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Helpers
 {
-    class OrderStatusIbsMock: OrderStatusHelper
+    internal class OrderStatusIbsMock : OrderStatusHelper
     {
-        readonly OrderStatusUpdater _updater;
+        private readonly OrderStatusUpdater _updater;
 
         public OrderStatusIbsMock(IOrderDao orderDao, OrderStatusUpdater updater)
-            :base(orderDao)
+            : base(orderDao)
         {
             _updater = updater;
         }
@@ -22,22 +26,22 @@ namespace apcurium.MK.Booking.Api.Helpers
         {
             var orderStatus = base.GetOrderStatus(orderId, session);
 
-            var ibsInfo = new IBSOrderInformation
-                              {
-                                  IBSOrderId = 9999,
-                                  VehicleMake = "FakeMake",
-                                  VehicleColor = "FakeColor",
-                                  VehicleModel = "FakeModel",
-                                  VehicleNumber = "FakeNumber",
-                                  VehicleRegistration = "Fake",
-                                  VehicleType = "Fake",
-                                  FirstName = "FakeName",
-                                  LastName = "FakeName",
-                                  MobilePhone = "FakePhone",
-                                  VehicleLatitude = 45.5134,
-                                  VehicleLongitude = -73.5530
-                              };
-            switch (orderStatus.IBSStatusId)
+            var ibsInfo = new IbsOrderInformation
+            {
+                IbsOrderId = 9999,
+                VehicleMake = "FakeMake",
+                VehicleColor = "FakeColor",
+                VehicleModel = "FakeModel",
+                VehicleNumber = "FakeNumber",
+                VehicleRegistration = "Fake",
+                VehicleType = "Fake",
+                FirstName = "FakeName",
+                LastName = "FakeName",
+                MobilePhone = "FakePhone",
+                VehicleLatitude = 45.5134,
+                VehicleLongitude = -73.5530
+            };
+            switch (orderStatus.IbsStatusId)
             {
                 case null:
                 case "":
@@ -55,7 +59,6 @@ namespace apcurium.MK.Booking.Api.Helpers
             }
             _updater.Update(ibsInfo, orderStatus);
             return orderStatus;
-
         }
     }
 }

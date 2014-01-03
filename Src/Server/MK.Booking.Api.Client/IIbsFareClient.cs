@@ -1,14 +1,14 @@
-using System;
-using apcurium.MK.Booking.Api.Contract.Requests;
+#region
+
 using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Mobile
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client
 {
-	public interface IIbsFareClient
-	{
-        DirectionInfo GetDirectionInfoFromIbs(double pickupLatitude, double pickupLongitude, double dropoffLatitude, double dropofLongitude);
-	}
+    public interface IIbsFareClient
+    {
+        DirectionInfo GetDirectionInfoFromIbs(double pickupLatitude, double pickupLongitude, double dropoffLatitude,
+            double dropofLongitude);
+    }
 }
-
-	

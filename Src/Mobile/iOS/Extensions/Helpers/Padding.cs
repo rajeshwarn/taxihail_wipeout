@@ -1,4 +1,4 @@
-using System;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 {
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             Bottom = bottom;
         }
         
-        public System.Drawing.RectangleF ShrinkRectangle (System.Drawing.RectangleF rect)
+        public RectangleF ShrinkRectangle (RectangleF rect)
         {
             rect.X = rect.X + Left;
             rect.Y = rect.Y + Top;

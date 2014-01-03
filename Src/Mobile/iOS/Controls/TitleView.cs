@@ -1,10 +1,9 @@
-using System;
-using MonoTouch.UIKit;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Style;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Common.Extensions;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class TitleView : UIView
 	{

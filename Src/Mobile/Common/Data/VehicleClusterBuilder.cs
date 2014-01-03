@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.Data
 {
     public class VehicleClusterBuilder
     {
-        private readonly System.Collections.Generic.List<AvailableVehicle> _vehicles = new List<AvailableVehicle>();
+        private readonly List<AvailableVehicle> _vehicles = new List<AvailableVehicle>();
         public void Add(AvailableVehicle vehicle)
         {
             if (vehicle == null) throw new ArgumentNullException();

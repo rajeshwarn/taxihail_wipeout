@@ -1,8 +1,12 @@
-﻿using System;
-using NUnit.Framework;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
 {
@@ -19,17 +23,17 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
-            this.sut.Handle(new CreditCardAdded
-                {
-                    SourceId = accountId,
-                    CreditCardCompany = creditCardComapny,
-                    FriendlyName = friendlyName,
-                    CreditCardId = creditCardId,
-                    Last4Digits = last4Digits,
-                    Token = token
-                });
+            Sut.Handle(new CreditCardAdded
+            {
+                SourceId = accountId,
+                CreditCardCompany = creditCardComapny,
+                FriendlyName = friendlyName,
+                CreditCardId = creditCardId,
+                Last4Digits = last4Digits,
+                Token = token
+            });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<CreditCardDetails>(creditCardId);
                 Assert.NotNull(dto);

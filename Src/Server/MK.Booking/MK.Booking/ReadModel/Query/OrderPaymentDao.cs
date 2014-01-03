@@ -1,10 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public class OrderPaymentDao: IOrderPaymentDao
+    public class OrderPaymentDao : IOrderPaymentDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
 

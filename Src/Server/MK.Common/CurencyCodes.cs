@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace apcurium.MK.Common
+﻿namespace apcurium.MK.Common
 {
     public class CurrencyCodes
     {
@@ -17,7 +11,6 @@ namespace apcurium.MK.Common
             public const string EuroMemberCountries = "EUR";
         }
 
-        //http://www.xe.com/iso4217.php/
         #region OtherCodes
 
         public class Other
@@ -174,11 +167,11 @@ namespace apcurium.MK.Common
             public const string VietNamDong = "VND";
             public const string VanuatuVatu = "VUV";
             public const string SamoaTala = "WST";
-            public const string CommunautéFinancièreAfricaineBEACCFAFrancBEAC = "XAF";
+            public const string CommunautéFinancièreAfricaineBeaccfaFrancBeac = "XAF";
             public const string EastCaribbeanDollar = "XCD";
-            public const string InternationalMonetaryFundIMFSpecialDrawingRights = "XDR";
-            public const string CommunautéFinancièreAfricaineBCEAOFranc = "XOF";
-            public const string ComptoirsFrançaisduPacifiqueCFPFranc = "XPF";
+            public const string InternationalMonetaryFundImfSpecialDrawingRights = "XDR";
+            public const string CommunautéFinancièreAfricaineBceaoFranc = "XOF";
+            public const string ComptoirsFrançaisduPacifiqueCfpFranc = "XPF";
             public const string YemenRial = "YER";
             public const string SouthAfricaRand = "ZAR";
             public const string ZambiaKwacha = "ZMW";
@@ -186,5 +179,7 @@ namespace apcurium.MK.Common
         }
 
         #endregion
+
+        //http://www.xe.com/iso4217.php/
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class AvailableVehicle : BaseDTO
+    public class AvailableVehicle : BaseDto
     {
         public double Latitude { get; set; }
         public double Longitude { get; set; }
@@ -9,6 +9,5 @@
 
     public class AvailableVehicleCluster : AvailableVehicle
     {
-
     }
 }

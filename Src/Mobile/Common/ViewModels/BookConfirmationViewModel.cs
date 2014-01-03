@@ -1,72 +1,31 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
-using TinyIoC;
-using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Client;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Configuration;
 using System.Globalization;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class BookConfirmationViewModel : BaseViewModel,
-		IMvxServiceConsumer<IAccountService>,
-		IMvxServiceConsumer<IBookingService>,
-		IMvxServiceConsumer<ICacheService>
+	public class BookConfirmationViewModel : BaseViewModel
 	{
-		IBookingService _bookingService;
-		IAccountService _accountService;
-
-		public BookConfirmationViewModel(string order)
+        public BookConfirmationViewModel(string order)
 		{
-			_accountService = this.GetService<IAccountService>();
-			_bookingService = this.GetService<IBookingService>();
-			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
-			RideSettings = new RideSettingsViewModel(Order.Settings);
-
-
-
-			RideSettings.OnPropertyChanged().Subscribe(p =>
-			{
-				FirePropertyChanged(() => RideSettings);
-			});
+	        Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
+            RideSettings = new RideSettingsViewModel(Order.Settings);
+            RideSettings.OnPropertyChanged().Subscribe(p => FirePropertyChanged(() => RideSettings));
 		}
 
-		void HandlePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-            
-		}
 
 		public override void Load()
 		{
-			base.Load();
-
-			Console.WriteLine("Opening confirmation view....");
-
+		    base.Load();
 			ShowWarningIfNecessary();
-
-
 			ShowFareEstimateAlertDialogIfNecessary();
-
-			Console.WriteLine("Done opening confirmation view....");
-
 		}
 
 		public string FareEstimate
@@ -101,12 +60,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public string OrderPassengerNumber
 		{
-			get { return Order.Settings.Passengers.ToString(); }
+			get { return Order.Settings.Passengers.ToString(CultureInfo.InvariantCulture); }
 		}
 
 		public string OrderLargeBagsNumber
 		{
-			get { return Order.Settings.LargeBags.ToString(); }
+			get { return Order.Settings.LargeBags.ToString(CultureInfo.InvariantCulture); }
 		}
 
 		public string OrderName
@@ -133,10 +92,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var ret = true;
+// ReSharper disable once RedundantAssignment
+                var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
 				}
 				catch (Exception)
 				{
@@ -150,10 +110,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
 				}
 				catch (Exception)
 				{
@@ -167,10 +128,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
 				}
 				catch (Exception)
 				{
@@ -180,11 +142,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand NavigateToRefineAddress
+        public AsyncCommand NavigateToRefineAddress
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>()
+				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
 				{
 					{ "apt", Order.PickupAddress.Apartment },
 					{ "ringCode", Order.PickupAddress.RingCode },
@@ -206,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand NavigateToEditInformations
+        public AsyncCommand NavigateToEditInformations
 		{
 			get
 			{
@@ -245,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand ConfirmOrderCommand
+        public AsyncCommand ConfirmOrderCommand
 		{
 			get
 			{
@@ -257,17 +219,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.Id = Guid.NewGuid();
 					try
 					{
-						MessageService.ShowProgress(true);
-						var orderInfo = _bookingService.CreateOrder(Order);
+                        this.Services().Message.ShowProgress(true);
+                        var orderInfo = this.Services().Booking.CreateOrder(Order);
 
-						if (!orderInfo.IBSOrderId.HasValue || !(orderInfo.IBSOrderId > 0))
+							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
 
 						var orderCreated = new Order
 						{
 							CreatedDate = DateTime.Now, 
 							DropOffAddress = Order.DropOffAddress, 
-							IBSOrderId = orderInfo.IBSOrderId, 
+							IbsOrderId = orderInfo.IbsOrderId, 
 							Id = Order.Id, PickupAddress = Order.PickupAddress,
 							Note = Order.Note, 
 							PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
@@ -280,27 +242,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						            orderStatus = orderInfo.ToJson()
 						        });	
 						Close();
-						MessengerHub.Publish(new OrderConfirmed(this, Order, false));
+                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 					}
-					catch (Exception ex)
+					catch
 					{
 						InvokeOnMainThread(() =>
 						{
-							var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 							if (CallIsEnabled)
 							{
-								var err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, Config.GetSetting("DefaultPhoneNumberDisplay"));
-								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
+                                var err = string.Format(this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), err);
 							}
 							else
 							{
-								MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), Resources.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall"));
 							}
 						});
 					}
 					finally
 					{
-						MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
 					}                         
 				}); 
                
@@ -312,42 +273,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 
-				return !Config.GetSetting("Client.HideCallDispatchButton", false);
+                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
 
 		}
 
-		public IMvxCommand CancelOrderCommand
+        public AsyncCommand CancelOrderCommand
 		{
 			get
 			{
 				return GetCommand(() =>
 				{
 					Close();
-					MessengerHub.Publish(new OrderConfirmed(this, Order, true));
+                    this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));
 				});            
 			}
 		}
 
 		private async void ShowWarningIfNecessary()
 		{
-			var validationInfo = await _bookingService.ValidateOrder(Order);
+            var validationInfo = await this.Services().Booking.ValidateOrder(Order);
 			if (validationInfo.HasWarning)
 			{
 
-				MessageService.ShowMessage(Resources.GetString("WarningTitle"), 
-					validationInfo.Message, Resources.GetString("ContinueButton"), () => validationInfo.ToString(), Resources.GetString("CancelBoutton"), () => RequestClose(this));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningTitle"), 
+// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                    validationInfo.Message, this.Services().Resources.GetString("ContinueButton"), () => validationInfo.ToString(), this.Services().Resources.GetString("CancelBoutton"), () => RequestClose(this));
 			}
 		}
 
-		private bool _showEstimate
+        //todo refactorer ça, avec un getdefault value
+		private bool ShowEstimate
 		{
 			get
 			{
+// ReSharper disable once RedundantAssignment
 				var ret = true;
 				try
 				{
-					ret = Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowEstimate"));
+                    ret = Boolean.Parse(this.Services().Config.GetSetting("Client.ShowEstimate"));
 				}
 				catch (Exception)
 				{
@@ -359,19 +323,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void ShowFareEstimateAlertDialogIfNecessary()
 		{
-			if (_showEstimate)
+			if (ShowEstimate)
 			{
-				var estimateEnabled = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<bool>("Client.ShowEstimateWarning", true);
+                var estimateEnabled = this.Services().Config.GetSetting("Client.ShowEstimateWarning", true);
 
 				if (estimateEnabled &&
-				                this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
+                                this.Services().Cache.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
 				                Order.DropOffAddress.HasValidCoordinate())
 				{
-					MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
+                    this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningEstimateTitle"), this.Services().Resources.GetString("WarningEstimate"),
 						"Ok", delegate
 					{
 					},
-						Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
+                        this.Services().Resources.GetString("WarningEstimateDontShow"), () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
 				}
 			}
 		}
@@ -394,61 +358,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-			string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
 			result += @" / ";
-			result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
 			return result;
 		}
 
 		private string FormatBuildingName(string buildingName)
 		{
-			if (buildingName.HasValue())
+		    if (buildingName.HasValue())
 			{
 				return buildingName;
 			}
-			else
-			{
-				return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
-			}
+            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
 		}
 
-		private string FormatDateTime(DateTime? pickupDate)
-		{
-			var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
-			string format = "{0:dddd, MMMM d}, {0:" + formatTime + "}";
-			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
-			return result;
-		}
-
-		private string FormatPrice(double? price)
-		{
-			if (price.HasValue)
+	    private string FormatPrice(double? price)
+	    {
+	        if (price.HasValue)
 			{
-				var culture = ConfigurationManager.GetSetting("PriceFormat");
+                var culture = this.Services().Config.GetSetting("PriceFormat");
 				return string.Format(new CultureInfo(culture), "{0:C}", price);
 			}
-			else
-			{
-				return "";
-			}
-
-		}
-
-		public string CultureInfoString
-		{
-			get
-			{
-				var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
-				if (culture.IsNullOrEmpty())
-				{
-					return "en-US";
-				}
-				else
-				{
-					return culture;
-				}
-			}
-		}
+	        return string.Empty;
+	    }
 	}
 }
 

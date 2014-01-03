@@ -1,6 +1,10 @@
-﻿using ServiceStack.ServiceHost;
+﻿#region
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
+using ServiceStack.ServiceHost;
+
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize
 {
     [Route("v2/tokenize")]
     public class TokenizeRequest : IReturn<TokenizeResponse>
@@ -9,10 +13,11 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
         {
             ValidateAccountInformation = true;
         }
-        public string AccountNumber {get; set;}
+
+        public string AccountNumber { get; set; }
 
         public string ExpiryDate { get; set; }
-        
+
         public bool ValidateAccountInformation { get; set; }
     }
 }

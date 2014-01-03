@@ -1,26 +1,29 @@
+#region
+
 using System;
 using System.Net;
-using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 
-#if !CLIENT
-#else
+#endregion
+
+#if CLIENT
 using ServiceStack.Common.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
-
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.Cmt
 {
     public class CmtBaseServiceClient
     {
-        private ServiceClientBase _client;
-        private readonly string _url;
         protected readonly CmtAuthCredentials Credentials;
+        private readonly string _url;
+        private ServiceClientBase _client;
 
-        public CmtBaseServiceClient(string url) : this(url, null){ }
+        public CmtBaseServiceClient(string url) : this(url, null)
+        {
+        }
 
         public CmtBaseServiceClient(string url, CmtAuthCredentials cmtAuthCredentials)
         {
@@ -53,20 +56,19 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
 
         private void SignRequest(HttpWebRequest request)
         {
-           if (Credentials != null)
-           {
-               request.Headers.Add("X-CMT-SessionToken", Credentials.SessionId);
-              
-               var oauthHeader = OAuthAuthorizer.AuthorizeRequest(Credentials.ConsumerKey,
-                                                                  Credentials.ConsumerSecret,
-                                                                  Credentials.AccessToken,
-                                                                  Credentials.AccessTokenSecret,
-                                                                  request.Method,
-                                                                  request.RequestUri,
-                                                                  null);
-               request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
-           }
+            if (Credentials != null)
+            {
+                request.Headers.Add("X-CMT-SessionToken", Credentials.SessionId);
+
+                var oauthHeader = OAuthAuthorizer.AuthorizeRequest(Credentials.ConsumerKey,
+                    Credentials.ConsumerSecret,
+                    Credentials.AccessToken,
+                    Credentials.AccessTokenSecret,
+                    request.Method,
+                    request.RequestUri,
+                    null);
+                request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
+            }
         }
-        
     }
 }

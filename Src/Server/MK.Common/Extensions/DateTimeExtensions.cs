@@ -1,5 +1,8 @@
-﻿using System;
+﻿#region
 
+using System;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -25,22 +28,20 @@ namespace apcurium.MK.Common.Extensions
                 do
                 {
                     instance = instance.AddDays(sign);
-                }
-                while (instance.IsWeekEnd());
+                } while (instance.IsWeekEnd());
             }
             return instance;
         }
 
         public static DateTime AddWeekDays(this DateTime instance, TimeSpan timeSpan)
         {
-            return AddWeekDays(instance,Convert.ToInt32( timeSpan.TotalDays));
+            return AddWeekDays(instance, Convert.ToInt32(timeSpan.TotalDays));
         }
 
 
-      
         public static DateTime AddWeeks(this DateTime dateTime, int weeks)
         {
-            return dateTime.AddDays(weeks * 7);
+            return dateTime.AddDays(weeks*7);
         }
     }
 }

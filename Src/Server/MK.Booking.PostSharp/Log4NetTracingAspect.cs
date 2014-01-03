@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Services.Protocols;
 using log4net;
-using log4net.Core;
 using PostSharp.Aspects;
-using PostSharp.Extensibility;
 using ServiceStack.Text;
 
 namespace MK.Booking.PostSharp
@@ -19,8 +14,8 @@ namespace MK.Booking.PostSharp
     public class Log4NetTracingAspect : OnMethodBoundaryAspect
     {
 
-        private Dictionary<Type, ILog> _loggers = new Dictionary<Type, ILog>();
-        private string _prefix;
+        private readonly Dictionary<Type, ILog> _loggers = new Dictionary<Type, ILog>();
+        private readonly string _prefix;
 
         public Log4NetTracingAspect()
         {
@@ -43,14 +38,16 @@ namespace MK.Booking.PostSharp
         {
             if ((!args.Method.IsConstructor) && (args.Method.MemberType == MemberTypes.Method) && (!args.Method.IsSpecialName))
             {
+// ReSharper disable AssignNullToNotNullAttribute
                 if (!_loggers.ContainsKey(args.Method.DeclaringType))
+
                 {
-                    _loggers.Add(args.Method.DeclaringType, LogManager.GetLogger(_prefix + args.Method.DeclaringType.FullName));
+                    if (args.Method.DeclaringType != null)
+                        _loggers.Add(args.Method.DeclaringType, LogManager.GetLogger(_prefix + args.Method.DeclaringType.FullName));
                 }
 
-                ILog logger = _loggers[args.Method.DeclaringType];
-
-
+                var logger = _loggers[args.Method.DeclaringType];
+ // ReSharper restore AssignNullToNotNullAttribute
 
                 long executionTime = 0;
                 if (args.MethodExecutionTag is Stopwatch)
@@ -66,7 +63,6 @@ namespace MK.Booking.PostSharp
                 {
                     logger.Error("Critical Error", args.Exception);
                 }
-
             }
         }
 
@@ -87,8 +83,6 @@ namespace MK.Booking.PostSharp
             
             logger.Info(string.Format("Call made to : {0} executed in {1}ms with parameters {2}", args.Method.Name,
              executionTime, parameters));
-
-
                        
             string returnedValue = null;
             if (args.ReturnValue != null)

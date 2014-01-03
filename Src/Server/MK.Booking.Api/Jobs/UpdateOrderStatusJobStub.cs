@@ -1,11 +1,10 @@
-﻿
-namespace apcurium.MK.Booking.Api.Jobs
+﻿namespace apcurium.MK.Booking.Api.Jobs
 {
     /// <summary>
-    /// This is a replacement for UpdateOrderStatus job used when IBS order updates
-    /// are faked using OrderStatusIbsMock
+    ///     This is a replacement for UpdateOrderStatus job used when IBS order updates
+    ///     are faked using OrderStatusIbsMock
     /// </summary>
-    class UpdateOrderStatusJobStub : IUpdateOrderStatusJob
+    internal class UpdateOrderStatusJobStub : IUpdateOrderStatusJob
     {
         public void CheckStatus()
         {

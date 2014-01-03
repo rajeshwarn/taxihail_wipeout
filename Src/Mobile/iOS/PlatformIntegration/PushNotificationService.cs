@@ -1,18 +1,15 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using MonoTouch.Foundation;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Enumeration;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PushNotificationService: BaseService, IPushNotificationService
     {
-        public PushNotificationService ()
-        {
-        }
 
         public void RegisterDeviceForPushNotifications (bool force = false)
         {
@@ -30,18 +27,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             var oldDeviceToken = NSUserDefaults.StandardUserDefaults.StringForKey("PushDeviceToken");
             
             //There's probably a better way to do this
-            var strFormat = new NSString("%@");
-            var newDeviceToken = deviceToken.ToString().Replace("<", "").Replace(">", "").Replace(" ", "");
+            var newDeviceToken = deviceToken.Replace("<", "").Replace(">", "").Replace(" ", "");
             
             if (string.IsNullOrEmpty(oldDeviceToken))
             {
-                base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
+                UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
                     service.Register(newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }
             else if(!oldDeviceToken.Equals(newDeviceToken))
             {
-                base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
+                UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
                     service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }

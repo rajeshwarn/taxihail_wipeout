@@ -1,62 +1,66 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
     public class Order : EventSourced
     {
-        private OrderStatus _status;
-
-        private bool _isRated;
         private string _ibsStatus;
+        private bool _isRated;
+        private OrderStatus _status;
         private double? _vehicleLatitude;
         private double? _vehicleLongitude;
 
         protected Order(Guid id)
             : base(id)
         {
-            base.Handles<OrderCreated>(OnOrderCreated);
-            base.Handles<OrderCancelled>(OnOrderCancelled);
-            base.Handles<OrderCompleted>(OnOrderCompleted);
-            base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
-            base.Handles<OrderRated>(OnOrderRated);
-            base.Handles<PaymentInformationSet>(NoAction);
-            base.Handles<OrderStatusChanged>(OnOrderStatusChanged);
-            base.Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
-            base.Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
-            base.Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderCreated>(OnOrderCreated);
+            Handles<OrderCancelled>(OnOrderCancelled);
+            Handles<OrderCompleted>(OnOrderCompleted);
+            Handles<OrderRemovedFromHistory>(OnOrderRemoved);
+            Handles<OrderRated>(OnOrderRated);
+            Handles<PaymentInformationSet>(NoAction);
+            Handles<OrderStatusChanged>(OnOrderStatusChanged);
+            Handles<OrderVehiclePositionChanged>(OnOrderVehiclePositionChanged);
+            Handles<OrderPairedForRideLinqCmtPayment>(NoAction);
+            Handles<OrderUnpairedForRideLinqCmtPayment>(NoAction);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
-        {               
-            this.LoadFrom(history);
+        {
+            LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent): this(id)                   
+        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress,
+            Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent) : this(id)
         {
             if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
-                 ( Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty()) ))
+                (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new OrderCreated
+            Update(new OrderCreated
             {
                 IBSOrderId = ibsOrderId,
                 AccountId = accountId,
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
                 DropOffAddress = dropOffAddress,
-                Settings =  settings,
+                Settings = settings,
                 EstimatedFare = estimatedFare,
-                CreatedDate = DateTime.Now,        
+                CreatedDate = DateTime.Now,
                 UserAgent = userAgent,
             });
         }
@@ -77,7 +81,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Tip amount or tip percent must be greater than 0");
             }
 
-            this.Update(new PaymentInformationSet
+            Update(new PaymentInformationSet
             {
                 CreditCardId = payment.CreditCardId,
                 TipAmount = payment.TipAmount,
@@ -85,51 +89,49 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        
 
         public void Cancel()
         {
-            this.Update(new OrderCancelled());
+            Update(new OrderCancelled());
         }
 
         public void Complete(double? fare, double? tip, double? toll, double? tax)
         {
-            if(_status != OrderStatus.Completed)
+            if (_status != OrderStatus.Completed)
             {
-                this.Update(new OrderCompleted
-                                {
-                                    Fare = fare,
-                                    Toll = toll,
-                                    Tip = tip,
-                                    Tax = tax
-                                });
+                Update(new OrderCompleted
+                {
+                    Fare = fare,
+                    Toll = toll,
+                    Tip = tip,
+                    Tax = tax
+                });
             }
         }
 
         public void RemoveFromHistory()
         {
-            this.Update(new OrderRemovedFromHistory());
+            Update(new OrderRemovedFromHistory());
         }
 
         public void RateOrder(string note, List<RatingScore> ratingScores)
         {
             if (!_isRated)
             {
-
                 _isRated = true;
                 Update(new OrderRated
-                           {
-                               Note = note,
-                               RatingScores = ratingScores
-                           });
+                {
+                    Note = note,
+                    RatingScores = ratingScores
+                });
             }
         }
 
         public void ChangeStatus(OrderStatusDetail status)
         {
-            if(status == null) throw new InvalidOperationException();
+            if (status == null) throw new InvalidOperationException();
 
-            if (status.IBSStatusId != this._ibsStatus)
+            if (status.IbsStatusId != _ibsStatus)
             {
                 Update(new OrderStatusChanged
                 {
@@ -137,7 +139,7 @@ namespace apcurium.MK.Booking.Domain
                 });
             }
 
-            if (status.VehicleLatitude != this._vehicleLatitude || status.VehicleLongitude != this._vehicleLongitude)
+            if (status.VehicleLatitude != _vehicleLatitude || status.VehicleLongitude != _vehicleLongitude)
             {
                 Update(new OrderVehiclePositionChanged
                 {
@@ -147,18 +149,19 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void Pair(string medallion, string driverId, string pairingToken, string pairingCode, string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
+        public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
+            string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
             Update(new OrderPairedForRideLinqCmtPayment
-                {
-                    Medallion = medallion,
-                    DriverId = driverId,
-                    PairingToken = pairingToken,
-                    PairingCode = pairingCode,
-                    TokenOfCardToBeUsedForPayment = tokenOfCardToBeUsedForPayment,
-                    AutoTipAmount = autoTipAmount,
-                    AutoTipPercentage = autoTipPercentage
-                });
+            {
+                Medallion = medallion,
+                DriverId = driverId,
+                PairingToken = pairingToken,
+                PairingCode = pairingCode,
+                TokenOfCardToBeUsedForPayment = tokenOfCardToBeUsedForPayment,
+                AutoTipAmount = autoTipAmount,
+                AutoTipPercentage = autoTipPercentage
+            });
         }
 
         public void Unpair()
@@ -168,7 +171,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
-            _ibsStatus = @event.Status.IBSStatusId;
+            _ibsStatus = @event.Status.IbsStatusId;
         }
 
         private void OnOrderCreated(OrderCreated obj)
@@ -198,8 +201,8 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderVehiclePositionChanged(OrderVehiclePositionChanged @event)
         {
-            this._vehicleLatitude = @event.Latitude;
-            this._vehicleLongitude = @event.Longitude;
+            _vehicleLatitude = @event.Latitude;
+            _vehicleLongitude = @event.Longitude;
         }
     }
 }

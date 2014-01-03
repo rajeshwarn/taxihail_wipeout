@@ -4,6 +4,7 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -45,18 +46,18 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 		}
 
 		public Task ShowMessage(string title, string message)
-        {
+		{
 			var ownerId = Guid.NewGuid().ToString();
 			var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
 			var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 
 			dispatcher.RequestMainThreadAction(() =>{
-	            var i = new Intent(Context, typeof(AlertDialogActivity));
-	            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-	            i.PutExtra("Title", title);
-	            i.PutExtra("Message", message);
+				var i = new Intent(Context, typeof(AlertDialogActivity));
+				i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+				i.PutExtra("Title", title);
+				i.PutExtra("Message", message);
 				i.PutExtra("OwnerId", ownerId );
-	            Context.StartActivity(i); 
+				Context.StartActivity(i); 
 			});
 
 			var tcs = new TaskCompletionSource<object>();
@@ -69,7 +70,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 				}, a => a.OwnerId == ownerId );
 
 			return tcs.Task; 
-        }
+		}
         
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {

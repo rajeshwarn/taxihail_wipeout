@@ -1,34 +1,32 @@
-﻿using System;
-using System.Linq;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
-using System.Net;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Maps;
+using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Services
+#endregion
+
+namespace apcurium.MK.Booking.Api.Services.Maps
 {
     /// <summary>
-    /// documentation https://developers.google.com/maps/documentation/geocoding/
+    ///     documentation https://developers.google.com/maps/documentation/geocoding/
     /// </summary>
-    public class GeocodingService : RestServiceBase<GeocodingRequest>
+    public class GeocodingService :Service
     {
-        private readonly IGeocoding _geocoding;        
-        
+        private readonly IGeocoding _geocoding;
+
         public GeocodingService(IGeocoding geocoding)
         {
             _geocoding = geocoding;
         }
-        
-        public override object OnPost(GeocodingRequest request)
-        {
 
+        public object Post(GeocodingRequest request)
+        {
             if ((request.Lat.HasValue && request.Lng.HasValue && !request.Name.IsNullOrEmpty()) ||
-               (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
+                (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "You must specify the name or the coordinate");
             }
@@ -37,16 +35,9 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return _geocoding.Search(request.Name, request.GeoResult);
             }
-            else
-            {
-                return _geocoding.Search(request.Lat.Value, request.Lng.Value, request.GeoResult);
-            }
-
+// ReSharper disable PossibleInvalidOperationException
+            return _geocoding.Search(request.Lat.Value, request.Lng.Value, request.GeoResult);
+// ReSharper restore PossibleInvalidOperationException
         }
-
-     
-
-
-
     }
 }

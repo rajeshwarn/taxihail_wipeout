@@ -9,7 +9,7 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MK.Booking.Api.Client.Android</RootNamespace>
+    <RootNamespace>apcurium.MK.Booking.Api.Client</RootNamespace>
     <AssemblyName>MK.Booking.Api.Client.Android</AssemblyName>
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -34,19 +34,6 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Android.Maps">
-      <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Android" />
-    <Reference Include="Newtonsoft.Json.MonoDroid">
-      <HintPath>..\..\Mobile\Infrastructure\Newtonsoft.Json.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Services" />
@@ -62,6 +49,9 @@
     </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="BraintreeEncryption.Library.Android">
+      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -121,29 +111,15 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Mobile\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
-      <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
-      <Name>BraintreeEncryption.Library.Android</Name>
+    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
+      <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
       <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
-      <Name>MK.Common.Android</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <Policies>
-          <TextStylePolicy EolMarker="Windows" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
-          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" CatchNewLinePlacement="NewLine" FinallyNewLinePlacement="NewLine" WhileNewLinePlacement="DoNotCare" ArrayInitializerWrapping="DoNotChange" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
-        </Policies>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
-  <ItemGroup />
 </Project>

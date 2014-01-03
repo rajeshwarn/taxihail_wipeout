@@ -1,17 +1,22 @@
-﻿using System;
+﻿#region
+
+using System;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
 {
     public class given_a_payment : given_a_view_model_generator
     {
         private Guid _paymentId;
+
         [SetUp]
         public void Setup()
         {
@@ -24,11 +29,11 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Amount = 12.34m,
                 TransactionId = "the transaction",
             });
-            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(dbName), new Logger());
+            var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger());
             ordetailsGenerator.Handle(new OrderCreated
             {
                 SourceId = orderId,
-                AccountId =  Guid.NewGuid(),
+                AccountId = Guid.NewGuid(),
                 PickupAddress = new Address
                 {
                     Apartment = "3939",
@@ -57,7 +62,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 SourceId = _paymentId,
             });
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);

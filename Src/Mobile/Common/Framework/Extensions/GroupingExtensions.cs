@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     /// <summary>
-    /// Provides Extensions Methods for IGrouping.
+    ///     Provides Extensions Methods for IGrouping.
     /// </summary>
     public static class GroupingExtensions
     {
         /// <summary>
-        /// Adapts a IEnumarable of a IGrouping into a IDictionary.
+        ///     Adapts a IEnumarable of a IGrouping into a IDictionary.
         /// </summary>
         /// <typeparam name="TKey">The type of the Key.</typeparam>
         /// <typeparam name="TElement">The type of the grouped element.</typeparam>

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Common.Configuration;
+using Microsoft.Practices.ServiceLocation;
+
+#endregion
 
 namespace apcurium.MK.Web
 {
@@ -32,7 +30,7 @@ namespace apcurium.MK.Web
         protected string GeolocSearchBounds { get; private set; }
         protected string AccountActivationDisabled { get; private set; }
         protected string EstimateEnabled { get; private set; }
-        protected string EstimateWarningEnabled { get; private set; }        
+        protected string EstimateWarningEnabled { get; private set; }
         protected string DestinationIsRequired { get; private set; }
         protected string DirectionTarifMode { get; private set; }
         protected bool DirectionNeedAValidTarif { get; private set; }
@@ -56,28 +54,29 @@ namespace apcurium.MK.Web
             DirectionTarifMode = config.GetSetting("Direction.TarifMode");
             DirectionNeedAValidTarif = config.GetSetting("Direction.NeedAValidTarif", false);
 
-            ApplicationVersion = Assembly.GetAssembly(typeof(_default)).GetName().Version.ToString();
+            ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
             EstimateEnabled = config.GetSetting("Client.ShowEstimate");
             EstimateWarningEnabled = config.GetSetting("Client.ShowEstimateWarning");
             DestinationIsRequired = config.GetSetting("Client.DestinationIsRequired");
 
             var accountActivationDisabled = config.GetSetting("AccountActivationDisabled");
-            AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled) ? bool.FalseString.ToLower() : accountActivationDisabled;
+            AccountActivationDisabled = string.IsNullOrWhiteSpace(accountActivationDisabled)
+                ? bool.FalseString.ToLower()
+                : accountActivationDisabled;
 
             ShowPassengerNumber = config.GetSetting("Client.ShowPassengerNumber", true);
 
             var filters = config.GetSetting("GeoLoc.SearchFilter").Split('&');
-            GeolocSearchFilter = filters.Length > 0 
+            GeolocSearchFilter = filters.Length > 0
                 ? Uri.UnescapeDataString(filters[0]).Replace('+', ' ')
                 : "{0}";
             GeolocSearchRegion = FindParam(filters, "region");
             GeolocSearchBounds = FindParam(filters, "bounds");
 
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
-            var referenceData = (ReferenceData)referenceDataService.Get(new ReferenceDataRequest());
+            var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
             ReferenceData = referenceData.ToString();
-
         }
 
         protected string FindParam(string[] filters, string param)
@@ -87,6 +86,5 @@ namespace apcurium.MK.Web
                 ? string.Empty
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
-
     }
 }

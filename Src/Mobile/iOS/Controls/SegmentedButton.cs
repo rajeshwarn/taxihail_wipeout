@@ -1,45 +1,44 @@
 using System;
-using System.Linq;
-using MonoTouch.UIKit;
 using System.Drawing;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Style;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
-using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.UIKit;
 
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class SegmentedButton : UIButton
+    public sealed class SegmentedButton : UIButton
     {
 		public bool Pressed {get;set;}
-        private UIColor[] _normalColors = new UIColor[]
-            {
-                UIColor.FromRGB(71, 71, 71),
-                UIColor.FromRGB(0, 0, 0),
-				UIColor.FromRGB(0, 0, 0)
-            };
-        private UIColor[] _highlightedColors = new UIColor[]
-            {
-                UIColor.FromRGB(39, 39, 39),
-                UIColor.FromRGB(100, 100, 100)
-            };
-		private float[] _normalColorLocations = new float[] { 0f, 0.83f, 1f };
-        private float[] _highlightedColorLocations = new float[] { 0f, 1f };
+        private readonly UIColor[] _normalColors =
+        {
+            UIColor.FromRGB(71, 71, 71),
+            UIColor.FromRGB(0, 0, 0),
+            UIColor.FromRGB(0, 0, 0)
+        };
+        private readonly UIColor[] _highlightedColors =
+        {
+            UIColor.FromRGB(39, 39, 39),
+            UIColor.FromRGB(100, 100, 100)
+        };
+		private readonly float[] _normalColorLocations = { 0f, 0.83f, 1f };
+        private readonly float[] _highlightedColorLocations = { 0f, 1f };
         private float _cornerRadius = 0;
         
        	
-		private UIColor _normalTitleColor = UIColor.FromRGB(163, 163, 163);
-		private UIColor _highlightedTitleColor = UIColor.White;
-		private UIFont _titleFont = AppStyle.ButtonFont;
-		private UIColor _normalTextShadowColor = UIColor.FromRGBA ( 0, 0, 0, 255 );
-        private UIColor _highlightedTextShadowColor = UIColor.FromRGBA ( 0, 0, 0, 128 );
+		private readonly UIColor _normalTitleColor = UIColor.FromRGB(163, 163, 163);
+		private readonly UIColor _highlightedTitleColor = UIColor.White;
+		private readonly UIFont _titleFont = AppStyle.ButtonFont;
+		private readonly UIColor _normalTextShadowColor = UIColor.FromRGBA ( 0, 0, 0, 255 );
+        private readonly UIColor _highlightedTextShadowColor = UIColor.FromRGBA ( 0, 0, 0, 128 );
 
-		private Style.ShadowDefinition _highlightedInnerShadow = new Style.ShadowDefinition(){ Color = new Style.ColorDefinition(){ Red = 0, Green = 0, Blue=0, Alpha=192}, OffsetX=0, OffsetY=0, BlurRadius=7};
-        private Style.ShadowDefinition _normalInnerShadow = new Style.ShadowDefinition(){ Color = new Style.ColorDefinition(){ Red = 0, Green = 0, Blue=0, Alpha=255}, OffsetX=1, OffsetY=0, BlurRadius=0};
-		private Style.ShadowDefinition _dropShadow = new Style.ShadowDefinition(){ Color = new Style.ColorDefinition(){ Red = 72, Green = 72, Blue=72, Alpha=255}, OffsetX=1, OffsetY=0, BlurRadius=0};
+		private readonly ShadowDefinition _highlightedInnerShadow = new ShadowDefinition{ Color = new ColorDefinition{ Red = 0, Green = 0, Blue=0, Alpha=192}, OffsetX=0, OffsetY=0, BlurRadius=7};
+        private readonly ShadowDefinition _normalInnerShadow = new ShadowDefinition{ Color = new ColorDefinition{ Red = 0, Green = 0, Blue=0, Alpha=255}, OffsetX=1, OffsetY=0, BlurRadius=0};
+		private readonly ShadowDefinition _dropShadow = new ShadowDefinition{ Color = new ColorDefinition{ Red = 72, Green = 72, Blue=72, Alpha=255}, OffsetX=1, OffsetY=0, BlurRadius=0};
 
-		private string _title;
+		private readonly string _title;
 
 		public SegmentedButton( RectangleF rect, string title ) : base ( rect )
         {
@@ -48,18 +47,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
 
-			this.TouchUpInside += delegate
+			TouchUpInside += delegate
 			{
 				Selected = !Selected;
 				if (Selected
 				    && SelectedChangedCommand != null
 				    && SelectedChangedCommand.CanExecute())
 				{
-					SelectedChangedCommand.Execute(this.Tag2);
+					SelectedChangedCommand.Execute(Tag2);
 				}
 			};
         }
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
 		public IMvxCommand SelectedChangedCommand { get; set; }
 
 		public string Tag2 { get; set; }
@@ -71,8 +71,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             var colorSpace = CGColorSpace.CreateDeviceRGB();
             var context = UIGraphics.GetCurrentContext();
 
-			CGColor[] newGradientColors = new CGColor[0];
-			float[] newGradientLocations = new float[0];
+			CGColor[] newGradientColors;
+			float[] newGradientLocations;
 			if( !Pressed )
 			{
 	            newGradientColors = _normalColors.Select( c=>c.CGColor).ToArray() ;
@@ -138,15 +138,22 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.RestoreState();
 
             context.SaveState();
-            context.SelectFont(_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
+            context.SetFont(CGFont.CreateWithFontName(_titleFont.Name));
+            context.SetFontSize(_titleFont.PointSize);
             context.SetTextDrawingMode(CGTextDrawingMode.Fill);
             context.SetStrokeColor(Pressed ? _highlightedTitleColor.CGColor : _normalTitleColor.CGColor);
             context.SetShadowWithColor(new SizeF(0f, -0.5f), 0.5f, Pressed ? _highlightedTextShadowColor.CGColor : _normalTextShadowColor.CGColor);
             context.SetFillColor( Pressed ? _highlightedTitleColor.CGColor : _normalTitleColor.CGColor);
             context.TextMatrix = new CGAffineTransform(1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
-            var titleSize = ((NSString)_title).StringSize(_titleFont);
+            var stringAttributes = new UIStringAttributes
+            {
+                Font = _titleFont,
+                ParagraphStyle = new NSParagraphStyle(),
+            };
+            stringAttributes.ParagraphStyle.Alignment = UITextAlignment.Center;
 
-            context.ShowTextAtPoint( (rect.Width / 2) - (titleSize.Width / 2), rect.GetMidY() + (_titleFont.PointSize / 3), _title);
+            var rectText = new RectangleF(rect.X, rect.GetMidY() + (_titleFont.PointSize / 3), rect.Width, rect.Height);
+            ((NSString)_title).DrawString(rectText, stringAttributes);
             context.RestoreState();
 
         }

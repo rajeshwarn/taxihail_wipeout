@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using System.Net.Mail;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Email
 {

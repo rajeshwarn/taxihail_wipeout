@@ -1,20 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
-using apcurium.MK.Booking.Events;
+
+#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
-    public class CreditCardPayment: EventSourced
+    public class CreditCardPayment : EventSourced
     {
-        private Guid _orderId;
-        private string _transactionId;
-        private string _authorizationCode;        
         private decimal _amount;
-        private decimal _meter;
-        private decimal _tip;
         private bool _isCaptured;
+        private decimal _meter;
+        private Guid _orderId;
+        private decimal _tip;
+        private string _transactionId;
 
         protected CreditCardPayment(Guid id)
             : base(id)
@@ -25,35 +28,36 @@ namespace apcurium.MK.Booking.Domain
 
         public CreditCardPayment(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
-        {               
-            this.LoadFrom(history);
+        {
+            LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip, string cardToken, PaymentProvider provider)
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip,
+            string cardToken, PaymentProvider provider)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
 
-            this.Update(new CreditCardPaymentInitiated
+            Update(new CreditCardPaymentInitiated
             {
                 OrderId = orderId,
                 TransactionId = transactionId,
                 Amount = amount,
                 Meter = meter,
                 Tip = tip,
-                CardToken = cardToken,                
-                Provider = provider, 
+                CardToken = cardToken,
+                Provider = provider,
             });
         }
 
-        public void Capture( PaymentProvider provider, string authorizationCode)
+        public void Capture(PaymentProvider provider, string authorizationCode)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
             }
 
-            this.Update(new CreditCardPaymentCaptured
+            Update(new CreditCardPaymentCaptured
             {
                 OrderId = _orderId,
                 TransactionId = _transactionId,
@@ -62,7 +66,6 @@ namespace apcurium.MK.Booking.Domain
                 Meter = _meter,
                 Tip = _tip,
                 Provider = provider
-                
             });
         }
 
@@ -74,13 +77,11 @@ namespace apcurium.MK.Booking.Domain
             _amount = obj.Amount;
             _meter = obj.Meter;
             _tip = obj.Tip;
-            
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
         {
             _isCaptured = true;
-            _authorizationCode = obj.AuthorizationCode;
         }
     }
 }

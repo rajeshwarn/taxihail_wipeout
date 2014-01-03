@@ -1,6 +1,10 @@
-﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Common.Enumeration;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {

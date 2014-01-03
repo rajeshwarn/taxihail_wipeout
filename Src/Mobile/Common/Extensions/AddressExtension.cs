@@ -20,7 +20,14 @@ namespace apcurium.MK.Booking.Mobile.Extensions
                 return false;
             }
 
-            return instance.Longitude != 0 && instance.Latitude != 0 && instance.Latitude >= -90 && instance.Latitude <= 90 && instance.Longitude >= -180 && instance.Longitude <= 180;
+// ReSharper disable CompareOfFloatsByEqualityOperator
+            return instance.Longitude != 0 
+                        && instance.Latitude != 0 
+                        && instance.Latitude >= -90 
+                        && instance.Latitude <= 90 
+                        && instance.Longitude >= -180 
+                        && instance.Longitude <= 180;
+// ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
 

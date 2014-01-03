@@ -1,5 +1,9 @@
+#region
+
 using System.Globalization;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -11,18 +15,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public Address[] Search( string addressName )
+        public Address[] Search(string addressName)
         {
-            var result = Client.Post<Address[]>("/geocode", new {
-                                                                    Name = addressName
-                                                                });
+            var result = Client.Post<Address[]>("/geocode", new
+            {
+                Name = addressName
+            });
             return result;
         }
 
 
         public Address[] Search(double latitude, double longitude)
         {
-            var resource = string.Format(CultureInfo.InvariantCulture, "/geocode?Lat={0}&Lng={1}", latitude, longitude );
+            var resource = string.Format(CultureInfo.InvariantCulture, "/geocode?Lat={0}&Lng={1}", latitude, longitude);
             var result = Client.Post<Address[]>(resource, null);
             return result;
         }
@@ -32,6 +37,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var result = Client.Get<Address>("/settings/defaultlocation");
             return result;
         }
-        
     }
 }

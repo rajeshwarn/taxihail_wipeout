@@ -1,17 +1,12 @@
 using System;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
-using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using System.Linq;
-using System.Reactive;
 using System.Collections.Generic;
-using System.Reactive.Disposables;
-using MK.Common.iOS.Patterns;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Touch.ExtensionMethods;
+using MK.Common.iOS.Patterns;
+using MonoTouch.CoreLocation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class LocationManagerDelegate : CLLocationManagerDelegate, IObservable<Position>
     {
@@ -37,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             var newLocation = locations.Last();
 
-            var position = new Position()
+            var position = new Position
             {
                 Error = (float)newLocation.HorizontalAccuracy,
                 Time = newLocation.Timestamp.ToDateTimeUtc(),

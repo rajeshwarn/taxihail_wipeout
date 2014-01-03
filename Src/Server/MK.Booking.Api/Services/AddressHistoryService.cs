@@ -1,19 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AddressHistoryService : RestServiceBase<AddressHistoryRequest>
+    public class AddressHistoryService : Service
     {
-        private readonly IAddressDao _dao;
-        private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
+        private readonly ICommandBus _commandBus;
+        private readonly IAddressDao _dao;
 
         public AddressHistoryService(IAddressDao dao, ICommandBus commandBus, IAccountDao accountDao)
         {
@@ -22,13 +26,13 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
         }
 
-        public override object OnGet(AddressHistoryRequest request)
+        public object Get(AddressHistoryRequest request)
         {
             var session = this.GetSession();
             return _dao.FindHistoricByAccountId(new Guid(session.UserAuthId));
         }
 
-        public override object OnDelete(AddressHistoryRequest request)
+        public object Delete(AddressHistoryRequest request)
         {
             var address = _dao.FindById(request.AddressId);
 
@@ -39,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't remove another account's address");
             }
 
-            _commandBus.Send(new RemoveAddressFromHistory() { AddressId = request.AddressId, AccountId = account.Id});
+            _commandBus.Send(new RemoveAddressFromHistory {AddressId = request.AddressId, AccountId = account.Id});
 
             return new HttpResult(HttpStatusCode.OK);
         }

@@ -1,19 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Booking.Mobile.Client;
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TutorialViewModel : BaseViewModel,                 
-            IMvxServiceConsumer<ITutorialService>
+    public class TutorialViewModel : BaseViewModel
 
     {
         private TutorialItemModel[] _tutorialItemsList;
@@ -25,8 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public TutorialViewModel()
         {
-            var service  = this.GetService<ITutorialService>();
-            TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
+            
+            TutorialItemsList = this.Services().Tutorial.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
         }
 
     }

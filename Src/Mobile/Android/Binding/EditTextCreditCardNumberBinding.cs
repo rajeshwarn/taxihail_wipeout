@@ -1,61 +1,48 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Interfaces;
 using Cirrious.MvvmCross.Binding.Android.Target;
+using Cirrious.MvvmCross.Binding.Interfaces;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-	public class EditTextCreditCardNumberBinding : MvxBaseAndroidTargetBinding
+    public class EditTextCreditCardNumberBinding : MvxBaseAndroidTargetBinding
     {
-		private EditTextLeftImage _control;
+        private readonly EditTextLeftImage _control;
 
-		public EditTextCreditCardNumberBinding(EditTextLeftImage control)
-		{
-			_control = control;
-					
-			_control.AfterCreditCardNumberChanged += HandleCreditCardNumberChanged;
-		}
+        public EditTextCreditCardNumberBinding(EditTextLeftImage control)
+        {
+            _control = control;
 
-		private void HandleCreditCardNumberChanged(object sender, EventArgs e)
-		{
-			FireValueChanged(_control.CreditCardNumber);
-		}
-	
-		public override void SetValue (object value)
-		{
-			_control.CreditCardNumber = (string)value;
-		}
+            _control.AfterCreditCardNumberChanged += HandleCreditCardNumberChanged;
+        }
 
-		public override MvxBindingMode DefaultMode
-		{
-			get { return MvxBindingMode.TwoWay; }
-		}
+        public override MvxBindingMode DefaultMode
+        {
+            get { return MvxBindingMode.TwoWay; }
+        }
 
-		protected override void Dispose(bool isDisposing)
-		{
-			if (isDisposing)
-			{
-				_control.AfterCreditCardNumberChanged -= HandleCreditCardNumberChanged;
-			}
-			base.Dispose(isDisposing);
-		}
+        public override Type TargetType
+        {
+            get { return typeof (string); }
+        }
 
+        private void HandleCreditCardNumberChanged(object sender, EventArgs e)
+        {
+            FireValueChanged(_control.CreditCardNumber);
+        }
 
-		public override Type TargetType
-		{
-			get { return typeof(string); }
-		}
+        public override void SetValue(object value)
+        {
+            _control.CreditCardNumber = (string) value;
+        }
+
+        protected override void Dispose(bool isDisposing)
+        {
+            if (isDisposing)
+            {
+                _control.AfterCreditCardNumberChanged -= HandleCreditCardNumberChanged;
+            }
+            base.Dispose(isDisposing);
+        }
     }
 }
-

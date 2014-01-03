@@ -1,5 +1,6 @@
 using Android.App;
 using Android.OS;
+using apcurium.MK.Booking.Mobile.Messages;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile;

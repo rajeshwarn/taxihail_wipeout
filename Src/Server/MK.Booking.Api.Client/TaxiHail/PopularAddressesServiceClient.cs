@@ -1,13 +1,17 @@
+#region
+
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 
+#endregion
+
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-    public class PopularAddressesServiceClient: BaseServiceClient
+    public class PopularAddressesServiceClient : BaseServiceClient
     {
         public PopularAddressesServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId,userAgent)
+            : base(url, sessionId, userAgent)
         {
         }
 
@@ -20,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 #if  !CLIENT
-        public void Add(PopularAddress address )
+        public void Add(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses");
             Client.Post<object>(req, address);

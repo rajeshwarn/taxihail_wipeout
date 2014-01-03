@@ -1,38 +1,29 @@
 using System;
-using apcurium.MK.Booking.Mobile.AppServices;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using System.Collections.Generic;
-using System.Reactive.Threading.Tasks;
 using System.Reactive.Linq;
-using System.Threading;
-using apcurium.MK.Common.Configuration.Impl;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentViewModel : BaseSubViewModel<object>, IMvxServiceConsumer<IPayPalExpressCheckoutService>
+    public class PaymentViewModel : BaseSubViewModel<object>
     {
-        public PaymentViewModel(string order, string orderStatus, string messageId) : base(messageId)
+        private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
+
+        public PaymentViewModel(string order, string orderStatus, string messageId,IPayPalExpressCheckoutService palExpressCheckoutService) : base(messageId)
         {
-            ConfigurationManager.GetPaymentSettings(false);
+            _palExpressCheckoutService = palExpressCheckoutService;
+            this.Services().Config.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
-            OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
+            OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            var account = AccountService.CurrentAccount;
+            var account = this.Services().Account.CurrentAccount;
             var paymentInformation = new PaymentInformation
             {
                 CreditCardId = account.DefaultCreditCard,
@@ -44,16 +35,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PayPalSelected = !IsCreditCardEnabled;
         }
 
-        public override void Start(bool firstStart)
-        {
-            base.Start(firstStart);
-        }
-
         public bool IsPayPalEnabled
         { 
             get
             {
-                var payPalSettings = ConfigurationManager.GetPaymentSettings().PayPalClientSettings;
+                var payPalSettings = this.Services().Config.GetPaymentSettings().PayPalClientSettings;
                 return payPalSettings.IsEnabled;
             }
         }
@@ -62,24 +48,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         { 
             get
             {
-                var setting = ConfigurationManager.GetPaymentSettings();
+                var setting = this.Services().Config.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
         }
 
         Order Order { get; set; }
 
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
         OrderStatusDetail OrderStatus { get; set; }
 
         public bool PayPalSelected { get; set; }
 
         public bool PaymentSelectorToggleIsVisible { get; set; }
 
-        public IMvxCommand UsePayPal
+        public AsyncCommand UsePayPal
         {
             get
             {
-                return GetCommand(() => this.InvokeOnMainThread(delegate
+                return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
                     FirePropertyChanged(() => PayPalSelected);
@@ -87,11 +74,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand UseCreditCard
+        public AsyncCommand UseCreditCard
         {
             get
             {
-                return GetCommand(() => this.InvokeOnMainThread(delegate
+                return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
                     FirePropertyChanged(() => PayPalSelected);
@@ -132,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set;
         }
 
-        public IMvxCommand ConfirmOrderCommand
+        public AsyncCommand ConfirmOrderCommand
         {
             get
             {
@@ -154,9 +141,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Amount > 100)
                     {
 
-                        string message = string.Format(Resources.GetString("ConfirmationPaymentAmountOver100"),CultureProvider.FormatCurrency(Amount) );
-                            
-                        MessageService.ShowMessage(Resources.GetString("ConfirmationPaymentAmountOver100Title"), message, Resources.GetString("OkButtonText"), () => Task.Factory.SafeStartNew(executePayment), Resources.GetString("CancelBoutton"), Nothing);
+                        string message = string.Format(this.Services().Resources.GetString("ConfirmationPaymentAmountOver100"), CultureProvider.FormatCurrency(Amount));
+
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ConfirmationPaymentAmountOver100Title"), message, this.Services().Resources.GetString("OkButtonText"), () => Task.Factory.SafeStartNew(executePayment), this.Services().Resources.GetString("CancelBoutton"), Nothing);
 
                     }
                     else
@@ -173,14 +160,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void PayPalFlow()
         {
-            if (CanProceedToPayment(requireCreditCard: false))
+            if (CanProceedToPayment(false))
             {
-                MessageService.ShowProgress(true);
-                var paypal = this.GetService<IPayPalExpressCheckoutService>();
-                paypal.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
+                this.Services().Message.ShowProgress(true);
+
+                _palExpressCheckoutService.SetExpressCheckoutForAmount(Order.Id, Convert.ToDecimal(Amount), Convert.ToDecimal(CultureProvider.ParseCurrency(MeterAmount)), Convert.ToDecimal(CultureProvider.ParseCurrency(TipAmount)))
 					.ToObservable()
                     // Always Hide progress indicator
-					.Do(_ => MessageService.ShowProgress(false), _ => MessageService.ShowProgress(false))
+                    .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
                         RequestSubNavigate<PayPalViewModel, bool>(@params, success =>
@@ -188,11 +175,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (success)
                             {
                                 ShowPayPalPaymentConfirmation();
-                                PaymentService.SetPaymentFromCache(Order.Id, Amount);
+                                this.Services().Payment.SetPaymentFromCache(Order.Id, Amount);
                             }
                             else
                             {
-                                MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutCancelTitle"), Resources.GetString("PayPalExpressCheckoutCancelMessage"));
+                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PayPalExpressCheckoutCancelTitle"), this.Services().Resources.GetString("PayPalExpressCheckoutCancelMessage"));
                             }
                         });
                 }, error => { });
@@ -203,17 +190,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (CanProceedToPayment())
             {
-                using (MessageService.ShowProgress ())
+                using (this.Services().Message.ShowProgress())
                 {
-                    var response = PaymentService.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+                    var response = this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {
-                        MessageService.ShowProgress(false);
-                        MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
+                        this.Services().Message.ShowProgress(false);
+                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
                         return;
                     }
 
-                    PaymentService.SetPaymentFromCache(Order.Id, Amount);
+                    this.Services().Payment.SetPaymentFromCache(Order.Id, Amount);
                     ShowCreditCardPaymentConfirmation(response.AuthorizationCode);
                 }
             }
@@ -223,22 +210,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (requireCreditCard && PaymentPreferences.SelectedCreditCard == null)
             {
-                MessageService.ShowProgress(false);
-                MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+                this.Services().Message.ShowProgress(false);
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
                 return false;
             }
 
             if (Amount <= 0)
             {
-                MessageService.ShowProgress(false);
-                MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoAmountSelectedMessage);
+                this.Services().Message.ShowProgress(false);
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoAmountSelectedMessage);
                 return false;
             }
 
-            if (!Order.IBSOrderId.HasValue)
+			if (!Order.IbsOrderId.HasValue)
             {
-                MessageService.ShowProgress(false);
-                MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);
+                this.Services().Message.ShowProgress(false);
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);
                 return false;
             }			
 
@@ -247,15 +234,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowPayPalPaymentConfirmation()
         {
-            MessageService.ShowMessage(Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
-                              Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+            this.Services().Message.ShowMessage(this.Services().Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
+                              this.Services().Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
                               null, () => ReturnResult(""),
                               Str.OkButtonText, () => ReturnResult(""));
         }
 
         private void ShowCreditCardPaymentConfirmation(string transactionId)
         {
-            MessageService.ShowMessage(Str.CmtTransactionSuccessTitle,
+            this.Services().Message.ShowMessage(Str.CmtTransactionSuccessTitle,
                               string.Format(Str.CmtTransactionSuccessMessage, transactionId),
                               null, () => ReturnResult(""),
                               Str.OkButtonText, () => ReturnResult(""));

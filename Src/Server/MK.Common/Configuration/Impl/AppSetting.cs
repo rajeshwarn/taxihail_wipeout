@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿#region
+
+using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
@@ -6,7 +10,6 @@ namespace apcurium.MK.Common.Configuration.Impl
     {
         public AppSetting()
         {
-            
         }
 
         public AppSetting(string key, string value)
@@ -17,6 +20,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         [Key]
         public string Key { get; set; }
+
         public string Value { get; set; }
     }
 }

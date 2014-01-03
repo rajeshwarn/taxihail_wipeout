@@ -1,9 +1,13 @@
-﻿using System;
-using ServiceStack.ServiceHost;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
+#endregion
+
+namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt
 {
     [Authenticate]
     [Route("/payments/cmt/preAuthorizePayment", "POST")]

@@ -1,15 +1,21 @@
-﻿using System.Data.SqlClient;
+﻿#region
+
+using System.Data.SqlClient;
+
+#endregion
 
 namespace DatabaseInitializer.Sql
 {
     public class DatabaseHelper
     {
-        public static string CreateConnectionString(string server, bool integratedSecurity, string userId, string password)
+        public static string CreateConnectionString(string server, bool integratedSecurity, string userId,
+            string password)
         {
             return CreateConnectionString(server, null, integratedSecurity, userId, password);
         }
 
-        public static string CreateConnectionString(string server, string database, bool integratedSecurity, string userId, string password)
+        public static string CreateConnectionString(string server, string database, bool integratedSecurity,
+            string userId, string password)
         {
             if (integratedSecurity)
             {
@@ -21,14 +27,27 @@ namespace DatabaseInitializer.Sql
 
         private static string CreateConnectionStringWithWindowsAuthentification(string server, string database)
         {
-            var connectionStringBuilder = new SqlConnectionStringBuilder { DataSource = server, InitialCatalog = database ?? "master", IntegratedSecurity = true };
+            var connectionStringBuilder = new SqlConnectionStringBuilder
+            {
+                DataSource = server,
+                InitialCatalog = database ?? "master",
+                IntegratedSecurity = true
+            };
 
             return connectionStringBuilder.ConnectionString;
         }
 
-        private static string CreateConnectionStringWithSqlServerAuthentification(string server, string database, string userId, string password)
+        private static string CreateConnectionStringWithSqlServerAuthentification(string server, string database,
+            string userId, string password)
         {
-            var connectionStringBuilder = new SqlConnectionStringBuilder { DataSource = server, InitialCatalog = database ?? "master", IntegratedSecurity = false, UserID = userId, Password = password };
+            var connectionStringBuilder = new SqlConnectionStringBuilder
+            {
+                DataSource = server,
+                InitialCatalog = database ?? "master",
+                IntegratedSecurity = false,
+                UserID = userId,
+                Password = password
+            };
 
             return connectionStringBuilder.ConnectionString;
         }
@@ -38,7 +57,7 @@ namespace DatabaseInitializer.Sql
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = 600 };
+                var sqlCommandCreate = new SqlCommand(cmdText) {Connection = connection, CommandTimeout = 600};
 
                 connection.Open();
                 sqlCommandCreate.ExecuteNonQuery();
@@ -48,16 +67,16 @@ namespace DatabaseInitializer.Sql
 
         public static T ExecuteScalarQuery<T>(string connectionString, string cmdText)
         {
-            object result = null;
+            object result;
             using (var connection = new SqlConnection(connectionString))
             {
-                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = 600 };
+                var sqlCommandCreate = new SqlCommand(cmdText) {Connection = connection, CommandTimeout = 600};
 
                 connection.Open();
                 result = sqlCommandCreate.ExecuteScalar();
                 connection.Close();
             }
-            return (T)result;
+            return (T) result;
         }
     }
 }

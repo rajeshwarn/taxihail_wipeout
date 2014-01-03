@@ -1,5 +1,4 @@
-﻿
-namespace apcurium.MK.Common.Entity
+﻿namespace apcurium.MK.Common.Entity
 {
     public class BookingSettings
     {

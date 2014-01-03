@@ -1,11 +1,7 @@
 using System;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Entity;
-using TinyIoC;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
@@ -14,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LocationDetailViewModel: BaseViewModel
 	{
-        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
+	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
 		public LocationDetailViewModel (string address)
 		{
@@ -31,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool ShowRingCodeField {
             get
             {
-                return ConfigurationManager.GetSetting( "Client.ShowRingCodeField" ) != "false" ;
+                return this.Services().Config.GetSetting("Client.ShowRingCodeField") != "false";
             }
             
         }
@@ -106,23 +102,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool RebookIsAvailable {
 			get {
-				var setting = ConfigurationManager.GetSetting("Client.HideRebookOrder");
+                var setting = this.Services().Config.GetSetting("Client.HideRebookOrder");
 				return !IsNew && !bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 			}
 		}
 
-        public IMvxCommand ValidateAddress {
+        public AsyncCommand ValidateAddress
+        {
             get {
                 return GetCommand(() =>
                 {
-                    MessageService.ShowProgress(true);
-                    var task = Task.Factory.StartNew(()=> GeolocService.ValidateAddress (_address.FullAddress))
+                    this.Services().Message.ShowProgress(true);
+                    var task = Task.Factory.StartNew(() => this.Services().Geoloc.ValidateAddress(_address.FullAddress))
                         .HandleErrors();
-                    task.ContinueWith(t=> MessageService.ShowProgress(false));
+                    task.ContinueWith(t => this.Services().Message.ShowProgress(false));
                     task.ContinueWith(t=>{
                         var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
-                            MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
+                            this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"), this.Services().Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
 
@@ -143,7 +140,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _validateAddressCancellationTokenSource.Cancel();
         }
 
-        public IMvxCommand SaveAddress {
+        public AsyncCommand SaveAddress
+        {
             get {
 
                 return GetCommand(() =>
@@ -151,21 +149,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 
                     if (!ValidateFields()) return;
                     var progressShowing = true;
-                    MessageService.ShowProgress(true);
+                    this.Services().Message.ShowProgress(true);
                     try {
-						var location = GeolocService.ValidateAddress (_address.FullAddress);
+                        var location = this.Services().Geoloc.ValidateAddress(_address.FullAddress);
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
-                            MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
+                            this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"), this.Services().Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
                     
                         location.CopyTo( _address );
 
-                        FirePropertyChanged (() => BookAddress );                         
+                        FirePropertyChanged (() => BookAddress );
 
-                        AccountService.UpdateAddress(_address);
+                        this.Services().Account.UpdateAddress(_address);
 
-						MessageService.ShowProgress(false);
+                        this.Services().Message.ShowProgress(false);
 						progressShowing = false;
 						Close();
                     
@@ -173,30 +171,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Logger.LogError (ex);
                     } finally {
 
-                        if(progressShowing) MessageService.ShowProgress(false);
+                        if (progressShowing) this.Services().Message.ShowProgress(false);
                     }
                 });
             }
         }
 
-        public IMvxCommand DeleteAddress {
+        public AsyncCommand DeleteAddress
+        {
             get {
                 return GetCommand(() =>
                 {
 
-                    MessageService.ShowProgress (true);
+                    this.Services().Message.ShowProgress(true);
                 
                     try {
                         if (_address.IsHistoric) {
-                            TinyIoCContainer.Current.Resolve<IAccountService> ().DeleteHistoryAddress (_address.Id);
+                            this.Services().Account.DeleteHistoryAddress(_address.Id);
                         } else {
-                            TinyIoCContainer.Current.Resolve<IAccountService> ().DeleteFavoriteAddress (_address.Id);
+                            this.Services().Account.DeleteFavoriteAddress(_address.Id);
                         }
                         Close ();
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-                        MessageService.ShowProgress (false);
+                        this.Services().Message.ShowProgress(false);
                     }
            
             
@@ -205,18 +204,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         }
 
-		public IMvxCommand RebookOrder
+        public AsyncCommand RebookOrder
 		{
             get
             {
                 return GetCommand(() =>
 				                                 {
                  var order = new Order {PickupAddress = _address};
-    
-                 var account = AccountService.CurrentAccount;
+
+                 var account = this.Services().Account.CurrentAccount;
                  order.Settings = account.Settings;
                  var serialized = JsonSerializer.SerializeToString(order);
-				 RequestNavigate<BookViewModel>(new { order = serialized }, true, MvxRequestedBy.UserAction);
+				 RequestNavigate<BookViewModel>(new { order = serialized }, true);
 				});
 			}
 		}
@@ -225,12 +224,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (string.IsNullOrWhiteSpace(BookAddress))
             {
-                MessageService.ShowMessage(Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"),
+                                                            this.Services().Resources.GetString("InvalidAddressMessage"));
                 return false;
             }
             if (string.IsNullOrWhiteSpace(FriendlyName))
             {
-                MessageService.ShowMessage(Resources.GetString("SaveAddressEmptyFieldTitle"), Resources.GetString("SaveAddressEmptyFieldMessage"));
+                this.Services().Message.ShowMessage(this.Services().Resources.GetString("SaveAddressEmptyFieldTitle"),
+                                                            this.Services().Resources.GetString("SaveAddressEmptyFieldMessage"));
                 return false;
             }
             return true;

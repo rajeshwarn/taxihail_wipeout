@@ -1,30 +1,46 @@
-﻿using System;
+﻿#region
+
+using System;
+using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using Infrastructure.Messaging;
-using System.Threading;
+using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TestOnlyReqGetTestAccountService : RestServiceBase<TestOnlyReqGetTestAccount>
+    public class TestOnlyReqGetTestAccountService : Service
     {
-        private readonly ICommandBus _commandBus;
         private readonly IAccountWebServiceClient _accountWebServiceClient;
+        private readonly ICommandBus _commandBus;
         private readonly IAccountDao _dao;
 
-        public TestOnlyReqGetTestAccountService(IAccountDao dao, ICommandBus commandBus,IAccountWebServiceClient accountWebServiceClient)
+        public TestOnlyReqGetTestAccountService(IAccountDao dao, ICommandBus commandBus,
+            IAccountWebServiceClient accountWebServiceClient)
         {
             _dao = dao;
             _commandBus = commandBus;
             _accountWebServiceClient = accountWebServiceClient;
         }
-        protected string TestUserEmail { get { return "apcurium.test{0}@apcurium.com"; } }
-        protected string TestUserPassword { get { return "password1"; } }
-        public override object OnGet(TestOnlyReqGetTestAccount request)
+
+        protected string TestUserEmail
+        {
+            get { return "apcurium.test{0}@apcurium.com"; }
+        }
+
+        protected string TestUserPassword
+        {
+            get { return "password1"; }
+        }
+
+        public object Get(TestOnlyReqGetTestAccount request)
         {
             //This method can only be used for unit test.  
             if ((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) != EndpointAttributes.Localhost)
@@ -42,11 +58,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             var accountId = Guid.NewGuid();
             var ibsAccountId = _accountWebServiceClient.CreateAccount(accountId,
-                                                                            testEmail,
-                                                                            "",
-                                                                            "Test",
-                                                                            "5144567890");
-            var command = new Commands.RegisterAccount
+                testEmail,
+                "",
+                "Test",
+                "5144567890");
+            var command = new RegisterAccount
             {
                 AccountId = accountId,
                 Email = testEmail,
@@ -63,14 +79,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             Thread.Sleep(400);
             // Confirm account immediately
-            _commandBus.Send(new Commands.ConfirmAccount
+            _commandBus.Send(new ConfirmAccount
             {
-                 AccountId = command.AccountId,
-                 ConfimationToken = command.ConfimationToken
+                AccountId = command.AccountId,
+                ConfimationToken = command.ConfimationToken
             });
 
             return _dao.FindByEmail(testEmail);
         }
-
     }
 }

@@ -1,21 +1,21 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Commands;
-using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class DateTimePicker : UIView
 	{
-		private bool _pickerViewIsShown = false;
+		private bool _pickerViewIsShown;
 		private UIDatePicker _picker;
 		private float _pickerViewHeight = 260f;
 		private RectangleF _screenBounds;
         private GradientButton _accept;
         private UIView _acceptDisableOverlay;
-		public DateTimePicker ( string cultureInfo ) :base(   )
+		public DateTimePicker ( string cultureInfo )
 		{
 			Initialize(cultureInfo);
 		}
@@ -45,9 +45,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			AddSubview( reset );
 			
-            _picker.Locale = new MonoTouch.Foundation.NSLocale( cultureInfo );
+            _picker.Locale = new NSLocale( cultureInfo );
 			_picker.MinuteInterval = 5;
-			_picker.Frame = new System.Drawing.RectangleF (0, 45, _screenBounds.Width, _pickerViewHeight - 40f);
+			_picker.Frame = new RectangleF (0, 45, _screenBounds.Width, _pickerViewHeight - 40f);
             _picker.ValueChanged += HandleValueChanged;
 
             _accept.Enabled = false;
@@ -69,6 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+// ReSharper disable once MemberCanBePrivate.Global
 		public bool ShowPastDate { get;set;}
 
 		private void SetSelectedDate( DateTime? selectedDate )
@@ -81,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				}
 				else
 				{
-					DateChangedCommand.Execute( selectedDate );
+					DateChangedCommand.Execute(null);
 				}
 			}
 		}
@@ -112,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private void Animate( bool show )
 		{
-			UIView.Animate( 0.5f, () => {
+			Animate( 0.5f, () => {
 				Frame = new RectangleF( Frame.X, _screenBounds.Height - (show ? Frame.Height : 0 ), Frame.Width, Frame.Height);
 			});
 			_pickerViewIsShown = !_pickerViewIsShown;
@@ -131,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		public override bool PointInside (PointF point, UIEvent uievent)
 		{
-			if( _pickerViewIsShown && !Frame.Contains( this.Superview.ConvertPointFromView( point, this ) ) )
+			if( _pickerViewIsShown && !Frame.Contains( Superview.ConvertPointFromView( point, this ) ) )
 			{
 				Hide ();
 			}

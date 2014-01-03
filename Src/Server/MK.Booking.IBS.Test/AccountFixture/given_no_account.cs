@@ -1,21 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using NUnit.Framework;
+
+#endregion
 
 namespace MK.Booking.IBS.Test.AccountFixture
 {
     [TestFixture]
     public class given_no_account
     {
-        protected WebAccount3Service Sut;
-
         [SetUp]
         public void Setup()
         {
-            this.Sut = new WebAccount3Service
+            Sut = new WebAccount3Service
             {
                 Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebAccount3"
             };
         }
+
+        protected WebAccount3Service Sut;
 
 
         [Test]
@@ -27,7 +31,7 @@ namespace MK.Booking.IBS.Test.AccountFixture
             var account = new TBookAccount3
             {
                 WEBID = accountId,
-                Address = new TWEBAddress() { },
+                Address = new TWEBAddress(),
                 Email2 = email,
                 Title = "",
                 FirstName = "Apcurium",

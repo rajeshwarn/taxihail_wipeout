@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
@@ -12,13 +6,15 @@ namespace apcurium.MK.Booking.Mobile.Extensions
     {
         public static BookingSettings Copy(this BookingSettings instance)
         {
-            var copy = new BookingSettings();
-            copy.Name = instance.Name;            
-            copy.Phone = instance.Phone;
-            copy.VehicleTypeId = instance.VehicleTypeId;
-            copy.ChargeTypeId = instance.ChargeTypeId;
-            copy.ProviderId = instance.ProviderId;
-            copy.NumberOfTaxi = instance.NumberOfTaxi;
+            var copy = new BookingSettings
+            {
+                Name = instance.Name,
+                Phone = instance.Phone,
+                VehicleTypeId = instance.VehicleTypeId,
+                ChargeTypeId = instance.ChargeTypeId,
+                ProviderId = instance.ProviderId,
+                NumberOfTaxi = instance.NumberOfTaxi
+            };
             return copy;
 
 

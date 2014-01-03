@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
+using apcurium.MK.Common.Entity;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/addresses", "POST")]
-    [RestService("/account/addresses/{Id}", "PUT, DELETE")]
+    [Route("/account/addresses", "POST")]
+    [Route("/account/addresses/{Id}", "PUT, DELETE")]
     public class SaveAddress
     {
         public Guid Id { get; set; }

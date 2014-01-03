@@ -1,7 +1,11 @@
+#region
+
 using System;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.ReadModel.Query
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface IOrderRatingsDao
     {

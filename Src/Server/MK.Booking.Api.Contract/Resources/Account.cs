@@ -1,20 +1,23 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-
-    public class Account : BaseDTO  
+    public class Account : BaseDto
     {
         public Guid Id { get; set; }
 
         public string Email { get; set; }
 
-        public string Name { get; set; }        
+        public string Name { get; set; }
 
         public string Phone { get; set; }
 
-        public int IBSAccountid { get; set; }
+        public int IbsAccountid { get; set; }
 
         public string FacebookId { get; set; }
 
@@ -29,6 +32,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public Guid? DefaultCreditCard { get; set; }
 
-        public int? DefaultTipPercent { get; set; } 
+        public int? DefaultTipPercent { get; set; }
     }
 }

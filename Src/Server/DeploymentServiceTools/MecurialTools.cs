@@ -1,27 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace DeploymentServiceTools
 {
     public class MecurialTools
     {
         private readonly string _sourceDirectory;
-        public string HgPath { get; set; }
 
-        public MecurialTools(string hgPath,string sourceDirectory)
+        public MecurialTools(string hgPath, string sourceDirectory)
         {
             HgPath = hgPath;
             _sourceDirectory = sourceDirectory;
-            
         }
 
+        public string HgPath { get; set; }
+
         public void Pull()
-        {             
-            var hgPull = ProcessEx.GetProcess(HgPath, string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", _sourceDirectory));
+        {
+            var hgPull = ProcessEx.GetProcess(HgPath,
+                string.Format(
+                    "pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}",
+                    _sourceDirectory));
             using (var exeProcess = Process.Start(hgPull))
             {
                 var output = ProcessEx.GetOutput(exeProcess);
@@ -41,9 +44,10 @@ namespace DeploymentServiceTools
         public void Clone(string revisionNumber)
         {
             var revision = GetRevisionString(revisionNumber);
-            
-            var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
-                                     _sourceDirectory, revision);
+
+            var args = string.Format(
+                @"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
+                _sourceDirectory, revision);
 
             var hgClone = ProcessEx.GetProcess(HgPath, args);
             using (var exeProcess = Process.Start(hgClone))
@@ -64,7 +68,6 @@ namespace DeploymentServiceTools
                 UseShellExecute = false,
                 Arguments = string.Format("identify --repository \"{0}\"", _sourceDirectory),
                 RedirectStandardOutput = true,
-
             };
 
             using (var exeProcess = Process.Start(identify))
@@ -80,19 +83,16 @@ namespace DeploymentServiceTools
 
         public void Revert()
         {
-
-			var hgRevert = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} -C", _sourceDirectory));
-			using (var exeProcess = Process.Start(hgRevert))
-			{
-				var output =ProcessEx.GetOutput(exeProcess);
-				if (exeProcess.ExitCode > 0)
-				{
-					throw new Exception("Error during revert source code step" + output);
-				}
-			}
-
+            var hgRevert = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} -C", _sourceDirectory));
+            using (var exeProcess = Process.Start(hgRevert))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during revert source code step" + output);
+                }
+            }
         }
-
 
 
         public void Purge()
@@ -110,7 +110,8 @@ namespace DeploymentServiceTools
 
         public void Update(string revisionNumber)
         {
-            var hgUpdate = ProcessEx.GetProcess(HgPath, string.Format("update --repository {0} {1}", _sourceDirectory, GetRevisionString(revisionNumber)));
+            var hgUpdate = ProcessEx.GetProcess(HgPath,
+                string.Format("update --repository {0} {1}", _sourceDirectory, GetRevisionString(revisionNumber)));
             using (var exeProcess = Process.Start(hgUpdate))
             {
                 var output = ProcessEx.GetOutput(exeProcess);

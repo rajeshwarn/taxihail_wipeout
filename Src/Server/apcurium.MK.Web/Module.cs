@@ -1,7 +1,7 @@
-﻿using System;
+﻿#region
+
 using System.Configuration;
 using System.Data.Entity;
-using System.IO;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -10,16 +10,9 @@ using Infrastructure.Messaging.InMemory;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
-using MK.Booking.Api.Client;
 using Microsoft.Practices.Unity;
-using PushSharp.Android;
-using PushSharp.Apple;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.PushNotifications.Impl;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Web
 {
@@ -29,12 +22,12 @@ namespace apcurium.MK.Web
         {
             RegisterInfrastructure(container);
 
-            new MK.Common.Module().Init(container);
-            new MK.Booking.Module().Init(container);
-            new MK.Booking.Google.Module().Init(container);
-            new MK.Booking.Maps.Module().Init(container);
-            new MK.Booking.IBS.Module().Init(container);
-            new MK.Booking.Api.Module().Init(container);
+            new Common.Module().Init(container);
+            new Booking.Module().Init(container);
+            new Booking.Google.Module().Init(container);
+            new Booking.Maps.Module().Init(container);
+            new Booking.IBS.Module().Init(container);
+            new Booking.Api.Module().Init(container);
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
@@ -42,10 +35,8 @@ namespace apcurium.MK.Web
 
         private void RegisterInfrastructure(IUnityContainer container)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
             var connectionStringSettings = ConfigurationManager.ConnectionStrings["MKWeb"];
-            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, connectionStringSettings);
+            container.RegisterInstance(Common.Module.MkConnectionString, connectionStringSettings);
 
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
@@ -54,13 +45,16 @@ namespace apcurium.MK.Web
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
             // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionStringSettings.ConnectionString, container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionStringSettings.ConnectionString,
+                container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
             // Repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor(connectionStringSettings.ConnectionString));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
+            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(),
+                new InjectionConstructor(connectionStringSettings.ConnectionString));
+            container.RegisterType(typeof (IEventSourcedRepository<>), typeof (SqlEventSourcedRepository<>),
+                new ContainerControlledLifetimeManager());
 
             // Command bus
             var commandBus = new AsynchronousMemoryCommandBus(container.Resolve<ITextSerializer>());
@@ -71,10 +65,6 @@ namespace apcurium.MK.Web
             var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
-
-
-            
-
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

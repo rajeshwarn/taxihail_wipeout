@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
-    public class PayPalExpressCheckoutPaymentCompleted: VersionedEvent
+    public class PayPalExpressCheckoutPaymentCompleted : VersionedEvent
     {
         public Guid OrderId { get; set; }
 

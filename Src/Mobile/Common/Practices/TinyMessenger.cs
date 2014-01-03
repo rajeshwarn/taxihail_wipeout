@@ -15,7 +15,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace TinyMessenger
 {
@@ -40,7 +39,7 @@ namespace TinyMessenger
         /// Store a WeakReference to the sender just in case anyone is daft enough to
         /// keep the message around and prevent the sender from being collected.
         /// </summary>
-        private WeakReference _Sender;
+        private readonly WeakReference _Sender;
         public object Sender
         {
             get
@@ -123,8 +122,8 @@ namespace TinyMessenger
     /// </summary>
     public sealed class TinyMessageSubscriptionToken : IDisposable
     {
-        private WeakReference _Hub;
-        private Type _MessageType;
+        private readonly WeakReference _Hub;
+        private readonly Type _MessageType;
 
         /// <summary>
         /// Initializes a new instance of the TinyMessageSubscriptionToken class.
@@ -398,9 +397,9 @@ namespace TinyMessenger
         private class WeakTinyMessageSubscription<TMessage> : ITinyMessageSubscription
             where TMessage : class, ITinyMessage
         {
-            protected TinyMessageSubscriptionToken _SubscriptionToken;
-            protected WeakReference _DeliveryAction;
-            protected WeakReference _MessageFilter;
+            protected readonly TinyMessageSubscriptionToken _SubscriptionToken;
+            protected readonly WeakReference _DeliveryAction;
+            protected readonly WeakReference _MessageFilter;
 
             public TinyMessageSubscriptionToken SubscriptionToken
             {
@@ -458,9 +457,9 @@ namespace TinyMessenger
         private class StrongTinyMessageSubscription<TMessage> : ITinyMessageSubscription
             where TMessage : class, ITinyMessage
         {
-            protected TinyMessageSubscriptionToken _SubscriptionToken;
-            protected Action<TMessage> _DeliveryAction;
-            protected Func<TMessage, bool> _MessageFilter;
+            protected readonly TinyMessageSubscriptionToken _SubscriptionToken;
+            protected readonly Action<TMessage> _DeliveryAction;
+            protected readonly Func<TMessage, bool> _MessageFilter;
 
             public TinyMessageSubscriptionToken SubscriptionToken
             {
@@ -741,7 +740,7 @@ namespace TinyMessenger
                     return;
 
                 var currentlySubscribed = (from sub in currentSubscriptions
-                                           where object.ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
+                                           where ReferenceEquals(sub.Subscription.SubscriptionToken, subscriptionToken)
                                            select sub).ToList();
 
                 currentlySubscribed.ForEach(sub => currentSubscriptions.Remove(sub));

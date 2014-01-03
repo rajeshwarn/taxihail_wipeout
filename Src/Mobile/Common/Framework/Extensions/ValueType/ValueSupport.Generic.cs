@@ -1,6 +1,6 @@
 using System;
 
-namespace apcurium.Framework.Extensions.ValueType
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 {
     public class ValueSupport<T> : IValueSupport<T>
     {

@@ -1,4 +1,8 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt
 {
@@ -35,19 +39,19 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt
         public string CustomerId { get; set; }
         public string CustomerName { get; set; }
 
+        public bool Compare(Trip otherTrip)
+        {
+            if (otherTrip.AutoTipPercentage != AutoTipPercentage)
+                return false;
+            if (otherTrip.AutoTipAmount != AutoTipAmount)
+                return false;
+            return true;
+        }
+
         public class Toll
         {
             public string TollName { get; set; }
             public int TollAmount { get; set; }
-        }
-
-        public bool Compare(Trip otherTrip)
-        {
-            if (otherTrip.AutoTipPercentage != this.AutoTipPercentage)
-                return false;
-            if (otherTrip.AutoTipAmount != this.AutoTipAmount)
-                return false;
-            return true;
         }
     }
 }

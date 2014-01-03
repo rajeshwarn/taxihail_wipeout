@@ -20,6 +20,7 @@ namespace Infrastructure.Sql.EventSourcing
     /// Used by <see cref="SqlEventSourcedRepository{T}"/>, and is used only for running the sample application
     /// without the dependency to the Windows Azure Service Bus when using the DebugLocal solution configuration.
     /// </summary>
+    [DbConfigurationType("apcurium.MK.Common.Database.CustomDbConfiguration, apcurium.MK.Common")]
     public class EventStoreDbContext : DbContext
     {
         public const string SchemaName = "Events";

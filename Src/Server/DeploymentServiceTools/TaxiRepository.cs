@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace DeploymentServiceTools
 {
@@ -17,7 +18,7 @@ namespace DeploymentServiceTools
             _sourceDirectory = sourceDirectory;
         }
 
-        public  void FetchSource(string revisionNumber, Action<string> logger)
+        public void FetchSource(string revisionNumber, Action<string> logger)
         {
             var hg = new MecurialTools(_hgPath, _sourceDirectory);
 
@@ -44,23 +45,23 @@ namespace DeploymentServiceTools
                     logger("Hg Pull");
                     hg.Pull();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     logger("Revert Failed - Deleting all files");
 
-                    foreach (var file in Directory.EnumerateFiles(_sourceDirectory,"*.*", SearchOption.AllDirectories))
+                    foreach (var file in Directory.EnumerateFiles(_sourceDirectory, "*.*", SearchOption.AllDirectories))
                     {
                         File.Delete(file);
                     }
-                    logger("Deleting source dir "+_sourceDirectory);
+                    logger("Deleting source dir " + _sourceDirectory);
                     Directory.Delete(_sourceDirectory);
 
                     logger("Full Clone");
                     hg.Clone(revisionNumber);
                 }
             }
-			
-			logger("Hg Update to rev "+ revisionNumber);
+
+            logger("Hg Update to rev " + revisionNumber);
             hg.Update(revisionNumber);
         }
     }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace apcurium.MK.Booking.IBS
+﻿namespace apcurium.MK.Booking.IBS
 {
-    public class IBSFareEstimate
+    public class IbsFareEstimate
     {
         public double? FareEstimate { get; set; }
 

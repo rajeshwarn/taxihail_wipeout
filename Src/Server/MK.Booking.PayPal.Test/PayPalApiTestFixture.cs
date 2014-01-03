@@ -1,10 +1,8 @@
-﻿using System.Net;
+﻿#region
+
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace MK.Booking.PayPal.Test
 {
@@ -37,12 +35,10 @@ namespace MK.Booking.PayPal.Test
             };
             var requestDetails = new SetExpressCheckoutRequestDetailsType
             {
-                                                                                           
                 OrderTotal = orderTotal,
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = "http://www.google.com",
                 CancelURL = "http://www.google.com"
-
             };
             var requestType = new SetExpressCheckoutRequestType
             {
@@ -59,7 +55,6 @@ namespace MK.Booking.PayPal.Test
 
             Assert.AreEqual(AckCodeType.Success, response.Ack);
             Assert.NotNull(response.Token);
-
         }
     }
 }

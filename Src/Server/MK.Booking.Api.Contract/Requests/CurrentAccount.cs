@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Http;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
-using apcurium.MK.Booking.Api.Contract.Http;
-using apcurium.MK.Booking.Api.Contract.Resources;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account", "GET")]
-    public class CurrentAccount : BaseDTO
+    [Route("/account", "GET")]
+    public class CurrentAccount : BaseDto
     {
     }
 

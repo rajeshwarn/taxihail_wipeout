@@ -47,9 +47,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 				Context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();
 			}
-			catch (Android.Content.ActivityNotFoundException ex)
+			catch
 			{
-
 				Toast.MakeText(Context, resource.GetString("NoMailClient"), ToastLength.Short).Show();
 			}
 		}
@@ -95,9 +94,6 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			reminderValues.Put ("event_id", eventID);
 			reminderValues.Put ("minutes", 120); 
 			reminderValues.Put ("method", 1);
-
-			Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (reminderUriString), reminderValues);			
-
         }
 
 		long GetDateTimeMS (DateTime date)

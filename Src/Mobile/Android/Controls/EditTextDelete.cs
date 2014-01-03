@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.Graphics.Drawables;
-using Android.OS;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -33,18 +29,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 
-        protected override void OnDraw(Android.Graphics.Canvas canvas)
+        protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            var deleteButton = new Button(this.Context);
-            deleteButton.Click += (sender, args) =>
-                                      {
-                                          this.Text = "";
-                                      };
-            deleteButton.SetBackgroundDrawable( Resources.GetDrawable(Resource.Drawable.cancel));
-            this.AddTouchables(new List<View>(){deleteButton});
+            var deleteButton = new Button(Context);
+            deleteButton.Click += (sender, args) => { Text = ""; };
+            deleteButton.SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.cancel));
+            AddTouchables(new List<View> {deleteButton});
         }
-
-
     }
 }

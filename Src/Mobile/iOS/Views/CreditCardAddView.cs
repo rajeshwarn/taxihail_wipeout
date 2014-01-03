@@ -1,13 +1,12 @@
-using System;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -16,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         #region Constructors
         
         public CreditCardAddView () 
-            : base(new MvxShowViewModelRequest<CreditCardAddViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<CreditCardAddViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         
@@ -62,17 +61,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			ViewModel.CreditCardCompanies[4].Image = "Assets/CreditCard/credit_card_generic.png";
 
 
-            ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+// ReSharper disable CoVariantArrayConversion
+            pickerCreditCardCategory.Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+
                 ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); });
 
-            ((ModalTextField)pickerExpirationYear).Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
+            pickerExpirationYear.Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
                 ViewModel.ExpirationYear = x.Id;
             });
+            
 
-            ((ModalTextField)pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
+            (pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
                 ViewModel.ExpirationMonth = x.Id;
             });
-
+// ReSharper restore CoVariantArrayConversion
             this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
 				{ txtCardNumber, "{'Text': {'Path': 'CreditCardNumber', 'Mode': 'TwoWay' }, 'ImageLeftSource': {'Path': 'CreditCardImagePath'}}" }, 
@@ -82,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }
             });
          
-            this.View.ApplyAppFont();     
+            View.ApplyAppFont();     
         }
 
         private bool GoToNext (UITextField textField)

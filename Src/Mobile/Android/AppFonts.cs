@@ -1,14 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -26,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (_typefaceNormal == null)
                 {
-                    _typefaceNormal = Typeface.CreateFromAsset(Application.Context.Assets , "AppFont_Regular.otf");
+                    _typefaceNormal = Typeface.CreateFromAsset(Application.Context.Assets, "AppFont_Regular.otf");
                 }
                 return _typefaceNormal;
             }
@@ -68,8 +58,5 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _typefaceItalic;
             }
         }
-
-        
-
     }
 }

@@ -1,8 +1,4 @@
-using System;
-using apcurium.MK.Booking.Mobile.AppServices;
-using System.Reactive.Threading.Tasks;
-using System.Windows.Input;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -20,24 +16,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			base.Load ();
 			// Show progress indicator while loading first request
-			MessageService.ShowProgress (true);
+            this.Services().Message.ShowProgress(true);
 		}
 
-		private bool _webViewLoadFinishedOnce = false;
+		private bool _webViewLoadFinishedOnce;
 		public void WebViewLoadFinished ()
 		{
 			if (!_webViewLoadFinishedOnce) {
-				MessageService.ShowProgress (false);
+                this.Services().Message.ShowProgress(false);
 				_webViewLoadFinishedOnce = true;
 			}
 		}
 
-		public IMvxCommand Finish
+        //todo : declare command in basesubviewmodel and refactor the Finish pattern in other viewmodels
+        public AsyncCommand<bool> Finish
 		{
 			get{
-				return GetCommand<bool>(success => {
-					ReturnResult(success);
-				});
+				return GetCommand<bool>(ReturnResult);
 			}
 		}
     }

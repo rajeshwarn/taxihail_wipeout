@@ -2,21 +2,16 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.Data;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class CreditCardsListViewModel : BaseSubViewModel<Guid>,
-        IMvxServiceConsumer<IAccountService>
+    public class CreditCardsListViewModel : BaseSubViewModel<Guid>
     {
         private TinyMessageSubscriptionToken _removeCreditCardToken;
         private ObservableCollection<CreditCardViewModel> _creditCards;
@@ -24,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public ObservableCollection<CreditCardViewModel> CreditCards
         {
             get { return _creditCards; }
-            set { this._creditCards = value; FirePropertyChanged("CreditCards"); }
+            set { _creditCards = value; FirePropertyChanged("CreditCards"); }
         }
 
         private bool _hasCards;
@@ -48,14 +43,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public CreditCardsListViewModel(string messageId):base(messageId)
         {
-            var accountService = this.GetService<IAccountService>();
             LoadCreditCards();
         }
 
         public override void Start (bool firstStart = false)
         {
             base.Start (firstStart);
-            _removeCreditCardToken = MessengerHub.Subscribe<RemoveCreditCard>(creditCardId => RemoveCreditCard(creditCardId.Content));
+            _removeCreditCardToken = this.Services().MessengerHub.Subscribe<RemoveCreditCard>(creditCardId => RemoveCreditCard(creditCardId.Content));
         }
 
         public override void Stop ()
@@ -63,18 +57,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.Stop ();
 
             if (_removeCreditCardToken != null) {
-                MessengerHub.Unsubscribe<RemoveCreditCard>(_removeCreditCardToken);
+                this.Services().MessengerHub.Unsubscribe<RemoveCreditCard>(_removeCreditCardToken);
             }
         }
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            this.MessageService.ShowMessage(this.Resources.GetString("RemoveCreditCardTitle"),
-                this.Resources.GetString("RemoveCreditCardMessage"),
-                this.Resources.GetString("YesButton"),
+            this.Services().Message.ShowMessage(this.Services().Resources.GetString("RemoveCreditCardTitle"),
+                this.Services().Resources.GetString("RemoveCreditCardMessage"),
+                this.Services().Resources.GetString("YesButton"),
                 () =>
                 {
-                    AccountService.RemoveCreditCard(creditCardId);
+                    this.Services().Account.RemoveCreditCard(creditCardId);
                     var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
                     if (creditCardToRemove != null)
                     {
@@ -90,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Resources.GetString("CancelBoutton"),
+                this.Services().Resources.GetString("CancelBoutton"),
                 () => { });
                                                                   
         }
@@ -99,28 +93,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return Task.Factory.StartNew(() =>
             {
-                var creditCards = AccountService.GetCreditCards().ToList();
+                var creditCards = this.Services().Account.GetCreditCards().ToList();
                 creditCards.Add(new CreditCardDetails
                 {
-                    FriendlyName = Resources.GetString("AddCreditCardTitle"),
+                    FriendlyName = this.Services().Resources.GetString("AddCreditCardTitle"),
                 });
-                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => 
-				                                                                               {
-					return new CreditCardViewModel()
-                	{
-	                    CreditCardDetails = x,
-	                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
-	                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
-	                    IsFirst = x.Equals(creditCards.First()),
-	                    IsLast = x.Equals(creditCards.Last()),
-	                    Picture = x.CreditCardCompany,
-					};
-				}));
+                CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel
+                {
+                    CreditCardDetails = x,
+                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
+                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
+                    IsFirst = x.Equals(creditCards.First()),
+                    IsLast = x.Equals(creditCards.Last()),
+                    Picture = x.CreditCardCompany,
+                }));
+                //todo utiliser une propriété calculée
                 HasCards = CreditCards.Any();
             });
         }
 
-        public IMvxCommand NavigateToAddOrSelect
+        public AsyncCommand<CreditCardViewModel> NavigateToAddOrSelect
         {
             get
             {
@@ -128,17 +120,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (creditCard.IsAddNew)
                     {
-                        this.NavigateToAddCreditCard.Execute();
+                        NavigateToAddCreditCard.Execute();
                     }
                     else
                     {
-                        this.SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardDetails.CreditCardId);
+                        SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardDetails.CreditCardId);
                     }
                 });
             }
         }
 
-        public IMvxCommand NavigateToAddCreditCard
+        public AsyncCommand NavigateToAddCreditCard
         {
             get
             {
@@ -146,9 +138,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     InvokeOnMainThread(()=>
                     {
-                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel()
+                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
                          {
-                             CreditCardDetails = new CreditCardDetails()
+                             CreditCardDetails = new CreditCardDetails
                              {
                                  CreditCardCompany = newCreditCard.CreditCardCompany,
                                  CreditCardId = newCreditCard.CreditCardId,
@@ -169,11 +161,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand SelectCreditCardAndBackToSettings
+        public AsyncCommand<Guid> SelectCreditCardAndBackToSettings
         {
             get
             {
-                return GetCommand<Guid>(creditCardId => this.ReturnResult(creditCardId));
+                return GetCommand<Guid>(ReturnResult);
             }
         }
     }

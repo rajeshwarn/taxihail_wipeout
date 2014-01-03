@@ -1,13 +1,22 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿#region
+
+using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Common.Extensions;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class ReferenceDataFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -20,12 +29,6 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
         [Test]
         public void Get()
         {
@@ -36,10 +39,10 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotEmpty(data.Result.VehiclesList);
             Assert.IsNotEmpty(data.Result.PaymentsList);
 
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
             data.Result.VehiclesList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
             data.Result.PaymentsList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
-            
-
+// ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
     }
 }

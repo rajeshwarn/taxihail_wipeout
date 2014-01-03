@@ -1,17 +1,17 @@
 using System;
-using System.Drawing;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
 using System.Collections.Generic;
+using System.Drawing;
+using MonoTouch.CoreGraphics;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class VerticalButton : UIButton
 	{
-		private UIColor _background;
+		private readonly UIColor _background;
 		private UIColor _customSelectedColor;
-		private CGColor _gradientStart;
-		private CGColor _gradientEnd;
+		private readonly CGColor _gradientStart;
+		private readonly CGColor _gradientEnd;
 		private CGColor _customSelectedGradientStart;
 		private CGColor _customSelectedGradientEnd;
 
@@ -53,9 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var colorSpace = CGColorSpace.CreateDeviceRGB();
 			var context = UIGraphics.GetCurrentContext();
 
-			List<UIBezierPath> _exteriorPaths = new List<UIBezierPath>();
-			List<UIBezierPath> _interiorBottomPaths = new List<UIBezierPath>();
-			List<UIBezierPath> _interiorTopPaths = new List<UIBezierPath>();
+			var exteriorPaths = new List<UIBezierPath>();
+			var interiorBottomPaths = new List<UIBezierPath>();
+			var interiorTopPaths = new List<UIBezierPath>();
 
 			UIBezierPath rectanglePath;
 			if( FirstButton )
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					rectanglePath = UIBezierPath.FromRoundedRect(rect, 4);
 				}
 
-				_exteriorPaths.Add( rectanglePath );
+				exteriorPaths.Add( rectanglePath );
 			}
 			else if( LastButton )
 			{
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					var path = new UIBezierPath();
 					path.MoveTo( new PointF( rect.X + 1, rect.Y ) );
 					path.AddLineTo( new PointF( rect.Right -1, rect.Y ) );
-					_interiorTopPaths.Add( path ); 
+					interiorTopPaths.Add( path ); 
 
 					path = new UIBezierPath();
 					path.MoveTo( new PointF( rect.X, rect.Y ) );
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					path.AddLineTo( new PointF( rect.Right - 4, rect.Bottom ) );
 					path.AddArc( new PointF( rect.Right - 4, rect.Bottom - 4 ), 4f, ((float)(Math.PI/2)), ((float)(2*Math.PI)), false );
 					path.AddLineTo( new PointF( rect.Right, rect.Y ) );
-					_exteriorPaths.Add( path );
+					exteriorPaths.Add( path );
 				}
 				else
 				{
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					var path = new UIBezierPath();
 					path.MoveTo( new PointF( rect.X + 1, rect.Bottom ) );
 					path.AddLineTo( new PointF( rect.Right - 1, rect.Bottom ) );
-					_interiorBottomPaths.Add( path ); 
+					interiorBottomPaths.Add( path ); 
 
 					path = new UIBezierPath();
 					path.MoveTo( new PointF( rect.X, rect.Bottom ) );
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					path.AddLineTo( new PointF( rect.Right - 4, rect.Top ) );
 					path.AddArc( new PointF( rect.Right - 4, rect.Top + 4 ), 4f, ((float)(3*Math.PI/2)), 0, true );
 					path.AddLineTo( new PointF( rect.Right, rect.Bottom ) );
-					_exteriorPaths.Add( path );
+					exteriorPaths.Add( path );
 				}
 
 			}
@@ -124,22 +124,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 				var path = new UIBezierPath();
 				path.MoveTo( new PointF( rect.X + 1, rect.Bottom ) );
 				path.AddLineTo( new PointF( rect.Right - 1, rect.Bottom ) );
-				_interiorBottomPaths.Add( path ); 
+				interiorBottomPaths.Add( path ); 
 				                         
 				path = new UIBezierPath();
 				path.MoveTo( new PointF( rect.X + 1, rect.Y ) );
 				path.AddLineTo( new PointF( rect.Right -1, rect.Y ) );
-				_interiorTopPaths.Add( path ); 
+				interiorTopPaths.Add( path ); 
 
 				path = new UIBezierPath();
 				path.MoveTo( new PointF( rect.X, rect.Y ) );
 				path.AddLineTo( new PointF( rect.X, rect.Bottom ) );
-				_exteriorPaths.Add( path ); 
+				exteriorPaths.Add( path ); 
 			
 				path = new UIBezierPath();
 				path.MoveTo( new PointF( rect.Right, rect.Y ) );
 				path.AddLineTo( new PointF( rect.Right, rect.Bottom ) );
-				_exteriorPaths.Add( path ); 
+				exteriorPaths.Add( path ); 
 			}
 
 			if( IsGradient )
@@ -147,11 +147,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 				CGColor[] newGradientColors;
 				if( Selected )
 				{
-					newGradientColors = new CGColor [] {_customSelectedGradientStart, _customSelectedGradientEnd};
+					newGradientColors = new[] {_customSelectedGradientStart, _customSelectedGradientEnd};
 				}
 				else
 				{
-					newGradientColors = new CGColor [] {_gradientStart, _gradientEnd};
+					newGradientColors = new[] {_gradientStart, _gradientEnd};
 				}
 
 				var newGradientLocations = new float [] {0, 1};
@@ -222,19 +222,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				UIColor.FromRGB(36,44,51).SetStroke();
 			}
-			_exteriorPaths.ForEach( p => {
+			exteriorPaths.ForEach( p => {
 				p.LineWidth = 1;
 				p.Stroke();
 			});
 
 			UIColor.FromRGB(253,253,253).SetStroke();
-			_interiorTopPaths.ForEach( p => {
+			interiorTopPaths.ForEach( p => {
 				p.LineWidth = 1;
 				p.Stroke();
 			});
 
 			UIColor.FromRGB(207,211,214).SetStroke();
-			_interiorBottomPaths.ForEach( p => {
+			interiorBottomPaths.ForEach( p => {
 				p.LineWidth = 1;
 				p.Stroke();
 			});

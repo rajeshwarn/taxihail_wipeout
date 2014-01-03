@@ -10,9 +10,9 @@
         <meta name="MobileOptimized" content="320">
         <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
         <meta http-equiv="cleartype" content="on">
-        <link rel="stylesheet" href='../themes/<%: this.ApplicationKey %>/less/combined.less'/>
+        <link rel="stylesheet" href='../themes/<%: ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='assets/less/TaxiHail-admin-grid.less'/>
-        <link rel="stylesheet" href='../themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
+        <link rel="stylesheet" href='../themes/<%: ApplicationKey %>/less/combined-responsive.less'/>
         <script src="../assets/js/modernizr.min.js"></script>
     </head>
     <body>
@@ -44,13 +44,13 @@
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/resources") %>"></script>
         
         <script type="text/javascript">
-            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
-            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
-            TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
-            TaxiHail.parameters.isSuperAdmin = <%: this.IsSuperAdmin ? "true" : "false" %>;
-            TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
-            TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
-            TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
+            TaxiHail.parameters.defaultLatitude = <%: DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: DefaultLongitude %>;
+            TaxiHail.parameters.isLoggedIn = <%: IsAuthenticated ? "true" : "false" %>;
+            TaxiHail.parameters.isSuperAdmin = <%: IsSuperAdmin ? "true" : "false" %>;
+            TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
+            TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
+            TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
         </script>

@@ -1,16 +1,15 @@
 using System;
-using MonoTouch.UIKit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
-	public class MessageHelper
+	public static class MessageHelper
 	{
-		public MessageHelper ()
-		{
-		}
 		
         public static void Show ( string title, string message, string additionalActionTitle , Action additionalAction )
         {
@@ -18,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                                                                 {                                       
                 LoadingOverlay.StopAnimatingLoading();
                 var av = new UIAlertView ( title, message, null, additionalActionTitle);
-                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                av.Clicked += delegate {
                     additionalAction();     
                 };                                      
                 av.Show();                                                      
@@ -32,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             UIApplication.SharedApplication.InvokeOnMainThread ( delegate
                                                                 {                   
                 LoadingOverlay.StopAnimatingLoading();
-                UIAlertView av = null;
+                UIAlertView av;
 
                 if ( neutralAction != null )
                 {
@@ -52,8 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         negativeAction(); 
                     }
                     if (e.ButtonIndex == 3) {
-                        
-                        neutralAction(); 
+                        if (neutralAction != null) neutralAction();
                     }
                     };
                 av.Show (  );                           
@@ -76,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }                  
                     else
                     {
-                        positiveAction();
+                        if (positiveAction != null) positiveAction();
                     }
                 };
                 av.Show (  );                           

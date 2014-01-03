@@ -1,14 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DatabaseInitializer.Services;
-using DatabaseInitializer.Sql;
-using Infrastructure.Messaging;
-using Microsoft.Practices.Unity;
-using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
@@ -19,15 +17,31 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using DatabaseInitializer.Services;
+using DatabaseInitializer.Sql;
+using Infrastructure.Messaging;
 using log4net;
-using log4net.Config;
+using Microsoft.Practices.Unity;
+using Newtonsoft.Json.Linq;
+using ConfigurationManager = apcurium.MK.Common.Configuration.Impl.ConfigurationManager;
+
+#endregion
 
 namespace DatabaseInitializer
 {
-    using System.Configuration;
-
     public class Program
     {
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         public static int Main(string[] args)
         {
             var loggger = LogManager.GetLogger("DatabaseInitializer");
@@ -39,7 +53,10 @@ namespace DatabaseInitializer
                     companyName = args[0];
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName));
+                var connectionString = new ConnectionStringSettings("MkWeb",
+                    string.Format(
+                        "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True",
+                        companyName));
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
                 //SQL Instance name
@@ -50,10 +67,14 @@ namespace DatabaseInitializer
                 }
                 else
                 {
+// ReSharper disable LocalizableElement
                     Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER");
+
                     var userSqlInstance = Console.ReadLine();
 
-                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ? "MSSQL10_50.MSSQLSERVER" : userSqlInstance;
+                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance)
+                        ? sqlInstanceName
+                        : userSqlInstance == "1" ? "MSSQL10_50.MSSQLSERVER" : userSqlInstance;
                 }
 
 
@@ -62,9 +83,9 @@ namespace DatabaseInitializer
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
                 IConfigurationManager configurationManager = new
-                    apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
+                    ConfigurationManager(
                     () => new ConfigurationDbContext(connectionString.ConnectionString));
-                
+
                 IDictionary<string, string> settingsInDb = null;
 
                 var isUpdate = creatorDb.DatabaseExists(connStringMaster, companyName);
@@ -99,7 +120,7 @@ namespace DatabaseInitializer
                 if (companyName != "MKWebDev")
                 {
                     creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString,
-                                               "IIS APPPOOL\\" + companyName, companyName);
+                        "IIS APPPOOL\\" + companyName, companyName);
                 }
 
                 //Copy Domain Events
@@ -116,11 +137,10 @@ namespace DatabaseInitializer
 
                 var commandBus = container.Resolve<ICommandBus>();
 
-                bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
+                var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
 
                 if (!companyIsCreated)
                 {
-
                     // Create Default company
                     commandBus.Send(new CreateCompany
                     {
@@ -137,10 +157,8 @@ namespace DatabaseInitializer
                 Console.WriteLine("Loading settings...");
                 if (isUpdate)
                 {
-                    settingsInDb.ForEach(setting =>
-                                             {
-                                                 objectSettings[setting.Key] = setting.Value;
-                                             });
+                    JObject settings = objectSettings;
+                    settingsInDb.ForEach(setting => { settings[setting.Key] = setting.Value; });
                 }
                 foreach (var token in objectSettings)
                 {
@@ -177,13 +195,13 @@ namespace DatabaseInitializer
                     replayService.ReplayAllEvents();
 
                     var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
+                    if (tariffs.GetAll().All(x => x.Type != (int) TariffType.Default))
                     {
                         // Default rate does not exist for this company 
                         CreateDefaultTariff(configurationManager, commandBus);
                     }
 
-                    CreateDefaultRules(connectionString, configurationManager, commandBus);
+                    CreateDefaultRules(connectionString, commandBus);
                     Console.WriteLine("Done playing events...");
 
                     var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
@@ -203,7 +221,6 @@ namespace DatabaseInitializer
                             AccountId = admin.Id,
                             ConfimationToken = admin.ConfirmationToken
                         });
-
                     }
                 }
                 else
@@ -211,28 +228,31 @@ namespace DatabaseInitializer
                     appSettings.Clear();
                     // Create default rate for company
                     CreateDefaultTariff(configurationManager, commandBus);
-                    CreateDefaultRules(connectionString, configurationManager, commandBus);
+                    CreateDefaultRules(connectionString, commandBus);
 
                     Console.WriteLine("Calling ibs...");
                     //Get default settings from IBS
                     var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
-                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
-                                        ?? referenceDataService.GetCompaniesList().FirstOrDefault();
+                    var defaultCompany = referenceDataService.GetCompaniesList()
+                        .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
+                                         ?? referenceDataService.GetCompaniesList().FirstOrDefault();
 
                     if (defaultCompany != null)
                     {
                         appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
-                        var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
-                                              referenceDataService.GetVehiclesList(defaultCompany).First();
+                        var defaultvehicule =
+                            referenceDataService.GetVehiclesList(defaultCompany)
+                                .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
+                            referenceDataService.GetVehiclesList(defaultCompany).First();
                         appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
-                        var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
-                            ?? referenceDataService.GetPaymentsList(defaultCompany).First();
+                        var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany)
+                            .FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
+                                                ?? referenceDataService.GetPaymentsList(defaultCompany).First();
 
 
                         appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
-
                     }
 
                     //Save settings so that registerAccountCommand succeed
@@ -242,14 +262,14 @@ namespace DatabaseInitializer
                     Console.WriteLine("Register normal account...");
                     //Register normal account
                     var registerAccountCommand = new RegisterAccount
-                                                      {
-                                                          Id = Guid.NewGuid(),
-                                                          AccountId = Guid.NewGuid(),
-                                                          Email = "john@taxihail.com",
-                                                          Name = "John Doe",
-                                                          Phone = "5146543024",
-                                                          Password = "password"
-                                                      };
+                    {
+                        Id = Guid.NewGuid(),
+                        AccountId = Guid.NewGuid(),
+                        Email = "john@taxihail.com",
+                        Name = "John Doe",
+                        Phone = "5146543024",
+                        Password = "password"
+                    };
 
                     var confirmationToken = Guid.NewGuid();
                     registerAccountCommand.ConfimationToken = confirmationToken.ToString();
@@ -257,20 +277,18 @@ namespace DatabaseInitializer
                     var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
                     registerAccountCommand.IbsAccountId =
                         accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
-                                                              registerAccountCommand.Email,
-                                                              string.Empty,
-                                                              registerAccountCommand.Name,
-                                                              registerAccountCommand.Phone);
+                            registerAccountCommand.Email,
+                            string.Empty,
+                            registerAccountCommand.Name,
+                            registerAccountCommand.Phone);
                     commandBus.Send(registerAccountCommand);
 
 
                     commandBus.Send(new ConfirmAccount
-                                        {
-                                            AccountId = registerAccountCommand.AccountId,
-                                            ConfimationToken = registerAccountCommand.ConfimationToken
-                                        });
-
-
+                    {
+                        AccountId = registerAccountCommand.AccountId,
+                        ConfimationToken = registerAccountCommand.ConfimationToken
+                    });
 
 
                     //Register admin account
@@ -282,7 +300,7 @@ namespace DatabaseInitializer
                         Email = "taxihail@apcurium.com",
                         Name = "Administrator",
                         Phone = "5146543024",
-                        Password = "1l1k3B4n4n@",//Todo Make the admin portal customizable
+                        Password = "1l1k3B4n4n@", //Todo Make the admin portal customizable
                         IsAdmin = true
                     };
 
@@ -291,16 +309,16 @@ namespace DatabaseInitializer
 
                     registerAdminAccountCommand.IbsAccountId =
                         accountWebServiceClient.CreateAccount(registerAdminAccountCommand.AccountId,
-                                                              registerAdminAccountCommand.Email,
-                                                              string.Empty,
-                                                              registerAdminAccountCommand.Name,
-                                                              registerAdminAccountCommand.Phone);
+                            registerAdminAccountCommand.Email,
+                            string.Empty,
+                            registerAdminAccountCommand.Name,
+                            registerAdminAccountCommand.Phone);
                     commandBus.Send(registerAdminAccountCommand);
                     commandBus.Send(new AddRoleToUserAccount
-                                        {
-                                            AccountId = registerAdminAccountCommand.AccountId,
-                                            RoleName = RoleName.SuperAdmin,
-                                        });
+                    {
+                        AccountId = registerAdminAccountCommand.AccountId,
+                        RoleName = RoleName.SuperAdmin,
+                    });
 
 
                     commandBus.Send(new ConfirmAccount
@@ -309,19 +327,19 @@ namespace DatabaseInitializer
                         ConfimationToken = registerAdminAccountCommand.ConfimationToken
                     });
 
-                    commandBus.Send(new AddRatingType()
+                    commandBus.Send(new AddRatingType
                     {
                         CompanyId = AppConstants.CompanyId,
                         Name = "Knowledgable driver",
                         RatingTypeId = Guid.NewGuid()
                     });
-                    commandBus.Send(new AddRatingType()
+                    commandBus.Send(new AddRatingType
                     {
                         CompanyId = AppConstants.CompanyId,
                         Name = "Politeness",
                         RatingTypeId = Guid.NewGuid()
                     });
-                    commandBus.Send(new AddRatingType()
+                    commandBus.Send(new AddRatingType
                     {
                         CompanyId = AppConstants.CompanyId,
                         Name = "Safety",
@@ -329,13 +347,11 @@ namespace DatabaseInitializer
                     });
                 }
 
-                commandBus.Send(new AddOrUpdateAppSettings()
+                commandBus.Send(new AddOrUpdateAppSettings
                 {
                     AppSettings = appSettings,
                     CompanyId = AppConstants.CompanyId
                 });
-
-
             }
             catch (Exception e)
             {
@@ -344,12 +360,15 @@ namespace DatabaseInitializer
                 return 1;
             }
             return 0;
+// ReSharper restore LocalizableElement
         }
 
-        private static void CreateDefaultRules(ConnectionStringSettings connectionString, IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultRules(ConnectionStringSettings connectionString, ICommandBus commandBus)
         {
             var rules = new RuleDao(() => new BookingDbContext(connectionString.ConnectionString));
-            if (rules.GetAll().None(r => (r.Category == (int)RuleCategory.WarningRule) && (r.Type == (int)RuleType.Default)))
+            if (
+                rules.GetAll()
+                    .None(r => (r.Category == (int) RuleCategory.WarningRule) && (r.Type == (int) RuleType.Default)))
             {
                 // Default rate does not exist for this company 
                 commandBus.Send(new CreateRule
@@ -367,7 +386,9 @@ namespace DatabaseInitializer
                 });
             }
 
-            if (rules.GetAll().None(r => (r.Category == (int)RuleCategory.DisableRule) && (r.Type == (int)RuleType.Default)))
+            if (
+                rules.GetAll()
+                    .None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
             {
                 // Default rate does not exist for this company 
                 commandBus.Send(new CreateRule
@@ -382,25 +403,19 @@ namespace DatabaseInitializer
                     Message = "Service is temporarily unavailable. Please call dispatch center for service.",
                 });
             }
-
         }
 
         private static void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
         {
-
-
             commandBus.Send(new AddOrUpdateAppSettings
-                            {
-                                AppSettings = appSettings,
-                                CompanyId = AppConstants.CompanyId
-                            });
-
+            {
+                AppSettings = appSettings,
+                CompanyId = AppConstants.CompanyId
+            });
         }
 
         private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
-
-
             var flatRate = configurationManager.GetSetting("Direction.FlateRate");
             var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
 
@@ -415,20 +430,6 @@ namespace DatabaseInitializer
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });
-        }
-
-
-
-
-        static public string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
         }
     }
 }

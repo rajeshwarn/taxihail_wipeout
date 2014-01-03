@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
@@ -9,22 +7,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class TermsAndConditionsService : ITermsAndConditionsService
     {
-
-        public TermsAndConditionsService ()
-        {
-        }
-
         private TermsAndConditionsContent _content;
 
 		public TermsAndConditionsContent Content {
-            get {
-				if (_content == null) {
-					_content = LoadTermsAndConditionsContent ();
-                }
-				return _content;
-            }
-
-        }
+            get { return _content ?? (_content = LoadTermsAndConditionsContent()); }
+		}
 
 		public string GetText()
 		{
@@ -34,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private static TermsAndConditionsContent LoadTermsAndConditionsContent ()
         {
             TermsAndConditionsContent result = null;
-            string resourceName = "";
+            string resourceName = string.Empty;
             
             foreach (string name in typeof(TermsAndConditionsService).Assembly.GetManifestResourceNames()) { 
                 if (name.ToLower ().EndsWith (".termsandconditions.json")) {
@@ -45,12 +32,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             
 			using (var stream = typeof(TermsAndConditionsContent).Assembly.GetManifestResourceStream( resourceName)) {
-                using (var reader = new StreamReader(stream, Encoding.UTF8)) {
+			    if (stream != null)
+			        using (var reader = new StreamReader(stream, Encoding.UTF8)) {
                     
-                    string serializedData = reader.ReadToEnd ();
-					result = JsonSerializer.DeserializeFromString<TermsAndConditionsContent> (serializedData);
-                }
-            }
+			            string serializedData = reader.ReadToEnd ();
+			            result = JsonSerializer.DeserializeFromString<TermsAndConditionsContent> (serializedData);
+			        }
+			}
             
             return result;
             

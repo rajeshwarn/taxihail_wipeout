@@ -1,43 +1,35 @@
-using System;
 using Android.App;
 using Android.Content.PM;
-using Cirrious.MvvmCross.Binding.Android.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Activities;
-using apcurium.MK.Booking.Mobile.Client;
+using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Android.Graphics;
 
-namespace Activities.Book
+using apcurium.MK.Booking.Mobile.ViewModels;
+
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	[Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true  )]
-	public class RideSummaryActivity : BaseBindingActivity<RideSummaryViewModel>
-	{
-		protected override int ViewTitleResourceId {
-			get {
-				return Resource.String.EmptyString; 
-			}
-		}
+    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait,
+        ClearTaskOnLaunch = true, FinishOnTaskLaunch = true)]
+    public class RideSummaryActivity : BaseBindingActivity<RideSummaryViewModel>
+    {
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.EmptyString; }
+        }
 
-		public RideSummaryActivity ()
-		{
-		}
+        protected override void OnViewModelSet()
+        {
+            SetContentView(Resource.Layout.View_Book_RideSummaryPage);
 
-
-		protected override void OnViewModelSet ()
-		{
-			SetContentView(Resource.Layout.View_Book_RideSummaryPage);
-
-            ViewModel.PropertyChanged += (sender, e) => 
+            ViewModel.PropertyChanged += (sender, e) =>
             {
-                if(ViewModel.ReceiptSent)
+                if (ViewModel.ReceiptSent)
                 {
                     var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
-                    sendReceiptBtn.SetText(Resource.String.HistoryViewSendReceiptSuccess, Android.Widget.TextView.BufferType.Normal);
+                    sendReceiptBtn.SetText(Resource.String.HistoryViewSendReceiptSuccess,
+                        TextView.BufferType.Normal);
                     sendReceiptBtn.Enabled = false;
                 }
             };
-		}
-	}
+        }
+    }
 }
-

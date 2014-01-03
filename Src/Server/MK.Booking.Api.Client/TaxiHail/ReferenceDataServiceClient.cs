@@ -1,12 +1,16 @@
-using apcurium.MK.Booking.Api.Contract.Resources;
+#region
+
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ReferenceDataServiceClient : BaseServiceClient
     {
         public ReferenceDataServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId,userAgent)
+            : base(url, sessionId, userAgent)
         {
         }
 

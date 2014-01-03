@@ -1,8 +1,9 @@
-﻿using System;
+﻿#region
+using System;
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.StaticFactory;
+#endregion
 
 namespace apcurium.MK.Common.IoC
 {
@@ -13,7 +14,13 @@ namespace apcurium.MK.Common.IoC
             Initialize();
         }
 
+        public UnityServiceLocator(IUnityContainer container)
+        {
+            Container = container;
+        }
+
         public static IUnityContainer Instance { get; private set; }
+        public IUnityContainer Container { get; private set; }
 
         public static IUnityContainer Initialize()
         {
@@ -32,8 +39,6 @@ namespace apcurium.MK.Common.IoC
         {
             container.AddNewExtension<UnityExtension>();
 
-            container.AddNewExtension<StaticFactoryExtension>();
-
             var serviceLocator = new UnityServiceLocator(container);
 
             container.RegisterInstance<IServiceLocator>(serviceLocator);
@@ -41,21 +46,14 @@ namespace apcurium.MK.Common.IoC
             return serviceLocator;
         }
 
-        public UnityServiceLocator(IUnityContainer container)
-        {
-            Container = container;
-        }
-
-        public IUnityContainer Container { get; private set; }
-
         /// <summary>
-        /// When implemented by inheriting classes, this method will do the actual work of resolving
-        /// the requested service instance.
+        ///     When implemented by inheriting classes, this method will do the actual work of resolving
+        ///     the requested service instance.
         /// </summary>
         /// <param name="serviceType">Type of instance requested.</param>
         /// <param name="key">Name of registered service you want. May be null.</param>
         /// <returns>
-        /// The requested service instance.
+        ///     The requested service instance.
         /// </returns>
         protected override object DoGetInstance(Type serviceType, string key)
         {
@@ -64,24 +62,20 @@ namespace apcurium.MK.Common.IoC
             {
                 return null;
             }
-            else
-            {
-                return Container.Resolve(serviceType, key);
-            }
+            return Container.Resolve(serviceType, key);
         }
 
         /// <summary>
-        /// When implemented by inheriting classes, this method will do the actual work of
-        /// resolving all the requested service instances.
+        ///     When implemented by inheriting classes, this method will do the actual work of
+        ///     resolving all the requested service instances.
         /// </summary>
         /// <param name="serviceType">Type of service requested.</param>
         /// <returns>
-        /// Sequence of service instance objects.
+        ///     Sequence of service instance objects.
         /// </returns>
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
             return Container.ResolveAll(serviceType);
         }
     }
-
 }

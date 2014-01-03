@@ -1,37 +1,24 @@
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
 using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Diagnostic;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.Interfaces.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Interfaces;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Client.Animations;
-using MonoTouch.MessageUI;
-using System.IO;
-using apcurium.MK.Booking.Mobile.Client.MapUtilities;
-using apcurium.MK.Booking.Mobile.Style;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Messages;
-using System.Threading;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
- 
-namespace apcurium.MK.Booking.Mobile.Client
+using TinyMessenger;
+
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class BookView : MvxBindingTouchViewController<BookViewModel> , INavigationView
     {
@@ -43,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private BookViewActionsView _bottomAction;
 
         public BookView () 
-            : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
 
@@ -74,9 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
       
                                
-            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
-            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
-            _dateTimePicker = new DateTimePicker (ViewModel.CultureInfo);
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
+            _dateTimePicker = new DateTimePicker (CultureProvider.CultureInfoString);
             _dateTimePicker.ShowPastDate = false;
 
             _onDateTimePicked = () => _dateTimePicker.Hide ();
@@ -141,10 +128,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 mapView.IncrementHeight(heightToCut);
             }
              
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
             ViewModel.Load();
 
-            _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
+            _menu = new PanelMenuView (bookView, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
         }
 
@@ -190,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			TinyIoCContainer.Current.Resolve<IBookingService> ().ClearLastOrder();
             NavigationController.NavigationBar.Hidden = true;
-            this.NavigationController.PopToRootViewController (true);
+            NavigationController.PopToRootViewController (true);
             ViewModel.Reset ();
             ViewModel.Dropoff.ClearAddress ();        
         }

@@ -1,9 +1,12 @@
-﻿using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration.Impl;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {

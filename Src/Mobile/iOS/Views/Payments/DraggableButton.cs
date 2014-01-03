@@ -1,34 +1,34 @@
-using System;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public class DraggableButton : UIButton
+    public sealed class DraggableButton : UIButton
     {
         public DraggableButton (RectangleF frame) : base(frame)
         {
 			ClipsToBounds = false;
         }
 
-        private PointF StartLocation;
+        private PointF _startLocation;
 
-        public override void TouchesBegan (MonoTouch.Foundation.NSSet touches, UIEvent evt)
+        public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
-            StartLocation = ((UITouch)evt.TouchesForView(this).AnyObject).LocationInView(this);
+            _startLocation = ((UITouch)evt.TouchesForView(this).AnyObject).LocationInView(this);
             base.TouchesBegan (touches, evt);
         }
 
         public event DraggedHandler Dragged;
          
 
-        public override void TouchesMoved (MonoTouch.Foundation.NSSet touches, UIEvent evt)
+        public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             var touch = (UITouch)evt.TouchesForView(this).AnyObject;
             var draggedTo = touch.LocationInView(this);
 
-            var x= draggedTo.X - StartLocation.X;
-            var y = draggedTo.Y - StartLocation.Y;
+            var x= draggedTo.X - _startLocation.X;
+            var y = draggedTo.Y - _startLocation.Y;
 
             if(Dragged != null)
             {
@@ -37,15 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             base.TouchesMoved (touches, evt);
         }
-
-        public override void TouchesEnded (MonoTouch.Foundation.NSSet touches, UIEvent evt)
-        {
-
-
-            base.TouchesEnded (touches, evt);
-        }
-
-
 
     }
 

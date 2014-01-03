@@ -1,17 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Util;
 using Android.Graphics;
+using Android.Runtime;
 using Android.Text;
+using Android.Util;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -27,44 +20,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-        public TextButton(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
+        public TextButton(IntPtr ptr, JniHandleOwnership handle)
             : base(ptr, handle)
         {
-
-
         }
 
 
-
+// ReSharper disable UnusedAutoPropertyAccessor.Global
         public string TextLine1 { get; set; }
-
         public string TextLine2 { get; set; }
-
-        protected override void OnDraw(Android.Graphics.Canvas canvas)
+// ReSharper restore UnusedAutoPropertyAccessor.Global
+        protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
 
-
             DrawText(canvas, TextLine1 ?? "", 8, 20, 15);
             DrawText(canvas, TextLine2 ?? "", 8, 45, 20);
-
-
         }
 
-        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize)
+        private void DrawText(Canvas canvas, string text, float x, float y, float textSize)
         {
-            TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
+            var paintText = new TextPaint(PaintFlags.AntiAlias | PaintFlags.LinearText);
             var rect = new Rect();
-            
-            var wManager = Context.GetSystemService( Context.WindowService );
 
-            paintText.TextSize = textSize;// / DisplayMetrics.DensityDefault ;
+            paintText.TextSize = textSize; // / DisplayMetrics.DensityDefault ;
             paintText.GetTextBounds(text, 0, text.Length, rect);
             paintText.SetARGB(255, 49, 49, 49);
             paintText.SetTypeface(AppFonts.Regular);
             canvas.DrawText(text, x, y, paintText);
-            
         }
-
     }
 }

@@ -1,6 +1,10 @@
-﻿using System;
-using Microsoft.Practices.Unity;
+﻿#region
+
+using System;
 using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity;
+
+#endregion
 
 namespace apcurium.MK.Common.IoC
 {
@@ -19,48 +23,41 @@ namespace apcurium.MK.Common.IoC
             {
                 return registered;
             }
-            else
-            {
-                return IsTypeRegistered(container.Parent, type);
-            }
+            return IsTypeRegistered(container.Parent, type);
         }
 
         private static bool IsTypeRegisteredInContainer(IUnityContainer container, Type type)
         {
-            UnityExtension extension = container.Configure<UnityExtension>();
+            var extension = container.Configure<UnityExtension>();
 
             if (extension == null)
             {
                 return false;
             }
-            else
+            var key = new NamedTypeBuildKey(type);
+
+            var mappingPolicy = extension
+                .Context
+                .Policies
+                .Get<IBuildKeyMappingPolicy>(key);
+
+            if (mappingPolicy != null)
             {
-                var key = new NamedTypeBuildKey(type);
-
-                var mappingPolicy = extension
-                    .Context
-                    .Policies
-                    .Get<IBuildKeyMappingPolicy>(key);
-
-                if (mappingPolicy != null)
-                {
-                    return true;
-                }
-
-                var buildPlanPolicy = extension
-                    .Context
-                    .Policies
-                    .Get<IBuildPlanPolicy>(key);
-
-                if (buildPlanPolicy != null &&
-                    buildPlanPolicy.GetType().Name == "FactoryDelegateBuildPlanPolicy")
-                {
-                    return true;
-                }
-
-                return false;
+                return true;
             }
+
+            var buildPlanPolicy = extension
+                .Context
+                .Policies
+                .Get<IBuildPlanPolicy>(key);
+
+            if (buildPlanPolicy != null &&
+                buildPlanPolicy.GetType().Name == "FactoryDelegateBuildPlanPolicy")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
-
 }

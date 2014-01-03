@@ -2,7 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
+
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace MK.Booking.PayPal
@@ -19,9 +19,6 @@ namespace MK.Booking.PayPal
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
         readonly CurrencyCodeType _currency;
-        readonly string _returnUrl;
-        readonly string _cancelUrl;
-
 
         public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, bool useSandbox = false)
         {
@@ -38,6 +35,7 @@ namespace MK.Booking.PayPal
             };
         }
 
+// ReSharper disable once InconsistentNaming
         internal string ISO4217CurrencySymbol
         {
             get { return _currency.ToString(); }
@@ -86,7 +84,7 @@ namespace MK.Booking.PayPal
                 {
                     // Important:
                     // ButtonSource is a tracking code that links the tansaction with Mobile Knowledge
-                    ButtonSource = ExpressCheckoutServiceClient.MobileKnowledgeReferralCode,
+                    ButtonSource = MobileKnowledgeReferralCode,
                     PayerID = payerId,
                     Token = token,
                     PaymentDetails = new [] { paymentDetails },
@@ -99,7 +97,7 @@ namespace MK.Booking.PayPal
                     DoExpressCheckoutPaymentRequestDetails = requestDetails,
                 };
 
-                var request = new DoExpressCheckoutPaymentReq()
+                var request = new DoExpressCheckoutPaymentReq
                 {
                     DoExpressCheckoutPaymentRequest = requestType,
                 };

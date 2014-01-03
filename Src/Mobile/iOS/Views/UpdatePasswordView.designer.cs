@@ -4,9 +4,11 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("UpdatePasswordView")]
 	partial class UpdatePasswordView
@@ -24,13 +26,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblNewPasswordConfirmation { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtCurrentPassword { get; set; }
+		TextField txtCurrentPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtNewPassword { get; set; }
+		TextField txtNewPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtNewPasswordConfirmation { get; set; }
+		TextField txtNewPasswordConfirmation { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

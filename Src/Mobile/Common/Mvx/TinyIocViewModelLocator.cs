@@ -1,6 +1,3 @@
-using apcurium.MK.Booking.Mobile.Infrastructure;
-
-
 #region Copyright
 // <copyright file="MvxDefaultViewModelLocator.cs" company="Cirrious">
 // (c) Copyright Cirrious. http://www.cirrious.com
@@ -10,18 +7,17 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 // </copyright>
 // 
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
-using Cirrious.MvvmCross.IoC;
-using TinyIoC;
 
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Platform.Diagnostics;
+using TinyIoC;
 
-namespace MK.Booking.Mobile.Infrastructure.Mvx
+namespace apcurium.MK.Booking.Mobile.Mvx
 {
     public class TinyIocViewModelLocator : IMvxViewModelLocator
     {
@@ -31,8 +27,6 @@ namespace MK.Booking.Mobile.Infrastructure.Mvx
 
         public bool TryLoad(Type viewModelType, IDictionary<string, string> parameters, out IMvxViewModel model)
         {
-            model = null;
-
             var dict = new Dictionary<string,object>();
 
             LogAnalytics(viewModelType);
@@ -59,6 +53,7 @@ namespace MK.Booking.Mobile.Infrastructure.Mvx
             {
                 TinyIoCContainer.Current.Resolve<IAnalyticsService>().LogViewModel(viewModelType.ToString().Split('.').Last());
             }
+// ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }

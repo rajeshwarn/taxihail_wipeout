@@ -1,11 +1,14 @@
-﻿using System;
+﻿#region
+
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
     public class BookingSettingsUpdated : VersionedEvent
     {
-        public string Name { get; set; }        
+        public string Name { get; set; }
         public string Phone { get; set; }
         public int Passengers { get; set; }
         public int? ProviderId { get; set; }

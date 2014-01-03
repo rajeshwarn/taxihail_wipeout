@@ -1,8 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -11,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public AddressDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
@@ -35,7 +39,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AddressDetails>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(false)).ToList();
+                return
+                    context.Query<AddressDetails>()
+                        .Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(false))
+                        .ToList();
             }
         }
 
@@ -43,7 +50,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AddressDetails>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(true)).ToList();
+                return
+                    context.Query<AddressDetails>()
+                        .Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(true))
+                        .ToList();
             }
         }
     }

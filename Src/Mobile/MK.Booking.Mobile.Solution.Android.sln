@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Client.Android", "Android\MK.Booking.Mobile.Client.Android.csproj", "{9F666743-C8EE-4553-A079-03FB36F979E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHail", "Android\TaxiHail.csproj", "{9F666743-C8EE-4553-A079-03FB36F979E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Android", "Common\MK.Booking.Mobile.Android.csproj", "{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}"
 EndProject
@@ -11,37 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.Andro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Android", "..\Server\MK.Common\MK.Common.Android.csproj", "{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0B2090C8-7575-4992-9765-04354EEB73A5}"
-	ProjectSection(SolutionItems) = preProject
-		Infrastructure\Newtonsoft.Json.MonoDroid.dll = Infrastructure\Newtonsoft.Json.MonoDroid.dll
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PushSharp.Client.MonoForAndroid.Gcm", "Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj", "{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BraintreeEncryption.Library.Android", "Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj", "{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reactive", "Reactive", "{33A2F3D9-5614-447D-82A8-77E67D7CBAE8}"
-	ProjectSection(SolutionItems) = preProject
-		Infrastructure\rx-android-master\System.Reactive.Core.dll = Infrastructure\rx-android-master\System.Reactive.Core.dll
-		Infrastructure\rx-android-master\System.Reactive.Interfaces.dll = Infrastructure\rx-android-master\System.Reactive.Interfaces.dll
-		Infrastructure\rx-android-master\System.Reactive.Linq.dll = Infrastructure\rx-android-master\System.Reactive.Linq.dll
-		Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll = Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MvvmCross", "MvvmCross", "{812EA7DF-2AE1-4DCB-BB82-5B86B6C766A5}"
-	ProjectSection(SolutionItems) = preProject
-		Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll = Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll
-		Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll = Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll
-		Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll = Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Android", "..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj", "{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Android", "..\Server\MK.Booking.Google\MK.Booking.Google.Android.csproj", "{742B3C55-5630-4DCA-BBBD-035C313A4647}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF46E3C4-F5C7-4107-BDFF-7001DB516F0F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Callbox.Mobile.Client.Android", "MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", "{DE9A07FE-A2EE-4669-934E-FF6D1805D858}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiHail.CallBox", "MK.Callbox.Mobile.Client.Android\TaxiHail.CallBox.csproj", "{DE9A07FE-A2EE-4669-934E-FF6D1805D858}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,26 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Android|Any CPU.ActiveCfg = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.iOS|Any CPU.ActiveCfg = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.iOS|Any CPU.Build.0 = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Mac|Any CPU.Build.0 = Debug|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Android|Any CPU.ActiveCfg = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Android|Any CPU.Build.0 = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.iOS|Any CPU.ActiveCfg = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.iOS|Any CPU.Build.0 = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Mac|Any CPU.ActiveCfg = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Mac|Any CPU.Build.0 = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Android|Any CPU.ActiveCfg = Debug|Any CPU
 		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Android|Any CPU.Build.0 = Debug|Any CPU
 		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -94,10 +48,8 @@ Global
 		{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.Android|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.Android|Any CPU.Build.0 = Debug|Any CPU
-		{9F666743-C8EE-4553-A079-03FB36F979E0}.Android|Any CPU.Deploy.0 = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F666743-C8EE-4553-A079-03FB36F979E0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.iOS|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.iOS|Any CPU.Build.0 = Debug|Any CPU
 		{9F666743-C8EE-4553-A079-03FB36F979E0}.Mac|Any CPU.ActiveCfg = Debug|Any CPU
@@ -155,14 +107,8 @@ Global
 		{F899012E-C6A6-4C49-8501-8DDEF592CCF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F899012E-C6A6-4C49-8501-8DDEF592CCF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{1466D096-69FA-4B75-BBB6-533FFAF5D4EB} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{33A2F3D9-5614-447D-82A8-77E67D7CBAE8} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-		{812EA7DF-2AE1-4DCB-BB82-5B86B6C766A5} = {0B2090C8-7575-4992-9765-04354EEB73A5}
-	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj
+		StartupItem = Android\TaxiHail.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,8 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.Practices.Unity;
+﻿#region
+
 using apcurium.MK.Booking.IBS.Impl;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
+using AutoMapper;
+using Microsoft.Practices.Unity;
+
+#endregion
 
 namespace apcurium.MK.Booking.IBS
 {
@@ -10,15 +12,16 @@ namespace apcurium.MK.Booking.IBS
     {
         public void Init(IUnityContainer container)
         {
-            var profile = new IBSAutoMapperProfile();
+            var profile = new IbsAutoMapperProfile();
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
-            container.RegisterType<IAccountWebServiceClient,AccountWebServiceClient>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IStaticDataWebServiceClient, StaticDataWebServiceClient>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IBookingWebServiceClient, BookingWebServiceClient>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IAccountWebServiceClient, AccountWebServiceClient>(
+                new ContainerControlledLifetimeManager());
+            container.RegisterType<IStaticDataWebServiceClient, StaticDataWebServiceClient>(
+                new ContainerControlledLifetimeManager());
+            container.RegisterType<IBookingWebServiceClient, BookingWebServiceClient>(
+                new ContainerControlledLifetimeManager());
         }
-
     }
-
 }

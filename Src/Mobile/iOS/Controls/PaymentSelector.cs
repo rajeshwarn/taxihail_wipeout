@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
@@ -11,10 +12,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	{
 		public event EventHandler ValueChanged;
 
-		private static UIColor SelectedBackground = UIColor.FromRGB(115, 117, 112);
-		private static UIColor NotSelectedBackground = UIColor.White;
-		private static UIColor NotSelectedFont = UIColor.FromRGB(115, 117, 112);
-		private static UIColor SelectedFont = UIColor.White;
+		private static readonly UIColor SelectedBackground = UIColor.FromRGB(115, 117, 112);
+		private static readonly UIColor NotSelectedBackground = UIColor.White;
+		private static readonly UIColor NotSelectedFont = UIColor.FromRGB(115, 117, 112);
+		private static readonly UIColor SelectedFont = UIColor.White;
 
 		UIButton _creditCardButton;
 		UIButton _payPalButton;

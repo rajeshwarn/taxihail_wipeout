@@ -1,106 +1,98 @@
 using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
 using Android.Locations;
 using Android.OS;
-using MK.Common.Android;
-using System.Reactive.Linq;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	public class LocationService : AbstractLocationService
-	{		
-		public LocationService()
-		{			
-			_locationManager = (LocationManager)Application.Context.GetSystemService(Context.LocationService);     
-			LocationListener = new LocationListener();
-			
-			Positions = LocationListener;
-		}
+    public class LocationService : AbstractLocationService
+    {
+        private readonly LocationListener _locationListener;
+        private readonly LocationManager _locationManager;
+        private bool _isStarted;
 
-		
-		public bool IsNetworkProviderEnabled {
-			get {
-				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider );
-			}
-		}
+        public LocationService()
+        {
+            _locationManager = (LocationManager) Application.Context.GetSystemService(Context.LocationService);
+            _locationListener = new LocationListener();
 
-		public bool IsGpsProviderEnabled {
-			get {
-				return _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
-			}
-		}
-		
-		public override bool IsLocationServicesEnabled {
-			get {
-				return IsNetworkProviderEnabled && IsGpsProviderEnabled;
-			}
-		}
-		
-		public override Position BestPosition {
-			get {
-				return LocationListener.BestPosition;
-			}
-		}
-		
-		public override  Position LastKnownPosition
-		{
-			get { return LocationListener.LastKnownPosition;	}  
-		}
-		
-		private LocationManager _locationManager;
-		private LocationListener LocationListener;   
-		
-		
-		
-		public bool IsLocationServiceEnabled
-		{
-			get{
-				return _locationManager.IsProviderEnabled( LocationManager.NetworkProvider ) 
-					||  _locationManager.IsProviderEnabled( LocationManager.GpsProvider );
-			}
-		}
+            Positions = _locationListener;
+        }
 
-		bool _isStarted;
-			public override bool IsStarted{
-			get{ return _isStarted;}
-		}
 
-		public override void Stop()
-		{            
-			if(IsStarted)
-			{   
-				_isStarted = false;
-				_locationManager.RemoveUpdates(LocationListener);
-			}
-		}
-		
-		public override void Start()
-		{   
-			if(IsStarted)
-			{
-				return;
-			}
+        public bool IsNetworkProviderEnabled
+        {
+            get { return _locationManager.IsProviderEnabled(LocationManager.NetworkProvider); }
+        }
 
-			if(!IsLocationServiceEnabled)
-			{
-				throw new Exception("Please enable location services!!");
-			}
-			if(IsNetworkProviderEnabled)
-			{
-				_locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, LocationListener, Looper.MainLooper);
-			}
-			if(IsGpsProviderEnabled)
-			{				
-				_locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, LocationListener, Looper.MainLooper);
-			}
-			_isStarted = true;
-		}		
-	}
+        public bool IsGpsProviderEnabled
+        {
+            get { return _locationManager.IsProviderEnabled(LocationManager.GpsProvider); }
+        }
+
+        public override bool IsLocationServicesEnabled
+        {
+            get { return IsNetworkProviderEnabled && IsGpsProviderEnabled; }
+        }
+
+        public override Position BestPosition
+        {
+            get { return _locationListener.BestPosition; }
+        }
+
+        public override Position LastKnownPosition
+        {
+            get { return _locationListener.LastKnownPosition; }
+        }
+
+
+        public bool IsLocationServiceEnabled
+        {
+            get
+            {
+                return _locationManager.IsProviderEnabled(LocationManager.NetworkProvider)
+                       || _locationManager.IsProviderEnabled(LocationManager.GpsProvider);
+            }
+        }
+
+        public override bool IsStarted
+        {
+            get { return _isStarted; }
+        }
+
+        public override void Stop()
+        {
+            if (IsStarted)
+            {
+                _isStarted = false;
+                _locationManager.RemoveUpdates(_locationListener);
+            }
+        }
+
+        public override void Start()
+        {
+            if (IsStarted)
+            {
+                return;
+            }
+
+            if (!IsLocationServiceEnabled)
+            {
+                throw new Exception("Please enable location services!!");
+            }
+            if (IsNetworkProviderEnabled)
+            {
+                _locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _locationListener,
+                    Looper.MainLooper);
+            }
+            if (IsGpsProviderEnabled)
+            {
+                _locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _locationListener,
+                    Looper.MainLooper);
+            }
+            _isStarted = true;
+        }
+    }
 }

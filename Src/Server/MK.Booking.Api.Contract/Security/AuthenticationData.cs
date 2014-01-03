@@ -1,5 +1,3 @@
-using System;
-
 namespace apcurium.MK.Booking.Api.Contract.Security
 {
     public class AuthenticationData

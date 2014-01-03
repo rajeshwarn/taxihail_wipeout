@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions

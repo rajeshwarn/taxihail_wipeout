@@ -1,17 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
-using NUnit.Framework;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class CreditCardFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -24,16 +32,9 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
         [Test]
         public void AddCreditCard()
         {
-
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
@@ -64,7 +65,6 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveCreditCard()
         {
-            
             var client = GetFakePaymentClient();
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test", client);
@@ -76,7 +76,8 @@ namespace apcurium.MK.Web.Tests
             //const string token = "jjwcnSLWm85";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
-            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2+"");
+            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate,
+                cc.Discover.AvcCvvCvv2 + "");
 
             sut.AddCreditCard(new CreditCardRequest
             {
@@ -92,10 +93,5 @@ namespace apcurium.MK.Web.Tests
             var creditCards = sut.GetCreditCards();
             Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
         }
-
-
-
-   
-
     }
 }

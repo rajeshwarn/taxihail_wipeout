@@ -1,8 +1,12 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -22,6 +26,5 @@ namespace apcurium.MK.Booking.Api.Client
         void AddCreditCard(CreditCardRequest creditCardRequest);
         IList<CreditCardDetails> GetCreditCards();
         void RemoveCreditCard(Guid creditCardId, string token);
-
     }
 }

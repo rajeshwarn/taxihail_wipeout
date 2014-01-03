@@ -1,10 +1,9 @@
-﻿using System.Data.Entity;
-using System.IO;
+﻿using System.IO;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.Fake;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -26,9 +25,6 @@ namespace apcurium.MK.Web.Tests
         static BaseTest()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));
-#pragma warning disable 618
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-#pragma warning restore 618
             AppHost = new AppHost();
             AppHost.Init();
         }

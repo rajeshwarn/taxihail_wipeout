@@ -1,26 +1,29 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Configuration;
-using Infrastructure.Messaging;
-using Microsoft.Practices.Unity;
-using ServiceStack.ServiceInterface.Validation;
-using ServiceStack.WebHost.Endpoints;
-using Funq;
+using apcurium.MK.Booking.Api.Security;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.IoC;
+using Funq;
+using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
-using apcurium.MK.Booking.Api.Security;
-using apcurium.MK.Common.IoC;
-using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
+using ServiceStack.ServiceInterface.Validation;
+using ServiceStack.WebHost.Endpoints;
+using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
+
+#endregion
 
 namespace apcurium.MK.Web.SelfHost
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
@@ -28,6 +31,7 @@ namespace apcurium.MK.Web.SelfHost
             appHost.Init();
             appHost.Start(listeningOn);
 
+// ReSharper disable once LocalizableElement
             Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
             Console.ReadKey();
         }
@@ -35,8 +39,9 @@ namespace apcurium.MK.Web.SelfHost
 
     public class AppHost : AppHostHttpListenerBase
     {
-
-        public AppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly) { }
+        public AppHost() : base("Mobile Knowledge Web Services", typeof (CurrentAccountService).Assembly)
+        {
+        }
 
         public override void Configure(Container containerFunq)
         {
@@ -47,25 +52,24 @@ namespace apcurium.MK.Web.SelfHost
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                 new IAuthProvider[]
-                    {
-                        new CustomCredentialsAuthProvider(container.Resolve<ICommandBus>(), container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
-                        new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
-                        new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
-                    }));
+                {
+                    new CustomCredentialsAuthProvider(UnityContainerExtensions.Resolve<ICommandBus>(container),
+                        UnityContainerExtensions.Resolve<IAccountDao>(container),
+                        UnityContainerExtensions.Resolve<IPasswordService>(container)),
+                    new CustomFacebookAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container)),
+                    new CustomTwitterAuthProvider(UnityContainerExtensions.Resolve<IAccountDao>(container))
+                }));
             Plugins.Add(new ValidationFeature());
-            containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
+            containerFunq.RegisterValidators(typeof (SaveFavoriteAddressValidator).Assembly);
 
             SetConfig(new EndpointHostConfig
             {
                 GlobalResponseHeaders =
-                        {
-                            { "Access-Control-Allow-Origin", "*" },
-                            { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
-                        },
+                {
+                    {"Access-Control-Allow-Origin", "*"},
+                    {"Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"},
+                },
             });
-
         }
     }
-
-
 }

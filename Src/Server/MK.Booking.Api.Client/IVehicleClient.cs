@@ -1,14 +1,14 @@
-using System;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
+#region
+
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
-namespace apcurium.MK.Booking.Mobile
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client
 {
-	public interface IVehicleClient
-	{				
-	    Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude);
-	}
+    public interface IVehicleClient
+    {
+        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude);
+    }
 }
-
-	

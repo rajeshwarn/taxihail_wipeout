@@ -1,7 +1,12 @@
-﻿using System;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -10,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public DeviceDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
@@ -26,7 +31,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<DeviceDetail>().Where(x => x.AccountId == accountId).ToList();                
+                return context.Query<DeviceDetail>().Where(x => x.AccountId == accountId).ToList();
             }
         }
     }

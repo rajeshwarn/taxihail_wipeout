@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
-using System;
-using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -15,11 +19,12 @@ namespace apcurium.MK.Booking.ReadModel
         }
 
         [Key]
-        public Guid Id { get; set; }      
-        public string Name { get; set; }        
+        public Guid Id { get; set; }
+
+        public string Name { get; set; }
         public string Email { get; set; }
-        public byte[] Password{ get; set; }
-        public string Phone{ get; set; }
+        public byte[] Password { get; set; }
+        public string Phone { get; set; }
         public int IBSAccountId { get; set; }
         public string TwitterId { get; set; }
         public string FacebookId { get; set; }
@@ -38,22 +43,21 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsAdmin
         {
-            get { return (Roles & (int)Security.Roles.Admin) == (int)Security.Roles.Admin; }
+            get { return (Roles & (int) Security.Roles.Admin) == (int) Security.Roles.Admin; }
         }
 
         public IEnumerable<string> RoleNames
         {
             get
             {
-                foreach (int role in Enum.GetValues(typeof(Roles)))
+                foreach (int role in Enum.GetValues(typeof (Roles)))
                 {
                     if ((Roles & role) == role)
                     {
-                        yield return Enum.GetName(typeof(Roles), role);
+                        yield return Enum.GetName(typeof (Roles), role);
                     }
                 }
             }
         }
-        
     }
 }

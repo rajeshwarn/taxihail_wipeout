@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using ServiceStack.ServiceHost;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/app/info", "GET")]
+    [Route("/app/info", "GET")]
     public class ApplicationInfoRequest
     {
     }

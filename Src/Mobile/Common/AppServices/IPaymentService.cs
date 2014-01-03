@@ -7,9 +7,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {        
         double? GetPaymentFromCache(Guid orderId);
         
-        void SetPaymentFromCache(Guid orderId, double amount);
-
-        void ResendConfirmationToDriver(System.Guid orderId);
+        void SetPaymentFromCache(Guid orderId, double amount);        
     }
 }
 

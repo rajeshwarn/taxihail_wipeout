@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
     public static class DictionaryExtensions
     {
         public static TValue FindOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> items, TKey key,
-                                                        Func<TValue> factory)
+            Func<TValue> factory)
         {
             TValue value;
 
@@ -25,7 +29,8 @@ namespace apcurium.MK.Common.Extensions
             return GetValueOrDefault(dictionary, key, default(TValue));
         }
 
-        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key,
+            TValue defaultValue)
         {
             var value = defaultValue;
 
@@ -38,20 +43,21 @@ namespace apcurium.MK.Common.Extensions
             return value;
         }
 
-        public static IEnumerable<TKey> RemoveKeys<TKey, TValue>(this IDictionary<TKey, TValue> items, IEnumerable<TKey> range)
+        public static IEnumerable<TKey> RemoveKeys<TKey, TValue>(this IDictionary<TKey, TValue> items,
+            IEnumerable<TKey> range)
         {
-            return range.Where(k => items.Remove(k)).ToList();
+            return range.Where(items.Remove).ToList();
         }
 
-        public static T MergeLeft<T, K, V>(this T me, params IDictionary<K, V>[] others)
-        where T : IDictionary<K, V>, new()
+        public static T MergeLeft<T, TK, TV>(this T me, params IDictionary<TK, TV>[] others)
+            where T : IDictionary<TK, TV>, new()
         {
-            T newMap = new T();
-            foreach (IDictionary<K, V> src in
-                (new List<IDictionary<K, V>> { me }).Concat(others))
+            var newMap = new T();
+            foreach (var src in
+                (new List<IDictionary<TK, TV>> {me}).Concat(others))
             {
                 // ^-- echk. Not quite there type-system.
-                foreach (KeyValuePair<K, V> p in src)
+                foreach (var p in src)
                 {
                     newMap[p.Key] = p.Value;
                 }

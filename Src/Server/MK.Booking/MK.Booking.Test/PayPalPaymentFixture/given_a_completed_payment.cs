@@ -1,50 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.PayPalPaymentFixture
 {
     [TestFixture]
     public class given_a_completed_payment
     {
-        private EventSourcingTestHelper<PayPalPayment> sut;
-        private Guid _orderId;
-        private Guid _paymentId;
-
         [SetUp]
         public void Setup()
         {
             _orderId = Guid.NewGuid();
             _paymentId = Guid.NewGuid();
 
-            sut = new EventSourcingTestHelper<PayPalPayment>();
-            sut.Setup(new PayPalPaymentCommandHandler(this.sut.Repository));
-            sut.Given(new PayPalExpressCheckoutPaymentInitiated
+            _sut = new EventSourcingTestHelper<PayPalPayment>();
+            _sut.Setup(new PayPalPaymentCommandHandler(_sut.Repository));
+            _sut.Given(new PayPalExpressCheckoutPaymentInitiated
             {
                 SourceId = _paymentId,
                 OrderId = _orderId,
                 Token = "the token",
                 Amount = 12.34m
             });
-            sut.Given(new PayPalExpressCheckoutPaymentCompleted {SourceId = _paymentId});
+            _sut.Given(new PayPalExpressCheckoutPaymentCompleted {SourceId = _paymentId});
         }
+
+        private EventSourcingTestHelper<PayPalPayment> _sut;
+        private Guid _orderId;
+        private Guid _paymentId;
 
         [Test]
         public void when_cancelling_the_payment()
         {
-            Assert.Throws<InvalidOperationException>(() => sut.When(new CancelPayPalExpressCheckoutPayment
-                                                                        {
-                                                                            PaymentId = _paymentId,
-                                                                        }));
-
+            Assert.Throws<InvalidOperationException>(() => _sut.When(new CancelPayPalExpressCheckoutPayment
+            {
+                PaymentId = _paymentId,
+            }));
         }
     }
 }

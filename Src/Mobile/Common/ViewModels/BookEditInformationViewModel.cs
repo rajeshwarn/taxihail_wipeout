@@ -1,33 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
-using TinyIoC;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.DesignPatterns.Serialization;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookEditInformationViewModel : BaseSubViewModel<Order>, IMvxServiceConsumer<IAccountService>
+    public class BookEditInformationViewModel : BaseSubViewModel<Order>
     {
-        private IAccountService _accountService;
         public BookEditInformationViewModel(string messageId, string order)
             : base(messageId)
         {
-            _accountService = this.GetService<IAccountService>();
-
             Order = JsonSerializer.DeserializeFromString<Order>(order);
             RideSettings = new RideSettingsViewModel( Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => 
@@ -55,9 +40,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.Settings.ChargeTypeId = id;
             FirePropertyChanged(() => ChargeType);
         }
-
-
-
         public int? VehicleTypeId
         {
             get { return Order.Settings.VehicleTypeId; }
@@ -68,11 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return Order.Settings.ChargeTypeId; }
             set { SetChargeTypeId(value); }
         }
-
-
-
-
-        public ListItem[] Vehicles
+        public ListItem<int>[] Vehicles
         {
             get
             {
@@ -80,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public ListItem[] Payments
+        public ListItem<int>[] Payments
         {
             get
             {
@@ -156,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
 
 
-        public IMvxCommand SaveCommand
+        public AsyncCommand SaveCommand
         {
             get
             {
@@ -172,9 +150,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
             result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
             return result;
         }
 
@@ -184,41 +162,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return buildingName;
             }
-            else
-            {
-                return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
-            }
+            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
         }
 
         private string FormatDateTime(DateTime? pickupDate)
         {
-            var formatTime = new CultureInfo(CultureInfoString).DateTimeFormat.ShortTimePattern;
+            var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:ddd, MMM d}, {0:" + formatTime + "}";
-            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : this.Services().Resources.GetString("TimeNow");
             return result;
         }
-        public string CultureInfoString
-        {
-            get
-            {
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
-                if (culture.IsNullOrEmpty())
-                {
-                    return "en-US";
-                }
-                else
-                {
-                    return culture;
-                }
-            }
-        }
+       
         public bool ShowPassengerName
         {
             get
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerName"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerName"));
                 }
                 catch (Exception)
                 {
@@ -233,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerPhone"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerPhone"));
                 }
                 catch (Exception)
                 {
@@ -248,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
-                    return Boolean.Parse(TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.ShowPassengerNumber"));
+                    return Boolean.Parse(this.Services().Config.GetSetting("Client.ShowPassengerNumber"));
                 }
                 catch (Exception)
                 {

@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
@@ -19,6 +17,7 @@ using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common;
 using Direction = apcurium.MK.Common.Entity.DirectionSetting;
+using apcurium.MK.Booking.Api.Client;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -34,16 +33,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 && info.PickupAddress.HasValidCoordinate () && (!destinationIsRequired || (  info.DropOffAddress.BookAddress.HasValue () 
                                                                                            && info.DropOffAddress.HasValidCoordinate () ) ) ;
         }
-
-        protected ILogger Logger {
-            get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
-        }
-
-        protected ICacheService Cache {
-            get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
-        }
-
-        protected IConfigurationManager Config {
+	
+		protected IConfigurationManager Config {
             get { return TinyIoCContainer.Current.Resolve<IConfigurationManager> (); }
         }
 
@@ -78,23 +69,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<OrderServiceClient> (service =>
             {
                 orderDetail = service.CreateOrder (order);
-            }, ex => HandleCreateOrderError (ex, order));
+            }, HandleCreateOrderError);
 
-            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0) {
+			if (orderDetail.IbsOrderId.HasValue && orderDetail.IbsOrderId > 0) {
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
-            ThreadPool.QueueUserWorkItem (o =>
-            {
-                TinyIoCContainer.Current.Resolve<IAccountService> ().RefreshCache (true);
-            });
+            ThreadPool.QueueUserWorkItem (o => TinyIoCContainer.Current.Resolve<IAccountService> ().RefreshCache (true));
 
             return orderDetail;
         }
 
 		public bool CallIsEnabled { get{ return !Config.GetSetting("Client.HideCallDispatchButton", false); } }
 
-        private void HandleCreateOrderError (Exception ex, CreateOrder order)
+        private void HandleCreateOrderError (Exception ex)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var title = appResource.GetString ("ErrorCreatingOrderTitle");
@@ -103,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			if (CallIsEnabled)
 			{
-				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage");
 			}
 
             try {
@@ -130,8 +118,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						}
                     }
                 }
-            } catch {
-
+            } catch (Exception exe)
+            {
+                Logger.LogError(exe);
             }
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
@@ -204,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool IsCompleted (Guid orderId)
         {
             var status = GetOrderStatus (orderId);
-            return IsStatusCompleted (status.IBSStatusId);
+			return IsStatusCompleted (status.IbsStatusId);
         }
 
         public bool IsStatusTimedOut(string statusId)
@@ -243,17 +232,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
-            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<Direction.TarifMode>("Direction.TarifMode", Direction.TarifMode.AppTarif);            
+            var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<DirectionSetting.TarifMode>("Direction.TarifMode", DirectionSetting.TarifMode.AppTarif);            
             DirectionInfo directionInfo = new DirectionInfo();
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
-                if (tarifMode != Direction.TarifMode.AppTarif)
+                if (tarifMode != DirectionSetting.TarifMode.AppTarif)
                 {
-                    directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
+					directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
                 }
 
-                if (tarifMode == Direction.TarifMode.AppTarif || (tarifMode == Direction.TarifMode.Both && directionInfo.Price == 0d))
+                if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
                 {
                     directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
@@ -342,7 +331,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return ratingType;
         }
 
-        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating (Guid orderId)
+        public OrderRatings GetOrderRating (Guid orderId)
         {
             var orderRate = new OrderRatings ();
             UseServiceClient<OrderServiceClient> (service =>
@@ -352,9 +341,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderRate;
         }
 
-        public void SendRatingReview (Common.Entity.OrderRatings orderRatings)
+        public void SendRatingReview (OrderRatings orderRatings)
         {
-            var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
             UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
 

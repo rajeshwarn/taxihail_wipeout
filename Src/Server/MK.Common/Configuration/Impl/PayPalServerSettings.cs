@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace apcurium.MK.Common.Configuration.Impl
+﻿namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalServerSettings
     {
@@ -13,7 +9,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsSandbox = true;
         }
 
-        public bool IsSandbox {get; set;}
+        public bool IsSandbox { get; set; }
         public PayPalCredentials SandboxCredentials { get; set; }
         public PayPalCredentials Credentials { get; set; }
     }

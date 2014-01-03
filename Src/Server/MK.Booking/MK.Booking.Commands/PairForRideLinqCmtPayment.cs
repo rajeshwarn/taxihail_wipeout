@@ -1,5 +1,9 @@
+#region
+
 using System;
 using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -10,7 +14,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; private set; }
         public Guid OrderId { get; set; }
         public string Medallion { get; set; }
         public string DriverId { get; set; }
@@ -19,5 +22,6 @@ namespace apcurium.MK.Booking.Commands
         public string TokenOfCardToBeUsedForPayment { get; set; }
         public double? AutoTipAmount { get; set; }
         public int? AutoTipPercentage { get; set; }
+        public Guid Id { get; private set; }
     }
 }

@@ -1,10 +1,7 @@
-using System;
-using System.Drawing;
-using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using System.Collections.Generic;
@@ -28,13 +25,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			MessageLabel.Font = AppStyle.GetNormalFont (MessageLabel.Font.PointSize);
 
 
-			AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton (SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
-			AppButtons.FormatStandardButton ((GradientButton)PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
-            AppButtons.FormatStandardButton ((GradientButton)ReSendConfirmationButton, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton (PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
+            AppButtons.FormatStandardButton (ReSendConfirmationButton, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
 
-			this.AddBindings(new Dictionary<object, string>(){
+			this.AddBindings(new Dictionary<object, string>{
 				{ TitleLabel, new B("Text","ThankYouTitle")},
 				{ MessageLabel, new B("Text","ThankYouMessage")},
 				{ SendRecieptButton, new B("TouchUpInside","SendReceiptCommand")
@@ -53,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if(ViewModel.ReceiptSent)
                 {
-					AppButtons.FormatStandardButton ((GradientButton)SendRecieptButton, Resources.GetValue("HistoryViewSendReceiptSuccess"), AppStyle.ButtonColor.Grey);
+					AppButtons.FormatStandardButton (SendRecieptButton, Resources.GetValue("HistoryViewSendReceiptSuccess"), AppStyle.ButtonColor.Grey);
                     SendRecieptButton.Enabled = false;
                 }
 

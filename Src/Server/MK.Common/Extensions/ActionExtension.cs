@@ -1,9 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -11,7 +12,6 @@ namespace apcurium.MK.Common.Extensions
     {
         public static void Retry(this Action action, TimeSpan retryInterval, int retryCount = 3)
         {
-
             Retry<object>(() =>
             {
                 action();
@@ -23,7 +23,7 @@ namespace apcurium.MK.Common.Extensions
         {
             var exceptions = new List<Exception>();
 
-            for (int retry = 0; retry < retryCount; retry++)
+            for (var retry = 0; retry < retryCount; retry++)
             {
                 try
                 {
@@ -38,7 +38,5 @@ namespace apcurium.MK.Common.Extensions
 
             throw new AggregateException(exceptions);
         }
-
-
     }
 }

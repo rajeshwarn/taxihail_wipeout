@@ -27,7 +27,9 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +46,7 @@
     <PackageAsSingleFile>false</PackageAsSingleFile>
     <PublishDatabases>false</PublishDatabases>
     <Prefer32Bit>false</Prefer32Bit>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,120 +58,98 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <HintPath>..\packages\AjaxMin.4.69.4665.24361\lib\net40\AjaxMin.dll</HintPath>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="dotless.Core">
-      <HintPath>..\packages\dotless.1.3.0.5\lib\dotless.Core.dll</HintPath>
+    <Reference Include="dotless.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\dotless.1.4.0.0\lib\dotless.Core.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.0.0-alpha2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=3.1.27.9, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Libraries\PostSharp.dll</HintPath>
     </Reference>
-    <Reference Include="PostSharp, Version=3.0.40.9, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PostSharp.3.0.40\lib\net20\PostSharp.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="PushSharp">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Android, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Android.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="PushSharp.Apple, Version=1.0.18.0, Culture=neutral, PublicKeyToken=cf74b75eab2c0170, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Apple.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="PushSharp.Blackberry">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Blackberry.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Common">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.Windows">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.Windows.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PushSharp.WindowsPhone">
-      <HintPath>..\packages\PushSharp.1.0.18\lib\net40\PushSharp.WindowsPhone.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ServiceStack, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.56\lib\net35\ServiceStack.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.71\lib\net35\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.71\lib\net35\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Redis, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.71\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.56\lib\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.56\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.57.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.57\lib\net35\ServiceStack.Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.56\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.56\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    <Reference Include="System.Reactive.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Core.2.2.2\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    <Reference Include="System.Reactive.Interfaces, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Interfaces.2.2.2\lib\net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    <Reference Include="System.Reactive.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-Linq.2.2.2\lib\net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx-PlatformServices.2.2.2\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -176,18 +157,20 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebGrease">
-      <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -356,111 +339,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
-    <Content Include="themes\BlackWhiteCab\img\cancel-icon.png" />
-    <Content Include="themes\BlackWhiteCab\img\location.png" />
-    <Content Include="themes\BlackWhiteCab\img\logo.png" />
-    <Content Include="themes\BluelineTaxi\img\logo.png" />
-    <Content Include="themes\BlueWhiteTaxi\img\logo.png" />
-    <Content Include="themes\CasinoTaxi\img\logo.png" />
-    <Content Include="themes\CentralTaxiBelleville\img\logo.png" />
-    <Content Include="themes\CentralTaxiNiagara\img\logo.png" />
-    <Content Include="themes\CrownCabCompany\img\cancel-icon.png" />
-    <Content Include="themes\CrownCabCompany\img\location.png" />
-    <Content Include="themes\CrownCabCompany\img\Logo.png" />
-    <Content Include="themes\FourTwos\img\cancel-icon.png" />
-    <Content Include="themes\FourTwos\img\header-bg.png" />
-    <Content Include="themes\FourTwos\img\location.png" />
-    <Content Include="themes\FourTwos\img\Logo.png" />
-    <Content Include="themes\GreenYellowCab\img\cancel-icon.png" />
-    <Content Include="themes\GreenYellowCab\img\header-bg.png" />
-    <Content Include="themes\GreenYellowCab\img\location.png" />
-    <Content Include="themes\GreenYellowCab\img\Logo.png" />
-    <Content Include="themes\LacledeCab\img\logo.png" />
-    <Content Include="themes\LuxorCab\img\cancel-icon.png" />
-    <Content Include="themes\LuxorCab\img\location.png" />
-    <Content Include="themes\LuxorCab\img\logo.png" />
-    <Content Include="themes\MearsTaxi\img\cancel-icon.png" />
-    <Content Include="themes\MearsTaxi\img\location.png" />
-    <Content Include="themes\MearsTaxi\img\logo.png" />
-    <Content Include="themes\MetroTaxiCT\img\cancel-icon.png" />
-    <Content Include="themes\MetroTaxiCT\img\location.png" />
-    <Content Include="themes\MetroTaxiCT\img\logo.png" />
-    <Content Include="themes\DispatchTaxi\img\cancel-icon.png" />
-    <Content Include="themes\DispatchTaxi\img\location.png" />
-    <Content Include="themes\DispatchTaxi\img\logo.png" />
-    <Content Include="themes\DiamondCab\img\logo.png" />
-    <Content Include="themes\FreedomTaxi\img\logo.png" />
-    <Content Include="themes\MississaugaTaxi\img\logo.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\cancel-icon.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\location.png" />
-    <Content Include="themes\SanJoseForARideCallbox\img\logo.png" />
-    <Content Include="themes\Taxi303\img\logo.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\location.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
-    <Content Include="themes\BostonCab\img\cancel-icon.png" />
-    <Content Include="themes\BostonCab\img\header-bg.png" />
-    <Content Include="themes\BostonCab\img\location.png" />
-    <Content Include="themes\BostonCab\img\logo.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\cancel-icon.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
-    <Content Include="themes\BarrieTaxi\img\cancel-icon.png" />
-    <Content Include="themes\BarrieTaxi\img\location.png" />
-    <Content Include="themes\BarrieTaxi\img\logo.png" />
-    <Content Include="themes\FlashCab\img\logo.png" />
-    <Content Include="themes\Nawlins\img\logo.png" />
-    <Content Include="themes\TaxiHailNYC\img\logo.png" />
-    <Content Include="themes\Taxiworld\img\header-bg.png" />
-    <Content Include="themes\Taxiworld\img\logo.png" />
-    <Content Include="themes\Thriev\img\cancel-icon.png" />
-    <Content Include="themes\Thriev\img\location.png" />
-    <Content Include="themes\Thriev\img\logo.png" />
-    <Content Include="themes\VETaxi\img\cancel-icon.png" />
-    <Content Include="themes\VETaxi\img\location.png" />
-    <Content Include="themes\VETaxi\img\Logo.png" />
-    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
-    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
-    <Content Include="themes\VictoriaTaxi\img\location.png" />
-    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\header-bg.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\location.png" />
-    <Content Include="themes\YellowCabBatonRouge\img\Logo.png" />
-    <Content Include="themes\YellowCabColumbus\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabColumbus\img\header-bg.png" />
-    <Content Include="themes\YellowCabColumbus\img\location.png" />
-    <Content Include="themes\YellowCabColumbus\img\Logo.png" />
-    <Content Include="themes\YellowCabJacksonville\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabJacksonville\img\location.png" />
-    <Content Include="themes\YellowCabJacksonville\img\logo.png" />
-    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
-    <Content Include="themes\YellowCabTampa\img\location.png" />
-    <Content Include="themes\YellowCabTampa\img\Logo.png" />
-    <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
-    <Content Include="themes\SanJoseForARide\img\location.png" />
-    <Content Include="themes\SanJoseForARide\img\logo.png" />
-    <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
-    <Content Include="themes\StLouisTaxi\img\location.png" />
-    <Content Include="themes\StLouisTaxi\img\Logo.png" />
-    <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
-    <Content Include="themes\StyleTransportation\img\location.png" />
-    <Content Include="themes\StyleTransportation\img\logo.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\cancel-icon.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\location.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
-    <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
-    <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
-    <Content Include="themes\WorcesterYellowCab\img\location.png" />
-    <Content Include="themes\WorcesterYellowCab\img\Logo.png" />
-    <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabSavannah\img\location.png" />
-    <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -486,10 +365,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\combined.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\style.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
     <Content Include="themes\TaxiHail\less\combined-responsive.less" />
     <Content Include="themes\TaxiHail\less\combined.less" />
     <Content Include="localization\OrderHistoryDetail.json" />
@@ -500,42 +375,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\templates\TariffItem.handlebars" />
-    <Content Include="themes\Taxiworld\less\combined-responsive.less" />
-    <Content Include="themes\Taxiworld\less\combined.less" />
-    <Content Include="themes\Taxiworld\less\style.less" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
     <Content Include="themes\TaxiHail\less\variables.less" />
     <Content Include="admin\templates\ManagePopularAddresses.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="themes\BarrieTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BarrieTaxi\less\combined.less" />
-    <Content Include="themes\BarrieTaxi\less\style.less" />
-    <Content Include="themes\BarrieTaxi\less\variables.less" />
-    <Content Include="themes\Taxi303\less\combined-responsive.less" />
-    <Content Include="themes\Taxi303\less\combined.less" />
-    <Content Include="themes\Taxi303\less\style.less" />
-    <Content Include="themes\Taxi303\less\variables.less" />
-    <Content Include="themes\FlashCab\less\combined-responsive.less" />
-    <Content Include="themes\FlashCab\less\combined.less" />
-    <Content Include="themes\FlashCab\less\style.less" />
-    <Content Include="themes\FlashCab\less\variables.less" />
-    <Content Include="themes\Nawlins\less\combined-responsive.less" />
-    <Content Include="themes\Nawlins\less\combined.less" />
-    <Content Include="themes\Nawlins\less\style.less" />
-    <Content Include="themes\Nawlins\less\variables.less" />
-    <Content Include="themes\FreedomTaxi\less\combined-responsive.less" />
-    <Content Include="themes\FreedomTaxi\less\combined.less" />
-    <Content Include="themes\FreedomTaxi\less\style.less" />
-    <Content Include="themes\FreedomTaxi\less\variables.less" />
-    <Content Include="themes\MississaugaTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MississaugaTaxi\less\combined.less" />
-    <Content Include="themes\MississaugaTaxi\less\style.less" />
-    <Content Include="themes\MississaugaTaxi\less\variables.less" />
-    <Content Include="themes\DiamondCab\less\combined-responsive.less" />
-    <Content Include="themes\DiamondCab\less\combined.less" />
-    <Content Include="themes\DiamondCab\less\style.less" />
-    <Content Include="themes\DiamondCab\less\variables.less" />
     <Content Include="admin\templates\ConfirmEmail.handlebars" />
     <Content Include="admin\localization\ConfirmEmail.json" />
     <Content Include="admin\templates\ManageRules.handlebars">
@@ -544,157 +388,12 @@
     <Content Include="admin\localization\ManageRules.json" />
     <Content Include="admin\templates\EditRule.handlebars" />
     <Content Include="admin\localization\EditRule.json" />
-    <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
-    <Content Include="themes\CasinoTaxi\less\combined.less" />
-    <Content Include="themes\CasinoTaxi\less\style.less" />
-    <Content Include="themes\CasinoTaxi\less\variables.less" />
-    <Content Include="themes\DispatchTaxi\less\combined-responsive.less" />
-    <Content Include="themes\DispatchTaxi\less\combined.less" />
-    <Content Include="themes\DispatchTaxi\less\style.less" />
-    <Content Include="themes\DispatchTaxi\less\variables.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\combined.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\style.less" />
-    <Content Include="themes\BlueWhiteTaxi\less\variables.less" />
     <Content Include="admin\templates\RuleItem.handlebars" />
     <Content Include="admin\localization\RuleItem.json" />
-    <Content Include="themes\MetroTaxiCT\less\combined-responsive.less" />
-    <Content Include="themes\MetroTaxiCT\less\combined.less" />
-    <Content Include="themes\MetroTaxiCT\less\style.less" />
-    <Content Include="themes\MetroTaxiCT\less\variables.less" />
-    <Content Include="themes\YellowCabJacksonville\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabJacksonville\less\combined.less" />
-    <Content Include="themes\YellowCabJacksonville\less\style.less" />
-    <Content Include="themes\YellowCabJacksonville\less\variables.less" />
     <Content Include="admin\templates\ManagePaymentSettings.handlebars" />
-    <Content Include="themes\Thriev\less\combined-responsive.less" />
-    <Content Include="themes\Thriev\less\combined.less" />
-    <Content Include="themes\Thriev\less\style.less" />
-    <Content Include="themes\Thriev\less\variables.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\style.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\variables.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\style.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\variables.less" />
-    <Content Include="themes\CrownCabCompany\less\combined-responsive.less" />
-    <Content Include="themes\CrownCabCompany\less\combined.less" />
-    <Content Include="themes\CrownCabCompany\less\style.less" />
-    <Content Include="themes\CrownCabCompany\less\variables.less" />
-    <Content Include="themes\FourTwos\less\combined-responsive.less" />
-    <Content Include="themes\FourTwos\less\combined.less" />
-    <Content Include="themes\FourTwos\less\style.less" />
-    <Content Include="themes\FourTwos\less\variables.less" />
-    <Content Include="themes\LacledeCab\less\combined-responsive.less" />
-    <Content Include="themes\LacledeCab\less\combined.less" />
-    <Content Include="themes\LacledeCab\less\style.less" />
-    <Content Include="themes\LacledeCab\less\variables.less" />
-    <Content Include="themes\LuxorCab\less\combined-responsive.less" />
-    <Content Include="themes\LuxorCab\less\combined.less" />
-    <Content Include="themes\LuxorCab\less\style.less" />
-    <Content Include="themes\LuxorCab\less\variables.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined-responsive.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\style.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\variables.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\style.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\variables.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined.less" />
-    <Content Include="themes\YellowCabColumbus\less\style.less" />
-    <Content Include="themes\YellowCabColumbus\less\variables.less" />
-    <Content Include="themes\Thriev\localization\Book.json" />
-    <Content Include="themes\Thriev\localization\BookingConfirmation.json" />
-    <Content Include="themes\Thriev\templates\BookingConfirmation.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="themes\MearsTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MearsTaxi\less\combined.less" />
-    <Content Include="themes\MearsTaxi\less\style.less" />
-    <Content Include="themes\MearsTaxi\less\variables.less" />
-    <Content Include="themes\GreenYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\GreenYellowCab\less\combined.less" />
-    <Content Include="themes\GreenYellowCab\less\style.less" />
-    <Content Include="themes\GreenYellowCab\less\variables.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined-responsive.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined-responsive.less" />
-    <Content Include="themes\BlackWhiteCab\less\combined.less" />
-    <Content Include="themes\BlackWhiteCab\less\style.less" />
-    <Content Include="themes\BlackWhiteCab\less\variables.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\combined.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\style.less" />
-    <Content Include="themes\CentralTaxiBelleville\less\variables.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined-responsive.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\combined.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\style.less" />
-    <Content Include="themes\CentralTaxiNiagara\less\variables.less" />
-    <Content Include="themes\CrownCabCompany\less\combined-responsive.less" />
-    <Content Include="themes\CrownCabCompany\less\combined.less" />
-    <Content Include="themes\CrownCabCompany\less\style.less" />
-    <Content Include="themes\CrownCabCompany\less\variables.less" />
-    <Content Include="themes\FourTwos\less\combined-responsive.less" />
-    <Content Include="themes\FourTwos\less\combined.less" />
-    <Content Include="themes\FourTwos\less\style.less" />
-    <Content Include="themes\FourTwos\less\variables.less" />
-    <Content Include="themes\LacledeCab\less\combined-responsive.less" />
-    <Content Include="themes\LacledeCab\less\combined.less" />
-    <Content Include="themes\LacledeCab\less\style.less" />
-    <Content Include="themes\LacledeCab\less\variables.less" />
-    <Content Include="themes\LuxorCab\less\combined-responsive.less" />
-    <Content Include="themes\LuxorCab\less\combined.less" />
-    <Content Include="themes\LuxorCab\less\style.less" />
-    <Content Include="themes\LuxorCab\less\variables.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined-responsive.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\combined.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\style.less" />
-    <Content Include="themes\SanJoseForARideCallbox\less\variables.less" />
-    <Content Include="themes\Thriev\less\combined-responsive.less" />
-    <Content Include="themes\Thriev\less\combined.less" />
-    <Content Include="themes\Thriev\less\style.less" />
-    <Content Include="themes\Thriev\less\variables.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\combined.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\style.less" />
-    <Content Include="themes\YellowCabBatonRouge\less\variables.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabColumbus\less\combined.less" />
-    <Content Include="themes\YellowCabColumbus\less\style.less" />
-    <Content Include="themes\YellowCabColumbus\less\variables.less" />
-    <Content Include="themes\GreenYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\GreenYellowCab\less\combined.less" />
-    <Content Include="themes\GreenYellowCab\less\style.less" />
-    <Content Include="themes\GreenYellowCab\less\variables.less" />
-    <Content Include="themes\BluelineTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BluelineTaxi\less\combined.less" />
-    <Content Include="themes\BluelineTaxi\less\style.less" />
-    <Content Include="themes\BluelineTaxi\less\variables.less" />
-    <Content Include="themes\MearsTaxi\less\combined-responsive.less" />
-    <Content Include="themes\MearsTaxi\less\combined.less" />
-    <Content Include="themes\MearsTaxi\less\style.less" />
-    <Content Include="themes\MearsTaxi\less\variables.less" />
-    <Content Include="themes\BlackWhiteCab\less\style.less" />
-    <Content Include="themes\BlackWhiteCab\less\variables.less" />
-    <Content Include="themes\BluelineTaxi\less\combined-responsive.less" />
-    <Content Include="themes\BluelineTaxi\less\combined.less" />
-    <Content Include="themes\BluelineTaxi\less\style.less" />
-    <Content Include="themes\BluelineTaxi\less\variables.less" />
-    <Content Include="themes\VETaxi\less\combined-responsive.less" />
-    <Content Include="themes\VETaxi\less\combined.less" />
-    <Content Include="themes\VETaxi\less\style.less" />
-    <Content Include="themes\VETaxi\less\variables.less" />
     <Content Include="templates\GetTheApp.handlebars" />
     <Content Include="admin\localization\SendPushNotification.json" />
     <Content Include="admin\templates\SendPushNotification.handlebars" />
-    <Content Include="themes\TaxiHailNYC\less\combined-responsive.less" />
-    <Content Include="themes\TaxiHailNYC\less\combined.less" />
-    <Content Include="themes\TaxiHailNYC\less\style.less" />
-    <Content Include="themes\TaxiHailNYC\less\variables.less" />
     <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -744,7 +443,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequiresPostSharp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -752,7 +450,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
-      <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Sql\Infrastructure.Sql\Infrastructure.Sql.csproj">
       <Project>{F038F286-5AEF-4341-83EC-9F72F42D06D6}</Project>
@@ -768,7 +466,7 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
       <Project>{1A931A36-D855-4A7A-AD0F-1B35D76582F3}</Project>
-      <Name>MK.Booking.Api %28MK.Booking.Api\MK.Booking.Api%29</Name>
+      <Name>MK.Booking.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
       <Project>{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}</Project>
@@ -786,13 +484,9 @@
       <Project>{20aea350-ad91-4053-a8b5-582e13ed43aa}</Project>
       <Name>MK.Booking.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
-      <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>
-      <Name>MK.Booking.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
-      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+      <Name>MK.Booking</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
@@ -850,9 +544,6 @@
     <Content Include="assets\less\combined.less" />
     <Content Include="assets\less\TaxiHail-responsive.less" />
     <Content Include="assets\less\TaxiHail.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\combined-responsive.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\Home.json" />
@@ -913,18 +604,6 @@
     <Content Include="assets\less\TaxiHail-popover.less" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\CheckerYellowCabPalmetto\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="templates\AddFavorite.handlebars" />
     <Content Include="templates\AddressControl.handlebars" />
     <Content Include="templates\AddressItem.handlebars" />
@@ -960,82 +639,13 @@
     <Content Include="templates\UserAccount.handlebars" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\BurlingtonTaxiOntario\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\GoTaxiDesMoines\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\StyleTransportation\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\SanJoseForARide\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\PublishProfiles\d.pubxml" />
-    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
-    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
-    <Content Include="themes\WorcesterYellowCab\less\style.less" />
-    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
-    <Content Include="themes\BostonCab\less\combined-responsive.less" />
-    <Content Include="themes\BostonCab\less\combined.less" />
-    <Content Include="themes\BostonCab\less\style.less" />
-    <Content Include="themes\BostonCab\less\variables.less" />
-    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
-    <Content Include="themes\VictoriaTaxi\less\combined.less" />
-    <Content Include="themes\VictoriaTaxi\less\style.less" />
-    <Content Include="themes\VictoriaTaxi\less\variables.less" />
-    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabTampa\less\combined.less" />
-    <Content Include="themes\YellowCabTampa\less\style.less" />
-    <Content Include="themes\YellowCabTampa\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\GrantAdminAccess.json" />
-    <Content Include="themes\StLouisTaxi\less\combined-responsive.less" />
-    <Content Include="themes\StLouisTaxi\less\combined.less" />
-    <Content Include="themes\StLouisTaxi\less\style.less" />
-    <Content Include="themes\StLouisTaxi\less\variables.less" />
-    <Content Include="themes\YellowCabSavannah\less\combined-responsive.less" />
-    <Content Include="themes\YellowCabSavannah\less\combined.less" />
-    <Content Include="themes\YellowCabSavannah\less\style.less" />
-    <Content Include="themes\YellowCabSavannah\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\Global.json" />
@@ -1108,7 +718,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Import Project="..\packages\PostSharp.3.0.40\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.3.0.40\tools\PostSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

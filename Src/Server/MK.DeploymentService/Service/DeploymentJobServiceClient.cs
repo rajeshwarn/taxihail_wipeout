@@ -1,55 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿#region
+
+using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using CustomerPortal.Web.Entities;
 using MK.DeploymentService.Properties;
-using System.Net;
 
+#endregion
 
 namespace MK.DeploymentService.Service
 {
     public class DeploymentJobServiceClient
     {
-
         public DeploymentJob GetNext()
         {
-
             var url = GetUrl();
 
 
-
-            
-
-            using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
+            using (
+                var client =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    }))
             {
-                client.BaseAddress = new Uri(url);                
+                client.BaseAddress = new Uri(url);
                 var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
                 if (r.IsSuccessStatusCode)
                 {
                     return r.Content.ReadAsAsync<DeploymentJob>()
-                            .Result;
+                        .Result;
                 }
-                else
-                {
-                    return null;
-                }
-
+                return null;
             }
-            
         }
-
-
 
 
         private static string GetUrl()
         {
+// ReSharper disable once RedundantAssignment
             var url = Settings.Default.CustomerPortalUrl;
 
 #if DEBUG
@@ -63,7 +53,12 @@ namespace MK.DeploymentService.Service
         {
             var url = GetUrl();
 
-            using (var client = new HttpClient(new HttpClientHandler { Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!") }))
+            using (
+                var client =
+                    new HttpClient(new HttpClientHandler
+                    {
+                        Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")
+                    }))
             {
                 client.BaseAddress = new Uri(url);
 
@@ -71,20 +66,9 @@ namespace MK.DeploymentService.Service
                 d.Details = details;
                 d.Status = status;
                 var content = new ObjectContent<JobStatusDetails>(d, new JsonMediaTypeFormatter());
-
-
-                var result = client.PostAsync("deployments/" + jobId + "/updatedetails", content).Result;
-                result.ToString();
-
-
+// ReSharper disable once UnusedVariable
+                var message = client.PostAsync("deployments/" + jobId + "/updatedetails", content).Result;
             }
-
         }
-
-
-
     }
 }
-
-
-

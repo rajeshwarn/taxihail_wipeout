@@ -1,21 +1,20 @@
-using System;
-using System.Drawing;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class RefineAddressView : MvxBindingTouchViewController<RefineAddressViewModel>
 	{
 		#region Constructors
 		public RefineAddressView(string apt, string ringCode, string buildingName) 
-			: base(new MvxShowViewModelRequest<RefineAddressViewModel>( new Dictionary<string, string>(){{"apt", apt}, {"ringCode", ringCode},  {"buildingName", buildingName}}, false, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<RefineAddressViewModel>( new Dictionary<string, string>{{"apt", apt}, {"ringCode", ringCode},  {"buildingName", buildingName}}, false, new MvxRequestedBy()   ) )
 		{
 		}
 		
@@ -29,14 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 		}	
 		#endregion
-		
-		public override void DidReceiveMemoryWarning ()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning ();
-			
-			// Release any cached data, images, etc that aren't in use.
-		}
 		
 		public override void ViewDidLoad ()
 		{
@@ -72,31 +63,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			NavigationItem.RightBarButtonItem = btnDone;
             NavigationItem.Title = Resources.GetValue( "View_RefineAddress");
 
-			this.AddBindings(new Dictionary<object, string>(){
+			this.AddBindings(new Dictionary<object, string>{
 				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,
 				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,			
 			});
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 		}
 		
-		public override void ViewDidUnload ()
-		{
-			base.ViewDidUnload ();
-			
-			// Clear any references to subviews of the main view in order to
-			// allow the Garbage Collector to collect them sooner.
-			//
-			// e.g. myOutlet.Dispose (); myOutlet = null;
-			
-			ReleaseDesignerOutlets ();
-		}
 		
-		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-		{
-			// Return true for supported orientations
-			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-		}
-
 		private bool ShouldReturnDelegate( UITextField textField )
 		{
 			return textField.ResignFirstResponder();

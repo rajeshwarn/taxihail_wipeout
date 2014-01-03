@@ -1,6 +1,9 @@
-using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Threading;
+#region
+
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -19,6 +22,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.GetAsync<ApplicationInfo>(resource, tcs.SetResult, (result, error) => tcs.SetException(error));
             return tcs.Task;
         }
-    
     }
 }

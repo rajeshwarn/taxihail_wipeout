@@ -1,26 +1,22 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreFoundation;
-using MonoTouch.Foundation;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Style;
+using MonoTouch.CoreGraphics;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("TextField")]
     public class TextField : UITextField
     {
 
-        private bool _isProgressing = false;
+        private bool _isProgressing;
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
-        private float _paddingRight = 0;
-        private float _paddingLeft = 0;
+        private float _paddingRight;
+        private float _paddingLeft;
         private float _paddingBaseLeft = 5;
         private UIActivityIndicatorView _progress;
-
-
 
         public TextField(IntPtr handle) : base(handle)
         {
@@ -41,14 +37,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             Font = AppStyle.NormalTextFont;
             PaddingLeft = _paddingBaseLeft;
 			LeftViewMode = UITextFieldViewMode.Always;
-            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
+            Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 40);
         }
 
         public float FieldHeight
         {
             set
             {
-                this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, value);
+                Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, value);
             }
         }
 
@@ -76,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
         }
          
+// ReSharper disable once UnusedMember.Global
         public bool IsProgressing
         {
             get { return _isProgressing; }
@@ -104,15 +101,18 @@ namespace apcurium.MK.Booking.Mobile.Client
                 InitProgress();
             }
 
-            _progress.Hidden = !_isProgressing;
-            if (_isProgressing)
+            if (_progress != null)
             {
-                _progress.StartAnimating();
+                _progress.Hidden = !_isProgressing;
+                if (_isProgressing)
+                {
+                    _progress.StartAnimating();
+                }
+                else
+                {
+                    _progress.StopAnimating();
+                }
             }
-            else
-            {
-                _progress.StopAnimating();
-            }   
         }
 
 		protected UIImageView ImageLeft { get; set; }
@@ -176,17 +176,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { _strokeColor = value; }
         }
 
-        public override void Draw(System.Drawing.RectangleF frame)
+        public override void Draw(RectangleF frame)
         {
 
             // General Declarations
             var context = UIGraphics.GetCurrentContext();
 
             // Color Declarations
-            UIColor color = UIColor.FromRGBA(0.00f, 0.00f, 0.00f, 1.00f);
-            UIColor color3 = color.ColorWithAlpha(0.6f);
-            UIColor wColor = UIColor.FromRGBA(1.00f, 1.00f, 1.00f, 1.00f);
-            UIColor color2 = wColor.ColorWithAlpha(0.2f);
+            var color = UIColor.FromRGBA(0.00f, 0.00f, 0.00f, 1.00f);
+            var color3 = color.ColorWithAlpha(0.6f);
+            var wColor = UIColor.FromRGBA(1.00f, 1.00f, 1.00f, 1.00f);
+            var color2 = wColor.ColorWithAlpha(0.2f);
 
 
             // Shadow Declarations

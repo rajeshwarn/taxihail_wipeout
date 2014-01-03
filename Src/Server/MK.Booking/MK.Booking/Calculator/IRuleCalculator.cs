@@ -1,6 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.ReadModel;
+
+#endregion
 
 namespace apcurium.MK.Booking.Calculator
 {

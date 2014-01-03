@@ -6,7 +6,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class NotifyPropertyChangedExtensions
     {
-     
         public static IObservable<string> OnPropertyChanged(this INotifyPropertyChanged obj)
         {
             return Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(

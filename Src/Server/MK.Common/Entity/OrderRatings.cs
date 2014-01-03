@@ -1,7 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Common.Entity
 {

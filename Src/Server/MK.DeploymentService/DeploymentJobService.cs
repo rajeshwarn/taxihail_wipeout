@@ -1,30 +1,37 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
 using CustomerPortal.Web.Entities;
 using DeploymentServiceTools;
-using Microsoft.Build.Framework;
+using log4net;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
+using Microsoft.Build.Framework;
 using Microsoft.Web.Administration;
+using MK.DeploymentService.Properties;
 using MK.DeploymentService.Service;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using log4net;
+
+#endregion
 
 namespace MK.DeploymentService
 {
     public class DeploymentJobService
     {
-        private readonly Timer _timer;
         private readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
         private readonly ILog _logger;
+        private readonly Timer _timer;
+        private DeploymentJob _job;
 
         public DeploymentJobService()
         {
@@ -45,7 +52,6 @@ namespace MK.DeploymentService
                 {
                     CheckAndRunJobWithBuild();
                 }
-
             }
             catch (LockRecursionException)
             {
@@ -57,7 +63,6 @@ namespace MK.DeploymentService
             }
         }
 
-        private DeploymentJob _job;
         //private ConfigurationManagerDbContext dbContext;
         private void CheckAndRunJobWithBuild()
         {
@@ -68,15 +73,14 @@ namespace MK.DeploymentService
             _job = job;
             try
             {
-
                 Log("Starting", JobStatus.Inprogress);
 
-                var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
+                var sourceDirectory = Path.Combine(Path.GetPathRoot(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System)), "mktaxi");
 
                 Log("Source Folder = " + sourceDirectory);
 
                 var taxiRepo = new TaxiRepository("hg.exe", sourceDirectory);
-                if (_job.Server.Role == EnvironmentRole.BuildServer )
+                if (_job.Server.Role == EnvironmentRole.BuildServer)
                 {
                     taxiRepo.FetchSource(_job.Revision.Commit, str => Log(str));
                     Build(sourceDirectory);
@@ -88,15 +92,13 @@ namespace MK.DeploymentService
                     var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
                     if (_job.Server.Role != EnvironmentRole.BuildServer)
                     {
-                        packagesDirectory = Properties.Settings.Default.DeployFolder;
+                        packagesDirectory = Settings.Default.DeployFolder;
                     }
                     var packagesLocation = CleanAndUnZip(packagesDirectory);
                     DeployTaxiHail(packagesLocation);
                 }
 
                 Log("Job Complete", JobStatus.Success);
-
-
             }
             catch (Exception e)
             {
@@ -109,8 +111,8 @@ namespace MK.DeploymentService
         {
             Log("Get the binaries and unzip it");
 
-            
-            var packageFile = Path.Combine(Properties.Settings.Default.DropFolder, GetZipFileName(_job));
+
+            var packageFile = Path.Combine(Settings.Default.DropFolder, GetZipFileName(_job));
             if (File.Exists(packageFile))
             {
                 Log("Delete existing local package");
@@ -140,7 +142,6 @@ namespace MK.DeploymentService
             try
             {
                 ZipFile.ExtractToDirectory(packageFile, unzipDirectory);
-              
             }
             catch (Exception)
             {
@@ -151,9 +152,8 @@ namespace MK.DeploymentService
             return unzipDirectory;
         }
 
-        private void Log( string details, JobStatus? status = null)
+        private void Log(string details, JobStatus? status = null)
         {
-
             _logger.Debug(details);
 
             if (_job != null)
@@ -168,18 +168,17 @@ namespace MK.DeploymentService
             Log("Build Databse Initializer");
             var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
             var pc = new ProjectCollection();
-            var globalProperty = new Dictionary<string, string> { { "Configuration", "Release" } };
-            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Build" }, null);
+            var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Build"}, null);
 
             var bParam = new BuildParameters(pc);
 
 
             Log("Setting logger");
 
-            bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] { new BuildLogger(txt => Log(txt)) });
+            bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] {new BuildLogger(txt => Log(txt))});
 
             var buildResult = BuildManager.DefaultBuildManager.Build(bParam, buildRequestData);
-
 
 
             Log("Build Finished");
@@ -195,7 +194,7 @@ namespace MK.DeploymentService
 
             Log(String.Format("Build Web Site"));
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
-            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Package" }, null);
+            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] {"Package"}, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
 
             if (buildResultWeb.Exception != null)
@@ -216,16 +215,16 @@ namespace MK.DeploymentService
                 File.Delete(fileName);
             }
 
-            
+
             var packageDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\");
 
             ZipFile.CreateFromDirectory(packageDir, fileName);
-            
+
             Log("Uploading package to server...");
             new PackagesServiceClient().UploadPackage(fileName);
             Log("Done uploading package to server...");
 
-            
+
             Log("Finished");
         }
 
@@ -294,18 +293,20 @@ namespace MK.DeploymentService
             jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username ?? ""));
             jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(_job.Company.IBS.Password ?? ""));
 
-            var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName + ".json";
+            var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") + companyName +
+                               ".json";
             var stringBuilder = new StringBuilder();
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
             File.WriteAllText(fileSettings, stringBuilder.ToString());
 
-           
+
             var exeArgs = string.Format("{0} {1}", companyName, _job.Server.SqlServerInstance);
             Log("Calling DB tool with : " + exeArgs);
-            var deployDb = ProcessEx.GetProcess(Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
-                                                   exeArgs, null, true);
+            var deployDb =
+                ProcessEx.GetProcess(
+                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                    exeArgs, null, true);
 
-            
 
             using (var exeProcess = Process.Start(deployDb))
             {
@@ -320,17 +321,16 @@ namespace MK.DeploymentService
             }
         }
 
-        void exeProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void exeProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             Console.WriteLine(e.Data);
             Log(e.Data);
         }
 
-        private void DeployServer(string companyId, string companyName, string packagesDirectory, ServerManager iisManager)
+        private void DeployServer(string companyId, string companyName, string packagesDirectory,
+            ServerManager iisManager)
         {
             Log("Deploying IIS");
-
-            var revision = _job.Revision.Commit;
 
             var subFolder = _job.Revision.Tag + "." + DateTime.Now.Ticks + "\\";
             var targetWeDirectory = Path.Combine(_job.Server.WebSitesFolder, companyName, subFolder);
@@ -429,17 +429,17 @@ namespace MK.DeploymentService
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log("Warning, cannot copy theme : " + ex.Message );
+                Log("Warning, cannot copy theme : " + ex.Message);
             }
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
+            var dir = new DirectoryInfo(sourceDirName);
+            var dirs = dir.GetDirectories();
 
             if (!dir.Exists)
             {
@@ -455,20 +455,20 @@ namespace MK.DeploymentService
             }
 
             // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-            foreach (FileInfo file in files)
+            var files = dir.GetFiles();
+            foreach (var file in files)
             {
-                string temppath = Path.Combine(destDirName, file.Name);
+                var temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
             }
 
             // If copying subdirectories, copy them and their contents to new location. 
             if (copySubDirs)
             {
-                foreach (DirectoryInfo subdir in dirs)
+                foreach (var subdir in dirs)
                 {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    var temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, true);
                 }
             }
         }
@@ -486,9 +486,9 @@ namespace MK.DeploymentService
         private static string MakeValidFileName(string name)
         {
             name = name.Replace(" ", string.Empty);
-            var invalidChars = System.Text.RegularExpressions.Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
             var invalidReStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
-            var safeName = System.Text.RegularExpressions.Regex.Replace(name, invalidReStr, "_");
+            var safeName = Regex.Replace(name, invalidReStr, "_");
             return safeName;
         }
     }

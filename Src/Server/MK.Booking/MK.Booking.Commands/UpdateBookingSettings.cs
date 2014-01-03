@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -10,7 +14,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; set; }        
         public string Name { get; set; }
         public string Phone { get; set; }
         public int Passengers { get; set; }
@@ -23,5 +26,6 @@ namespace apcurium.MK.Booking.Commands
         public int? DefaultTipPercent { get; set; }
 
         public Guid AccountId { get; set; }
+        public Guid Id { get; set; }
     }
 }

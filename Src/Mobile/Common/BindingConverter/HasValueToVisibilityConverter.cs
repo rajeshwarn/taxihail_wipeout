@@ -1,12 +1,8 @@
-using System;
-using Cirrious.MvvmCross.Converters;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.Localization;
 using System.Collections;
-using Cirrious.MvvmCross.Converters.Visibility;
 using System.Globalization;
+using Cirrious.MvvmCross.Converters.Visibility;
 
-namespace BindingConverter
+namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
 	public class HasValueToVisibilityConverter: MvxBaseVisibilityConverter
 	{

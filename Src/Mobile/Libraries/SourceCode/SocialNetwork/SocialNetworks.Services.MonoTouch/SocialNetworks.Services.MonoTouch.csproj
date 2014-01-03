@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SocialNetworks.Services.MonoTouch</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>SocialNetworks.Services.MonoTouch</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>SocialNetworks.Services.MonoTouch</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>SocialNetworksServicesMonoTouch</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>SocialNetworksServicesMonoTouch</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="System.Json" />
+    <Reference Include="MonoTouch.Dialog-1" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\SocialNetworks.Services\Entities\Post.cs">
+      <Link>Entities\Post.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\Entities\UserInfos.cs">
+      <Link>Entities\UserInfos.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\Entities\FacebookStatus.cs">
+      <Link>Entities\FacebookStatus.cs</Link>
+    </Compile>
+    <Compile Include="FacebookServiceMT.cs" />
+    <Compile Include="..\SocialNetworks.Services\IFacebookService.cs">
+      <Link>IFacebookService.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\OAuth\OAuthConfig.cs">
+      <Link>OAuth\OAuthConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\Entities\TwitterStatus.cs">
+      <Link>Entities\TwitterStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\ITwitterService.cs">
+      <Link>ITwitterService.cs</Link>
+    </Compile>
+    <Compile Include="FacebookHelpers\DialogHandler.cs" />
+    <Compile Include="FacebookHelpers\RequestHandler.cs" />
+    <Compile Include="OAuth\WebViewController.cs" />
+    <Compile Include="..\SocialNetworks.Services\OAuth\Punycode.cs">
+      <Link>OAuth\Punycode.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\OAuth\OAuth.cs">
+      <Link>OAuth\OAuth.cs</Link>
+    </Compile>
+    <Compile Include="..\SocialNetworks.Services\OAuth\OAuthAuthorizer.cs">
+      <Link>OAuth\OAuthAuthorizer.cs</Link>
+    </Compile>
+    <Compile Include="OAuth\OAuthAuthorizerMonoTouch.cs" />
+    <Compile Include="..\SocialNetworks.Services\TwitterServiceBase.cs">
+      <Link>TwitterServiceBase.cs</Link>
+    </Compile>
+    <Compile Include="TwitterServiceMonoTouch.cs" />
+    <Compile Include="Entities\UserLike.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="OAuth\" />
+    <Folder Include="FacebookHelpers\" />
+    <Folder Include="Assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\back.png" />
+    <Content Include="Assets\back%402x.png" />
+    <Content Include="Assets\forward.png" />
+    <Content Include="Assets\forward%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="facebookios">
+      <Version>3.8.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+</Project>

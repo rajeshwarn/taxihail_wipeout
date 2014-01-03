@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,13 +7,16 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class OrderServiceClient : BaseServiceClient
     {
         public OrderServiceClient(string url, string sessionId, string userAgent)
-            : base(url, sessionId,userAgent)
+            : base(url, sessionId, userAgent)
         {
         }
 
@@ -25,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void CancelOrder(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/cancel", orderId);
-            Client.Post<string>(req, new CancelOrder { OrderId = orderId  });            
+            Client.Post<string>(req, new CancelOrder {OrderId = orderId});
         }
 
         public void SendReceipt(Guid orderId)
@@ -35,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
         public IList<Order> GetOrders()
-        {            
+        {
             var req = string.Format("/account/orders");
             var result = Client.Get<IList<Order>>(req).ToArray();
             return result;
@@ -85,12 +90,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Post<string>("/ratings/", orderRatingRequest);
         }
 
-        public Common.Entity.OrderRatings GetOrderRatings(Guid orderId)
+        public OrderRatings GetOrderRatings(Guid orderId)
         {
             var req = string.Format("/ratings/{0}", orderId);
-            return Client.Get<Common.Entity.OrderRatings>(req);
+            return Client.Get<OrderRatings>(req);
         }
-        
+
         public OrderValidationResult ValidateOrder(CreateOrder order, string testZone = null)
         {
             if (testZone.HasValue())

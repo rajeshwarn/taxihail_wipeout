@@ -1,28 +1,32 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
-using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class PayPalService : Service
     {
         private readonly ICommandBus _commandBus;
+        private readonly IConfigurationManager _configurationManager;
         private readonly IOrderPaymentDao _dao;
         private readonly ExpressCheckoutServiceFactory _factory;
-        private readonly IConfigurationManager _configurationManager;
 
         public PayPalService(ICommandBus commandBus, IOrderPaymentDao dao,
-                             ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager)
+            ExpressCheckoutServiceFactory factory, IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -31,18 +35,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         }
 
 
-
         public PayPalExpressCheckoutPaymentResponse Post(
             InitiatePayPalExpressCheckoutPaymentRequest request)
         {
-            var root = ApplicationPathResolver.GetApplicationPath(base.RequestContext);
+            var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
             var successUrl = root + "/api/payment/paypal/success";
             var cancelUrl = root + "/api/payment/paypal/cancel";
 
             var payPalSettings = GetPayPalSettings();
             var credentials = payPalSettings.IsSandbox
-                                  ? payPalSettings.SandboxCredentials
-                                  : payPalSettings.Credentials;
+                ? payPalSettings.SandboxCredentials
+                : payPalSettings.Credentials;
 
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
 
@@ -50,19 +53,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var checkoutUrl = service.GetCheckoutUrl(token);
 
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
-                                 {
-                                     OrderId = request.OrderId,
-                                     PaymentId = Guid.NewGuid(),
-                                     Token = token,
-                                     Amount = request.Amount,
-                                     Meter = request.Meter,
-                                     Tip = request.Tip ,
-                                 });
+            {
+                OrderId = request.OrderId,
+                PaymentId = Guid.NewGuid(),
+                Token = token,
+                Amount = request.Amount,
+                Meter = request.Meter,
+                Tip = request.Tip,
+            });
 
             return new PayPalExpressCheckoutPaymentResponse
-                       {
-                           CheckoutUrl = checkoutUrl,
-                       };
+            {
+                CheckoutUrl = checkoutUrl,
+            };
         }
 
         public HttpResult Get(CancelPayPalExpressCheckoutPaymentRequest request)
@@ -74,13 +77,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
 
             _commandBus.Send(new CancelPayPalExpressCheckoutPayment
-                                 {
-                                     PaymentId = payment.PaymentId,
-                                 });
-            return new HttpResult() {
+            {
+                PaymentId = payment.PaymentId,
+            });
+            return new HttpResult
+            {
                 StatusCode = HttpStatusCode.Redirect,
-                Headers = {
-                    { HttpHeaders.Location, "taxihail://cancel" }
+                Headers =
+                {
+                    {HttpHeaders.Location, "taxihail://cancel"}
                 }
             };
         }
@@ -95,24 +100,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var payPalSettings = GetPayPalSettings();
             var credentials = payPalSettings.IsSandbox
-                                  ? payPalSettings.SandboxCredentials
-                                  : payPalSettings.Credentials;
+                ? payPalSettings.SandboxCredentials
+                : payPalSettings.Credentials;
             var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
             var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, payment.Amount);
 
-            
-            _commandBus.Send(new CompletePayPalExpressCheckoutPayment
-                                 {
-                                     PaymentId = payment.PaymentId,
-                                     PayPalPayerId = request.PayerId,
-                                     TransactionId = transactionId,
-                                 });
 
-            return new HttpResult()
+            _commandBus.Send(new CompletePayPalExpressCheckoutPayment
+            {
+                PaymentId = payment.PaymentId,
+                PayPalPayerId = request.PayerId,
+                TransactionId = transactionId,
+            });
+
+            return new HttpResult
             {
                 StatusCode = HttpStatusCode.Redirect,
-                Headers = {
-                    { HttpHeaders.Location, "taxihail://success" }
+                Headers =
+                {
+                    {HttpHeaders.Location, "taxihail://success"}
                 }
             };
         }
@@ -120,16 +126,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private PayPalServerSettings GetPayPalSettings()
         {
             var paymentSettings = (ServerPaymentSettings) _configurationManager.GetPaymentSettings();
-            if (paymentSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "Payment settings not found");
-            
+            if (paymentSettings == null)
+                throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
+                    "Payment settings not found");
+
             var payPalSettings = paymentSettings.PayPalServerSettings;
-            if (payPalSettings == null) throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError", "PayPal settings not found");
+            if (payPalSettings == null)
+                throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
+                    "PayPal settings not found");
 
             return payPalSettings;
         }
 
 
-        public static bool TestClient(IConfigurationManager configurationManager, IRequestContext requestContext, PayPalCredentials payPalServerSettings, bool isSandbox)
+        public static bool TestClient(IConfigurationManager configurationManager, IRequestContext requestContext,
+            PayPalCredentials payPalServerSettings, bool isSandbox)
         {
             try
             {
@@ -142,8 +153,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 return false;
             }
-            
-
         }
     }
 }

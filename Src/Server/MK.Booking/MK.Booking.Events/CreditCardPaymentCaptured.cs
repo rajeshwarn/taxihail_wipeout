@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
+#endregion
+
 namespace apcurium.MK.Booking.Events
 {
-    public class CreditCardPaymentCaptured: VersionedEvent
+    public class CreditCardPaymentCaptured : VersionedEvent
     {
         public string TransactionId { get; set; }
         public string AuthorizationCode { get; set; }

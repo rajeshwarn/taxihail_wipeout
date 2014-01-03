@@ -1,9 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
-using System.Globalization;
+using AutoMapper;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -12,7 +18,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public OrderDao(Func<BookingDbContext> contextFactory)
-        {            
+        {
             _contextFactory = contextFactory;
         }
 
@@ -46,23 +52,19 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var joinedLines = from order in context.Set<OrderDetail>()
-                                  join account in context.Set<AccountDetail>()                                   
-                                  on order.AccountId equals account.Id
-                                   
-                                  join payment in context.Set<OrderPaymentDetail>()
-                                  on order.Id equals payment.OrderId into orderPayment
-                                  from payment in orderPayment.DefaultIfEmpty()
+                    join account in context.Set<AccountDetail>()
+                        on order.AccountId equals account.Id
+                    join payment in context.Set<OrderPaymentDetail>()
+                        on order.Id equals payment.OrderId into orderPayment
+                    from payment in orderPayment.DefaultIfEmpty()
+                    join status in context.Set<OrderStatusDetail>()
+                        on order.Id equals status.OrderId into statusOrder
+                    from status in statusOrder.DefaultIfEmpty()
+                    join rating in context.Set<RatingScoreDetails>()
+                        on order.Id equals rating.OrderId into ratingOrder
+                    from rating in ratingOrder.DefaultIfEmpty()
+                    select new {order, account, payment, status, rating};
 
-                                  join status in context.Set<OrderStatusDetail>()
-                                  on order.Id equals status.OrderId into statusOrder
-                                  from status in statusOrder.DefaultIfEmpty()
-
-                                  join rating in context.Set<RatingScoreDetails>()
-                                  on order.Id equals rating.OrderId into ratingOrder
-                                  from rating in ratingOrder.DefaultIfEmpty()
-
-                                  select new { order, account, payment, status, rating };
-                
                 OrderDetailWithAccount details = null;
 
                 foreach (var joinedLine in joinedLines)
@@ -72,22 +74,22 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         if (details != null)
                             list.Add(details);
                         details = new OrderDetailWithAccount();
-                        AutoMapper.Mapper.Map(joinedLine.account, details);
-                        AutoMapper.Mapper.Map(joinedLine.order, details);
+                        Mapper.Map(joinedLine.account, details);
+                        Mapper.Map(joinedLine.order, details);
                         if (joinedLine.payment != null)
                         {
-                            AutoMapper.Mapper.Map(joinedLine.payment, details);
+                            Mapper.Map(joinedLine.payment, details);
                         }
 
                         if (joinedLine.status != null)
                         {
-                            AutoMapper.Mapper.Map(joinedLine.status, details);
+                            Mapper.Map(joinedLine.status, details);
                         }
                     }
 
                     if (joinedLine.rating != null)
-                        details.Rating[joinedLine.rating.Name] = joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
-
+                        details.Rating[joinedLine.rating.Name] =
+                            joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
                 }
                 list.Add(details);
             }
@@ -99,10 +101,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where order.Status != OrderStatus.Canceled 
-                                        && order.Status != OrderStatus.Completed
-                                        && order.Status != OrderStatus.TimedOut
-                                     select order).ToList();
+                    where order.Status != OrderStatus.Canceled
+                          && order.Status != OrderStatus.Completed
+                          && order.Status != OrderStatus.TimedOut
+                    select order).ToList();
                 return currentOrders;
             }
         }
@@ -112,9 +114,9 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
-                                     where order.AccountId == accountId
-                                     where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
-                                     select order).ToList();
+                    where order.AccountId == accountId
+                    where order.Status != OrderStatus.Canceled && order.Status != OrderStatus.Completed
+                    select order).ToList();
                 return currentOrders;
             }
         }

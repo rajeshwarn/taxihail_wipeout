@@ -1,21 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Models
 {
     public class RideSettingsModel
     {
-        private IEnumerable<ListItem> _companyList;
-        private IEnumerable<ListItem> _vehicleTypeList;
-        private IEnumerable<ListItem> _chargeTypeList;
+        private readonly IEnumerable<ListItem> _companyList;
+        private readonly IEnumerable<ListItem> _vehicleTypeList;
+        private readonly IEnumerable<ListItem> _chargeTypeList;
 
         public RideSettingsModel(BookingSettings data, IEnumerable<ListItem> companyList, IEnumerable<ListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
         {

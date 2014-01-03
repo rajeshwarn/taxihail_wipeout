@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -9,8 +13,9 @@ namespace apcurium.MK.Booking.Commands
         {
             Id = Guid.NewGuid();
         }
-        public Guid Id { get; private set; }
+
         public Guid CompanyId { get; set; }
         public Guid RuleId { get; set; }
+        public Guid Id { get; private set; }
     }
 }

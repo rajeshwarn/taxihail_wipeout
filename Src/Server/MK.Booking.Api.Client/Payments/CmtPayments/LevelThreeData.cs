@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using System.Xml.Serialization;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
 {

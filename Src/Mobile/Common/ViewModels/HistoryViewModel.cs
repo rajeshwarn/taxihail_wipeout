@@ -1,24 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
-using ServiceStack.Text;
-using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
 using TinyMessenger;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 using System.Globalization;
-using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public HistoryViewModel()
         {
             HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
-            _orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
             LoadOrders ();
         }
         public ObservableCollection<OrderViewModel> Orders
@@ -42,22 +30,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatDateTime(DateTime date )
         {
-            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+            var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:dddd, MMMM d}, {0:"+formatTime+"}";
             string result = string.Format(format, date) ;
             return result;
         }
-        public string CultureInfoString
-        {
-            get{
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
-                if ( culture.IsNullOrEmpty() )
-                {
-                    return "en-US";
-                }
-                return culture;
-            }
-        }
+       
         private bool _hasOrders;
         public bool HasOrders {
             get {
@@ -77,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Task.Factory.StartNew(() =>
             {
-                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel()
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel
                 {
                     IBSOrderId = x.IBSOrderId,
                     Id = x.Id,
@@ -96,12 +74,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void LoadOrders ()
 		{
-			AccountService.GetHistoryOrders ().Subscribe(orders =>
+            this.Services().Account.GetHistoryOrders().Subscribe(orders =>
 			{
 
-                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel()
+                Orders = new ObservableCollection<OrderViewModel>(orders.Select(x => new OrderViewModel
                 {
-                    IBSOrderId = x.IBSOrderId,
+					IBSOrderId = x.IbsOrderId,
                     Id = x.Id,
                     CreatedDate = x.CreatedDate,
                     PickupAddress = x.PickupAddress,
@@ -115,13 +93,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 HasOrders = orders.Any();
 
 			});
-
-
-           
 		}
 
 
-        public IMvxCommand NavigateToHistoryDetailPage
+        public AsyncCommand<OrderViewModel> NavigateToHistoryDetailPage
         {
             get
             {
@@ -133,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Unload ()
         {
             base.Unload ();
-            MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
+            this.Services().MessengerHub.Unsubscribe<OrderDeleted>(_orderDeletedToken);
         }
 
     }

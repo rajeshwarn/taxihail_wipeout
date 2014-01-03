@@ -1,6 +1,9 @@
-﻿using System.Configuration;
+﻿#region
+
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using apcurium.MK.Common.Entity;
 using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -11,10 +14,8 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Entity;
 
+#endregion
 
 namespace DatabaseInitializer
 {
@@ -33,14 +34,11 @@ namespace DatabaseInitializer
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
-            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, connectionString);
+            container.RegisterInstance(apcurium.MK.Common.Module.MkConnectionString, connectionString);
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
 
@@ -49,13 +47,16 @@ namespace DatabaseInitializer
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
             // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString, container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString,
+                container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
             // Repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor(connectionString.ConnectionString));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
+            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(),
+                new InjectionConstructor(connectionString.ConnectionString));
+            container.RegisterType(typeof (IEventSourcedRepository<>), typeof (SqlEventSourcedRepository<>),
+                new ContainerControlledLifetimeManager());
 
             // Command bus
             var commandBus = new SynchronousMemoryCommandBus();
@@ -67,8 +68,10 @@ namespace DatabaseInitializer
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
 
-           //ReplayEventService
-            container.RegisterInstance<IEventsPlayBackService>(new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), eventBus, container.Resolve<ITextSerializer>()));
+            //ReplayEventService
+            container.RegisterInstance<IEventsPlayBackService>(
+                new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), eventBus,
+                    container.Resolve<ITextSerializer>()));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)
@@ -87,8 +90,8 @@ namespace DatabaseInitializer
             // Filter out Integration Event Handlers
             // They should never replay events
             var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
-                                              .Where(x=> !(x is IIntegrationEventHandler))
-                                              .ToArray();
+                .Where(x => !(x is IIntegrationEventHandler))
+                .ToArray();
 
             foreach (var eventHandler in eventHandlers)
             {

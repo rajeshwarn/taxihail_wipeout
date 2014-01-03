@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
     public class AccountUpdated : VersionedEvent
     {
-
-        public string Name { get; set; }                
-        
+        public string Name { get; set; }
     }
 }

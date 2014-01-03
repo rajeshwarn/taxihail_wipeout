@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Data.SqlTypes;
-using System.Linq;
-using System.Text;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class TariffDetailsGenerator: IEventHandler<TariffCreated>, IEventHandler<TariffUpdated>, IEventHandler<TariffDeleted>
+    public class TariffDetailsGenerator : IEventHandler<TariffCreated>, IEventHandler<TariffUpdated>,
+        IEventHandler<TariffDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -33,11 +35,30 @@ namespace apcurium.MK.Booking.EventHandlers
                     MarginOfError = @event.MarginOfError,
                     KilometerIncluded = @event.KilometerIncluded,
                     PassengerRate = @event.PassengerRate,
-                    DaysOfTheWeek = (int)@event.DaysOfTheWeek,
-                    StartTime =  @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue:  @event.StartTime,
-                    EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.EndTime,
-                    Type = (int)@event.Type
-                });   
+                    DaysOfTheWeek = (int) @event.DaysOfTheWeek,
+                    StartTime =
+                        @event.StartTime < (DateTime) SqlDateTime.MinValue
+                            ? (DateTime) SqlDateTime.MinValue
+                            : @event.StartTime,
+                    EndTime =
+                        @event.EndTime < (DateTime) SqlDateTime.MinValue
+                            ? (DateTime) SqlDateTime.MinValue
+                            : @event.EndTime,
+                    Type = (int) @event.Type
+                });
+            }
+        }
+
+        public void Handle(TariffDeleted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var tariff = context.Find<TariffDetail>(@event.TariffId);
+                if (tariff != null)
+                {
+                    context.Set<TariffDetail>().Remove(tariff);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -53,28 +74,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 tariff.KilometerIncluded = @event.KilometerIncluded;
                 tariff.PassengerRate = @event.PassengerRate;
                 tariff.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
-                tariff.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue
-                                ? (DateTime) SqlDateTime.MinValue
-                                : @event.StartTime;
-                tariff.EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue
-                              ? (DateTime) SqlDateTime.MinValue
-                              : @event.EndTime;
+                tariff.StartTime = @event.StartTime < (DateTime) SqlDateTime.MinValue
+                    ? (DateTime) SqlDateTime.MinValue
+                    : @event.StartTime;
+                tariff.EndTime = @event.EndTime < (DateTime) SqlDateTime.MinValue
+                    ? (DateTime) SqlDateTime.MinValue
+                    : @event.EndTime;
 
                 context.SaveChanges();
-            }
-            
-        }
-
-        public void Handle(TariffDeleted @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var tariff = context.Find<TariffDetail>(@event.TariffId);
-                if (tariff != null)
-                {
-                    context.Set<TariffDetail>().Remove(tariff);
-                    context.SaveChanges();
-                }
             }
         }
     }

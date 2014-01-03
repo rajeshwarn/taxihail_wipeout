@@ -63,7 +63,6 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
     <Reference Include="ServiceStack.Text.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
@@ -73,46 +72,57 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Mobile">
-      <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
-      <HintPath>..\iOS\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
+      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json.MonoTouch">
-      <HintPath>..\iOS\Newtonsoft.Json.MonoTouch.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="SocialNetworks.Services.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\SocialNetworks.Services.MonoTouch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Practices\Bootstrapper.cs" />
-    <Compile Include="Practices\IModule.cs" />
-    <Compile Include="Practices\ServiceLocator.cs" />
+    <Compile Include="AsyncCommand.cs" />
+    <Compile Include="Extensions\DisposableExtensions.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
+    <Compile Include="Extensions\UseServiceClientExtensions.cs" />
+    <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
-    <Compile Include="Infrastructure\IAppContext.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
-    <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
-    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
-    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
-    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
     <Compile Include="AppServices\IAccountService.cs" />
     <Compile Include="AppServices\IBookingService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
-    <Compile Include="AppServices\ModuleService.cs" />
     <Compile Include="Data\ListItemValue.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
@@ -184,6 +194,7 @@
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Data\Coordinate.cs" />
@@ -198,7 +209,6 @@
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
-    <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
@@ -234,20 +244,16 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Data\TutorialContent.cs" />
-    <Compile Include="Extensions\IDisposableExtensions.cs" />
-    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
-    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="Extensions\IObservableExtensions.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="ViewModels\Payment\Strings.Base.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
@@ -258,7 +264,6 @@
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
@@ -266,7 +271,6 @@
     <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="ViewModels\IHaveViewModel.cs" />
-    <Compile Include="BindingConverter\OrderStatusToTextColorConverter_IOS.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
     <Compile Include="Infrastructure\IAnalyticsService.cs" />
@@ -291,10 +295,6 @@
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
-      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
-      <Name>SocialNetworks.Services.MonoTouch</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
@@ -302,10 +302,6 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
       <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
       <Name>MK.Booking.Maps.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
-      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
-      <Name>System.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -325,11 +321,16 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
-          <TextStylePolicy EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <TextStylePolicy EolMarker="Windows" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" CatchNewLinePlacement="NewLine" FinallyNewLinePlacement="NewLine" WhileNewLinePlacement="DoNotCare" ArrayInitializerWrapping="DoNotChange" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
 </Project>

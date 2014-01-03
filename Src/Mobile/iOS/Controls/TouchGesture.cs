@@ -1,31 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
 
-using System.Diagnostics;
-
-using apcurium.Framework.Extensions;
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TouchGesture :UIGestureRecognizer
     {
-
-         private Stopwatch _stopWatch;
+        private Stopwatch _stopWatch;
 
         public event EventHandler TouchBegin;
 
-        public TouchGesture ()  : base()
+        public TouchGesture ()
         {
             Initialize();                       
         }
-
-                    
-
         public TouchGesture (IntPtr handle) : base(handle)
         {
             Initialize();
@@ -39,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         private void Initialize()
         {
-            this.DelaysTouchesBegan = false;
-            this.DelaysTouchesEnded = false;    
+            DelaysTouchesBegan = false;
+            DelaysTouchesEnded = false;    
             _stopWatch = new Stopwatch ();
 
         }
@@ -51,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         public bool UserIsTouching {
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;
             set;
         }
@@ -62,13 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             var r = _stopWatch.ElapsedMilliseconds;         
             return r;
             }
-            else
-            {
-                return long.MaxValue;
-            }
+            return long.MaxValue;
         }
-        
-        
+
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {                       
             UserIsTouching = true;

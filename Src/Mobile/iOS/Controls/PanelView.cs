@@ -1,22 +1,17 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	[Register ("PanielView")]
 	public class PanelView : UIView
 	{
 		private UILabel _label;
 
-		public PanelView ()
-		{
-			Initialize();
-		}
-		
-		public PanelView (IntPtr handle) : base(  handle )
+	    public PanelView (IntPtr handle) : base(  handle )
 		{
 			Initialize();
 		}
@@ -36,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			set { _label.Text = value;}
 		}
 
-		public override void Draw (System.Drawing.RectangleF rect)
+		public override void Draw (RectangleF rect)
 		{
 			base.Draw (rect);
 

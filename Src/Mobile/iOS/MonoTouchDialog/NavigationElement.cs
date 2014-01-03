@@ -1,13 +1,14 @@
 using System;
 using MonoTouch.Dialog;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {
  
     public class NavigationElement : RootElement
     {
-		private Action _navigate;
+		private readonly Action _navigate;
 
 		public NavigationElement(string caption, Action navigate ) : base (caption)
         {
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			   
         }
 
-		public override void Selected (DialogViewController dvc, UITableView tableView, MonoTouch.Foundation.NSIndexPath path)
+		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath path)
 		{
 			_navigate();
 		}

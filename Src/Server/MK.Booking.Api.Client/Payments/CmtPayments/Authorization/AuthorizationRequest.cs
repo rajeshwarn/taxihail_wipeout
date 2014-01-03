@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿#region
+using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using ServiceStack.ServiceHost;
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization
 {
     [Route("v2/merchants/{MerchantToken}/authorize")]
-
     public class AuthorizationRequest : IReturn<AuthorizationResponse>
     {
         public AuthorizationRequest()
@@ -32,12 +30,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
 
         public string MerchantToken { get; set; }
 
-        public class TransactionTypes
-        {
-            public const string Sale = "S";
-            public const string PreAuthorized = "P";
-        }
-
         public class CardReaderMethods
         {
             public const int Swipe = 0;
@@ -45,6 +37,10 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization
             public const int Manual = 2;
         }
 
-
+        public class TransactionTypes
+        {
+            public const string Sale = "S";
+            public const string PreAuthorized = "P";
+        }
     }
 }

@@ -4,15 +4,17 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client.Views
+namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
 	[Register ("BookPaymentSettingsView")]
 	partial class BookPaymentSettingsView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btConfirm { get; set; }
+		GradientButton btConfirm { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btCreditCard { get; set; }
@@ -24,10 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIView Container { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCreditCardOnFile { get; set; }
+		FormLabel lblCreditCardOnFile { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
+		FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField MeterAmountLabel { get; set; }
@@ -51,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Views.Payments.TipSliderControl TipSlider { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel TipStringLabel { get; set; }
+		FormLabel TipStringLabel { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TotalAmountLabel { get; set; }

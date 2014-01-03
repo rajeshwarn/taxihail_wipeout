@@ -1,11 +1,15 @@
-﻿using AutoMapper;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using AutoMapper;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderPairingService : RestServiceBase<OrderPairingRequest>
+    public class OrderPairingService : Service
     {
         private readonly IOrderDao _orderDao;
 
@@ -14,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public override object OnGet(OrderPairingRequest request)
+        public object Get(OrderPairingRequest request)
         {
             var orderPairing = _orderDao.FindOrderPairingById(request.OrderId);
 

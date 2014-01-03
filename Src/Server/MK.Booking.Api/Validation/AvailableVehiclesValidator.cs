@@ -1,5 +1,9 @@
-﻿using ServiceStack.FluentValidation;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.FluentValidation;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Validation
 {

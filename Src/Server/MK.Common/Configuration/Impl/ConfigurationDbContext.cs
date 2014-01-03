@@ -1,9 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Data.Entity;
 using System.Linq;
+using apcurium.MK.Common.Database;
+
+#endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {
+    [DbConfigurationType(typeof(CustomDbConfiguration))]
     public class ConfigurationDbContext : DbContext
     {
         public const string SchemaName = "Config";
@@ -21,7 +27,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             modelBuilder.ComplexType<PayPalServerSettings>();
             modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
-            
+
             base.OnModelCreating(modelBuilder);
         }
 

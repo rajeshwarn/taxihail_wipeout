@@ -1,4 +1,4 @@
-﻿namespace apcurium.Framework.Extensions.ValueType
+﻿namespace apcurium.MK.Booking.Mobile.Framework.Extensions.ValueType
 {
     public static class ValueSupportExtensions
     {

@@ -1,45 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Android.Graphics;
 using Android.Util;
 using apcurium.MK.Booking.Mobile.Style;
-using Android.Graphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class DrawHelper
     {
-		public static int ToPixels(this float dip)
-		{
-			return GetPixels(dip);
-		}
-		public static int ToPixels(this int dip)
-		{
-			return GetPixels(dip);
-		}
-        public static  int GetPixels(float dipValue)
+        public static int ToPixels(this float dip)
         {
-            int px = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue , Application.Context.Resources.DisplayMetrics); // getDisplayMetrics());
+            return GetPixels(dip);
+        }
+
+        public static int ToPixels(this int dip)
+        {
+            return GetPixels(dip);
+        }
+
+        public static int GetPixels(float dipValue)
+        {
+            var px =
+                (int)
+                    TypedValue.ApplyDimension(ComplexUnitType.Dip, dipValue,
+                        Application.Context.Resources.DisplayMetrics); // getDisplayMetrics());
             return px;
         }
 
-        public static  int GetPixelsFromPt(float ptValue)
+        public static int GetPixelsFromPt(float ptValue)
         {
-            int px = (int)TypedValue.ApplyDimension(ComplexUnitType.Pt, ptValue , Application.Context.Resources.DisplayMetrics); // getDisplayMetrics());
+            var px =
+                (int)
+                    TypedValue.ApplyDimension(ComplexUnitType.Pt, ptValue, Application.Context.Resources.DisplayMetrics);
+                // getDisplayMetrics());
             return px;
         }
 
-        public static Color ConvertToColor( this ColorDefinition colorDef )
+        public static Color ConvertToColor(this ColorDefinition colorDef)
         {
-            return new Color( colorDef.Red, colorDef.Green, colorDef.Blue , colorDef.Alpha );
+            return new Color(colorDef.Red, colorDef.Green, colorDef.Blue, colorDef.Alpha);
         }
 
 //        public static int[] ConvertToIntArray(this ColorDefinition[] colorDef ) 
@@ -64,8 +62,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 //            int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
 //        }
 //
-
-
-
     }
 }

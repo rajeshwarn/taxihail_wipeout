@@ -1,11 +1,5 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
@@ -20,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		// to be able to be created from a xib rather than from managed code
 
         public AboutUsView () 
-            : base(new MvxShowViewModelRequest<AboutUsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<AboutUsViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         

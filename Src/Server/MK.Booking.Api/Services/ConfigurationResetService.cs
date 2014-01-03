@@ -1,23 +1,23 @@
-﻿using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Configuration;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfigurationResetService : RestServiceBase<ConfigurationResetRequest>
+    public class ConfigurationResetService : Service
     {
-        private ICacheClient _cacheClient;
+        private readonly ICacheClient _cacheClient;
+
         public ConfigurationResetService(ICacheClient cacheClient)
         {
             _cacheClient = cacheClient;
         }
 
-        public override object OnGet(ConfigurationResetRequest request)
+        public object Get(ConfigurationResetRequest request)
         {
             _cacheClient.Remove(ReferenceDataService.CacheKey);
             return true;

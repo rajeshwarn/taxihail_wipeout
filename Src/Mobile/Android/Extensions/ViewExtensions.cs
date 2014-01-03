@@ -1,146 +1,151 @@
-using System;
-using Android.Views;
 using System.Drawing;
+using Android.Views;
 using Android.Widget;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
-	public static class ViewExtensions
-	{
-		public static void SetFillParent(this View thisView)
-		{
-			thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent);
-		}
-		public static void SetWrapContent(this View thisView)
-		{
-			thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-		}
+    public static class ViewExtensions
+    {
+        public static void SetFillParent(this View thisView)
+        {
+            thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FillParent,
+                ViewGroup.LayoutParams.FillParent);
+        }
 
-		public static void SetSize(this View thisView, int width, int height)
-		{
-			thisView.LayoutParameters = new ViewGroup.LayoutParams(width, height);
-		}
+        public static void SetWrapContent(this View thisView)
+        {
+            thisView.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent,
+                ViewGroup.LayoutParams.WrapContent);
+        }
 
-		public static void SetSize(this View thisView, Size size)
-		{
-			thisView.SetSize(size.Width, size.Height);
-		}
+        public static void SetSize(this View thisView, int width, int height)
+        {
+            thisView.LayoutParameters = new ViewGroup.LayoutParams(width, height);
+        }
 
-		public static Size GetSize(this View thisView)
-		{
-			if(thisView.LayoutParameters == null)
-			{
-				return new Size(0,0);
-			}
+        public static void SetSize(this View thisView, Size size)
+        {
+            thisView.SetSize(size.Width, size.Height);
+        }
 
-			return new Size(thisView.LayoutParameters.Width, thisView.LayoutParameters.Height);
-		}
+        public static Size GetSize(this View thisView)
+        {
+            if (thisView.LayoutParameters == null)
+            {
+                return new Size(0, 0);
+            }
 
-		public static Rectangle GetFrame(this View thisView)
-		{
-			RelativeLayout.LayoutParams layout =thisView.LayoutParameters.AsRelative();
+            return new Size(thisView.LayoutParameters.Width, thisView.LayoutParameters.Height);
+        }
 
-			return new Rectangle(layout.LeftMargin,layout.TopMargin,layout.Width,layout.Height);
-		}
+        public static Rectangle GetFrame(this View thisView)
+        {
+            RelativeLayout.LayoutParams layout = thisView.LayoutParameters.AsRelative();
 
-		public static void SetFrame(this View thisView, Rectangle rec)
-		{
-			thisView.SetFrame(rec.X,rec.Y,rec.Width,rec.Height);
-		}
+            return new Rectangle(layout.LeftMargin, layout.TopMargin, layout.Width, layout.Height);
+        }
+
+        public static void SetFrame(this View thisView, Rectangle rec)
+        {
+            thisView.SetFrame(rec.X, rec.Y, rec.Width, rec.Height);
+        }
 
 
-		public static void SetFrame(this View thisView, int x, int y, int width, int height)
-		{
-			var layout = thisView.LayoutParameters.AsRelative();
-			layout.Width = width;
+        public static void SetFrame(this View thisView, int x, int y, int width, int height)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
+            layout.Width = width;
+            thisView.SetPosition(x, y);
+        }
 
-			new RelativeLayout.LayoutParams(width,height);
-			thisView.SetPosition(x,y);
-		}
-		public static void AddLayoutRule(this View thisView, params LayoutRules[] verbs)
-		{
-			var layout = thisView.LayoutParameters.AsRelative();
+        public static void AddLayoutRule(this View thisView, params LayoutRules[] verbs)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
 
-			foreach(var verb in verbs)
-			{
-				layout.AddRule(verb);
-			}
+            foreach (var verb in verbs)
+            {
+                layout.AddRule(verb);
+            }
 
-			thisView.LayoutParameters = layout;			
-		}
+            thisView.LayoutParameters = layout;
+        }
 
-		
-		public static T SetPosition<T>(this T thisView, int x, int y) where T:View
-		{
-			var newLayout = thisView.LayoutParameters.ToRelative();
-			newLayout.LeftMargin = x;
-			newLayout.TopMargin = y;
-			
-			thisView.LayoutParameters = newLayout;
 
-			return thisView;
-		}
-	
-		public static T SetX<T>(this T thisView, int x) where T:View
-		{
-			var newLayout = thisView.LayoutParameters.ToRelative();
-			newLayout.LeftMargin = x;			
-			thisView.LayoutParameters = newLayout;
-			return thisView;
-		}
-		public static T SetWidth<T>(this T thisView, int width) where T:View
-		{
-			if(thisView.LayoutParameters == null)
-			{
-				thisView.LayoutParameters = new ViewGroup.LayoutParams(0,0);
-			}
-			thisView.LayoutParameters.Width = width;
-			return thisView;
-		}	
-		public static int GetWidth(this View thisView)
-		{
-			var layout = thisView.LayoutParameters.AsRelative();
-			return layout.Width;
-		}
-		public static int GetTop(this View thisView)
-		{
-			var layout = thisView.LayoutParameters.AsRelative();
-			return layout.TopMargin;
-		}
-		public static int GetLeft(this View thisView)
-		{			
-			var layout = thisView.LayoutParameters.AsRelative();
-			return layout.LeftMargin;
-		}
-		public static int GetRight(this View thisView)
-		{
-			var layout = thisView.LayoutParameters.AsRelative();
-			return layout.LeftMargin +layout.Width;
-		}
+        public static T SetPosition<T>(this T thisView, int x, int y) where T : View
+        {
+            var newLayout = thisView.LayoutParameters.ToRelative();
+            newLayout.LeftMargin = x;
+            newLayout.TopMargin = y;
 
-		public static T SetY<T>(this T thisView, int y) where T:View
-		{
-			var newLayout = thisView.LayoutParameters.ToRelative();
-			newLayout.TopMargin = y;	
-			thisView.LayoutParameters = newLayout;
-			return thisView;
-		}
+            thisView.LayoutParameters = newLayout;
 
-		public static T IncrementX<T>(this T thisView, int x) where T:View
-		{
-			var newLayout = thisView.LayoutParameters.ToRelative();
-			newLayout.LeftMargin += x;			
-			thisView.LayoutParameters = newLayout;
-			return thisView;
-		}
-		public static T IncrementY<T>(this T thisView, int y) where T:View
-		{
-			var newLayout = thisView.LayoutParameters.ToRelative();
-			newLayout.TopMargin += y;	
-			thisView.LayoutParameters = newLayout;
-			return thisView;
-		}
+            return thisView;
+        }
 
-	}
+        public static T SetX<T>(this T thisView, int x) where T : View
+        {
+            var newLayout = thisView.LayoutParameters.ToRelative();
+            newLayout.LeftMargin = x;
+            thisView.LayoutParameters = newLayout;
+            return thisView;
+        }
+
+        public static T SetWidth<T>(this T thisView, int width) where T : View
+        {
+            if (thisView.LayoutParameters == null)
+            {
+                thisView.LayoutParameters = new ViewGroup.LayoutParams(0, 0);
+            }
+            thisView.LayoutParameters.Width = width;
+            return thisView;
+        }
+
+        public static int GetWidth(this View thisView)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
+            return layout.Width;
+        }
+
+        public static int GetTop(this View thisView)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
+            return layout.TopMargin;
+        }
+
+        public static int GetLeft(this View thisView)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
+            return layout.LeftMargin;
+        }
+
+        public static int GetRight(this View thisView)
+        {
+            var layout = thisView.LayoutParameters.AsRelative();
+            return layout.LeftMargin + layout.Width;
+        }
+
+        public static T SetY<T>(this T thisView, int y) where T : View
+        {
+            var newLayout = thisView.LayoutParameters.ToRelative();
+            newLayout.TopMargin = y;
+            thisView.LayoutParameters = newLayout;
+            return thisView;
+        }
+
+        public static T IncrementX<T>(this T thisView, int x) where T : View
+        {
+            var newLayout = thisView.LayoutParameters.ToRelative();
+            newLayout.LeftMargin += x;
+            thisView.LayoutParameters = newLayout;
+            return thisView;
+        }
+
+        public static T IncrementY<T>(this T thisView, int y) where T : View
+        {
+            var newLayout = thisView.LayoutParameters.ToRelative();
+            newLayout.TopMargin += y;
+            thisView.LayoutParameters = newLayout;
+            return thisView;
+        }
+    }
 }
-

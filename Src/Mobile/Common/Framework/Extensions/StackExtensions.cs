@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public static class StackExtensions
     {
@@ -9,7 +8,5 @@ namespace apcurium.Framework.Extensions
         {
             return stack.Empty() ? default(T) : stack.Peek();
         }
-
-      
     }
 }

@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using MonoTouch.UIKit;
-using System.Drawing;
 using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -58,9 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if ( VerticalAlignement == StackPanelAlignement.Center )
             {
-                return ( this.Bounds.Height - (  ctlTotalHeight < this.Bounds.Height ? ctlTotalHeight : this.Bounds.Height )) / 2;
+                return ( Bounds.Height - (  ctlTotalHeight < Bounds.Height ? ctlTotalHeight : Bounds.Height )) / 2;
             }
-            else if ( VerticalAlignement == StackPanelAlignement.Top )
+            if ( VerticalAlignement == StackPanelAlignement.Top )
             {
                 return TopOffset;
             }
@@ -71,13 +70,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.LayoutSubviews ();
 
-            var grouppedCtl = Subviews.Where ( v=>!v.Hidden ).OrderBy ( v=>v.Frame.Top ).GroupBy ( v =>v.Frame.Top );
+            var grouppedCtl = Subviews.Where ( v=>!v.Hidden ).OrderBy ( v=>v.Frame.Top ).GroupBy ( v =>v.Frame.Top ).ToArray();
 
             var ctlTotalHeight = grouppedCtl.Sum ( g => g.Max ( v=>v.Bounds.Height ) );
 
             ctlTotalHeight += ( grouppedCtl.Count() - 1 ) * _offset;
 
-            float currentYPosition = GetStartYPosition( ctlTotalHeight );
+            var currentYPosition = GetStartYPosition( ctlTotalHeight );
 
 
             foreach (var item in grouppedCtl) {

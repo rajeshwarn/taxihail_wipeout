@@ -1,11 +1,9 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using System.Globalization;
-using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -17,10 +15,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            IsRatingButtonShown = Config.GetSetting<bool>( "Client.RatingEnabled", false );  
+            IsRatingButtonShown = this.Services().Config.GetSetting( "Client.RatingEnabled", false );  
 
 		}
-        public override void Start(bool firstStart)
+        public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
             FirePropertyChanged(() => IsPayButtonShown);
@@ -40,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private bool _receiptSent { get; set; }
+	    private bool _receiptSent;
         public bool ReceiptSent 
         {
             get { return _receiptSent; }
@@ -55,9 +53,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool IsPayButtonShown{
 			get{
-				var setting = ConfigurationManager.GetPaymentSettings ();
+                var setting = this.Services().Config.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+                return isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
 			}
 		}
 
@@ -65,15 +63,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-                var setting = ConfigurationManager.GetPaymentSettings();
+                var setting = this.Services().Config.GetPaymentSettings();
                 var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+                return isPayEnabled && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
 
 		public bool IsSendReceiptButtonShown {
 			get{
-                var sendReceiptAvailable =  ConfigurationManager.GetSetting<bool>("Client.SendReceiptAvailable",false);
+                var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
              
 			}
@@ -90,58 +88,52 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public IMvxCommand SendReceiptCommand {
+        public AsyncCommand SendReceiptCommand
+        {
 			get {
 				return new AsyncCommand (() =>
 				{
-					BookingService.SendReceipt (Order.Id);
+                    this.Services().Booking.SendReceipt(Order.Id);
                     ReceiptSent = true;
 				});
 			}
 		}
 
-		public IMvxCommand NavigateToRatingPage {
+        public AsyncCommand NavigateToRatingPage
+        {
 			get {
-				return new AsyncCommand (() =>
+				return new AsyncCommand (() => RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
 				{
-					RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
-					{
-						orderId = Order.Id.ToString (), 
-						canRate = true.ToString (CultureInfo.InvariantCulture), 
-						isFromStatus = true.ToString (CultureInfo.InvariantCulture)
-					}.ToStringDictionary(),_=>{
-						IsRatingButtonShown = false;
-					});
-				});
+				    orderId = Order.Id.ToString (), 
+				    canRate = true.ToString (CultureInfo.InvariantCulture), 
+				    isFromStatus = true.ToString (CultureInfo.InvariantCulture)
+				}.ToStringDictionary(),_=>{
+				                              IsRatingButtonShown = false;
+				}));
 			}
 		}
-        public IMvxCommand ResendConfirmationCommand {
+        public AsyncCommand ResendConfirmationCommand
+        {
             get {
                 return new AsyncCommand (() =>
                 {
-                    var formattedAmount = CultureProvider.FormatCurrency(PaymentService.GetPaymentFromCache(Order.Id).Value); 
-
-                    MessageService.ShowMessage( "Confirmation",
-                        Resources.GetString("ConfirmationOfPaymentSent"));
-
-
-                    PaymentService.ResendConfirmationToDriver( Order.Id );
+                    this.Services().Message.ShowMessage("Confirmation",
+                        this.Services().Resources.GetString("ConfirmationOfPaymentSent"));
+                    this.Services().Payment.ResendConfirmationToDriver(Order.Id);
 
                 });
             }
         }
 
-		public IMvxCommand PayCommand {
+        public AsyncCommand PayCommand
+        {
 			get {
-				return new AsyncCommand (() =>
-				{
-					RequestNavigate<ConfirmCarNumberViewModel>(
-					new 
-					{ 
-						order = Order.ToJson(),
-						orderStatus = OrderStatus.ToJson()
-					}, false, MvxRequestedBy.UserAction);
-				});
+				return new AsyncCommand (() => RequestNavigate<ConfirmCarNumberViewModel>(
+				    new 
+				    { 
+				        order = Order.ToJson(),
+				        orderStatus = OrderStatus.ToJson()
+				    }));
 			}
 		}
 	}

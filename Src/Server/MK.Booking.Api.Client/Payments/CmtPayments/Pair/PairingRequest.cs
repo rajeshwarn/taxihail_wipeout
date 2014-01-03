@@ -1,6 +1,10 @@
-﻿using ServiceStack.ServiceHost;
+﻿#region
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair
+using ServiceStack.ServiceHost;
+
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair
 {
     [Route("v1/init/pairing/external")]
     public class PairingRequest : IReturn<CmtPairingResponse>

@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace apcurium.Framework
+namespace apcurium.MK.Booking.Mobile.Framework
 {
     /// <summary>
-    /// An empty implementation of the IDisposable class.
+    ///     An empty implementation of the IDisposable class.
     /// </summary>
     public class NullDisposable : IDisposable
     {
         /// <summary>
-        /// Provider for a instance of the NullDisposable
+        ///     Provider for a instance of the NullDisposable
         /// </summary>
         public static readonly IDisposable Instance = new NullDisposable();
 
         /// <summary>
-        /// Private constructor, use Instance.
+        ///     Private constructor, use Instance.
         /// </summary>
         private NullDisposable()
         {
@@ -22,7 +22,7 @@ namespace apcurium.Framework
         #region IDisposable Members
 
         /// <summary>
-        /// See IDisposable.
+        ///     See IDisposable.
         /// </summary>
         public void Dispose()
         {

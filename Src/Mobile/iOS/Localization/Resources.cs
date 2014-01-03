@@ -1,11 +1,11 @@
 using System;
-using MonoTouch.Foundation;
-using apcurium.MK.Booking.Mobile.Localization;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Models;
+using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Localization
 {
 	public class Resources : IAppResource
 	{
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static string GetValue (string key)
 		{
-			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
+			var localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
 			return localizedValue ?? string.Empty;
 		}
 
@@ -29,20 +29,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("LanguageCode"); }
 		}
 
-		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
+		public string OrderNote{ get { return OrderNoteStatic; } }
 
 
-		public string MobileUser{ get { return Resources.MobileUserStatic; } }
+		public string MobileUser{ get { return MobileUserStatic; } }
 
-		public string Notes{ get { return Resources.NotesStatic; } }
+		public string Notes{ get { return NotesStatic; } }
 
-		public string PaiementType{ get { return Resources.RideSettingsChargeType; } }
+		public string PaiementType{ get { return RideSettingsChargeType; } }
 
-		public string OrderNoteGPSApproximate{ get { return Resources.OrderNoteGPSApproximateStatic; } }
+		public string OrderNoteGPSApproximate{ get { return OrderNoteGPSApproximateStatic; } }
 
-		public string StatusInvalid{ get { return Resources.CarAssignedStatic; } }
+		public string StatusInvalid{ get { return CarAssignedStatic; } }
 
-		public string CarAssigned{ get { return Resources.CarAssignedStatic; } }
+		public string CarAssigned{ get { return CarAssignedStatic; } }
 
 		public static string TabBook {
 			get { return GetValue ("TabBook"); }
@@ -597,7 +597,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return GetValue("NotesToDriverHint"); }
         }
 
+// ReSharper disable InconsistentNaming
 		public static string OrderNoteGPS {
+
 			get { return GetValue ("OrderNoteGPS"); }
 		}
 
@@ -1020,17 +1022,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return new List<TutorialItemModel>()
             {
-                new TutorialItemModel() {ImageUri = "tutorial_screen01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen03",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen04",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen05",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen06",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen07",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
-                new TutorialItemModel() {ImageUri = "tutorial_screen08",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
+                new TutorialItemModel {ImageUri = "tutorial_screen01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen03",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen04",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen05",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen06",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen07",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
+                new TutorialItemModel {ImageUri = "tutorial_screen08",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
 
             };
         }
+        // ReSharper restore InconsistentNaming
 	}
 }
 

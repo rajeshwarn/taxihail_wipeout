@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace apcurium.MK.Common
+﻿namespace apcurium.MK.Common
 {
     public class VehicleStatuses
     {
+        public static string[] DoneStatuses = {Common.Done};
+        public static string[] CancelStatuses = {Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow};
+        public static string[] ShowOnMapStatuses = {Common.Assigned, Common.Arrived, Common.Loaded};
 
-        public static string[] DoneStatuses = new[] { Common.Done };
-        public static string[] CancelStatuses = new[] { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
-        public static string[] ShowOnMapStatuses = new[] { Common.Assigned, Common.Arrived, Common.Loaded };
+        public class Addresses
+        {
+            public const string AddressValidQry = "wosAddrValidQry";
+            public const string AddressValidating = "wosAddrValidating";
+            public const string AddressValidatingTimeout = "wosAddrValidatingTimeout";
+            public const string AddressNotValid = "wosAddrNotValid";
+            public const string AddressValid = "wosAddrValid";
+            public const string AddressPostalValidQry = "wosAddrPostalValidQry";
+        }
 
         public class Common
         {
@@ -26,16 +30,6 @@ namespace apcurium.MK.Common
             public const string CancelledDone = "wosCANCELLED_DONE";
 
             public const string Timeout = "wosTIMEOUT";
-        }
-
-        public class Addresses
-        {
-            public const string AddressValidQry = "wosAddrValidQry";
-            public const string AddressValidating = "wosAddrValidating";
-            public const string AddressValidatingTimeout = "wosAddrValidatingTimeout";
-            public const string AddressNotValid = "wosAddrNotValid";
-            public const string AddressValid = "wosAddrValid";
-            public const string AddressPostalValidQry = "wosAddrPostalValidQry";
         }
 
         public class CreditCards
@@ -61,9 +55,6 @@ namespace apcurium.MK.Common
             public const string ReportQry = "wosReportQry";
             public const string ReportProcessing = "wosReportProcessing";
             public const string ReportDone = "wosReportDone";
-         }
-
-
-
+        }
     }
 }

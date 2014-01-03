@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Validation
 {
@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Validation
     {
         public RegisterAccountValidator()
         {
-            RuleSet(ApplyTo.Post,() =>
+            RuleSet(ApplyTo.Post, () =>
             {
                 RuleFor(x => x.Email).NotNull();
                 RuleFor(x => x.Name).NotNull();

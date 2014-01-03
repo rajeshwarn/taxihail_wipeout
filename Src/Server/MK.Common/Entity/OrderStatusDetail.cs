@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace apcurium.MK.Common.Entity
 {
@@ -11,9 +15,9 @@ namespace apcurium.MK.Common.Entity
 
         public OrderStatus Status { get; set; }
         public DriverInfos DriverInfos { get; set; }
-        public int? IBSOrderId { get; set; }
-        public string IBSStatusId { get; set; }
-        public string IBSStatusDescription { get; set; }
+        public int? IbsOrderId { get; set; }
+        public string IbsStatusId { get; set; }
+        public string IbsStatusDescription { get; set; }
         public string VehicleNumber { get; set; }
         public double? VehicleLatitude { get; set; }
         public double? VehicleLongitude { get; set; }

@@ -1,6 +1,10 @@
+#region
+
 using System;
 using System.Security.Cryptography;
 using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Security
 {
@@ -9,9 +13,14 @@ namespace apcurium.MK.Booking.Security
         private const string HashKey =
             "nTzeqlFYUZn50LLXUfDC05sAdk5Z686EuKxC7Apvg4xl3ChCQZ2Bn4Bq0WT2wKDe++csoTGb74XBTwaHpb+nmeU2qjwESH/WAqOL7ucMKHUXdLA1CvVRdpKsRBlJSeZKnNvlNlDRnBtaY+01hf/ShEotHHtdlBwnIn2cYM4z5js";
 
+        private readonly string[] _strCharacters =
+        {
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+            "W", "X", "Y", "Z",
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+        };
+
         private Random _random;
-        private readonly string[] _strCharacters = { "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-												     "1","2","3","4","5","6","7","8","9","0"};
 
         public byte[] EncodePassword(string password, string salt)
         {
@@ -42,7 +51,7 @@ namespace apcurium.MK.Booking.Security
             {
                 var plainText = Encoding.Default.GetBytes(passwordSubmitted + salt);
                 var hashKey = Encoding.Default.GetBytes(HashKey);
-                KeyedHashAlgorithm keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
+                var keyedHashAlgorithm = KeyedHashAlgorithm.Create("HMACSHA1");
 
                 keyedHashAlgorithm.Key = hashKey;
 
@@ -65,7 +74,7 @@ namespace apcurium.MK.Booking.Security
 
         private bool CompareBytesArray(byte[] a, byte[] b)
         {
-            bool result = true;
+            var result = true;
 
             if (a == null)
             {
@@ -82,7 +91,7 @@ namespace apcurium.MK.Booking.Security
             }
             else
             {
-                for (int i = 0; i < a.Length; i++)
+                for (var i = 0; i < a.Length; i++)
                 {
                     if (a[i] != b[i])
                     {

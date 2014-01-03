@@ -36,16 +36,6 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Android" />
-    <Reference Include="Newtonsoft.Json.MonoDroid">
-      <HintPath>..\Infrastructure\Newtonsoft.Json.MonoDroid.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -62,32 +52,42 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\Infrastructure\rx-android-master\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Infrastructure\rx-android-master\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Infrastructure\rx-android-master\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Infrastructure\rx-android-master\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
-    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
+    <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
     <Compile Include="AppServices\Impl\TutorialService.cs" />
-    <Compile Include="AppServices\ISocialNetworksService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
-    <Compile Include="BindingConverter\OrderStatusToTextColorConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -135,11 +135,9 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppContext.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
-    <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
@@ -164,9 +162,6 @@
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
-    <Compile Include="Practices\Bootstrapper.cs" />
-    <Compile Include="Practices\IModule.cs" />
-    <Compile Include="Practices\ServiceLocator.cs" />
     <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -174,10 +169,6 @@
     <Compile Include="AppServices\IBookingService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
     <Compile Include="AppServices\Impl\BookingService.cs" />
-    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
-    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
-    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
-    <Compile Include="AppServices\ModuleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
@@ -220,7 +211,6 @@
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
-    <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
@@ -235,7 +225,7 @@
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
     <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
-    <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
@@ -243,14 +233,13 @@
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
-    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
-    <Compile Include="Extensions\IObservableExtensions.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
-    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\Strings.Base.cs" />
     <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
@@ -273,6 +262,8 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
+    <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
+    <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -294,10 +285,6 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\BrainTreeEncryption.Library\BraintreeEncryption.Library.Android.csproj">
-      <Project>{4A5874EB-5ECF-4BC2-A099-E2814EDB0C8F}</Project>
-      <Name>BraintreeEncryption.Library.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -328,18 +315,11 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Converters\" />
-    <Folder Include="Fakes\" />
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties>
-        <Policies>
-          <TextStylePolicy EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
-          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ElseNewLinePlacement="NewLine" CatchNewLinePlacement="NewLine" FinallyNewLinePlacement="NewLine" WhileNewLinePlacement="DoNotCare" ArrayInitializerWrapping="DoNotChange" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
-        </Policies>
-      </Properties>
-    </MonoDevelop>
-  </ProjectExtensions>
 </Project>

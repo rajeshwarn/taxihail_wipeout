@@ -1,6 +1,10 @@
-﻿using System;
-using Infrastructure.Messaging;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging;
+
+#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -11,8 +15,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
             Payment = new PaymentInformation();
         }
-
-        public Guid Id { get; private set; }
 
         public Guid OrderId { get; set; }
 
@@ -31,8 +33,9 @@ namespace apcurium.MK.Booking.Commands
         public PaymentInformation Payment { get; set; }
 
         public double? EstimatedFare { get; set; }
-        
+
         public string UserAgent { get; set; }
+        public Guid Id { get; private set; }
 
         public class PaymentInformation
         {
@@ -41,6 +44,5 @@ namespace apcurium.MK.Booking.Commands
             public double? TipAmount { get; set; }
             public double? TipPercent { get; set; }
         }
- 
     }
 }

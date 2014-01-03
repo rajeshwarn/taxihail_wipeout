@@ -4,9 +4,11 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("LoginView")]
 	partial class LoginView
@@ -18,22 +20,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnSignIn { get; set; }
+		GradientButton btnSignIn { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.UnderlinedLabel linkForgotPassword { get; set; }
+		UnderlinedLabel linkForgotPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnSignUp { get; set; }
+		GradientButton btnSignUp { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnFbLogin { get; set; }
+		GradientButton btnFbLogin { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnTwLogin { get; set; }
+		GradientButton btnTwLogin { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnServer { get; set; }
+		GradientButton btnServer { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

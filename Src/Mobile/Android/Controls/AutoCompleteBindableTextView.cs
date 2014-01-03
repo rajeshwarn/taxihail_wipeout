@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Reactive.Linq;
 using Android.Content;
+using Android.Runtime;
 using Android.Text;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class AutoCompleteBindableTextView : AutoCompleteTextView
     {
+        private IDisposable _subscription;
+        private IDisposable _subscriptionTypeStart;
+
         public AutoCompleteBindableTextView(Context context)
             : base(context)
         {
@@ -23,22 +28,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Init();
         }
 
-        public AutoCompleteBindableTextView(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
+        public AutoCompleteBindableTextView(IntPtr ptr, JniHandleOwnership handle)
             : base(ptr, handle)
         {
             Init();
         }
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+        public IMvxCommand TextChangedCommand { get; set; }
+
+
+        public IMvxCommand OnTypeStarted { get; set; }
+
+        public bool IsAddressSearching { get; set; }
+// ReSharper restore UnusedAutoPropertyAccessor.Global
         private void Init()
         {
-            
-
-            
         }
 
-        private IDisposable _subscription;
-        private IDisposable _subscriptionTypeStart;
-        protected override void OnVisibilityChanged(Android.Views.View changedView, Android.Views.ViewStates visibility)
+        protected override void OnVisibilityChanged(View changedView, ViewStates visibility)
         {
             base.OnVisibilityChanged(changedView, visibility);
 
@@ -54,20 +62,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _subscriptionTypeStart = null;
             }
 
-            if (visibility == Android.Views.ViewStates.Visible)
+            if (visibility == ViewStates.Visible)
             {
                 var subsciption = Observable.FromEvent<TextChangedEventArgs>(
-                            ev => this.TextChanged += (sender2, e2) => { ev(e2); },
-                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(x=>x.Text.ToString());
+                    ev => TextChanged += (sender2, e2) => ev(e2),
+// ReSharper disable once EventUnsubscriptionViaAnonymousDelegate
+                    ev => TextChanged -= (sender3, e3) => ev(e3)).Select(x => x.Text.ToString());
 
                 _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(700)).Subscribe(ExecuteCommand);
                 _subscriptionTypeStart = subsciption.Subscribe(_ =>
-                                                                   {
-                                                                       if (IsAddressSearching)
-                                                                       {
-                                                                           OnTypeStarted.Execute();
-                                                                       }
-                                                                   });
+                {
+                    if (IsAddressSearching)
+                    {
+                        OnTypeStarted.Execute();
+                    }
+                });
 
                 if (Text.HasValue())
                 {
@@ -76,19 +85,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		private void ExecuteCommand(string text)
-		{
+        private void ExecuteCommand(string text)
+        {
             if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
             {
                 TextChangedCommand.Execute(text);
-             }
-         }
-
-        public IMvxCommand TextChangedCommand { get; set; }
-
-        public IMvxCommand OnTypeStarted { get; set; }
-
-        public bool IsAddressSearching { get; set; }
-
+            }
+        }
     }
 }

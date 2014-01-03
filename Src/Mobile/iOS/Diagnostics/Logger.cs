@@ -1,15 +1,13 @@
-
 using System;
-using System.IO;
-
 using System.Diagnostics;
+using System.IO;
+using System.Reactive.Disposables;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
-using System.Reactive.Disposables;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
     public class LoggerWrapper :  ILogger
     {
@@ -42,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             LogMessage("Start: " + message);
             return Disposable.Create (() => {
                 w.Stop();
-                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
+                LogMessage("Stop:  " + message + " Execution time : " + w.ElapsedMilliseconds + " ms");
             });
         }
 
@@ -58,35 +56,35 @@ namespace apcurium.MK.Booking.Mobile.Client
 
     }
     
-    public class Logger
+    public static class Logger
     {
         private static Stopwatch _stopWatch;
-
-        public Logger ()
-        {
-        }
 
         public static void LogError (Exception ex)
         {
             LogError (ex, 0);
         }
 
-        public  static string GetStack(int position)
+        public static string GetStack(int position)
         {
-            StackTrace stackTrace = new StackTrace();           // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
-            
-            return stackFrames[position].GetMethod().Name;        
+            var stackTrace = new StackTrace();           // get call stack
+            var stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+            if (stackFrames != null)
+            {
+                return stackFrames[position].GetMethod().Name;
+            }
+            return "no stack frame";
         }
 
         public static void LogError (Exception ex, int indent)
         {
-            string indentStr = "";
-            for (int i = 0; i < indent; i++) {
+            var indentStr = "";
+            for (var i = 0; i < indent; i++) {
                 indentStr += "   ";
             }
             if (indent == 0) {
-                Write (indentStr + "Error on " + DateTime.Now.ToString ());
+                Write (indentStr + "Error on " + DateTime.Now);
             }
             
             
@@ -94,19 +92,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             Write (indentStr + "Stack : " + ex.StackTrace);
             
             if (ex.InnerException != null) {
+// ReSharper disable once RedundantAssignment
                 LogError (ex.InnerException, indent++);
             }
         }
 
         public static void LogMessage (string message)
         {
-            
-            
-            Write ("Message on " + DateTime.Now.ToString () + " : " + message);
-            
+            Write ("Message on " + DateTime.Now + " : " + message);
         }
-
-
 
         public static void StartStopwatch (string message)
         {
@@ -126,22 +120,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static void LogStack ()
         {
-            StackTrace stackTrace = new StackTrace ();           // get call stack
-            StackFrame[] stackFrames = stackTrace.GetFrames ();  // get method calls (frames)
+            var stackTrace = new StackTrace ();           // get call stack
+            var stackFrames = stackTrace.GetFrames ();  // get method calls (frames)
 
             // write call stack method names
-            foreach (StackFrame stackFrame in stackFrames) {
-                if (stackFrame.GetMethod ().Name != "LogStack") {
-                    Write ("Stack : " + stackFrame.GetMethod ().Name);   // write method name
+            if (stackFrames != null)
+                foreach (var stackFrame in stackFrames) {
+                    if (stackFrame.GetMethod ().Name != "LogStack") {
+                        Write ("Stack : " + stackFrame.GetMethod ().Name);   // write method name
+                    }
                 }
-            }
-        
         }
 
         private static void Write (string message)
         {
             try {
-                string user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
+                var user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
                 var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
                 if (account != null) {
                     user = account.Email;                             
@@ -168,10 +162,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                             }
                             fs.Close ();
                         }
+// ReSharper disable once EmptyGeneralCatchClause
                     } catch {
                     
                     }
                 }
+// ReSharper disable once EmptyGeneralCatchClause
             } catch {
             }
             

@@ -1,16 +1,11 @@
 using System;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 
-using MonoTouch.Foundation;
-
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
-	public class ThreadHelper
+	public static class ThreadHelper
 	{
-		public ThreadHelper ()
-		{
-		}
-
 		public static void ExecuteInThread (Action action)
 		{
 			//action(); 
@@ -29,24 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				
 			});
 		}
-
-		public static Thread ExecuteInThreadWithPool (Action action)
-		{
-			
-			
-			var thread = new Thread (o =>
-			{
-				using (var ns = new NSAutoreleasePool ())
-				{
-					action ();
-				}
-			});
-			
-			thread.Start ();
-			return thread;
-		}
-		
-		
 	}
 }
 

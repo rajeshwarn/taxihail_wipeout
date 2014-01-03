@@ -1,14 +1,17 @@
 using System;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using MonoTouch.MessageUI;
 using System.IO;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using MonoTouch.EventKit;
-using apcurium.MK.Common.Diagnostic;
+using MonoTouch.Foundation;
+using MonoTouch.MessageUI;
+using MonoTouch.ObjCRuntime;
+using MonoTouch.UIKit;
+using TinyIoC;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PhoneService : IPhoneService
     {
@@ -25,11 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _eventStore;
             }
         }
-
-        public PhoneService ()
-        {
-        }
-
         #region IPhoneService implementation
 
         public void Call (string phoneNumber)
@@ -56,11 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");
             }
-            var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
-            mailComposer.SetToRecipients (new string[] { supportEmail  });
+            var presenter = TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+            mailComposer.SetToRecipients (new [] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (subject);
-            mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) 
+            mailComposer.Finished += delegate
             {
                 presenter.Close ( null ); 
                 //presenter.NativeModalViewControllerDisappearedOnItsOwn();
@@ -79,17 +77,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
         {
-            if(EventStore.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("requestAccessToEntityType:completion:")))
+            if(EventStore.RespondsToSelector(new Selector("requestAccessToEntityType:completion:")))
             {
                 //iOS6 code
-                EventStore.RequestAccess (EKEntityType.Event,(bool granted, NSError e) => {
+                EventStore.RequestAccess (EKEntityType.Event,(granted, e) => {
                         if (granted)
                         {
                             AddEvent (title, addInfo, startDate, alertDate);
                         }
                         else
                         {
-                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
                         }
                 } );
             }else{
@@ -100,21 +98,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
         {
-            EKEvent newEvent = EKEvent.FromStore (EventStore);
+            var newEvent = EKEvent.FromStore (EventStore);
             newEvent.AddAlarm (EKAlarm.FromDate (alertDate));
             newEvent.StartDate = startDate;
             newEvent.EndDate = startDate.AddHours (1);
             newEvent.Title = title;
             newEvent.Notes = addInfo;
             newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
-            NSError err = null;
+            NSError err;
             EventStore.SaveEvent (newEvent, EKSpan.ThisEvent, out err);
             if (err != null) {
-                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Err Saving Event : " + err.ToString ());
-                return;
+                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Err Saving Event : " + err);
             }
             else {
-                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
+                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
             }
         }
 

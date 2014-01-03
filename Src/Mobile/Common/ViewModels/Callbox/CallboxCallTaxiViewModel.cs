@@ -1,31 +1,25 @@
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using System;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
 	public class CallboxCallTaxiViewModel : BaseCallboxViewModel
 	{
-		public override void Load()
-		{
-			base.Load();
-		}
-
-		public IMvxCommand CallTaxi
+	    public AsyncCommand CallTaxi
 		{
 			get
 			{
-				return this.GetCommand(() => 
-					InvokeOnMainThread ( ()=>
+				return GetCommand(() => 
+					InvokeOnMainThread(()=>
 						{
-							this.MessageService.ShowEditTextDialog(Resources.GetString("BookTaxiTitle"), 
-								Resources.GetString("BookTaxiPassengerName"), Resources.GetString("Ok"), 
+							this.Services().Message.ShowEditTextDialog(this.Services().Resources.GetString("BookTaxiTitle"), 
+								this.Services().Resources.GetString("BookTaxiPassengerName"), this.Services().Resources.GetString("Ok"), 
 								s =>
 								{ 
 									try
 									{
-                            							RequestClose( this );
-										RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s },true, MvxRequestedBy.UserAction);                                                        
+                            			RequestClose( this );
+										RequestNavigate<CallboxOrderListViewModel>(new { passengerName = s }, true);                                                        
 									}
 									catch( Exception e )
 									{

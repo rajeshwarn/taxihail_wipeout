@@ -1,4 +1,4 @@
-﻿namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair
+﻿namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair
 {
     public class CmtPairingResponse
     {

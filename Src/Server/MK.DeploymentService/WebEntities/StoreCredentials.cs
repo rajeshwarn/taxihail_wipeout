@@ -1,9 +1,10 @@
-﻿namespace CustomerPortal.Web.Entities
+﻿// ReSharper disable once CheckNamespace
+namespace CustomerPortal.Web.Entities
 {
-	public class AppleStoreCredentials : StoreCredentials
-	{
-		public string Team { get; set; }
-	}
+    public class AppleStoreCredentials : StoreCredentials
+    {
+        public string Team { get; set; }
+    }
 
     public class StoreCredentials
     {

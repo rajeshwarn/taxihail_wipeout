@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace apcurium.MK.Common.Entity
 {
     public class Rule
     {
-        public Guid Id { get; set; }        
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string ZoneList { get; set; }
         public bool AppliesToCurrentBooking { get; set; }
@@ -22,6 +23,5 @@ namespace apcurium.MK.Common.Entity
         public RuleCategory Category { get; set; }
         public RuleType Type { get; set; }
         public bool IsActive { get; set; }
-
     }
 }

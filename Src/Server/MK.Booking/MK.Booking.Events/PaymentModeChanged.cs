@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using Infrastructure.EventSourcing;
-using apcurium.MK.Common.Configuration.Impl;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {

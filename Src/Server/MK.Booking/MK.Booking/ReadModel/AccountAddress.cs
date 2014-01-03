@@ -1,6 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -11,7 +15,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         [ForeignKey("Account")]
         public AccountDetail AccountId { get; set; }
-        
+
         public string FriendlyName { get; set; }
 
         public string FullAddress { get; set; }
@@ -23,7 +27,5 @@ namespace apcurium.MK.Booking.ReadModel
         public string Apartment { get; set; }
 
         public string RingCode { get; set; }
-
-
     }
 }

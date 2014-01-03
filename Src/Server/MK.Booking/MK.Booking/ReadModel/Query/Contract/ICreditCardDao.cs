@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using apcurium.MK.Common.Configuration.Impl;
+﻿#region
 
-namespace apcurium.MK.Booking.ReadModel.Query
+using System;
+using System.Collections.Generic;
+
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface ICreditCardDao
     {

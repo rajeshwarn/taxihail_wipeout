@@ -1,17 +1,13 @@
-
 using System;
-using MonoTouch.UIKit;
-using System.Threading;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.Foundation;
-using apcurium.Framework.Extensions;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
-	public class ImageHelper
+	public static class ImageHelper
 	{
-		public ImageHelper ()
-		{
-		}
 
 		public static UIImage GetImage ( string imagePath )
 		{
@@ -22,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return null;
 			}
 			
-			UIImage result = null;
+			UIImage result;
 			
 			result = UIImage.FromFile ( imagePath );
 			
@@ -101,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					image.InvokeOnMainThread ( (  ) => image.Image = loadedImage );
 				}
+// ReSharper disable once EmptyGeneralCatchClause
 				catch
 				{
 					

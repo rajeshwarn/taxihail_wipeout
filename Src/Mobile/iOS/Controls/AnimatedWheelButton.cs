@@ -1,11 +1,11 @@
 using System;
 using System.Drawing;
-using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-	public class AnimatedWheelButton : VerticalButton
+	public sealed class AnimatedWheelButton : VerticalButton
 	{
 		public AnimatedWheelButton ( RectangleF rect, UIColor gradientStart, UIColor gradientEnd ) : base( rect, gradientStart, gradientEnd )
 		{
@@ -31,23 +31,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.Animate( isOpen, fullHeight );
 
-			UIView.BeginAnimations("Wheel");
-			UIView.SetAnimationDuration(0.3);
-			UIView.SetAnimationCurve( UIViewAnimationCurve.EaseIn );
+			BeginAnimations("Wheel");
+			SetAnimationDuration(0.3);
+			SetAnimationCurve( UIViewAnimationCurve.EaseIn );
 			if( isOpen )
 			{
-				this.ImageView.Transform = CGAffineTransform.MakeRotation( 0f );
+				ImageView.Transform = CGAffineTransform.MakeRotation( 0f );
 			}
 			else
 			{
-				this.ImageView.Transform = CGAffineTransform.MakeRotation( (float)Math.PI );
+				ImageView.Transform = CGAffineTransform.MakeRotation( (float)Math.PI );
 			}
-			UIView.CommitAnimations();
-		}
-
-		public override void Draw (RectangleF rect)
-		{
-			base.Draw (rect);
+			CommitAnimations();
 		}
 	}
 }

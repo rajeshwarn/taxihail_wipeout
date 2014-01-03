@@ -1,11 +1,13 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using AutoMapper;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
+using AutoMapper;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Providers
 {

@@ -1,12 +1,11 @@
-﻿using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
-
     public class Prediction
     {
         public string Description { get; set; }

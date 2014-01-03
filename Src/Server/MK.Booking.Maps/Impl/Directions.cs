@@ -1,25 +1,26 @@
-﻿using apcurium.MK.Booking.Google;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Extensions;
+﻿#region
+
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using apcurium.MK.Booking.Google;
+using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
+
+#endregion
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Directions : IDirections
     {
-
         public enum DistanceFormat
         {
             Km,
             Mile,
         }
 
-        
+
         private readonly IMapsApiClient _client;
         private readonly IConfigurationManager _configManager;
         private readonly IPriceCalculator _priceCalculator;
@@ -32,12 +33,14 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng, DateTime? date = default(DateTime?))
+        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
+            double? destinationLng, DateTime? date = default(DateTime?))
         {
             var result = new Direction();
-            var directions = _client.GetDirections(originLat.GetValueOrDefault(), originLng.GetValueOrDefault(), destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault());
+            var directions = _client.GetDirections(originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
+                destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault());
 
-            if (directions.Status == Google.Resources.ResultStatus.OK)
+            if (directions.Status == ResultStatus.OK)
             {
                 var route = directions.Routes.ElementAt(0);
                 if (route.Legs.Count > 0)
@@ -64,38 +67,23 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var culture = _configManager.GetSetting("PriceFormat");
                 return string.Format(new CultureInfo(culture), "{0:C}", price);
             }
-            else
-            {
-                return "";
-            }
-
+            return "";
         }
+
         private string FormatDistance(int? distance)
         {
             if (distance.HasValue)
             {
-                var format = _configManager.GetSetting("DistanceFormat").ToEnum<DistanceFormat>(true, DistanceFormat.Km);                
+                var format = _configManager.GetSetting("DistanceFormat").ToEnum(true, DistanceFormat.Km);
                 if (format == DistanceFormat.Km)
                 {
-                    double distanceInKM = Math.Round((double)distance.Value / 1000, 1);
-                    return string.Format("{0:n1} km", distanceInKM);
+                    var distanceInKm = Math.Round((double) distance.Value/1000, 1);
+                    return string.Format("{0:n1} km", distanceInKm);
                 }
-                else
-                {
-
-                    double distanceInMiles = Math.Round((double)distance.Value / 1000 / 1.609344, 1);
-                    
-                    //format == DistanceFormat.Km ? distance : Convert.ToInt32(Math.Round(distance / 1609.344, 0));
-
-                    return string.Format("{0:n1} miles", distanceInMiles);
-                }
+                var distanceInMiles = Math.Round((double) distance.Value/1000/1.609344, 1);
+                return string.Format("{0:n1} miles", distanceInMiles);
             }
-            else
-            {
-                return "";
-            }
-
+            return "";
         }
-        
     }
 }

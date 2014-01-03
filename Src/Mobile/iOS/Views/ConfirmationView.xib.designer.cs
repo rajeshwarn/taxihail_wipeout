@@ -4,10 +4,11 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
-using System.CodeDom.Compiler;
 
-namespace apcurium.MK.Booking.Mobile.Client
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using MonoTouch.Foundation;
+
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("ConfirmationView")]
 	partial class ConfirmationView
@@ -16,73 +17,73 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIButton btnConfirm { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnEdit { get; set; }
+		GradientButton btnEdit { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
+		FormLabel lblApartment { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartmentValue { get; set; }
+		FormLabel lblApartmentValue { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeTypeValue { get; set; }
+		FormLabel lblChargeTypeValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblDestination { get; set; }
+		FormLabel lblDestination { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblDestinationValue { get; set; }
+		FormLabel lblDestinationValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
+		FormLabel lblEntryCode { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCodeValue { get; set; }
+		FormLabel lblEntryCodeValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblFare { get; set; }
+		FormLabel lblFare { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblFareValue { get; set; }
+		FormLabel lblFareValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBags { get; set; }
+		FormLabel lblLargeBags { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblLargeBagsValue { get; set; }
+		FormLabel lblLargeBagsValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblName { get; set; }
+		FormLabel lblName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblNameValue { get; set; }
+		FormLabel lblNameValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblNoteDriver { get; set; }
+		FormLabel lblNoteDriver { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengers { get; set; }
+		FormLabel lblPassengers { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPassengersValue { get; set; }
+		FormLabel lblPassengersValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhone { get; set; }
+		FormLabel lblPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPhoneValue { get; set; }
+		FormLabel lblPhoneValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPickup { get; set; }
+		FormLabel lblPickup { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblPickupValue { get; set; }
+		FormLabel lblPickupValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehicleTypeValue { get; set; }
+		FormLabel lblVehicleTypeValue { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }

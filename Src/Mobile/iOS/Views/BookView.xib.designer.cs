@@ -4,10 +4,11 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
-using System.CodeDom.Compiler;
 
-namespace apcurium.MK.Booking.Mobile.Client
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using MonoTouch.Foundation;
+
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("BookView")]
 	partial class BookView
@@ -19,22 +20,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIButton bookBtn { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton bookLaterButton { get; set; }
+		GradientButton bookLaterButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
+		BottomBar bottomBar { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton cancelBtn { get; set; }
+		GradientButton cancelBtn { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton dropoffActivationButton { get; set; }
+		GradientButton dropoffActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffButton { get; set; }
+		TextProgressButton dropoffButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView headerBackgroundView { get; set; }
@@ -49,13 +50,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton pickupActivationButton { get; set; }
+		GradientButton pickupActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
+		TextProgressButton pickupButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton refreshCurrentLocationButton { get; set; }
+		GradientButton refreshCurrentLocationButton { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

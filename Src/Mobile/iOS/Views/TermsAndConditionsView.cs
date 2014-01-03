@@ -1,37 +1,23 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Common;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class TermsAndConditionsView : BaseViewController<TermsAndConditionsViewModel>
     {
 
 
         public TermsAndConditionsView () 
-            : base(new MvxShowViewModelRequest<TermsAndConditionsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<TermsAndConditionsViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
 
@@ -63,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Grey );          
 
             new [] { 
-                lblTitle,
+                lblTitle
             }
             .Where(x => x != null)
                 .ForEach(x => x.TextColor = AppStyle.DarkText)
@@ -81,20 +67,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             var bindings = new [] {
                 Tuple.Create<object,string>(btnAccept, "{'TouchUpInside':{'Path':'AcceptTermsAndConditions'}}"),
                 Tuple.Create<object,string>(btnCancel, "{'TouchUpInside':{'Path':'RejectTermsAndConditions'}}"),
-                Tuple.Create<object,string>(txtTermsAndConditions, "{'Text': {'Path': 'TermsAndConditions'}}"),
+                Tuple.Create<object,string>(txtTermsAndConditions, "{'Text': {'Path': 'TermsAndConditions'}}")
             }
             .Where(x=> x.Item1 != null )
                 .ToDictionary(x=>x.Item1, x=>x.Item2);
 
             this.AddBindings(bindings);
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
-            this.NavigationItem.TitleView = new TitleView (null, string.Empty, false);
+            NavigationItem.TitleView = new TitleView (null, string.Empty, false);
 
         }
     }

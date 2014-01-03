@@ -1,10 +1,14 @@
-﻿using ServiceStack.FluentValidation;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.FluentValidation;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Validation
 {
-    public class CreateOrderValidator: AbstractValidator<CreateOrder>
+    public class CreateOrderValidator : AbstractValidator<CreateOrder>
     {
         public CreateOrderValidator()
         {

@@ -1,18 +1,16 @@
 using System;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
     [Register("TipSliderControl")]
-    public partial class TipSliderControl : UIView
+    public sealed class TipSliderControl : UIView
     {
         public TipSliderControl (IntPtr handle) :  base(handle)
         {
-         
             BackgroundColor = UIColor.Clear;
 
 			this.SetX (Frame.X - DeltaX)
@@ -44,12 +42,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         private const float HandleTouchHeight = 60; 
         private const float HandleWidth = 21;        
         private const float HandleHeight = 42;
-        static UIImage HandleImage = UIImage.FromFile("Assets/sliderHandle.png");
+        static readonly UIImage HandleImage = UIImage.FromFile("Assets/sliderHandle.png");
         
-        static UIImage GrayBarEndImage = UIImage.FromFile("Assets/sliderGrayBar.png");
-        static UIImage YellowBarEndImage = UIImage.FromFile("Assets/sliderYellowBar.png");
-        static UIImage GrayBarBodyImage = UIImage.FromFile("Assets/sliderGrayBarBody.png");
-        static UIImage YellowBarBodyImage = UIImage.FromFile("Assets/sliderYellowBarBody.png");
+        static readonly UIImage GrayBarEndImage = UIImage.FromFile("Assets/sliderGrayBar.png");
+        static readonly UIImage YellowBarEndImage = UIImage.FromFile("Assets/sliderYellowBar.png");
+        static readonly UIImage GrayBarBodyImage = UIImage.FromFile("Assets/sliderGrayBarBody.png");
+        static readonly UIImage YellowBarBodyImage = UIImage.FromFile("Assets/sliderYellowBarBody.png");
 
             
         DraggableButton _handle;
@@ -117,8 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             }
         }
 
-        float DeltaX = (HandleTouchWidth - HandleWidth)/2;
-        float DeltaY = (HandleTouchHeight - HandleHeight)/2;
+        private const float DeltaX = (HandleTouchWidth - HandleWidth)/2;
 
         private float Position {
             get{

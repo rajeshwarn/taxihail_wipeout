@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace apcurium.MK.Booking.Google.Resources
+﻿namespace apcurium.MK.Booking.Google.Resources
 {
     public class PlaceDetailResponse
     {

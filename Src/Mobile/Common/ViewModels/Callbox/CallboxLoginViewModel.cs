@@ -1,29 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public class CallboxLoginViewModel : BaseViewModel
     {
-        private IAccountService _accountService;
-
-        public CallboxLoginViewModel(IAccountService accountService)
-        {
-            _accountService = accountService;
-        }
 
         public override void Load()
         {
@@ -58,13 +43,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
         }
 
-        public IMvxCommand SignInCommand
+        public AsyncCommand SignInCommand
         {
             get
             {
                 return GetCommand(() =>
                                       {
-                                          _accountService.ClearCache();
+										 this.Services().Account.ClearCache();
                                           SignIn();
                                       });
             }
@@ -74,30 +59,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             try
             {
-                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);
-                MessageService.ShowProgress(true);
+				Logger.LogMessage("SignIn with server {0}", this.Services().Settings.ServiceUrl);
+				this.Services().Message.ShowProgress(true);
                 var account = default(Account);
 
                 try
                 {
-                    account = _accountService.GetAccount(Email, Password);
+                    account = this.Services().Account.GetAccount(Email, Password);
                 }
                 catch (Exception e)
                 {
-                    var title = Resources.GetString("InvalidLoginMessageTitle");
-                    var message = Resources.GetString("InvalidLoginMessage");
+					var title = this.Services().Resources.GetString("InvalidLoginMessageTitle");
+					var message = this.Services().Resources.GetString("InvalidLoginMessage");
 
                     Logger.LogError( e );
 
-                    MessageService.ShowMessage(title, message);
+					this.Services().Message.ShowMessage(title, message);
                 }
 
                 if (account != null)
                 {
-                    this.Password = string.Empty;
-                    if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+                    Password = string.Empty;
+                    if (this.Services().Account.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
                     {
-                        var active = _accountService.GetActiveOrdersStatus();
                         RequestNavigate<CallboxOrderListViewModel>(true);
                     }
                     else
@@ -109,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
             finally
             {
-                MessageService.ShowProgress(false);
+				this.Services().Message.ShowProgress(false);
             }
         }
     }

@@ -4,10 +4,11 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
-using System.CodeDom.Compiler;
 
-namespace apcurium.MK.Booking.Mobile.Client
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using MonoTouch.Foundation;
+
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[Register ("StatusView")]
 	partial class StatusView
@@ -16,28 +17,28 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnCall { get; set; }
+		GradientButton btnCall { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnCallDriver { get; set; }
+		GradientButton btnCallDriver { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnCancel { get; set; }
+		GradientButton btnCancel { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnNewRide { get; set; }
+		GradientButton btnNewRide { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnPay { get; set; }
+		GradientButton btnPay { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnResend { get; set; }
+		GradientButton btnResend { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
@@ -70,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.StatusBar statusBar { get; set; }
+		StatusBar statusBar { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView topSlidingStatus { get; set; }

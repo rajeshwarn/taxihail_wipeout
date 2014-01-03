@@ -1,36 +1,27 @@
 using System;
 using System.Threading;
 using Android.App;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
+
 using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public class ThreadHelper
     {
-        public ThreadHelper()
-        {
-        }
-
         private static ProgressDialog _dialog;
-        public static void ExecuteInThread(Activity owner, Action action, bool showLoading)
-        {
-            ExecuteInThread(owner, action, null, showLoading);
-        }
+
         public static void ExecuteInThread(Activity owner, Action action, Action onDismiss, bool showLoading)
-		{
-			//action();
+        {
+            //action();
 
             if (showLoading)
             {
                 _dialog = ProgressDialog.Show(owner, "", owner.GetString(Resource.String.LoadingMessage), true, false);
             }
 
-			ThreadPool.QueueUserWorkItem (o =>
-			{
-
-
+            ThreadPool.QueueUserWorkItem(o =>
+            {
                 try
                 {
                     action();
@@ -44,42 +35,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 {
                     if (owner != null)
                     {
-
                         owner.RunOnUiThread(() =>
-                                                {
-                                                    if (_dialog != null)
-                                                    {
-                                                        _dialog.Cancel();
-                                                        _dialog.Dispose();
-                                                        _dialog = null;
-                                                    }
-                                                    if (onDismiss != null)
-                                                    {
-                                                        onDismiss();
-                                                    }
-                                                });
+                        {
+                            if (_dialog != null)
+                            {
+                                _dialog.Cancel();
+                                _dialog.Dispose();
+                                _dialog = null;
+                            }
+                            if (onDismiss != null)
+                            {
+                                onDismiss();
+                            }
+                        });
                     }
                 }
-				
-			});
-		}
+            });
+        }
 
         public static Thread ExecuteInThreadWithPool(Action action)
         {
-
-
-            var thread = new Thread(o =>
-            {
-
-                action();
-
-            });
+            var thread = new Thread(o => { action(); });
 
             thread.Start();
             return thread;
         }
-
-
     }
 }
-

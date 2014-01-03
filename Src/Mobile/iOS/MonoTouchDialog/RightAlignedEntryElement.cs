@@ -1,10 +1,9 @@
-using System;
-using MonoTouch.Dialog;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
 using System.Drawing;
+using MonoTouch.Dialog;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {
     public class RightAlignedEntryElement: EntryElement
         {
@@ -32,10 +31,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return res;
             }
 
-            NSString cellKey = new NSString ("RightAligned");
+        readonly NSString _cellKey = new NSString ("RightAligned");
             protected override NSString CellKey {
                 get {
-                    return cellKey;
+                    return _cellKey;
                 }
             }
         }

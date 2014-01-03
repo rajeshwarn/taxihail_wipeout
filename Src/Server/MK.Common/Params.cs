@@ -1,7 +1,8 @@
-using System;
+#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Common
 {
@@ -13,5 +14,3 @@ namespace apcurium.MK.Common
         }
     }
 }
-
-

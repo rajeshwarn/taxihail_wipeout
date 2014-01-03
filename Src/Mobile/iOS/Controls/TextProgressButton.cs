@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
-using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	[Register ("TextProgressButton")]
 	public class TextProgressButton : UIControl
@@ -58,12 +58,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleTouchUp (object sender, EventArgs e)
         {
-            this.BackgroundColor = UIColor.Clear;
+            BackgroundColor = UIColor.Clear;
         }
         
         void HandleTouchDown (object sender, EventArgs e)
         {
-            this.BackgroundColor = UIColor.FromRGBA(0,0,0,50);
+            BackgroundColor = UIColor.FromRGBA(0,0,0,50);
         }
 
         public string TextLine1

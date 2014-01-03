@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Linq;
-using System.Text;
-using AutoMapper;
-using Infrastructure.Messaging;
-using MK.Common.Android;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Messages;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
+using AutoMapper;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class VehicleService: Service
+    public class VehicleService : Service
     {
-        readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+
         public VehicleService(IBookingWebServiceClient bookingWebServiceClient)
         {
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -29,12 +29,10 @@ namespace apcurium.MK.Booking.Api.Services
 
         public SendMessageToDriverResponse Post(SendMessageToDriverRequest request)
         {
-            return new SendMessageToDriverResponse()
-                {
-                    Success = _bookingWebServiceClient.SendMessageToDriver(request.Message, request.CarNumber)
-                };
+            return new SendMessageToDriverResponse
+            {
+                Success = _bookingWebServiceClient.SendMessageToDriver(request.Message, request.CarNumber)
+            };
         }
-
-
     }
 }

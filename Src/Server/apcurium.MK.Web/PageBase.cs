@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿#region
+
 using System.Web.UI;
 using Funq;
 using ServiceStack.CacheAccess;
@@ -9,15 +7,19 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
 
+#endregion
+
 namespace apcurium.MK.Web
 {
     public class PageBase : Page
     {
-        private Container container;
+        private Container _container;
+        private ISession _session;
+        private AuthUserSession _userSession;
 
         public Container Container
         {
-            get { return container ?? (container = AppHostBase.Instance.Container); }
+            get { return _container ?? (_container = AppHostBase.Instance.Container); }
         }
 
         protected string SessionKey
@@ -29,27 +31,19 @@ namespace apcurium.MK.Web
             }
         }
 
-        private AuthUserSession userSession;
-
         protected AuthUserSession UserSession
         {
             get
             {
-                if (userSession != null) return userSession;
+                if (_userSession != null) return _userSession;
                 if (SessionKey != null)
-                    userSession = this.Cache.Get<AuthUserSession>(SessionKey);
+                    _userSession = Cache.Get<AuthUserSession>(SessionKey);
                 else
                     SessionFeature.CreateSessionIds();
 
                 var unAuthorizedSession = new AuthUserSession();
-                return userSession ?? (userSession = unAuthorizedSession);
+                return _userSession ?? (_userSession = unAuthorizedSession);
             }
-        }
-
-        public void ClearSession()
-        {
-            userSession = null;
-            this.Cache.Remove(SessionKey);
         }
 
         public new ICacheClient Cache
@@ -62,11 +56,15 @@ namespace apcurium.MK.Web
             get { return Container.Resolve<ISessionFactory>(); }
         }
 
-        private ISession session;
-
         public new ISession Session
         {
-            get { return session ?? (session = SessionFactory.GetOrCreateSession()); }
+            get { return _session ?? (_session = SessionFactory.GetOrCreateSession()); }
+        }
+
+        public void ClearSession()
+        {
+            _userSession = null;
+            Cache.Remove(SessionKey);
         }
     }
 }

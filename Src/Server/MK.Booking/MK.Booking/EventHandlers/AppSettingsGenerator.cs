@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.Linq;
-using System.Text;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {

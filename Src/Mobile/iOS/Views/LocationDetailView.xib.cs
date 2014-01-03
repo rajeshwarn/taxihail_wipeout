@@ -1,31 +1,23 @@
-
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Common.Diagnostic;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.ViewModels;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class LocationDetailView : MvxBindingTouchViewController<LocationDetailViewModel>
     {
         #region Constructors
 
         public LocationDetailView () 
-			: base(new MvxShowViewModelRequest<LocationDetailViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<LocationDetailViewModel>( null, true, new MvxRequestedBy()   ) )
 		{
 			Initialize();
 		}
@@ -53,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-            this.NavigationItem.HidesBackButton = false;
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationDetail"), true);
+            NavigationItem.HidesBackButton = false;
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationDetail"), true);
             
             
 
@@ -77,13 +69,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
-			((GradientButton)btnBook).SetTitle(Resources.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
+			(btnBook).SetTitle(Resources.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             if ( !ViewModel.ShowRingCodeField )
             {
                 txtRingCode.Hidden = true;
-                txtAptNumber.Frame = new System.Drawing.RectangleF( txtAptNumber.Frame.X, txtAptNumber.Frame.Y, txtAddress.Frame.Width, txtAptNumber.Frame.Height );
+                txtAptNumber.Frame = new RectangleF( txtAptNumber.Frame.X, txtAptNumber.Frame.Y, txtAddress.Frame.Width, txtAptNumber.Frame.Height );
             }
 
             this.AddBindings(new Dictionary<object, string>{
@@ -100,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(  Resources.SaveButton , UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute () );
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         public override void ViewWillDisappear (bool animated)

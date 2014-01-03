@@ -1,4 +1,5 @@
-using System;
+using System.Drawing;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Touch.Interfaces;
@@ -7,7 +8,6 @@ using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Linq;
-using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -36,17 +36,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             var navBar = new UIImageView();
             navBar.Image = UIImage.FromFile("Assets/navBar.png");
-            navBar.Frame = new System.Drawing.RectangleF(0, 20, 320, 44);
+            navBar.Frame = new RectangleF(0, 20, 320, 44);
             _masterNavigationController.View.InsertSubview(navBar, 0);
 
             var back = new UIImageView();
             back.Image = UIImage.FromFile("Assets/background.png");
-            back.Frame = new System.Drawing.RectangleF(0, 64, 320, back.Image.Size.Height);
+            back.Frame = new RectangleF(0, 64, 320, back.Image.Size.Height);
             _masterNavigationController.View.InsertSubview(back, 0);
 
         }
 
-        public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
+        public override void Show(IMvxTouchView view)
         {        
            
             
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private bool HideNavBar(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
+        private bool HideNavBar(IMvxTouchView view)
         {
             return (view is INavigationView) && (((INavigationView)view).HideNavigationBar);
         }
@@ -78,18 +78,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (CurrentTopViewController != null)
             {
 
-                viewController.View.Frame = new System.Drawing.RectangleF(0, 0, CurrentTopViewController.View.Bounds.Width, CurrentTopViewController.View.Bounds.Height);
+                viewController.View.Frame = new RectangleF(0, 0, CurrentTopViewController.View.Bounds.Width, CurrentTopViewController.View.Bounds.Height);
                 _modal = viewController;
                 CurrentTopViewController.View.AddSubview(viewController.View);
                 return true;
             }
             return false;
-
-            //CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
-            //return base.PresentModalViewController (viewController, animated);
         }
 
-        public override void Close(Cirrious.MvvmCross.Interfaces.ViewModels.IMvxViewModel toClose)
+        public override void Close(IMvxViewModel toClose)
         {
             if (_modal != null)
             {
@@ -158,6 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {               
                 navBar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
             }
+// ReSharper disable once EmptyGeneralCatchClause
             catch
             {
             }

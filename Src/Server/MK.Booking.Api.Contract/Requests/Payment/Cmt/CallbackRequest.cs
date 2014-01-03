@@ -1,8 +1,12 @@
-﻿using System;
-using ServiceStack.ServiceHost;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
+﻿#region
 
-namespace apcurium.MK.Booking.Api.Contract.Requests.Cmt
+using System;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
+using ServiceStack.ServiceHost;
+
+#endregion
+
+namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt
 {
     [Route("/payments/cmt/callback/{OrderId}", "POST")]
     public class CallbackRequest : Trip, IReturnVoid

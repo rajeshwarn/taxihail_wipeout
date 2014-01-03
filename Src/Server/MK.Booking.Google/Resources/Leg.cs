@@ -1,4 +1,8 @@
+#region
+
 using System.Collections.Generic;
+
+#endregion
 
 namespace apcurium.MK.Booking.Google.Resources
 {
@@ -11,6 +15,5 @@ namespace apcurium.MK.Booking.Google.Resources
         public string Start_address { get; set; }
         public Location Start_location { get; set; }
         public List<Step> Steps { get; set; }
-
     }
 }

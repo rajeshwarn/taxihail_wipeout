@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			if( leftBtnTitle.HasValue() )
 			{
-				var leftBtn = AppButtons.CreateStandardButton(new RectangleF( 5, 3, 46, 30 ), leftBtnTitle, leftBtnColor );
+				var leftBtn = CreateStandardButton(new RectangleF( 5, 3, 46, 30 ), leftBtnTitle, leftBtnColor );
 				if( leftBtnAction != null )
 				{
 					leftBtn.TouchUpInside += delegate {
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			if( rightBtnTitle.HasValue() )
 			{
-				var rightBtn = AppButtons.CreateStandardButton(new RectangleF( 269, 3, 46, 30 ), rightBtnTitle, rightBtnColor );
+				var rightBtn = CreateStandardButton(new RectangleF( 269, 3, 46, 30 ), rightBtnTitle, rightBtnColor );
 				if( rightBtnAction != null )
 				{
 					rightBtn.TouchUpInside += delegate {
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{
 					x = 320f - 5f - btnWidth;
 				}
-				var btn = AppButtons.CreateStandardButton(new RectangleF( x, 3, btnWidth, 30 ), btnTitle, btnColor );
+				var btn = CreateStandardButton(new RectangleF( x, 3, btnWidth, 30 ), btnTitle, btnColor );
 				if( btnAction != null )
 				{
 					btn.TouchUpInside += delegate {

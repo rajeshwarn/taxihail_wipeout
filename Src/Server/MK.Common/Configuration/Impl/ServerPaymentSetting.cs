@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
+
+#endregion
 
 namespace apcurium.MK.Common.Configuration.Impl
 {

@@ -1,17 +1,27 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
-using NUnit.Framework;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
+using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class NearbyPlacesFixture : BaseTest
     {
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         private const double Latitude = 45.5062;
         private const double Longitude = -73.5726;
 
@@ -27,10 +37,53 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        [SetUp]
-        public override void Setup()
+        [Test]
+        public void when_creating_an_order_with_a_nearby_place()
         {
-            base.Setup();
+            var orderId = Guid.NewGuid();
+            var address =
+                new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
+
+            if (address == null)
+            {
+                Assert.Inconclusive("no places returned");
+            }
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
+
+            sut.CreateOrder(new CreateOrder
+            {
+                Id = orderId,
+                PickupAddress = address,
+                Settings =
+                    new BookingSettings
+                    {
+                        ChargeTypeId = 99,
+                        VehicleTypeId = 1,
+                        ProviderId = Provider.MobileKnowledgeProviderId,
+                        Phone = "514-555-1212",
+                        Passengers = 6,
+                        NumberOfTaxi = 1,
+                        Name = "Joe Smith"
+                    },
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Distance = 3,
+                    Price = 10
+                }
+            });
+            var order = sut.GetOrder(orderId);
+
+            Assert.NotNull(order);
+            Assert.AreEqual(address.FullAddress, order.PickupAddress.FullAddress);
+        }
+
+        [Test]
+        public void when_location_is_not_provided()
+        {
+            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
+            Assert.Throws<WebServiceException>(() => sut.GetNearbyPlaces(null, null),
+                ErrorCode.NearbyPlaces_LocationRequired.ToString());
         }
 
         [Test]
@@ -38,7 +91,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
             var addresses = sut.GetNearbyPlaces(Latitude, Longitude);
-            
+
             if (!addresses.Any())
             {
                 Assert.Inconclusive("no places returned");
@@ -64,43 +117,6 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotEmpty(greatRadius);
             Assert.IsNotEmpty(smallRadius);
             Assert.Less(smallRadius.Count(), greatRadius.Count());
-        }
-
-        [Test]
-        public void when_location_is_not_provided()
-        {
-            var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-            Assert.Throws<WebServiceException>(() => sut.GetNearbyPlaces(null, null), ErrorCode.NearbyPlaces_LocationRequired.ToString());
-        }
-
-        [Test]
-        public void when_creating_an_order_with_a_nearby_place()
-        {
-            var orderId = Guid.NewGuid();
-            var address = new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
-
-            if (address == null)
-            {
-                Assert.Inconclusive("no places returned");
-            }
-
-            var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
-
-            sut.CreateOrder(new CreateOrder
-                                {
-                                    Id = orderId,
-                                    PickupAddress = address,
-                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 1, ProviderId = Provider.MobileKnowledgeProviderId, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" },
-                                    Estimate = new CreateOrder.RideEstimate
-                                    {
-                                        Distance = 3,
-                                        Price = 10
-                                    }
-                                });
-            var order = sut.GetOrder(orderId);
-
-            Assert.NotNull(order);
-            Assert.AreEqual(address.FullAddress, order.PickupAddress.FullAddress);
         }
     }
 }

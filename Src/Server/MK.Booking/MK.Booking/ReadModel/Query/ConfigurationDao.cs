@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 
-namespace apcurium.MK.Booking.ReadModel
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query
 {
-    class ConfigurationDao : IConfigurationDao
+    internal class ConfigurationDao : IConfigurationDao
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 
@@ -23,6 +26,5 @@ namespace apcurium.MK.Booking.ReadModel
                 return settings ?? new ServerPaymentSettings();
             }
         }
-    
     }
 }

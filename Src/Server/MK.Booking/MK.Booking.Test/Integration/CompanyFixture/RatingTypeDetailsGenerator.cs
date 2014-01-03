@@ -1,32 +1,35 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Infrastructure.Messaging;
-using Moq;
-using NUnit.Framework;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Entity;
+using Infrastructure.Messaging;
+using Moq;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
 {
+// ReSharper disable once InconsistentNaming
     public class given_a_rating_type_view_model_generator : given_a_read_model_database
     {
-        protected RatingTypeDetailsGenerator sut;
-        protected List<ICommand> commands = new List<ICommand>();
+        protected List<ICommand> Commands = new List<ICommand>();
+        protected RatingTypeDetailsGenerator Sut;
 
         public given_a_rating_type_view_model_generator()
         {
             var bus = new Mock<ICommandBus>();
             bus.Setup(x => x.Send(It.IsAny<Envelope<ICommand>>()))
-                .Callback<Envelope<ICommand>>(x => this.commands.Add(x.Body));
+                .Callback<Envelope<ICommand>>(x => Commands.Add(x.Body));
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
-                .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
+                .Callback<IEnumerable<Envelope<ICommand>>>(x => Commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new RatingTypeDetailsGenerator(() => new BookingDbContext(dbName));
+            Sut = new RatingTypeDetailsGenerator(() => new BookingDbContext(DbName));
         }
     }
 
@@ -40,15 +43,15 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
             var companyId = Guid.NewGuid();
 
             var ratingTypeAdded = new RatingTypeAdded
-                        {
-                            SourceId = companyId,
-                            RatingTypeId = ratingTypeId,
-                            Name = "RatingType"
-                        };
+            {
+                SourceId = companyId,
+                RatingTypeId = ratingTypeId,
+                Name = "RatingType"
+            };
 
-            this.sut.Handle(ratingTypeAdded);
+            Sut.Handle(ratingTypeAdded);
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var list = context.Query<RatingTypeDetail>().Where(x => x.Id == ratingTypeId);
                 Assert.AreEqual(1, list.Count());
@@ -63,35 +66,52 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
     [TestFixture]
     public class given_a_ratingType : given_a_rating_type_view_model_generator
     {
-        private Guid _companyId;
-        private Guid _ratingTypeId;
-
         [SetUp]
         public void SetUp()
         {
-
-            this.sut.Handle(new RatingTypeAdded
-                                {
-                                    SourceId = (_companyId = Guid.NewGuid()),
-                                    RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
-                                    Name = "RatingType " + Guid.NewGuid()
-                                });
+            Sut.Handle(new RatingTypeAdded
+            {
+                SourceId = (_companyId = Guid.NewGuid()),
+                RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
+                Name = "RatingType " + Guid.NewGuid()
+            });
         }
 
+        private Guid _companyId;
+        private Guid _ratingTypeId;
+
+        [Test]
+        public void when_ratingType_hidden()
+        {
+            Sut.Handle(new RatingTypeHidded
+            {
+                SourceId = _companyId,
+                RatingTypeId = _ratingTypeId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var ratingType = context.Query<RatingTypeDetail>().SingleOrDefault(x => x.Id == _ratingTypeId);
+
+                Assert.That(ratingType, Is.Not.Null);
+// ReSharper disable once PossibleNullReferenceException
+                Assert.That(ratingType.IsHidden, Is.True);
+            }
+        }
 
         [Test]
         public void when_ratingType_updated_then_dto_updated()
         {
             var ratingTypeUpdated = new RatingTypeUpdated
-                                        {
-                                            SourceId = _companyId,
-                                            RatingTypeId = _ratingTypeId,
-                                            Name = "Updated RatingType",
-                                        };
+            {
+                SourceId = _companyId,
+                RatingTypeId = _ratingTypeId,
+                Name = "Updated RatingType",
+            };
 
-            this.sut.Handle(ratingTypeUpdated);
+            Sut.Handle(ratingTypeUpdated);
 
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var list = context.Query<RatingTypeDetail>().Where(x => x.Id == _ratingTypeId);
                 Assert.AreEqual(1, list.Count());
@@ -103,39 +123,24 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
         }
 
         [Test]
-        public void when_ratingType_hidden()
-        {
-            this.sut.Handle(new RatingTypeHidded()
-            {
-                SourceId = _companyId,
-                RatingTypeId = _ratingTypeId
-            });
-
-            using (var context = new BookingDbContext(dbName))
-            {
-                var ratingType = context.Query<RatingTypeDetail>().SingleOrDefault(x => x.Id == _ratingTypeId);
-
-                Assert.That(ratingType, Is.Not.Null);
-                Assert.That(ratingType.IsHidden, Is.True);
-            }
-        }
-
-        [Test]
         public void when_ratingType_with_same_name_created()
         {
-            using (var context = new BookingDbContext(dbName))
+            using (var context = new BookingDbContext(DbName))
             {
                 var firstRatingType = context.Query<RatingTypeDetail>().FirstOrDefault();
 
-                this.sut.Handle(new RatingTypeAdded
+                if (firstRatingType != null)
                 {
-                    SourceId = (_companyId = Guid.NewGuid()),
-                    RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
-                    Name = firstRatingType.Name
-                });
+                    Sut.Handle(new RatingTypeAdded
+                    {
+                        SourceId = (_companyId = Guid.NewGuid()),
+                        RatingTypeId = (_ratingTypeId = Guid.NewGuid()),
+                        Name = firstRatingType.Name
+                    });
 
-                var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
-                Assert.That(countWithName, Is.EqualTo(1));
+                    var countWithName = context.Query<RatingTypeDetail>().Count(x => x.Name == firstRatingType.Name);
+                    Assert.That(countWithName, Is.EqualTo(1));
+                }
             }
         }
     }

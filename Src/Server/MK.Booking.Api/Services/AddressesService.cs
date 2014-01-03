@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
+﻿#region
+
+using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Common.Web;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AddressesService : RestServiceBase<Addresses> 
+    public class AddressesService : Service
     {
         public AddressesService(IAddressDao dao)
         {
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected IAddressDao Dao { get; set; }
 
-        public override object OnGet(Addresses request)
+        public object Get(Addresses request)
         {
             var session = this.GetSession();
             return Dao.FindFavoritesByAccountId(new Guid(session.UserAuthId));

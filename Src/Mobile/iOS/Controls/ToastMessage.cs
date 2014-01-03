@@ -1,29 +1,27 @@
-using System;
-using System.Linq;
-using  apcurium.MK.Common.Extensions;
-using MonoTouch.UIKit;
 using System.Drawing;
+using System.Linq;
+using apcurium.MK.Common.Extensions;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class ToastMessage : UIView
 	{
-		private string _msg;
-		private UIView _owner;
+		private readonly string _msg;
+		private readonly UIView _owner;
 
 		private float _sidePadding = 10f;
 		private float _interiorPadding = 5f;
 		private float _bottomPadding = 80f;
 
-		private NSTimer _timer;
-		private int _toastDuration = 2; //seconds
+	    private int _toastDuration = 2; //seconds
 
 		private double _animationDuration = 2;
 		private float _minimumToastHeight = 30f;
 
 
-		public ToastMessage ( UIView owner, string msg ) : base ()
+		public ToastMessage ( UIView owner, string msg )
 		{
 			_msg = msg;
 			_owner = owner;
@@ -32,10 +30,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void Initialize()
 		{
-			this.BackgroundColor = UIColor.FromRGBA( 0, 0, 0, 100 );
-            this.Layer.CornerRadius = 6; //AppStyle.ButtonCornerRadius;
-			this.Layer.BorderWidth = 1;
-			this.Layer.BorderColor = UIColor.FromRGBA(0,0,0,110).CGColor;
+			BackgroundColor = UIColor.FromRGBA( 0, 0, 0, 100 );
+            Layer.CornerRadius = 6; //AppStyle.ButtonCornerRadius;
+			Layer.BorderWidth = 1;
+			Layer.BorderColor = UIColor.FromRGBA(0,0,0,110).CGColor;
 
 			var screenSize = UIScreen.MainScreen.Bounds;
 			var textSize = ((NSString)_msg).StringSize(AppStyle.NormalTextFont, screenSize.Width - ((_sidePadding + _interiorPadding) *2), UILineBreakMode.TailTruncation );
@@ -55,13 +53,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void Show( int duration )
 		{
 			_owner.Subviews.Where( v => v is ToastMessage ).ForEach( vv => vv.RemoveFromSuperview() );
-			UIView.Animate( _animationDuration, () => _owner.AddSubview( this ) );
-			_timer = NSTimer.CreateScheduledTimer( duration == 0 ? _toastDuration : duration, () => Hide() );
+			Animate( _animationDuration, () => _owner.AddSubview( this ) );
+			NSTimer.CreateScheduledTimer( duration == 0 ? _toastDuration : duration, () => Hide() );
 		}
 
 		private void Hide()
 		{
-			UIView.Animate( _animationDuration, () => this.RemoveFromSuperview() );
+			Animate( _animationDuration, () => RemoveFromSuperview() );
 		}
 	}
 }

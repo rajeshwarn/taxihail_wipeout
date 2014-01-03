@@ -1,35 +1,33 @@
-﻿using apcurium.MK.Booking.Api.Contract.Requests;
+﻿#region
+
+using System.Net;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Maps;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Maps;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class SearchLocationsService : RestServiceBase<SearchLocationsRequest>
+    public class SearchLocationsService : Service
     {
         private readonly IAddresses _client;
-        private IConfigurationManager _configManager;
 
-        public SearchLocationsService(IAddresses client, IConfigurationManager configurationManager)
+        public SearchLocationsService(IAddresses client)
         {
             _client = client;
-            _configManager = configurationManager;
         }
 
-        public override object OnPost(SearchLocationsRequest request)
+        public object Post(SearchLocationsRequest request)
         {
             if (request == null || string.IsNullOrEmpty(request.Name))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.Search_Locations_NameRequired.ToString());
             }
-            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(), request.GeoResult);
-           
+            return _client.Search(request.Name, request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault(),
+                request.GeoResult);
         }
     }
 }

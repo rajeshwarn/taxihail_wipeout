@@ -1,11 +1,10 @@
-using System;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 {
 
-    public class UIViewHelper
+    public static class UIViewHelper
     {
         public static void StackSubViews(IEnumerable<UIView> views)
         {           

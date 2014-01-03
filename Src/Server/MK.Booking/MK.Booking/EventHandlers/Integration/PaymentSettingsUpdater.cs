@@ -1,8 +1,13 @@
-﻿using System.Linq;
-using Infrastructure.Messaging;
-using Infrastructure.Messaging.Handling;
+﻿#region
+
+using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using Infrastructure.Messaging;
+using Infrastructure.Messaging.Handling;
+
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -10,7 +15,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<PaymentModeChanged>
     {
-        private IAccountDao _accountDao;
+        private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
 
         public PaymentSettingsUpdater(IAccountDao accountDao, ICommandBus commandBus)
@@ -21,11 +26,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(PaymentModeChanged @event)
         {
-            _commandBus.Send(new DeleteAllCreditCards()
-                {
-                    AccountIds = _accountDao.GetAll().Select(a=>a.Id).ToArray()
-                });   
-         
+            _commandBus.Send(new DeleteAllCreditCards
+            {
+                AccountIds = _accountDao.GetAll().Select(a => a.Id).ToArray()
+            });
         }
     }
 }

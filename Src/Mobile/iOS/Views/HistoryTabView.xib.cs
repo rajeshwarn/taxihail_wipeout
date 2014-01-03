@@ -1,33 +1,24 @@
-
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using System.Threading.Tasks;
-using System.Threading;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.Client.Binding;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
 	{
 
-		private const string CELLID = "HistoryCell";
+		private const string Cellid = "HistoryCell";
 		
-		static string CellBindingText =
+		static readonly string CellBindingText =
 			   new B("FirstLine","Title")
 				.Add("FirstLineTextColor","Status","OrderStatusToTextColorConverter")
 				.Add("SecondLine","PickupAddress.DisplayAddress")
@@ -39,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		#region Constructors
 
 		public HistoryTabView() 
-			: base(new MvxShowViewModelRequest<HistoryViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<HistoryViewModel>( null, true, new MvxRequestedBy()   ) )
 		{
 		}
 		
@@ -59,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.ViewDidLoad ();
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryList"), true);
+            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryList"), true);
 
 			lblInfo.Text = Resources.HistoryInfo;	
 			lblInfo.TextColor = AppStyle.TitleTextColor;
@@ -71,14 +62,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             var source = new BindableCommandTableViewSource(
 				tableHistory, 
 				UITableViewCellStyle.Subtitle,
-				new NSString(CELLID), 
+				new NSString(Cellid), 
 				CellBindingText,
 				UITableViewCellAccessory.None);
 			
 			source.CellCreator = (tview , iPath, state ) => { 
-                return new TwoLinesCell( CELLID, CellBindingText ); 
+                return new TwoLinesCell( Cellid, CellBindingText ); 
             };
-			this.AddBindings(new Dictionary<object, string>(){
+			this.AddBindings(new Dictionary<object, string>{
                 {tableHistory, "{'Hidden': {'Path': 'HasOrders', 'Converter': 'BoolInverter'}}"},
                 {lblNoHistory, "{'Hidden': {'Path': 'HasOrders'}}"},
                 {source, "{'ItemsSource':{'Path':'Orders'}, 'SelectedCommand':{'Path':'NavigateToHistoryDetailPage'}}"} ,
@@ -86,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			tableHistory.Source = source;
 
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
 		}
 
 		public override void ViewWillAppear (bool animated)

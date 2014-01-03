@@ -1,54 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+
 using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Extensions;
-using Android.Graphics;
-using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class PageInfo
     {
-        public View RootView
-        {
-            get;
-            set;
-        }
-        
-        public View ContentView
-        {
-            get;
-            set;
-        }
-        
-        public TutorialItemModel ItemModel
-        {
-            get;
-            set;
-        }
-        
-        public bool IsLoaded
-        {
-            get;
-            set;
-        }
-        
-        
-        
-        
+        public View RootView { get; set; }
+
+        public View ContentView { get; set; }
+
+        public TutorialItemModel ItemModel { get; set; }
+
+        public bool IsLoaded { get; set; }
     }
 
     public class HorizontalPager : ViewGroup
@@ -57,39 +29,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         // What fraction (1/x) of the screen the user must swipe to indicate a page change
         private static int FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE = 4;
         private static int INVALID_SCREEN = -1;
-        /*
-         * Velocity of a swipe (in density-independent pixels per second) to force a swipe to the
-         * next/previous screen. Adjusted into mDensityAdjustedSnapVelocity on init.
-         */
-        private static int SNAP_VELOCITY_DIP_PER_SECOND = 600;
         // Argument to getVelocity for units to give pixels per second (1 = pixels per millisecond).
         private static int VELOCITY_UNIT_PIXELS_PER_SECOND = 1000;
         private static int TOUCH_STATE_REST = 0;
         private static int TOUCH_STATE_HORIZONTAL_SCROLLING = 1;
         private static int TOUCH_STATE_VERTICAL_SCROLLING = -1;
-        private int mCurrentScreen;
-        private int mDensityAdjustedSnapVelocity;
-        private bool mFirstLayout = true;
-        private float mLastMotionX;
-        private float mLastMotionY;
-
-        public event EventHandler<ScreenSwitchArgs> mOnScreenSwitchListener;
-
-        private int mMaximumVelocity;
-        private int mNextScreen = INVALID_SCREEN;
-        private Scroller mScroller;
-        private int mTouchSlop;
-        private int mTouchState = TOUCH_STATE_REST;
-        private VelocityTracker mVelocityTracker;
-        private int mLastSeenLayoutWidth = -1;
         private List<PageInfo> _pages;
         private TutorialItemModel[] _tutorialItemModel;
+        private int _mCurrentScreen;
+        private int mDensityAdjustedSnapVelocity = 0;
+        private bool _mFirstLayout = true;
+        private float _mLastMotionX;
+        private float _mLastMotionY;
 
-        public TutorialItemModel[] TutorialItemModel
-        {
-            get { return _tutorialItemModel; }
-            set { _tutorialItemModel = value;  }
-        }
+        private int _mMaximumVelocity;
+        private int _mNextScreen = INVALID_SCREEN;
+        private Scroller _mScroller;
+        private int _mTouchSlop;
+        private int _mTouchState = TOUCH_STATE_REST;
+        private VelocityTracker _mVelocityTracker;
+
         /**
          * Simple constructor to use when creating a view from code.
          *
@@ -122,16 +81,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          */
 
         public HorizontalPager(Context context, IAttributeSet attrs)
-            : base(context,attrs)
+            : base(context, attrs)
         {
             //init();
         }
-        
+
+        public TutorialItemModel[] TutorialItemModel
+        {
+            get { return _tutorialItemModel; }
+// ReSharper disable once UnusedMember.Global
+            set { _tutorialItemModel = value; }
+        }
+
+        public event EventHandler<ScreenSwitchArgs> MOnScreenSwitchListener;
+
 
         /**
          * Sets up the scroller and touch/fling sensitivity parameters for the pager.
          */
-
 
 
         private void UnloadItems()
@@ -149,12 +116,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     i++;
                 }
             }
-            this.RemoveAllViews();
+            RemoveAllViews();
             _pages = null;
             GC.Collect();
         }
 
-        void UnloadItem(int index)
+        private void UnloadItem(int index)
         {
             if (index >= _pages.Count)
             {
@@ -170,32 +137,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (page.ContentView != null)
                 {
                     var d = page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Drawable;
-                    if (d is BitmapDrawable)
+                    var drawable = d as BitmapDrawable;
+                    if (drawable != null)
                     {
-                        ((BitmapDrawable)d).Bitmap.Recycle();
+                        drawable.Bitmap.Recycle();
                     }
                     page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(null);
 
-                    int i = this.IndexOfChild(page.ContentView);
-                    this.RemoveView(page.ContentView);
+                    int i = IndexOfChild(page.ContentView);
+                    RemoveView(page.ContentView);
                     page.RootView = new View(Context);
-                    this.AddView(page.RootView, i);
-                    page.RootView.Layout(page.ContentView.Left, 0, page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);                                               
+                    AddView(page.RootView, i);
+                    page.RootView.Layout(page.ContentView.Left, 0,
+                        page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);
                     page.ContentView.Dispose();
                     page.ContentView = null;
-                                     
                 }
-
             }
 
             GC.Collect();
-
-
         }
 
-        void LoadItem(int index)
+        private void LoadItem(int index)
         {
-
             if (index >= _pages.Count)
             {
                 return;
@@ -205,15 +169,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var page = _pages[index];
             if (!page.IsLoaded)
             {
-
                 page.IsLoaded = true;
-                var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
+                var inflater = (LayoutInflater) Context.GetSystemService(Context.LayoutInflaterService);
                 page.ContentView = inflater.Inflate(Resource.Layout.TutorialListItem, null);
-                
+
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = page.ItemModel.TopText;
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = page.ItemModel.BottomText;
                 page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = page.ItemModel.TopTitle;
-                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = page.ItemModel.BottomTitle;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text =
+                    page.ItemModel.BottomTitle;
 
                 var resource = Resources.GetIdentifier(page.ItemModel.ImageUri, "drawable", Context.PackageName);
 
@@ -229,18 +193,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Invalidate();
 
 
-
-                int i = this.IndexOfChild(page.RootView);
-                this.RemoveView(page.RootView);
-                this.AddView(page.ContentView, i);
-                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);                           
+                int i = IndexOfChild(page.RootView);
+                RemoveView(page.RootView);
+                AddView(page.ContentView, i);
+                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth,
+                    page.RootView.MeasuredHeight);
 
                 page.RootView.Dispose();
                 page.RootView = null;
-
             }
         }
-        
+
 //        private void LayoutItem(int index)
 //        {
 //            var page = _pages[index];
@@ -262,31 +225,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void LoadItems()
         {
-           
             if (_pages != null)
             {
                 return;
             }
 
-            _pages = new List<PageInfo>();                                           
+            _pages = new List<PageInfo>();
 
             for (int i = 0; i < TutorialItemModel.Count(); i++)
             {
-                var page = new PageInfo{ ItemModel =  TutorialItemModel[i], RootView = new View(Context) };
+                var page = new PageInfo {ItemModel = TutorialItemModel[i], RootView = new View(Context)};
                 _pages.Add(page);
-                this.AddView(page.RootView);
+                AddView(page.RootView);
             }
             LoadItem(0);
             PostDelayed(() => LoadItem(1), 200);
-            mScroller = new Scroller(Context);
+            _mScroller = new Scroller(Context);
 
             ViewConfiguration configuration = ViewConfiguration.Get(Context);
-            mTouchSlop = configuration.ScaledTouchSlop;
-            mMaximumVelocity = configuration.ScaledMaximumFlingVelocity;
+            _mTouchSlop = configuration.ScaledTouchSlop;
+            _mMaximumVelocity = configuration.ScaledMaximumFlingVelocity;
         }
 
         protected override void OnVisibilityChanged(View changedView, ViewStates visibility)
-        {           
+        {
             base.OnVisibilityChanged(changedView, visibility);
 
             if (visibility == ViewStates.Visible)
@@ -336,10 +298,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 
-            if (mFirstLayout)
+            if (_mFirstLayout)
             {
-                ScrollTo(mCurrentScreen * width, 0);
-                mFirstLayout = false;
+                ScrollTo(_mCurrentScreen*width, 0);
+                _mFirstLayout = false;
             }
 
 
@@ -362,13 +324,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 mScroller.StartScroll(ScrollX, 0, delta, 0, 0);
             }*/
-
-
-            mLastSeenLayoutWidth = width;
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r,
-                                         int b)
+            int b)
         {
             int childLeft = 0;
             int count = ChildCount;
@@ -407,7 +366,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                      * we're mid-vertical-scroll, don't even try; let the children deal with it. If we
                      * haven't found a scroll event yet, check for one.
                      */
-                    if (mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
+                    if (_mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
                     {
                         /*
                          * We've already started a horizontal scroll; set intercept to true so we can
@@ -415,10 +374,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                          */
                         intercept = true;
                     }
-                    else if (mTouchState == TOUCH_STATE_VERTICAL_SCROLLING)
+                    else if (_mTouchState == TOUCH_STATE_VERTICAL_SCROLLING)
                     {
                         // Let children handle the events for the duration of the scroll event.
-                        intercept = false;
                     }
                     else
                     {
@@ -434,26 +392,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                         float x = ev.GetX();
-                        int xDiff = (int)Math.Abs(x - mLastMotionX);
-                        bool xMoved = xDiff > mTouchSlop;
+                        var xDiff = (int) Math.Abs(x - _mLastMotionX);
+                        bool xMoved = xDiff > _mTouchSlop;
 
 
                         if (xMoved)
                         {
                             // Scroll if the user moved far enough along the X axis
-                            mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
-                            mLastMotionX = x;
+                            _mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
+                            _mLastMotionX = x;
                         }
 
 
                         float y = ev.GetY();
-                        int yDiff = (int)Math.Abs(y - mLastMotionY);
-                        bool yMoved = yDiff > mTouchSlop;
+                        var yDiff = (int) Math.Abs(y - _mLastMotionY);
+                        bool yMoved = yDiff > _mTouchSlop;
 
 
                         if (yMoved)
                         {
-                            mTouchState = TOUCH_STATE_VERTICAL_SCROLLING;
+                            _mTouchState = TOUCH_STATE_VERTICAL_SCROLLING;
                         }
                     }
 
@@ -462,33 +420,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 case MotionEventActions.Cancel:
                 case MotionEventActions.Up:
                     // Release the drag.
-                    mTouchState = TOUCH_STATE_REST;
+                    _mTouchState = TOUCH_STATE_REST;
                     break;
                 case MotionEventActions.Down:
                     /*
                      * No motion yet, but register the coordinates so we can check for intercept at the
                      * next MOVE event.
                      */
-                    mLastMotionY = ev.GetY();
-                    mLastMotionX = ev.GetX();
-                    break;
-                default:
+                    _mLastMotionY = ev.GetY();
+                    _mLastMotionX = ev.GetX();
                     break;
             }
-
 
             return intercept;
         }
 
         public override bool OnTouchEvent(MotionEvent ev)
         {
-
-
-            if (mVelocityTracker == null)
+            if (_mVelocityTracker == null)
             {
-                mVelocityTracker = VelocityTracker.Obtain();
+                _mVelocityTracker = VelocityTracker.Obtain();
             }
-            mVelocityTracker.AddMovement(ev);
+            _mVelocityTracker.AddMovement(ev);
 
 
             MotionEventActions action = ev.Action;
@@ -502,44 +455,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                      * If being flinged and user touches, stop the fling. isFinished will be false if
                      * being flinged.
                      */
-                    if (!mScroller.IsFinished)
+                    if (!_mScroller.IsFinished)
                     {
-                        mScroller.AbortAnimation();
+                        _mScroller.AbortAnimation();
                     }
 
 
                     // Remember where the motion event started
-                    mLastMotionX = x;
+                    _mLastMotionX = x;
 
 
-                    if (mScroller.IsFinished)
+                    if (_mScroller.IsFinished)
                     {
-                        mTouchState = TOUCH_STATE_REST;
+                        _mTouchState = TOUCH_STATE_REST;
                     }
                     else
                     {
-                        mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
+                        _mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
                     }
 
 
                     break;
                 case MotionEventActions.Move:
-                    int xDiff = (int)Math.Abs(x - mLastMotionX);
-                    bool xMoved = xDiff > mTouchSlop;
+                    var xDiff = (int) Math.Abs(x - _mLastMotionX);
+                    bool xMoved = xDiff > _mTouchSlop;
 
 
                     if (xMoved)
                     {
                         // Scroll if the user moved far enough along the X axis
-                        mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
+                        _mTouchState = TOUCH_STATE_HORIZONTAL_SCROLLING;
                     }
 
 
-                    if (mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
+                    if (_mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
                     {
                         // Scroll to follow the motion event
-                        int deltaX = (int)(mLastMotionX - x);
-                        mLastMotionX = x;
+                        var deltaX = (int) (_mLastMotionX - x);
+                        _mLastMotionX = x;
                         int scrollX = ScrollX;
 
 
@@ -568,47 +521,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                 case MotionEventActions.Up:
-                    if (mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
+                    if (_mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
                     {
-                        VelocityTracker velocityTracker = mVelocityTracker;
+                        VelocityTracker velocityTracker = _mVelocityTracker;
                         velocityTracker.ComputeCurrentVelocity(VELOCITY_UNIT_PIXELS_PER_SECOND,
-                                                               mMaximumVelocity);
-                        int velocityX = (int)velocityTracker.XVelocity;
+                            _mMaximumVelocity);
+                        var velocityX = (int) velocityTracker.XVelocity;
 
 
-                        if (velocityX > mDensityAdjustedSnapVelocity && mCurrentScreen > 0)
+                        if (velocityX > mDensityAdjustedSnapVelocity && _mCurrentScreen > 0)
                         {
                             // Fling hard enough to move left
-                            snapToScreen(mCurrentScreen - 1);
+                            SnapToScreen(_mCurrentScreen - 1);
                         }
                         else if (velocityX < -mDensityAdjustedSnapVelocity
-                            && mCurrentScreen < ChildCount - 1)
+                                 && _mCurrentScreen < ChildCount - 1)
                         {
                             // Fling hard enough to move right
-                            snapToScreen(mCurrentScreen + 1);
+                            SnapToScreen(_mCurrentScreen + 1);
                         }
                         else
                         {
-                            snapToDestination();
+                            SnapToDestination();
                         }
 
 
-                        if (mVelocityTracker != null)
+                        if (_mVelocityTracker != null)
                         {
-                            mVelocityTracker.Recycle();
-                            mVelocityTracker = null;
+                            _mVelocityTracker.Recycle();
+                            _mVelocityTracker = null;
                         }
                     }
 
 
-                    mTouchState = TOUCH_STATE_REST;
+                    _mTouchState = TOUCH_STATE_REST;
 
 
                     break;
                 case MotionEventActions.Cancel:
-                    mTouchState = TOUCH_STATE_REST;
-                    break;
-                default:
+                    _mTouchState = TOUCH_STATE_REST;
                     break;
             }
 
@@ -618,19 +569,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public override void ComputeScroll()
         {
-            if (mScroller.ComputeScrollOffset())
+            if (_mScroller.ComputeScrollOffset())
             {
-                ScrollTo(mScroller.CurrX, mScroller.CurrY);
+                ScrollTo(_mScroller.CurrX, _mScroller.CurrY);
                 PostInvalidate();
             }
-            else if (mNextScreen != INVALID_SCREEN)
+            else if (_mNextScreen != INVALID_SCREEN)
             {
-                mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
+                _mCurrentScreen = Math.Max(0, Math.Min(_mNextScreen, ChildCount - 1));
 
                 for (int i = 0; i < _pages.Count; i++)
                 {
                     var idx = i;
-                    if ((i == mCurrentScreen) || (i == mCurrentScreen - 1) || (i == mCurrentScreen + 1))
+                    if ((i == _mCurrentScreen) || (i == _mCurrentScreen - 1) || (i == _mCurrentScreen + 1))
                     {
                         LoadItem(idx);
                     }
@@ -638,18 +589,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         UnloadItem(idx);
                     }
-
                 }
 
 
                 // Notify observer about screen change
-                if (mOnScreenSwitchListener != null)
+                if (MOnScreenSwitchListener != null)
                 {
-                    mOnScreenSwitchListener(this, new ScreenSwitchArgs(mCurrentScreen));
+                    MOnScreenSwitchListener(this, new ScreenSwitchArgs(_mCurrentScreen));
                 }
 
 
-                mNextScreen = INVALID_SCREEN;
+                _mNextScreen = INVALID_SCREEN;
             }
         }
 
@@ -660,9 +610,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @return The index of the currently displayed screen.
          */
 
-        public int getCurrentScreen()
+        public int GetCurrentScreen()
         {
-            return mCurrentScreen;
+            return _mCurrentScreen;
         }
 
 
@@ -673,16 +623,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param animate True to smoothly scroll to the screen, false to snap instantly
          */
 
-        public void setCurrentScreen(int currentScreen, bool animate)
+        public void SetCurrentScreen(int currentScreen, bool animate)
         {
-            mCurrentScreen = Math.Max(0, Math.Min(currentScreen, ChildCount - 1));
+            _mCurrentScreen = Math.Max(0, Math.Min(currentScreen, ChildCount - 1));
             if (animate)
             {
-                snapToScreen(currentScreen, ANIMATION_SCREEN_SET_DURATION_MILLIS);
+                SnapToScreen(currentScreen, ANIMATION_SCREEN_SET_DURATION_MILLIS);
             }
             else
             {
-                ScrollTo(mCurrentScreen * Width, 0);
+                ScrollTo(_mCurrentScreen*Width, 0);
             }
             Invalidate();
         }
@@ -694,37 +644,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param onScreenSwitchListener The listener for switch events.
          */
 
-        
-
 
         /**
          * Snaps to the screen we think the user wants (the current screen for very small movements; the
          * next/prev screen for bigger movements).
          */
 
-        private void snapToDestination()
+        private void SnapToDestination()
         {
             int screenWidth = Width;
             int scrollX = ScrollX;
-            int whichScreen = mCurrentScreen;
-            int deltaX = scrollX - (screenWidth * mCurrentScreen);
+            int whichScreen = _mCurrentScreen;
+            int deltaX = scrollX - (screenWidth*_mCurrentScreen);
 
 
             // Check if they want to go to the prev. screen
-            if ((deltaX < 0) && mCurrentScreen != 0
-                && ((screenWidth / FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < -deltaX))
+            if ((deltaX < 0) && _mCurrentScreen != 0
+                && ((screenWidth/FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < -deltaX))
             {
                 whichScreen--;
                 // Check if they want to go to the next screen
             }
-            else if ((deltaX > 0) && (mCurrentScreen + 1 != ChildCount)
-                && ((screenWidth / FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < deltaX))
+            else if ((deltaX > 0) && (_mCurrentScreen + 1 != ChildCount)
+                     && ((screenWidth/FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < deltaX))
             {
                 whichScreen++;
             }
 
-
-            snapToScreen(whichScreen);
+            SnapToScreen(whichScreen);
         }
 
 
@@ -735,9 +682,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param whichScreen Screen to snap to
          */
 
-        private void snapToScreen(int whichScreen)
+        private void SnapToScreen(int whichScreen)
         {
-            snapToScreen(whichScreen, -1);
+            SnapToScreen(whichScreen, -1);
         }
 
 
@@ -749,7 +696,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          *            make the scroll take an exact duration.
          */
 
-        private void snapToScreen(int whichScreen, int duration)
+        private void SnapToScreen(int whichScreen, int duration)
         {
             /*
              * Modified by Yoni Samlan: Allow new snapping even during an ongoing scroll animation. This
@@ -757,40 +704,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              * RadioGroup used as "tabbed" controls. Also, make the animation take a percentage of our
              * normal animation time, depending how far they've already scrolled.
              */
-            mNextScreen = Math.Max(0, Math.Min(whichScreen, ChildCount - 1));
-            int newX = mNextScreen * Width;
+            _mNextScreen = Math.Max(0, Math.Min(whichScreen, ChildCount - 1));
+            int newX = _mNextScreen*Width;
             int delta = newX - ScrollX;
 
 
             if (duration < 0)
             {
                 // E.g. if they've scrolled 80% of the way, only animation for 20% of the duration
-                mScroller.StartScroll(ScrollX, 0, delta, 0, (int)(Math.Abs(delta)
-                    / (float)Width * ANIMATION_SCREEN_SET_DURATION_MILLIS));
+                _mScroller.StartScroll(ScrollX, 0, delta, 0, (int) (Math.Abs(delta)
+                                                                   /(float) Width*ANIMATION_SCREEN_SET_DURATION_MILLIS));
             }
             else
             {
-                mScroller.StartScroll(ScrollX, 0, delta, 0, duration);
+                _mScroller.StartScroll(ScrollX, 0, delta, 0, duration);
             }
 
 
             Invalidate();
         }
 
-
-        /**
-         * Listener for the event that the HorizontalPager switches to a new view.
-         */
-
-        public interface OnScreenSwitchListener
-        {
-            /**
-             * Notifies listeners about the new screen. Runs after the animation completed.
-             *
-             * @param screen The new screen index.
-             */
-            void onScreenSwitched(int screen);
-        }
     }
 
     public class ScreenSwitchArgs : EventArgs

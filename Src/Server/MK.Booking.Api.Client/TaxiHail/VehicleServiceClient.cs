@@ -1,11 +1,8 @@
-using System;
-using System.Globalization;
 using System.Net;
 using System.Threading.Tasks;
 using MK.Common.Android;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 

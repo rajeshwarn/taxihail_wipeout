@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿#region
+
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class DirectionFixture : BaseTest
     {
-
-        private const string _testUserEmail = "apcurium.test@apcurium.com";
-        private const string _testUserPassword = "password";
-
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
@@ -27,12 +28,6 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-        [SetUp]
-        public override void Setup()
-        {
-            base.Setup();
-        }
-
         [Test]
         public void BasicDirectionSearch()
         {
@@ -42,16 +37,6 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(direction);
             Assert.True(direction.Distance.HasValue);
             Assert.True(direction.Price.HasValue);
-            
         }
-
-
-
-
-
-
-
-
-
     }
 }

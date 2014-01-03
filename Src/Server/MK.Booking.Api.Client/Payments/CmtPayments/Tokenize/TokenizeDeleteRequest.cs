@@ -1,11 +1,10 @@
-﻿using ServiceStack.ServiceHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿#region
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Tokenize
+using ServiceStack.ServiceHost;
+
+#endregion
+
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize
 {
     [Route("v2/tokenize/{CardToken}/")]
     public class TokenizeDeleteRequest : IReturn<TokenizeDeleteResponse>

@@ -1,12 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
-using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AccountOrderListService : RestServiceBase<AccountOrderListRequest>
+    public class AccountOrderListService : Service
     {
         public AccountOrderListService(IOrderDao dao)
         {
@@ -15,11 +19,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         protected IOrderDao Dao { get; set; }
 
-        public override object OnGet(AccountOrderListRequest request)
+        public object Get(AccountOrderListRequest request)
         {
             var session = this.GetSession();
             var orders = Dao.FindByAccountId(new Guid(session.UserAuthId))
-                .Where(x=> !x.IsRemovedFromHistory)
+                .Where(x => !x.IsRemovedFromHistory)
                 .OrderByDescending(c => c.CreatedDate)
                 .Select(read => new OrderMapper().ToResource(read));
 

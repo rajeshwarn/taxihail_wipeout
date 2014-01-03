@@ -1,8 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
-using MonoTouch.Foundation;
+using MonoTouch;
 using MonoTouch.UIKit;
-namespace apcurium.MK.Booking.Mobile.Client
+
+namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
 
 // make sure to add a 'using System.Runtime.InteropServices;' line to your file  
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public enum HardwareVersion
 		{
+// ReSharper disable InconsistentNaming
 			iPhone,
 			iPhone3G,
 			iPhone3GS,
@@ -26,10 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			iPadSimulator,
 			Unknown
 		}
+// ReSharper restore InconsistentNaming
 
 		// Changing the constant to "/usr/bin/libSystem.dylib" allows this P/Invoke to work on Mac OS X  
 		// Using "hw.model" as property gives Macintosh model, "hw.machine" kernel arch (ppc, ppc64, i386, x86_64)  
-		[DllImport( MonoTouch.Constants.SystemLibrary )]
+		[DllImport( Constants.SystemLibrary )]
 		// name of the property  
 		// output  
 		// IntPtr.Zero  
@@ -43,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				// get the length of the string that will be returned  
 				var pLen = Marshal.AllocHGlobal ( sizeof( int ) );
-				sysctlbyname ( DeviceHardware.HardwareProperty, IntPtr.Zero, pLen, IntPtr.Zero, 0 );
+				sysctlbyname ( HardwareProperty, IntPtr.Zero, pLen, IntPtr.Zero, 0 );
 				
 				var length = Marshal.ReadInt32 ( pLen );
 				
@@ -56,11 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 				
 				// get the hardware string  
 				var pStr = Marshal.AllocHGlobal ( length );
-				sysctlbyname ( DeviceHardware.HardwareProperty, pStr, pLen, IntPtr.Zero, 0 );
+				sysctlbyname ( HardwareProperty, pStr, pLen, IntPtr.Zero, 0 );
 				
 				// convert the native string into a C# string  
 				var hardwareStr = Marshal.PtrToStringAnsi ( pStr );
-				var ret = HardwareVersion.Unknown;
+				HardwareVersion ret;
 				
 				// determine which hardware we are running  
 				if ( hardwareStr == "iPhone1,1" )
@@ -84,7 +87,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				else if ( hardwareStr == "i386" || hardwareStr == "x86_64" )
 				{
 					if ( UIDevice.CurrentDevice.Model.Contains ( "iPhone" ) )
+// ReSharper disable CompareOfFloatsByEqualityOperator
 						ret = UIScreen.MainScreen.Bounds.Height * UIScreen.MainScreen.Scale == 960 || UIScreen.MainScreen.Bounds.Width * UIScreen.MainScreen.Scale == 960 ? HardwareVersion.iPhone4Simulator : HardwareVersion.iPhoneSimulator;
+// ReSharper restore CompareOfFloatsByEqualityOperator
 					else
 						ret = HardwareVersion.iPadSimulator;
 				}

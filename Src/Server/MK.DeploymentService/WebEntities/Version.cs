@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
 
+#endregion
+// ReSharper disable once CheckNamespace
 namespace CustomerPortal.Web.Entities
 {
     public class Version
@@ -12,6 +16,7 @@ namespace CustomerPortal.Web.Entities
 
         [Display(Name = "iOS App Store Package File (.ipa)")]
         public string IpaFilename { get; set; }
+
         [Display(Name = "Android Application Package File (.apk)")]
         public string ApkFilename { get; set; }
 

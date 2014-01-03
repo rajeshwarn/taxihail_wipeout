@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
@@ -11,9 +15,9 @@ namespace apcurium.MK.Booking.Events
             return new RoleAddedToUserAccount
             {
                 RoleName = "Admin",
-                EventDate = this.EventDate,
-                SourceId = this.SourceId,
-                Version = this.Version,
+                EventDate = EventDate,
+                SourceId = SourceId,
+                Version = Version,
             };
         }
     }

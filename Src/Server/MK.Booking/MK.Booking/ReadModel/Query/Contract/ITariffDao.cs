@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
 
-namespace apcurium.MK.Booking.ReadModel.Query
+using System.Collections.Generic;
+
+#endregion
+
+namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
     public interface ITariffDao
     {

@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using System.Net;
-using System.Globalization;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Maps;
+using ServiceStack.ServiceInterface;
 
-namespace apcurium.MK.Booking.Api.Services
+#endregion
+
+namespace apcurium.MK.Booking.Api.Services.Maps
 {
-
-
-
-    public class DirectionsService : RestServiceBase<DirectionsRequest>
+    public class DirectionsService : Service
     {
         private readonly IDirections _client;
-        
+
         public DirectionsService(IDirections client)
         {
             _client = client;
         }
 
 
-        public override object OnGet(DirectionsRequest request)
+        public object Get(DirectionsRequest request)
         {
-            var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat, request.DestinationLng, date: request.Date);
+            var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat,
+                request.DestinationLng, request.Date);
             return new DirectionInfo
             {
                 Distance = result.Distance,
@@ -39,8 +31,5 @@ namespace apcurium.MK.Booking.Api.Services
                 Price = result.Price
             };
         }
-
-      
-
     }
 }

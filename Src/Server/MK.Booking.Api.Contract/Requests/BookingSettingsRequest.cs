@@ -1,12 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/bookingsettings", "PUT")]
-    public class BookingSettingsRequest : BaseDTO
+    [Route("/account/bookingsettings", "PUT")]
+    public class BookingSettingsRequest : BaseDto
     {
         public string Name { get; set; }
 
@@ -16,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string LastName { get; set; }
 
-        public string Email { get; set; } 
+        public string Email { get; set; }
 
         public string Phone { get; set; }
 
@@ -33,6 +37,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public Guid? DefaultCreditCard { get; set; }
 
         public int? DefaultTipPercent { get; set; }
-
     }
 }

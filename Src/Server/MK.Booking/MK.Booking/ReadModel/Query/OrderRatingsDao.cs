@@ -1,8 +1,13 @@
+#region
+
 using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Database;
 using System.Linq;
+using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -26,14 +31,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 ratingScoreDetails = context.Query<RatingScoreDetails>().Where(d => d.OrderId == orderId).ToList();
             }
 
-            return orderRatingDetails == null ? new OrderRatings() : new OrderRatings
+            return orderRatingDetails == null
+                ? new OrderRatings()
+                : new OrderRatings
                 {
                     OrderId = orderRatingDetails.OrderId,
                     Note = orderRatingDetails.Note,
-                    RatingScores = ratingScoreDetails.Select(s => new RatingScore { RatingTypeId = s.RatingTypeId, Score = s.Score, Name = s.Name}).ToList()
+                    RatingScores =
+                        ratingScoreDetails.Select(
+                            s => new RatingScore {RatingTypeId = s.RatingTypeId, Score = s.Score, Name = s.Name})
+                            .ToList()
                 };
         }
     }
-
-    
 }

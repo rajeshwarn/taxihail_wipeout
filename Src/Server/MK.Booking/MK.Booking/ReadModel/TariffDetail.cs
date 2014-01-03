@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using apcurium.MK.Common.Entity;
+
+#endregion
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.ReadModel
     {
         [Key]
         public Guid Id { get; set; }
+
         public Guid CompanyId { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }

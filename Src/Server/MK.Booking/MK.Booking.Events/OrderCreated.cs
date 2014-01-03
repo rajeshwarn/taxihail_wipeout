@@ -1,6 +1,10 @@
-﻿using System;
-using Infrastructure.EventSourcing;
+﻿#region
+
+using System;
 using apcurium.MK.Common.Entity;
+using Infrastructure.EventSourcing;
+
+#endregion
 
 namespace apcurium.MK.Booking.Events
 {
@@ -8,16 +12,16 @@ namespace apcurium.MK.Booking.Events
     {
         public OrderCreated()
         {
-            Settings = new BookingSettings();    
+            Settings = new BookingSettings();
         }
 
         public Guid AccountId { get; set; }
 
         public int IBSOrderId { get; set; }
-        
+
         public DateTime PickupDate { get; set; }
-        
-        public DateTime CreatedDate{ get; set; }
+
+        public DateTime CreatedDate { get; set; }
 
         public Address PickupAddress { get; set; }
 

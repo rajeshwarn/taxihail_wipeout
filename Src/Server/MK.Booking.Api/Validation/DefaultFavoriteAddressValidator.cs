@@ -1,6 +1,10 @@
-﻿using ServiceStack.FluentValidation;
-using ServiceStack.ServiceInterface;
+﻿#region
+
 using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.FluentValidation;
+using ServiceStack.ServiceInterface;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Validation
 {
@@ -14,7 +18,6 @@ namespace apcurium.MK.Booking.Api.Validation
                 RuleFor(r => r.Address.Latitude).InclusiveBetween(-90d, 90d);
                 RuleFor(r => r.Address.Longitude).InclusiveBetween(-180d, 180d);
             });
-
         }
     }
 }

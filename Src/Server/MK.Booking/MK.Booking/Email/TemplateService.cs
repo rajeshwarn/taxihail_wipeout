@@ -1,14 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
+
+#endregion
 
 namespace apcurium.MK.Booking.Email
 {
     public class TemplateService : ITemplateService
     {
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+
         public string Find(string templateName)
         {
             var path = Path.Combine(AssemblyDirectory, "Email\\Templates", templateName + ".html");
@@ -21,24 +33,13 @@ namespace apcurium.MK.Booking.Email
 
         public string Render(string template, object data)
         {
-            if(template == null) throw new ArgumentNullException("template");
+            if (template == null) throw new ArgumentNullException("template");
             return Nustache.Core.Render.StringToString(template, data);
         }
 
         public string ImagePath(string imageName)
         {
             return Path.Combine(AssemblyDirectory, "Email\\Images", imageName);
-        }
-
-        static public string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
         }
     }
 }

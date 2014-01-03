@@ -1,37 +1,27 @@
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using System.Text.RegularExpressions;
-using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using apcurium.MK.Common;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
        
 
         public ConfirmationView () 
-            : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new MvxRequestedBy()   ) )
         {
         }
         
@@ -49,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.LoadView();
             var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            bool isThriev = appSettings.ApplicationName == "Thriev";
+            var isThriev = appSettings.ApplicationName == "Thriev";
             if (isThriev)
             {
                 NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);
@@ -111,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             txtNotes.Placeholder = Resources.GetValue("NotesToDriverHint");
             
-            scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
+            scrollView.ContentSize = new SizeF( 320, 700 );
             
             txtNotes.Ended += HandleTouchDown;
             txtNotes.Started += NoteStartedEdit;
@@ -157,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
             this.AddBindings(bindings);
             
-            this.View.ApplyAppFont ();
+            View.ApplyAppFont ();
         }
 
         private void OffsetControls (float offset, params UIView[] controls)
@@ -169,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void NoteStartedEdit (object sender, EventArgs e)
         {
-            scrollView.SetContentOffset (new System.Drawing.PointF (0, 208.5f), true);
+            scrollView.SetContentOffset (new PointF (0, 208.5f), true);
 
         }
 
@@ -182,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
-            this.NavigationItem.TitleView = new TitleView (null, Resources.View_BookingDetail, true);
+            NavigationItem.TitleView = new TitleView (null, Resources.View_BookingDetail, true);
           
         }
     }

@@ -1,20 +1,77 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
-using AutoMapper;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using AutoMapper;
+using Infrastructure.Messaging.Handling;
 
-namespace apcurium.MK.Booking.BackOffice.EventHandlers
+#endregion
+
+namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>, IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>, IEventHandler<DefaultFavoriteAddressUpdated>
+    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>,
+        IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>,
+        IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>,
+        IEventHandler<DefaultFavoriteAddressUpdated>
         , IEventHandler<PopularAddressAdded>, IEventHandler<PopularAddressRemoved>, IEventHandler<PopularAddressUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
+
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+
+        public void Handle(AddressRemovedFromHistory @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<AddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    context.Set<AddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressAdded @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = new DefaultAddressDetails();
+                Mapper.Map(@event.Address, address);
+                context.Save(address);
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    context.Set<DefaultAddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.Address.Id);
+                if (address != null)
+                {
+                    Mapper.Map(@event.Address, address);
+                    context.SaveChanges();
+                }
+            }
         }
 
         public void Handle(FavoriteAddressAdded @event)
@@ -30,9 +87,8 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     return;
                 }
 
-                var addressDetails = new AddressDetails();
-                addressDetails.AccountId = @event.SourceId;
-                AutoMapper.Mapper.Map(@event.Address, addressDetails);
+                var addressDetails = new AddressDetails {AccountId = @event.SourceId};
+                Mapper.Map(@event.Address, addressDetails);
                 context.Save(addressDetails);
 
                 if (@event.Address != null)
@@ -40,7 +96,8 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     var aptEvent = @event.Address.Apartment ?? string.Empty;
                     var ringCodeEvent = @event.Address.RingCode ?? string.Empty;
                     var fullAddressEvent = @event.Address.FullAddress;
-                    var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x => x.IsHistoric)
+                    var identicalHistoricAddress =
+                        (from a in context.Query<AddressDetails>().Where(x => x.IsHistoric)
                             where a.AccountId == @event.SourceId
                             where (a.Apartment ?? string.Empty) == aptEvent
                             where a.FullAddress == fullAddressEvent
@@ -74,10 +131,10 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.Address.Id);
-                if(address != null)
+                if (address != null)
                 {
                     address.IsHistoric = false;
-                    AutoMapper.Mapper.Map(@event.Address, address);
+                    Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }
@@ -88,71 +145,24 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var identicalAddresses = from a in context.Query<AddressDetails>()
-                                         where a.AccountId == @event.AccountId
-                                         where (a.Apartment ?? string.Empty) == (@event.PickupAddress.Apartment ?? string.Empty)
-                                         where a.FullAddress == @event.PickupAddress.FullAddress
-                                         where (a.RingCode ?? string.Empty) == (@event.PickupAddress.RingCode ?? string.Empty)
-                                         where a.Latitude == @event.PickupAddress.Latitude
-                                         where a.Longitude == @event.PickupAddress.Longitude
-                                         select a;
+                    where a.AccountId == @event.AccountId
+                    where (a.Apartment ?? string.Empty) == (@event.PickupAddress.Apartment ?? string.Empty)
+                    where a.FullAddress == @event.PickupAddress.FullAddress
+                    where (a.RingCode ?? string.Empty) == (@event.PickupAddress.RingCode ?? string.Empty)
+// ReSharper disable once CompareOfFloatsByEqualityOperator
+                    where a.Latitude == @event.PickupAddress.Latitude
+// ReSharper disable once CompareOfFloatsByEqualityOperator
+                    where a.Longitude == @event.PickupAddress.Longitude
+                    select a;
 
                 if (!identicalAddresses.Any())
                 {
                     var address = new AddressDetails();
-                    AutoMapper.Mapper.Map(@event.PickupAddress, address);
+                    Mapper.Map(@event.PickupAddress, address);
                     address.Id = Guid.NewGuid();
                     address.AccountId = @event.AccountId;
                     address.IsHistoric = true;
                     context.Save(address);
-                }
-            }
-        }
-
-        public void Handle(AddressRemovedFromHistory @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<AddressDetails>(@event.AddressId);
-                if(address != null)
-                {
-                    context.Set<AddressDetails>().Remove(address);
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressAdded @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = new DefaultAddressDetails();
-                AutoMapper.Mapper.Map(@event.Address, address);
-                context.Save(address);
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressRemoved @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
-                if (address != null )
-                {
-                    context.Set<DefaultAddressDetails>().Remove(address);
-                    context.SaveChanges();
-                }
-            }
-        }
-
-        public void Handle(DefaultFavoriteAddressUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var address = context.Find<DefaultAddressDetails>(@event.Address.Id);
-                if (address != null)
-                {
-                    AutoMapper.Mapper.Map(@event.Address, address);
-                    context.SaveChanges();
                 }
             }
         }

@@ -1,16 +1,11 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
-using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
 using System.ComponentModel;
@@ -50,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsPlaceSearch{ get; set; }
 
-        private void OnSearchStart ()
+        private void OnSearchStart()
         {
             IsSearching = true;
             Logger.LogMessage ("OnSearchStarted");
@@ -64,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Disposable = null;
         }
 
-        private void OnSearch ()
+        private void OnSearch()
         {
             IsSearching = true;
 
@@ -80,9 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return SearchFavoriteAndHistoryAddresses().Concat(SearchGeocodeAddresses());                
             })
-            .Subscribe(addresses=>{
-                RefreshResults(addresses);
-            });
+            .Subscribe(RefreshResults);
 
         }
 
@@ -105,26 +98,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged (() => IsSearching);
             }
         }
-
-
-     
         protected IEnumerable<AddressViewModel> SearchPlaces ()
-        {           
-            var position = LocationService.BestPosition;
+        {
+            var position = this.Services().Location.BestPosition;
 
             if (position == null) {
                 return Enumerable.Empty<AddressViewModel> ();
             }
             var fullAddresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude, Criteria.HasValue () ? Criteria : null);
             var addresses = fullAddresses.ToList ();
-            return addresses.Select (a => new AddressViewModel () { Address = a , Icon = "address"}).ToList ();
+            return addresses.Select (a => new AddressViewModel { Address = a , Icon = "address"}).ToList ();
             
         }
 
         protected IEnumerable<AddressViewModel> SearchFavoriteAndHistoryAddresses ()
         {
-            var addresses = AccountService.GetFavoriteAddresses ();
-            var historicAddresses = AccountService.GetHistoryAddresses ();
+            var addresses = this.Services().Account.GetFavoriteAddresses();
+            var historicAddresses = this.Services().Account.GetHistoryAddresses();
 
             Func<Address, bool> predicate = c => true;
 
@@ -146,16 +136,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var searchText = Criteria.ToSafeString();
 
             Logger.LogMessage ("Starting SearchAddresses : " + searchText);
-            var position = LocationService.BestPosition;
+            var position = this.Services().Location.BestPosition;
 
             Address[] addresses;
 
             if (position == null) {
                 Logger.LogMessage ("No Position SearchAddresses : " + searchText);
-                addresses = GeolocService.SearchAddress (searchText);                
+                addresses = this.Services().Geoloc.SearchAddress(searchText);                
             } else {
                 Logger.LogMessage ("Position SearchAddresses : " + searchText);
-                addresses = GeolocService.SearchAddress(searchText, position.Latitude, position.Longitude);
+                addresses = this.Services().Geoloc.SearchAddress(searchText, position.Latitude, position.Longitude);
             }
             return addresses.Select (a => new AddressViewModel { Address = a, Icon="address"}).ToArray ();
         }
@@ -167,6 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 AddressViewModels.Clear ();                   
 
                 AddressViewModels.AddRange (result);
+                //todo: clarify this usage
                 BubbleSort (AddressViewModels);
                 AddressViewModels.ForEach (a => 
                 {
@@ -209,7 +200,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             AddressViewModels.Clear ();
         }
 
-        public IMvxCommand RowSelectedCommand {
+        public AsyncCommand<AddressViewModel> RowSelectedCommand
+        {
             get {
                 return GetCommand<AddressViewModel> (address => ThreadPool.QueueUserWorkItem (o =>
                     {
@@ -225,29 +217,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 placeAddress.FullAddress = address.Address.FullAddress;
                             }
                             RequestClose (this);
-                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId, true)));
+                            InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, placeAddress, _ownerId, true)));
                         } else if (address.Address.AddressType == "localContact") {
 
-                            var addresses = GeolocService.SearchAddress (address.Address.FullAddress);
+                            var addresses = this.Services().Geoloc.SearchAddress(address.Address.FullAddress);
                             if (addresses.Any()) {
                                 RequestClose (this);
-                            InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId, true)));
+                                InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId, true)));
                             } else {
-                                    
-                                var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverTitle");
-                                var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverMessage");
-                                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, msg);
+
+                                var title = this.Services().Resources.GetString("LocalContactCannotBeResolverTitle");
+                                var msg = this.Services().Resources.GetString("LocalContactCannotBeResolverMessage");
+                                this.Services().Message.ShowMessage(title, msg);
                             }
                         } else {
                             RequestClose (this);
-                                
-                        InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId, true)));
+
+                            InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, address.Address, _ownerId, true)));
                         }
                     }));
             }
         }
 
-        public IMvxCommand CloseViewCommand {
+        public AsyncCommand CloseViewCommand
+        {
             get { return GetCommand (() => RequestClose (this)); }
         }
 

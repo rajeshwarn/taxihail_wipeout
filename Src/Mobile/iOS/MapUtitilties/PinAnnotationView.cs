@@ -1,11 +1,10 @@
 using System;
+using System.Drawing;
+using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
-using MonoTouch.CoreFoundation;
-using MonoTouch.Foundation;
-using System.Drawing;
 
-namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
+namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
 	public class PinAnnotationView : MKAnnotationView
 	{
@@ -35,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 
 		}
 			
-		public override NSObject Annotation
+		public override sealed NSObject Annotation
 		{
 			get { return base.Annotation; }
 			set
@@ -60,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
                 lblVehicleNumber.Font = AppStyle.GetBoldFont(12);
                 lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
-                this.AddSubview( lblVehicleNumber );
+                AddSubview( lblVehicleNumber );
             }
 			CenterOffset = new PointF( 0, -Image.Size.Height/2);
 		}

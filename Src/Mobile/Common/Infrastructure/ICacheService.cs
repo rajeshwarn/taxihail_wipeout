@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -18,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void Set<T>(string key, T obj) where T : class;
 
         void Set<T>(string key, T obj, DateTime expiresAt) where T : class;
-		
 		
         void Clear(string key);
 

@@ -1,32 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Net;
-using System.Text;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class PushNotificationRegistrationService : RestServiceBase<PushNotificationRegistration>
+    public class PushNotificationRegistrationService : Service
     {
-        private readonly IAccountDao _dao;
         private readonly ICommandBus _commandBus;
+        private readonly IAccountDao _dao;
 
-        public PushNotificationRegistrationService(IAccountDao Dao, ICommandBus commandBus)
+        public PushNotificationRegistrationService(IAccountDao dao, ICommandBus commandBus)
         {
-            _dao = Dao;
+            _dao = dao;
             _commandBus = commandBus;
         }
 
-        public override object OnPost(PushNotificationRegistration request)
+        public object Post(PushNotificationRegistration request)
         {
             var account = _dao.FindById(new Guid(this.GetSession().UserAuthId));
-            
+
             var command = new RegisterDeviceForPushNotifications
             {
                 AccountId = account.Id,
@@ -40,9 +41,8 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        public override object OnDelete(PushNotificationRegistration request)
+        public object Delete(PushNotificationRegistration request)
         {
-
             var account = _dao.FindById(new Guid(this.GetSession().UserAuthId));
             var command = new UnregisterDeviceForPushNotifications
             {

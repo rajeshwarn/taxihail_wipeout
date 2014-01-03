@@ -1,48 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.Models;
-using apcurium.MK.Booking.Mobile.Client;
-using Cirrious.MvvmCross.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.Text;
-using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TermsAndConditionsViewModel : BaseSubViewModel<bool>,                 
-        IMvxServiceConsumer<ITermsAndConditionsService>
-
+    public class TermsAndConditionsViewModel : BaseSubViewModel<bool>
 	{
 
-        public TermsAndConditionsViewModel ( string messageId ) : base(messageId)
-		{
+        public TermsAndConditionsViewModel (string messageId ) : base(messageId)
+        {
+        }
 
-		}
-
-		public IMvxCommand RejectTermsAndConditions
+        public AsyncCommand RejectTermsAndConditions
 		{
 			get
 			{
-                return GetCommand(() => { 
-                    ReturnResult(false);
-				});
+                return GetCommand(() => ReturnResult(false));
 			}
 		}
 
-		public IMvxCommand AcceptTermsAndConditions
+        public AsyncCommand AcceptTermsAndConditions
 		{
 			get
 			{
-				return GetCommand (() =>
-				{
-                    ReturnResult(true);
-				});
+				return GetCommand (() => ReturnResult(true));
 
 			}			
 		}
@@ -53,8 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             { 
                 if (_text.IsNullOrEmpty())
                 {
-                    var service = this.GetService<ITermsAndConditionsService>();
-                    _text = service.GetText();
+                    _text = this.Services().Terms.GetText();
                 }
                 return @_text; 
             } 

@@ -1,16 +1,14 @@
-﻿using apcurium.MK.Booking.Api.Contract;
-using apcurium.MK.Booking.Api.Contract.Requests;
+﻿#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Api.Contract;
+
+#endregion
 
 namespace apcurium.MK.Web
 {
-    public partial class ApiDoc : System.Web.UI.Page
+    public partial class ApiDoc : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,14 +21,11 @@ namespace apcurium.MK.Web
                 Response.Write("<br>");
                 foreach (var verb in contractDocumentReport.VerbList)
                 {
-                    Response.Write("&nbsp;&nbsp;Verb : " + verb );
+                    Response.Write("&nbsp;&nbsp;Verb : " + verb);
                     Response.Write("<br>");
                 }
                 Response.Write("<br>");
-                                               
-
             }
-            
         }
     }
 }

@@ -1,9 +1,8 @@
 using System;
 using Android.App;
 using Android.Runtime;
-using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
-
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -13,13 +12,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
-            
         }
 
 
         public TaxiMobileApplication()
         {
-            
         }
 
         public override void OnCreate()
@@ -29,44 +26,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-
         }
 
-		public override void OnTerminate ()
-		{
-			base.OnTerminate ();
-		}
-
-
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            try
+            if (e.ExceptionObject is Exception)
             {
-                if (e.ExceptionObject is Exception)
-                {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError((Exception) e.ExceptionObject);
             }
         }
 
-        
-        private void AndroidEnvironmentOnUnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs raiseThrowableEventArgs)
+
+        private void AndroidEnvironmentOnUnhandledExceptionRaiser(object sender,
+            RaiseThrowableEventArgs raiseThrowableEventArgs)
         {
-            try
-            {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            TinyIoCContainer.Current.Resolve<ILogger>().LogError(raiseThrowableEventArgs.Exception);
         }
     }
-
-
 }

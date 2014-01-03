@@ -1,9 +1,12 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 using System.Text;
-using System.ComponentModel;
+
+#endregion
 
 namespace apcurium.MK.Common.Extensions
 {
@@ -48,6 +51,7 @@ namespace apcurium.MK.Common.Extensions
         {
             return instance.ToCharArray().All(Char.IsDigit);
         }
+
         //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {
@@ -65,11 +69,17 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Returns a string that contains a specified number of characters from the left side of a string.
+        ///     Returns a string that contains a specified number of characters from the left side of a string.
         /// </summary>
-        /// <param name="instance"><see cref="System.String"/> expression from which the leftmost characters are returned.</param>
-        /// <param name="length"><see cref="System.Int32"/> expression. Numeric expression indicating how many characters to return.</param>
-        /// <returns>If zero, a zero-length string ("") is returned. If greater than or equal to the number of characters in value, the complete string is returned.</returns>
+        /// <param name="instance"><see cref="System.String" /> expression from which the leftmost characters are returned.</param>
+        /// <param name="length">
+        ///     <see cref="System.Int32" /> expression. Numeric expression indicating how many characters to
+        ///     return.
+        /// </param>
+        /// <returns>
+        ///     If zero, a zero-length string ("") is returned. If greater than or equal to the number of characters in value,
+        ///     the complete string is returned.
+        /// </returns>
         /// <exception cref="System.ArgumentException">length &lt; 0</exception>
         public static string Left(this string instance, int length)
         {
@@ -77,11 +87,17 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Returns a string containing a specified number of characters from the right side of a string.
+        ///     Returns a string containing a specified number of characters from the right side of a string.
         /// </summary>
-        /// <param name="instance"><see cref="System.String"/> expression from which the rightmost characters are returned.</param>
-        /// <param name="length"><see cref="System.Int32"/> expression. Numeric expression indicating how many characters to return.</param>
-        /// <returns>If zero, a zero-length string ("") is returned. If greater than or equal to the number of characters in value, the complete string is returned.</returns>
+        /// <param name="instance"><see cref="System.String" /> expression from which the rightmost characters are returned.</param>
+        /// <param name="length">
+        ///     <see cref="System.Int32" /> expression. Numeric expression indicating how many characters to
+        ///     return.
+        /// </param>
+        /// <returns>
+        ///     If zero, a zero-length string ("") is returned. If greater than or equal to the number of characters in value,
+        ///     the complete string is returned.
+        /// </returns>
         /// <exception cref="System.ArgumentException">length &lt; 0</exception>
         public static string Right(this string instance, int length)
         {
@@ -89,11 +105,14 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Returns a string that contains a specified number of characters of a string.
+        ///     Returns a string that contains a specified number of characters of a string.
         /// </summary>
-        /// <param name="instance"><see cref="System.String"/> expression from which the characters are returned.</param>
-        /// <param name="length"><see cref="System.Int32"/> expression. Numeric expression indicating how many characters to return.</param>
-        /// <param name="predicate"><see cref="Func&lt;string&gt;"/> expression that returns the substring.</param>
+        /// <param name="instance"><see cref="System.String" /> expression from which the characters are returned.</param>
+        /// <param name="length">
+        ///     <see cref="System.Int32" /> expression. Numeric expression indicating how many characters to
+        ///     return.
+        /// </param>
+        /// <param name="predicate"><see /> expression that returns the substring.</param>
         private static string LeftRightInternal(this string instance, int length, Func<string> predicate)
         {
             if (length < 0)
@@ -107,7 +126,7 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Append a chunk at the end of a string
+        ///     Append a chunk at the end of a string
         /// </summary>
         /// <param name="target">target string object</param>
         /// <param name="chunk">Chunk to add</param>
@@ -118,7 +137,7 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Append a chunk at the end of a string only if the condition is met.
+        ///     Append a chunk at the end of a string only if the condition is met.
         /// </summary>
         /// <param name="target">target string object</param>
         /// <param name="chunk">Chunk to add</param>
@@ -130,7 +149,7 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Append a chunk at the end of a string only if the string doen't end by it.
+        ///     Append a chunk at the end of a string only if the string doen't end by it.
         /// </summary>
         /// <param name="target">target string object</param>
         /// <param name="chunk">Chunk to add</param>
@@ -139,35 +158,33 @@ namespace apcurium.MK.Common.Extensions
         {
             return target.Append(chunk, s => !s.EndsWith(chunk));
         }
+
         //Replaces accent characters from a string with the equivalent non accent character
         public static string RemoveDiacritics(this string instance)
         {
-            string stFormD = instance.Normalize(System.Text.NormalizationForm.FormD);
-            StringBuilder sb = new StringBuilder();
+            var stFormD = instance.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
 
-            for (int ich = 0; ich < stFormD.Length; ich++)
+            for (var ich = 0; ich < stFormD.Length; ich++)
             {
-                UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
+                var uc = CharUnicodeInfo.GetUnicodeCategory(stFormD[ich]);
                 if (uc != UnicodeCategory.NonSpacingMark)
                 {
                     sb.Append(stFormD[ich]);
                 }
             }
 
-            return (sb.ToString().Normalize(System.Text.NormalizationForm.FormC));
+            return (sb.ToString().Normalize(NormalizationForm.FormC));
         }
 
         public static TEnum ToEnum<TEnum>(this string instance, bool ignoreCase, TEnum @default) where TEnum : struct
         {
             TEnum t;
-            if (Enum.TryParse<TEnum>(instance, ignoreCase, out t))
+            if (Enum.TryParse(instance, ignoreCase, out t))
             {
                 return t;
             }
-            else
-            {
-                return @default;
-            }
+            return @default;
         }
 
         public static bool SoftEqual(this string value, string toCompare)
@@ -194,57 +211,11 @@ namespace apcurium.MK.Common.Extensions
             return bool.TryParse(value, out r) ? r : defaultValue;
         }
 
-        public static T TryToParse<T>(this string value, T defaultValue)
-        {
-            if (value.IsNullOrEmpty())
-            {
-                return defaultValue;
-            }
-
-            if (string.IsNullOrWhiteSpace(value))
-                return defaultValue;
-
-            TypeConverter converter = GetConverter<T>();
-
-            try
-            {
-                return (T)converter.ConvertFromInvariantString(value);
-            }
-            catch
-            {
-            }
-            return defaultValue;
-
-        }
-
-        private static TypeConverter GetConverter<T>()
-        {
-            //TypeDescriptor.GetConverter(defaultValue); doesn't work on the mobile device because the constructor is removed 
-            //The actual type is not referenced so the linker removes it 
-
-            var t = typeof(T);
-            if (t.Equals(typeof(bool)))
-            {
-                return new BooleanConverter();
-            }
-            else if (t.Equals(typeof(double)))
-            {
-                return new  DoubleConverter();
-            }
-
-            else if (t.Equals(typeof(decimal)))
-            {
-                return new  DecimalConverter();
-            }
-                
-            throw new InvalidOperationException("Type " + typeof(T).Name + " has no type converter");
-        }
-
         public static string GetValue(this string instance, string fallback)
         {
             return instance == null || string.IsNullOrWhiteSpace(instance)
-                       ? fallback
-                       : instance;
+                ? fallback
+                : instance;
         }
     }
 }

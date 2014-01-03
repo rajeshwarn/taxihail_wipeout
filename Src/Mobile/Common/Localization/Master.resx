@@ -807,7 +807,7 @@
   <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
     <value>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</value>
   </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+<data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
     <value>No fare estimate available for the ride.</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
@@ -894,22 +894,26 @@
   <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
     <value>Please contact {0} at {1} for further assistance.</value>
   </data>
+
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>The order cannot be created.</value>
   </data>
+
   <data name="AccountDisabled_NoCall" xml:space="preserve">
     <value>Your account has been disabled.</value>
   </data>
+
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
+<data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
     <value>The specified Pickup address lies outside the regular service area.</value>
   </data>
+
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
+ <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
     <value>The order cannot be created because your account is currently inactive.</value>
   </data>
   <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
@@ -1418,42 +1422,6 @@
   </data>
   <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
     <value>You will be charged {0}. Please confirm the amount. </value>
-  </data>
-  <data name="CmtCancelPayment" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="CmtCardNumber" xml:space="preserve">
-    <value>Card Number:</value>
-  </data>
-  <data name="CmtCarNumber" xml:space="preserve">
-    <value>Car Number:</value>
-  </data>
-  <data name="CmtChangePaymentInfo" xml:space="preserve">
-    <value>Change Payment Settings</value>
-  </data>
-  <data name="CmtConfirmBookingInfo" xml:space="preserve">
-    <value>Confirm payment information</value>
-  </data>
-  <data name="CmtConfirmPayment" xml:space="preserve">
-    <value>Confirm</value>
-  </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>Unpair</value>
-  </data>
-  <data name="CmtTipAmount" xml:space="preserve">
-    <value>Tip Amount:</value>
-  </data>
-  <data name="View_Payments_CmtRideLinqConfirmPairTitle" xml:space="preserve">
-    <value>Confirm payment information</value>
-  </data>
-  <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
-    <value>Change payment information</value>
-  </data>  
-  <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
-    <value>Update required</value>
-  </data>
-  <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
-    <value>You need to update Google Play Services in order to use this application.</value>
   </data>
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>

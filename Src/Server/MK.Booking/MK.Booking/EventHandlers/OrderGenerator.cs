@@ -1,14 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Data.SqlTypes;
-using apcurium.MK.Common.Diagnostic;
-using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using AutoMapper;
+using Infrastructure.Messaging.Handling;
 
+#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -23,14 +26,46 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderPairedForRideLinqCmtPayment>,
         IEventHandler<OrderUnpairedForRideLinqCmtPayment>
     {
-
         private readonly Func<BookingDbContext> _contextFactory;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger)
         {
             _contextFactory = contextFactory;
             _logger = logger;
+        }
+
+        public void Handle(OrderCancelled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int) OrderStatus.Canceled;
+                context.Save(order);
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Canceled;
+                    details.IbsStatusId = VehicleStatuses.Common.CancelledDone;
+                    details.IbsStatusDescription = "Order Cancelled";
+                    context.Save(details);
+                }
+            }
+        }
+
+        public void Handle(OrderCompleted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int) OrderStatus.Completed;
+                order.Fare = @event.Fare;
+                order.Tip = @event.Tip;
+                order.Toll = @event.Toll;
+                order.Tax = @event.Tax;
+                context.Save(order);
+            }
         }
 
         public void Handle(OrderCreated @event)
@@ -47,7 +82,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     Settings = @event.Settings,
-                    Status = (int)OrderStatus.Created,
+                    Status = (int) OrderStatus.Created,
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
@@ -65,70 +100,34 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         OrderId = @event.SourceId,
                         AccountId = @event.AccountId,
-                        IBSOrderId = @event.IBSOrderId,
+                        IbsOrderId = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription = "Processing your order",
+                        IbsStatusDescription = "Processing your order",
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });
                 }
             }
-
         }
 
-        public void Handle(OrderCancelled @event)
+        public void Handle(OrderPairedForRideLinqCmtPayment @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int)OrderStatus.Canceled;
-                context.Save(order);
-
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
+                context.Save(new OrderPairingDetail
                 {
-                    details.Status = OrderStatus.Canceled;
-                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
-                    details.IBSStatusDescription = "Order Cancelled";
-                    context.Save(details);
-                }
+                    OrderId = @event.SourceId,
+                    Medallion = @event.Medallion,
+                    DriverId = @event.DriverId,
+                    PairingToken = @event.PairingToken,
+                    PairingCode = @event.PairingCode,
+                    TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                    AutoTipAmount = @event.AutoTipAmount,
+                    AutoTipPercentage = @event.AutoTipPercentage
+                });
             }
         }
 
-        public void Handle(OrderCompleted @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                var payment = context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == @event.SourceId);
-                order.Status = (int)OrderStatus.Completed;
-                order.Fare = @event.Fare;
-                order.Tip = @event.Tip;
-                order.Toll = @event.Toll;
-                order.Tax = @event.Tax;
-                context.Save(order);
-            }
-        }
-
-
-
-        public void Handle(OrderRemovedFromHistory @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var order = context.Find<OrderDetail>(@event.SourceId);
-                order.IsRemovedFromHistory = true;
-
-                var details = context.Find<OrderStatusDetail>(@event.SourceId);
-                if (details != null)
-                {
-                    details.Status = OrderStatus.Removed;
-                    context.Save(details);
-                }
-
-                context.SaveChanges();
-            }
-        }
 
         public void Handle(OrderRated @event)
         {
@@ -160,17 +159,21 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(PaymentInformationSet @event)
+        public void Handle(OrderRemovedFromHistory @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.PaymentInformation.PayWithCreditCard = true;
-                order.PaymentInformation.CreditCardId = @event.CreditCardId;
-                order.PaymentInformation.TipAmount = @event.TipAmount;
-                order.PaymentInformation.TipPercent = @event.TipPercent;
+                order.IsRemovedFromHistory = true;
 
-                context.Save(order);
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Removed;
+                    context.Save(details);
+                }
+
+                context.SaveChanges();
             }
         }
 
@@ -178,9 +181,9 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime)SqlDateTime.MinValue
-                                               ? (DateTime)SqlDateTime.MinValue
-                                               : @event.Status.PickupDate;
+                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
+                    ? (DateTime) SqlDateTime.MinValue
+                    : @event.Status.PickupDate;
                 var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
                 if (details == null)
                 {
@@ -188,7 +191,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
                 else
                 {
-                    AutoMapper.Mapper.Map(@event.Status, details);
+                    Mapper.Map(@event.Status, details);
                     context.Save(details);
                 }
 
@@ -207,6 +210,19 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (orderPairingDetail != null)
+                {
+                    context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    context.SaveChanges();
+                }
+            }
+        }
+
         public void Handle(OrderVehiclePositionChanged @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -219,34 +235,17 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderPairedForRideLinqCmtPayment @event)
+        public void Handle(PaymentInformationSet @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderPairingDetail
-                {
-                    OrderId = @event.SourceId,
-                    Medallion = @event.Medallion,
-                    DriverId = @event.DriverId, 
-                    PairingToken = @event.PairingToken,
-                    PairingCode = @event.PairingCode,
-                    TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
-                    AutoTipAmount = @event.AutoTipAmount,
-                    AutoTipPercentage = @event.AutoTipPercentage
-                });
-            }
-        }
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.PaymentInformation.PayWithCreditCard = true;
+                order.PaymentInformation.CreditCardId = @event.CreditCardId;
+                order.PaymentInformation.TipAmount = @event.TipAmount;
+                order.PaymentInformation.TipPercent = @event.TipPercent;
 
-        public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
-                if (orderPairingDetail != null)
-                {
-                    context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
-                    context.SaveChanges();
-                }
+                context.Save(order);
             }
         }
     }

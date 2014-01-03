@@ -1,9 +1,9 @@
 using System;
-using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	[Register ("BottomBar")]
 	public class BottomBar : UIView
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 
-		public override void Draw (System.Drawing.RectangleF rect)
+		public override void Draw (RectangleF rect)
 		{
 			base.Draw (rect);
 
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			fillRectPath.Fill();
 
 			//Stroke
-			UIBezierPath strokePath = new UIBezierPath();
+			var strokePath = new UIBezierPath();
 			strokePath.MoveTo( new PointF( rect.Left, rect.Top ) );
 			strokePath.AddLineTo( new PointF( rect.Right, rect.Top ) );
 			UIColor.Black.ColorWithAlpha( 0.35f ).SetStroke();
@@ -44,12 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		}
 
-		public RectangleF OutsideRect { get; set; }
-
-//		public override bool PointInside (PointF point, UIEvent uievent)
-//		{
-//			return this.Frame.Contains( point) || OutsideRect.Contains( point );
-//		}
+// ReSharper disable once UnusedAutoPropertyAccessor.Local
+		public RectangleF OutsideRect { private get; set; }
 	}
 }
 

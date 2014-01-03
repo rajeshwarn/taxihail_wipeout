@@ -1,32 +1,28 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
-using System.Reflection;
 using System.IO;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments.Authorization;
-using apcurium.MK.Common.Extensions;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
-        private AppSettingsData _data;
+        private readonly AppSettingsData _data;
 
         public AppSettings ()
         {
-            using (var stream = this.GetType().Assembly.GetManifestResourceStream(this.GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
+            using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
-                using (StreamReader reader = new StreamReader(stream)) 
-				{
-                    string serializedData = reader.ReadToEnd ();
-                    _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
-                }
-            }
+			    if (stream != null)
+			        using (var reader = new StreamReader(stream)) 
+			        {
+			            string serializedData = reader.ReadToEnd ();
+			            _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
+			        }
+			}
         }
 
         public bool ErrorLogEnabled {
@@ -48,29 +44,28 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public string ServiceUrl {
             get {
-                string url = "";
+                string url;
                 try {
-                    url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
+                    url = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
                 } catch {
                     return _data.ServiceUrl;
                 }
                 if (string.IsNullOrEmpty (url)) {
                     
                     return _data.ServiceUrl;
-                } else {
-                    return url;
                 }
+                return url;
             }
             set {
                 if (CanChangeServiceUrl) {
-                    TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
+                    TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
 
                     if (string.IsNullOrEmpty (value)) {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
                     } else if (value.ToLower ().StartsWith ("http")) {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
                     } else {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
+                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
                     }
                 }
             }

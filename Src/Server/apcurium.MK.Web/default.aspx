@@ -13,8 +13,8 @@
         <meta name="MobileOptimized" content="320">
         <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
         <meta http-equiv="cleartype" content="on">
-        <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
-        <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
+        <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined.less'/>
+        <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.min.js"></script>
     </head>
     <body>
@@ -42,24 +42,24 @@
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/bundles/resources") %>"></script>
         
         <script type="text/javascript">
-            TaxiHail.parameters.applicationName = "<%: this.ApplicationName %>";
-            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
-            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
-            TaxiHail.parameters.defaultPhoneNumber = '<%: this.DefaultPhoneNumber %>';
-            TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
-            TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
-            TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
-            TaxiHail.parameters.geolocSearchFilter = '<%= this.GeolocSearchFilter%>';
-            TaxiHail.parameters.geolocSearchRegion = '<%= this.GeolocSearchRegion%>';
-            TaxiHail.parameters.geolocSearchBounds = '<%= this.GeolocSearchBounds%>';
-            TaxiHail.parameters.hideDispatchButton = <%: this.HideDispatchButton%>;
-            TaxiHail.parameters.accountActivationDisabled = <%: this.AccountActivationDisabled%>;
-            TaxiHail.parameters.isEstimateEnabled = <%: this.EstimateEnabled %>;
-            TaxiHail.parameters.isEstimateWarningEnabled = <%: this.EstimateWarningEnabled %>;
-            TaxiHail.parameters.isDestinationRequired = <%: this.DestinationIsRequired %>;
-            TaxiHail.parameters.showPassengerNumber = <%: this.ShowPassengerNumber ? "true" : "false"  %>;
-            TaxiHail.parameters.directionTarifMode = "<%: this.DirectionTarifMode %>";
-            TaxiHail.parameters.directionNeedAValidTarif = <%: this.DirectionNeedAValidTarif ? "true" : "false"   %>;
+            TaxiHail.parameters.applicationName = "<%: ApplicationName %>";
+            TaxiHail.parameters.defaultLatitude = <%: DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: DefaultLongitude %>;
+            TaxiHail.parameters.defaultPhoneNumber = '<%: DefaultPhoneNumber %>';
+            TaxiHail.parameters.isLoggedIn = <%: IsAuthenticated ? "true" : "false" %>;
+            TaxiHail.parameters.facebookAppId = '<%: FacebookAppId %>';
+            TaxiHail.parameters.facebookEnabled = <%: FacebookEnabled %>;
+            TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
+            TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
+            TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
+            TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton %>;
+            TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled %>;
+            TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled %>;
+            TaxiHail.parameters.isEstimateWarningEnabled = <%: EstimateWarningEnabled %>;
+            TaxiHail.parameters.isDestinationRequired = <%: DestinationIsRequired %>;
+            TaxiHail.parameters.showPassengerNumber = <%: ShowPassengerNumber ? "true" : "false" %>;
+            TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
+            TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
 
             TaxiHail.referenceData = <%= ReferenceData %>;

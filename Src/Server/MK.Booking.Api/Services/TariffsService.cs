@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.Linq;
 using System.Net;
-using System.Text;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common;
+
+#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TariffsService : RestServiceBase<Tariff>
+    public class TariffsService : Service
     {
         private readonly ICommandBus _commandBus;
         private readonly ITariffDao _dao;
@@ -26,14 +27,12 @@ namespace apcurium.MK.Booking.Api.Services
             _dao = dao;
         }
 
-
-
-        public override object OnGet(Tariff request)
+        public object Get(Tariff request)
         {
             return _dao.GetAll();
         }
 
-        public override object OnPost(Tariff request)
+        public object Post(Tariff request)
         {
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Name == request.Name))
@@ -51,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        public override object OnPut(Tariff request)
+        public object Put(Tariff request)
         {
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name))
@@ -66,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public override object OnDelete(Tariff request)
+        public object Delete(Tariff request)
         {
             var command = new DeleteTariff {CompanyId = AppConstants.CompanyId, TariffId = request.Id};
             _commandBus.Send(command);
@@ -74,5 +73,4 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
     }
-
 }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
+using System;
 using Infrastructure.Messaging;
-using System.ComponentModel.DataAnnotations;
-using apcurium.MK.Common.Extensions;
+
+#endregion
+
 namespace apcurium.MK.Booking.Commands
 {
     public class UpdateAccount : ICommand
@@ -14,10 +14,9 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; set; }
         public Guid AccountId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-
+        public Guid Id { get; set; }
     }
 }

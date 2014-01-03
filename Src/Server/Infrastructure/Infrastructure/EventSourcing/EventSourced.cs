@@ -90,6 +90,10 @@ namespace Infrastructure.EventSourcing
             this.pendingEvents.Add(e);
         }
 
+        /// <summary>
+        /// when not action is required for event when entityt is rehydrated
+        /// </summary>
+        /// <param name="e"></param>
         protected void NoAction(VersionedEvent e)
         {
          

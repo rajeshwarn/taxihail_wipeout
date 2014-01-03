@@ -1,7 +1,6 @@
-using System;
 using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
     public static class UIResponderExtensions
     {

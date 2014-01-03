@@ -1,15 +1,12 @@
 using System;
-using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.Foundation;
-using MonoTouch.CoreGraphics;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class ShadowView : UIView
+    public sealed class ShadowView : UIView
     {
-        
         public ShadowView ()
         {
             Layer.MasksToBounds = false;
@@ -17,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             Layer.ShadowOpacity = 0.5f;
             Layer.ShadowRadius = 1f;
             Layer.ShadowOffset = new SizeF (0f, -1f);
-            
         }
         
         public void Resize ()
@@ -25,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var size = new SizeF (Bounds.Size.Width, 0);
             var curlFactor = 2.0f;
             var shadowDepth = 5.0f;
-            UIBezierPath path = new UIBezierPath ();
+            var path = new UIBezierPath ();
             path.MoveTo (new PointF (-2f, size.Height - 1f));
             path.AddLineTo (new PointF (size.Width + 2f, size.Height - 1f));
             path.AddLineTo (new PointF (size.Width + 2f, size.Height - 1f + shadowDepth));
@@ -50,30 +46,20 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIView _assignedVisibleView;
         private UIView _assignedSlideoutView;
 
-        private bool _wasTouched = false;
+        private bool _wasTouched;
 
         private float _minHeight;
         private float _maxHeight;
-        
-        public StatusBar ()
-        {
-            //Initialize();
-        }
-        
-        public StatusBar (IntPtr handle) : base(  handle )
-        {
-            //Initialize();
-        }
         
         void SetShadow ()
         {
             if (_shadowView == null) {
                 _shadowView = new ShadowView (); 
-                _shadowView.Frame = new RectangleF (0, this.Bounds.Height, this.Bounds.Width, 200);
+                _shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 200);
                 _shadowView.BackgroundColor = UIColor.Clear;
                 AddSubview (_shadowView);
             }
-            _shadowView.Frame = new RectangleF (0, this.Bounds.Height, this.Bounds.Width, 10);
+            _shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 10);
             _shadowView.Resize ();
         }
         
@@ -92,10 +78,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             }
            
-            _visibleView.Frame = new RectangleF (0, this.Bounds.Height - _minHeight, this.Bounds.Width, _minHeight);
+            _visibleView.Frame = new RectangleF (0, Bounds.Height - _minHeight, Bounds.Width, _minHeight);
         }
 
-        private bool _isEnabled{get;set;}
+        private bool _isEnabled;
 
         public bool IsEnabled
         {
@@ -132,10 +118,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _assignedSlideoutView.Frame = new RectangleF(0,0, _slideoutView.Bounds.Width , _slideoutView.Bounds.Height ); 
 
             }
-            var topVisibleView = this.Bounds.Height - _minHeight;
+            var topVisibleView = Bounds.Height - _minHeight;
             var heightSlideOut = _maxHeight - _minHeight;
             
-            _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, this.Bounds.Width, heightSlideOut);
+            _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, Bounds.Width, heightSlideOut);
         }
 
         public void Initialize (UIView visibleView, UIView slidingView)
@@ -176,9 +162,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
-            UITouch t = touches.AnyObject as UITouch;
-            if (t != null && this.IsEnabled) {
-                _initialHeight = this.Bounds.Height;
+            var t = touches.AnyObject as UITouch;
+            if (t != null && IsEnabled) {
+                _initialHeight = Bounds.Height;
                 _startPt = t.LocationInView (this);
                 _lastPoint = _startPt;
                 Console.WriteLine (_startPt.Y);
@@ -192,8 +178,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
-            UITouch t = touches.AnyObject as UITouch;
-            if (t != null && this.IsEnabled) {
+            var t = touches.AnyObject as UITouch;
+            if (t != null && IsEnabled) {
                 var p = t.LocationInView (this);
                 Console.WriteLine (p.Y);
                 var newHeight = _initialHeight + p.Y - _startPt.Y;
@@ -222,17 +208,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Action changeSize = () => 
             {
-                this.Frame = new RectangleF (this.Frame.X, this.Frame.Y, this.Bounds.Width, height);
+                Frame = new RectangleF (Frame.X, Frame.Y, Bounds.Width, height);
                 SetShadow ();
                 SetVisibleView ();
                 SetNeedsDisplay ();
                 SetSlideoutView ();
             };
             if (animate) {
-                UIView.BeginAnimations ("setheight");
-                UIView.SetAnimationDuration (0.5);
+                BeginAnimations ("setheight");
+                SetAnimationDuration (0.5);
                 changeSize ();
-                UIView.CommitAnimations ();
+                CommitAnimations ();
                 
             } else {
                 changeSize ();
@@ -255,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
         
-        public override void Draw (System.Drawing.RectangleF rect)
+        public override void Draw (RectangleF rect)
         {
             
             base.Draw (rect);

@@ -1,14 +1,10 @@
-using System;
 using Cirrious.MvvmCross.Interfaces.IoC;
 using TinyIoC;
 
-namespace MK.Booking.Mobile.Infrastructure.Practices
+namespace apcurium.MK.Booking.Mobile.Mvx
 {
     public class TinyIoCProvider : IMvxIoCProvider
     {
-        public TinyIoCProvider()
-        {
-        }
         #region IMvxIoCProvider implementation
         public bool SupportsService<T>() where T : class
         {
@@ -22,7 +18,7 @@ namespace MK.Booking.Mobile.Infrastructure.Practices
 
         public bool TryGetService<T>(out T service) where T : class
         {
-            return TinyIoCContainer.Current.TryResolve<T>(out service);
+            return TinyIoCContainer.Current.TryResolve(out service);
         }
 
         public void RegisterServiceType<TFrom, TTo>() 

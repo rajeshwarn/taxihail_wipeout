@@ -4,6 +4,8 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -18,16 +20,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel MessageLabel { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton PayButton { get; set; }
+		GradientButton PayButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton RateButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton ReSendConfirmationButton { get; set; }
+		GradientButton ReSendConfirmationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton SendRecieptButton { get; set; }
+		GradientButton SendRecieptButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel TitleLabel { get; set; }

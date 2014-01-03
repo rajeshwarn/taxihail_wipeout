@@ -2,11 +2,9 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
-using Android.Views;
 using Android.Widget;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Style;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -15,29 +13,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     /// </summary>
     public class BindableSelectionButton : Button
     {
-        protected BindableSelectionButton(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+        protected BindableSelectionButton(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(javaReference, transfer)
         {
             Initialize();
-        }
-
-        private void Initialize()
-        {
-            this.Click += delegate
-                              {
-                                  Selected = !Selected;
-                                  if (Selected
-                                      && SelectedChangedCommand != null
-                                      && SelectedChangedCommand.CanExecute())
-                                  {
-                                      SelectedChangedCommand.Execute(this.Tag);
-                                  }
-                              };
-
-            if ( StyleManager.Current.ButtonFontSize.HasValue )
-            {
-                TextSize =  StyleManager.Current.ButtonFontSize.Value;
-            }
-
         }
 
         public BindableSelectionButton(Context context) : base(context)
@@ -50,11 +29,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
-        public BindableSelectionButton(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
+        public BindableSelectionButton(Context context, IAttributeSet attrs, int defStyle)
+            : base(context, attrs, defStyle)
         {
             Initialize();
         }
 
+// ReSharper disable once MemberCanBePrivate.Global
+// ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IMvxCommand SelectedChangedCommand { get; set; }
+
+        private void Initialize()
+        {
+            Click += delegate
+            {
+                Selected = !Selected;
+                if (Selected
+                    && SelectedChangedCommand != null
+                    && SelectedChangedCommand.CanExecute())
+                {
+                    SelectedChangedCommand.Execute(Tag);
+                }
+            };
+
+            if (StyleManager.Current.ButtonFontSize.HasValue)
+            {
+                TextSize = StyleManager.Current.ButtonFontSize.Value;
+            }
+        }
     }
 }

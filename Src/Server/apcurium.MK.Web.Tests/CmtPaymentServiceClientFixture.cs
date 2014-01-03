@@ -1,10 +1,14 @@
-﻿using NUnit.Framework;
-using apcurium.CMT.Web.Tests;
+﻿#region
+
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
+using NUnit.Framework;
+
+#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -15,26 +19,16 @@ namespace apcurium.MK.Web.Tests
         public CmtPaymentServiceClientFixture()
             : base(TestCreditCards.TestCreditCardSetting.Cmt)
         {
-
         }
-
-        private DummyConfigManager DummyConfigManager { get; set; }
-
-        [SetUp]
-        public void Setup()
-        {
-            DummyConfigManager = new DummyConfigManager();
-        }
-
 
         protected override IPaymentServiceClient GetPaymentClient()
         {
             return new CmtPaymentClient(BaseUrl, SessionId, new CmtPaymentSettings(), new Logger(), "Test");
         }
 
-        protected override Common.Enumeration.PaymentProvider GetProvider()
+        protected override PaymentProvider GetProvider()
         {
-            return Common.Enumeration.PaymentProvider.CMT;
+            return PaymentProvider.Cmt;
         }
     }
 }

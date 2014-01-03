@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +9,18 @@ using Infrastructure.Messaging;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 
+#endregion
+
 namespace DatabaseInitializer.Services
 {
-    public class EventsPlayBackService  : IEventsPlayBackService
+    public class EventsPlayBackService : IEventsPlayBackService
     {
         private readonly Func<EventStoreDbContext> _contextFactory;
         private readonly IEventBus _eventBus;
         private readonly ITextSerializer _serializer;
 
-        public EventsPlayBackService(Func<EventStoreDbContext> contextFactory, IEventBus eventBus, ITextSerializer serializer)
+        public EventsPlayBackService(Func<EventStoreDbContext> contextFactory, IEventBus eventBus,
+            ITextSerializer serializer)
         {
             _contextFactory = contextFactory;
             _eventBus = eventBus;
@@ -33,18 +38,17 @@ namespace DatabaseInitializer.Services
         public void ReplayAllEvents()
         {
             IEnumerable<Event> allEvents;
-            using(var context =_contextFactory.Invoke())
+            using (var context = _contextFactory.Invoke())
             {
                 allEvents = context.Set<Event>().OrderBy(x => x.EventDate).ToList();
             }
 
-            if(allEvents.Any())
+            if (allEvents.Any())
             {
                 foreach (var @event in allEvents)
                 {
-                    _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event)) { CorrelationId = @event.CorrelationId });
+                    _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event)) {CorrelationId = @event.CorrelationId});
                 }
-               
             }
         }
 

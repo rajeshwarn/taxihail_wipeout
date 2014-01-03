@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace apcurium.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
     public interface IExtensionPoint
     {
