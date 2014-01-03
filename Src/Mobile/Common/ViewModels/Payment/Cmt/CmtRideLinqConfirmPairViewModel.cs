@@ -1,29 +1,19 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-    public class CmtRideLinqConfirmPairViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
+    public class CmtRideLinqConfirmPairViewModel : BaseViewModel
 	{
-        private readonly IAccountService _accountService;
-        private readonly IPaymentService _paymentService;
         public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
-			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();                        
-            _accountService  = this.GetService<IAccountService>();
-            _paymentService = this.GetService<IPaymentService>();
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
             if (PaymentPreferences.SelectedCreditCard == null)
             {
@@ -51,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = _accountService.CurrentAccount;
+                    var account = this.Services().Account.CurrentAccount;
                     var paymentInformation = new PaymentInformation
                     {
                         CreditCardId = account.DefaultCreditCard,
@@ -91,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile
             FirePropertyChanged(() => CardNumber);
         }
 
-        public bool _isConfirmEnabled = false;
+        private bool _isConfirmEnabled;
         public bool IsConfirmEnabled
         {
             get
@@ -111,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile
 			}
 		}
 
-        public string _cardNumber = "";
+        private string _cardNumber = "";
         public string CardNumber
         {
             get
@@ -120,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile
                 {
                     return _cardNumber;
                 }
-                else return "None";
+                return "None";
             }
         }
 
@@ -129,22 +119,22 @@ namespace apcurium.MK.Booking.Mobile
             get
             {
                 var tipAmount = PaymentPreferences.Tip;
-                return tipAmount.ToString() + "%";                
+                return tipAmount.ToString(CultureInfo.InvariantCulture) + "%";                
             }
         }        
 
-		public IMvxCommand ConfirmPayment
+		public AsyncCommand ConfirmPayment
 		{
 			get {
 				return GetCommand (() =>
 				{                      
                     // MKTAXI-1161 - Change the Pair status with account service
                     // TODO: Get tip in percent
-                    var payment = _paymentService;                    
+                    var payment = this.Services().Payment;                    
                     
                     PairingResponse pairingResponse = payment.Pair(Order.Id, PaymentPreferences.SelectedCreditCard.Token, PaymentPreferences.Tip, 0d);                    
                     
-                    CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
+                    this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
                         
                     RequestNavigate<BookingStatusViewModel>(new
                     {
@@ -155,7 +145,8 @@ namespace apcurium.MK.Booking.Mobile
 			}
 		}
 
-        public IMvxCommand ChangePaymentInfo
+// ReSharper disable once UnusedMember.Global
+        public AsyncCommand ChangePaymentInfo
         {
             get
             {
@@ -176,13 +167,13 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand CancelPayment
+        public AsyncCommand CancelPayment
         {
             get
             {
                 return GetCommand(() =>
                 {
-                    CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), "canceled");
+                    this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), "canceled");
 
                     RequestNavigate<BookingStatusViewModel>(new
                     {

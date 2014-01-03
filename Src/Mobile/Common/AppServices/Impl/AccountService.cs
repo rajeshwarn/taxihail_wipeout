@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Mobile.Data;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
-
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -117,11 +116,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
 #endif
-
-#endif
-
             ClearCache ();
-          
         }
 
         public void RefreshCache (bool reload)

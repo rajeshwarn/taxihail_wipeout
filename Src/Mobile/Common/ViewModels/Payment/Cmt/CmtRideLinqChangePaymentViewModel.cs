@@ -1,33 +1,22 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using System.Linq;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-    public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentDetailsViewModel>, IMvxServiceConsumer<IAccountService>
-	{
-        private readonly IAccountService _accountService;
+    public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentDetailsViewModel>
+    {
         public CmtRideLinqChangePaymentViewModel(string messageId, string order, string orderStatus): base(messageId)
 		{
             Order = order.FromJson<Order>();
-            _accountService  = this.GetService<IAccountService>();
             _paymentPreferences = PaymentPreferences; // Workaround
-
             // TODO: Currently, no saved manual tip amount in the profile. So, always 0.            
             PlaceholderAmount = "0";
 		}
 
-        public string _placeholderAmount { get; set; }
+        private string _placeholderAmount { get; set; }
         public string PlaceholderAmount
         {
             get
@@ -48,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 if (_paymentPreferences == null)
                 {
-                    var account = _accountService.CurrentAccount;
+                    var account = this.Services().Account.CurrentAccount;
                     var paymentInformation = new PaymentInformation
                     {
                         CreditCardId = account.DefaultCreditCard,
@@ -73,11 +62,11 @@ namespace apcurium.MK.Booking.Mobile
             get
             {
                 var tipAmount = PaymentPreferences.Tip;
-                return tipAmount.ToString() + "%";                
+                return tipAmount + "%";                
             }
         }        
 
-        public IMvxCommand SomeCommand
+        public AsyncCommand SomeCommand
         {
             get
             {
@@ -88,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand SomeCancel
+        public AsyncCommand SomeCancel
         {
             get
             {

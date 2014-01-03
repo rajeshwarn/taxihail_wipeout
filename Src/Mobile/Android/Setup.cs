@@ -28,7 +28,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class Setup
+	public class Setup
         : MvxBaseAndroidBindingSetup
     {
         public Setup(Context applicationContext)
@@ -66,8 +66,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IPushNotificationService>(
                 (c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
 
-
+#if SOCIAL_NETWORKS
             InitializeSocialNetwork();
+#endif
         }
 
         protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
@@ -105,9 +106,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
-#else
-        
 #endif
+
 
         protected override MvxApplication CreateApp()
         {
