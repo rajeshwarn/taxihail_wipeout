@@ -84,9 +84,12 @@
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
+    <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\PreAuthorizeAndCommitPaymentBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\CallbackRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\Cmt\PreAuthorizeAndCommitPaymentCmtRequest.cs" />
+    <Compile Include="Requests\Payment\Cmt\UnpairingRidelinqCmtRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\CommitPreauthorizedPaymentBraintreeRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\DeleteTokenizedCreditcardBraintreeRequest.cs" />

@@ -13,6 +13,15 @@ namespace DatabaseInitializer.Sql
 {
     public class DatabaseCreator
     {
+        public void DropDatabase(string connStringMaster, string database)
+        {
+            var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
+
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
+
+            DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
+        }
+
         public bool DatabaseExists(string connStringMaster, string companyName)
         {
             var exists = "SELECT count(*) FROM sys.databases WHERE name = N'" + companyName + "'";

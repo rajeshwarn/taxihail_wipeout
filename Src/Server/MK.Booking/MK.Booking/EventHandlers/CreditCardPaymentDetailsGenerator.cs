@@ -49,8 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
 
-                var order = context.Set<OrderDetail>().Single(o=>o.Id == payment.OrderId );
-
+                var order = context.Set<OrderDetail>().Single(o=>o.Id == payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
                     order.Fare = Convert.ToDouble( payment.Meter );

@@ -405,6 +405,8 @@
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CmtTransactionResendConfirmationButtonText">Resend</string>
+  <string name="CmtRideLinqUnpair">Unpair</string>
+  <string name="View_Payments_ConfirmCmtPairTitle">Confirm payment information</string>
   <string name="TaxiServerDownMessage">Can\'t send message to Taxi</string>
   <string name="NoOrderId">Order Not ready</string>
   <string name="November">Nov (11)</string>
@@ -458,4 +460,13 @@
   <string name="GooglePlayServicesNotAvailableMessage">You need to update Google Play Services in order to use this application.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">The order cannot be created because your account is currently inactive.</string>
   <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
+  <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall">No fare estimate available for the ride.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">The order cannot be created because your account is currently inactive.</string>
+  <string name="CmtCancelPayment">Cancel</string>
+  <string name="CmtCardNumber">Card Number:</string>
+  <string name="CmtCarNumber">Car Number:</string>
+  <string name="CmtChangePaymentInfo">Change Payment Settings</string>
+  <string name="CmtConfirmBookingInfo">Confirm payment information</string>
+  <string name="CmtConfirmPayment">Confirm</string>
+  <string name="CmtTipAmount">Tip Amount:</string>
 </resources>

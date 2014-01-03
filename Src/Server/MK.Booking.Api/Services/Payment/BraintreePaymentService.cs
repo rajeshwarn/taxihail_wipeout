@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         {
                             Number = tokenizeRequest.EncryptedCreditCardNumber,
                             ExpirationDate = tokenizeRequest.EncryptedExpirationDate,
-                            CVV = tokenizeRequest.EncryptedCvv,
+                            CVV = tokenizeRequest.EncryptedCvv
                         }
                 };
 

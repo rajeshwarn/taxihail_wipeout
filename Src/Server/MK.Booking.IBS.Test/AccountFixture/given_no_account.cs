@@ -13,7 +13,7 @@ namespace MK.Booking.IBS.Test.AccountFixture
         {
             this.Sut = new WebAccount3Service
             {
-                Url = "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/IWebAccount3"
+                Url = "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/IWebAccount3"
             };
         }
 

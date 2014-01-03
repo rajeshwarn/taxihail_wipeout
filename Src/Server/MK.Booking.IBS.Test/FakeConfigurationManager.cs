@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 
 namespace MK.Booking.IBS.Test
@@ -13,7 +10,7 @@ namespace MK.Booking.IBS.Test
         readonly Dictionary<string, string> _settings = new Dictionary<string, string>()
         {
             {"IBS.WebServicesPassword", "test"},
-            {"IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/"},            
+            {"IBS.WebServicesUrl", "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/"},            
             {"IBS.WebServicesUserName", "taxi"}
         };
 

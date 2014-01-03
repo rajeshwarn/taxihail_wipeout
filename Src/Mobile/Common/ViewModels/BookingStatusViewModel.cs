@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
             IsCancelButtonVisible = true;			
+            IsPairing = false;
             _waitingToNavigateAfterTimeOut = false;
 			_bookingService = this.GetService<IBookingService>();
 		}
@@ -161,6 +162,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        bool _isUnpairButtonVisible;
+        public bool IsUnpairButtonVisible
+        {
+            get
+            {
+                return _isUnpairButtonVisible;
+            }
+            set
+            {
+                _isUnpairButtonVisible = value;
+                FirePropertyChanged(() => IsUnpairButtonVisible);
+            }
+        }
+
         private string _confirmationNoTxt;
 		public string ConfirmationNoTxt {
 			get {
@@ -190,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool IsCallButtonVisible {
             get { return !bool.Parse (Config.GetSetting ("Client.HideCallDispatchButton")); }
 		}
-
+        
 		public bool VehicleDriverHidden
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
@@ -318,6 +333,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 		        
 		string vehicleNumber = null;
+        private bool IsPairing = false;
         private void RefreshStatus ()
         {
             try {
@@ -339,7 +355,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
-#endif
+#endif                                
                 IsPayButtonVisible = false;
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
@@ -347,12 +363,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap ();
 
-					UpdatePayCancelButtons(status.IBSStatusId);
+                    // TODO: Put the good timing / condition for Pair navigation
+
+                    var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+                    var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
+                    
+                    if (isLoaded && !isPaired && !IsPairing)
+                    {
+                        IsPairing = true;
+                        GoToCmtPairScreen();                        
+                    }
+                    
+                    UpdatePayCancelButtons(status.IBSStatusId);
 
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
 						ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IBSOrderId.Value+"");
                     }
-
+                    
                     if (isDone) 
 					{
 						GoToSummary();
@@ -373,9 +400,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var setting = ConfigurationManager.GetPaymentSettings ();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
+            //bool IsCmtRideLinqEnabled = setting.PaymentMode == PaymentMethod.RideLinqCmt;
+            bool IsCmtRideLinqEnabled = true;
+
+            //var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
+            var isPaired = false;
+          
+            IsUnpairButtonVisible = IsCmtRideLinqEnabled && isPaired;
+
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded) 
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)
+                                && (!IsCmtRideLinqEnabled);
 			
             IsCancelButtonVisible = statusId == null ||
                                     statusId == VehicleStatuses.Common.Assigned 
@@ -394,6 +430,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}.ToStringDictionary());
 			RequestClose (this);
 		}
+
+        public void GoToCmtPairScreen()
+        {
+            RequestNavigate<ConfirmCmtPairingViewModel>(new
+            {
+                order = Order.ToJson(),
+                orderStatus = OrderStatusDetail.ToJson()
+            }.ToStringDictionary());
+            RequestClose(this);
+        }
+
 
         public void GoToBookingScreen(){
             if (!_waitingToNavigateAfterTimeOut)
@@ -529,6 +576,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-		#endregion
+
+
+       public IMvxCommand Unpair
+       {
+           get
+           {
+               return GetCommand(() =>
+               {
+                   // Use the server setting
+               });
+           }
+       }
+	    #endregion
     }
 }

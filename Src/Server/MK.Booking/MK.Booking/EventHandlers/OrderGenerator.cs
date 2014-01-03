@@ -19,7 +19,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderRated>,
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderVehiclePositionChanged>
+        IEventHandler<OrderVehiclePositionChanged>,
+        IEventHandler<OrderPairedForRideLinqCmtPayment>,
+        IEventHandler<OrderUnpairedForRideLinqCmtPayment>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -214,6 +216,37 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.VehicleLongitude = @event.Longitude;
 
                 context.Save(order);
+            }
+        }
+
+        public void Handle(OrderPairedForRideLinqCmtPayment @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new OrderPairingDetail
+                {
+                    OrderId = @event.SourceId,
+                    Medallion = @event.Medallion,
+                    DriverId = @event.DriverId, 
+                    PairingToken = @event.PairingToken,
+                    PairingCode = @event.PairingCode,
+                    TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                    AutoTipAmount = @event.AutoTipAmount,
+                    AutoTipPercentage = @event.AutoTipPercentage
+                });
+            }
+        }
+
+        public void Handle(OrderUnpairedForRideLinqCmtPayment @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderPairingDetail = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (orderPairingDetail != null)
+                {
+                    context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
+                    context.SaveChanges();
+                }
             }
         }
     }
