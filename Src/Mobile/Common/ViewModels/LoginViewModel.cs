@@ -52,8 +52,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+        public LoginViewModel(IFacebookService facebookService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
         {
+            _facebookService = facebookService;
             _applicationInfoService = applicationInfoService;
 			_accountService = accountService;		
             _pushService = pushService;
@@ -238,7 +239,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             if (facebookId.HasValue())
                             {
-                                account = service.GetFacebookAccount(facebookId);
+                                var task = service.GetFacebookAccount(facebookId);
+                                task.Wait();
+                                account = task.Result;
                             }
                             else
                             {
@@ -271,25 +274,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		#if SOCIAL_NETWORKS
-
-        public IMvxCommand LoginFacebook
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                {
-                    if (_facebookService.IsConnected)
-                    {
-                        CheckFacebookAccount();
-                    }
-                    else
-                    {
-                        _facebookService.Connect("email");
-
-                    }
-                });
-            }
-        }
 
 		public IMvxCommand LoginTwitter
 		{
@@ -408,6 +392,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 #endif
 
+        public IMvxCommand LoginFacebook
+        {
+            get
+            {
+                return base
+                        .GetCommand(
+                            () => _facebookService.Connect("email"),
+                            () => true);
+            }
+        }
+
         public void SetServerUrl(string serverUrl)
         {
             TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
@@ -432,52 +427,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public async void OnFacebookLoginSucessful(string accessToken)
+		public void OnFacebookLoginSucessful(string accessToken)
 		{
-			var userInfo = _facebookService.GetUserInfo(accessToken);
-
-
+			CheckFacebookAccount(accessToken);
 		}
 
-		private void CheckFacebookAccount(string accessToken)
+		private async void CheckFacebookAccount(string accessToken)
 		{
-			MessageService.ShowProgress(true);
+			using (MessageService.ShowProgress())
+			{
+				var info = await _facebookService.GetUserInfo(accessToken);
 
-			_facebookService.GetUserInfos(info =>
+				var data = new RegisterAccount();
+				data.FacebookId = info.Id;
+				data.Email = info.Email;
+				data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+
+				var account = await _accountService.GetFacebookAccount(data.FacebookId);
+				if (account == null)
 				{
-					var data = new RegisterAccount();
-					data.FacebookId = info.Id;
-					data.Email = info.Email;
-					data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-
-					try
-					{
-						var account = _accountService.GetFacebookAccount(data.FacebookId);
-						if (account == null)
-						{
-							DoSignUp(data);
-						}
-						else
-						{                                
-							Task.Factory.SafeStartNew(() =>
-								{
-									try
-									{
-										LoginSucess();
-									}
-									finally
-									{
-									}
-								});
-						}
-					}
-					finally
-					{
-						MessageService.ShowProgress(false);
-					}
-
-				}, () => MessageService.ShowProgress(false) );
-
+					DoSignUp(data);
+				}
+				else
+				{
+					LoginSucess();
+				}
+			}
 
 		}
 

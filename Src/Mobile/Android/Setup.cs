@@ -114,7 +114,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 #else
-		partial void InitializeSocialNetwork();
+		public void InitializeSocialNetwork()
+		{
+			TinyIoCContainer.Current.Register<IFacebookService>((c,p) => new FacebookService(c.Resolve<IAppSettings>().FacebookAppId, LoginActivity.TopInstance));
+		}
 #endif
         
         protected override MvxApplication CreateApp()

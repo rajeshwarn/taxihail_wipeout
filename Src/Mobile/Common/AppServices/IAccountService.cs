@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account GetAccount(string email, string password);
         
-        Account GetFacebookAccount(string facebookId);
+		Task<Account> GetFacebookAccount(string facebookId);
         
         Account GetTwitterAccount(string twitterId);
         

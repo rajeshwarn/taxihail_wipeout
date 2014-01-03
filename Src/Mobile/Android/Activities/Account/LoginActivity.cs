@@ -39,8 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
         public static LoginActivity TopInstance{get;set;}
 
-		FacebookService _facebookService;
-
         private ProgressDialog _progressDialog;
 
 #if SOCIAL_NETWORKS
@@ -72,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 				case Result.Ok:
 
 					var accessToken = data.GetStringExtra("AccessToken");
-					ViewModel.OnFacebookLoginSucessfull(accessToken);
+                    ViewModel.OnFacebookLoginSucessful(accessToken);
 					break;
 				case Result.Canceled:
 					string error = data.GetStringExtra ("Exception");
@@ -81,8 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 				default:
 					break;
 			}
-
-			_facebookService.GetUserInfo(requestCode, resultCode, data);
 		}
 
 		public LoginActivity ()
@@ -98,8 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         protected override void OnViewModelSet()
         {            
-			this._facebookService = new FacebookService("134284363380764", this);
-
             SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
@@ -108,13 +102,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
 			{
 				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
-			}
-			else
-			{
-				FindViewById<Button>(Resource.Id.FacebookButton).Click += (object sender, EventArgs e) => {
-					_facebookService.Connect("email");
-				};
-
 			}
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)

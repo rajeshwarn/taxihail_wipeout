@@ -350,7 +350,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <XamarinComponentReference Include="facebook-sdk">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>6.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
