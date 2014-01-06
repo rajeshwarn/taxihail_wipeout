@@ -20,7 +20,7 @@
             "sendpushnotification": "sendPushNotification",
             
             /* settings */
-            "settings" : "manageCompanySettings",
+            "settings": "manageCompanySettings",
 
             /* paymentSettings */
             "paymentSettings": "managePaymentSettings",
@@ -45,8 +45,8 @@
             "exclusions": "manageIBSExclusions",
 
             /*Export*/
-            "exportaccounts": "exportaccounts",
-            "exportorders": "exportorders"
+            "exportaccounts": "exportAccounts",
+            "exportorders": "exportOrders"
         },
 
         initialize: function (options) {
@@ -159,11 +159,12 @@
             action(TaxiHail.ExclusionsController, 'index');
         },
 
-        exportaccounts: function () {
-           
+        exportAccounts: function () {
+            action(TaxiHail.ExportController, 'exportAccounts');
         },
-        exportorders: function () {
-            
+
+        exportOrders: function () {
+            action(TaxiHail.ExportController, 'exportOrders');
         }
     });
 

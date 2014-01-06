@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                     break;
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
-                    return orders.Select(x =>
+                    //return
+                    var testResult = orders.Where(x => x.CreatedDate != null).Select(x =>
                         {
                             var operatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
                             var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.ToSafeString();
@@ -125,6 +126,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             return excelResult;
 
                         }).ToList();
+
+
+                    return testResult;
+
                     break;
             }
             return new HttpResult(HttpStatusCode.NotFound);

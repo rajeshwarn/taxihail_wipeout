@@ -44,6 +44,9 @@
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
+<PropertyGroup>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+</PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -123,7 +126,8 @@
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCmtPairingActivity.cs" />
+    <Compile Include="Activities\Book\CmtRideLinqChangePaymentActivity.cs" />
+    <Compile Include="Activities\Book\CmtRideLinqConfirmPairActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -415,9 +419,6 @@
     <AndroidResource Include="Resources\Layout\View_LocationList.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Values\String.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
     <AndroidResource Include="Resources\Layout\ListItemAutoComplete.axml">
@@ -634,6 +635,7 @@
     <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
+    <AndroidResource Include="Resources\Values\String.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -745,5 +747,11 @@
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCmtPair.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
   </ItemGroup>
 </Project>

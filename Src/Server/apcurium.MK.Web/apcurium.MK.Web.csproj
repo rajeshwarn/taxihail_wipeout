@@ -195,6 +195,7 @@
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\ExportController.js" />
     <Content Include="admin\controllers\PaymentSettingsController.js" />
     <Content Include="admin\controllers\RulesController.js" />
     <Content Include="admin\controllers\DefaultAddressesController.js" />
@@ -219,6 +220,7 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\ExportOrdersOrAccountsView.js" />
     <Content Include="admin\views\ManagePaymentSettingsView.js" />
     <Content Include="admin\views\RuleItemView.js" />
     <Content Include="admin\views\ManageRulesView.js" />
@@ -540,7 +542,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\ManageRules.json" />
-    <Content Include="admin\templates\EditRule.handlebars" />
+    <Content Include="admin\templates\EditRule.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\localization\EditRule.json" />
     <Content Include="themes\CasinoTaxi\less\combined-responsive.less" />
     <Content Include="themes\CasinoTaxi\less\combined.less" />
@@ -693,6 +697,9 @@
     <Content Include="themes\TaxiHailNYC\less\combined.less" />
     <Content Include="themes\TaxiHailNYC\less\style.less" />
     <Content Include="themes\TaxiHailNYC\less\variables.less" />
+    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
