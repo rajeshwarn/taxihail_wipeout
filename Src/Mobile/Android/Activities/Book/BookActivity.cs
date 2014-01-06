@@ -210,7 +210,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.ClearAnimation();
-            mainLayout.DrawingCacheEnabled = true;
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
 
