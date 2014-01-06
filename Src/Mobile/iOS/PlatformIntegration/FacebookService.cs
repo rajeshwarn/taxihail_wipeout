@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using MonoTouch.Foundation;
 using System.Threading.Tasks;
@@ -45,9 +46,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
-		public override Task<FacebookUserInfo> GetUserInfo(string accessToken)
+		public override Task<FacebookUserInfo> GetUserInfo()
 		{
-			throw new NotImplementedException();
+			var tcs = new TaskCompletionSource<FacebookUserInfo>();
+			FBRequestConnection.StartForMe((connection, result, error) =>
+			{
+					if(error == null)
+					{
+						var graph = (FBGraphObject)result;
+						tcs.TrySetResult(FacebookUserInfo.CreateFrom(graph));
+					}
+					else
+					{
+						tcs.SetException(new NSErrorException(error));
+					}
+			});
+			return tcs.Task;
 		}
 
     }

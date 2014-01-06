@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public class FacebookUserInfo
+	public partial class FacebookUserInfo
     {
 		public string Id { get; private set; }
 		public string Firstname { get; private set; }
@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile
 		public string Email { get; private set; }
 		public string Gender { get; private set; }
 
-		internal static FacebookUserInfo CreateFrom(IDictionary<string, object> data)
+		public static FacebookUserInfo CreateFrom(IDictionary<string, object> data)
 		{
 			return new FacebookUserInfo
 			{

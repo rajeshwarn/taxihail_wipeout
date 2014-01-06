@@ -65,12 +65,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
+			var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookService;
 
 			switch (resultCode) {
 				case Result.Ok:
 
 					var accessToken = data.GetStringExtra("AccessToken");
-                    ViewModel.OnFacebookLoginSucessful(accessToken);
+					facebookService.SaveAccessToken(accessToken);
 					break;
 				case Result.Canceled:
 					string error = data.GetStringExtra ("Exception");

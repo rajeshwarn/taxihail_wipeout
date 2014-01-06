@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_facebookService
 				.GetAndObserveSessionStatus()
 				.Where(connected => connected)
-				.Subscribe(_ => OnFacebookLoginSucessful(""))
+				.Subscribe(_ => CheckFacebookAccount())
 				.DisposeWith(_subscriptions);
 		}
 
@@ -448,16 +448,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public void OnFacebookLoginSucessful(string accessToken)
-		{
-			CheckFacebookAccount(accessToken);
-		}
-
-		private async void CheckFacebookAccount(string accessToken)
+		private async void CheckFacebookAccount()
 		{
 			using (MessageService.ShowProgress())
 			{
-				var info = await _facebookService.GetUserInfo(accessToken);
+				var info = await _facebookService.GetUserInfo();
 
 				var data = new RegisterAccount();
 				data.FacebookId = info.Id;

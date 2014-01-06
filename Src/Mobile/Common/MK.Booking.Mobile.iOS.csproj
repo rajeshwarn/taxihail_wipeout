@@ -301,6 +301,9 @@
     <Compile Include="AppServices\IFacebookService.cs" />
     <Compile Include="AppServices\Impl\FacebookServiceBase.cs" />
     <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Impl\FacebookUserInfo.iOS.cs">
+      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
