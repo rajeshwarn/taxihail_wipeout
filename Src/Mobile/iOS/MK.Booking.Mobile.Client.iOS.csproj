@@ -488,6 +488,10 @@
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs">
+      <DependentUpon>CmtRideLinqConfirmPairView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -559,6 +563,7 @@
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

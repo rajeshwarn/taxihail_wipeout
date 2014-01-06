@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public void RefreshCreditCards()
         {
-            var selectedCard = PaymentPreferences.SelectedCreditCard;
+			var selectedCard = PaymentPreferences.SelectedCreditCard;
             
             if (selectedCard != null)
             {

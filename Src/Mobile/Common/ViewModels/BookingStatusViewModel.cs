@@ -343,13 +343,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var hasSeen = CacheService.Get<string>("OrderReminderWasSeen." + orderId.ToString());
             return !string.IsNullOrEmpty(hasSeen);
         }
+
         private void SetHasSeenReminderPrompt(Guid orderId)
         {
             CacheService.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());
         }
 
-
-
+		private bool IsCmtRideLinqEnabled { get { return ConfigurationManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
 
         private void AddReminder(OrderStatusDetail status)
         {
@@ -406,18 +406,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap();
 
-                    var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-                    var isPaired = (_bookingService.IsPaired(Order.Id) == true) ? true : false;
-                    var pairState = CacheService.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
-                    var isPairBypass = (pairState == "failed") || (pairState == "canceled") || (pairState == "unpaired");
-                    var IsCmtRideLinqEnabled = (setting.PaymentMode == PaymentMethod.RideLinqCmt);
+					if(IsCmtRideLinqEnabled && AccountService.CurrentAccount.DefaultCreditCard != null)
+					{
+						var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+						var isPaired = (_bookingService.IsPaired(Order.Id) == true) ? true : false;
+						var pairState = CacheService.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
+						var isPairBypass = (pairState == "failed") || (pairState == "canceled") || (pairState == "unpaired");
 
-                    if (isLoaded && !isPaired && !IsCurrentlyPairing && !isPairBypass)
-                    {
-                        IsCurrentlyPairing = true;
-                        GoToCmtPairScreen();
-                        return;
-                    }
+						if (isLoaded && !isPaired && !IsCurrentlyPairing && !isPairBypass)
+						{
+							IsCurrentlyPairing = true;
+							GoToCmtPairScreen();
+							return;
+						}
+					}
 
                     UpdatePayCancelButtons(status.IBSStatusId);
 
@@ -448,18 +450,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var setting = ConfigurationManager.GetPaymentSettings();
             var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 
-            //bool IsCmtRideLinqEnabled = setting.PaymentMode == PaymentMethod.RideLinqCmt;
-            bool IsCmtRideLinqEnabled = true;
-
-            //var isPaired = _bookingService.IsPaired(Order.Id) == true ? true : false;
-            var isPaired = false;
+            var isPaired = _bookingService.IsPaired(Order.Id);
 
             IsUnpairButtonVisible = IsCmtRideLinqEnabled && isPaired;
 
             IsPayButtonVisible = (statusId == VehicleStatuses.Common.Done
                                 || statusId == VehicleStatuses.Common.Loaded)
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)
-                                && (!IsCmtRideLinqEnabled);
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
 
             IsCancelButtonVisible = statusId == null ||
                                     statusId == VehicleStatuses.Common.Assigned
@@ -595,18 +592,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 #if DEBUG
 #else
-                        if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
-                            MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
-                            return;
-                       }
+					if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
+						MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
+						return;
+					}
 #endif
 
-                    RequestNavigate<ConfirmCarNumberViewModel>(
-                    new
-                    {
-                        order = Order.ToJson(),
-                        orderStatus = OrderStatusDetail.ToJson()
-                    }, false, MvxRequestedBy.UserAction);
+					if(IsCmtRideLinqEnabled)
+					{
+						GoToCmtPairScreen();
+					}
+					else
+					{
+						RequestNavigate<ConfirmCarNumberViewModel>(
+							new
+							{
+								order = Order.ToJson(),
+								orderStatus = OrderStatusDetail.ToJson()
+							}, false, MvxRequestedBy.UserAction);
+					}
                 });
             }
         }
