@@ -58,25 +58,6 @@
                 android:background="@color/transparent">
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Green"
-                    android:id="@+id/CancelSettingsButton"
-                    style="@style/ButtonText"
-                    android:background="@drawable/green_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:layout_weight="0.33"
-                    android:singleLine="true"
-                    android:lines="1"
-                    android:text="@string/CmtRideLinqCancelChanges"
-                    local:MvxBind="{'Click': {'Path': 'CancelCommand'}}" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="15dip"
-                android:background="@color/transparent">
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
                     android:id="@+id/SaveSettingsButton"
                     style="@style/ButtonText"
                     android:background="@drawable/green_button"
@@ -87,6 +68,25 @@
                     android:lines="1"
                     android:text="@string/CmtRideLinqSaveChanges"
                     local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="15dip"
+                    android:background="@color/transparent">
+                    <apcurium.mk.booking.mobile.client.controls.StyledButton
+                        local:ButtonStyle="Green"
+                        android:id="@+id/CancelSettingsButton"
+                        style="@style/ButtonText"
+                        android:background="@drawable/red_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dip"
+                        android:layout_weight="0.33"
+                        android:singleLine="true"
+                        android:lines="1"
+                        android:text="@string/CmtRideLinqCancelChanges"
+                        local:MvxBind="{'Click': {'Path': 'CancelCommand'}}" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
