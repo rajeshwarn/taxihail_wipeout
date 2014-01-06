@@ -94,23 +94,6 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
-            android:orientation="horizontal">
-            <apcurium.mk.booking.mobile.client.controls.TipSlider
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/tipSlider"
-                local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}"
-                android:layout_marginBottom="4.0dp"
-                android:layout_marginRight="-10dp"
-                android:layout_marginLeft="-10dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
             android:layout_height="100dip"
             android:padding="10dp"
             android:orientation="vertical"

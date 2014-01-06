@@ -1440,6 +1440,12 @@
   <data name="CmtRideLinqUnpair" xml:space="preserve">
     <value>Unpair</value>
   </data>
+  <data name="CmtRideLinqCancelChanges" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CmtRideLinqSaveChanges" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="CmtTipAmount" xml:space="preserve">
     <value>Tip Amount:</value>
   </data>

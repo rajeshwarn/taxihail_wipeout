@@ -195,3 +195,4 @@ namespace apcurium.MK.Booking.Mobile
 	}
 }
 
+>>>>>>> theirs

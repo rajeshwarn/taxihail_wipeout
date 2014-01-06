@@ -14,88 +14,64 @@ using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentDetailsViewModel>, IMvxServiceConsumer<IAccountService>
+	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>, IMvxServiceConsumer<IAccountService>
 	{
         private readonly IAccountService _accountService;
         public CmtRideLinqChangePaymentViewModel(string messageId, string order, string orderStatus): base(messageId)
 		{
-            Order = order.FromJson<Order>();
-            _accountService  = this.GetService<IAccountService>();
-            _paymentPreferences = PaymentPreferences; // Workaround
+			_accountService  = this.GetService<IAccountService>();
 
-            // TODO: Currently, no saved manual tip amount in the profile. So, always 0.            
-            PlaceholderAmount = "0";
+			var account = AccountService.CurrentAccount;
+			var paymentInformation = new PaymentInformation
+			{
+				CreditCardId = account.DefaultCreditCard,
+				TipPercent = account.DefaultTipPercent,
+			};
+
+
+			DefaultPaymentInformations = PaymentInformations = paymentInformation;
+			PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+			PaymentPreferences.SelectedCreditCardId = (Guid)account.DefaultCreditCard;
+			PaymentPreferences.LoadCreditCards();
 		}
 
-        public string _placeholderAmount { get; set; }
-        public string PlaceholderAmount
-        {
-            get
-            {                
-                return _placeholderAmount;
-            }
+		public PaymentInformation PaymentInformations { get; set ; }
 
-            set
-            {
-                _placeholderAmount = value;
-            }
-        }
+		public PaymentInformation DefaultPaymentInformations { get; set ; }
 
-        private PaymentDetailsViewModel _paymentPreferences;
-        public PaymentDetailsViewModel PaymentPreferences
+		public PaymentDetailsViewModel PaymentPreferences
+		{
+			get;
+			private set;
+		}
+
+		public IMvxCommand CancelCommand
         {
             get
             {
-                if (_paymentPreferences == null)
-                {
-                    var account = _accountService.CurrentAccount;
-                    var paymentInformation = new PaymentInformation
-                    {
-                        CreditCardId = account.DefaultCreditCard,
-                        TipPercent = account.DefaultTipPercent,
-                    };
-
-                    _paymentPreferences.Tip = (int)account.DefaultTipPercent;                    
-                    _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-                    _paymentPreferences.SelectedCreditCardId = (Guid)account.DefaultCreditCard;
-                    _paymentPreferences.LoadCreditCards();
-
-                }
-                return _paymentPreferences;
+				return GetCommand(() =>
+				{
+					ReturnResult(new PaymentInformation
+					{
+						CreditCardId = DefaultPaymentInformations.CreditCardId,
+						TipPercent = DefaultPaymentInformations.TipPercent,
+					});
+				});
             }
         }
 
-		Order Order { get; set; }
-		OrderStatusDetail OrderStatus { get; set; }
-
-        public string TipAmountInPercent
+		public IMvxCommand SaveCommand
         {
             get
             {
-                var tipAmount = PaymentPreferences.Tip;
-                return tipAmount.ToString() + "%";                
-            }
-        }        
-
-        public IMvxCommand SomeCommand
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    
-                });
-            }
-        }
-
-        public IMvxCommand SomeCancel
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    // Return original values
-                });
+				return GetCommand(() =>
+				{
+					ReturnResult(new PaymentInformation
+					{
+						CreditCardId = PaymentPreferences.SelectedCreditCardId,
+						TipPercent = PaymentPreferences.Tip,
+					});
+				});
             }
         }
 	}
