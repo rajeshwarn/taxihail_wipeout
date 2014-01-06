@@ -60,7 +60,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 			base.OnCreate(bundle);
 			_touchMap.OnCreate(bundle);
-			_touchMap.SetMapReady();
+
+            _touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutOberverForMap(_touchMap));
+			
+        }
+
+        public class LayoutOberverForMap : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+        {
+            private readonly TouchMap _touchMap;
+
+            public LayoutOberverForMap(TouchMap touchMap)
+            {
+                _touchMap = touchMap;
+            }
+
+            public void OnGlobalLayout()
+            {
+                _touchMap.SetMapReady();
+            }
         }
 
         protected override void OnViewModelSet()
