@@ -13,7 +13,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 	partial class CmtRideLinqConfirmPairView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnCancel { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnChangePaymentSettings { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnConfirm { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardNumber { get; set; }
@@ -35,9 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblCarNumber != null) {
-				lblCarNumber.Dispose ();
-				lblCarNumber = null;
+			if (btnChangePaymentSettings != null) {
+				btnChangePaymentSettings.Dispose ();
+				btnChangePaymentSettings = null;
 			}
 
 			if (lblCardNumber != null) {
@@ -45,9 +51,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblCardNumber = null;
 			}
 
-			if (lblTip != null) {
-				lblTip.Dispose ();
-				lblTip = null;
+			if (lblCardNumberValue != null) {
+				lblCardNumberValue.Dispose ();
+				lblCardNumberValue = null;
+			}
+
+			if (lblCarNumber != null) {
+				lblCarNumber.Dispose ();
+				lblCarNumber = null;
 			}
 
 			if (lblCarNumberValue != null) {
@@ -55,9 +66,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblCarNumberValue = null;
 			}
 
-			if (lblCardNumberValue != null) {
-				lblCardNumberValue.Dispose ();
-				lblCardNumberValue = null;
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
 			}
 
 			if (lblTipValue != null) {
@@ -65,9 +76,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblTipValue = null;
 			}
 
-			if (btnChangePaymentSettings != null) {
-				btnChangePaymentSettings.Dispose ();
-				btnChangePaymentSettings = null;
+			if (btnConfirm != null) {
+				btnConfirm.Dispose ();
+				btnConfirm = null;
+			}
+
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
 			}
 		}
 	}

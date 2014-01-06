@@ -425,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_applicationInfoService = null;     
 
-            RequestNavigate<BookViewModel>(true);
+			RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);

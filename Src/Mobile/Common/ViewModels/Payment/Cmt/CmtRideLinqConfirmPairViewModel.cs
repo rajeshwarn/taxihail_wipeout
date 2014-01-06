@@ -16,93 +16,37 @@ namespace apcurium.MK.Booking.Mobile
 {
 	public class CmtRideLinqConfirmPairViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
 	{
-		private readonly IAccountService _accountService;
-		private readonly IPaymentService _paymentService;
 		public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
-			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();                        
-			_accountService  = this.GetService<IAccountService>();
-			_paymentService = this.GetService<IPaymentService>();
-
-			if (PaymentPreferences.SelectedCreditCard == null)
-			{
-				RequestSubNavigate<CreditCardsListViewModel, Guid>(
-					null, result =>
-					{
-						if (result != default(Guid))
-						{
-							PaymentPreferences.SelectedCreditCardId = result;
-							PaymentPreferences.LoadCreditCards();
-							RefreshCreditCards();
-						}
-					});
-			}
-			else
-			{
-				RefreshCreditCards();
-			}
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
+			_paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), new PaymentInformation
+				{
+					CreditCardId = AccountService.CurrentAccount.DefaultCreditCard,
+					TipPercent = AccountService.CurrentAccount.DefaultTipPercent,
+				});
+			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
 		}
 
 		private PaymentDetailsViewModel _paymentPreferences;
-		public PaymentDetailsViewModel PaymentPreferences
-		{
-			get
-			{
-				if (_paymentPreferences == null)
-				{
-					var account = _accountService.CurrentAccount;
-					var paymentInformation = new PaymentInformation
-					{
-						CreditCardId = account.DefaultCreditCard,
-						TipPercent = account.DefaultTipPercent,
-					};
-
-					_paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-				}
-				return _paymentPreferences;
-			}
-
-			set
-			{
-				_paymentPreferences = value;
-			}
-		}
 
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus { get; set; }
 
 		public void RefreshCreditCards()
 		{
-			var selectedCard = PaymentPreferences.SelectedCreditCard;
+			var selectedCard = _paymentPreferences.SelectedCreditCard;
 
 			if (selectedCard != null)
 			{
-				IsConfirmEnabled = true;
 				_cardNumber = selectedCard.CreditCardCompany + " " + selectedCard.Last4Digits;
 			}
 			else
 			{
-				IsConfirmEnabled = false;
 				_cardNumber = "";
 			}
 
-			FirePropertyChanged(() => IsConfirmEnabled);
 			FirePropertyChanged(() => CardNumber);
-		}
-
-		public bool _isConfirmEnabled = false;
-		public bool IsConfirmEnabled
-		{
-			get
-			{
-				return _isConfirmEnabled;
-			}   
-
-			set
-			{
-				_isConfirmEnabled = value;
-			}
 		}
 
 		public string CarNumber{
@@ -128,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			get
 			{
-				var tipAmount = PaymentPreferences.Tip;
+				var tipAmount = _paymentPreferences.Tip;
 				return tipAmount.ToString() + "%";                
 			}
 		}        
@@ -138,11 +82,17 @@ namespace apcurium.MK.Booking.Mobile
 			get {
 				return GetCommand (() =>
 					{                      
-						// MKTAXI-1161 - Change the Pair status with account service
-						// TODO: Get tip in percent
-						var payment = _paymentService;                    
+						if (_paymentPreferences.SelectedCreditCard == null)
+						{
+							MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+							return;
+						}
 
-						PairingResponse pairingResponse = payment.Pair(Order.Id, PaymentPreferences.SelectedCreditCard.Token, PaymentPreferences.Tip, 0d);                    
+						// TODO: Get tip in percent or amount, the value not used must be null
+						var tipPercent = _paymentPreferences.Tip;
+						var tipAmount = default(double?);
+
+						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, tipPercent, tipAmount);                    
 
 						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
 
@@ -150,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile
 							{
 								order = Order.ToJson(),
 								orderStatus = OrderStatus.ToJson()
-							});                   
+							});    
+						RequestClose(this);
 					});
 			}
 		}
@@ -164,12 +115,15 @@ namespace apcurium.MK.Booking.Mobile
 						RequestSubNavigate<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
 							new
 							{
-								order = Order.ToJson(),
-								orderStatus = OrderStatus.ToJson(),
+								currentPaymentInformation = new PaymentInformation
+								{
+									CreditCardId = _paymentPreferences.SelectedCreditCardId,
+									TipPercent = _paymentPreferences.Tip,
+								}.ToJson()
 							}.ToStringDictionary(), result =>
 							{                                                
-								PaymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
-								PaymentPreferences.Tip = (int)result.TipPercent;
+								_paymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
+								_paymentPreferences.Tip = (int)result.TipPercent;
 								FirePropertyChanged(() => TipAmountInPercent);
 								RefreshCreditCards();
 							});

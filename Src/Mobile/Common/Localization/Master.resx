@@ -1453,7 +1453,7 @@
     <value>Confirm payment information</value>
   </data>
   <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
-    <value>Change payment information</value>
+    <value>Change payment info</value>
   </data>  
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>

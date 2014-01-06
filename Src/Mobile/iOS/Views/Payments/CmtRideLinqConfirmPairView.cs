@@ -26,27 +26,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			NavigationController.NavigationBar.Hidden = false;
 			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-			var cancelButton = new MonoTouch.UIKit.UIBarButtonItem(Resources.GetValue("CmtCancelPayment"), UIBarButtonItemStyle.Plain, delegate {
-				ViewModel.CancelPayment.Execute();
-			});
-
-			var confirmButton = new MonoTouch.UIKit.UIBarButtonItem(Resources.GetValue("CmtConfirmPayment"), UIBarButtonItemStyle.Plain, delegate {
-				ViewModel.ConfirmPayment.Execute();
-			});
-
 			NavigationItem.HidesBackButton = true;
-			NavigationItem.LeftBarButtonItem = cancelButton;
-			NavigationItem.RightBarButtonItem = confirmButton;
 			NavigationItem.Title = Resources.GetValue("CmtConfirmBookingInfo");
 
 			lblCarNumber.Text= Resources.GetValue("CmtCarNumber");
 			lblCardNumber.Text= Resources.GetValue("CmtCardNumber");
 			lblTip.Text= Resources.GetValue("CmtTipAmount");
 
+			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.GetValue("CmtConfirmPayment"), AppStyle.ButtonColor.Green );
 			AppButtons.FormatStandardButton((GradientButton)btnChangePaymentSettings, Resources.GetValue("CmtChangePaymentInfo"), AppStyle.ButtonColor.Silver );
+			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.GetValue("CmtCancelPayment"), AppStyle.ButtonColor.Red );
 
 			this.AddBindings(new Dictionary<object, string>{
+				{ btnConfirm, new B("TouchUpInside","ConfirmPayment") }, 
 				{ btnChangePaymentSettings, new B("TouchUpInside","ChangePaymentInfo") }, 
+				{ btnCancel, new B("TouchUpInside","CancelPayment") }, 
 				{ lblCarNumberValue, new B("Text","CarNumber") }, 
 				{ lblCardNumberValue, new B("Text","CardNumber") }, 
 				{ lblTipValue, new B("Text","TipAmountInPercent") }, 

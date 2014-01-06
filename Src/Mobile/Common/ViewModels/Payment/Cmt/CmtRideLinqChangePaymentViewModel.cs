@@ -16,34 +16,15 @@ namespace apcurium.MK.Booking.Mobile
 {
 	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>, IMvxServiceConsumer<IAccountService>
 	{
-        private readonly IAccountService _accountService;
-        public CmtRideLinqChangePaymentViewModel(string messageId, string order, string orderStatus): base(messageId)
+		public CmtRideLinqChangePaymentViewModel(string messageId, string currentPaymentInformation): base(messageId)
 		{
-			_accountService  = this.GetService<IAccountService>();
-
-			var account = AccountService.CurrentAccount;
-			var paymentInformation = new PaymentInformation
-			{
-				CreditCardId = account.DefaultCreditCard,
-				TipPercent = account.DefaultTipPercent,
-			};
-
-
-			DefaultPaymentInformations = PaymentInformations = paymentInformation;
-			PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-			PaymentPreferences.SelectedCreditCardId = (Guid)account.DefaultCreditCard;
+			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
+			PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), DefaultPaymentInformations);
 			PaymentPreferences.LoadCreditCards();
 		}
 
-		public PaymentInformation PaymentInformations { get; set ; }
-
 		public PaymentInformation DefaultPaymentInformations { get; set ; }
-
-		public PaymentDetailsViewModel PaymentPreferences
-		{
-			get;
-			private set;
-		}
+		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
 		public IMvxCommand CancelCommand
         {
@@ -66,6 +47,11 @@ namespace apcurium.MK.Booking.Mobile
             {
 				return GetCommand(() =>
 				{
+					if(AccountService.CurrentAccount.DefaultCreditCard == null)
+					{
+						AccountService.UpdateSettings(AccountService.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, AccountService.CurrentAccount.DefaultTipPercent);
+					}
+
 					ReturnResult(new PaymentInformation
 					{
 						CreditCardId = PaymentPreferences.SelectedCreditCardId,

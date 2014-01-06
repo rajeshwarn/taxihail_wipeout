@@ -457,10 +457,12 @@
 "CmtConfirmBookingInfo"="Confirm payment information";
 "CmtConfirmPayment"="Confirm";
 "CmtRideLinqUnpair"="Unpair";
-"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment information";
+"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment info";
 "CmtCarNumber"="Car Number:";
 "CmtTipAmount"="Tip Amount:";
 "CmtChangePaymentInfo"="Change Payment Settings";
 "CmtCancelPayment"="Cancel";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm payment information";
 "CmtCardNumber"="Card Number:";
+"CmtRideLinqCancelChanges"="Cancel";
+"CmtRideLinqSaveChanges"="Save";
