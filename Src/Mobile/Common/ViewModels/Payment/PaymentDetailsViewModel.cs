@@ -18,7 +18,10 @@ public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
     public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
     {
 
-        CreditCards.CollectionChanged += (sender, e) => FirePropertyChanged(()=>HasCreditCards);
+		CreditCards.CollectionChanged += (sender, e) =>
+		{
+			FirePropertyChanged(() => HasCreditCards);
+		};
         LoadCreditCards();
         
         SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();

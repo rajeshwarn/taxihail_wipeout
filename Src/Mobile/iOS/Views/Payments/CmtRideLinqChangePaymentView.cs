@@ -34,13 +34,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             scrollView.AutoSize ();
 
-            var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
-				ViewModel.SomeCommand.Execute();
+			var cancelbutton = new MonoTouch.UIKit.UIBarButtonItem(Resources.CancelBoutton, UIBarButtonItemStyle.Plain, delegate {
+				ViewModel.CancelCommand.Execute();
+			});
+
+			var savebutton = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+				ViewModel.SaveCommand.Execute();
             });
 
             NavigationItem.HidesBackButton = true;
-            NavigationItem.RightBarButtonItem = button;
-            NavigationItem.Title = Resources.GetValue("View_RideSettings");
+			NavigationItem.LeftBarButtonItem = cancelbutton;
+			NavigationItem.RightBarButtonItem = savebutton;
+			NavigationItem.Title = Resources.GetValue("View_Payments_CmtRideLinqChangePaymentTitle");
 
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             this.AddBindings(new Dictionary<object, string>(){

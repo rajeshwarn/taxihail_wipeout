@@ -100,7 +100,7 @@
             android:layout_height="40dip"
             android:text="@string/CmtConfirmPayment"
             android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}, 'Clickable': {'Path': 'IsConfirmEnabled'}}"
+            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}"
             android:layout_gravity="bottom"
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="false"

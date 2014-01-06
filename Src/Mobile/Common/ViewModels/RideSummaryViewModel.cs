@@ -7,6 +7,7 @@ using System.Globalization;
 using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
 				var setting = ConfigurationManager.GetPaymentSettings ();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !PaymentService.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
 			}
 		}
 
