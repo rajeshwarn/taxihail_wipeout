@@ -93,7 +93,6 @@
         },
         
         confirmEmail: function () {
-            console.log("App.exportorders()");
             action(TaxiHail.SecurityController, 'confirmemail');
         },
         
@@ -163,8 +162,8 @@
         exportAccounts: function () {
             action(TaxiHail.ExportController, 'exportAccounts');
         },
+
         exportOrders: function () {
-            console.log("App.exportorders()");
             action(TaxiHail.ExportController, 'exportOrders');
         }
     });

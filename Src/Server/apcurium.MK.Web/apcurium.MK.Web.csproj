@@ -386,15 +386,21 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\localization\ManageRules.json" />
-    <Content Include="admin\templates\EditRule.handlebars" />
+    <Content Include="admin\templates\EditRule.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\localization\EditRule.json" />
     <Content Include="admin\templates\RuleItem.handlebars" />
     <Content Include="admin\localization\RuleItem.json" />
     <Content Include="admin\templates\ManagePaymentSettings.handlebars" />
     <Content Include="templates\GetTheApp.handlebars" />
     <Content Include="admin\localization\SendPushNotification.json" />
-    <Content Include="admin\templates\SendPushNotification.handlebars" />
-    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars" />
+    <Content Include="admin\templates\SendPushNotification.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
