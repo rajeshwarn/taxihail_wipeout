@@ -1,8 +1,9 @@
 ﻿(function ()
 {
+
     var View = TaxiHail.ExportOrdersOrAccountsView = TaxiHail.TemplatedView.extend({
-    
-            events: {
+
+        events: {
             'click [data-action=confirmExport]': 'exportData',
             'click [data-action=eraseStartTime]': 'onEraseStartTimeClick',
             'click [data-action=eraseEndTime]': 'onEraseEndTimeClick'
