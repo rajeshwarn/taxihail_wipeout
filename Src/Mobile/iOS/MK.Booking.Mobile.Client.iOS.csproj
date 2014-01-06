@@ -492,6 +492,10 @@
     <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs">
       <DependentUpon>CmtRideLinqConfirmPairView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs">
+      <DependentUpon>CmtRideLinqChangePaymentView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -564,6 +568,7 @@
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -803,5 +808,6 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+    <BundleResource Include="Resources\.DS_Store" />
   </ItemGroup>
 </Project>
