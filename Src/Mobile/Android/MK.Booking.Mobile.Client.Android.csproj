@@ -36,17 +36,12 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="" />
-      </CustomCommands>
-    </CustomCommands>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
-<PropertyGroup>
+  <PropertyGroup>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-</PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -632,14 +627,16 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Values\String.xml" />
   </ItemGroup>
+
+  <!-- Other possible parameters for further cases: WorkingDirectory="" Condition="'$(Os)'=='Unix'" -->
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-     Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
+    <Target Name="BeforeBuild">        
+        <!--- <Exec Command="..\..\LocalizationTool\GenerateAndroidResources.sh" WorkingDirectory=""  /> -->
+        <Exec Command="mono &quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;./Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" />
+   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
+
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
   </ItemGroup>
