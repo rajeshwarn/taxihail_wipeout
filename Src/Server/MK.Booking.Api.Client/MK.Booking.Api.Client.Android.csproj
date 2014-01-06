@@ -37,9 +37,6 @@
     <Reference Include="Cirrious.MvvmCross.Android">
       <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Android.Maps">
-      <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Android.Maps.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding.Android">
       <HintPath>..\..\Mobile\Infrastructure\MvvmCross\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
     </Reference>
