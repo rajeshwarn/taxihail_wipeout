@@ -214,6 +214,24 @@
     <Reference Include="MonoTouch.FacebookConnect">
       <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -769,10 +787,6 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
-      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
-      <Name>System.Reactive</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Assets\AppFont_Regular.otf" />
@@ -799,6 +813,11 @@
   <ItemGroup>
     <XamarinComponentReference Include="facebookios">
       <Version>3.8.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
