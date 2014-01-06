@@ -10,8 +10,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
-using SocialNetworks.Services.MonoTouch;
-using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.ExtensionMethods;
@@ -25,6 +23,8 @@ using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         private bool _callbackFromFB = false;
         private bool _isStarting = false;
+
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
             _isStarting = true;
@@ -87,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
+			FBAppCall.HandleDidBecomeActive();
+
             UIApplication.CheckForIllegalCrossThreadCalls=true;
 
             var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
@@ -170,21 +173,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             Logger.LogMessage("ReceiveMemoryWarning");
         }
         
-        public override bool HandleOpenURL(UIApplication application, NSUrl url)
-        {
-
-            Console.WriteLine(url.ToString());
-            if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId + TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName.ToLower().Replace( " ", string.Empty ) ))
-            {
-                _callbackFromFB = true;
-                return (TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);
-            }
-            return false;               
-        }
-        
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
-            return HandleOpenURL(application, url);
+			Console.WriteLine(url.ToString());
+			if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId + TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+			{
+				_callbackFromFB = true;
+				var handleOpenUrl = FBAppCall.HandleOpenURL(url, sourceApplication);
+				return handleOpenUrl;
+			}
+
+			return false;
         }
 
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)

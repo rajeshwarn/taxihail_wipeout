@@ -10,7 +10,6 @@ using System.IO;
 using System.Drawing;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
-using SocialNetworks.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;

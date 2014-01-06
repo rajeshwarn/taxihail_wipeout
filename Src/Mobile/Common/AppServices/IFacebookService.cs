@@ -8,6 +8,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		void Connect(string permissions);
 
 		Task<FacebookUserInfo> GetUserInfo(string accessToken);
+
+		IObservable<bool> GetAndObserveSessionStatus();
     }
 }
 

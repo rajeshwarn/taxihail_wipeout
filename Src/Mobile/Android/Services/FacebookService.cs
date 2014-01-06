@@ -26,8 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			webAuth.PutExtra ("ExtendedPermissions", permissions);
 			_mainActivity.StartActivityForResult (webAuth, 0);
 		}
-
-
     }
 }
 

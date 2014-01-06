@@ -1,5 +1,6 @@
 #if SOCIAL_NETWORKS
 using SocialNetworks.Services;
+
 #endif
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly IPushNotificationService _pushService;
 		public event EventHandler LoginSucceeded; 
 		readonly IFacebookService _facebookService;
+		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 
 #if SOCIAL_NETWORKS
 		readonly ITwitterService _twitterService;
@@ -71,6 +75,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
         }
+
+		public override void Start(bool firstStart)
+		{
+			base.Start(firstStart);
+
+			_facebookService
+				.GetAndObserveSessionStatus()
+				.Where(connected => connected)
+				.Subscribe(_ => OnFacebookLoginSucessful(""))
+				.DisposeWith(_subscriptions);
+		}
+
+		public override void Stop()
+		{
+			base.Stop();
+			_subscriptions.Clear();
+		}
 
         private async void CheckVersion()
         {

@@ -7,8 +7,6 @@ using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoTouch.FacebookHelpers;
 using System.Collections.Generic;
 
-
-
 namespace SocialNetworks.Services.MonoTouch
 {
     public class FacebookServiceMT : FBSessionDelegate, IFacebookService 
