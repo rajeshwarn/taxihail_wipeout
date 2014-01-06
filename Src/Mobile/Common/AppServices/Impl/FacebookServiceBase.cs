@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _sessionStatus;
 		}
 
-		protected ISubject<bool> SessionStatusSubject
+        protected IObserver<bool> SessionStatusSubject
 		{
 			get
 			{
