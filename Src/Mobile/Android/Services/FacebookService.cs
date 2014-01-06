@@ -38,7 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void SaveAccessToken(string accessToken)
 		{
 			this._facebookClient.AccessToken = accessToken;
-			this.SessionStatusSubject.OnNext(accessToken != null);
+			// Assume that is accessToken is no null, we are connected
+			this.SessionStatusObserver.OnNext(accessToken != null);
 		}
     }
 }

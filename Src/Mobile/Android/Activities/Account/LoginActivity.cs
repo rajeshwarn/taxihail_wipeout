@@ -37,9 +37,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait  )]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-        public static LoginActivity TopInstance{get;set;}
+		private readonly IMessageService _messageService;
+		public static LoginActivity TopInstance { get; private set;}
 
-        private ProgressDialog _progressDialog;
+		public LoginActivity ()
+		{
+			TopInstance = this;
+			this._messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
+
+		}
 
 #if SOCIAL_NETWORKS
         /// <summary>
@@ -69,23 +75,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 			switch (resultCode) {
 				case Result.Ok:
-
 					var accessToken = data.GetStringExtra("AccessToken");
 					facebookService.SaveAccessToken(accessToken);
 					break;
 				case Result.Canceled:
-					string error = data.GetStringExtra ("Exception");
-					Alert ("Failed to Log In", "Reason:" + error, false, (res) => {} );
+					string error = data.GetStringExtra("Exception");
+					_messageService.ShowMessage("Failed to Log In", "Reason:" + error);
 					break;
 				default:
 					break;
 			}
-		}
-
-		public LoginActivity ()
-		{
-			TopInstance = this;
-
 		}
 
         protected override int ViewTitleResourceId
@@ -96,9 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {            
             SetContentView(Resource.Layout.View_Login);            
-
-            _progressDialog = new ProgressDialog(this);
-                      
 
 			if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
 			{
@@ -132,40 +128,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     .Subscribe( _ => Observable.Timer(TimeSpan.FromSeconds(2))  
                             .Subscribe(__ => RunOnUiThread(Finish)));
 
-                
-
-                
-
-
 #if DEBUG
             FindViewById<EditText>(Resource.Id.Username).Text = "john@taxihail.com";
             FindViewById<EditText>(Resource.Id.Password).Text = "password";            
 #endif 
 
-
-
-        }
-
-        private void HideProgressDialog()
-        {
-            RunOnUiThread(() =>
-            {
-                if (_progressDialog != null)
-                {
-                    _progressDialog.Dismiss();
-                    _progressDialog = null;
-                }
-            });
-        }
-
-        private void ShowProgressDialog()
-        {
-            RunOnUiThread(() =>
-            {
-				_progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
-                _progressDialog.Show();
-
-            });
         }
 
         private void PromptServer()
@@ -198,59 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             alert.Show();
         }
 
-        private void CancelAction(object sender, EventArgs e)
-        {
-            _progressDialog.CancelEvent -= CancelAction;
-            _progressDialog.Cancel();
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();            
-        }
-
-
         protected override void OnDestroy()
         {
             base.OnDestroy();           
             GC.Collect();
         }
-
-		public override void Finish ()
-		{
-			base.Finish ();
-		}
-
-		public override void FinishActivity (int requestCode)
-		{
-			base.FinishActivity (requestCode);
-		}
-
-		public override void FinishFromChild (Activity child)
-		{
-			base.FinishFromChild (child);
-		}
-
-		public void Alert (string title, string message, bool CancelButton , Action<Result> callback)
-		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.SetTitle(title);
-			builder.SetMessage(message);
-
-			builder.SetPositiveButton("Ok", (sender, e) => {
-				callback(Result.Ok);
-			});
-
-			if (CancelButton) {
-				builder.SetNegativeButton("Cancel", (sender, e) => {
-					callback(Result.Canceled);
-				});
-			}
-
-			builder.Show();
-		}
-
-
 
     }
 }

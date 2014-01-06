@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public abstract class FacebookServiceBase: IFacebookService
     {
-		private ISubject<bool> _sessionStatus = new ReplaySubject<bool>(1);
+		readonly ISubject<bool> _sessionStatus = new ReplaySubject<bool>(1);
 
 		public abstract void Connect(string permissions);
 		
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _sessionStatus;
 		}
 
-        protected IObserver<bool> SessionStatusSubject
+        protected IObserver<bool> SessionStatusObserver
 		{
 			get
 			{

@@ -105,14 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
 			{
 				// If there's one, just open the session silently
-				FBSession.OpenActiveSession(new[] {"basic_info"}, allowLoginUI: false, completion:(session, status, error) => 
-					{
-						// Handler for session state changes
-						// This method will be called EACH time the session state changes,
-						// also for intermediate states and NOT just when the session open
-						//this.SessionStateChanged(session, State, error);
-					});
+				FBSession.OpenActiveSession(new[] {"basic_info"},
+					allowLoginUI: false,
+					completion:(session, status, error) => {});
 			}
+			TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
             
 			/*var oauthConfig = new OAuthConfig
             {
@@ -129,7 +126,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return AppContext.Current.Controller; // AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController;
             });*/
             
-			TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
 			//TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }

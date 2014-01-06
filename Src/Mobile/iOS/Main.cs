@@ -88,9 +88,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
-			FBAppCall.HandleDidBecomeActive();
+			UIApplication.CheckForIllegalCrossThreadCalls=true;
 
-            UIApplication.CheckForIllegalCrossThreadCalls=true;
+			//Facebook init
+			FBAppCall.HandleDidBecomeActive();
 
             var locService = TinyIoCContainer.Current.Resolve<AbstractLocationService>();
             if ( locService != null )
@@ -176,11 +177,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
 			Console.WriteLine(url.ToString());
-			if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId + TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName.ToLower().Replace( " ", string.Empty ) ))
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+			if (url.AbsoluteString.StartsWith("fb" + settings.FacebookAppId + settings.ApplicationName.ToLower().Replace( " ", string.Empty ) ))
 			{
 				_callbackFromFB = true;
-				var handleOpenUrl = FBAppCall.HandleOpenURL(url, sourceApplication);
-				return handleOpenUrl;
+				return FBAppCall.HandleOpenURL(url, sourceApplication);
 			}
 
 			return false;

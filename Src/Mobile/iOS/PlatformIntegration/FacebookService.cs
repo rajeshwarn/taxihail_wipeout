@@ -10,12 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
 	public class FacebookService: FacebookServiceBase
     {
-
-		public FacebookService()
-        {
-
-        }
-
 		public override void Connect(string permissions)
 		{
 			// If the session state is any of the two "open" states when the button is clicked
@@ -26,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				// Close the session and remove the access token from the cache
 				// The session state handler (in the app delegate) will be called automatically
 				FBSession.ActiveSession.CloseAndClearTokenInformation();
-				base.SessionStatusSubject.OnNext(false);
+				base.SessionStatusObserver.OnNext(false);
 			}
 
 			// Open a session showing the user the login UI

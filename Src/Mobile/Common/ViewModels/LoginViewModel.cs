@@ -31,10 +31,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private IApplicationInfoService _applicationInfoService;
+		public event EventHandler LoginSucceeded; 
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
-		public event EventHandler LoginSucceeded; 
 		readonly IFacebookService _facebookService;
 		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 
@@ -56,10 +55,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IFacebookService facebookService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+        public LoginViewModel(IFacebookService facebookService,
+			IAccountService accountService,
+			IPushNotificationService pushService)
         {
             _facebookService = facebookService;
-            _applicationInfoService = applicationInfoService;
 			_accountService = accountService;		
             _pushService = pushService;
 
@@ -80,11 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start(firstStart);
 
-			_facebookService
-				.GetAndObserveSessionStatus()
-				.Where(connected => connected)
-				.Subscribe(_ => CheckFacebookAccount())
-				.DisposeWith(_subscriptions);
+			ObserveFacebookConnectionEvents();
 		}
 
 		public override void Stop()
@@ -190,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             try
                             {
-                                LoginSucess();
+                                OnLoginSuccess();
                             }
                             finally
                             {
@@ -276,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (account != null)
                         {
-                            LoginSucess();
+                            OnLoginSuccess();
                         }
                     }
                     catch
@@ -432,14 +428,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
         }
 
-        private void LoginSucess()
+        private void OnLoginSuccess()
         {
 #if SOCIAL_NETWORKS
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 #endif
-
-			_applicationInfoService = null;     
 
             RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)
@@ -466,11 +460,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 				else
 				{
-					LoginSucess();
+					OnLoginSuccess();
 				}
 			}
 
 		}
 
+		void ObserveFacebookConnectionEvents()
+		{
+			_facebookService
+				.GetAndObserveSessionStatus()
+				.Where(connected => connected)
+				.Subscribe(_ => CheckFacebookAccount())
+				.DisposeWith(_subscriptions);
+		}
     }
 }

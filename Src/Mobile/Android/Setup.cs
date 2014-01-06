@@ -67,13 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(this.ApplicationContext));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-
-
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
-
-            
-
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
 			TinyIoCContainer.Current.Register<IPushNotificationService>( (c,p)=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()));
 
