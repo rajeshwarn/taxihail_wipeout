@@ -26,24 +26,21 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				// Close the session and remove the access token from the cache
 				// The session state handler (in the app delegate) will be called automatically
 				FBSession.ActiveSession.CloseAndClearTokenInformation();
-
-				// If the session state is not any of the two "open" states when the button is clicked
+				base.SessionStatusSubject.OnNext(false);
 			}
-			else
-			{
-				// Open a session showing the user the login UI
-				// You must ALWAYS ask for basic_info permissions when opening a session
-				FBSession.OpenActiveSession(new [] {"basic_info"},
-					allowLoginUI: true,
-					completion: (session, status, error) =>
-					{
-						//var appDelegate = UIApplication.SharedApplications.Delegate;
-						bool connected = status == FBSessionState.Open
-						                 || status == FBSessionState.OpenTokenExtended;
 
-						SessionStatusSubject.OnNext(connected);
-					});
-			}
+			// Open a session showing the user the login UI
+			// You must ALWAYS ask for basic_info permissions when opening a session
+			FBSession.OpenActiveSession(new [] {"basic_info"},
+				allowLoginUI: true,
+				completion: (session, status, error) =>
+				{
+					//var appDelegate = UIApplication.SharedApplications.Delegate;
+					bool connected = status == FBSessionState.Open
+					                 || status == FBSessionState.OpenTokenExtended;
+
+					SessionStatusSubject.OnNext(connected);
+				});
 		}
 
 		public override Task<FacebookUserInfo> GetUserInfo()
