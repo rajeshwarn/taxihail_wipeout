@@ -2,7 +2,7 @@
 
 namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair
 {
-    [Route("v1/init/pairing/external")]
+    [Route("v1/init/pairing/external/cof")]
     public class PairingRequest : IReturn<CmtPairingResponse>
     {
         public string Medallion { get; set; }
@@ -15,5 +15,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments.Pair
         public bool AutoCompletePayment { get; set; }
         public int? AutoTipPercentage { get; set; }
         public double? AutoTipAmount { get; set; }
+        public string CardOnFileId { get; set; }
     }
 }

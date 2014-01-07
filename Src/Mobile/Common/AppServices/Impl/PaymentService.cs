@@ -59,13 +59,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             const string onErrorMessage = "Payment Method not found or unknown";
 
             var settings = _configurationManager.GetPaymentSettings();
-
-
-
-            // TODO: Debug exclusively for RideLinqCmt
-#if DEBUG
-            settings.PaymentMode = PaymentMethod.RideLinqCmt;
-#endif
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:

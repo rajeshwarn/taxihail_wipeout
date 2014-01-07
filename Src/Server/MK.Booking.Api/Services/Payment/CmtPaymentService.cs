@@ -257,19 +257,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 // send pairing request
 
                 // Determine the root path to the app 
-                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+                //var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+                
                 var response = CmtMobileServiceClient.Post(new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
+                    //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber
+                    Medallion = orderStatusDetail.VehicleNumber,
+                    CardOnFileId = request.CardToken
                 });
 
                 // wait for trip to be updated
