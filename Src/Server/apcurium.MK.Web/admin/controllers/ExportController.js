@@ -9,12 +9,12 @@
 
         exportAccounts: function () {
 
-            return new TaxiHail.ExportOrdersOrAccountsView();
+            return new TaxiHail.ExportAccountsView();
         },
 
         exportOrders: function () {
 
-            return new TaxiHail.ExportOrdersOrAccountsView();
+            return new TaxiHail.ExportOrdersView();
         }
     });
 }());
