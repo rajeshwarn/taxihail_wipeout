@@ -66,11 +66,18 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_facebook_id()
+        public async void when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(async () => await sut
-                .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+            try
+            {
+                await sut.AuthenticateFacebook(Guid.NewGuid().ToString());
+                Assert.Fail();
+            }
+            catch(WebServiceException e)
+            {
+                Assert.AreEqual("Invalid UserName or Password", e.ErrorMessage);
+            }
         }
 
         [Test]
