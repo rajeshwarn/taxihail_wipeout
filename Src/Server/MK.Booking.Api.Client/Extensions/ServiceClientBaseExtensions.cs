@@ -6,7 +6,7 @@ namespace ServiceStack.ServiceClient.Web
 {
 	public static class ServiceClientBaseExtensions
     {
-		/*public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
+		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
 		{
 			var tcs = new TaskCompletionSource<TResponse>();
 
@@ -15,7 +15,7 @@ namespace ServiceStack.ServiceClient.Web
 				(result, error) => tcs.SetException(error));
 
 			return tcs.Task;
-		}*/
+		}
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
 		{
