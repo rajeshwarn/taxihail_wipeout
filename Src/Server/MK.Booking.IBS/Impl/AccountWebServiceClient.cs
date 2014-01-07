@@ -22,11 +22,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isSuccess = false;
             var ibsAcccountId = 0;
 
-            int resultParsing;
-
-            var queryNumberDigitInPhoneNumber = phone.Where(digit => int.TryParse(digit.ToString(), out resultParsing) == true);
-
-            string phoneClean = string.Join("", queryNumberDigitInPhoneNumber);
+            Regex regEx = new Regex(@"\D");
+            string phoneClean = regEx.Replace(phone, "");
 
             UseService(service =>
             {
