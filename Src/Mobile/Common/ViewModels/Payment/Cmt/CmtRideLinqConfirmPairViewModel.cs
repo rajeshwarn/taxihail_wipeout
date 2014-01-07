@@ -94,13 +94,8 @@ namespace apcurium.MK.Booking.Mobile
 
 						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, tipPercent, tipAmount);                    
 
-						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
+						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 
-						RequestNavigate<BookingStatusViewModel>(new
-							{
-								order = Order.ToJson(),
-								orderStatus = OrderStatus.ToJson()
-							});    
 						RequestClose(this);
 					});
 			}
@@ -137,13 +132,9 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				return GetCommand(() =>
 					{
-						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), "canceled");
+						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Canceled);
 
-						RequestNavigate<BookingStatusViewModel>(new
-							{
-								order = Order.ToJson(),
-								orderStatus = OrderStatus.ToJson()
-							});                   
+						RequestClose(this);                
 					});
 			}
 		}
