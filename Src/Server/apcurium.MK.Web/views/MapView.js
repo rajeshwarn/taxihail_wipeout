@@ -205,51 +205,35 @@
             }
         },
 
-        centerMapAroundVehicleAndPickup: function()
-        {
-            var p1 = this._vehicleMarker.position;
-            var p2 = this._pickupPin.position;
-            
+        centerMapAroundVehicleAndPickup: function () {
+            var projection = this._target.getProjection();
             this._bounds = new google.maps.LatLngBounds();
             this._bounds.extend(this._pickupPin.position);
-            this._bounds.extend(this._vehicleMarker.position);                
+            this._bounds.extend(this._vehicleMarker.position);
             this._map.fitBounds(this._bounds);
-            var zoom = this.readjustZoomAfterFitBounds(this._bounds, { height: this._mapSizeWithPadding.y, width: this._mapSizeWithPadding.x });
-            this._map.setZoom(zoom);
 
-            var projection = this._target.getProjection();
+            var mainDiv = $('#main');
+            var pickupPnt = projection.fromLatLngToContainerPixel(this._pickupPin.position);
+            var vehiclePnt = projection.fromLatLngToContainerPixel(this._vehicleMarker.position);
+            var mainDivBottom = $(mainDiv).offset().top + $(mainDiv).height();
+            var mainDivLeft = $(mainDiv).offset().left;
+            var mainDivRight = $(mainDiv).offset().left + $(mainDiv).width();
+            var diffWithPickupY = pickupPnt.y - mainDivBottom;
+            var diffWithVehicleY = vehiclePnt.y - mainDivBottom;
+            var maxDiff = Math.max(diffWithPickupY, diffWithVehicleY);
+            var vehicleInside = (vehiclePnt.x > mainDivLeft) && (vehiclePnt.x < mainDivRight) && (vehiclePnt.y < mainDivBottom);
+            var pickupInside = (pickupPnt.x > mainDivLeft) && (pickupPnt.x < mainDivRight) && (pickupPnt.y < mainDivBottom);
+            var anyInside = vehicleInside || pickupInside;
 
-            var point1 = projection.fromLatLngToContainerPixel(this._pickupPin.position);
-            var point2 = projection.fromLatLngToContainerPixel(this._vehicleMarker.position);
-
-            var topLeft = new google.maps.Point(this._mapSize.x / 3, 0);
-            var bottomRight = new google.maps.Point(this._mapSize.x / 3 * 2, this._mapSize.y / 2.5);
-
-            function inRect(p1, r1, r2) {
-                if (p1.x > r1.x && p1.x < r2.x && p1.y > r1.y && p1.y < r2.y)
-                {                    
-                    return true;
-                } else { return false; }
-            }
-            
-            console.log(this._mapSize.y * (5 / 6));
-
-            if (inRect(point1, topLeft, bottomRight))
-            {
-                if (point2.y < this._mapSize.y * (5 / 6))
-                {
-                    this._map.panBy(0, -(bottomRight.y - point1.y)); // -200 on y
-                }                
-            }
-
-            if (inRect(point2, topLeft, bottomRight)) {
-
-                if (point1.y < this._mapSize.y * (5 / 6)) {
-                    
-                    this._map.panBy(0, -(bottomRight.y - point2.y)); // -200 on y
-                }                
+            if (anyInside) {
+                var offsetY = new google.maps.Point(0, maxDiff);
+                var extendByY = projection.fromContainerPixelToLatLng(offsetY);
+                this._bounds.extend(this._bounds.getNorthEast());
+                this._bounds.extend(extendByY);
+                this._map.fitBounds(this._bounds);
             }
         },
+
 
         testic: function()
         {
