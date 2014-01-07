@@ -67,15 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			try
 			{
-				MapsInitializer.Initialize(this.ApplicationContext);
-				_touchMap.SetMapReady();
+				MapsInitializer.Initialize(this.ApplicationContext);			;
+				_touchMap.ViewTreeObserver.AddOnGlobalLayoutListener(new LayoutObserverForMap(_touchMap));
 			}
 			catch (GooglePlayServicesNotAvailableException e)
 			{
 				Logger.LogError(e);
 			}
 		}
-
 
 
         protected override void OnViewModelSet()
@@ -156,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			base.OnPause();
 
-			_touchMap.OnPause();
+			_touchMap.Pause();
 		}
 
         protected override void OnStart ()
