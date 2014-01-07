@@ -17,7 +17,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
     {
 
         #region Constructors
@@ -89,20 +89,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            if (settings.FacebookEnabled) {
+            if (settings.FacebookEnabled)
+			{
                 AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
 
-            if (settings.TwitterEnabled) {
+            if (settings.TwitterEnabled)
+			{
                 AppButtons.FormatStandardButton (btnTwLogin, Resources.TwitterButton, AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
                 this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-            if (settings.CanChangeServiceUrl) {
+            if (settings.CanChangeServiceUrl)
+			{
                 AppButtons.FormatStandardButton (btnServer, "Change Server", AppStyle.ButtonColor.Grey, "Assets/server.png");
                 btnServer.TouchUpInside += ChangeServerTouchUpInside;
             }

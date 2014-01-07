@@ -32,7 +32,6 @@
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
-    <MtouchLink>None</MtouchLink>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
   </PropertyGroup>
@@ -190,9 +189,6 @@
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="MonoTouch.Dialog-1" />
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleAnalytics">
       <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
     </Reference>
@@ -231,6 +227,9 @@
     </Reference>
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Components\xamarin.mobile-0.7.1\lib\ios\Xamarin.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -487,6 +486,7 @@
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\OrderStatusToTextColorConverter_IOS.cs" />
+    <Compile Include="PlatformIntegration\FacebookService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -770,6 +770,11 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="facebookios">
+      <InstallationInProgress>True</InstallationInProgress>
+      <Version>3.8.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

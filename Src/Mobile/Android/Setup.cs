@@ -14,7 +14,9 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Mvx;
 using apcurium.MK.Booking.Mobile.Settings;
@@ -56,16 +58,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(ApplicationContext));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-
-
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
-
 
             TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
             TinyIoCContainer.Current.Register<IPushNotificationService>(
                 (c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
-
 #if SOCIAL_NETWORKS
             InitializeSocialNetwork();
 #endif
@@ -106,6 +104,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
+		public void InitializeSocialNetwork()
+		{
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
+			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
+			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
+		}
 #endif
 
 

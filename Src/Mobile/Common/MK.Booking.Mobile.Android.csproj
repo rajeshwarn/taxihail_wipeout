@@ -79,6 +79,10 @@
     <Reference Include="System.Reactive.Providers">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -269,6 +273,11 @@
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
+    <Compile Include="AppServices\Social\IFacebookService.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
+      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -321,6 +330,9 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AppServices\Social\" />
+  </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>

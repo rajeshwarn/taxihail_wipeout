@@ -336,15 +336,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TinyIoCContainer.Current.Resolve < ICacheService>().Set ("AuthenticationData", authResponse);
         }
 
-        public Account GetFacebookAccount (string facebookId)
+		public async Task<Account> GetFacebookAccount (string facebookId)
         {
             try {
                 var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
-                var authResponse = auth.AuthenticateFacebook (facebookId);
-                SaveCredentials (authResponse);
+				var authResponse = auth
+					.AuthenticateFacebook(facebookId)
+					.ConfigureAwait(false);
+
+				SaveCredentials (await authResponse);
+
                 return GetAccount (false);
-            } catch {
-                return null;
+
+			} catch(Exception e) {
+				Logger.LogError(e);
+				return null;
             }
         }
 

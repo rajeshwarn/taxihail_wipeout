@@ -14,14 +14,14 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Diagnostic;
-using SocialNetworks.Services.OAuth;
-using SocialNetworks.Services.MonoTouch;
-using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
+using MonoTouch.FacebookConnect;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -91,9 +91,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void InitializeSocialNetwork()
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+			FBSettings.DefaultAppID = settings.FacebookAppId;
+
+			if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
+			{
+				// If there's one, just open the session silently
+				FBSession.OpenActiveSession(new[] {"basic_info"},
+					allowLoginUI: false,
+					completion:(session, status, error) => {});
+			}
+			TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
             
-            
-            var oauthConfig = new OAuthConfig
+			/*var oauthConfig = new OAuthConfig
             {
                 
                 ConsumerKey =  settings.TwitterConsumerKey,
@@ -102,15 +111,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 RequestTokenUrl = settings.TwitterRequestTokenUrl,
                 AccessTokenUrl = settings.TwitterAccessTokenUrl,
                 AuthorizeUrl = settings.TwitterAuthorizeUrl 
-            };
+            };*/
 
-            var facebook = new FacebookServiceMT(settings.FacebookAppId, settings.ApplicationName.ToLower().Replace(" ", string.Empty) ); // "134284363380764");
-            var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> {
+			/*var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> {
                 return AppContext.Current.Controller; // AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController;
-            });
+            });*/
             
-            TinyIoCContainer.Current.Register<IFacebookService>(facebook);
-            TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
+			//TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
 

@@ -3,13 +3,18 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
+		readonly IFacebookService _facebookService;
+
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
@@ -17,9 +22,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public CreateAcccountViewModel (string messageId, string data) : base(messageId)
 		{
-			if (data != null) {
+			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+
+			if (data != null)
+			{
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
-			} else {
+			} else
+			{
 				Data = new RegisterAccount();
 			}
 		}

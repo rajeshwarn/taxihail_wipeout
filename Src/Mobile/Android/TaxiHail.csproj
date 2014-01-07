@@ -123,6 +123,9 @@
     <Reference Include="PushSharp.Client.MonoForAndroid">
       <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -359,6 +362,7 @@
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
+    <Compile Include="Services\Social\FacebookService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -706,5 +710,8 @@
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

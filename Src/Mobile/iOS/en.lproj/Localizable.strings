@@ -458,6 +458,7 @@
 "CmtConfirmPayment"="Confirm";
 "CmtRideLinqUnpair"="Unpair";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Change payment information";
+"View_Payments_ConfirmCmtPairTitle"="Confirm payment information";
 "CmtCarNumber"="Car Number:";
 "CmtTipAmount"="Tip Amount:";
 "CmtChangePaymentInfo"="Change Payment Settings";

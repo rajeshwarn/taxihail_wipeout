@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             var password = ConfigManager.GetSetting("IBS.DefaultAccountPassword");
             var isSuccess = false;
             var ibsAcccountId = 0;
-
             Regex regEx = new Regex(@"\D");
             string phoneClean = regEx.Replace(phone, "");
 
