@@ -13,6 +13,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests;

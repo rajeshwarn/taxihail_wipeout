@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Mobile.AppServices
+namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {
 	public interface IFacebookService
     {

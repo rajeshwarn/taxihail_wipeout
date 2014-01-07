@@ -285,9 +285,9 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
-    <Compile Include="AppServices\IFacebookService.cs" />
-    <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
-    <Compile Include="AppServices\Impl\FacebookUserInfo.android.cs">
+    <Compile Include="AppServices\Social\IFacebookService.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
       <DependentUpon>FacebookUserInfo.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -348,6 +348,7 @@
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Fakes\" />
+    <Folder Include="AppServices\Social\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
