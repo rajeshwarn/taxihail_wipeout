@@ -2,12 +2,12 @@ using System;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public enum CmtRideLinqPairingState
+	public static class CmtRideLinqPairingState
     {
-		Canceled,
-		Failed,
-		Success,
-		Unpaired
+		public const string Canceled = "Canceled";
+		public const string Failed = "Failed";
+		public const string Success = "Success";
+		public const string Unpaired = "Unpaired";
     }
 }
 
