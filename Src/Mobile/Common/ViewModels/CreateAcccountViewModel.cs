@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using TinyMessenger;
 using ServiceStack.Text;
 using System.Collections.Generic;

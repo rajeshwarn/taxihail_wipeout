@@ -1,15 +1,14 @@
 using System;
-using Android.Content;
-using Android.App;
-using Facebook;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
-using apcurium.MK.Booking.Mobile.AppServices;
+using Android.App;
+using Android.Content;
+using Facebook;
 using Xamarin.FacebookBinding;
 using Xamarin.FacebookBinding.Model;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
 	public class FacebookService: IFacebookService
     {
