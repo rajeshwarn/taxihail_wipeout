@@ -63,5 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public IPushNotificationService PushNotification { get { return _viewModel.Container.Resolve<IPushNotificationService>(); } }
 
         public IPackageInfo PackageInfo { get { return _viewModel.Container.Resolve<IPackageInfo>(); } }
+
+		public IVehicleService Vehicle { get { return _viewModel.Container.Resolve<IVehicleService>(); } }
     }
 }

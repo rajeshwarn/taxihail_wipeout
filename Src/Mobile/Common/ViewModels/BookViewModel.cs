@@ -658,7 +658,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Subscriptions.Add(subscription);
             do
             {
-                AvailableVehicles = await this.Services().VehicleClient.GetAvailableVehiclesAsync(Pickup.Model.Latitude, Pickup.Model.Longitude);
+				AvailableVehicles = await this.Services().Vehicle.GetAvailableVehiclesAsync(Pickup.Model.Latitude, Pickup.Model.Longitude);
                 await Task.Delay(5000);
             }
             while(!subscription.IsDisposed);
