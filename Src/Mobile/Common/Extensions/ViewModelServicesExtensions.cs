@@ -53,8 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public IAccountService Account { get { return _viewModel.Container.Resolve<IAccountService>(); } }
 
         public IPaymentService Payment { get { return _viewModel.Container.Resolve<IPaymentService>(); } }
-        //todo to remove
-        public IVehicleClient VehicleClient { get { return _viewModel.Container.Resolve<IVehicleClient>(); } }
 
         public ITutorialService Tutorial { get { return _viewModel.Container.Resolve<ITutorialService>(); } }
 
