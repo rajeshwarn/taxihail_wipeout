@@ -281,6 +281,8 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
+    <Compile Include="AppServices\IVehicleService.cs" />
+    <Compile Include="AppServices\Impl\VehicleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
