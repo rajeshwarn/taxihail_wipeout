@@ -3,6 +3,8 @@ using SocialNetworks.Services;
 using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoDroid;
 
+
+
 #endif
 using System;
 using Android.App;
@@ -11,8 +13,10 @@ using Android.OS;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
+using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Android.Graphics;
 using Android.Views;
 using TinyIoC;

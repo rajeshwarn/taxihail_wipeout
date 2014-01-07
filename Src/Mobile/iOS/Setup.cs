@@ -23,6 +23,7 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using MonoTouch.FacebookConnect;
 
 
