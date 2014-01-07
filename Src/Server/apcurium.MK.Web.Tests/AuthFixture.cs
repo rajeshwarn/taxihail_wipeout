@@ -54,11 +54,11 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_user_sign_in_with_facebook()
+        public async void when_user_sign_in_with_facebook()
         {
-            var account = GetNewFacebookAccount();
+            var account = await GetNewFacebookAccount();
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.AuthenticateFacebook(account.FacebookId);
+            var response = await sut.AuthenticateFacebook(account.FacebookId);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
@@ -69,12 +69,12 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(() => sut
+            Assert.Throws<WebServiceException>(async () => await sut
                 .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
 
         [Test]
-        public void when_user_sign_in_with_twitter()
+        public async void when_user_sign_in_with_twitter()
         {
             var account = GetNewTwitterAccount();
             var sut = new AuthServiceClient(BaseUrl, null, "Test");

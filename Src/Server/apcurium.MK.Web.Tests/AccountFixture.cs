@@ -54,13 +54,13 @@ namespace apcurium.MK.Web.Tests
         }
         
         [Test]
-        public void RegisteringFacebookAccountTest()
+        public async void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateFacebook(newAccount.FacebookId);
+            var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateFacebook(newAccount.FacebookId);
             var account = sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
@@ -280,10 +280,10 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_granting_admin_access()
+        public async void when_granting_admin_access()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-            var fbAccount = this.GetNewFacebookAccount();
+            var fbAccount = await this.GetNewFacebookAccount();
             CreateAndAuthenticateTestAdminAccount();
             sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             
@@ -292,12 +292,12 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_granting_admin_access_with_incorrect_rights()
+        public async void when_granting_admin_access_with_incorrect_rights()
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             var asc = new AccountServiceClient(BaseUrl, null, "Test");
 
-            var fbAccount = this.GetNewFacebookAccount();
+            var fbAccount = await this.GetNewFacebookAccount();
 
             var newAccount = asc.CreateTestAccount();
             new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(newAccount.Email, TestAccountPassword);
