@@ -84,7 +84,6 @@ namespace apcurium.CMT.Web.Tests
         }
 
         [Test]
-        [Ignore("Error 500 on the CMT Server")]
         public void when_deleting_a_tokenized_credit_card()
         {
             var client = GetPaymentClient();

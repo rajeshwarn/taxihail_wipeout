@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -16,7 +17,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         {
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
-            
 			ConsumerKey = cmtSettings.CustomerKey;
 			ConsumerSecretKey = cmtSettings.ConsumerSecretKey;
 
@@ -36,7 +36,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                                                                request.Method,
                                                                request.RequestUri,
                                                                null);
-            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);         
+            request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
+            request.ContentType = ContentType.Json;
+
         }
 
         public T Get<T>(IReturn<T> request)
