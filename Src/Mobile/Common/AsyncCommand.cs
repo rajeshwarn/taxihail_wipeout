@@ -1,12 +1,16 @@
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Threading;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class AsyncCommand : IMvxCommand, IDisposable
     {
+		readonly ILogger _logger;
         private Func<bool> _canExecute;
         private Action _execute;
         private bool _isExecuting;
@@ -18,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public AsyncCommand(Action execute, Func<bool> canExecute)
         {
+			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
             _execute = execute;
             _canExecute = canExecute;
         }
@@ -32,17 +37,28 @@ namespace apcurium.MK.Booking.Mobile
             return CanExecute(null);
         }
 
-        public void Execute(object parameter)
+		public async void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
                 _isExecuting = true;
                 OnCanExecuteChanged();
-                Task.Factory.StartNew(() => _execute()).HandleErrors().ContinueWith(_ =>
-                                                                                        {
-                                                                                            _isExecuting = false;
-                                                                                            OnCanExecuteChanged();
-                                                                                        });
+				try
+				{
+					await Task.Factory.StartNew(() => _execute(),
+						default(CancellationToken),
+						TaskCreationOptions.None,
+						GetTaskScheduler());
+				}
+				catch(Exception e)
+				{
+					_logger.LogError(e);
+				}
+				finally
+				{
+					_isExecuting = false;
+					OnCanExecuteChanged();
+				}
             }
         }
 
@@ -60,6 +76,19 @@ namespace apcurium.MK.Booking.Mobile
                 CanExecuteChanged(this, new EventArgs());
             }
         }
+
+		private TaskScheduler GetTaskScheduler()
+		{
+			try
+			{
+				return TaskScheduler.FromCurrentSynchronizationContext();
+			}
+			catch(Exception e)
+			{
+				_logger.LogError(e);
+				return TaskScheduler.Default;
+			}
+		}
 
         #region IDisposable implementation
 
@@ -83,7 +112,8 @@ namespace apcurium.MK.Booking.Mobile
     }
 
     public class AsyncCommand<T> : IMvxCommand, IDisposable
-        {
+    {
+		readonly ILogger _logger;
         private Func<T,bool> _canExecute;
         private Action<T> _execute;
         private bool _isExecuting;
@@ -95,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public AsyncCommand(Action<T> execute, Func<T,bool> canExecute)
         {
+			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
             _execute = execute;
             _canExecute = canExecute;
         }
@@ -109,19 +140,30 @@ namespace apcurium.MK.Booking.Mobile
             return CanExecute(null);
         }
 
-        public void Execute(object parameter)
+		public async void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
                 _isExecuting = true;
                 OnCanExecuteChanged();
-                    Task.Factory.StartNew(() => _execute((T)parameter))
-					.HandleErrors()
-					.ContinueWith(_ =>
-                    {
-                        _isExecuting = false;
-                        OnCanExecuteChanged();
-                    });
+
+				try
+				{
+					await Task.Factory.StartNew(() => _execute((T)parameter),
+						default(CancellationToken),
+						TaskCreationOptions.None,
+						GetTaskScheduler()
+					);
+				}
+				catch(Exception e)
+				{
+					_logger.LogError(e);
+				}
+				finally
+				{
+					_isExecuting = false;
+					OnCanExecuteChanged();
+				}
             }
         }
 
@@ -139,6 +181,19 @@ namespace apcurium.MK.Booking.Mobile
                 CanExecuteChanged(this, new EventArgs());
             }
         }
+
+		private TaskScheduler GetTaskScheduler()
+		{
+			try
+			{
+				return TaskScheduler.FromCurrentSynchronizationContext();
+			}
+			catch(Exception e)
+			{
+				_logger.LogError(e);
+				return TaskScheduler.Default;
+			}
+		}
 
         #region IDisposable implementation
 
