@@ -9,7 +9,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		public string Firstname { get; private set; }
 		public string Lastname { get; private set; }
 		public string Email { get; private set; }
-		public string Gender { get; private set; }
 
 		public static FacebookUserInfo CreateFrom(IDictionary<string, object> data)
 		{
@@ -19,7 +18,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 				Email = (string)data["email"],
 				Firstname = (string)data["first_name"],
 				Lastname = (string)data["last_name"],
-				Gender = (string)data["gender"],
 			};
 		}
     }
