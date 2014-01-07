@@ -11,8 +11,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
         public CmtRideLinqChangePaymentViewModel(string messageId, string order, string orderStatus): base(messageId)
 		{
             Order = order.FromJson<Order>();
-            _paymentPreferences = PaymentPreferences; // Workaround
-            // TODO: Currently, no saved manual tip amount in the profile. So, always 0.            
+            _paymentPreferences = PaymentPreferences; // Workaround            
             PlaceholderAmount = "0";
 		}
 

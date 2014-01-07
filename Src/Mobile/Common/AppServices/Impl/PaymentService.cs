@@ -61,10 +61,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var settings = _configurationManager.GetPaymentSettings();
 
-            //TODO: Debug exclusively for RideLinqCmt
-#if DEBUG
-            settings.PaymentMode = PaymentMethod.RideLinqCmt;
-#endif
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
