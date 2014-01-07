@@ -32,7 +32,6 @@
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
-    <MtouchLink>None</MtouchLink>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
   </PropertyGroup>

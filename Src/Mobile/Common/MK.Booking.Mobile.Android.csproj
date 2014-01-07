@@ -286,7 +286,6 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="AppServices\IFacebookService.cs" />
-    <Compile Include="AppServices\Impl\FacebookServiceBase.cs" />
     <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
     <Compile Include="AppServices\Impl\FacebookUserInfo.android.cs">
       <DependentUpon>FacebookUserInfo.cs</DependentUpon>

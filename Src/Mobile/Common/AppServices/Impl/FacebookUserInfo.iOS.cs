@@ -14,7 +14,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 				Email = (NSString)data["email"],
 				Firstname = (NSString)data["first_name"],
 				Lastname = (NSString)data["last_name"],
-				Gender = (NSString)data["gender"],
 			};
 		}
     }

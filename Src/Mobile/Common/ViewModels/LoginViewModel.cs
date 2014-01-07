@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
 		readonly IFacebookService _facebookService;
-		readonly CompositeDisposable _subscriptions = new CompositeDisposable();
 
 #if SOCIAL_NETWORKS
 		readonly ITwitterService _twitterService;
@@ -75,19 +74,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
         }
-
-		public override void Start(bool firstStart)
-		{
-			base.Start(firstStart);
-
-			ObserveFacebookConnectionEvents();
-		}
-
-		public override void Stop()
-		{
-			base.Stop();
-			_subscriptions.Clear();
-		}
 
         private async void CheckVersion()
         {
@@ -415,7 +401,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return base
                         .GetCommand(
-                            () => _facebookService.Connect("email"),
+							async () => {
+								try
+								{
+									await _facebookService.Connect("email");
+									CheckFacebookAccount();
+								}
+								catch(TaskCanceledException e)
+								{
+									Logger.LogMessage("FacebookService.Connect was cancelled");
+								}
+								catch(Exception e)
+								{
+									Logger.LogError(e);
+								}
+							},
                             () => true);
             }
         }
@@ -466,13 +466,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-		void ObserveFacebookConnectionEvents()
-		{
-			_facebookService
-				.GetAndObserveSessionStatus()
-				.Where(connected => connected)
-				.Subscribe(_ => CheckFacebookAccount())
-				.DisposeWith(_subscriptions);
-		}
     }
 }
