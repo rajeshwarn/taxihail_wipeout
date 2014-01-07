@@ -2,11 +2,14 @@
 using SocialNetworks.Services;
 using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services.OAuth;
+
+
 #endif
 using System;
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.Client.Cache;
@@ -64,9 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
             TinyIoCContainer.Current.Register<IPushNotificationService>(
                 (c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
-#if SOCIAL_NETWORKS
-            InitializeSocialNetwork();
-#endif
+            
+			InitializeSocialNetwork();
         }
 
         protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
@@ -104,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
+#endif
 		public void InitializeSocialNetwork()
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
@@ -111,8 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
 			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
 		}
-#endif
-
 
         protected override MvxApplication CreateApp()
         {

@@ -414,7 +414,7 @@ Global
 		{DE9A07FE-A2EE-4669-934E-FF6D1805D858} = {4982DCA0-B205-47C3-A4C2-364755A3D7D5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = iOS\TaxiHail.csproj
+		StartupItem = Android\TaxiHail.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = PrefixedHierarchical

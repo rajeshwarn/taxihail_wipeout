@@ -773,7 +773,6 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="facebookios">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>3.8.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
