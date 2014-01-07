@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CacheService.Set("OrderReminderWasSeen." + orderId.ToString(), true.ToString());
         }
 
-		private bool IsCmtRideLinqEnabled { get { return ConfigurationManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
+		private bool IsCmtRideLinq { get { return ConfigurationManager.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt; } }
 
         private void AddReminder(OrderStatusDetail status)
         {
@@ -402,7 +402,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap();
 
-					if(IsCmtRideLinqEnabled && AccountService.CurrentAccount.DefaultCreditCard != null)
+					if(IsCmtRideLinq && AccountService.CurrentAccount.DefaultCreditCard != null)
 					{
 						var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 						var isPaired = BookingService.IsPaired(Order.Id);
@@ -448,7 +448,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			var isPaired = BookingService.IsPaired(Order.Id);
 
-            IsUnpairButtonVisible = IsCmtRideLinqEnabled && isPaired;
+			IsUnpairButtonVisible = IsCmtRideLinq && isPaired;
 
             IsPayButtonVisible = (statusId == VehicleStatuses.Common.Done
                                 || statusId == VehicleStatuses.Common.Loaded)
@@ -460,7 +460,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
 
-            IsResendButtonVisible = isPayEnabled && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
+			IsResendButtonVisible = isPayEnabled && !IsCmtRideLinq && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
         }
 
         public void GoToSummary()
@@ -593,7 +593,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 #endif
 
-					if(IsCmtRideLinqEnabled)
+					if(IsCmtRideLinq)
 					{
 						GoToCmtPairScreen();
 					}

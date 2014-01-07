@@ -88,11 +88,7 @@ namespace apcurium.MK.Booking.Mobile
 							return;
 						}
 
-						// TODO: Get tip in percent or amount, the value not used must be null
-						var tipPercent = _paymentPreferences.Tip;
-						var tipAmount = default(double?);
-
-						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, tipPercent, tipAmount);                    
+						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
 						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 
