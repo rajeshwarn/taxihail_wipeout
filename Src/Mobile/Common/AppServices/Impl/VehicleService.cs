@@ -13,9 +13,9 @@ using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-	public class VehicleService : BaseService
+	public class VehicleService : BaseService, IVehicleService
     {
-		public VehicleService(ICacheService cacheService)
+		public VehicleService()
         {
 
         }
