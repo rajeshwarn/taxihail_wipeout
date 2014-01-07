@@ -62,9 +62,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="Facebook">
-      <HintPath>..\Components\facebook-sdk-6.2.1\lib\android\Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -85,6 +82,9 @@
     </Reference>
     <Reference Include="System.Reactive.Providers">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -285,9 +285,11 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
-    <Compile Include="AppServices\IFacebookService.cs" />
-    <Compile Include="AppServices\Impl\FacebookServiceBase.cs" />
-    <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Social\IFacebookService.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
+      <DependentUpon>FacebookUserInfo.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -346,6 +348,7 @@
   <ItemGroup>
     <Folder Include="Converters\" />
     <Folder Include="Fakes\" />
+    <Folder Include="AppServices\Social\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -358,12 +361,7 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <XamarinComponentReference Include="facebook-sdk">
-      <Version>6.2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

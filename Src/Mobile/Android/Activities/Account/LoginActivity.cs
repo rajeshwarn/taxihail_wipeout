@@ -2,6 +2,9 @@
 using SocialNetworks.Services;
 using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoDroid;
+
+
+
 #endif
 using System;
 using Android.App;
@@ -10,8 +13,10 @@ using Android.OS;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
+using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Android.Graphics;
 using Android.Views;
 using TinyIoC;
@@ -30,20 +35,24 @@ using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Common.Configuration;
 using Android.Text;
 using System.Reactive.Linq;
+using Xamarin.FacebookBinding;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait  )]
-    public class LoginActivity : BaseBindingActivity<LoginViewModel>
+	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
 		private readonly IMessageService _messageService;
+		private readonly FacebookService _facebookService;
+		private UiLifecycleHelper _uiHelper;
 		public static LoginActivity TopInstance { get; private set;}
 
 		public LoginActivity ()
 		{
 			TopInstance = this;
 			this._messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
+			this._facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 
 		}
 
@@ -67,11 +76,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             (ViewModel.FacebookService as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 #endif
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.OnCreate(bundle);
+
+			_uiHelper = new UiLifecycleHelper(this, _facebookService.StatusCallback);
+			_uiHelper.OnCreate(bundle);
+
+		}
+		protected override void OnPause()
+		{
+			base.OnPause();
+			_uiHelper.OnPause();
+		}
+		protected override void OnResume()
+		{
+			base.OnResume();
+			_uiHelper.OnResume();
+		}
+
+		protected override void OnSaveInstanceState(Bundle outState)
+		{
+			base.OnSaveInstanceState(outState);
+			_uiHelper.OnSaveInstanceState(outState);
+		}
 
 		protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
-			var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookService;
+			_uiHelper.OnActivityResult(requestCode, (int)resultCode, data);
+			/*var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookService;
 
 			switch (resultCode) {
 				case Result.Ok:
@@ -84,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 					break;
 				default:
 					break;
-			}
+			}*/
 		}
 
         protected override int ViewTitleResourceId
@@ -167,9 +201,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();           
+            base.OnDestroy();
+			_uiHelper.OnDestroy();           
             GC.Collect();
         }
-
-    }
+	}
 }

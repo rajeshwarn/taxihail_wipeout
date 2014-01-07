@@ -298,10 +298,9 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
-    <Compile Include="AppServices\IFacebookService.cs" />
-    <Compile Include="AppServices\Impl\FacebookServiceBase.cs" />
-    <Compile Include="AppServices\Impl\FacebookUserInfo.cs" />
-    <Compile Include="AppServices\Impl\FacebookUserInfo.iOS.cs">
+    <Compile Include="AppServices\Social\FacebookUserInfo.cs" />
+    <Compile Include="AppServices\Social\IFacebookService.cs" />
+    <Compile Include="AppServices\Social\FacebookUserInfo.iOS.cs">
       <DependentUpon>FacebookUserInfo.cs</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -361,9 +360,11 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppServices\Social\" />
   </ItemGroup>
 </Project>

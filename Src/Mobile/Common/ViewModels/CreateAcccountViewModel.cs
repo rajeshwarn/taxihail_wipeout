@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 using TinyMessenger;
 using ServiceStack.Text;
 using System.Collections.Generic;
@@ -16,6 +17,9 @@ namespace apcurium.MK.Booking.Mobile
 {
     public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
+		readonly IAccountService _accountService;
+		readonly IFacebookService _facebookService;
+
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
@@ -23,9 +27,14 @@ namespace apcurium.MK.Booking.Mobile
 
         public CreateAcccountViewModel (string messageId, string data) : base(messageId)
 		{
-			if (data != null) {
+			_accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
+			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+
+			if (data != null)
+			{
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
-			} else {
+			} else
+			{
 				Data = new RegisterAccount();
 			}
 		}
@@ -45,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			get
 			{
-                return GetCommand(() => { Close(); });
+				return GetCommand(() => Close());
 			}
 		}
 
@@ -100,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile
                         var setting = ConfigurationManager.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
 
-						var result = TinyIoCContainer.Current.Resolve<IAccountService>().Register(Data, out error);
+							var result = _accountService.Register(Data, out error);
 						if (result)
 						{
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)

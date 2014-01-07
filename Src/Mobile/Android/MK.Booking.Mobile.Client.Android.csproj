@@ -128,6 +128,9 @@
     <Reference Include="System.Reactive.Providers">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Facebook">
+      <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -387,8 +390,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Extensions\GoogleMapExtensions.cs" />
-    <Compile Include="Services\FacebookService.cs" />
-    <Compile Include="Services\FacebookWebViewAuthActivity.cs" />
+    <Compile Include="Services\Social\FacebookService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -655,6 +657,7 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
+    <Folder Include="Services\Social\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
@@ -751,7 +754,6 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
-      <InstallationInProgress>True</InstallationInProgress>
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>

@@ -1,15 +1,13 @@
 using System;
 using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Mobile.AppServices
+namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {
 	public interface IFacebookService
     {
-		void Connect(string permissions);
-
+		Task Connect(string permissions);
+		void Disconnect();
 		Task<FacebookUserInfo> GetUserInfo();
-
-		IObservable<bool> GetAndObserveSessionStatus();
     }
 }
 

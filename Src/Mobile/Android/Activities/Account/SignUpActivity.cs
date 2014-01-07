@@ -30,8 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Sign Up", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class SignUpActivity : BaseBindingActivity<CreateAcccountViewModel> 
     {
-        private bool IsCreatedFromSocial;
-        
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_SignUp; }
@@ -40,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		protected override void OnViewModelSet()
 		{
 			SetContentView(Resource.Layout.View_SignUp);
-			IsCreatedFromSocial = ViewModel.HasSocialInfo;
-		}		    
+		}    
 	}
 }
