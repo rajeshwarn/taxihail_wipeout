@@ -1,8 +1,12 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
+using System.Threading.Tasks;
+
+
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
 
@@ -35,21 +39,22 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             };
         }
 
-        public AuthenticationData AuthenticateFacebook(string facebookId)
-        {
-            var response = Authenticate(new Auth
-            {
-                UserName = facebookId,
-                Password = facebookId,
-                RememberMe = true,
-            }, "credentialsfb");
+		public async Task<AuthenticationData> AuthenticateFacebook(string facebookId)
+		{
+			var response = await AuthenticateAsync(new Auth
+				{
+					UserName = facebookId,
+					Password = facebookId,
+					RememberMe = true,
+				}, "credentialsfb")
+				.ConfigureAwait(false);
 
-            return new AuthenticationData
-            {
-                UserName = response.UserName,
-                SessionId = response.SessionId
-            };
-        }
+			return new AuthenticationData
+			{
+				UserName = response.UserName,
+				SessionId = response.SessionId
+			};
+		}
 
         public AuthenticationData AuthenticateTwitter(string twitterId)
         {
@@ -72,5 +77,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var response = Client.Post<AuthResponse>("/auth/" + provider , auth);
             return response;
         }
+
+		private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
+		{
+			return Client.PostAsync<AuthResponse>("/auth/" + provider , auth);
+		}
+
+
     }
 }

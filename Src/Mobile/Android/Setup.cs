@@ -67,13 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppResource>(new ResourceManager(this.ApplicationContext));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-
-
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
-
-            
-
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
 			TinyIoCContainer.Current.Register<IPushNotificationService>( (c,p)=> new PushNotificationService(this.ApplicationContext, c.Resolve<IConfigurationManager>()));
 
@@ -114,7 +109,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 #else
-		partial void InitializeSocialNetwork();
+		public void InitializeSocialNetwork()
+		{
+			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+
+			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
+			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
+		}
 #endif
         
         protected override MvxApplication CreateApp()

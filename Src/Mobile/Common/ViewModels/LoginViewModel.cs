@@ -1,5 +1,6 @@
 #if SOCIAL_NETWORKS
 using SocialNetworks.Services;
+
 #endif
 using System;
 using System.Collections.Generic;
@@ -23,18 +24,19 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private IApplicationInfoService _applicationInfoService;
+		public event EventHandler LoginSucceeded; 
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
-		public event EventHandler LoginSucceeded; 
+		readonly IFacebookService _facebookService;
 
 #if SOCIAL_NETWORKS
-		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
 		public IFacebookService FacebookService { get { return _facebookService; } }
 
@@ -52,9 +54,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 #endif
 
-        public LoginViewModel(IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
+        public LoginViewModel(IFacebookService facebookService,
+			IAccountService accountService,
+			IPushNotificationService pushService)
         {
-            _applicationInfoService = applicationInfoService;
+            _facebookService = facebookService;
 			_accountService = accountService;		
             _pushService = pushService;
 
@@ -168,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             try
                             {
-                                LoginSucess();
+                                OnLoginSuccess();
                             }
                             finally
                             {
@@ -238,7 +242,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             if (facebookId.HasValue())
                             {
-                                account = service.GetFacebookAccount(facebookId);
+                                var task = service.GetFacebookAccount(facebookId);
+                                task.Wait();
+                                account = task.Result;
                             }
                             else
                             {
@@ -252,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (account != null)
                         {
-                            LoginSucess();
+                            OnLoginSuccess();
                         }
                     }
                     catch
@@ -272,25 +278,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		#if SOCIAL_NETWORKS
 
-        public IMvxCommand LoginFacebook
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                {
-                    if (_facebookService.IsConnected)
-                    {
-                        CheckFacebookAccount();
-                    }
-                    else
-                    {
-                        _facebookService.Connect("email");
-
-                    }
-                });
-            }
-        }
-
 		public IMvxCommand LoginTwitter
 		{
 			get
@@ -309,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private void CheckFacebookAccount()
+		private void CheckFacebookAccount()
         {
             MessageService.ShowProgress(true);
 
@@ -408,6 +395,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 #endif
 
+        public IMvxCommand LoginFacebook
+        {
+            get
+            {
+                return base
+                        .GetCommand(
+							async () => {
+								try
+								{
+									await _facebookService.Connect("email");
+									CheckFacebookAccount();
+								}
+								catch(TaskCanceledException e)
+								{
+									Logger.LogMessage("FacebookService.Connect was cancelled");
+								}
+								catch(Exception e)
+								{
+									Logger.LogError(e);
+								}
+							},
+                            () => true);
+            }
+        }
+
         public void SetServerUrl(string serverUrl)
         {
             TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
@@ -416,14 +428,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
         }
 
-        private void LoginSucess()
+        private void OnLoginSuccess()
         {
 #if SOCIAL_NETWORKS
             _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 #endif
-
-			_applicationInfoService = null;     
 
             RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)
@@ -431,5 +441,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				LoginSucceeded(this, EventArgs.Empty);
 			}
         }
+
+		private async void CheckFacebookAccount()
+		{
+			using (MessageService.ShowProgress())
+			{
+				var info = await _facebookService.GetUserInfo();
+
+				var data = new RegisterAccount();
+				data.FacebookId = info.Id;
+				data.Email = info.Email;
+				data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+
+				var account = await _accountService.GetFacebookAccount(data.FacebookId);
+				if (account == null)
+				{
+					DoSignUp(data);
+				}
+				else
+				{
+					OnLoginSuccess();
+				}
+			}
+
+		}
+
     }
 }

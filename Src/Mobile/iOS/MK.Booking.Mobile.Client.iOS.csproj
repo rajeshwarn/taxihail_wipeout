@@ -32,7 +32,6 @@
       </CustomCommands>
     </CustomCommands>
     <MtouchUseSGen>True</MtouchUseSGen>
-    <MtouchLink>None</MtouchLink>
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
   </PropertyGroup>
@@ -193,9 +192,6 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
     </Reference>
-    <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Libraries\Monotouch\MonoTouch.FacebookConnect.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
       <HintPath>Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
     </Reference>
@@ -213,6 +209,27 @@
     </Reference>
     <Reference Include="GoogleAnalytics">
       <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoTouch.FacebookConnect">
+      <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -488,6 +505,7 @@
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\FacebookService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -764,17 +782,9 @@
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
-      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
-      <Name>SocialNetworks.Services.MonoTouch</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\rx-monotouch-master\System.Reactive.csproj">
-      <Project>{B201C111-F231-4D4A-9500-DF2CA8D5FD33}</Project>
-      <Name>System.Reactive</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -798,5 +808,15 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="facebookios">
+      <Version>3.8.0.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

@@ -454,3 +454,14 @@
 "ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall"="No fare estimate available for the ride.";
 "GooglePlayServicesNotAvailableTitle"="Update required";
 "GooglePlayServicesNotAvailableMessage"="You need to update Google Play Services in order to use this application.";
+"View_Payments_ConfirmCmtPairTitle"="Confirm payment information";
+"CmtConfirmBookingInfo"="Confirm payment information";
+"CmtConfirmPayment"="Confirm";
+"CmtRideLinqUnpair"="Unpair";
+"CmtCarNumber"="Car Number:";
+"CmtTipAmount"="Tip Amount:";
+"CmtChangePaymentInfo"="Change Payment Settings";
+"CmtCancelPayment"="Cancel";
+"CmtCardNumber"="Card Number:";
+"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment information";
+"View_Payments_CmtRideLinqConfirmPairTitle"="Confirm payment information";

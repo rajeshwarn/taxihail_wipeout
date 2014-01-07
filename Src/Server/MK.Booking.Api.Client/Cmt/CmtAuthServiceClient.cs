@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Security;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Api.Client.Cmt
 {
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             throw new System.NotImplementedException ();
         }
 
-        public AuthenticationData AuthenticateFacebook (string twitterId)
+		public Task<AuthenticationData> AuthenticateFacebook (string twitterId)
         {
             throw new System.NotImplementedException ();
         }

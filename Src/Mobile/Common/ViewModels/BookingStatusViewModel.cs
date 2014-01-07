@@ -85,12 +85,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 InvokeOnMainThread(() => RefreshStatus());
             });
 
-#if MONOTOUCH
-			Observable.IntervalSafe( TimeSpan.FromSeconds (_refreshPeriod))
-#else
             Observable.Interval(TimeSpan.FromSeconds(_refreshPeriod))
-#endif
-.Subscribe(unit => InvokeOnMainThread(RefreshStatus))
+				.Subscribe(unit => InvokeOnMainThread(RefreshStatus))
                 .DisposeWith(Subscriptions);
 
         }
@@ -496,18 +492,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (!_waitingToNavigateAfterTimeOut)
             {
-#if MONOTOUCH
-                Observable.IntervalSafe(TimeSpan.FromSeconds(10))
-#else
                 Observable.Interval(TimeSpan.FromSeconds(10))
-#endif
-.Subscribe(unit => InvokeOnMainThread(() =>
-{
-    _bookingService.ClearLastOrder();
-    _waitingToNavigateAfterTimeOut = true;
-    RequestNavigate<BookViewModel>(clearTop: true);
-    RequestClose(this);
-}));
+					.Subscribe(unit => InvokeOnMainThread(() =>
+					{
+					    _bookingService.ClearLastOrder();
+					    _waitingToNavigateAfterTimeOut = true;
+					    RequestNavigate<BookViewModel>(clearTop: true);
+					    RequestClose(this);
+					}));
             }
         }
 
