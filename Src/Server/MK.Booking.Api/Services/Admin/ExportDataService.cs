@@ -34,16 +34,14 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             var ibsServerTimeDifference = _configurationManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
             var offset = new TimeSpan(ibsServerTimeDifference);
             
-            DateTime startDate = (request.StartDate != null) ? request.StartDate.Value : DateTime.MinValue;
-            DateTime endDate = (request.EndDate != null) ? request.EndDate.Value : DateTime.MaxValue;
+            var startDate = request.StartDate ?? DateTime.MinValue;
+            var endDate = request.EndDate ?? DateTime.MaxValue;
 
             switch (request.Target)
             {
                 case DataType.Accounts:
                     var accounts = _accountDao.GetAll();
-                    return accounts.Where(x => x.CreationDate != DateTime.MinValue
-                        && x.CreationDate >= startDate
-                        && x.CreationDate <= endDate).Select(x => new
+                    return accounts.Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).Select(x => new
                     {
                         x.Id,
                         x.IBSAccountId,
@@ -64,9 +62,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
                     //return
-                    var testResult = orders.Where(x => x.CreatedDate != DateTime.MinValue
-                        && x.CreatedDate >= startDate
-                        && x.CreatedDate <= endDate)
+                    var testResult = orders.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate)
                         .Select(x =>
                         {
                             var operatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
