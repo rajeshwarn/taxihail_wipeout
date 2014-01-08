@@ -207,11 +207,11 @@
 
         centerMapAroundVehicleAndPickup: function () {
             var projection = this._target.getProjection();
-            this._bounds = new google.maps.LatLngBounds();
-            this._bounds.extend(this._pickupPin.position);
-            this._bounds.extend(this._vehicleMarker.position);
-            this._map.fitBounds(this._bounds);
-
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(this._pickupPin.position);
+            bounds.extend(this._vehicleMarker.position);
+            this._map.fitBounds(bounds);
+            
             var mainDiv = $('#main');
             var pickupPnt = projection.fromLatLngToContainerPixel(this._pickupPin.position);
             var vehiclePnt = projection.fromLatLngToContainerPixel(this._vehicleMarker.position);
@@ -228,9 +228,9 @@
             if (anyInside) {
                 var offsetY = new google.maps.Point(0, maxDiff);
                 var extendByY = projection.fromContainerPixelToLatLng(offsetY);
-                this._bounds.extend(this._bounds.getNorthEast());
-                this._bounds.extend(extendByY);
-                this._map.fitBounds(this._bounds);
+                bounds.extend(bounds.getNorthEast());
+                bounds.extend(extendByY);
+                this._map.fitBounds(bounds);
             }
         },
 
