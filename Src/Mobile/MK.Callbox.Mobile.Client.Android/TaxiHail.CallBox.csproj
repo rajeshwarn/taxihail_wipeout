@@ -18,7 +18,7 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <MandroidI18n />
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -52,6 +52,9 @@
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GooglePlayServicesLib">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\GooglePlayServicesLib.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -93,6 +96,12 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Binding.Android">
       <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.AppCompat">
+      <HintPath>..\Components\googleplayservicesgingerbread-13.0\lib\android\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +251,10 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
+    <XamarinComponentReference Include="googleplayservicesgingerbread">
+      <Visible>False</Visible>
+      <Version>13.0</Version>
+    </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>
       <Visible>False</Visible>

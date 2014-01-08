@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile
 				var baseUrl = c.Resolve<IAppSettings>().ServiceUrl;
 				var sessionId = GetSessionId(c);
 
-                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>(), c.Resolve<ILogger>());
+                return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
 			});
             
 

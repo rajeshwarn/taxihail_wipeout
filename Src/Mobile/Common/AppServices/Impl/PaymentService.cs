@@ -3,16 +3,15 @@ using SocialNetworks.Services;
 #endif
 using System;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Fake;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -27,11 +26,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         string _sessionId;
         ICacheService _cache;
         private const string PayedCacheSuffix = "_Payed";
-        ILogger _logger;
 
-        public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache, ILogger logger)
+        public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache)
         {
-            _logger = logger;
             _baseUrl = url;
             _sessionId = sessionId;
             _cache = cache;
@@ -67,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _logger, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
+                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

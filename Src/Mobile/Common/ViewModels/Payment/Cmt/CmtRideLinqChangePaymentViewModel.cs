@@ -1,18 +1,11 @@
 using System;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>, IMvxServiceConsumer<IAccountService>
 	{
@@ -47,9 +40,10 @@ namespace apcurium.MK.Booking.Mobile
             {
 				return GetCommand(() =>
 				{
-					if(AccountService.CurrentAccount.DefaultCreditCard == null)
+                    if (this.Services().Account.CurrentAccount.DefaultCreditCard == null)
 					{
-						AccountService.UpdateSettings(AccountService.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, AccountService.CurrentAccount.DefaultTipPercent);
+                        this.Services().Account.UpdateSettings(this.Services().Account.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, 
+                                    this.Services().Account.CurrentAccount.DefaultTipPercent);
 					}
 
 					ReturnResult(new PaymentInformation
