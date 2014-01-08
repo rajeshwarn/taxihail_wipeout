@@ -16,7 +16,7 @@ using ServiceStack.Redis.Support;
 
 namespace apcurium.MK.Booking.Api.Services.Admin
 {
-    public class ExportDataService : RestServiceBase<ExportDataRequest>
+    public class ExportDataService : Service
     {
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
@@ -29,16 +29,19 @@ namespace apcurium.MK.Booking.Api.Services.Admin
             _configurationManager = configurationManager;
         }
 
-        public override object OnGet(ExportDataRequest request)
+        public object Post(ExportDataRequest request)
         {
             var ibsServerTimeDifference = _configurationManager.GetSetting("IBS.TimeDifference").SelectOrDefault(long.Parse, 0);
             var offset = new TimeSpan(ibsServerTimeDifference);
+            
+            var startDate = request.StartDate ?? DateTime.MinValue;
+            var endDate = request.EndDate ?? DateTime.MaxValue;
 
             switch (request.Target)
             {
                 case DataType.Accounts:
                     var accounts = _accountDao.GetAll();
-                    return accounts.Select(x => new
+                    return accounts.Where(x => x.CreationDate >= startDate && x.CreationDate <= endDate).Select(x => new
                     {
                         x.Id,
                         x.IBSAccountId,
@@ -56,11 +59,11 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                         x.IsConfirmed,
                         x.DisabledByAdmin
                     });
-                    break;
                 case DataType.Orders:
                     var orders = _orderDao.GetAllWithAccountSummary();
                     //return
-                    var testResult = orders.Where(x => x.CreatedDate != null).Select(x =>
+                    var testResult = orders.Where(x => x.CreatedDate >= startDate && x.CreatedDate <= endDate)
+                        .Select(x =>
                         {
                             var operatingSystem = UserAgentParser.GetOperatingSystem(x.UserAgent);
                             var phone = string.IsNullOrWhiteSpace(x.Phone) ? "" : x.Phone.ToSafeString();
@@ -129,8 +132,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
 
                     return testResult;
-
-                    break;
             }
             return new HttpResult(HttpStatusCode.NotFound);
         }
