@@ -17,7 +17,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
     {
 
         #region Constructors
