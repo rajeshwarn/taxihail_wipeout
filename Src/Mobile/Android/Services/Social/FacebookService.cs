@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Facebook;
 using Xamarin.FacebookBinding;
 using Xamarin.FacebookBinding.Model;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
@@ -11,18 +10,17 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
 	public class FacebookService: IFacebookService
-    {
+	{
 		readonly string _appId;
 		readonly Func<Activity> _mainActivity;
-		readonly FacebookClient _facebookClient = new FacebookClient();
 		readonly MyStatusCallback _statusCallback;
 
 		public FacebookService(string appId, Func<Activity> mainActivity)
-        {
+		{
 			this._mainActivity = mainActivity;
 			this._appId = appId;
 			this._statusCallback = new MyStatusCallback();
-        }
+		}
 
 		public Task Connect(string permissions)
 		{
@@ -45,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			var tcs = new TaskCompletionSource<object>();
 			if (!session.IsOpened)
 			{
-				_statusCallback.SetTaskCompletionSource(tcs);
+				_statusCallback.SetTaskCompletionSource(tcs, session);
 				Session.OpenRequest openRequest = null;
 
 				openRequest = new Session.OpenRequest(_mainActivity());
@@ -111,12 +109,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 		{
 			readonly object _gate = new object();
 			private TaskCompletionSource<object> _tcs;
+			private Session _currentTaskSession;
+
 			public MyStatusCallback ()
 			{
 			}
 
 			public void Call (Session session, SessionState status, Java.Lang.Exception exception)
 			{
+				if (_currentTaskSession == null || _currentTaskSession != session)
+				{
+					return;
+				}
+
 				bool connected = status == SessionState.Opened
 				                 || status == SessionState.OpenedTokenUpdated;
 
@@ -133,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				}
 			}
 
-			public void SetTaskCompletionSource(TaskCompletionSource<object> tcs)
+			public void SetTaskCompletionSource(TaskCompletionSource<object> tcs, Session session)
 			{
 				lock (_gate)
 				{
@@ -142,6 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 						_tcs.TrySetCanceled();
 					}
 					_tcs = tcs;
+					_currentTaskSession = session;
 				}
 			}
 		}
@@ -165,6 +171,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 				}
 			}
 		}
-    }
+	}
 }
 
