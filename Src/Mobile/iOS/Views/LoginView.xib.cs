@@ -28,7 +28,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
     {
 
         #region Constructors
