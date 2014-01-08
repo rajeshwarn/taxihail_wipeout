@@ -22,7 +22,6 @@ using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using MonoTouch.FacebookConnect;
 
 namespace apcurium.MK.Booking.Mobile.Client

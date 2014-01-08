@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 using ServiceStack.ServiceClient.Web;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
-
 #else
-using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
 
