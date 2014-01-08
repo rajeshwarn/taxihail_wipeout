@@ -88,6 +88,7 @@
     <Compile Include="Cmt\CmtAuthResponse.cs" />
     <Compile Include="Cmt\CmtBaseServiceClient.cs" />
     <Compile Include="Cmt\CmtAuthServiceClient.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />

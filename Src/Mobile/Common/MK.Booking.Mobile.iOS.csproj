@@ -285,6 +285,7 @@
     <Compile Include="Data\TermsAndConditionsContent.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqPairingState.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\Social\FacebookUserInfo.cs" />

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -55,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
                 var setting = this.Services().Config.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !PaymentService.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
 			}
 		}
 
@@ -65,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
                 var setting = this.Services().Config.GetPaymentSettings();
                 var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
-                return isPayEnabled && this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue;
+				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && PaymentService.GetPaymentFromCache(Order.Id).HasValue;
 	        }
 	    }
 

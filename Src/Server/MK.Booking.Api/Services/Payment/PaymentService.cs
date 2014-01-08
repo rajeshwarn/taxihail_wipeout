@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;

@@ -1,188 +1,138 @@
 using System;
-using System.Globalization;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using System.Linq;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
+namespace apcurium.MK.Booking.Mobile
 {
-    public class CmtRideLinqConfirmPairViewModel : BaseViewModel
+	public class CmtRideLinqConfirmPairViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
 	{
-        public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
+		public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
-			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
-
-            if (PaymentPreferences.SelectedCreditCard == null)
-            {
-                RequestSubNavigate<CreditCardsListViewModel, Guid>(
-                    null, result =>
-                {
-                    if (result != default(Guid))
-                    {
-                        PaymentPreferences.SelectedCreditCardId = result;
-                        PaymentPreferences.LoadCreditCards();
-                        RefreshCreditCards();
-                    }
-                });
-            }
-            else
-            {
-                RefreshCreditCards();
-            }
+			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
+			_paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), new PaymentInformation
+				{
+					CreditCardId = AccountService.CurrentAccount.DefaultCreditCard,
+					TipPercent = AccountService.CurrentAccount.DefaultTipPercent,
+				});
+			_paymentPreferences.CreditCards.CollectionChanged += (sender, e) => RefreshCreditCards();
 		}
 
-        private PaymentDetailsViewModel _paymentPreferences;
-        public PaymentDetailsViewModel PaymentPreferences
-        {
-            get
-            {
-                if (_paymentPreferences == null)
-                {
-                    var account = this.Services().Account.CurrentAccount;
-                    var paymentInformation = new PaymentInformation
-                    {
-                        CreditCardId = account.DefaultCreditCard,
-                        TipPercent = account.DefaultTipPercent,
-                    };
-
-                    _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-                }
-                return _paymentPreferences;
-            }
-
-            set
-            {
-                _paymentPreferences = value;
-            }
-        }
+		private PaymentDetailsViewModel _paymentPreferences;
 
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus { get; set; }
 
-        public void RefreshCreditCards()
-        {
-            var selectedCard = PaymentPreferences.SelectedCreditCard;
-            
-            if (selectedCard != null)
-            {
-                IsConfirmEnabled = true;
-                _cardNumber = selectedCard.CreditCardCompany + " " + selectedCard.Last4Digits;
-            }
-            else
-            {
-                IsConfirmEnabled = false;
-                _cardNumber = "";
-            }
+		public void RefreshCreditCards()
+		{
+			var selectedCard = _paymentPreferences.SelectedCreditCard;
 
-            FirePropertyChanged(() => IsConfirmEnabled);
-            FirePropertyChanged(() => CardNumber);
-        }
+			if (selectedCard != null)
+			{
+				_cardNumber = selectedCard.CreditCardCompany + " " + selectedCard.Last4Digits;
+			}
+			else
+			{
+				_cardNumber = "";
+			}
 
-        private bool _isConfirmEnabled;
-        public bool IsConfirmEnabled
-        {
-            get
-            {
-                return _isConfirmEnabled;
-            }   
-         
-            set
-            {
-                _isConfirmEnabled = value;
-            }
-        }
+			FirePropertyChanged(() => CardNumber);
+		}
 
-        public string CarNumber{
+		public string CarNumber{
 			get{
 				return OrderStatus.VehicleNumber;
 			}
 		}
 
-        private string _cardNumber = "";
-        public string CardNumber
-        {
-            get
-            {
-                if (_cardNumber != "")
-                {
-                    return _cardNumber;
-                }
-                return "None";
-            }
-        }
-
-        public string TipAmountInPercent
-        {
-            get
-            {
-                var tipAmount = PaymentPreferences.Tip;
-                return tipAmount.ToString(CultureInfo.InvariantCulture) + "%";                
-            }
-        }        
-
-		public AsyncCommand ConfirmPayment
+		public string _cardNumber = "";
+		public string CardNumber
 		{
-			get {
-				return GetCommand (() =>
-				{                      
-                    // MKTAXI-1161 - Change the Pair status with account service
-                    // TODO: Get tip in percent
-                    var payment = this.Services().Payment;                    
-                    
-                    PairingResponse pairingResponse = payment.Pair(Order.Id, PaymentPreferences.SelectedCreditCard.Token, PaymentPreferences.Tip, 0d);                    
-                    
-                    this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? "success" : "failed");
-                        
-                    RequestNavigate<BookingStatusViewModel>(new
-                    {
-                        order = Order.ToJson(),
-                        orderStatus = OrderStatus.ToJson()
-                    });                   
-				});
+			get
+			{
+				if (_cardNumber != "")
+				{
+					return _cardNumber;
+				}
+				else return "None";
 			}
 		}
 
-// ReSharper disable once UnusedMember.Global
-        public AsyncCommand ChangePaymentInfo
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    RequestSubNavigate<CmtRideLinqChangePaymentViewModel, PaymentDetailsViewModel>(
-                        new
-                        {
-                            order = Order.ToJson(),
-                            orderStatus = OrderStatus.ToJson(),
-                        }.ToStringDictionary(), result =>
-                    {                                                
-                            PaymentPreferences = result;
-                            PaymentPreferences.LoadCreditCards();
-                            RefreshCreditCards();                        
-                    });
-                });
-            }
-        }
+		public string TipAmountInPercent
+		{
+			get
+			{
+				var tipAmount = _paymentPreferences.Tip;
+				return tipAmount.ToString() + "%";                
+			}
+		}        
 
-        public AsyncCommand CancelPayment
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), "canceled");
+		public IMvxCommand ConfirmPayment
+		{
+			get {
+				return GetCommand (() =>
+					{                      
+						if (_paymentPreferences.SelectedCreditCard == null)
+						{
+							MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+							return;
+						}
 
-                    RequestNavigate<BookingStatusViewModel>(new
-                    {
-                        order = Order.ToJson(),
-                        orderStatus = OrderStatus.ToJson()
-                    });                   
-                });
-            }
-        }
+						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+
+						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
+
+						RequestClose(this);
+					});
+			}
+		}
+
+		public IMvxCommand ChangePaymentInfo
+		{
+			get
+			{
+				return GetCommand(() =>
+					{
+						RequestSubNavigate<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
+							new
+							{
+								currentPaymentInformation = new PaymentInformation
+								{
+									CreditCardId = _paymentPreferences.SelectedCreditCardId,
+									TipPercent = _paymentPreferences.Tip,
+								}.ToJson()
+							}.ToStringDictionary(), result =>
+							{                                                
+								_paymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
+								_paymentPreferences.Tip = (int)result.TipPercent;
+								FirePropertyChanged(() => TipAmountInPercent);
+								RefreshCreditCards();
+							});
+					});
+			}
+		}
+
+		public IMvxCommand CancelPayment
+		{
+			get
+			{
+				return GetCommand(() =>
+					{
+						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Canceled);
+
+						RequestClose(this);                
+					});
+			}
+		}
 	}
 }
-

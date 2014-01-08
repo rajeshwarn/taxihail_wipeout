@@ -508,5 +508,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             canvas.DrawText(vehicleNumber, canvas.Width/2, rect.Height() + textVerticalOffset, paintText);
             return mutableBitmap;
         }
+		public void Pause()
+		{
+			base.OnPause();
+			_mapReady = false;
+		}
+
     }
+
+	public class LayoutObserverForMap : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+	{
+		private readonly TouchMap _touchMap;
+
+		public LayoutObserverForMap(TouchMap touchMap)
+		{
+			_touchMap = touchMap;
+		}
+
+		public void OnGlobalLayout()
+		{
+			_touchMap.SetMapReady();
+		}
+	}
 }

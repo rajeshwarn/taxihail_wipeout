@@ -203,7 +203,8 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
-    <Content Include="admin\views\ExportOrdersOrAccountsView.js" />
+    <Content Include="admin\views\ExportAccountsView.js" />
+    <Content Include="admin\views\ExportOrdersView.js" />
     <Content Include="admin\views\ManagePaymentSettingsView.js" />
     <Content Include="admin\views\RuleItemView.js" />
     <Content Include="admin\views\ManageRulesView.js" />
@@ -398,9 +399,10 @@
     <Content Include="admin\templates\SendPushNotification.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\ExportOrdersOrAccounts.handlebars">
+    <Content Include="admin\templates\ExportOrders.handlebars">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="admin\templates\ExportAccounts.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

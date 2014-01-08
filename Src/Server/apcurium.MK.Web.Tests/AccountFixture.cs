@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void RegisteringFacebookAccountTest()
+        public async void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var newAccount = new RegisterAccount
@@ -46,7 +46,7 @@ namespace apcurium.MK.Web.Tests
             };
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateFacebook(newAccount.FacebookId);
+            var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateFacebook(newAccount.FacebookId);
             var account = sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
@@ -192,9 +192,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_granting_admin_access()
+        public async void when_granting_admin_access()
         {
-            var fbAccount = GetNewFacebookAccount();
+            var fbAccount = await GetNewFacebookAccount();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
@@ -202,17 +202,16 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_granting_admin_access_with_incorrect_rights()
+        public async void when_granting_admin_access_with_incorrect_rights()
         {
             var asc = new AccountServiceClient(BaseUrl, null, "Test");
 
-            var fbAccount = GetNewFacebookAccount();
+            var fbAccount = await GetNewFacebookAccount();
 
             var newAccount = asc.CreateTestAccount();
             new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(newAccount.Email, TestAccountPassword);
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-            Assert.Throws<WebServiceException>(
-                () => sut.GrantAdminAccess(new GrantAdminRightRequest {AccountEmail = fbAccount.Email}));
+            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest {AccountEmail = fbAccount.Email}));
         }
 
         [Test]
@@ -426,5 +425,6 @@ namespace apcurium.MK.Web.Tests
             };
             Assert.Throws<WebServiceException>(() => sut.UpdatePassword(request));
         }
+            
     }
 }

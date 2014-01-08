@@ -1,89 +1,63 @@
 using System;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using System.Linq;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
+namespace apcurium.MK.Booking.Mobile
 {
-    public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentDetailsViewModel>
-    {
-        public CmtRideLinqChangePaymentViewModel(string messageId, string order, string orderStatus): base(messageId)
+	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>, IMvxServiceConsumer<IAccountService>
+	{
+		public CmtRideLinqChangePaymentViewModel(string messageId, string currentPaymentInformation): base(messageId)
 		{
-            Order = order.FromJson<Order>();
-            _paymentPreferences = PaymentPreferences; // Workaround            
-            PlaceholderAmount = "0";
+			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
+			PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), DefaultPaymentInformations);
+			PaymentPreferences.LoadCreditCards();
 		}
 
-        private string _placeholderAmount { get; set; }
-        public string PlaceholderAmount
-        {
-            get
-            {                
-                return _placeholderAmount;
-            }
+		public PaymentInformation DefaultPaymentInformations { get; set ; }
+		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
-            set
-            {
-                _placeholderAmount = value;
-            }
-        }
-
-        private PaymentDetailsViewModel _paymentPreferences;
-        public PaymentDetailsViewModel PaymentPreferences
+		public IMvxCommand CancelCommand
         {
             get
             {
-                if (_paymentPreferences == null)
-                {
-                    var account = this.Services().Account.CurrentAccount;
-                    var paymentInformation = new PaymentInformation
-                    {
-                        CreditCardId = account.DefaultCreditCard,
-                        TipPercent = account.DefaultTipPercent,
-                    };
-
-                    _paymentPreferences.Tip = (int)account.DefaultTipPercent;                    
-                    _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
-                    _paymentPreferences.SelectedCreditCardId = (Guid)account.DefaultCreditCard;
-                    _paymentPreferences.LoadCreditCards();
-
-                }
-                return _paymentPreferences;
+				return GetCommand(() =>
+				{
+					ReturnResult(new PaymentInformation
+					{
+						CreditCardId = DefaultPaymentInformations.CreditCardId,
+						TipPercent = DefaultPaymentInformations.TipPercent,
+					});
+				});
             }
         }
 
-		Order Order { get; set; }
-		OrderStatusDetail OrderStatus { get; set; }
-
-        public string TipAmountInPercent
+		public IMvxCommand SaveCommand
         {
             get
             {
-                var tipAmount = PaymentPreferences.Tip;
-                return tipAmount + "%";                
-            }
-        }        
+				return GetCommand(() =>
+				{
+					if(AccountService.CurrentAccount.DefaultCreditCard == null)
+					{
+						AccountService.UpdateSettings(AccountService.CurrentAccount.Settings, PaymentPreferences.SelectedCreditCardId, AccountService.CurrentAccount.DefaultTipPercent);
+					}
 
-        public AsyncCommand SomeCommand
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    
-                });
-            }
-        }
-
-        public AsyncCommand SomeCancel
-        {
-            get
-            {
-                return GetCommand(() =>
-                {
-                    // Return original values
-                });
+					ReturnResult(new PaymentInformation
+					{
+						CreditCardId = PaymentPreferences.SelectedCreditCardId,
+						TipPercent = PaymentPreferences.Tip,
+					});
+				});
             }
         }
 	}

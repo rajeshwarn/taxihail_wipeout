@@ -270,6 +270,7 @@
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
     <Compile Include="Messages\AppActivated.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
+    <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqPairingState.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />

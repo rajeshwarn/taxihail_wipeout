@@ -101,8 +101,7 @@ namespace apcurium.MK.Web
             });
 
 
-            ContentTypeFilters.Register("text/x-csv", CsvCustomSerializer.SerializeToStream,
-                CsvCustomSerializer.DeserializeFromStream);
+            ContentTypeFilters.Register("text/x-csv", CsvCustomSerializer.SerializeToStream, CsvCustomSerializer.DeserializeFromStream);
             ResponseFilters.Add((req, res, dto) =>
             {
                 if (req.ResponseContentType == "text/x-csv")

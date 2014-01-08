@@ -13,7 +13,6 @@ using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
-using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
@@ -265,19 +264,22 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 // send pairing request
 
                 // Determine the root path to the app 
-                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+                //todo waiting for the provider enabled callbackurl
+                //var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
+
                 var response = _cmtMobileServiceClient.Post(new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
+                    //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber
+                    Medallion = orderStatusDetail.VehicleNumber,
+                    CardOnFileId = request.CardToken
                 });
 
                 // wait for trip to be updated

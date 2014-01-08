@@ -2,20 +2,17 @@
 
 using System;
 using System.Globalization;
-using System.IO;
 using System.Net;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Cmt;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Diagnostic;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
+namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
     /// <summary>
     ///     The Tokenize resource provides developers the ability to create a token in place of
@@ -25,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
     /// </summary>
     public class CmtPaymentClient : BaseServiceClient, IPaymentServiceClient
     {
-        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings, ILogger logger,
+        public CmtPaymentClient(string baseUrl, string sessionId, CmtPaymentSettings cmtSettings,
             string userAgent)
             : base(baseUrl, sessionId, userAgent)
         {           
@@ -100,9 +97,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt.Payments
                 });
                 return response;
             }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException e)
+            catch (ServiceStack.ServiceClient.Web.WebServiceException)
             {                
-                return new PairingResponse() { IsSuccessfull = false };
+                return new PairingResponse { IsSuccessfull = false };
             }            
         }
 

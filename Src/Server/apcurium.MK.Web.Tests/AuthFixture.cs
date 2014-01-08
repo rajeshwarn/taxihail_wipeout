@@ -1,17 +1,17 @@
-﻿#region
-
-using System;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-
-#endregion
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class AuthFixture : BaseTest
     {
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -38,11 +38,27 @@ namespace apcurium.MK.Web.Tests
 
 
         [Test]
-        public void when_user_sign_in_with_facebook()
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
+        public void when_user_sign_in_with_invalid_password()
         {
-            var account = GetNewFacebookAccount();
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.AuthenticateFacebook(account.FacebookId);
+            var response = sut.Authenticate(TestAccount.Email, "wrong password");
+        }
+
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
+        public void when_user_sign_in_with_invalid_email()
+        {
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+        }
+
+        [Test]
+        public async void when_user_sign_in_with_facebook()
+        {
+            var account = await GetNewFacebookAccount();
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            var response = await sut.AuthenticateFacebook(account.FacebookId);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
@@ -50,41 +66,22 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage"
-            )]
-        public void when_user_sign_in_with_invalid_email()
+        public async void when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+            try
+            {
+                await sut.AuthenticateFacebook(Guid.NewGuid().ToString());
+                Assert.Fail();
+            }
+            catch(WebServiceException e)
+            {
+                Assert.AreEqual("Invalid UserName or Password", e.ErrorMessage);
+            }
         }
 
         [Test]
-        public void when_user_sign_in_with_invalid_facebook_id()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(() => sut
-                .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
-        }
-
-        [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage"
-            )]
-        public void when_user_sign_in_with_invalid_password()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            sut.Authenticate(TestAccount.Email, "wrong password");
-        }
-
-        [Test]
-        public void when_user_sign_in_with_invalid_twitter_id()
-        {
-            var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(() => sut
-                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
-        }
-
-        [Test]
-        public void when_user_sign_in_with_twitter()
+        public async void when_user_sign_in_with_twitter()
         {
             var account = GetNewTwitterAccount();
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
@@ -93,6 +90,14 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
             Assert.AreEqual(account.TwitterId, response.UserName);
+        }
+
+        [Test]
+        public void when_user_sign_in_with_invalid_twitter_id()
+        {
+            var sut = new AuthServiceClient(BaseUrl, null, "Test");
+            Assert.Throws<WebServiceException>(() => sut
+                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }

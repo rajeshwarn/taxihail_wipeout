@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,11 +36,6 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="BeforeBuild" command="" />
-      </CustomCommands>
-    </CustomCommands>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup>
@@ -647,14 +642,15 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Values\String.xml" />
   </ItemGroup>
+  <!-- Other possible parameters for further cases: WorkingDirectory="" Condition="'$(Os)'=='Unix'" -->
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-     Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+    <!--- <Exec Command="..\..\LocalizationTool\GenerateAndroidResources.sh" WorkingDirectory=""  /> -->
+    <Exec Command="mono &quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;./Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" Condition="'$(Os)'=='Unix'" />
+    <Exec Command="&quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;./Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" Condition="'$(Os)'!='Unix'" />
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
     <Folder Include="Services\Social\" />
@@ -757,11 +753,6 @@
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCmtPair.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
