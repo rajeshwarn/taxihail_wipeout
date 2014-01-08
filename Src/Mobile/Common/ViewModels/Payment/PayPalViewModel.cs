@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-        //todo : declare command in basesubviewmodel and refactor the Finish pattern in other viewmodels
         public AsyncCommand<bool> Finish
 		{
 			get{

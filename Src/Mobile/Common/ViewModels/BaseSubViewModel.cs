@@ -15,11 +15,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get;
 			private set;
 		}
-
-		protected void Cancel()
-		{
-			ReturnResult(default(TResult));
-		}
 		
 		protected void ReturnResult(TResult result)
 		{
