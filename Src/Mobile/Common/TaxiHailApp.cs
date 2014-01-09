@@ -1,4 +1,4 @@
-using apcurium.MK.Booking.Mobile.Mvx;
+using apcurium.MK.Booking.Mobile.Mvx_;
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;

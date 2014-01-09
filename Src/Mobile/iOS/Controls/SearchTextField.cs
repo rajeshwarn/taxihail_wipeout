@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Windows.Input;
 using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
@@ -74,9 +74,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private IMvxCommand _textChangedCommand;
+        private ICommand _textChangedCommand;
 
-        public IMvxCommand TextChangedCommand
+        public ICommand TextChangedCommand
         { 
             get{ return _textChangedCommand;}
             set

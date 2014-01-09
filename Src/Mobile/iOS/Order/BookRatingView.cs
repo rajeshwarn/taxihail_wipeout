@@ -1,29 +1,18 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	public partial class BookRatingView : MvxBindingTouchViewController<BookRatingViewModel>
+	public partial class BookRatingView : MvxViewController
 	{
 		public BookRatingView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
-		{
-		}
-		
-		public BookRatingView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public BookRatingView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
+			: base("BookRatingView", null)
 		{
 		}
 		

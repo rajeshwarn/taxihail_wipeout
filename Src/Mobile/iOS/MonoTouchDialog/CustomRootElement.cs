@@ -1,6 +1,6 @@
 using System;
-using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 using MonoTouch.UIKit;
+using CrossUI.Touch.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {

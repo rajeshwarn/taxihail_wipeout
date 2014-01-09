@@ -4,16 +4,17 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Binding;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
+	[MvxViewFor(typeof(ConfirmCarNumberViewModel))]
+    public partial class ConfrimCarNumberPage :  BaseViewController
     {
-        public ConfrimCarNumberPage(MvxShowViewModelRequest request) 
-            : base(request)
+        public ConfrimCarNumberPage() 
+			: base("ConfrimCarNumberPage", null)
         {
         }
 

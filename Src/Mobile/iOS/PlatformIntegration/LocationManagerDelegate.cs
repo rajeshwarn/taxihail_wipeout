@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Touch.ExtensionMethods;
 using MK.Common.iOS.Patterns;
 using MonoTouch.CoreLocation;
 

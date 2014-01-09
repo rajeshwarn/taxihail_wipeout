@@ -1,24 +1,24 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Order;
-using MonoTouch.MapKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using System.Drawing;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
-using apcurium.MK.Common.Entity;
-using System.Threading;
+using MonoTouch.MapKit;
 using MonoTouch.UIKit;
-using System.Threading.Tasks;
-using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private UIImageView _dropoffCenterPin;
 
         private TouchGesture _gesture;
-        private IMvxCommand _mapMoved;
+        private ICommand _mapMoved;
         private Address _pickup;
         private Address _dropoff;
         private CancellationTokenSource _cancelToken;
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             CancelMoveMap();
         }
                
-        public IMvxCommand MapMoved
+        public ICommand MapMoved
         {
             get{ return _mapMoved;} 
             set

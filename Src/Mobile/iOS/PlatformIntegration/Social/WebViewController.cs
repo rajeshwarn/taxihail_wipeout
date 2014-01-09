@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Dialog;
-using MonoTouch.Foundation;
 using System.Drawing;
+using CrossUI.Touch.Dialog;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {

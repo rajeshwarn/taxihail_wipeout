@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
@@ -101,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		}
 	
 
-		public IMvxCommand SetRateCommand {
+		public ICommand SetRateCommand {
 			get ;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
 			set ;

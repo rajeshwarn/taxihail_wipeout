@@ -1,7 +1,6 @@
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;

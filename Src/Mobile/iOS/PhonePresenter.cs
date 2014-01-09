@@ -1,13 +1,10 @@
 using System.Drawing;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Touch.Views.Presenters;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Touch.Interfaces;
-using Cirrious.MvvmCross.Platform.Diagnostics;
-using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Linq;
+using Cirrious.MvvmCross.Touch.Views;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
+using Cirrious.MvvmCross.ViewModels;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

@@ -5,8 +5,6 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Touch.Interfaces;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;

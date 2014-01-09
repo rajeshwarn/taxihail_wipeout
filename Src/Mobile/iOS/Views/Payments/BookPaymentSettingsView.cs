@@ -4,16 +4,17 @@ using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public partial class BookPaymentSettingsView : BaseViewController<PaymentViewModel>
+	[MvxViewFor(typeof(PaymentViewModel))]
+    public partial class BookPaymentSettingsView : BaseViewController
     {
-        public BookPaymentSettingsView(MvxShowViewModelRequest request) 
-            : base(request)
+        public BookPaymentSettingsView() 
+			: base("BookPaymentSettingsView", null)
         {
         }
 

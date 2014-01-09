@@ -6,16 +6,15 @@ using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
+    public partial class AddressSearchView : MvxViewController
 	{
 		private const string Cellid = "AdressCell";
 
@@ -29,22 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				   'IsFirst':{'Path':'IsFirst'},
 				   'IsLast':{'Path':'IsLast'},
 				}";
-		#region Constructors
-        public AddressSearchView() 
-            : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-
-        public AddressSearchView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-
-        public AddressSearchView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+        
+		public AddressSearchView() 
+			: base("AddressSearchView", null)
         {
         }	
-		#endregion
 
 		public override void ViewDidLoad ()
 		{

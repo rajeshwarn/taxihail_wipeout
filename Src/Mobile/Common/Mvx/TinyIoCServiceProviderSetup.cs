@@ -1,7 +1,7 @@
 using System;
 using Cirrious.MvvmCross.Platform;
 
-namespace apcurium.MK.Booking.Mobile.Mvx
+namespace apcurium.MK.Booking.Mobile.Mvx_
 {
      public static class TinyIoCServiceProviderSetup
     {

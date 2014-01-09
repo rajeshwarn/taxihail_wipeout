@@ -3,7 +3,6 @@ using System.IO;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Touch.Interfaces;
 using MonoTouch.EventKit;
 using MonoTouch.Foundation;
 using MonoTouch.MessageUI;

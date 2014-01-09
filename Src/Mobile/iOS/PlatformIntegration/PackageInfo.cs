@@ -2,11 +2,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
-using Cirrious.MvvmCross.Interfaces.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-
     public class PackageInfo : IPackageInfo
     {
         private static string _userAgent;

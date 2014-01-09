@@ -1,12 +1,13 @@
+using System;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

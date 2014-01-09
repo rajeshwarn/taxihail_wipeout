@@ -3,9 +3,8 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -13,20 +12,10 @@ using MonoTouch.UIKit;
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
     [NoHistory]
-    public partial class BookStreetNumberView : MvxBindingTouchViewController<BookStreetNumberViewModel>
+    public partial class BookStreetNumberView : MvxViewController
     {
         public BookStreetNumberView() 
-            : base(new MvxShowViewModelRequest<BookStreetNumberViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-        
-        public BookStreetNumberView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public BookStreetNumberView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("BookStreetNumberView", null)
         {
         }
 		

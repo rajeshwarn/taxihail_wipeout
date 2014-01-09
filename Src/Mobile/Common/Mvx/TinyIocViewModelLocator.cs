@@ -17,7 +17,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyIoC;
 
-namespace apcurium.MK.Booking.Mobile.Mvx
+namespace apcurium.MK.Booking.Mobile.Mvx_
 {
     public class TinyIocViewModelLocator : IMvxViewModelLocator
     {

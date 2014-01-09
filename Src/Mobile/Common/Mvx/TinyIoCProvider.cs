@@ -1,7 +1,7 @@
 using Cirrious.MvvmCross.Interfaces.IoC;
 using TinyIoC;
 
-namespace apcurium.MK.Booking.Mobile.Mvx
+namespace apcurium.MK.Booking.Mobile.Mvx_
 {
     public class TinyIoCProvider : IMvxIoCProvider
     {

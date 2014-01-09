@@ -1,9 +1,9 @@
 using System;
-using apcurium.MK.Booking.Mobile.Client.Localization;
+using System.Drawing;
+using System.Windows.Input;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using System.Drawing;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -120,8 +120,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			
 		}
 
-		private IMvxCommand _dateChangedCommand;
-		public IMvxCommand DateChangedCommand
+		private ICommand _dateChangedCommand;
+		public ICommand DateChangedCommand
 		{ 
 			get{ return _dateChangedCommand;}
 			set
