@@ -1,10 +1,5 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-using SocialNetworks.Services.MonoDroid;
-using SocialNetworks.Services.OAuth;
 
 
-#endif
 using System;
 using System.Collections.Generic;
 using Android.App;
@@ -18,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -85,34 +81,26 @@ namespace apcurium.MK.Booking.Mobile.Client
             CustomBindingsLoader.Load(registry);
         }
 
-
-#if SOCIAL_NETWORKS
-        public void InitializeSocialNetwork()
-        {
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
-            var oauthConfig = new OAuthConfig
-            {
-
-                ConsumerKey = settings.TwitterConsumerKey,
-                Callback = settings.TwitterCallback,
-                ConsumerSecret = settings.TwitterConsumerSecret,
-                RequestTokenUrl = settings.TwitterRequestTokenUrl,
-                AccessTokenUrl = settings.TwitterAccessTokenUrl,
-                AuthorizeUrl = settings.TwitterAuthorizeUrl
-            };
-            
-            TinyIoCContainer.Current.Register<IFacebookService>( (c,p) => new FacebookServicesMD(c.Resolve<IAppSettings>().FacebookAppId, LoginActivity.TopInstance ));
-            TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
-
-        }
-#endif
 		public void InitializeSocialNetwork()
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
 			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
 			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
+
+			var oauthConfig = new OAuthConfig
+			{
+
+				ConsumerKey = settings.TwitterConsumerKey,
+				Callback = settings.TwitterCallback,
+				ConsumerSecret = settings.TwitterConsumerSecret,
+				RequestTokenUrl = settings.TwitterRequestTokenUrl,
+				AccessTokenUrl = settings.TwitterAccessTokenUrl,
+				AuthorizeUrl = settings.TwitterAuthorizeUrl
+			};
+
+			TinyIoCContainer.Current.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
+
 		}
 
         protected override MvxApplication CreateApp()

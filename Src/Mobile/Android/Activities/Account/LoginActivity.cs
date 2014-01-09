@@ -1,9 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-using SocialNetworks.Services.Entities;
-using SocialNetworks.Services.MonoDroid;
-
-#endif
 using System;
 using System.Reactive.Linq;
 using Android.App;
@@ -42,26 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 		}
 
-#if SOCIAL_NETWORKS
-    /// <summary>
-    /// use for SSO when FB app is isntalled
-    /// </summary>
-    /// <param name='requestCode'>
-    /// Request code.
-    /// </param>
-    /// <param name='resultCode'>
-    /// Result code.
-    /// </param>
-    /// <param name='data'>
-    /// Data.
-    /// </param>
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-                       
-            (ViewModel.FacebookService as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
-        }
-#endif
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);

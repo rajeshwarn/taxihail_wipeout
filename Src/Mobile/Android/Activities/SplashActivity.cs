@@ -1,8 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-using SocialNetworks.Services.MonoDroid;
-using SocialNetworks.Services.OAuth;
-#endif
 using Android.App;
 using Android.OS;
 using System;

@@ -1,6 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-#endif
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -93,20 +91,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void SignOut ()
         {
-#if SOCIAL_NETWORKS
-            try {
+            try
+			{
                 var facebook = TinyIoCContainer.Current.Resolve<IFacebookService> ();
-                if (facebook.IsConnected) {                    
-                    facebook.Disconnect ();
-                }
-            } catch( Exception ex )
+                facebook.Disconnect ();
+            } 
+			catch( Exception ex )
             {
                 Console.WriteLine(ex.Message);
             }
 
-            try {
+            try
+			{
                 var twitterService = TinyIoCContainer.Current.Resolve<ITwitterService> ();
-                if (twitterService.IsConnected) {
+                if (twitterService.IsConnected)
+				{
                     twitterService.Disconnect ();
                 }
             } 
@@ -115,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Console.WriteLine(ex.Message);
             }
 
-#endif
             ClearCache ();
         }
 

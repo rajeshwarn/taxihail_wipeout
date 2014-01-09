@@ -83,6 +83,7 @@
       <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
@@ -279,6 +280,15 @@
     <Compile Include="AppServices\Social\FacebookUserInfo.android.cs">
       <DependentUpon>FacebookUserInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="AppServices\Social\ITwitterService.cs" />
+    <Compile Include="AppServices\Social\TwitterServiceBase.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthAuthorizer.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthAuthorizerMonoDroid.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthConfig.cs" />
+    <Compile Include="AppServices\Social\OAuth\Punycode.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthEncoder.cs" />
+    <Compile Include="AppServices\Social\TwitterUserInfo.cs" />
+    <Compile Include="AppServices\Social\TwitterStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -333,6 +343,7 @@
   <ItemGroup />
   <ItemGroup>
     <Folder Include="AppServices\Social\" />
+    <Folder Include="AppServices\Social\OAuth\" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">

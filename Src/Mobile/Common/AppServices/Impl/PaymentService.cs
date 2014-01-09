@@ -1,6 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-#endif
 using System;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;

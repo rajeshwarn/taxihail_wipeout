@@ -5,7 +5,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 {
 	public interface IFacebookService
     {
-		Task Connect(string permissions);
+		Task Connect();
 		void Disconnect();
 		Task<FacebookUserInfo> GetUserInfo();
     }
