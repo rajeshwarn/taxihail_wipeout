@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
@@ -12,8 +11,6 @@ using ServiceStack.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Enumeration;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Framework;
 
@@ -28,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public LoginViewModel(IFacebookService facebookService,
 			ITwitterService twitterService,
-			IAccountService accountService,
 			IPushNotificationService pushService)
         {
             _facebookService = facebookService;
