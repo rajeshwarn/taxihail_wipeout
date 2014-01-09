@@ -20,7 +20,6 @@ using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
@@ -82,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
-            TinyIoCContainer.Current.Register<IAppCacheService>(new AppCacheService());
+            TinyIoCContainer.Current.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
 
             TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
             TinyIoCContainer.Current.Register<IPushNotificationService, PushNotificationService>();
