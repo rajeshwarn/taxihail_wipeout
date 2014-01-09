@@ -1,15 +1,14 @@
 ﻿(function () {
     TaxiHail.MapView = Backbone.View.extend({
         
-        initialize : function () {
+        initialize: function () {
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
             this.cityZoomLevel = 12;
-            var self = this;                      
-                this.interval = window.setInterval(function () {                    
-                    self.refresh();
+            var self = this;
+            this.interval = window.setInterval(function () {
+                self.refresh();
             }, 5000);
-
         },
         
         refresh: function () {
@@ -139,8 +138,6 @@
 
             this._mapSize = new google.maps.Point($container.width(), $container.height());
 
-            this._mapSizeWithPadding = new google.maps.Point($container.width() * 3 / 4, $container.height() * 2 / 3);
-
             var onmapchanged = function () {
                 var $_container = $(target.getMap().getDiv()),
                     x = $_container.width() / 2,
@@ -207,10 +204,10 @@
 
         centerMapAroundVehicleAndPickup: function () {            
             var projection = this._target.getProjection();            
-            this._bounds = new google.maps.LatLngBounds();
-            this._bounds.extend(this._pickupPin.position);
-            this._bounds.extend(this._vehicleMarker.position);            
-            this._map.fitBounds(this._bounds);
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(this._pickupPin.position);
+            bounds.extend(this._vehicleMarker.position);            
+            this._map.fitBounds(bounds);
 
             var mainDiv = $('#main');
             var pickupPnt = projection.fromLatLngToContainerPixel(this._pickupPin.position);
@@ -228,9 +225,9 @@
             if (anyInside) {
                 var offsetY = new google.maps.Point(0, maxDiff);
                 var extendByY = projection.fromContainerPixelToLatLng(offsetY);
-                this._bounds.extend(this._bounds.getNorthEast());
-                this._bounds.extend(extendByY);
-                this._map.fitBounds(this._bounds);
+                bounds.extend(bounds.getNorthEast());
+                bounds.extend(extendByY);
+                this._map.fitBounds(bounds);
             }
         },
 
