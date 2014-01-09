@@ -3,32 +3,18 @@ using System.Collections.Generic;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class UpdatePasswordView : BaseViewController<UpdatePasswordViewModel>
+	public partial class UpdatePasswordView : BaseViewController
 	{
-		#region Constructors
-		public UpdatePasswordView(Guid accountId) 
-			: base(new MvxShowViewModelRequest<UpdatePasswordViewModel>( new Dictionary<string, string>{{"accountId", accountId.ToString()}}, false, new MvxRequestedBy()))
-		{
-		}
-		
-		public UpdatePasswordView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public UpdatePasswordView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
+		public UpdatePasswordView() 
+			: base("UpdatePasswordView", null)
 		{
 		}	
-		#endregion
 		
 		public override void ViewDidLoad ()
 		{

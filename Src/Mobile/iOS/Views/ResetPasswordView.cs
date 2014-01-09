@@ -3,35 +3,19 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>
+    public partial class ResetPasswordView : BaseViewController
     {
-        #region Constructors
-        
-        public ResetPasswordView () 
-            : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new MvxRequestedBy()   ) )
+        public ResetPasswordView() 
+			: base("ResetPasswordView", null)
         {
         }
         
-        public ResetPasswordView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public ResetPasswordView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-        
-#endregion
-		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();

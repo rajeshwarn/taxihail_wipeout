@@ -9,34 +9,20 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class StatusView : BaseViewController<BookingStatusViewModel>
+	[MvxViewFor(typeof(BookingStatusViewModel))]
+    public partial class StatusView : BaseViewController
     {
-        #region Constructors
-
         public StatusView () 
-            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("StatusView", null)
         {
         }
-        
-        public StatusView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public StatusView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-
-        #endregion
 
         public override void ViewDidLoad ()
         {

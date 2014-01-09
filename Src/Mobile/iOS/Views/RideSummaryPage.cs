@@ -1,18 +1,19 @@
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class RideSummaryPage  : BaseViewController<RideSummaryViewModel>
+	[MvxViewFor(typeof(RideSummaryViewModel))]
+	public partial class RideSummaryPage  : BaseViewController
 	{     
-		public RideSummaryPage(MvxShowViewModelRequest request) 
-		: base(request)
+		public RideSummaryPage() 
+			: base("RideSummaryPage", null)
 		{
 		}    
 

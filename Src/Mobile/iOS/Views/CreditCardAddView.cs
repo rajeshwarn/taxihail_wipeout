@@ -5,31 +5,16 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
+    public partial class CreditCardAddView : BaseViewController
     {
-        #region Constructors
-        
         public CreditCardAddView () 
-            : base(new MvxShowViewModelRequest<CreditCardAddViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("CreditCardAddView", null)
         {
         }
-        
-        public CreditCardAddView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public CreditCardAddView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-        
-        #endregion
 		
         public override void ViewDidLoad ()
         {

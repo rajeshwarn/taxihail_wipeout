@@ -9,9 +9,8 @@ using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -20,27 +19,15 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookView : MvxBindingTouchViewController<BookViewModel> , INavigationView
+    public partial class BookView : MvxViewController , INavigationView
     {
-        #region Constructors
-
         private PanelMenuView _menu;
         private DateTimePicker _dateTimePicker;
         private Action _onDateTimePicked;
         private BookViewActionsView _bottomAction;
 
         public BookView () 
-            : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-
-        public BookView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public BookView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("BookView", null)
         {
         }
 
@@ -181,8 +168,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.Reset ();
             ViewModel.Dropoff.ClearAddress ();        
         }
-
-        #endregion
 
 
 

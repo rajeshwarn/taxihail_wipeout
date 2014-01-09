@@ -4,15 +4,14 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LocationsTabView : BaseViewController<MyLocationsViewModel>
+	[MvxViewFor(typeof(MyLocationsViewModel))]
+	public partial class LocationsTabView : BaseViewController
 	{
         const string CellBindingText = @"
                 {
@@ -26,28 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    'IsAddNewCell': {'Path': 'IsAddNew'}
                 }";
 
-		#region Constructors
-
         public LocationsTabView () 
-            : base(new MvxShowViewModelRequest<MyLocationsViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("LocationsTabView", null)
         {
             Initialize();
         }
-        
-        public LocationsTabView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            Initialize();
-        }
-        
-        public LocationsTabView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-            Initialize();
-        }
-
-        #endregion
-        
         
         void Initialize()
         {

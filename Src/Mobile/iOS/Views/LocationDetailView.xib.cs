@@ -3,38 +3,21 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LocationDetailView : MvxBindingTouchViewController<LocationDetailViewModel>
+	public partial class LocationDetailView : MvxViewController
     {
-        #region Constructors
-
         public LocationDetailView () 
-			: base(new MvxShowViewModelRequest<LocationDetailViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("LocationDetailView", null)
 		{
 			Initialize();
 		}
-		
-		public LocationDetailView (MvxShowViewModelRequest request) 
-			: base(request)
-		{
-			Initialize();
-		}
-		
-		public LocationDetailView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-			Initialize();
-		}
-
-        #endregion
 
         void Initialize()
         {

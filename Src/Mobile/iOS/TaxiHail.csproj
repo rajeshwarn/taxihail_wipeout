@@ -415,9 +415,6 @@
     </Compile>
     <Compile Include="Controls\FormLabel.cs" />
     <Compile Include="Views\BaseViewController.cs" />
-    <Compile Include="Views\BaseViewController.designer.cs">
-      <DependentUpon>BaseViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\UIResponderExtensions.cs" />
     <Compile Include="Order\BookStreetNumberView.cs" />
     <Compile Include="Order\BookStreetNumberView.designer.cs">

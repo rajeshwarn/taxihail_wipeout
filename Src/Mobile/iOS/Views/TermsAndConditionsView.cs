@@ -4,30 +4,16 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class TermsAndConditionsView : BaseViewController<TermsAndConditionsViewModel>
+    public partial class TermsAndConditionsView : BaseViewController
     {
-
-
         public TermsAndConditionsView () 
-            : base(new MvxShowViewModelRequest<TermsAndConditionsViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-
-        public TermsAndConditionsView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-
-        public TermsAndConditionsView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("TermsAndConditionsView", null)
         {
         }
 

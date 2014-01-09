@@ -5,15 +5,15 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
+	[MvxViewFor(typeof(HistoryViewModel))]
+	public partial class HistoryTabView : BaseViewController
 	{
 
 		private const string Cellid = "HistoryCell";
@@ -27,24 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.Add("IsFirst","IsFirst")
 				.Add("IsLast","IsLast");
 
-		#region Constructors
-
 		public HistoryTabView() 
-			: base(new MvxShowViewModelRequest<HistoryViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("HistoryTabView", null)
 		{
 		}
-		
-		public HistoryTabView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public HistoryTabView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-		}
-
-		#endregion
 
 		public override void ViewDidLoad ()
 		{

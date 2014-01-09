@@ -4,16 +4,15 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class RideSettingsView : BaseViewController<RideSettingsViewModel>
+    public partial class RideSettingsView : BaseViewController
     {              
-        public RideSettingsView(MvxShowViewModelRequest request) 
-            : base(request)
+        public RideSettingsView() 
+			: base("RideSettingsView", null)
         {
         }    
 		

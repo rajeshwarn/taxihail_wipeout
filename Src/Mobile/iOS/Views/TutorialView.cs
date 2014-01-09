@@ -4,39 +4,21 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class TutorialView : MvxBindingTouchViewController<TutorialViewModel>, IMvxModalTouchView
+    public partial class TutorialView : MvxViewController, IMvxModalTouchView
     {
-        #region Constructors
-        
         public TutorialView () 
-            : base(new MvxShowViewModelRequest<TutorialViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("TutorialView", null)
         {
             Initialize ();
         }
-        
-        public TutorialView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            Initialize ();
-        }
-        
-        public TutorialView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-            Initialize ();
-        }
-        
-#endregion
         
         void Initialize ()
         {

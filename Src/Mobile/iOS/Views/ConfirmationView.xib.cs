@@ -7,8 +7,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -16,37 +14,24 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
+    public partial class ConfirmationView : BaseViewController
     {
-       
-
         public ConfirmationView () 
-            : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-        
-        public ConfirmationView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public ConfirmationView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("ConfirmationView", null)
         {
         }
 
-        public override void LoadView()
-        {
-            base.LoadView();
-            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var isThriev = appSettings.ApplicationName == "Thriev";
-            if (isThriev)
-            {
-                NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);
-            } else {
-                NSBundle.MainBundle.LoadNib ("ConfirmationView", this, null);
-            }
-        }
+		public override string NibName
+		{
+			get
+			{
+				var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+				var isThriev = appSettings.ApplicationName == "Thriev";
+				return isThriev
+					? "ConfirmationView_Thriev"
+					: "ConfirmationView";
+			}
+		}
 
         public override void ViewWillAppear (bool animated)
         {

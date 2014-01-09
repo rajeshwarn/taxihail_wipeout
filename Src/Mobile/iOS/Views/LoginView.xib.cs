@@ -7,9 +7,8 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -17,27 +16,10 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : MvxViewController, INavigationView
     {
-
-        #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-        public LoginView () 
-            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-            
-        }
-        
-        public LoginView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            
-        }
-        
-        public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+		public LoginView () 
+			: base("LoginView", null)
         {
 
         }
@@ -153,8 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
             popup.Show ();
         }
-
-        #endregion
+		
     }
 }
 

@@ -1,17 +1,15 @@
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreditCardsListView :  BaseViewController<CreditCardsListViewModel>
+    public partial class CreditCardsListView :  BaseViewController
     {
         
         private const string Cellid = "CreditCardsCell";
@@ -28,24 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    'DeleteCommand':{'Path':'RemoveCreditCards'}
                 }";
         
-        #region Constructors
-        
         public CreditCardsListView () 
-            : base(new MvxShowViewModelRequest<CreditCardsListViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("CreditCardsListView", null)
         {
         }
-        
-        public CreditCardsListView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public CreditCardsListView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-        
-#endregion
         
         
         public override void ViewDidLoad ()

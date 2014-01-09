@@ -10,22 +10,16 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookEditInformation : BaseViewController<BookEditInformationViewModel>
+    public partial class BookEditInformation : BaseViewController
     {
-        public BookEditInformation(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public BookEditInformation(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+        public BookEditInformation() 
+			: base("BookEditInformation", null)
         {
         }
 

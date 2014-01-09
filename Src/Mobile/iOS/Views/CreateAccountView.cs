@@ -3,34 +3,18 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreateAccountView : BaseViewController<CreateAcccountViewModel>
+    public partial class CreateAccountView : BaseViewController
     {
-        #region Constructors
-        
-        public CreateAccountView () 
-            : base(new MvxShowViewModelRequest<CreateAcccountViewModel>( null, true, new MvxRequestedBy()   ) )
+        public CreateAccountView() 
+			: base("CreateAccountView", null)
         {
         }
-        
-        public CreateAccountView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public CreateAccountView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-        
-#endregion
 		
         public override void ViewDidLoad ()
         {
