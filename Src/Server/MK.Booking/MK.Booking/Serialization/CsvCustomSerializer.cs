@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Serialization
 
         private static void SerializeDictionaryToStream(IRequestContext requestContext, List<Dictionary<string, string>> response, Stream stream)
         {
-            if (response == null) return;
+            if (response == null || response.Count == 0) return;
 
             using (var writer = new CsvWriter(new StreamWriter(stream)))
             {

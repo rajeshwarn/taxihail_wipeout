@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.IO;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -78,12 +79,13 @@ namespace apcurium.MK.Web.Tests
         }
         
 
-        protected Account GetNewFacebookAccount()
+        protected async Task<Account> GetNewFacebookAccount()
         {
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             AccountService.RegisterAccount(newAccount);
 
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").AuthenticateFacebook(newAccount.FacebookId);
+            var client = new AuthServiceClient(BaseUrl, null, "Test");
+            var authResponse = await client.AuthenticateFacebook(newAccount.FacebookId);
             SessionId = authResponse.SessionId;
 
             return AccountService.GetMyAccount();

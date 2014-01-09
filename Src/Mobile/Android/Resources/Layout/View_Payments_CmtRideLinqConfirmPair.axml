@@ -13,14 +13,6 @@
         android:padding="10dp"
         android:orientation="vertical"
         android:gravity="fill">
-    <!-- <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/CmtConfirmBookingInfo"
-            style="@style/MultilineFormLabelText"
-            android:textSize="20dp"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal" /> -->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -94,23 +86,6 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
-            android:paddingTop="15dip"
-            android:orientation="horizontal">
-            <apcurium.mk.booking.mobile.client.controls.TipSlider
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/tipSlider"
-                local:MvxBind="{'Percent': {'Path': 'PaymentPreferences.Tip', 'Mode':'TwoWay'}}"
-                android:layout_marginBottom="4.0dp"
-                android:layout_marginRight="-10dp"
-                android:layout_marginLeft="-10dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
             android:layout_height="100dip"
             android:padding="10dp"
             android:orientation="vertical"
@@ -125,7 +100,7 @@
             android:layout_height="40dip"
             android:text="@string/CmtConfirmPayment"
             android:layout_marginRight="5dp"
-            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}, 'Clickable': {'Path': 'IsConfirmEnabled'}}"
+            local:MvxBind="{'Click': {'Path': 'ConfirmPayment'}}"
             android:layout_gravity="bottom"
             android:layout_alignParentLeft="false"
             android:layout_alignParentTop="false"
@@ -134,7 +109,7 @@
             local:ButtonStyle="Green"
             android:id="@+id/ChangePaymentInfoBtn"
             style="@style/ButtonText"
-            android:background="@drawable/green_button"
+            android:background="@drawable/gray_button"
             android:layout_width="fill_parent"
             android:text="@string/CmtChangePaymentInfo"
             android:layout_marginRight="5dp"
@@ -148,7 +123,7 @@
             local:ButtonStyle="Green"
             android:id="@+id/CancelPaymentBtn"
             style="@style/ButtonText"
-            android:background="@drawable/green_button"
+            android:background="@drawable/red_button"
             android:layout_width="fill_parent"
             android:text="@string/CmtCancelPayment"
             android:layout_marginRight="5dp"

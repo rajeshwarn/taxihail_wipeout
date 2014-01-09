@@ -468,5 +468,7 @@
   <string name="CmtConfirmPayment">Confirm</string>
   <string name="CmtTipAmount">Tip Amount:</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm payment information</string>
-  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment information</string>
+  <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment info</string>
+  <string name="CmtRideLinqCancelChanges">Cancel</string>
+  <string name="CmtRideLinqSaveChanges">Save</string>
 </resources>

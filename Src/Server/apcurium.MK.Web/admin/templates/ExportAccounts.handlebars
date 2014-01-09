@@ -2,16 +2,20 @@
     <div class='span6'>
         <div class='well clearfix'>
             <div class='errors'></div>
-          <div class="form-horizontal clearfix" name="exportForm" >
+          <form class="form-horizontal clearfix" name="exportForm" method="post" action ="../api/admin/export/accounts?format=csv">
           <div class='control-group'>
+            <input name='format' value="x-csv" type="hidden"/>
             <label class='control-label' for='book-later-date-start'>{{localize "Start Date"}}</label>
-            <div class='controls'>
-              <div class="input-append date" data-role='datepicker' name='startDate' data-date="">
+            <div class='controls'> 
+
+              <div class="input-append date bootstrap-timepicker-component" data-role='datepicker' name='startDate' data-date="">
                 <input id='book-later-date-start' name='startDate' class="input-small" type="text"/>
                 <span class="add-on">
                   <i class="icon-calendar"></i>
                 </span>
               </div>
+              
+              
               <button type="button" class="btn" data-action="eraseStartTime">x</button>
             </div>
           </div>
@@ -24,13 +28,14 @@
                   <i class="icon-calendar"></i>
                 </span>
               </div>
-              <button type="button" class="btn" data-action="eraseEndTime">x</button>
+              <button type="" class="btn" data-action="eraseEndTime">x</button>
             </div>
           </div>
             <div class="control-group btn-right-alignment">
-                <button type="submit" class='btn btn-primary span' data-action='confirmExport' data-loading-text="{{localize 'Loading'}}">Export</button>
+                <button type="submit" class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">Export</button>
             </div>
-          </div>
+            
+          </form>
         </div>
     </div>
 </div>

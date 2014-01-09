@@ -1,8 +1,7 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using System.Threading.Tasks;
-
-
+using ServiceStack.ServiceClient.Web;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else

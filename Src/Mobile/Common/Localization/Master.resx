@@ -1440,6 +1440,12 @@
   <data name="CmtRideLinqUnpair" xml:space="preserve">
     <value>Unpair</value>
   </data>
+  <data name="CmtRideLinqCancelChanges" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CmtRideLinqSaveChanges" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="CmtTipAmount" xml:space="preserve">
     <value>Tip Amount:</value>
   </data>
@@ -1447,7 +1453,7 @@
     <value>Confirm payment information</value>
   </data>
   <data name="View_Payments_CmtRideLinqChangePaymentTitle" xml:space="preserve">
-    <value>Change payment information</value>
+    <value>Change payment info</value>
   </data>  
   <data name="GooglePlayServicesNotAvailableTitle" xml:space="preserve">
     <value>Update required</value>
