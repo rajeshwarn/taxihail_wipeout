@@ -4,10 +4,6 @@ using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Mvx;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Dialog.Touch;
-using Cirrious.MvvmCross.Touch.Interfaces;
 using Cirrious.MvvmCross.Touch.Platform;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -24,17 +20,18 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup
-        : MvxTouchDialogBindingSetup
+    public class Setup: MvxTouchSetup
     {
-        readonly IMvxTouchViewPresenter _presenter;
+        readonly IMvxViewPresenter _presenter;
         readonly IDictionary<string, string> _options;
 
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter, IDictionary<string, string> options)
+        public Setup(MvxApplicationDelegate applicationDelegate, IMvxViewPresenter presenter, IDictionary<string, string> options)
             : base(applicationDelegate, presenter)
         {
             _presenter = presenter;
@@ -43,26 +40,27 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         #region Overrides of MvxBaseSetup
         
-        protected override MvxApplication CreateApp()
+		protected override IMvxApplication CreateApp()
         {
-            var app = new TaxiHailApp(_options);
-            return app;
+			return new TaxiHailApp(_options);
         }
 
-		protected override IEnumerable<Type> ValueConverterHolders {
-			get {
+		protected override List<Type> ValueConverterHolders
+		{
+			get
+			{
 				return new[] { typeof(AppConverters) };
 			}
 		}
 
-        protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
+		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
         {
             base.FillTargetFactories (registry);
             registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
             CustomBindingsLoader.Load(registry);
         }
 
-        protected override void InitializeIoC()
+		protected override void InitializeLastChance()
         {
             TinyIoCServiceProviderSetup.Initialize();
 

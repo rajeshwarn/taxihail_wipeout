@@ -192,15 +192,6 @@
     <Reference Include="GoogleAnalytics">
       <HintPath>..\Libraries\Monotouch\GoogleAnalytics.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios">
-      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Binding.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios">
-      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Dialog.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Touch.TaxiHail.Ios">
-      <HintPath>..\Libraries\Monotouch\Cirrious.MvvmCross.Touch.TaxiHail.Ios.dll</HintPath>
-    </Reference>
     <Reference Include="MvvmCross.TaxiHail.Ios">
       <HintPath>..\Libraries\Monotouch\MvvmCross.TaxiHail.Ios.dll</HintPath>
     </Reference>
@@ -231,6 +222,27 @@
     <Reference Include="MonoTouch.FacebookConnect">
       <HintPath>..\Components\facebookios-3.8.0.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.CrossCore.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Binding.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.CrossCore">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -239,6 +251,7 @@
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
     <None Include="Assets\VerticalButtonBar\.DS_Store" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
