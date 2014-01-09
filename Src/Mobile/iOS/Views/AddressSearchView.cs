@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));            		
 
 			((SearchTextField)SearchTextField).SetImageLeft( "Assets/Search/SearchIcon.png" );
-			SearchTextField.Placeholder = Resources.SearchHint;
+			SearchTextField.Placeholder = Localize.GetValue("searchHint");
             			
 			var source = new BindableAddressTableViewSource(
                                 AddressListView, 
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SearchAddress"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_SearchAddress"), true);
         
             NavigationController.SetViewControllers(NavigationController.ViewControllers.Where ( v=> v.GetType () != typeof(  BookStreetNumberView ) ).ToArray (), false );
         }

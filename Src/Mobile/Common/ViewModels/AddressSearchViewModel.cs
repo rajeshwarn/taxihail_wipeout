@@ -226,8 +226,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId, true)));
                             } else {
 
-                                var title = this.Services().Resources.GetString("LocalContactCannotBeResolverTitle");
-                                var msg = this.Services().Resources.GetString("LocalContactCannotBeResolverMessage");
+                                var title = this.Services().Localize["LocalContactCannotBeResolverTitle"];
+                                var msg = this.Services().Localize["LocalContactCannotBeResolverMessage"];
                                 this.Services().Message.ShowMessage(title, msg);
                             }
                         } else {

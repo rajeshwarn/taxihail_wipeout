@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
     public class ErrorHandler : IErrorHandler
     {
-
         public static DateTime LastConnectError = DateTime.MinValue;
 
         public void HandleError(Exception ex)
@@ -20,15 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             if (ex is WebServiceException)
             {
                 var webServiceException = (WebServiceException) ex;
-                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorCallTitle");
-                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorDefaultMessage");
-                    //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+                var title = TinyIoCContainer.Current.Resolve<ILocalization>()["ServiceErrorCallTitle"];
+                var message = TinyIoCContainer.Current.Resolve<ILocalization>()["ServiceErrorDefaultMessage"];
 
                 try
                 {
-                    message =
-                        TinyIoCContainer.Current.Resolve<IAppResource>()
-                            .GetString("ServiceError" + webServiceException.ErrorCode);
+                    message = TinyIoCContainer.Current.Resolve<ILocalization>()["ServiceError" + webServiceException.ErrorCode];
                 }
 // ReSharper disable once EmptyGeneralCatchClause
                 catch
@@ -46,8 +42,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     if ((cm == null) || (cm.ActiveNetworkInfo == null) ||
                         (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
                     {
-                        var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
-                        var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage");
+                        var title = TinyIoCContainer.Current.Resolve<ILocalization>()["NetworkErrorTitle"];
+                        var message = TinyIoCContainer.Current.Resolve<ILocalization>()["NetworkErrorMessage"];
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
                     }
                 }

@@ -23,11 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             Container.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-            lblConfirmDriverInfo.Text = Resources.GetValue("VehicleNumberInfo");
-            lblConfirmDriverNotice.Text = Resources.GetValue("VehicleNumberNotice");
+            lblConfirmDriverInfo.Text = Localize.GetValue("VehicleNumberInfo");
+            lblConfirmDriverNotice.Text = Localize.GetValue("VehicleNumberNotice");
             lblConfirmDriverNotice.Font = AppStyle.GetNormalFont (13);
 
-            AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Resources.ConfirmButton, AppStyle.ButtonColor.Green ); 
+            AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green); 
 
             this.AddBindings(new Dictionary<object, string>{
                 { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 

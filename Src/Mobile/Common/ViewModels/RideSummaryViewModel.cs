@@ -1,3 +1,4 @@
+using System;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -29,13 +30,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public string ThankYouTitle {
 			get{
-				return Str.ThankYouTitle;
+                return this.Services().Localize["View_BookingStatus_ThankYouTitle"];
 			}
 		}
 
 		public string ThankYouMessage {
 			get{
-				return Str.ThankYouMessage;
+                return String.Format(this.Services().Localize["View_BookingStatus_ThankYouMessage"], this.Services().Settings.ApplicationName);
 			}
 		}
 
@@ -119,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new AsyncCommand (() =>
                 {
                     this.Services().Message.ShowMessage("Confirmation",
-                        this.Services().Resources.GetString("ConfirmationOfPaymentSent"));
+                        this.Services().Localize["ConfirmationOfPaymentSent"]);
                     this.Services().Payment.ResendConfirmationToDriver(Order.Id);
 
                 });
