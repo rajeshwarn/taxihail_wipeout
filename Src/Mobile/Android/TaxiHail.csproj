@@ -363,6 +363,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\credit_card_generic.png" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
+    <Compile Include="Services\Social\TwitterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return new MvxRelayCommand(() =>
+				return base.GetCommand(() =>
 				{
 					if (_twitterService.IsConnected)
 					{
@@ -264,13 +264,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						_twitterService.Connect();
 					}
-				});
+					}, () => true);
 			}
 		}
 
         private void CheckTwitterAccount()
         {
-            Message.ShowProgress(true);
+			this.Services().Message.ShowProgress(true);
 
             _twitterService.GetUserInfos(info =>
             {
@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 try
                 {
-                    var account = _accountService.GetTwitterAccount(data.TwitterId);
+						var account = this.Services().Account.GetTwitterAccount(data.TwitterId);
                     if (account == null)
                     {
                         DoSignUp(data);
@@ -292,10 +292,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 finally
                 {
-                    Message.ShowProgress(false);
+						this.Services().Message.ShowProgress(false);
                 }
-            }
-            );
+            });
         }
 
 

@@ -252,8 +252,8 @@
   </ProjectExtensions>
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservicesgingerbread">
-      <Visible>False</Visible>
       <Version>13.0</Version>
+      <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>

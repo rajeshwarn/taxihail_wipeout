@@ -9,7 +9,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -487,7 +486,10 @@
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\OrderStatusToTextColorConverter_IOS.cs" />
-    <Compile Include="PlatformIntegration\FacebookService.cs" />
+    <Compile Include="PlatformIntegration\Social\FacebookService.cs" />
+    <Compile Include="PlatformIntegration\Social\OAuthAuthorizer.cs" />
+    <Compile Include="PlatformIntegration\Social\TwitterService.cs" />
+    <Compile Include="PlatformIntegration\Social\WebViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -777,5 +779,8 @@
       <Version>3.8.0.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PlatformIntegration\Social\" />
   </ItemGroup>
 </Project>
