@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 		void Share(string message, Action onRequestDone);
 		void Disconnect();
 
-		event EventHandler<object> ConnectionStatusChanged;
+		event EventHandler<TwitterStatus> ConnectionStatusChanged;
 		void SetLoginContext(object context);
     }
 }

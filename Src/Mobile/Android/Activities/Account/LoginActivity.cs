@@ -1,11 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-using SocialNetworks.Services.Entities;
-using SocialNetworks.Services.MonoDroid;
-
-
-
-#endif
 using System;
 using Android.App;
 using Android.Content;
@@ -56,26 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 		}
 
-#if SOCIAL_NETWORKS
-        /// <summary>
-        /// use for SSO when FB app is isntalled
-        /// </summary>
-        /// <param name='requestCode'>
-        /// Request code.
-        /// </param>
-        /// <param name='resultCode'>
-        /// Result code.
-        /// </param>
-        /// <param name='data'>
-        /// Data.
-        /// </param>
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-                       
-            (ViewModel.FacebookService as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
-        }
-#endif
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
@@ -105,20 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
 			_uiHelper.OnActivityResult(requestCode, (int)resultCode, data);
-			/*var facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookService;
-
-			switch (resultCode) {
-				case Result.Ok:
-					var accessToken = data.GetStringExtra("AccessToken");
-					facebookService.SaveAccessToken(accessToken);
-					break;
-				case Result.Canceled:
-					string error = data.GetStringExtra("Exception");
-					_messageService.ShowMessage("Failed to Log In", "Reason:" + error);
-					break;
-				default:
-					break;
-			}*/
 		}
 
         protected override int ViewTitleResourceId

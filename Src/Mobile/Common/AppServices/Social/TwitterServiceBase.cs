@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 		}
 
 		#region ITwitterService implementation
-		public event EventHandler<object> ConnectionStatusChanged;
+		public event EventHandler<TwitterStatus> ConnectionStatusChanged;
 
 		public virtual void SetLoginContext(object context)
 		{
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 						_screenName = oauth.AccessScreenname;
 						if( ConnectionStatusChanged != null )
 						{
-							//ConnectionStatusChanged(this, new TwitterStatus(true));
+							ConnectionStatusChanged(this, new TwitterStatus(true));
 						}
 					});
 				}
@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Social
 		public void Disconnect ()
 		{
 			ClearAuthorization();
-			//ConnectionStatusChanged(this, new TwitterStatus(false));
+			ConnectionStatusChanged(this, new TwitterStatus(false));
 		}
 
 		public bool IsConnected {
