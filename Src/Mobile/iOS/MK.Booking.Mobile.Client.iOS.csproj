@@ -505,7 +505,10 @@
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlatformIntegration\FacebookService.cs" />
+    <Compile Include="PlatformIntegration\Social\FacebookService.cs" />
+    <Compile Include="PlatformIntegration\Social\WebViewController.cs" />
+    <Compile Include="PlatformIntegration\Social\TwitterService.cs" />
+    <Compile Include="PlatformIntegration\Social\OAuthAuthorizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -544,6 +547,7 @@
     <Folder Include="Binding\" />
     <Folder Include="Views\Payments\" />
     <Folder Include="Extensions\Helpers\" />
+    <Folder Include="PlatformIntegration\Social\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -808,6 +812,10 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+    <BundleResource Include="Assets\Social\TW\back.png" />
+    <BundleResource Include="Assets\Social\TW\back%402x.png" />
+    <BundleResource Include="Assets\Social\TW\forward.png" />
+    <BundleResource Include="Assets\Social\TW\forward%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="facebookios">

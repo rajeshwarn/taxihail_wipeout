@@ -7,6 +7,7 @@ using System.Text;
 using System.Net;
 using System.Web;
 using System.Security.Cryptography;
+using System.Collections.Specialized;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Social.OAuth

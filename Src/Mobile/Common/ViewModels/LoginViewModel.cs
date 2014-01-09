@@ -327,10 +327,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							async () => {
 								try
 								{
-									await _facebookService.Connect("email");
+									await _facebookService.Connect();
 									CheckFacebookAccount();
 								}
-								catch(TaskCanceledException e)
+								catch(TaskCanceledException)
 								{
 									Logger.LogMessage("FacebookService.Connect was cancelled");
 								}

@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Converters;
@@ -24,6 +25,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
 
 
@@ -106,13 +108,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded)
 			{
 				// If there's one, just open the session silently
-				FBSession.OpenActiveSession(new[] {"basic_info"},
+				FBSession.OpenActiveSession(new[] {"basic_info", "email"},
 					allowLoginUI: false,
 					completion:(session, status, error) => {});
 			}
 			TinyIoCContainer.Current.Register<IFacebookService>(new FacebookService());
             
-			/*var oauthConfig = new OAuthConfig
+			var oauthConfig = new OAuthConfig
             {
                 
                 ConsumerKey =  settings.TwitterConsumerKey,
@@ -121,13 +123,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 RequestTokenUrl = settings.TwitterRequestTokenUrl,
                 AccessTokenUrl = settings.TwitterAccessTokenUrl,
                 AuthorizeUrl = settings.TwitterAuthorizeUrl 
-            };*/
+            };
 
-			/*var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> {
-                return AppContext.Current.Controller; // AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController;
-            });*/
+			var twitterService = new TwitterService(oauthConfig, ()=> {
+                return AppContext.Current.Controller; 
+            });
             
-			//TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
+			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
 
