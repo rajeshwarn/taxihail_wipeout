@@ -26,17 +26,10 @@ namespace apcurium.MK.Booking.Mobile
     public class TaxiHailApp  : MvxApplication
     {    
       
-        public TaxiHailApp()
-            : this(default(IDictionary<string, string>))
-        {
-        }
-
-        public TaxiHailApp(IDictionary<string, string> @params)
-        {
-
+		public TaxiHailApp()
+		{
             InitalizeServices();
-
-            InitializeStartNavigation(@params);
+            InitializeStartNavigation();
         }
         
         private void InitalizeServices()
@@ -158,9 +151,9 @@ namespace apcurium.MK.Booking.Mobile
             return sessionId;
         }
         
-        private void InitializeStartNavigation(IDictionary<string, string> @params)
+        private void InitializeStartNavigation()
         {
-			Mvx.RegisterSingleton<IMvxAppStart>(new StartNavigation(@params));
+			Mvx.RegisterSingleton<IMvxAppStart>(new StartNavigation());
         }
 
 

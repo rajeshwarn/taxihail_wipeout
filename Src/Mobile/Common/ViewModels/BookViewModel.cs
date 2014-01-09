@@ -625,7 +625,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Order.Estimate.Price = estimate.Price;
 
                 var serialized = Order.ToJson();
-                RequestNavigate<BookConfirmationViewModel>(new {order = serialized});
+                ShowViewModel<BookConfirmationViewModel>(new {order = serialized});
 			}
         }
 
@@ -633,7 +633,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => RequestNavigate<BookRatingViewModel>(
+                return GetCommand(() => ShowViewModel<BookRatingViewModel>(
                     new KeyValuePair<string, bool>("canRate", true)));
             }
         }
@@ -645,7 +645,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
-            RequestNavigate<BookingStatusViewModel>(new
+            ShowViewModel<BookingStatusViewModel>(new
             {
                 order = data.ToJson(),
                 orderStatus = orderInfo.ToJson()

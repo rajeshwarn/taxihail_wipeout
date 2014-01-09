@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public ObservableCollection<OrderViewModel> Orders
         {
             get { return _orders; }
-            set { _orders = value; FirePropertyChanged("Orders"); }
+			set { _orders = value; RaisePropertyChanged(); }
         }
 
         private string FormatDateTime(DateTime date )
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if(value != _hasOrders) {
                     _hasOrders = value;
-                    FirePropertyChanged("HasOrders");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
+                return GetCommand<OrderViewModel>(vm => ShowViewModel<HistoryDetailViewModel>(
                     new {orderId = vm.Id}));
             }
         }

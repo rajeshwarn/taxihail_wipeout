@@ -376,7 +376,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary(){
 
-			RequestNavigate<RideSummaryViewModel> (new {
+			ShowViewModel<RideSummaryViewModel> (new {
 				order = Order.ToJson(),
 				orderStatus = OrderStatusDetail.ToJson()
 			}.ToStringDictionary());
@@ -390,15 +390,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 			this.Services().Booking.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
-                        RequestNavigate<BookViewModel>(clearTop: true);
-                        RequestClose(this);
+                        ShowViewModel<BookViewModel>(clearTop: true);
+						Close(this);
                     }));
             }
         }
 
         public void GoToCmtPairScreen()
         {
-            RequestNavigate<CmtRideLinqConfirmPairViewModel>(new
+            ShowViewModel<CmtRideLinqConfirmPairViewModel>(new
             {
                 order = Order.ToJson(),
                 orderStatus = OrderStatusDetail.ToJson()
@@ -428,7 +428,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => this.Services().Message.ShowMessage(Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                 {
                     this.Services().Booking.ClearLastOrder();
-                    RequestNavigate<BookViewModel> (clearTop: true);
+                    ShowViewModel<BookViewModel> (clearTop: true);
                 },
                     Str.NoButtonText, NoAction));
             }
@@ -454,7 +454,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 this.Services().Booking.ClearLastOrder();
-                                RequestNavigate<BookViewModel> (clearTop: true);
+                                ShowViewModel<BookViewModel> (clearTop: true);
                             } 
                             else 
                             {
@@ -490,7 +490,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<ConfirmCarNumberViewModel>(
+                        ShowViewModel<ConfirmCarNumberViewModel>(
                             new
                             {
                                 order = Order.ToJson(),

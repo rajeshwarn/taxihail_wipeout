@@ -235,12 +235,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Settings = Order.Settings
 						};
 	    						
-						RequestNavigate<BookingStatusViewModel>(new
+						ShowViewModel<BookingStatusViewModel>(new
 						        {
 						            order = orderCreated.ToJson(),
 						            orderStatus = orderInfo.ToJson()
 						        });	
-						Close();
+						Close(this);
                         this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 					}
 					catch
@@ -283,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return GetCommand(() =>
 				{
-					Close();
+						Close(this);
                     this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));
 				});            
 			}

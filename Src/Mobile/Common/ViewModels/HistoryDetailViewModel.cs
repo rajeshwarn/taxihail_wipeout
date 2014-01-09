@@ -305,7 +305,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							VehicleLatitude = null,
 							VehicleLongitude = null
 					};
-					RequestNavigate<BookingStatusViewModel>(new {
+					ShowViewModel<BookingStatusViewModel>(new {
 						order =  Order.ToJson(),
 						orderStatus = orderStatus.ToJson()
 					});
@@ -323,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         this.Services().Booking.RemoveFromHistory(OrderId);
                         this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
-                        Close();
+						Close(this);
                     }
                 });
             }
@@ -336,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-                    RequestNavigate<BookViewModel>(new { order = serialized }, true);
+                    ShowViewModel<BookViewModel>(new { order = serialized }, true);
                 });
             }
         }
@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         this.Services().Booking.SendReceipt(OrderId);
                     }
-                    RequestClose(this);
+                    Close(this);
                 });
             }
         }

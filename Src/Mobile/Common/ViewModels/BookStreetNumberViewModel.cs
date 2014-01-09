@@ -87,8 +87,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _token.Dispose ();
                     _token = null;
 
-                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId , places = "false"});                                       
-                    RequestClose( this );
+                    ShowViewModel<AddressSearchViewModel> (new { search = "", ownerId = _ownerId , places = "false"});                                       
+                    Close( this );
                 });
             }
         }
@@ -101,8 +101,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().MessengerHub.Unsubscribe<AddressSelected>(_token);
                     _token.Dispose ();
                     _token = null; 
-                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
-                    RequestClose( this );
+                    ShowViewModel<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
+                    Close( this );
                 });
             }
         }
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                                   {
                     this.Services().MessengerHub.Publish(new AddressSelected(this, null, _ownerId, false));                                                        
-                    RequestClose( this );
+                    Close( this );
                 });
             }
         }
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         void OnAddressSelected (AddressSelected obj)
         {
-            RequestClose(this);
+            Close(this);
         }
 
         public AsyncCommand SaveCommand

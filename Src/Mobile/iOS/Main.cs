@@ -21,6 +21,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Configuration.Impl;
 using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -62,11 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
 
-			var setup = new Setup(this, new PhonePresenter( this, window ), @params );
+			var setup = new Setup(this, new PhonePresenter( this, window ));
             setup.Initialize();
 
 			var startup = Mvx.Resolve<IMvxAppStart>();
-			startup.Start();
+			startup.Start(@params);
 
             window.MakeKeyAndVisible();
 

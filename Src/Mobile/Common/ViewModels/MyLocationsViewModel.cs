@@ -42,9 +42,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if(a.Address.Id == Guid.Empty)
                     {
                         // New address
-                        RequestNavigate<LocationDetailViewModel>();
+                        ShowViewModel<LocationDetailViewModel>();
                     } else {
-                        RequestNavigate<LocationDetailViewModel>(new Dictionary<string,string>{
+                        ShowViewModel<LocationDetailViewModel>(new Dictionary<string,string>{
                             { "address", a.Address.ToJson() }
                         });
                     }

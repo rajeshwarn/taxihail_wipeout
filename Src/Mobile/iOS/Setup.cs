@@ -28,20 +28,18 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class Setup: MvxTouchSetup
     {
         readonly IMvxViewPresenter _presenter;
-        readonly IDictionary<string, string> _options;
 
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxViewPresenter presenter, IDictionary<string, string> options)
+        public Setup(MvxApplicationDelegate applicationDelegate, IMvxViewPresenter presenter)
             : base(applicationDelegate, presenter)
         {
             _presenter = presenter;
-            _options = options;
         }
         
         #region Overrides of MvxBaseSetup
         
 		protected override IMvxApplication CreateApp()
         {
-			return new TaxiHailApp(_options);
+			return new TaxiHailApp();
         }
 
 		protected override List<Type> ValueConverterHolders

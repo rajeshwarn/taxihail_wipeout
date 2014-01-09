@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     _=>{
                     });
 					
-					RequestClose(this);
+					Close(this);
 				});
 			}
 		}

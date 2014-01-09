@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         this.Services().Message.ShowProgress(false);
 						progressShowing = false;
-						Close();
+						Close(this);
                     
                     } catch (Exception ex) {
                         Logger.LogError (ex);
@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         } else {
                             this.Services().Account.DeleteFavoriteAddress(_address.Id);
                         }
-                        Close ();
+							Close (this);
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
@@ -215,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                  var account = this.Services().Account.CurrentAccount;
                  order.Settings = account.Settings;
                  var serialized = JsonSerializer.SerializeToString(order);
-				 RequestNavigate<BookViewModel>(new { order = serialized }, true);
+				 ShowViewModel<BookViewModel>(new { order = serialized }, true);
 				});
 			}
 		}

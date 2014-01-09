@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 
 						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 
-						RequestClose(this);
+						Close(this);
 					});
 			}
 		}
@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 				return GetCommand(() =>
 					{
 						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id, CmtRideLinqPairingState.Canceled);
-						RequestClose(this);                
+						Close(this);                
 					});
 			}
 		}

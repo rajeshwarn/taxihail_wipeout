@@ -19,14 +19,10 @@ namespace apcurium.MK.Booking.Mobile
             MvxNavigatingObject,
             IMvxAppStart
     {
-        readonly IDictionary<string, string> _params;
-        public StartNavigation (IDictionary<string, string> @params)
+		public void Start (object hint)
         {
-            _params = @params ?? new Dictionary<string, string>();
-        }
+			var @params = (Dictionary<string, string>)hint;
 
-        public void Start ()
-        {
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
@@ -36,9 +32,9 @@ namespace apcurium.MK.Booking.Mobile
 			{
 				ShowViewModel<LoginViewModel>();
             } 
-            else if (_params.ContainsKey ("orderId"))
+			else if (@params.ContainsKey ("orderId"))
             {
-                var orderId = Guid.Parse(_params["orderId"]);
+				var orderId = Guid.Parse(@params["orderId"]);
 				var accountService = Mvx.Resolve<IAccountService> ();
 				var bookingService = Mvx.Resolve<IBookingService> ();
                 

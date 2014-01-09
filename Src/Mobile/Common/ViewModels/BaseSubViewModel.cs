@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		protected void ReturnResult(TResult result)
 		{
 			var message = new SubNavigationResultMessage<TResult>(this, MessageId, result);		
-			Close();
+			Close(this);
             this.Services().MessengerHub.Publish(message);
 		}
 	}

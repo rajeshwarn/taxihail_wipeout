@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+                return GetCommand(() => ShowViewModel<UpdatePasswordViewModel>());
             }
         }
 
@@ -277,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
                         this.Services().Account.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-                        Close();
+						Close(this);
                     }
                 });
             }

@@ -216,13 +216,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 placeAddress.FullAddress = address.Address.FullAddress;
                             }
-                            RequestClose (this);
+                            Close (this);
                             InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, placeAddress, _ownerId, true)));
                         } else if (address.Address.AddressType == "localContact") {
 
                             var addresses = this.Services().Geoloc.SearchAddress(address.Address.FullAddress);
                             if (addresses.Any()) {
-                                RequestClose (this);
+                                Close (this);
                                 InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId, true)));
                             } else {
 
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 this.Services().Message.ShowMessage(title, msg);
                             }
                         } else {
-                            RequestClose (this);
+                            Close (this);
 
                             InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, address.Address, _ownerId, true)));
                         }
@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand CloseViewCommand
         {
-            get { return GetCommand (() => RequestClose (this)); }
+            get { return GetCommand (() => Close (this)); }
         }
 
 

@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (this.Services().Config.GetSetting("Client.StreetNumberScreenEnabled", true)
                         && Model.BookAddress.HasValue())
                     {
-                        RequestNavigate<BookStreetNumberViewModel>(new
+                        ShowViewModel<BookStreetNumberViewModel>(new
                             {
                                 address = JsonSerializer.SerializeToString(Model),
                                 ownerId = _id
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<AddressSearchViewModel>(new
+                        ShowViewModel<AddressSearchViewModel>(new
                             {
                                 search = Model.FullAddress,
                                 ownerId = _id, 
