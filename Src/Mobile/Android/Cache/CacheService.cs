@@ -9,14 +9,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
     public class CacheService : ICacheService
     {
-        protected virtual string CacheKey
+        private readonly string _cacheKey;
+
+        public CacheService(string cacheKey = null)
         {
-            get { return "MK.Booking.Cache"; }
+            _cacheKey = cacheKey ?? "MK.Booking.Cache";
         }
 
         public T Get<T>(string key) where T : class
         {
-            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
             var serialized = pref.GetString(key, null);
 
             if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
@@ -46,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         {
             var item = new CacheItem<T>(obj, expiresAt);
             var serialized = JsonSerializer.SerializeToString(item);
-            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
             pref.Edit().PutString(key, serialized).Commit();
         }
 
@@ -59,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void Clear(string key)
         {
-            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
             var serialized = pref.GetString(key, null);
             if (serialized.HasValue())
             {
@@ -70,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void ClearAll()
         {
-            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
             pref.Edit().Clear().Commit();
         }
     }

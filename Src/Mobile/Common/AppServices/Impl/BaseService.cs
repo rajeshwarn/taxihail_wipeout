@@ -95,15 +95,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return _logger ?? (_logger = TinyIoCContainer.Current.Resolve<ILogger>());
             }
         }
-        protected IAppCacheService Cache
+        protected ICacheService Cache
         {
             get
             {
-                return TinyIoCContainer.Current.Resolve<IAppCacheService>();
+                return TinyIoCContainer.Current.Resolve<ICacheService>("AppCache");
             }
         }
-
-
 
     }
 }
