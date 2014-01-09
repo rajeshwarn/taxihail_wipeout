@@ -2,10 +2,6 @@ using System;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
-    public interface IAppCacheService : ICacheService
-    { 
-    }
-
     public interface ICacheService
     {
         T Get<T>(string key) where T : class;

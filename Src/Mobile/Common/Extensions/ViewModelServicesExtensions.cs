@@ -1,5 +1,4 @@
-﻿using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Mobile.AppServices;
+﻿using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
@@ -42,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public ICacheService Cache { get { return _viewModel.Container.Resolve<ICacheService>(); } }
 
-        public IAppCacheService AppCache { get { return _viewModel.Container.Resolve<IAppCacheService>(); } }
+        public ICacheService AppCache { get { return _viewModel.Container.Resolve<ICacheService>("AppCache"); } }
 
         public IAppSettings AppSettings { get { return _viewModel.Container.Resolve<IAppSettings>(); } }
 
