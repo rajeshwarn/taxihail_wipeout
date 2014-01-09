@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
 using MonoTouch.UIKit;
 
-namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
+namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
 	public class FacebookService: IFacebookService
     {
-		public Task Connect(string permissions)
+		public Task Connect()
 		{
 			// If the session state is any of the two "open" states when the button is clicked
 			if (FBSession.ActiveSession.State == FBSessionState.Open
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			// You must ALWAYS ask for basic_info permissions when opening a session
 			try
 			{
-				FBSession.OpenActiveSession(new [] {"basic_info"},
+				FBSession.OpenActiveSession(new [] {"basic_info", "email"},
 					allowLoginUI: true,
 					completion: (session, status, error) =>
 					{

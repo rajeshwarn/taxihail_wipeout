@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;CLIENT;MONOTOUCH</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT;MONOTOUCH;MONO_PUNYCODE_PUBLIC</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -109,6 +109,8 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Json" />
+    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
@@ -304,6 +306,14 @@
     <Compile Include="AppServices\Social\FacebookUserInfo.iOS.cs">
       <DependentUpon>FacebookUserInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="AppServices\Social\ITwitterService.cs" />
+    <Compile Include="AppServices\Social\TwitterServiceBase.cs" />
+    <Compile Include="AppServices\Social\TwitterStatus.cs" />
+    <Compile Include="AppServices\Social\TwitterUserInfo.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthAuthorizer.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthConfig.cs" />
+    <Compile Include="AppServices\Social\OAuth\OAuthEncoder.cs" />
+    <Compile Include="AppServices\Social\OAuth\Punycode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -317,10 +327,6 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
-      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
-      <Name>SocialNetworks.Services.MonoTouch</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>

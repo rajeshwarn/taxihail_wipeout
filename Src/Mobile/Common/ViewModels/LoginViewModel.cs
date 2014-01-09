@@ -1,7 +1,3 @@
-#if SOCIAL_NETWORKS
-using SocialNetworks.Services;
-
-#endif
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,32 +32,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         readonly IAccountService _accountService;
         readonly IPushNotificationService _pushService;
 		readonly IFacebookService _facebookService;
-
-#if SOCIAL_NETWORKS
 		readonly ITwitterService _twitterService;
-		public IFacebookService FacebookService { get { return _facebookService; } }
-
-		public LoginViewModel(IFacebookService facebookService, ITwitterService twitterService, IAccountService accountService, IApplicationInfoService applicationInfoService, IPushNotificationService pushService)
-			:this(accountService, applicationInfoService, pushService)
-		{
-			_facebookService = facebookService;
-			_twitterService = twitterService;
-			_facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
-			_facebookService.ConnectionStatusChanged += HandleFbConnectionStatusChanged;
-
-			_twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
-			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
-		}
-
-#endif
 
         public LoginViewModel(IFacebookService facebookService,
+			ITwitterService twitterService,
 			IAccountService accountService,
 			IPushNotificationService pushService)
         {
             _facebookService = facebookService;
 			_accountService = accountService;		
             _pushService = pushService;
+
+			_twitterService = twitterService;
+			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
+
 
             CheckVersion();
         }
@@ -277,8 +261,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		#if SOCIAL_NETWORKS
-
 		public IMvxCommand LoginTwitter
 		{
 			get
@@ -296,48 +278,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
-
-		private void CheckFacebookAccount()
-        {
-            MessageService.ShowProgress(true);
-
-            _facebookService.GetUserInfos(info =>
-            {
-                var data = new RegisterAccount();
-                data.FacebookId = info.Id;
-                data.Email = info.Email;
-                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-
-                try
-                {
-                    var account = _accountService.GetFacebookAccount(data.FacebookId);
-                    if (account == null)
-                    {
-                        DoSignUp(data);
-                    }
-                    else
-                    {                                
-                        Task.Factory.SafeStartNew(() =>
-                                                  {
-                            try
-                            {
-                                LoginSucess();
-                            }
-                            finally
-                            {
-                            }
-                        });
-                    }
-                }
-                finally
-                {
-                    MessageService.ShowProgress(false);
-                }
-
-            }, () => MessageService.ShowProgress(false) );
-
-
-        }
 
         private void CheckTwitterAccount()
         {
@@ -358,16 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        Task.Factory.SafeStartNew(() =>
-                                                  {
-                            try
-                            {
-                                LoginSucess();
-                            }
-                            finally
-                            {
-                            }
-                        });
+						Task.Factory.SafeStartNew(() => OnLoginSuccess());
                     }
                 }
                 finally
@@ -379,22 +310,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        void HandleTwitterConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.TwitterStatus e)
+        void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
         {
             if (e.IsConnected)
             {
                 CheckTwitterAccount();
             }
         }
-
-		void HandleFbConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.FacebookStatus e)
-		{
-			if (e.IsConnected)
-			{
-				CheckFacebookAccount();
-			}
-		}
-#endif
 
         public IMvxCommand LoginFacebook
         {
@@ -405,10 +327,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							async () => {
 								try
 								{
-									await _facebookService.Connect("email");
+									await _facebookService.Connect();
 									CheckFacebookAccount();
 								}
-								catch(TaskCanceledException e)
+								catch(TaskCanceledException)
 								{
 									Logger.LogMessage("FacebookService.Connect was cancelled");
 								}
@@ -431,10 +353,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnLoginSuccess()
         {
-#if SOCIAL_NETWORKS
-            _facebookService.ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
-#endif
 
 			RequestNavigate<BookViewModel>(true);
 			if (LoginSucceeded != null)

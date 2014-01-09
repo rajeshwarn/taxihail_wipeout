@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 			this._statusCallback = new MyStatusCallback();
 		}
 
-		public Task Connect(string permissions)
+		public Task Connect()
 		{
 			// If the session state is any of the two "open" states when the button is clicked
 			if (Session.ActiveSession != null 
