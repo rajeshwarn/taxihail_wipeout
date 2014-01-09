@@ -203,8 +203,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             InvokeOnMainThread(() =>
                 {
-                    FirePropertyChanged(() => Pickup);
-                    FirePropertyChanged(() => Dropoff);
+					RaisePropertyChanged(() => Pickup);
+					RaisePropertyChanged(() => Dropoff);
                 });
 
             var isUserInitiated = sender is bool && (bool)sender;
@@ -214,18 +214,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
             Task.Factory.SafeStartNew(CalculateEstimate);
-            FirePropertyChanged(() => CanClearAddress);
+			RaisePropertyChanged(() => CanClearAddress);
         }
 
         private void CalculateEstimate() 
         {
             _fareEstimate = this.Services().Resources.GetString("EstimatingFare");
 
-            FirePropertyChanged(() => FareEstimate);
+			RaisePropertyChanged(() => FareEstimate);
 
             _fareEstimate = this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
             
-            FirePropertyChanged(() => FareEstimate);
+			RaisePropertyChanged(() => FareEstimate);
         }
 
         public void InitializeOrder()
@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private void NewOrder()
         {
-            RequestMainThreadAction(() =>
+			InvokeOnMainThread(() =>
             {
                 InitializeOrder();
 
@@ -288,12 +288,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ForceRefresh()
         {
-            FirePropertyChanged(() => Order);
-            FirePropertyChanged(() => Pickup);
-            FirePropertyChanged(() => Dropoff);
-            FirePropertyChanged(() => SelectedAddress);
-            FirePropertyChanged(() => AddressSelectionMode);
-            FirePropertyChanged(() => FareEstimate);
+			RaisePropertyChanged(() => Order);
+			RaisePropertyChanged(() => Pickup);
+			RaisePropertyChanged(() => Dropoff);
+			RaisePropertyChanged(() => SelectedAddress);
+			RaisePropertyChanged(() => AddressSelectionMode);
+			RaisePropertyChanged(() => FareEstimate);
         }
 
         public string FareEstimate
@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _fareEstimate = value;
-                FirePropertyChanged(() => FareEstimate);
+				RaisePropertyChanged();
             }
         }
 
@@ -332,7 +332,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set
             {
                 _mapCenter = value;
-                FirePropertyChanged(() => MapCenter);
+				RaisePropertyChanged();
 			}
         }
 
@@ -343,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             { 
 				_availableVehicles = value;
-				FirePropertyChanged(() => AvailableVehicles);
+				RaisePropertyChanged();
             }
         }
 
@@ -354,7 +354,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set
             {
                 _showEstimate = value;
-                FirePropertyChanged(() => ShowEstimate);
+				RaisePropertyChanged();
             } 
         }
 
@@ -377,8 +377,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_addressSelectionMode != value)
                 {
                     _addressSelectionMode = value;
-                    FirePropertyChanged(()=>AddressSelectionMode);
-                    FirePropertyChanged(() => CanClearAddress);
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => CanClearAddress);
                 }
             }
         }
@@ -434,7 +434,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             this.Services().Message.ShowToast(this.Services().Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long);
                         }
-                        FirePropertyChanged(() => SelectedAddress);
+						RaisePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
                     }));
             }
@@ -444,7 +444,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => RequestMainThreadAction(delegate
+				return GetCommand(() => InvokeOnMainThread(delegate
                     {
                         // Close the menu if it was open
                         Panel.MenuIsOpen = false;
@@ -457,7 +457,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             this.Services().Message.ShowToast(this.Services().Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
                         }
-                        FirePropertyChanged(() => SelectedAddress);
+						RaisePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
                     }));
             }

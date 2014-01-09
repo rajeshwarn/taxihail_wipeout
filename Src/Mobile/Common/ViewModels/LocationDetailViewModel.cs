@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.FullAddress)
                 {
                     _address.FullAddress = value;
-                    FirePropertyChanged("BookAddress");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.Apartment)
                 {
                     _address.Apartment = value;
-                    FirePropertyChanged("Apartment");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.RingCode)
                 {
                     _address.RingCode = value;
-                    FirePropertyChanged("RingCode");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.FriendlyName)
                 {
                     _address.FriendlyName = value;
-                    FirePropertyChanged("FriendlyName");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -94,8 +94,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _isNew)
                 {
                     _isNew = value;
-                    FirePropertyChanged(() => IsNew);
-					FirePropertyChanged(() => RebookIsAvailable);
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => RebookIsAvailable);
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread (() =>
                         {
 							location.CopyTo(_address);
-							FirePropertyChanged(()=>BookAddress);
+							RaisePropertyChanged(()=>BookAddress);
                         });
                         
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     
                         location.CopyTo( _address );
 
-                        FirePropertyChanged (() => BookAddress );
+						RaisePropertyChanged (() => BookAddress );
 
                         this.Services().Account.UpdateAddress(_address);
 

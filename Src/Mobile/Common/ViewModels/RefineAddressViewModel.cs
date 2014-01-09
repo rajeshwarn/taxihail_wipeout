@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _streetNumber = value;
-                FirePropertyChanged(() => StreetNumber);
+				RaisePropertyChanged();
             }
         }
 
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _streetAddress = value;
-                FirePropertyChanged(() => StreetAddress);
+				RaisePropertyChanged();
             }
         }
 
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _aptNumber = value;
-                FirePropertyChanged(() => AptNumber);
+				RaisePropertyChanged();
             }
         }
 
@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _ringCode = value;
-                FirePropertyChanged(() => RingCode);
+				RaisePropertyChanged();
             }
         }
 
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _buildingName = value;
-                FirePropertyChanged(() => BuildingName);
+				RaisePropertyChanged();
             }
         }
 

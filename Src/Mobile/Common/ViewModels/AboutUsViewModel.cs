@@ -8,7 +8,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string Uri
         {
             get { return _uri; }
-            set { _uri = value; FirePropertyChanged(()=>Uri); }
+			set
+			{ 
+				_uri = value;
+				RaisePropertyChanged();
+			}
         }
 
         public AboutUsViewModel()

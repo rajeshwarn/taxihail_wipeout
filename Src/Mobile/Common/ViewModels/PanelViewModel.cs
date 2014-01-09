@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if (value != _version) {
                     _version = value;
-                    FirePropertyChanged ("Version");
+					RaisePropertyChanged ();
                 }
             }
         }

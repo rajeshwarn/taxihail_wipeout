@@ -3,7 +3,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -17,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 	        Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
             RideSettings = new RideSettingsViewModel(Order.Settings);
-            RideSettings.OnPropertyChanged().Subscribe(p => FirePropertyChanged(() => RideSettings));
+			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
 
 
@@ -161,8 +160,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.PickupAddress.BuildingName = result.BuildingName;
 					InvokeOnMainThread(() =>
 					{
-						FirePropertyChanged(() => AptRingCode);
-						FirePropertyChanged(() => BuildingName);
+						RaisePropertyChanged(() => AptRingCode);
+						RaisePropertyChanged(() => BuildingName);
 					});
 				}));
 			}

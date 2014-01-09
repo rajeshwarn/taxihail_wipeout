@@ -1,13 +1,12 @@
 using System;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>, IMvxServiceConsumer<IAccountService>
+	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>
 	{
 		public CmtRideLinqChangePaymentViewModel(string messageId, string currentPaymentInformation): base(messageId)
 		{
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public PaymentInformation DefaultPaymentInformations { get; set ; }
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
-		public IMvxCommand CancelCommand
+		public ICommand CancelCommand
         {
             get
             {
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
             }
         }
 
-		public IMvxCommand SaveCommand
+		public ICommand SaveCommand
         {
             get
             {

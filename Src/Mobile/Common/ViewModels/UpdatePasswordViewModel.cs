@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
 				_currentPassword = value;
-				FirePropertyChanged(() => CurrentPassword);
+				RaisePropertyChanged();
             }
         }
 
@@ -24,8 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
 				_newPassword = value;
-				FirePropertyChanged(() => NewPassword);
-				FirePropertyChanged(() => NewPasswordIsConfirmed);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => NewPasswordIsConfirmed);
             }
         }
 
@@ -36,8 +36,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
 				_newPasswordConfirmation = value;
-				FirePropertyChanged(() => NewPasswordConfirmation);
-				FirePropertyChanged(() => NewPasswordIsConfirmed);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => NewPasswordIsConfirmed);
             }
         }
 

@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set 
             {
                 _isFirst = value;
-                FirePropertyChanged( () => IsFirst );
+				RaisePropertyChanged();
             }
         }
 
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set 
             {
                 _isLast = value;
-                FirePropertyChanged( () => IsLast );
+				RaisePropertyChanged();
             }
         }
 	}

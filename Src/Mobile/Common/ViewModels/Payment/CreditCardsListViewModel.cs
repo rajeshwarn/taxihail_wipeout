@@ -19,7 +19,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public ObservableCollection<CreditCardViewModel> CreditCards
         {
             get { return _creditCards; }
-            set { _creditCards = value; FirePropertyChanged("CreditCards"); }
+            set
+			{ 
+				_creditCards = value;
+				RaisePropertyChanged(); }
         }
 
         private bool _hasCards;
@@ -34,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if (value != _hasCards)
                 {
                     _hasCards = value;
-                    FirePropertyChanged("HasCards");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -73,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (creditCardToRemove != null)
                     {
                         InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
-                        FirePropertyChanged("CreditCards");
+						RaisePropertyChanged("CreditCards");
                     }
                     CreditCards[0].IsFirst = true;
 
@@ -149,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                              },
                              Picture = newCreditCard.CreditCardCompany
                         });
-                        FirePropertyChanged("CreditCards");
+						RaisePropertyChanged("CreditCards");
                     });                                                                                         
                     CreditCards[0].IsFirst=true;
                     CreditCards.Last().IsFirst=false;                        

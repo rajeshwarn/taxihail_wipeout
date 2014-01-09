@@ -26,17 +26,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                      {
                 var v = this.Services().Account.GetVehiclesList();
                 _vehicules = v == null ? new ListItem[0] : v.ToArray();
-                FirePropertyChanged( ()=> Vehicles );
-                FirePropertyChanged( ()=> VehicleTypeId );
-                FirePropertyChanged( ()=> VehicleTypeName );
+				RaisePropertyChanged( ()=> Vehicles );
+				RaisePropertyChanged( ()=> VehicleTypeId );
+				RaisePropertyChanged( ()=> VehicleTypeName );
 
 
                 var p = this.Services().Account.GetPaymentsList();
                 _payments = p == null ? new ListItem[0] : p.ToArray();
 
-                FirePropertyChanged( ()=> Payments );
-                FirePropertyChanged( ()=> ChargeTypeId );
-                FirePropertyChanged( ()=> ChargeTypeName );
+				RaisePropertyChanged( ()=> Payments );
+				RaisePropertyChanged( ()=> ChargeTypeId );
+				RaisePropertyChanged( ()=> ChargeTypeName );
             });
 
         }
@@ -116,8 +116,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.VehicleTypeId)
                 {
                     _bookingSettings.VehicleTypeId = value;
-                    FirePropertyChanged("VehicleTypeId");
-                    FirePropertyChanged("VehicleTypeName");
+					RaisePropertyChanged();
+					RaisePropertyChanged("VehicleTypeName");
                 }
             }
         }
@@ -155,8 +155,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.ChargeTypeId)
                 {
                     _bookingSettings.ChargeTypeId = value;
-                    FirePropertyChanged("ChargeTypeId");
-                    FirePropertyChanged("ChargeTypeName");
+					RaisePropertyChanged();
+					RaisePropertyChanged("ChargeTypeName");
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Name)
                 {
                     _bookingSettings.Name = value;
-                    FirePropertyChanged("Name");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Phone)
                 {
                     _bookingSettings.Phone = value;
-                    FirePropertyChanged("Phone");
+					RaisePropertyChanged();
                 }
             }
         }

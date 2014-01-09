@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             RideSettings = new RideSettingsViewModel( Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => 
                                                        {
-                FirePropertyChanged(()=> RideSettings);
-                FirePropertyChanged(() => Payments);
-                FirePropertyChanged(() => Vehicles);
-                FirePropertyChanged(() => VehicleName);
-                FirePropertyChanged(() => ChargeType);
+				RaisePropertyChanged(()=> RideSettings);
+				RaisePropertyChanged(() => Payments);
+				RaisePropertyChanged(() => Vehicles);
+				RaisePropertyChanged(() => VehicleName);
+				RaisePropertyChanged(() => ChargeType);
             });
 
 
@@ -32,13 +32,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void SetVehicleTypeId(int? id)
         {
             Order.Settings.VehicleTypeId = id;
-            FirePropertyChanged(() => VehicleName);
+			RaisePropertyChanged(() => VehicleName);
         }
 
         public void SetChargeTypeId(int? id)
         {
             Order.Settings.ChargeTypeId = id;
-            FirePropertyChanged(() => ChargeType);
+			RaisePropertyChanged(() => ChargeType);
         }
         public int? VehicleTypeId
         {
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _fareEstimate)
                 {
                     _fareEstimate = value;
-                    FirePropertyChanged("FareEstimate");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _order = value;
-                FirePropertyChanged(() => Order);
+				RaisePropertyChanged();
             }
         }
 

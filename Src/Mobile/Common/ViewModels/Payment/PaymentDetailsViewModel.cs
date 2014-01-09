@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
         {
-	    CreditCards.CollectionChanged += (sender, e) =>  FirePropertyChanged(()=>HasCreditCards);
+			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
 		
             LoadCreditCards();
         
@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if(value != _selectedCreditCardId)
                 {
                     _selectedCreditCardId = value;
-                    FirePropertyChanged(()=>SelectedCreditCardId);
-                    FirePropertyChanged(()=>SelectedCreditCard);
+					RaisePropertyChanged(()=>SelectedCreditCardId);
+					RaisePropertyChanged(()=>SelectedCreditCard);
                 }
             
             }
@@ -71,9 +71,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return _tip;
             }
-            set{
+            set
+			{
                 _tip = value;
-                FirePropertyChanged(()=>Tip);
+				RaisePropertyChanged();
             }
         }
 
@@ -131,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                                                 CreditCards.Add(card);
                                                             }
                                                             // refresh selected credit card
-                                                            FirePropertyChanged(()=>SelectedCreditCard);
+															RaisePropertyChanged(()=>SelectedCreditCard);
                             });
             }).HandleErrors();
         

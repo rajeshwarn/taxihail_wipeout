@@ -16,7 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return _ratingList; }
             set { _ratingList = value; 
-				FirePropertyChanged(()=>RatingList); }
+				RaisePropertyChanged();
+			}
         }
         
         private string _note;
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _note; }
             set { 
 				_note = value; 
-				FirePropertyChanged(()=>Note);
+				RaisePropertyChanged();
 			}
         }
 
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set {
 				_canRating = value;
-				FirePropertyChanged(()=>CanRating); 
+				RaisePropertyChanged(); 
 			}
 
         }
@@ -56,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(value != _canSubmit)
 				{
 					_canSubmit = value;
-					FirePropertyChanged(()=>CanSubmit);
+					RaisePropertyChanged();
 				}
 			}
 			
@@ -72,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set 
 			{
 				_orderId = value; 
-				FirePropertyChanged(()=>OrderId); 
+				RaisePropertyChanged(); 
 			}
 
         }

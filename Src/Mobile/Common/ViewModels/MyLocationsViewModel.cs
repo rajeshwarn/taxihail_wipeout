@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if(value != _allAddresses) {
                     _allAddresses = value;
-                    FirePropertyChanged("AllAddresses");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     a.IsLast = a.Equals(AllAddresses.Last());                    
                 });
 
-                FirePropertyChanged( () =>AllAddresses );
+				RaisePropertyChanged( () =>AllAddresses );
 
             }, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }

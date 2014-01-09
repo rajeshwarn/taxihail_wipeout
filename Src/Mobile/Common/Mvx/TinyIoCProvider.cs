@@ -1,5 +1,5 @@
-using Cirrious.MvvmCross.Interfaces.IoC;
 using TinyIoC;
+using Cirrious.CrossCore.IoC;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {

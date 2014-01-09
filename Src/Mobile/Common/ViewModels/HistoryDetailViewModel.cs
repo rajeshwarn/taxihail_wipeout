@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_orderId = value; 
-				FirePropertyChanged(()=>OrderId); 
+				RaisePropertyChanged(); 
 			}
         }
 
@@ -43,13 +43,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_order.TransactionId != default(long)) {
                     AuthorizationNumber = _order.TransactionId + "";
                 }
-                FirePropertyChanged(()=>Order); 
-                FirePropertyChanged(()=>ConfirmationTxt); 
-                FirePropertyChanged(()=>RequestedTxt); 
-                FirePropertyChanged(()=>OriginTxt); 
-                FirePropertyChanged(()=>AptRingTxt); 
-                FirePropertyChanged(()=>DestinationTxt); 
-                FirePropertyChanged(()=>PickUpDateTxt); 
+				RaisePropertyChanged(()=>Order); 
+				RaisePropertyChanged(()=>ConfirmationTxt); 
+				RaisePropertyChanged(()=>RequestedTxt); 
+				RaisePropertyChanged(()=>OriginTxt); 
+				RaisePropertyChanged(()=>AptRingTxt); 
+				RaisePropertyChanged(()=>DestinationTxt); 
+				RaisePropertyChanged(()=>PickUpDateTxt); 
             }
 		}
 
@@ -61,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    set
 		    {
 		        _status = value;
-		        FirePropertyChanged("Status");
-		        FirePropertyChanged("SendReceiptAvailable");
+				RaisePropertyChanged();
+				RaisePropertyChanged("SendReceiptAvailable");
 		    }
 		}
         
@@ -85,8 +85,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_isDone = value; 
-				FirePropertyChanged(()=>IsDone); 
-				FirePropertyChanged(()=>ShowRateButton); 
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(()=>ShowRateButton); 
 			}
         }
 
@@ -98,8 +98,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set { 
 				if (value != _isCompleted) {
 					_isCompleted = value;
-					FirePropertyChanged (()=>IsCompleted);
-					FirePropertyChanged (()=>RebookIsAvailable);
+					RaisePropertyChanged ();
+					RaisePropertyChanged (()=>RebookIsAvailable);
 				}
 			}
 		}
@@ -120,8 +120,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_hasRated = value; 
-				FirePropertyChanged(()=>HasRated); 
-				FirePropertyChanged(()=>ShowRateButton);  
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(()=>ShowRateButton);  
 			}
         }
 
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _canCancel)
                 {
                     _canCancel = value;
-                    FirePropertyChanged(()=>CanCancel);
+					RaisePropertyChanged();
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set{
                 _authorizationNumber = value;
-                FirePropertyChanged (()=>AuthorizationNumber);
+				RaisePropertyChanged ();
             }
         }
 

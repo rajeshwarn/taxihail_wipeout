@@ -1,16 +1,15 @@
 using System;
 using System.Globalization;
+using System.Windows.Input;
+using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
-	public class CmtRideLinqConfirmPairViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IPaymentService>
+	public class CmtRideLinqConfirmPairViewModel : BaseViewModel
 	{
 		public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
 		{
@@ -42,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 				_cardNumber = "";
 			}
 
-			FirePropertyChanged(() => CardNumber);
+			RaisePropertyChanged(() => CardNumber);
 		}
 
 		public string CarNumber{
@@ -73,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			}
 		}        
 
-		public IMvxCommand ConfirmPayment
+		public ICommand ConfirmPayment
 		{
 			get {
 				return GetCommand (() =>
@@ -93,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 			}
 		}
 
-		public IMvxCommand ChangePaymentInfo
+		public ICommand ChangePaymentInfo
 		{
 			get
 			{
@@ -111,13 +110,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 				        _paymentPreferences.SelectedCreditCardId = (Guid)result.CreditCardId;
 				        _paymentPreferences.Tip = (int)result.TipPercent;
 // ReSharper restore PossibleInvalidOperationException
-				        FirePropertyChanged(() => TipAmountInPercent);
+						RaisePropertyChanged(() => TipAmountInPercent);
 				        RefreshCreditCards();
 				    }));
 			}
 		}
 
-		public IMvxCommand CancelPayment
+		public ICommand CancelPayment
 		{
 			get
 			{

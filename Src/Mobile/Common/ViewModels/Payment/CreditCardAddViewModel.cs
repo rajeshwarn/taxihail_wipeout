@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         }
                     }
                 }
-                FirePropertyChanged("CreditCardNumber");
+				RaisePropertyChanged();
             }
         }
 
@@ -177,8 +177,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set {
 				_creditCardCategory = value;
-				FirePropertyChanged("CreditCardCategory");
-				FirePropertyChanged("CreditCardCategoryName");
+				RaisePropertyChanged();
+				RaisePropertyChanged("CreditCardCategoryName");
 			}
 		}
 
@@ -195,9 +195,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get {return _creditCardType;}
             set {
                 _creditCardType = value;
-                FirePropertyChanged("CreditCardType");
-                FirePropertyChanged("CreditCardTypeName");
-                FirePropertyChanged("CreditCardImagePath");
+				RaisePropertyChanged();
+				RaisePropertyChanged("CreditCardTypeName");
+				RaisePropertyChanged("CreditCardImagePath");
             }
         }
 
@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if(year != current){
                     Data.ExpirationYear = year.ToSafeString();
-                    FirePropertyChanged("ExpirationYear");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -244,8 +244,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if(month != current){
                     Data.ExpirationMonth = month.ToSafeString();
-                    FirePropertyChanged("ExpirationMonth");
-                    FirePropertyChanged("ExpirationMonthDisplay");
+					RaisePropertyChanged("ExpirationMonth");
+					RaisePropertyChanged("ExpirationMonthDisplay");
                 }
             }
         }

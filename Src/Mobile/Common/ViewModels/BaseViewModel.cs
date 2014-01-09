@@ -1,13 +1,12 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
 using TinyIoC;
 using System.Runtime.CompilerServices;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -101,6 +100,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     : (_commands[memberName] = new AsyncCommand(execute, canExecute));
 
         }
+
+		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
+		{
+			base.RaisePropertyChanged(whichProperty);
+		}
     }
 
 }

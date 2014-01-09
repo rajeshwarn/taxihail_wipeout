@@ -11,7 +11,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
-using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using apcurium.MK.Common.Configuration;

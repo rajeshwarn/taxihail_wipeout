@@ -1,11 +1,11 @@
 using System;
-using Cirrious.MvvmCross.Converters;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class PhoneNumberConverter: MvxBaseValueConverter
+    public class PhoneNumberConverter: MvxValueConverter
     {
         public override object Convert (object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

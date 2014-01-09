@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.Text;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Enumeration;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Windows.Input;
+using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Framework;
+using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _email = value;
-                FirePropertyChanged(() => Email);
+				RaisePropertyChanged();
             }
         }
 
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _password = value;
-                FirePropertyChanged(() => Password);
+				RaisePropertyChanged();
             }
         }
 
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             finally
                             {
                                 Thread.Sleep(1000);
-                                RequestMainThreadAction(() => this.Services().Message.ShowProgress(false));
+								InvokeOnMainThread(() => this.Services().Message.ShowProgress(false));
                             }
                         });
 
@@ -246,7 +246,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public IMvxCommand LoginTwitter
+		public ICommand LoginTwitter
 		{
 			get
 			{
@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand LoginFacebook
+        public ICommand LoginFacebook
         {
             get
             {

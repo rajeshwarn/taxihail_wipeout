@@ -1,7 +1,7 @@
 using System;
-using Cirrious.MvvmCross.Interfaces.Commands;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Windows.Input;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Models
 {
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             get { return Score == 1; }
             set
             {
-                FirePropertyChanged(() => MadSelected);
+				RaisePropertyChanged();
             }
         }
         
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             get { return Score == 2; }
             set
             {
-                FirePropertyChanged(() => UnhappySelected);
+				RaisePropertyChanged();
             }
         }
 
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             get { return Score == 3; }
             set
 			{
-                FirePropertyChanged(() => NeutralSelected);
+				RaisePropertyChanged();
             }
         }
         
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             get { return Score == 4; }
             set
 			{                
-                FirePropertyChanged(() => HappySelected);
+				RaisePropertyChanged();
             }
         }
 
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             get { return Score == 5; }
             set
             {
-                FirePropertyChanged(() => EcstaticSelected);
+				RaisePropertyChanged();
             }
         }
 
@@ -75,18 +75,21 @@ namespace apcurium.MK.Booking.Mobile.Models
         }
 
         private bool _canRating;
-
         public bool CanRating
         {
             get
             {
                 return _canRating;
             }
-            set { _canRating = value; FirePropertyChanged("CanRating"); }
+            set
+			{
+				_canRating = value;
+				RaisePropertyChanged();
+			}
 
         }
 
-        public IMvxCommand SetRateCommand
+        public ICommand SetRateCommand
         {
             get
             {

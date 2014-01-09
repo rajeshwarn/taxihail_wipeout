@@ -1,8 +1,4 @@
 using apcurium.MK.Booking.Mobile.Mvx_;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -17,16 +13,17 @@ using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
-using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Platform;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class TaxiHailApp  : MvxApplication
-        , IMvxServiceProducer<IMvxStartNavigation>
     {    
       
         public TaxiHailApp()
@@ -36,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public TaxiHailApp(IDictionary<string, string> @params)
         {
+
             InitalizeServices();
 
             InitializeStartNavigation(@params);
@@ -125,28 +123,7 @@ namespace apcurium.MK.Booking.Mobile
                 RefreshAppData ();
             }
         }
-//
-//        void NavigateToFirstScreen()
-//        {
-//            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
-//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
-//                    new MvxShowViewModelRequest(
-//                    typeof(LoginViewModel),
-//                    null,
-//                    true,
-//                    MvxRequestedBy.UserAction));
-//            } 
-//            else
-//            {
-//
-//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( new MvxShowViewModelRequest(
-//                    typeof(BookViewModel),
-//                    null,
-//                        true,
-//                        MvxRequestedBy.Unknown));
-//
-//            }
-//        }
+		
         private void LoadAppCache()
         {
             TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
@@ -183,13 +160,9 @@ namespace apcurium.MK.Booking.Mobile
         
         private void InitializeStartNavigation(IDictionary<string, string> @params)
         {
-            var startApplicationObject = new StartNavigation(@params);
-            this.RegisterServiceInstance(startApplicationObject);
+			Mvx.RegisterSingleton<IMvxAppStart>(new StartNavigation(@params));
         }
 
-
-
-       
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {

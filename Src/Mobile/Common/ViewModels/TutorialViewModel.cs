@@ -11,7 +11,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public TutorialItemModel[] TutorialItemsList
         {
             get { return _tutorialItemsList; }
-            set { _tutorialItemsList =value; FirePropertyChanged(()=>TutorialItemsList); }
+            set
+			{ 
+				_tutorialItemsList = value;
+				RaisePropertyChanged();
+			}
         }
 
         public TutorialViewModel()

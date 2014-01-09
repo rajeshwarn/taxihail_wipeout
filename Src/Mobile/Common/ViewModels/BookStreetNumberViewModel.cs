@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _streetNumberOrBuildingName = Model.BuildingName;
                 }
-                FirePropertyChanged(() => StreetNumberOrBuildingName);
+				RaisePropertyChanged(() => StreetNumberOrBuildingName);
             }
             _token = this.Services().MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _ownerId);
         }
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set {
                 _streetNumberOrBuildingName = value;
-                FirePropertyChanged (() => StreetNumberOrBuildingName);
+				RaisePropertyChanged ();
             }
         }
 

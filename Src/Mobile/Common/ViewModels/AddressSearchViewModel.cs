@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _criteria; }
             set {
                 _criteria = value;
-                FirePropertyChanged (() => Criteria);
+				RaisePropertyChanged ();
             }
         }
 
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _isSearching; }
             set {
                 _isSearching = value;
-                FirePropertyChanged (() => IsSearching);
+				RaisePropertyChanged ();
             }
         }
         protected IEnumerable<AddressViewModel> SearchPlaces ()

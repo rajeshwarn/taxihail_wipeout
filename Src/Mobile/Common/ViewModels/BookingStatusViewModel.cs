@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _mapCenter; }
 			private set {
 				_mapCenter = value;
-				FirePropertyChanged (() => MapCenter);
+				RaisePropertyChanged ();
 			}
 		}
 		
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_pickupViewModel = value;
-				FirePropertyChanged (() => Pickup); 
+				RaisePropertyChanged (); 
 			}
 		}
 		
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_dropoffViewModel = value;
-				FirePropertyChanged (() => Dropoff); 
+				RaisePropertyChanged (); 
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _isPayButtonVisible;
 			} set{
 				_isPayButtonVisible = value;
-				FirePropertyChanged (() => IsPayButtonVisible); 
+				RaisePropertyChanged (); 
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _isCancelButtonVisible;
 			} set{
 				_isCancelButtonVisible = value;
-				FirePropertyChanged (() => IsCancelButtonVisible); 
+				RaisePropertyChanged (); 
 			}
 		}
 		
@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _isResendButtonVisible;
             } set{
                 _isResendButtonVisible = value;
-                FirePropertyChanged (() => IsResendButtonVisible); 
+				RaisePropertyChanged (); 
             }
         }
 
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_confirmationNoTxt = value;
-				FirePropertyChanged (() => ConfirmationNoTxt);
+				RaisePropertyChanged ();
 			}
 		}
         public bool IsCallTaxiVisible
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _statusInfoText; }
 			set {
 				_statusInfoText = value;
-				FirePropertyChanged (() => StatusInfoText);
+				RaisePropertyChanged ();
 			}
 		}
 
@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return Pickup.Model; }
 			set {
 				Pickup.Model = value;
-				FirePropertyChanged (() => PickupModel);
+				RaisePropertyChanged ();
 			}
 		}
 
@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _order; }
 			set {
 				_order = value;
-				FirePropertyChanged (() => Order);
+				RaisePropertyChanged ();
 			}
 		}
 		
@@ -226,15 +226,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
-				FirePropertyChanged (() => OrderStatusDetail);
-				FirePropertyChanged (() => VehicleDriverHidden);
-				FirePropertyChanged (() => VehicleLicenceHidden);
-				FirePropertyChanged (() => VehicleTypeHidden);
-				FirePropertyChanged (() => VehicleMakeHidden);
-				FirePropertyChanged (() => VehicleModelHidden);
-				FirePropertyChanged (() => VehicleColorHidden);
-                FirePropertyChanged (() => IsDriverInfoAvailable);
-                FirePropertyChanged (() => IsCallTaxiVisible);
+				RaisePropertyChanged (() => OrderStatusDetail);
+				RaisePropertyChanged (() => VehicleDriverHidden);
+				RaisePropertyChanged (() => VehicleLicenceHidden);
+				RaisePropertyChanged (() => VehicleTypeHidden);
+				RaisePropertyChanged (() => VehicleMakeHidden);
+				RaisePropertyChanged (() => VehicleModelHidden);
+				RaisePropertyChanged (() => VehicleColorHidden);
+				RaisePropertyChanged (() => IsDriverInfoAvailable);
+				RaisePropertyChanged (() => IsCallTaxiVisible);
 			}
 		}
 
@@ -540,7 +540,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _isUnpairButtonVisible = value;
-                FirePropertyChanged(() => IsUnpairButtonVisible);
+				RaisePropertyChanged();
             }
         }
 

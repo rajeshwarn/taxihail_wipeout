@@ -7,6 +7,7 @@
 // </copyright>
 // 
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
+using Cirrious.MvvmCross.ViewModels;
 
 #endregion
 
@@ -14,17 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {
     public class TinyIocViewModelLocator : IMvxViewModelLocator
     {
-        #region IMvxViewModelLocator Members
-
-
-
         public bool TryLoad(Type viewModelType, IDictionary<string, string> parameters, out IMvxViewModel model)
         {
             var dict = new Dictionary<string,object>();
@@ -58,7 +54,5 @@ namespace apcurium.MK.Booking.Mobile.Mvx_
             {
             }
         }
-
-        #endregion
     }
 }

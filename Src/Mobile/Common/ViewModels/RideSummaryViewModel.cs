@@ -22,9 +22,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
-            FirePropertyChanged(() => IsPayButtonShown);
-            FirePropertyChanged(() => IsResendConfirmationButtonShown);
-            FirePropertyChanged(() => IsSendReceiptButtonShown);
+			RaisePropertyChanged(() => IsPayButtonShown);
+			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
+			RaisePropertyChanged(() => IsSendReceiptButtonShown);
         }
 
 		public string ThankYouTitle {
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _receiptSent; }
             set {
                 _receiptSent = value;
-                FirePropertyChanged(() => ReceiptSent);
+				RaisePropertyChanged();
             }
         }
 
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set { 
 				_isRatingButtonShow = value;
-				FirePropertyChanged (() => IsRatingButtonShown);
+				RaisePropertyChanged ();
 			}
 		}
 

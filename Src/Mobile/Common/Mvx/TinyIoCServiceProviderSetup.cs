@@ -1,5 +1,4 @@
 using System;
-using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {

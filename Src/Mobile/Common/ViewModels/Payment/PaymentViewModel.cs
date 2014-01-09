@@ -69,7 +69,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
-                    FirePropertyChanged(() => PayPalSelected);
+					//TODO: Property should RaisePropertyChanged
+					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
@@ -81,7 +82,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
-                    FirePropertyChanged(() => PayPalSelected);
+					//TODO: Property should RaisePropertyChanged
+					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
