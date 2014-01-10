@@ -20,11 +20,13 @@ namespace apcurium.MK.Web.Tests
         private Guid _orderId;
 
         [TestFixtureSetUp]
-        public async override void TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
             base.TestFixtureSetup();
 
-            var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authResponseTask = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            authResponseTask.Wait();
+            var authResponse = authResponseTask.Result;
 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId, "Test");
@@ -51,7 +53,7 @@ namespace apcurium.MK.Web.Tests
                 }
             };
 
-            await sut.CreateOrder(order);
+            sut.CreateOrder(order).Wait();
         }
 
         [TestFixtureTearDown]

@@ -9,12 +9,12 @@ namespace apcurium.MK.Web.Tests
     public class PushNotificationRegistrationFixture : BaseTest
     {
         [SetUp]
-        public async override void Setup()
+        public override void Setup()
         {
             base.Setup();
-            await CreateAndAuthenticateTestAdminAccount();
+            CreateAndAuthenticateTestAdminAccount().Wait();
             var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
-            await sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android);
+            sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android).Wait();
         }
 
         private readonly string _knownDeviceToken = Guid.NewGuid().ToString();
