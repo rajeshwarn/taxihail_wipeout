@@ -128,10 +128,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address) {
                 IsExecuting = true,
-                EmptyAddressPlaceholder = this.Services().Resources.GetString("BookPickupLocationEmptyPlaceholder")
+                EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
             };
             Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address) {
-                EmptyAddressPlaceholder = this.Services().Resources.GetString("BookDropoffLocationEmptyPlaceholder")
+                EmptyAddressPlaceholder = this.Services().Localize["BookDropoffLocationEmptyPlaceholder"]
             };
         }
 
@@ -219,7 +219,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate() 
         {
-            _fareEstimate = this.Services().Resources.GetString("EstimatingFare");
+            _fareEstimate = this.Services().Localize["EstimatingFare"];
 
             FirePropertyChanged(() => FareEstimate);
 
@@ -432,7 +432,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (AddressSelectionMode == AddressSelectionMode.PickupSelection && IsVisible)
                         {
-                            this.Services().Message.ShowToast(this.Services().Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long);
+                            this.Services().Message.ShowToast(this.Services().Localize["PickupWasActivatedToastMessage"], ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
@@ -455,7 +455,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (AddressSelectionMode == AddressSelectionMode.DropoffSelection && IsVisible)
                         {
-                            this.Services().Message.ShowToast(this.Services().Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
+                            this.Services().Message.ShowToast(this.Services().Localize["DropoffWasActivatedToastMessage"], ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
@@ -487,12 +487,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             var serverInfo = await this.Services().ApplicationInfo.GetAppInfoAsync();
             var appVersion = _packageInfo.Version;
-            var versionFormat = this.Services().Resources.GetString("Version");
+            var versionFormat = this.Services().Localize["Version"];
 
             var version = string.Format(versionFormat, appVersion);
             if (serverInfo != null)
             {
-                var serverVersionFormat = this.Services().Resources.GetString("ServerInfo");
+                var serverVersionFormat = this.Services().Localize["ServerInfo"];
                 version += " " + string.Format(serverVersionFormat, serverInfo.SiteName, serverInfo.Version);
             }
             Panel.Version = version;
@@ -511,7 +511,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     if (date.HasValue && date < DateTime.Now)
                     {
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidChoiceTitle"), this.Services().Resources.GetString("BookViewInvalidDate"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidChoiceTitle"], this.Services().Localize["BookViewInvalidDate"]);
                         Order.PickupDate = null;
                     }
                     else
@@ -577,11 +577,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var destinationIsRequired = this.Services().Config.GetSetting("Client.DestinationIsRequired", false);
                     if ( destinationIsRequired )
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidBookinInfoTitle"), this.Services().Resources.GetString("InvalidBookinInfoWhenDestinationIsRequired")));
+                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]));
                     }
                     else
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidBookinInfoTitle"), this.Services().Resources.GetString("InvalidBookinInfo")));
+                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]));
                     }
                     return;
                 }
@@ -589,7 +589,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
                 {
                     Order.PickupDate = null;
-                    InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidBookinInfoTitle"), this.Services().Resources.GetString("BookViewInvalidDate")));
+                    InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]));
                     return;
                 }
 

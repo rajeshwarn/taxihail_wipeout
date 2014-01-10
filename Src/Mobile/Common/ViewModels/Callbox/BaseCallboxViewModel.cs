@@ -4,15 +4,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
     public abstract class BaseCallboxViewModel : BaseViewModel
     {
-     
 		public AsyncCommand Logout
         {
             get
             {
-				return GetCommand(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("LogoutTitle"), 
-					this.Services().Resources.GetString("LogoutMessage"), 
-					this.Services().Resources.GetString("Yes"), () =>
-					{}, this.Services().Resources.GetString("No"), () => { }));
+                return GetCommand(() => this.Services().Message.ShowMessage(this.Services().Localize["LogoutTitle"],
+                    this.Services().Localize["LogoutMessage"],
+                    this.Services().Localize["Yes"], () =>
+                    { }, this.Services().Localize["No"], () => { }));
             }
         }
     }

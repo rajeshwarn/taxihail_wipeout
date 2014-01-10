@@ -70,14 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             contentStack.Maybe(x => x.TopOffset = 10);
 
 
-            lblVehiculeType.Maybe(x => x.Text = Resources.ConfirmVehiculeTypeLabel);
-            lblChargeType.Maybe(x => x.Text = Resources.ChargeTypeLabel);                     
-            lblEntryCode.Maybe(x => x.Text = Resources.GetValue ( "EntryCodeLabel" ));
-            lblApartment.Maybe(x => x.Text = Resources.GetValue ( "ApartmentLabel" ));
-            lblName.Maybe(x => x.Text = Resources.GetValue ( "PassengerNameLabel" ));
-            lblPassengers.Maybe(x => x.Text = Resources.GetValue ( "PassengerNumberLabel" ));
-            lblLargeBags.Maybe(x => x.Text = Resources.GetValue ( "LargeBagsLabel" ));
-            lblPhone.Maybe(x => x.Text = Resources.GetValue ( "PassengerPhoneLabel" ));
+            lblVehiculeType.Maybe(x => x.Text = Localize.GetValue("ConfirmVehiculeTypeLabel"));
+            lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));                     
+            lblEntryCode.Maybe(x => x.Text = Localize.GetValue("EntryCodeLabel"));
+            lblApartment.Maybe(x => x.Text = Localize.GetValue ("ApartmentLabel"));
+            lblName.Maybe(x => x.Text = Localize.GetValue ("PassengerNameLabel" ));
+            lblPassengers.Maybe(x => x.Text = Localize.GetValue ("PassengerNumberLabel"));
+            lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
+            lblPhone.Maybe(x => x.Text = Localize.GetValue ("PassengerPhoneLabel"));
 
 
             scrollView.ContentSize = new SizeF( 320, 700 );
@@ -85,13 +85,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtAprtment.Maybe(x => x.Ended += HandleTouchDown);
             txtEntryCode.Maybe(x => x.Ended += HandleTouchDown);
 
-            pickerVehicleType.Configure(Resources.RideSettingsVehiculeType, 
+            pickerVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), 
                                         ()=> ViewModel.Vehicles, 
                                         ViewModel.VehicleTypeId, 
                                         x => ViewModel.SetVehicleTypeId(x.Id), 
                                         ViewModel.OnPropertyChanged().Where( property => property == "Vehicles") );
 
-            pickerChargeType.Configure(Resources.RideSettingsChargeType,
+            pickerChargeType.Configure(Localize.GetValue("RideSettingsChargeType"),
                                        ()=>ViewModel.Payments, 
                                        ViewModel.ChargeTypeId, 
                                        x => ViewModel.SetChargeTypeId(x.Id), 
@@ -125,9 +125,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_BookingDetail"), true);
 
-            var btnDone = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            {
                 if( ViewModel.SaveCommand.CanExecute() )
                 {
                     ViewModel.SaveCommand.Execute();

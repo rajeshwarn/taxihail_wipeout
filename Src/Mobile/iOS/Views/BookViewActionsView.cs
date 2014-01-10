@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             AddSubview ( ClearLocationButton );
 
 
-            BookNowButton = AppButtons.CreateStandardButton( new RectangleF( 55,7,210,35 ) , Resources.BookItButton, AppStyle.ButtonColor.Green, "");
+            BookNowButton = AppButtons.CreateStandardButton(new RectangleF(55, 7, 210, 35), Localize.GetValue("BookItButton"), AppStyle.ButtonColor.Green, "");
             AddSubview ( BookNowButton );
 
             BookLaterButton = AppButtons.CreateStandardButton( new RectangleF( 273,7,39,35 ) , "", AppStyle.ButtonColor.Black, "");

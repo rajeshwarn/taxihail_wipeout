@@ -12,8 +12,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 				return GetCommand(() => 
 					InvokeOnMainThread(()=>
 						{
-							this.Services().Message.ShowEditTextDialog(this.Services().Resources.GetString("BookTaxiTitle"), 
-								this.Services().Resources.GetString("BookTaxiPassengerName"), this.Services().Resources.GetString("Ok"), 
+                            this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
+                                this.Services().Localize["BookTaxiPassengerName"], this.Services().Localize["Ok"], 
 								s =>
 								{ 
 									try

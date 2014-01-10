@@ -63,9 +63,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.Load();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
-            
-            AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );          
-            AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.GetValue ( "EditDetails" ), AppStyle.ButtonColor.Grey );          
+
+            AppButtons.FormatStandardButton((GradientButton)btnConfirm, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green);          
+            AppButtons.FormatStandardButton((GradientButton)btnEdit, Localize.GetValue("EditDetails"), AppStyle.ButtonColor.Grey );          
             
             
 
@@ -83,23 +83,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 x.Offset = x.Offset + countHidden ;
             });
 
-            
-            lblVehiculeType.Maybe(x=>x.Text = Resources.ConfirmVehiculeTypeLabel + ":"); 
-            lblChargeType.Maybe(x=>x.Text = Resources.ChargeTypeLabel + ":");                      
-            lblEntryCode.Maybe(x=>x.Text = Resources.GetValue ( "EntryCodeLabel" )+ ":");
-            lblApartment.Maybe(x=>x.Text = Resources.GetValue ( "ApartmentLabel" )+ ":");
-            lblNoteDriver.Maybe(x=>x.Text = Resources.GetValue ( "NotesToDriveLabel" )+ ":");
-            
-            lblName.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNameLabel" )+ ":");
-            lblPassengers.Maybe(x=>x.Text = Resources.GetValue ( "PassengerNumberLabel" )+ ":");
-            lblLargeBags.Maybe(x=>x.Text = Resources.GetValue ( "LargeBagsLabel" )+ ":");
-            lblPhone.Maybe(x=>x.Text = Resources.GetValue ( "PassengerPhoneLabel" )+ ":");
 
-            lblPickup.Maybe(x => x.Text = Resources.GetValue("ConfirmOriginLablel") + ":");
-            lblDestination.Maybe(x => x.Text = Resources.GetValue("ConfirmDestinationLabel") + ":");
-            lblFare.Maybe(x => x.Text = Resources.GetValue("EstimatePrice") + ":");
+            lblVehiculeType.Maybe(x => x.Text = Localize.GetValue("ConfirmVehiculeTypeLabel") + ":");
+            lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel") + ":");                      
+            lblEntryCode.Maybe(x=>x.Text = Localize.GetValue ( "EntryCodeLabel" )+ ":");
+            lblApartment.Maybe(x=>x.Text = Localize.GetValue ( "ApartmentLabel" )+ ":");
+            lblNoteDriver.Maybe(x=>x.Text = Localize.GetValue ( "NotesToDriveLabel" )+ ":");
+            
+            lblName.Maybe(x=>x.Text = Localize.GetValue ( "PassengerNameLabel" )+ ":");
+            lblPassengers.Maybe(x=>x.Text = Localize.GetValue ( "PassengerNumberLabel" )+ ":");
+            lblLargeBags.Maybe(x=>x.Text = Localize.GetValue ( "LargeBagsLabel" )+ ":");
+            lblPhone.Maybe(x=>x.Text = Localize.GetValue ( "PassengerPhoneLabel" )+ ":");
 
-            txtNotes.Placeholder = Resources.GetValue("NotesToDriverHint");
+            lblPickup.Maybe(x => x.Text = Localize.GetValue("ConfirmOriginLablel") + ":");
+            lblDestination.Maybe(x => x.Text = Localize.GetValue("ConfirmDestinationLabel") + ":");
+            lblFare.Maybe(x => x.Text = Localize.GetValue("EstimatePrice") + ":");
+
+            txtNotes.Placeholder = Localize.GetValue("NotesToDriverHint");
             
             scrollView.ContentSize = new SizeF( 320, 700 );
             
@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
-            NavigationItem.TitleView = new TitleView (null, Resources.View_BookingDetail, true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_BookingDetail"), true);
           
         }
     }

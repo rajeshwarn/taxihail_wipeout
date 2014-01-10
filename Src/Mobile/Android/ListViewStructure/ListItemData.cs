@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
                        (_nullListItemData = new ListItemData
                        {
                            Key = int.MinValue,
-                           Value = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NoPreference")
+                           Value = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
                        });
             }
         }

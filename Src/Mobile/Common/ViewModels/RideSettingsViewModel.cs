@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 if (!VehicleTypeId.HasValue)
                 {
-                    return this.Services().Resources.GetString("NoPreference");
+                    return this.Services().Localize["NoPreference"];
                 }
 
                 if (Vehicles == null)
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (!ChargeTypeId.HasValue)
                 {
-                    return this.Services().Resources.GetString("NoPreference");
+                    return this.Services().Localize["NoPreference"];
                 }
 
 
@@ -288,12 +288,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (string.IsNullOrEmpty(Name) 
                 || string.IsNullOrEmpty(Phone))
             {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), this.Services().Resources.GetString("UpdateBookingSettingsEmptyField"));
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
                 return false;
             }
             if (Phone.Count(Char.IsDigit) < 10)
             {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), this.Services().Resources.GetString("InvalidPhoneErrorMessage"));
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
             }
 

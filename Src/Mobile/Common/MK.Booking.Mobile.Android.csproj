@@ -143,9 +143,9 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
+    <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
@@ -249,10 +249,6 @@
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Strings.Base.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
@@ -341,10 +337,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="AppServices\Social\" />
-    <Folder Include="AppServices\Social\OAuth\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.1</Version>

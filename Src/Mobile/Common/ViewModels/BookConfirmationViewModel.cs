@@ -250,12 +250,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (CallIsEnabled)
 							{
-                                var err = string.Format(this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), err);
+                                var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							}
 							else
 							{
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall"));
+                                this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
 							}
 						});
 					}
@@ -296,9 +296,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (validationInfo.HasWarning)
 			{
 
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningTitle"), 
+                this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-                    validationInfo.Message, this.Services().Resources.GetString("ContinueButton"), () => validationInfo.ToString(), this.Services().Resources.GetString("CancelBoutton"), () => RequestClose(this));
+                    validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelBoutton"], () => RequestClose(this));
 			}
 		}
 
@@ -331,11 +331,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 this.Services().Cache.Get<string>("WarningEstimateDontShow").IsNullOrEmpty() &&
 				                Order.DropOffAddress.HasValidCoordinate())
 				{
-                    this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningEstimateTitle"), this.Services().Resources.GetString("WarningEstimate"),
+                    this.Services().Message.ShowMessage(this.Services().Localize["WarningEstimateTitle"], this.Services().Localize["WarningEstimate"],
 						"Ok", delegate
 					{
 					},
-                        this.Services().Resources.GetString("WarningEstimateDontShow"), () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
+                        this.Services().Localize["WarningEstimateDontShow"], () => this.Services().Cache.Set("WarningEstimateDontShow", "yes"));
 				}
 			}
 		}
@@ -358,9 +358,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
 			result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
 			return result;
 		}
 
@@ -370,7 +370,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return buildingName;
 			}
-            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
+            return this.Services().Localize["HistoryDetailBuildingNameNotSpecified"];
 		}
 
 	    private string FormatPrice(double? price)

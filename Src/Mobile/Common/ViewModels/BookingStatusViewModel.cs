@@ -33,16 +33,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			base.Load ();
 
-			StatusInfoText = Str.GetStatusInfoText(Str.LoadingMessage);
+            StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
             Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
             {
-				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
+				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
             };
 
             Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address)
             {
-				EmptyAddressPlaceholder = Str.BookPickupLocationEmptyPlaceholder
+				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
             };
 
             CenterMap ();
@@ -246,15 +246,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
                     {
                         this.Services().Message.ShowMessage(string.Empty, 
-						                            OrderStatusDetail.DriverInfos.MobilePhone, 
-						                            Str.CallButtonText,
+						                            OrderStatusDetail.DriverInfos.MobilePhone,
+                                                    this.Services().Localize["CallButton"],
                                                     () => this.Services().Phone.Call(OrderStatusDetail.DriverInfos.MobilePhone),
-						                            Str.CancelButtonText, 
+                                                    this.Services().Localize["CancelBoutton"], 
 						                            () => {});   
                     }
                     else
                     {
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("NoPhoneNumberTitle"), this.Services().Resources.GetString("NoPhoneNumberMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["NoPhoneNumberTitle"], this.Services().Localize["NoPhoneNumberMessage"]);
                     }
                 }); 
 			}
@@ -281,11 +281,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 && this.Services().Phone.CanUseCalendarAPI())
             {
                 SetHasSeenReminderPrompt(status.OrderId);
-                InvokeOnMainThread(() => this.Services().Message.ShowMessage(Str.AddReminderTitle, Str.AddReminderMessage, Str.YesButtonText, () => this.Services().Phone.AddEventToCalendarAndReminder(Str.ReminderTitle, 
-                    Str.GetReminderDetails(Order.PickupAddress.FullAddress, Order.PickupDate),						              									 
+                InvokeOnMainThread(() => this.Services().Message.ShowMessage(
+                    this.Services().Localize["AddReminderTitle"], 
+                    this.Services().Localize["AddReminderMessage"],
+                    this.Services().Localize["YesButton"],
+                    () => this.Services().Phone.AddEventToCalendarAndReminder(
+                        string.Format(this.Services().Localize["ReminderTitle"], this.Services().Settings.ApplicationName), 
+                        string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
-                    Order.PickupDate, 
-                    Order.PickupDate.AddHours(-2)), Str.NoButtonText, () => { }));
+                    Order.PickupDate,
+                    Order.PickupDate.AddHours(-2)), 
+                    this.Services().Localize["NoButton"], () => { }));
             }
         }
 
@@ -336,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 UpdatePayCancelButtons(status.IbsStatusId);
 
                 if (OrderStatusDetail.IbsOrderId.HasValue) {
-                    ConfirmationNoTxt = Str.GetStatusDescription(OrderStatusDetail.IbsOrderId.Value+"");
+                    ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IbsOrderId.Value + "");
                 }
 
                 if (isDone) 
@@ -425,12 +431,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand NewRide
         {
             get {
-                return GetCommand(() => this.Services().Message.ShowMessage(Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
-                {
-                    this.Services().Booking.ClearLastOrder();
-                    RequestNavigate<BookViewModel> (clearTop: true);
-                },
-                    Str.NoButtonText, NoAction));
+                return GetCommand(() => this.Services().Message.ShowMessage(
+                    this.Services().Localize["StatusNewRideButton"], 
+                    this.Services().Localize["StatusConfirmNewBooking"],
+                    this.Services().Localize["YesButton"], 
+                    () => { 
+                        this.Services().Booking.ClearLastOrder();
+                        RequestNavigate<BookViewModel> (clearTop: true);
+                    },
+                    this.Services().Localize["NoButton"], NoAction));
             }
         }
 
@@ -439,33 +448,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
-						if ((OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Loaded)) {
-                            this.Services().Message.ShowMessage(Str.CannotCancelOrderTitle, Str.CannotCancelOrderMessage);
+				    if ((OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Done) || (OrderStatusDetail.IbsStatusId == VehicleStatuses.Common.Loaded)) {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CannotCancelOrderTitle"], this.Services().Localize["CannotCancelOrderMessage"]);
                         return;
                     }
 
-                        this.Services().Message.ShowMessage("", Str.StatusConfirmCancelRide, Str.YesButtonText, () => Task.Factory.SafeStartNew(() =>
-                    {
-                        try 
+                    this.Services().Message.ShowMessage(
+                        "", 
+                        this.Services().Localize["StatusConfirmCancelRide"],
+                        this.Services().Localize["YesButton"], 
+                        () => Task.Factory.SafeStartNew(() =>
                         {
-                            this.Services().Message.ShowProgress(true);
+                            try 
+                            {
+                                this.Services().Message.ShowProgress(true);
 
-                            var isSuccess = this.Services().Booking.CancelOrder(Order.Id);      
-                            if (isSuccess) 
-                            {
-                                this.Services().Booking.ClearLastOrder();
-                                RequestNavigate<BookViewModel> (clearTop: true);
+                                var isSuccess = this.Services().Booking.CancelOrder(Order.Id);      
+                                if (isSuccess) 
+                                {
+                                    this.Services().Booking.ClearLastOrder();
+                                    RequestNavigate<BookViewModel> (clearTop: true);
+                                } 
+                                else 
+                                {
+                                    this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], this.Services().Localize["StatusConfirmCancelRideError"]);
+                                }
                             } 
-                            else 
+                            finally 
                             {
-                                this.Services().Message.ShowMessage(Str.StatusConfirmCancelRideErrorTitle, Str.StatusConfirmCancelRideError);
-                            }
-                        } 
-                        finally 
-                        {
-                            this.Services().Message.ShowProgress(false);
-                        }     
-                    }),Str.NoButtonText, () => { });
+                                this.Services().Message.ShowProgress(false);
+                            }     
+                        }),
+                        this.Services().Localize["NoButton"], () => { });
                 });
             }
         }
@@ -479,7 +493,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
 #else
 					if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
-						MessageService.ShowMessage(Resources.GetString("VehicleNumberErrorTitle"), Resources.GetString("VehicleNumberErrorMessage"));
+						MessageService.ShowMessage(Localize.GetString("VehicleNumberErrorTitle"), Localize.GetString("VehicleNumberErrorMessage"));
 						return;
 					}
 #endif
@@ -507,10 +521,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand (() =>
                 {
                     this.Services().Message.ShowMessage(string.Empty,
-                                                this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
-                                               Str.CallButtonText,
-                                                () => this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")),
-						                       Str.CancelButtonText, 
+                                               this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
+                                               this.Services().Localize["CallButton"],
+                                               () => this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")),
+                                               this.Services().Localize["CancelBoutton"], 
                                                () => {});                    
                 });
             }

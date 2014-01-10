@@ -170,7 +170,7 @@
     <Compile Include="Helpers\WebRequestHelper.cs" />
     <Compile Include="Activities\History\HistoryActivity.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
-    <Compile Include="Localization\ResourceManager.cs" />
+    <Compile Include="Localization\Localize.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Models\IconAction.cs" />
