@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
@@ -12,19 +13,20 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public interface IAccountServiceClient
     {
-        Account GetMyAccount();
-        void RegisterAccount(RegisterAccount account);
-        void UpdateBookingSettings(BookingSettingsRequest settings);
-        IList<Address> GetFavoriteAddresses();
-        IList<Address> GetHistoryAddresses(Guid accountId);
-        void AddFavoriteAddress(SaveAddress address);
-        void UpdateFavoriteAddress(SaveAddress address);
-        void RemoveFavoriteAddress(Guid addressId);
-        void ResetPassword(string emailAddress);
-        string UpdatePassword(UpdatePassword updatePassword);
-        void RemoveAddress(Guid addressId);
-        void AddCreditCard(CreditCardRequest creditCardRequest);
-        IList<CreditCardDetails> GetCreditCards();
-        void RemoveCreditCard(Guid creditCardId, string token);
+        Task<Account> GetMyAccount();
+        Task RegisterAccount(RegisterAccount account);
+        Task UpdateBookingSettings(BookingSettingsRequest settings);
+        Task<IList<Address>> GetFavoriteAddresses();
+        Task<IList<Address>> GetHistoryAddresses(Guid accountId);
+        Task AddFavoriteAddress(SaveAddress address);
+        Task UpdateFavoriteAddress(SaveAddress address);
+        Task RemoveFavoriteAddress(Guid addressId);
+        Task ResetPassword(string emailAddress);
+        Task<string> UpdatePassword(UpdatePassword updatePassword);
+        Task RemoveAddress(Guid addressId);
+        Task AddCreditCard(CreditCardRequest creditCardRequest);
+
+        Task<IList<CreditCardDetails>> GetCreditCards();
+        Task RemoveCreditCard(Guid creditCardId, string token);
     }
 }

@@ -2,7 +2,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
@@ -20,93 +21,93 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public OrderStatusDetail CreateOrder(CreateOrder order)
+        public Task<OrderStatusDetail> CreateOrder(CreateOrder order)
         {
             var req = string.Format("/account/orders");
-            var result = Client.Post<OrderStatusDetail>(req, order);
+            var result = Client.PostAsync<OrderStatusDetail>(req, order);
             return result;
         }
 
-        public void CancelOrder(Guid orderId)
+        public Task CancelOrder(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/cancel", orderId);
-            Client.Post<string>(req, new CancelOrder {OrderId = orderId});
+            return Client.PostAsync<string>(req, new CancelOrder { OrderId = orderId });
         }
 
-        public void SendReceipt(Guid orderId)
+        public Task SendReceipt(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/sendreceipt", orderId);
-            Client.Post<string>(req, new SendReceipt());
+            return Client.PostAsync<string>(req, new SendReceipt());
         }
 
-        public IList<Order> GetOrders()
+        public Task<IList<Order>> GetOrders()
         {
             var req = string.Format("/account/orders");
-            var result = Client.Get<IList<Order>>(req).ToArray();
+            var result = Client.GetAsync<IList<Order>>(req);
             return result;
         }
 
-        public Order GetOrder(Guid orderId)
+        public Task GetOrder(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}", orderId);
-            var result = Client.Get<Order>(req);
+            var result = Client.GetAsync<Order>(req);
             return result;
         }
 
-        public void RemoveFromHistory(Guid orderId)
+        public Task RemoveFromHistory(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}", orderId);
-            Client.Delete<string>(req);
+            return Client.DeleteAsync<string>(req);
         }
 
-        public OrderStatusDetail GetOrderStatus(Guid orderId)
+        public Task<OrderStatusDetail> GetOrderStatus(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/status", orderId);
-            var result = Client.Get<OrderStatusDetail>(req);
+            var result = Client.GetAsync<OrderStatusDetail>(req);
             return result;
         }
 
-        public OrderPairingDetail GetOrderPairing(Guid orderId)
+        public Task<OrderPairingDetail> GetOrderPairing(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/pairing", orderId);
-            var result = Client.Get<OrderPairingDetail>(req);
+            var result = Client.GetAsync<OrderPairingDetail>(req);
             return result;
         }
 
-        public OrderStatusDetail[] GetActiveOrdersStatus()
+        public Task<OrderStatusDetail[]> GetActiveOrdersStatus()
         {
             var req = string.Format("/account/orders/status/active");
-            var result = Client.Get<OrderStatusDetail[]>(req);
+            var result = Client.GetAsync<OrderStatusDetail[]>(req);
             return result;
         }
 
-        public List<RatingType> GetRatingTypes()
+        public Task<List<RatingType>> GetRatingTypes()
         {
-            return Client.Get<List<RatingType>>("/ratingtypes");
+            return Client.GetAsync<List<RatingType>>("/ratingtypes");
         }
 
-        public void RateOrder(OrderRatingsRequest orderRatingRequest)
+        public Task RateOrder(OrderRatingsRequest orderRatingRequest)
         {
-            Client.Post<string>("/ratings/", orderRatingRequest);
+            return Client.PostAsync<string>("/ratings/", orderRatingRequest);
         }
 
-        public OrderRatings GetOrderRatings(Guid orderId)
+        public Task<OrderRatings> GetOrderRatings(Guid orderId)
         {
             var req = string.Format("/ratings/{0}", orderId);
-            return Client.Get<OrderRatings>(req);
+            return Client.GetAsync<OrderRatings>(req);
         }
 
-        public OrderValidationResult ValidateOrder(CreateOrder order, string testZone = null)
+        public Task<OrderValidationResult> ValidateOrder(CreateOrder order, string testZone = null)
         {
             if (testZone.HasValue())
             {
                 var req = string.Format("/account/orders/validate/" + testZone);
-                return Client.Post<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, order);
             }
             else
             {
                 var req = string.Format("/account/orders/validate");
-                return Client.Post<OrderValidationResult>(req, order);
+                return Client.PostAsync<OrderValidationResult>(req, order);
             }
         }
     }
