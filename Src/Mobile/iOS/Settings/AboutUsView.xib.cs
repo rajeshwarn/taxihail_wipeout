@@ -13,6 +13,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			: base("AboutUsView", null)
         {
         }
+
+		public new AboutUsViewModel ViewModel
+		{
+			get
+			{
+				return (AboutUsViewModel)DataContext;
+			}
+		}
 		
 		public override void ViewDidLoad ()
 		{

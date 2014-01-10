@@ -11,7 +11,8 @@ using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-    [NoHistory]
+	//TODO: [MvvmCross v3] NoHistory attribute not defined
+	//[NoHistory]
     public partial class BookStreetNumberView : MvxViewController
     {
         public BookStreetNumberView() 

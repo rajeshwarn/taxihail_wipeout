@@ -2,6 +2,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using Cirrious.CrossCore.Core;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 if ( _userAgent == null )
                 {
                     _userAgent = "";
-                    TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>
+					TinyIoCContainer.Current.Resolve<IMvxMainThreadDispatcher>().RequestMainThreadAction(() =>
                     {
                         try
                         {

@@ -11,6 +11,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			: base("PayPalView", null)
         {
         }
+
+		public new PayPalViewModel ViewModel
+		{
+			get
+			{
+				return (PayPalViewModel)DataContext;
+			}
+		}
 		
         public override void ViewDidLoad ()
         {

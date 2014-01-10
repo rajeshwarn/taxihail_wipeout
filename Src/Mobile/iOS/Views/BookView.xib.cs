@@ -31,6 +31,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
+		public new BookViewModel ViewModel
+		{
+			get
+			{
+				return (BookViewModel)DataContext;
+			}
+		}
+
         #region INavigationView implementation
 
         public bool HideNavigationBar {

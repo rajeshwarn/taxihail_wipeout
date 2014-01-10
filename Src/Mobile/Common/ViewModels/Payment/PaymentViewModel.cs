@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
-                        RequestSubNavigate<PayPalViewModel, bool>(@params, success =>
+						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
                         {
                             if (success)
                             {

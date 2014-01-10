@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if (value != _menuIsOpen) {
                     _menuIsOpen = value;
-                    FirePropertyChanged ("MenuIsOpen");
+					RaisePropertyChanged ();
                 }
             }
         }

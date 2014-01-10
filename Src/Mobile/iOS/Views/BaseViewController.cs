@@ -17,16 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
 
-		#region IHaveViewModel implementation
-
-		public BaseViewModel MyViewModel {
-			get {
-				return ViewModel;
-			}
-		}
-
-		#endregion
-
         #region Constructors
 
         public BaseViewController ()

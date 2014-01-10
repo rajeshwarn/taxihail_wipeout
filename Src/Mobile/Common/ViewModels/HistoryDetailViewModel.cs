@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-													RequestSubNavigate<BookRatingViewModel,OrderRated>(new 
+													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 					            	                    {														
 															orderId = OrderId, 
 															canRate = canRate.ToString()
@@ -336,7 +336,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-                    ShowViewModel<BookViewModel>(new { order = serialized }, true);
+						// TODO: Clear top parameter has been removed when migrating to MvvMCRoss v3
+						// Find out if it was necessary
+                    ShowViewModel<BookViewModel>(new { order = serialized });
                 });
             }
         }

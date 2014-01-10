@@ -145,12 +145,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
+				return GetCommand(() => ShowSubViewModel<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
 				{
-					{ "apt", Order.PickupAddress.Apartment },
-					{ "ringCode", Order.PickupAddress.RingCode },
-					{ "buildingName", Order.PickupAddress.BuildingName },
-				}, result =>
+						{ "apt", Order.PickupAddress.Apartment },
+						{ "ringCode", Order.PickupAddress.RingCode },
+						{ "buildingName", Order.PickupAddress.BuildingName },
+					}.ToStringDictionary(), result =>
 				{
 					if (result == null)
 						return;
@@ -171,10 +171,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<BookEditInformationViewModel, Order>(
+				return GetCommand(() => ShowSubViewModel<BookEditInformationViewModel, Order>(
 					new {
                             order = Order.ToJson()
-                        }.ToSimplePropertyDictionary(), result =>
+					}.ToStringDictionary(), result =>
 				{
 					if (result == null)
 						return;
@@ -190,17 +190,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.Settings.LargeBags = result.Settings.LargeBags;
 					InvokeOnMainThread(() =>
 					{
-						FirePropertyChanged(() => RideSettings);
-						FirePropertyChanged(() => AptRingCode);
-						FirePropertyChanged(() => BuildingName);
-						FirePropertyChanged(() => OrderPassengerNumber);
-						FirePropertyChanged(() => OrderLargeBagsNumber);
-						FirePropertyChanged(() => OrderPhone);
-						FirePropertyChanged(() => OrderName);
-						FirePropertyChanged(() => OrderApt);
-						FirePropertyChanged(() => OrderRingCode);
-						FirePropertyChanged(() => VehicleName);
-						FirePropertyChanged(() => ChargeType);
+						RaisePropertyChanged(() => RideSettings);
+						RaisePropertyChanged(() => AptRingCode);
+						RaisePropertyChanged(() => BuildingName);
+						RaisePropertyChanged(() => OrderPassengerNumber);
+						RaisePropertyChanged(() => OrderLargeBagsNumber);
+						RaisePropertyChanged(() => OrderPhone);
+						RaisePropertyChanged(() => OrderName);
+						RaisePropertyChanged(() => OrderApt);
+						RaisePropertyChanged(() => OrderRingCode);
+						RaisePropertyChanged(() => VehicleName);
+						RaisePropertyChanged(() => ChargeType);
 					});
 				}));
 			}
@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 this.Services().Message.ShowMessage(this.Services().Resources.GetString("WarningTitle"), 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-                    validationInfo.Message, this.Services().Resources.GetString("ContinueButton"), () => validationInfo.ToString(), this.Services().Resources.GetString("CancelBoutton"), () => RequestClose(this));
+                    validationInfo.Message, this.Services().Resources.GetString("ContinueButton"), () => validationInfo.ToString(), this.Services().Resources.GetString("CancelBoutton"), () => Close(this));
 			}
 		}
 

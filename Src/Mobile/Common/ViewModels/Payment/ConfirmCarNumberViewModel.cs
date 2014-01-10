@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get {
 				return GetCommand (() =>
 				{ 
-                    RequestSubNavigate<PaymentViewModel,object>(
+						ShowSubViewModel<PaymentViewModel,object>(
                     new { 
                         order = Order.ToJson(),
                         orderStatus = OrderStatus.ToJson(),

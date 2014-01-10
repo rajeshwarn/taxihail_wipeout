@@ -45,12 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        protected void ShowViewModel<T>(object param, bool clearTop) where T : IMvxViewModel
-        {
-            ShowViewModel<T>(param, clearTop, MvxRequestedBy.UserAction);
-        }
-
-        protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues,
+		protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
             where TViewModel : BaseSubViewModel<TResult>
         {
@@ -75,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             },
             msg => msg.MessageId == messageId);
 
-            return ShowViewModel<TViewModel>(parameterValues);
+			return ShowViewModel<TViewModel>(parameterValues);
         }
 
         protected AsyncCommand GetCommand(Action action)

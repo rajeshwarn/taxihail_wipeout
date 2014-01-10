@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand NavigateToRatingPage
         {
 			get {
-				return new AsyncCommand (() => RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
+				return new AsyncCommand (() => ShowSubViewModel<BookRatingViewModel, OrderRated> (new 
 				{
 				    orderId = Order.Id.ToString (), 
 				    canRate = true.ToString (CultureInfo.InvariantCulture), 

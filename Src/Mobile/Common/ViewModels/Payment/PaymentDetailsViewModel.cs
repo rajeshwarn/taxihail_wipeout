@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 
                                            if(CreditCards.Count == 0)
                                            {
-                                               RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
+												ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
                                                {
                                                    CreditCards.Add (new CreditCardDetails
                                                    {
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                            }else{
                     
                     
-                                               RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
+												ShowSubViewModel<CreditCardsListViewModel, Guid>(null, result => {
                                                                                                                       if(result != default(Guid))
                                                                                                                       {
                                                                                                                           SelectedCreditCardId = result;

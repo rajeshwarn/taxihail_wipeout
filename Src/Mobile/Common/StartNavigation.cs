@@ -46,7 +46,11 @@ namespace apcurium.MK.Booking.Mobile
 					ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
                         {"order", order.ToJson()},
                         {"orderStatus", orderStatus.ToJson()},
-                    },clearTop: true);
+                    }
+						/* 
+						 * TODO: Figure out if this was needed
+						 * ,clearTop: true
+						 */);
                     
                 }
             }

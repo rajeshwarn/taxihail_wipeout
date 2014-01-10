@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
+				return GetCommand(() => ShowSubViewModel<CmtRideLinqChangePaymentViewModel, PaymentInformation>(
 				    new
 				    {
 				        currentPaymentInformation = new PaymentInformation

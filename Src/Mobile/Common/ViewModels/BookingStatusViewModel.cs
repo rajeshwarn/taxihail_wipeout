@@ -390,7 +390,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 			this.Services().Booking.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
-                        ShowViewModel<BookViewModel>(clearTop: true);
+							// TODO: [MvvmCross v3] ClearTop parameter was removed here
+                        ShowViewModel<BookViewModel>();
 						Close(this);
                     }));
             }
@@ -428,7 +429,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() => this.Services().Message.ShowMessage(Str.StatusNewRideButtonText, Str.StatusConfirmNewBooking, Str.YesButtonText, () =>
                 {
                     this.Services().Booking.ClearLastOrder();
-                    ShowViewModel<BookViewModel> (clearTop: true);
+					//TODO: [MvvmCross v3] ClearTop parameter was removed here
+                    ShowViewModel<BookViewModel> ();
                 },
                     Str.NoButtonText, NoAction));
             }
@@ -454,7 +456,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 this.Services().Booking.ClearLastOrder();
-                                ShowViewModel<BookViewModel> (clearTop: true);
+								//TODO: [MvvmCross v3] ClearTop parameter was removed here
+                                ShowViewModel<BookViewModel> ();
                             } 
                             else 
                             {
@@ -495,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 order = Order.ToJson(),
                                 orderStatus = OrderStatusDetail.ToJson()
-                            }, false);
+                            });
                     }
                 });
             }

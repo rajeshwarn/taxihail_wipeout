@@ -14,7 +14,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public RideSettingsView() 
 			: base("RideSettingsView", null)
         {
-        }    
+        }
+
+		public new RideSettingsViewModel ViewModel
+		{
+			get
+			{
+				return (RideSettingsViewModel)DataContext;
+			}
+		}
 		
         public override void ViewDidLoad ()
         {

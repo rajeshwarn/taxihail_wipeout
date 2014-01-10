@@ -1,7 +1,8 @@
 using System;
 using System.Globalization;
-using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.CrossCore;
 using Cirrious.CrossCore.Converters;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
@@ -15,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			if(string.IsNullOrEmpty((string)parameter)) {
 				return null;
 			}
-			return this.GetService().GetString(parameter.ToString());
+			return Mvx.Resolve<IAppResource>().GetString(parameter.ToString());
 		}
 	}
 }

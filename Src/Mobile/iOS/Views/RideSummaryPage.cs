@@ -15,7 +15,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public RideSummaryPage() 
 			: base("RideSummaryPage", null)
 		{
-		}    
+		}
+
+		public new RideSummaryViewModel ViewModel
+		{
+			get
+			{
+				return (RideSummaryViewModel)DataContext;
+			}
+		} 
 
 		public override void ViewDidLoad ()
 		{

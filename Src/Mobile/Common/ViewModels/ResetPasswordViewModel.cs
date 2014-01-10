@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowProgress(true);
 					try{
                         this.Services().Account.ResetPassword(Email);
-                        RequestClose( this );
+                        Close( this );
                      }catch(Exception e)
                      {
                          var msg = this.Services().Resources.GetString("ServiceError" + e.Message);

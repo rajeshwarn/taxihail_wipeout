@@ -3,7 +3,7 @@ using Cirrious.CrossCore.IoC;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {
-    public class TinyIoCProvider : IMvxIoCProvider
+	public class TinyIoCProvider //: IMvxIoCProvider
     {
         #region IMvxIoCProvider implementation
         public bool SupportsService<T>() where T : class

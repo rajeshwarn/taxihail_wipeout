@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var showTermsAndConditions = this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false);
                         if( showTermsAndConditions && !_termsAndConditionsApproved )
                         {
-                            RequestSubNavigate<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
+							ShowSubViewModel<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
                             return;
                         }
 

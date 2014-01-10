@@ -19,7 +19,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {
-    public class TinyIocViewModelLocator : IMvxViewModelLocator
+	public class TinyIocViewModelLocator //: IMvxViewModelLocator
     {
         public bool TryLoad(Type viewModelType, IDictionary<string, string> parameters, out IMvxViewModel model)
         {

@@ -18,6 +18,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         {
         }
 
+		public new PaymentViewModel ViewModel
+		{
+			get
+			{
+				return (PaymentViewModel)DataContext;
+			}
+		}
+
         double MeterAmount{
             get{
                 return CultureProvider.ParseCurrency(MeterAmountLabel.Text);
