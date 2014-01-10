@@ -951,12 +951,6 @@
   <data name="View_LocationList" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_PasswordRecovery" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
-  <data name="View_PasswordRecovery_Label" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
   <data name="View_SignUp" xml:space="preserve">
     <value>Create Account</value>
   </data>

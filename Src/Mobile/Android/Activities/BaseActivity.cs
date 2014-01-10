@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     public abstract class BaseBindingActivity<TViewModel> : MvxBindingActivityView<TViewModel>
         where TViewModel : BaseViewModel, IMvxViewModel
     {
-        protected abstract int ViewTitleResourceId { get; }
+        protected int ViewTitleResourceId { get; }
 
 
         protected override void OnResume()
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnResume();
 
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-            if (txt != null) txt.Text = GetString(ViewTitleResourceId);
+			if (txt != null) txt.Text = GetString(ViewTitleResourceId);
         }
 
         protected override void OnStart()

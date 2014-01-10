@@ -285,7 +285,6 @@
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
   <string name="CreateAccoutMobileLabel">Mobile:</string>
   <string name="NoButton">No</string>
-  <string name="View_PasswordRecovery_Label">Reset Password</string>
   <string name="DeleteButton">Delete</string>
   <string name="TwitterButton">Sign In with Twitter</string>
   <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
@@ -313,7 +312,6 @@
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="GenericTitle"></string>
-  <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">View Tutorial</string>
   <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
