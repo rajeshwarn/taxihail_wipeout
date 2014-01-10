@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task<Account> GetMyAccount();
         Task RegisterAccount(RegisterAccount account);
         Task UpdateBookingSettings(BookingSettingsRequest settings);
-        Task<IList<Address>> GetFavoriteAddresses();
+        Task<IEnumerable<Address>> GetFavoriteAddresses();
         Task<IList<Address>> GetHistoryAddresses(Guid accountId);
         Task AddFavoriteAddress(SaveAddress address);
         Task UpdateFavoriteAddress(SaveAddress address);
@@ -25,8 +25,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task<string> UpdatePassword(UpdatePassword updatePassword);
         Task RemoveAddress(Guid addressId);
         Task AddCreditCard(CreditCardRequest creditCardRequest);
-
-        Task<IList<CreditCardDetails>> GetCreditCards();
+        Task<IEnumerable<CreditCardDetails>> GetCreditCards();
         Task RemoveCreditCard(Guid creditCardId, string token);
     }
 }

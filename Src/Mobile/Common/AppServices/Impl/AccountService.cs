@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Data;
 using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
@@ -134,50 +135,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached != null) {
                 return cached;
             }
-            IEnumerable<Address> result = new Address[0];
-            UseServiceClient<IAccountServiceClient> (service =>
-            {
-                result = service.GetHistoryAddresses (CurrentAccount.Id);
-            });
+
+            var result = UseServiceClientAsync<IAccountServiceClient, IList<Address>>(service => service.GetHistoryAddresses (CurrentAccount.Id));
 
             Cache.Set(HistoryAddressesCacheKey, result.ToArray());
             return result;
         }
 
-        public Task<Order[]> GetHistoryOrders ()
+        public Task<IList<Order>> GetHistoryOrders ()
         {
-            return Task.Factory.StartNew(() =>
-                {
-
-                    var result = new Order[0];
-                    UseServiceClient<OrderServiceClient>(service =>
-                        {
-                            result = service.GetOrders().ToArray();
-                        }
-                        );
-                    return result;
-                });
+            var client = TinyIoCContainer.Current.Resolve<OrderServiceClient>();
+            return client.GetOrders();
         }
 
         public Order GetHistoryOrder (Guid id)
         {
-            var result = default(Order);
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                result = service.GetOrder (id);
-            }
-            );
+            var result = 
+            UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
             return result;
         }
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
-            var result = default(OrderStatusDetail[]);
-            UseServiceClient<OrderServiceClient>(service =>
-            {
-                result = service.GetActiveOrdersStatus();
-            }
-            );
+            var result = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
             return result;
         }
 
@@ -188,14 +168,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (cached != null) {
                 return cached;
             }
-            IEnumerable<Address> result = new Address[0];
-            UseServiceClient<IAccountServiceClient> (service =>
-            {
-                result = service.GetFavoriteAddresses ();
-            }
-                );
-            Cache.Set (FavoriteAddressesCacheKey, result.ToArray ());
-            return result;
+            var result = UseServiceClientAsync<IAccountServiceClient, IEnumerable<Address>>(service => service.GetFavoriteAddresses());
+            var favoriteAddresses = result as Address[] ?? result.ToArray();
+            Cache.Set (FavoriteAddressesCacheKey, favoriteAddresses.ToArray ());
+            return favoriteAddresses;
         }
 
         private void UpdateCacheArray<T> (string key, T updated, Func<T, T, bool> compare) where T : class
@@ -313,8 +289,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account GetAccount (string email, string password)
         {
             try {
-                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
-                var authResponse = auth.Authenticate (email, password);
+                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.Authenticate (email, password));
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
             } catch (Exception ex) {
@@ -356,8 +331,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try {
                 var parameters = new NamedParameterOverloads ();
-                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
-                var authResponse = auth.AuthenticateTwitter (twitterId);
+                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId));
                 SaveCredentials (authResponse);
 
                 parameters.Add ("credential", authResponse);
@@ -375,8 +349,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Cache.Clear (HistoryAddressesCacheKey);
                 Cache.Clear (FavoriteAddressesCacheKey);
 
-                var service = TinyIoCContainer.Current.Resolve<IAccountServiceClient> ("Authenticate");
-                var account = service.GetMyAccount ();
+                var account = UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount ());
                 if (account != null) {
                     CurrentAccount = account;
                     data = account;
@@ -401,11 +374,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account RefreshAccount ()
         {
             try {
-                var service = TinyIoCContainer.Current.Resolve<IAccountServiceClient> ("Authenticate");
-                var account = service.GetMyAccount ();
+                var account = UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount());
                 CurrentAccount = account;
-
-            
                 return account;
             } catch {
                 return null;
@@ -555,15 +525,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<CreditCardDetails> GetCreditCards ()
         {
-
-            IEnumerable<CreditCardDetails> result = new CreditCardDetails[0];
-            UseServiceClient<IAccountServiceClient> (service =>
-            {
-                result = service.GetCreditCards ();
-            });
-        
+            var result = UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
             return result;
-            
         }
 
         public void RemoveCreditCard (Guid creditCardId)
@@ -574,15 +537,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool AddCreditCard (CreditCardInfos creditCard)
         {
-            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<IPaymentService> ();
-            
 			try
 			{
-
-                var response = creditAuthorizationService.Tokenize(
+                var response = UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
                     creditCard.CardNumber,
                     new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-                    creditCard.CCV); 				
+                    creditCard.CCV));	
 			    creditCard.Token = response.CardOnFileToken;       
 			
 			}

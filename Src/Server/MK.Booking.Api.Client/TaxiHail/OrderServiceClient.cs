@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
-        public Task GetOrder(Guid orderId)
+        public Task<Order> GetOrder(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}", orderId);
             var result = Client.GetAsync<Order>(req);

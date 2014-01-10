@@ -2,6 +2,8 @@
 
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
@@ -23,14 +25,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         protected string ClientKey { get; set; }
 
 
-        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             var braintree = new BraintreeEncrypter(ClientKey);
             var encryptedNumber = braintree.Encrypt(creditCardNumber);
             var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
             var encryptedCvv = braintree.Encrypt(cvv);
 
-            return Client.Post(new TokenizeCreditCardBraintreeRequest
+            return Client.PostAsync(new TokenizeCreditCardBraintreeRequest
             {
                 EncryptedCreditCardNumber = encryptedNumber,
                 EncryptedExpirationDate = encryptedExpirationDate,
@@ -38,18 +40,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
+        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return Client.Delete(new DeleteTokenizedCreditcardBraintreeRequest
+            return Client.DeleteAsync(new DeleteTokenizedCreditcardBraintreeRequest
             {
                 CardToken = cardToken,
             });
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount,
+        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,
             double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizePaymentBraintreeRequest
+            return Client.PostAsync(new PreAuthorizePaymentBraintreeRequest
             {
                 Amount = (decimal) amount,
                 Meter = (decimal) meterAmount,
@@ -59,18 +61,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
+        public Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId)
         {
-            return Client.Post(new CommitPreauthorizedPaymentBraintreeRequest
+            return Client.PostAsync(new CommitPreauthorizedPaymentBraintreeRequest
             {
                 TransactionId = transactionId,
             });
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount,
+        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizeAndCommitPaymentBraintreeRequest
+            return Client.PostAsync(new PreAuthorizeAndCommitPaymentBraintreeRequest
             {
                 Amount = (decimal) amount,
                 MeterAmount = (decimal) meterAmount,
@@ -80,19 +82,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
             throw new NotImplementedException();
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             throw new NotImplementedException();
         }
 
-        public void ResendConfirmationToDriver(Guid orderId)
+        public Task ResendConfirmationToDriver(Guid orderId)
         {
-            Client.Post(new ResendPaymentConfirmationRequest {OrderId = orderId});
+            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
         }
     }
 }

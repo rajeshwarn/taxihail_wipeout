@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile
 			});
             
 
-            container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger >(), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
 

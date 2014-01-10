@@ -40,16 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<OrderValidationResult> ValidateOrder (CreateOrder order)
         {
-            return Task.Run(() =>
-            {
-                var validationResut = new OrderValidationResult();
-                
-                UseServiceClient<OrderServiceClient>(service =>
-                {
-                    validationResut = service.ValidateOrder(order);
-                }, ex => Logger.LogError(ex));
-                return validationResut;
-            });
+            return TinyIoCContainer.Current.Resolve<OrderServiceClient>().ValidateOrder(order);
         }
 
         public bool IsPaired(Guid orderId)
@@ -64,12 +55,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
-            var orderDetail = new OrderStatusDetail ();
-            
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                orderDetail = service.CreateOrder (order);
-            }, HandleCreateOrderError);
+            var orderDetail = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
 			if (orderDetail.IbsOrderId.HasValue && orderDetail.IbsOrderId > 0) {
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
@@ -145,11 +131,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
             var r = new OrderStatusDetail ();
-            UseServiceClient<OrderServiceClient>(service =>
-                {
-                    r = service.GetOrderStatus(orderId);
-                }, ex => Logger.LogError(ex));
-
+            UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
             return r;
         }
 
@@ -167,11 +149,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     throw new InvalidOperationException ();
                 }
                 var lastOrderId = Cache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
-                UseServiceClient<OrderServiceClient> (service =>
-                {
-                    result = service.GetOrderStatus (new Guid (lastOrderId));
-                }, ex => Logger.LogError (ex));
-
+                result = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
                 return result;
             });
 
@@ -233,13 +211,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
             var tarifMode = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting<DirectionSetting.TarifMode>("Direction.TarifMode", DirectionSetting.TarifMode.AppTarif);            
-            DirectionInfo directionInfo = new DirectionInfo();
+            var directionInfo = new DirectionInfo();
             
             if (pickup.HasValidCoordinate() && destination.HasValidCoordinate())
             {
                 if (tarifMode != DirectionSetting.TarifMode.AppTarif)
                 {
-					directionInfo = TinyIoCContainer.Current.Resolve<IIbsFareClient>().GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude);                                                            
+                    directionInfo = UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
                 }
 
                 if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
@@ -323,21 +301,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public List<RatingType> GetRatingType ()
         {
-            var ratingType = new List<RatingType> ();
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                ratingType = service.GetRatingTypes ();
-            });
+            var ratingType =
+            UseServiceClientAsync<OrderServiceClient, List<RatingType>>(service => service.GetRatingTypes());
             return ratingType;
         }
 
         public OrderRatings GetOrderRating (Guid orderId)
         {
-            var orderRate = new OrderRatings ();
-            UseServiceClient<OrderServiceClient> (service =>
-            {
-                orderRate = service.GetOrderRatings (orderId);
-            });
+            var orderRate = UseServiceClientAsync<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
             return orderRate;
         }
 
