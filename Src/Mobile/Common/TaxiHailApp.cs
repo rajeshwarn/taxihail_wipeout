@@ -25,19 +25,15 @@ using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class TaxiHailApp  : MvxApplication
-        , IMvxServiceProducer<IMvxStartNavigation>
+    public class TaxiHailApp  : MvxApplication, IMvxServiceProducer<IMvxStartNavigation>
     {    
-      
-        public TaxiHailApp()
-            : this(default(IDictionary<string, string>))
+		public TaxiHailApp() : this(default(IDictionary<string, string>))
         {
         }
 
         public TaxiHailApp(IDictionary<string, string> @params)
         {
             InitalizeServices();
-
             InitializeStartNavigation(@params);
         }
         
@@ -75,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<ITutorialService, TutorialService>();
             container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 
-
             container.Register<IGeolocService, GeolocService>();
             container.Register<IGoogleService, GoogleService>();
             container.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -88,6 +83,7 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IMapsApiClient, MapsApiClient>();
             container.Register<IPopularAddressProvider, PopularAddressProvider>();
             container.Register<ITariffProvider, TariffProvider>();
+
             // ***** PayPal *****
             container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
             container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
@@ -100,53 +96,28 @@ namespace apcurium.MK.Booking.Mobile
                 return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
 			});
             
-
             container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger >(), c.Resolve<IPackageInfo>().UserAgent));
             container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
-
-
+			
             container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
             container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
         }
 
-
         void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             if ( (e.LifetimeEvent == MvxLifetimeEvent.Deactivated) || (e.LifetimeEvent == MvxLifetimeEvent.Closing) )  {
                 ClearAppCache ();
                 TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
-            } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
+            } 
+			else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
                 TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
-                //NavigateToFirstScreen();
                 RefreshAppData ();
             }
         }
-//
-//        void NavigateToFirstScreen()
-//        {
-//            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null) {
-//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( 
-//                    new MvxShowViewModelRequest(
-//                    typeof(LoginViewModel),
-//                    null,
-//                    true,
-//                    MvxRequestedBy.UserAction));
-//            } 
-//            else
-//            {
-//
-//                TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestNavigate( new MvxShowViewModelRequest(
-//                    typeof(BookViewModel),
-//                    null,
-//                        true,
-//                        MvxRequestedBy.Unknown));
-//
-//            }
-//        }
+
         private void LoadAppCache()
         {
             TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
@@ -164,12 +135,11 @@ namespace apcurium.MK.Booking.Mobile
         private void RefreshAppData()
         {
 			Task.Run(() =>
-			                      {
+			{
 				ClearAppCache();
 				LoadAppCache();
 			});
         }
-
         
         private string GetSessionId (TinyIoCContainer container)
         {
@@ -187,13 +157,9 @@ namespace apcurium.MK.Booking.Mobile
             this.RegisterServiceInstance(startApplicationObject);
         }
 
-
-
-       
-
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
-            return new TinyIocViewModelLocator(); //base.CreateDefaultViewModelLocator();
+            return new TinyIocViewModelLocator();
         }
     }
 }

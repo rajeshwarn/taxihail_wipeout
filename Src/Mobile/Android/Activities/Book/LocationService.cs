@@ -4,6 +4,8 @@ using Android.Content;
 using Android.Locations;
 using Android.OS;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -20,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             Positions = _locationListener;
         }
-
 
         public bool IsNetworkProviderEnabled
         {
@@ -46,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             get { return _locationListener.LastKnownPosition; }
         }
-
 
         public bool IsLocationServiceEnabled
         {
@@ -80,13 +80,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (!IsLocationServiceEnabled)
             {
+				TinyIoCContainer.Current.Resolve<ILogger>().LogError("Location service is not enabled");
                 throw new Exception("Please enable location services!!");
             }
+
             if (IsNetworkProviderEnabled)
             {
                 _locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _locationListener,
                     Looper.MainLooper);
             }
+
             if (IsGpsProviderEnabled)
             {
                 _locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _locationListener,
