@@ -22,10 +22,12 @@ namespace apcurium.MK.Web.Tests
         }
 
         [SetUp]
-        public async override void Setup()
+        public override void Setup()
         {
             base.Setup();
-            await CreateAndAuthenticateTestAdminAccount();
+            var task = CreateAndAuthenticateTestAdminAccount();
+            task.Wait();
+
             new AdministrationServiceClient(BaseUrl, SessionId, "Test").AddOrUpdateAppSettings(new ConfigurationsRequest
             {
                 AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWeb"}}
