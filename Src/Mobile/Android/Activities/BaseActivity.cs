@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     public abstract class BaseBindingActivity<TViewModel> : MvxBindingActivityView<TViewModel>
         where TViewModel : BaseViewModel, IMvxViewModel
     {
-        protected int ViewTitleResourceId { get; }
+		protected abstract int ViewTitleResourceId { get; }
 
 
         protected override void OnResume()

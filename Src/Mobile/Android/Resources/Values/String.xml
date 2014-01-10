@@ -11,6 +11,9 @@
   <string name="CreateAccountLanguage">Language</string>
   <string name="NbPassenger"> ({0} passenger)</string>
   <string name="ResetPasswordSucessTitle">Password reset</string>
+  <string name="View_UpdatePassword">Update Password</string>
+  <string name="View_PasswordRecoveryReset">Reset</string>
+  <string name="ResetPasswordLabel">Email</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
@@ -161,7 +164,6 @@
   <string name="LocationHistoryTitle">Locations history</string>
   <string name="RingCode">Entry Code</string>
   <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
-  <string name="ResetPasswordLabel">Email</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="CarAssigned">Your taxi {0}</string>
   <string name="RideSettingsChargeType">Charge type</string>
@@ -182,7 +184,6 @@
   <string name="EstimatePriceOver100">Call for price</string>
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="HistoryViewSendReceiptButton">Send Receipt</string>
-  <string name="View_UpdatePassword">Update Password</string>
   <string name="LocationNoHistory">No history</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="ConfirmCompanyLabel">Company:</string>
