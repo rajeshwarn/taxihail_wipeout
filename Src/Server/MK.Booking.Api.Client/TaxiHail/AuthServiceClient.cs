@@ -26,19 +26,21 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<Account>("/account");
         }
 
-        public async Task<AuthenticationData> Authenticate(string email, string password)
+        public Task<AuthenticationData> Authenticate(string email, string password)
         {
-            var response = await AuthenticateAsync(new Auth
-            {
-                UserName = email,
-                Password = password,
-                RememberMe = true,
-            }, "credentials");
-            return new AuthenticationData
+			var responseTask = AuthenticateAsync (new Auth {
+				UserName = email,
+				Password = password,
+				RememberMe = true,
+			}, "credentials");
+			//todo remove when using the async await patten in service layer
+			responseTask.Wait ();
+			var response = responseTask.Result;
+			return Task.FromResult(new AuthenticationData
             {
                 UserName = response.UserName,
                 SessionId = response.SessionId
-            };
+			});
         }
 
 		public async Task<AuthenticationData> AuthenticateFacebook(string facebookId)
@@ -58,27 +60,27 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			};
 		}
 
-        public async Task<AuthenticationData> AuthenticateTwitter(string twitterId)
+        public Task<AuthenticationData> AuthenticateTwitter(string twitterId)
         {
-            var response = await AuthenticateAsync(new Auth
+			var responseTask = AuthenticateAsync(new Auth
             {
                 UserName = twitterId,
                 Password = twitterId,
                 RememberMe = true,
             }, "credentialstw");
-
-            return new AuthenticationData
-            {
-                UserName = response.UserName,
-                SessionId = response.SessionId
-            };
+			//todo remove when using the async await patten in service layer
+			responseTask.Wait ();
+			var response = responseTask.Result;
+			return Task.FromResult(new AuthenticationData
+				{
+					UserName = response.UserName,
+					SessionId = response.SessionId
+				});
         }
 
         private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
 		{
 			return Client.PostAsync<AuthResponse>("/auth/" + provider , auth);
 		}
-
-
     }
 }
