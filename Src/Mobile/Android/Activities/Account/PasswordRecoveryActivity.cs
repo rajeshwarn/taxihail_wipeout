@@ -9,12 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class PasswordRecoveryActivity : BaseBindingActivity<ResetPasswordViewModel>
     {
-        protected override int ViewTitleResourceId
-        {
-            get { return Resource.String.View_PasswordRecovery_Label; }
-        }
-
-        protected override void OnViewModelSet()
+		protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_PasswordRecovery);
         }
