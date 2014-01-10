@@ -38,10 +38,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PutAsync<string>("/account/bookingsettings", settings);
         }
 
-        public Task<IList<Address>> GetFavoriteAddresses()
+        public Task<IEnumerable<Address>> GetFavoriteAddresses()
         {
             var req = string.Format("/account/addresses");
-            var addresses = Client.GetAsync<IList<Address>>(req);
+            var addresses = Client.GetAsync<IEnumerable<Address>>(req);
             return addresses;
         }
 
@@ -95,9 +95,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.PostAsync<string>(req, creditCardRequest);
         }
 
-        public Task<IList<CreditCardDetails>> GetCreditCards()
+        public Task<IEnumerable<CreditCardDetails>> GetCreditCards()
         {
-            return Client.GetAsync<IList<CreditCardDetails>>("/account/creditcards");
+            return Client.GetAsync<IEnumerable<CreditCardDetails>>("/account/creditcards");
         }
 
         public Task RemoveCreditCard(Guid creditCardId, string cardOnFileToken)

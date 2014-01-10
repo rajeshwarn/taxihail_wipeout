@@ -71,6 +71,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return default(TResult);
         }
 
+        protected TResult UseServiceClientAsync<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "")
+            where TResult : class
+            where TService : class
+        {
+            var service = TinyIoCContainer.Current.Resolve<TService>();
+
+            try
+            {
+                using (Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
+                {
+                     var task = action(service);
+                     task.Wait();
+                     return task.Result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+                TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+            }
+            return default(TResult);
+        }
+
         protected void QueueCommand<T>(Action<T> action) where T : class
         {
             ThreadPool.QueueUserWorkItem(o =>

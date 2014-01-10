@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.DeleteAsync<string>(req);
         }
 
-        public Task<IList<Tariff>> GetTariffs()
+        public Task<IEnumerable<Tariff>> GetTariffs()
         {
             var req = string.Format("/admin/tariffs");
-            return Client.GetAsync<IList<Tariff>>(req);
+            return Client.GetAsync<IEnumerable<Tariff>>(req);
         }
     }
 }

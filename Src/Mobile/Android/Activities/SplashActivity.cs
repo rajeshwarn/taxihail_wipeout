@@ -2,9 +2,7 @@ using Android.App;
 using Android.OS;
 using System;
 using System.Collections.Generic;
-using Android.App;
 using Android.Content.PM;
-using Android.OS;
 using Cirrious.MvvmCross.Android.Platform;
 using Cirrious.MvvmCross.Android.Views;
 
