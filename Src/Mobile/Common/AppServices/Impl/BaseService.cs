@@ -86,10 +86,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                      return task.Result;
                 }
             }
-            catch (Exception ex)
+            catch (AggregateException ex)
             {
-                Logger.LogError(ex);
-                TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                ex.Handle(x =>
+                {
+                    Logger.LogError(x);
+                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(x);
+                    return true;
+                });
+                
             }
             return default(TResult);
         }

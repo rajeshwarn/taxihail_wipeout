@@ -3,9 +3,9 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Authorization;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Capture;
@@ -59,18 +59,34 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)
         {
-            var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
+            try
             {
-                CardToken = request.CardToken
-            });
-            responseTask.Wait();
-            var response = responseTask.Result;
+                var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
+                {
+                    CardToken = request.CardToken
+                });
+                responseTask.Wait();
+                var response = responseTask.Result;
 
-            return new DeleteTokenizedCreditcardResponse
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = response.ResponseCode == 1,
+                    Message = response.ResponseMessage
+                };
+            }
+            catch (AggregateException ex)
             {
-                IsSuccessfull = response.ResponseCode == 1,
-                Message = response.ResponseMessage
-            };
+                ex.Handle(x =>
+                {
+                    _logger.LogError(x);
+                    return true;
+                });
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.InnerExceptions.First().Message,
+                };
+            }
         }
 
         public PreAuthorizePaymentResponse Post(PreAuthorizePaymentCmtRequest preAuthorizeRequest)
@@ -117,6 +133,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     IsSuccessfull = isSuccessful,
                     Message = response.ResponseMessage,
                     TransactionId = response.TransactionId.ToString(CultureInfo.InvariantCulture),
+                };
+            }
+            catch (AggregateException ex)
+            {
+                ex.Handle(x =>
+                {
+                    _logger.LogError(x);
+                    return true;
+                });
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.InnerExceptions.First().Message,
                 };
             }
             catch (Exception e)
@@ -208,6 +237,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     AuthorizationCode = authorizationCode,
                 };
             }
+            catch (AggregateException ex)
+            {
+                ex.Handle(x =>
+                {
+                    _logger.LogError(x);
+                    return true;
+                });
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.InnerExceptions.First().Message,
+                };
+            }
             catch (Exception e)
             {
                 return new CommitPreauthorizedPaymentResponse
@@ -249,6 +291,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     IsSuccessfull = isSuccessful,
                     Message = response.ResponseMessage,
                     AuthorizationCode = response.AuthorizationCode,
+                };
+            }
+            catch (AggregateException ex)
+            {
+                ex.Handle(x =>
+                {
+                    _logger.LogError(x);
+                    return true;
+                });
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessfull = false,
+                    Message = ex.InnerExceptions.First().Message,
                 };
             }
             catch (Exception e)
