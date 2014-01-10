@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
@@ -13,17 +12,17 @@ namespace apcurium.MK.Web.Tests
     public class OrderStatusFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public override void Setup()
         {
-            await base.Setup();
+            base.Setup();
         }
 
         private Guid _orderId;
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public async override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
 
             var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
 

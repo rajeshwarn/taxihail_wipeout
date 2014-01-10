@@ -15,9 +15,9 @@ namespace apcurium.MK.Web.Tests
     public class RuleFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public async override void Setup()
         {
-            await base.Setup();
+            base.Setup();
             await CreateAndAuthenticateTestAdminAccount();
             
             var sut = new RulesServiceClient(BaseUrl, SessionId, "Test");
@@ -42,9 +42,9 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownRuleId;
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
@@ -13,9 +12,9 @@ namespace apcurium.MK.Web.Tests
     public class CompanyDefaultFavoriteAddressFixture : BaseTest
     {
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -25,9 +24,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [SetUp]
-        public async override Task Setup()
+        public async override void Setup()
         {
-            await base.Setup();
+            base.Setup();
             await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress

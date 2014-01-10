@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
@@ -9,15 +8,15 @@ namespace apcurium.MK.Web.Tests
     public class GeolocFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public override void Setup()
         {
-            await base.Setup();
+            base.Setup();
         }
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

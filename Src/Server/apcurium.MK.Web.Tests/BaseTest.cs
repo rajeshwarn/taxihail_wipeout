@@ -35,14 +35,14 @@ namespace apcurium.MK.Web.Tests
             return new FakePaymentClient();
         }
 
-        public async virtual Task TestFixtureSetup()
+        public async virtual void TestFixtureSetup()
         {
             AppHost.Start(BaseUrl);
 
             TestAccount = await AccountService.GetTestAccount(0);
         }
 
-        public async virtual Task Setup()
+        public async virtual void Setup()
         {
             var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
@@ -53,7 +53,7 @@ namespace apcurium.MK.Web.Tests
             AppHost.Stop();
         }
 
-        protected string GetTempEmail()
+        protected  string GetTempEmail()
         {
             return string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
         }
