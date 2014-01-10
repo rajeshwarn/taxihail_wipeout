@@ -331,14 +331,12 @@
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
-    <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon_state.xml" />
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
     <AndroidResource Include="Resources\Drawable\grip.png" />
     <AndroidResource Include="Resources\Drawable\hail_state.xml" />
     <AndroidResource Include="Resources\Drawable\newBlackButton.xml" />
-    <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <AndroidResource Include="Resources\Drawable\phone.png" />
     <AndroidResource Include="Resources\Drawable\pin_destination.png" />
@@ -483,6 +481,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\FontSize.xml" />
+    <AndroidResource Include="Resources\Drawable\black_button.xml" />
+    <AndroidResource Include="Resources\Drawable\email_cell.png" />
+    <AndroidResource Include="Resources\Drawable\password_cell.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -492,7 +493,12 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\drawable-large-nodpi\" />
+    <Folder Include="Resources\drawable-ldpi\" />
+    <Folder Include="Resources\drawable-mdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
@@ -575,10 +581,4 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
-    <Folder Include="Resources\Drawable\" />
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-large-nodpi\" />
-    <Folder Include="Resources\drawable-ldpi\" />
-    <Folder Include="Resources\drawable-mdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
 </Project>
