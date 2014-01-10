@@ -35,14 +35,14 @@ namespace apcurium.MK.Web.Tests
             return new FakePaymentClient();
         }
 
-        public async virtual void TestFixtureSetup()
+        public async virtual Task TestFixtureSetup()
         {
             AppHost.Start(BaseUrl);
 
             TestAccount = await AccountService.GetTestAccount(0);
         }
 
-        public async virtual void Setup()
+        public async virtual Task Setup()
         {
             var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
