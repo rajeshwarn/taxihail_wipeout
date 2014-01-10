@@ -23,7 +23,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                       .Where(e => e.EventArgs.Event.Action == MotionEventActions.Down)
                       .Buffer(TimeOut,NbClick)
                       .Where(s => s.Count == 5)
-                      .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute(null)));
+                      .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute()));
 
             ViewModel.Load();
         }

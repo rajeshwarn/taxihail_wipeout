@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         void RevertToPickupSelection (object sender, EventArgs e)
         {
-            ActivatePickup.Execute(null);
+            ActivatePickup.Execute();
         }
 
         void LoadLastActiveOrder( )

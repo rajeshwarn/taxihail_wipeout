@@ -12,6 +12,7 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -20,6 +21,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public HistoryDetailView() 
 			: base("HistoryDetailView", null)
 		{
+		}
+
+		public new HistoryDetailViewModel ViewModel
+		{
+			get
+			{
+				return (HistoryDetailViewModel)DataContext;
+			}
 		}
 
         public override void ViewDidLoad()

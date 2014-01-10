@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				}
 				else
 				{
-					DateChangedCommand.Execute(null);
+					DateChangedCommand.Execute();
 				}
 			}
 		}

@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MonoTouchDialog;
+using CrossUI.Touch.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

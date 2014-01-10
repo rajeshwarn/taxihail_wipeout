@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
 
-			var setup = new Setup(this, new PhonePresenter( this, window ));
+			var setup = new Setup(this, window);
             setup.Initialize();
 
 			var startup = Mvx.Resolve<IMvxAppStart>();

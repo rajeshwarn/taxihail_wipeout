@@ -8,32 +8,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
     public class TipSliderBinding: MvxTargetBinding
     {
-        
         public static void Register(IMvxTargetBindingFactoryRegistry registry)
         {           
             registry.RegisterFactory(new MvxCustomBindingFactory<TipSliderControl>("Value", obj => new TipSliderBinding(obj)));
         }
         
-        
-        
-        
-        private readonly TipSliderControl _control;
-        
-        public TipSliderBinding(TipSliderControl control)
+		public TipSliderBinding(TipSliderControl target)
         {
-            _control = control;         
-            _control.ValueChanged += HandleSelectedChanged;
+			target.ValueChanged += HandleSelectedChanged;
         }
         
         void HandleSelectedChanged (object sender, EventArgs e)
         {
-            FireValueChanged(_control.Value);
+			var control = Target as TipSliderControl;
+            FireValueChanged(control.Value);
         }
         
         
         public override void SetValue (object value)
         {
-            _control.Value = (int)value;
+			var control = Target as TipSliderControl;
+            control.Value = (int)value;
         }
         
         public override MvxBindingMode DefaultMode

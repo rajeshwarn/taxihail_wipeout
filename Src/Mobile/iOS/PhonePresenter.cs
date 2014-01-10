@@ -109,11 +109,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                     return;
                 }
 
-                var viewModel = topView.ReflectionGetViewModel();
+				var viewModel = topView.ViewModel;
                 if (viewModel != toClose)
                 {
                     var viewControllers = _masterNavigationController.ViewControllers.ToList();
-                    var toCloseController = (UIViewController)viewControllers.OfType<IHaveViewModel>().FirstOrDefault(vc => vc.MyViewModel == toClose);
+                    var toCloseController = (UIViewController)viewControllers.OfType<IHaveViewModel>().FirstOrDefault(vc => vc.ViewModel == toClose);
 
 
                     if (toCloseController == null)
@@ -132,16 +132,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if (_masterNavigationController.ViewControllers.Length >= 2)
                 {
-
                     var typeController = _masterNavigationController.ViewControllers[1].GetType();
-                    if (typeController.IsDefined(typeof(NoHistoryAttribute), false))
+					//TODO: [MvvmCross v3] NoHistoryAttribute is not defined
+					/*if (typeController.IsDefined(typeof(NoHistoryAttribute), false))
                     {
                         var newStack = _masterNavigationController.ViewControllers.ToList();
                         newStack.RemoveAt(1);
                         _masterNavigationController.SetViewControllers(newStack.ToArray(), true);
-                    }
+                    }*/
                 }
-                _masterNavigationController.PopViewControllerAnimatedPause(true);
+				// TODO: [MvvmCross v3] Figure out what this method was doing
+				//_masterNavigationController.PopViewControllerAnimatedPause(true);
+                _masterNavigationController.PopViewControllerAnimated(true);
             }
         }
 

@@ -310,6 +310,7 @@
     <Compile Include="AppServices\Social\OAuth\Punycode.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Extensions\ICommandExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

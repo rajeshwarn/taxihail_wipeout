@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if(controller == null) return;
 
             controller.View.EndEditing(true);
-            if(NavigateCommand != null) NavigateCommand.Execute();
+			if(NavigateCommand != null) NavigateCommand.Execute();
 
         }
     }

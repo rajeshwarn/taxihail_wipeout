@@ -7,7 +7,7 @@ using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	public partial class BookRatingCell : MvxTableViewCell
+	public partial class BookRatingCell : MvxStandardTableViewCell
 	{
 		public static NSString Identifier = new NSString("BookRatingCell");
 		public const string BindingText = @"{'RatingTypeName':{'Path':'RatingTypeName'},

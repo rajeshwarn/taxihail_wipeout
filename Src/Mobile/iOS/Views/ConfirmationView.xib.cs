@@ -12,6 +12,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {

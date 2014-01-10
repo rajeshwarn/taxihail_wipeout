@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             _removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
             _removeButton.SetImage(UIImage.FromFile("Assets/CreditCard/delete_card_btn.png"),UIControlState.Normal);
             _removeButton.TouchUpInside += (sender, e) => {
-                DeleteCommand.Execute();
+				DeleteCommand.Execute();
             };
             AddSubview ( _removeButton ); 
         }

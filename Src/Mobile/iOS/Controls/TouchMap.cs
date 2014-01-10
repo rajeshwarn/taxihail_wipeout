@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     InvokeOnMainThread(() =>
                     {
-                        if ((MapMoved != null) && (MapMoved.CanExecute()))
+								if ((MapMoved != null) && (MapMoved.CanExecute()))
                         {
                             Console.WriteLine("MapMovedMapMovedMapMovedMapMovedMapMovedMapMovedMapMoved");
                             MapMoved.Execute(new Address {            Latitude = CenterCoordinate.Latitude,              Longitude = CenterCoordinate.Longitude });

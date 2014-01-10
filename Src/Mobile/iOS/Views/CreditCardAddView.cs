@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,6 +15,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			: base("CreditCardAddView", null)
         {
         }
+
+		public new CreditCardAddViewModel ViewModel
+		{
+			get
+			{
+				return (CreditCardAddViewModel)DataContext;
+			}
+		}
 		
         public override void ViewDidLoad ()
         {

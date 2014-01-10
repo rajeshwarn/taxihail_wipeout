@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,7 +15,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public UpdatePasswordView() 
 			: base("UpdatePasswordView", null)
 		{
-		}	
+		}
+
+		public new UpdatePasswordViewModel ViewModel
+		{
+			get
+			{
+				return (UpdatePasswordViewModel)DataContext;
+			}
+		}
 		
 		public override void ViewDidLoad ()
 		{

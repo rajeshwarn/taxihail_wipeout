@@ -8,6 +8,7 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -19,7 +20,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			: base("BookStreetNumberView", null)
         {
         }
-		
+
+		public new BookStreetNumberViewModel ViewModel
+		{
+			get
+			{
+				return (BookStreetNumberViewModel)DataContext;
+			}
+		}
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);

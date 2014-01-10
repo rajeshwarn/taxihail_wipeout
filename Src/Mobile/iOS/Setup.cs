@@ -27,12 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class Setup: MvxTouchSetup
     {
-        readonly IMvxViewPresenter _presenter;
-
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxViewPresenter presenter)
-            : base(applicationDelegate, presenter)
+        public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
+			: base(applicationDelegate, window)
         {
-            _presenter = presenter;
         }
         
         #region Overrides of MvxBaseSetup
@@ -46,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get
 			{
-				return new[] { typeof(AppConverters) };
+				return new List<Type> { typeof(AppConverters) };
 			}
 		}
 
@@ -71,7 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
-            TinyIoCContainer.Current.Register(_presenter);
+
+			// TODO: Is this required?
+			// TinyIoCContainer.Current.Register(base.Presenter);
 
             TinyIoCContainer.Current.Register<IAppResource, Resources>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
@@ -117,6 +116,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
+
+		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter()
+		{
+			return new PhonePresenter(base.ApplicationDelegate, base.Window);
+		}
 
 #endregion
     }

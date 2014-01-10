@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (_eventRaiseForText != Text)
             {
-                if (TextChangedCommand != null && TextChangedCommand.CanExecute())
+				if (TextChangedCommand != null && TextChangedCommand.CanExecute())
                 {
                     _eventRaiseForText = Text;
                     TextChangedCommand.Execute(Text);

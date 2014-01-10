@@ -1,8 +1,10 @@
+using System;
 using System.Reflection;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Platform;
+using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding;
-using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
@@ -30,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             var editText = View;
             if (editText == null)
             {
-                MvxBindingTrace.Trace(MvxTraceLevel.Error,"Error - UITextView is null in MvxUITextViewTargetBinding");
+				Mvx.Trace(MvxTraceLevel.Error,"Error - UITextView is null in MvxUITextViewTargetBinding");
             }
             else
             {

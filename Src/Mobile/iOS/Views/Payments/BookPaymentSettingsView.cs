@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {

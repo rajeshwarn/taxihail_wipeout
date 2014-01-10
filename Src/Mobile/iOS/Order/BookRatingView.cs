@@ -6,6 +6,7 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -24,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 			submitRatingBtn.SetTitle(Resources.Submit, UIControlState.Normal);
 
-			var source = new MvxActionBasedBindableTableViewSource(
+			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,
 				UITableViewCellStyle.Default,
 				BookRatingCell.Identifier ,

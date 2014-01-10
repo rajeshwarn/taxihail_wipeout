@@ -7,28 +7,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
 	public class PaymentSelectorBinding: MvxTargetBinding
 	{
-
 		public static void Register(IMvxTargetBindingFactoryRegistry registry)
 		{           
 			registry.RegisterFactory(new MvxCustomBindingFactory<PaymentSelector>("PayPalSelected", obj => new PaymentSelectorBinding(obj)));
 		}
 
-		private readonly PaymentSelector _control;
-
-		public PaymentSelectorBinding(PaymentSelector control)
+		public PaymentSelectorBinding(PaymentSelector target)
+			:base(target)
 		{
-			_control = control;         
-			_control.ValueChanged += HandleSelectedChanged;
+			target.ValueChanged += HandleSelectedChanged;
 		}
 
 		void HandleSelectedChanged (object sender, EventArgs e)
 		{
-			FireValueChanged(_control.PayPalSelected);
+			var control = Target as PaymentSelector;
+			FireValueChanged(control.PayPalSelected);
 		}
 
 		public override void SetValue (object value)
 		{
-			_control.PayPalSelected = (bool)value;
+			var control = Target as PaymentSelector;
+			control.PayPalSelected = (bool)value;
 		}
 
 		public override MvxBindingMode DefaultMode

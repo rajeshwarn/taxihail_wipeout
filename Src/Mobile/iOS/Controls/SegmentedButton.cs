@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				Selected = !Selected;
 				if (Selected
 				    && SelectedChangedCommand != null
-				    && SelectedChangedCommand.CanExecute())
+					&& SelectedChangedCommand.CanExecute())
 				{
 					SelectedChangedCommand.Execute(Tag2);
 				}
