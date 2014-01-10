@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -10,9 +9,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

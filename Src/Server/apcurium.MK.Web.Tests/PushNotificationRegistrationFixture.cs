@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
@@ -10,9 +9,9 @@ namespace apcurium.MK.Web.Tests
     public class PushNotificationRegistrationFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public async override void Setup()
         {
-            await base.Setup();
+            base.Setup();
             await CreateAndAuthenticateTestAdminAccount();
             var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId, "Test");
             await sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android);
@@ -21,9 +20,9 @@ namespace apcurium.MK.Web.Tests
         private readonly string _knownDeviceToken = Guid.NewGuid().ToString();
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

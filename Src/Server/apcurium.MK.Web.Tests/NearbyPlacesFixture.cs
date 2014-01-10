@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -14,18 +13,18 @@ namespace apcurium.MK.Web.Tests
     public class NearbyPlacesFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public override void Setup()
         {
-            await base.Setup();
+            base.Setup();
         }
 
         private const double Latitude = 45.5062;
         private const double Longitude = -73.5726;
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

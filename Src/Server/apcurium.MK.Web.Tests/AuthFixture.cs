@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -10,9 +9,9 @@ namespace apcurium.MK.Web.Tests
     public class AuthFixture : BaseTest
     {
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

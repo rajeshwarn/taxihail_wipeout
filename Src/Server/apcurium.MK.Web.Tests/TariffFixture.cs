@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
@@ -11,12 +10,12 @@ namespace apcurium.MK.Web.Tests
     public class TariffFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public override void Setup()
         {
-            await base.Setup();
-            await CreateAndAuthenticateTestAdminAccount();
+            base.Setup();
+            CreateAndAuthenticateTestAdminAccount().Wait();
             var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
-            await sut.CreateTariff(new Tariff
+            sut.CreateTariff(new Tariff
                 {
                     Id = (_knownTariffId = Guid.NewGuid()),
                     Type = (int) TariffType.Recurring,
@@ -29,15 +28,15 @@ namespace apcurium.MK.Web.Tests
                     PassengerRate = 1.3m,
                     MarginOfError = 1.4,
                     KilometerIncluded = 0,
-                });
+                }).Wait();
         }
 
         private Guid _knownTariffId;
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

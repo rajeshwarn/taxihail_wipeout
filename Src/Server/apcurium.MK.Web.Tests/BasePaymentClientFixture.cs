@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
@@ -17,16 +16,16 @@ namespace apcurium.MK.Web.Tests
     public abstract class BasePaymentClientFixture : BaseTest
     {
         [SetUp]
-        public async override Task Setup()
+        public async override void Setup()
         {
-            await base.Setup();
+            base.Setup();
             await CreateAndAuthenticateTestAccount();
         }
 
         [TestFixtureSetUp]
-        public async override Task TestFixtureSetup()
+        public override void TestFixtureSetup()
         {
-            await base.TestFixtureSetup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
