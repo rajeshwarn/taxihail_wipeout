@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<Address[]> Search(double latitude, double longitude)
         {
             var resource = string.Format(CultureInfo.InvariantCulture, "/geocode?Lat={0}&Lng={1}", latitude, longitude);
-            var result = Client.PostAsync<Address[]>(resource, null);
+            var result = Client.PostAsync<Address[]>(resource, new object());
             return result;
         }
 

@@ -12,10 +12,10 @@ namespace apcurium.MK.Web.Tests
     public class CompanyPopularAddressFixture : BaseTest
     {
         [SetUp]
-        public async override void Setup()
+        public override void Setup()
         {
             base.Setup();
-            await CreateAndAuthenticateTestAdminAccount();
+            CreateAndAuthenticateTestAdminAccount().Wait();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddPopularAddress(new PopularAddress
             {

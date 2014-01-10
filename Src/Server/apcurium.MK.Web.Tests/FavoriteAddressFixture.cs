@@ -12,12 +12,12 @@ namespace apcurium.MK.Web.Tests
     public class FavoriteAddressFixture : BaseTest
     {
         [SetUp]
-        public async override void Setup()
+        public override void Setup()
         {
             _knownAddressId = Guid.NewGuid();
             base.Setup();
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-            await sut.AddFavoriteAddress(new SaveAddress
+            sut.AddFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Tests
                             Latitude = 45.515065,
                             Longitude = -73.558064
                         }
-                });
+                }).Wait();
         }
 
         private Guid _knownAddressId;

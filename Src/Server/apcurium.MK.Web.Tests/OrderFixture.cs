@@ -97,11 +97,13 @@ namespace apcurium.MK.Web.Tests
         private readonly Guid _orderId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public async new void TestFixtureSetup()
+        public new void TestFixtureSetup()
         {
             base.TestFixtureSetup();
 
-            var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authTask = new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            authTask.Wait();
+            var auth = authTask.Result;
             SessionId = auth.SessionId;
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
@@ -128,7 +130,7 @@ namespace apcurium.MK.Web.Tests
                             LargeBags = 1
                         }
                 };
-            await sut.CreateOrder(order);
+            sut.CreateOrder(order).Wait();
         }
 
         [SetUp]
