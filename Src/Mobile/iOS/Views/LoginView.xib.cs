@@ -56,17 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
              
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));                       
+            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
 
-            AppButtons.FormatStandardButton (btnSignIn, Resources.SignInButton, AppStyle.ButtonColor.Black);
-            AppButtons.FormatStandardButton (btnSignUp, Resources.SignUpButton, AppStyle.ButtonColor.Grey);          
+            AppButtons.FormatStandardButton(btnSignIn, Localize.GetValue("SignInButton"), AppStyle.ButtonColor.Black);
+            AppButtons.FormatStandardButton(btnSignUp, Localize.GetValue("SignUpButton"), AppStyle.ButtonColor.Grey);          
 
             ((TextField)txtEmail).PaddingLeft = 5;
             ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
             ((TextField)txtEmail).FieldHeight = 48;
             ((TextField)txtPassword).FieldHeight = 48;
 
-            txtEmail.Placeholder = Resources.EmailLabel;
+            txtEmail.Placeholder = Localize.GetValue("EmailLabel");
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
             txtEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
             txtEmail.AutocorrectionType = UITextAutocorrectionType.No;
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ((TextField)txtPassword).PaddingLeft = 5;
             ((TextField)txtPassword).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
 
-            txtPassword.Placeholder = Resources.PasswordLabel;
+            txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
             txtPassword.SecureTextEntry = true;
             txtPassword.ReturnKeyType = UIReturnKeyType.Done;
             txtPassword.ShouldReturn = delegate {                          
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             if (settings.FacebookEnabled)
 			{
-                AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
+                AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (settings.TwitterEnabled)
 			{
-                AppButtons.FormatStandardButton (btnTwLogin, Resources.TwitterButton, AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
+                AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
                 this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;

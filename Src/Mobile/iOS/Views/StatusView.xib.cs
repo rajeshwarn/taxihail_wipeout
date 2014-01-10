@@ -51,21 +51,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 View.BringSubviewToFront (statusBar);
 
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
-                lblConfirmation.Text = Resources.LoadingMessage;
-                txtDriver.Text = Resources.DriverInfoDriver;
+                lblConfirmation.Text = Localize.GetValue("LoadingMessage");
+                txtDriver.Text = Localize.GetValue("DriverInfoDriver");
                 txtDriver.TextColor = AppStyle.GreyText;
-                txtLicence.Text = Resources.DriverInfoLicence;
+                txtLicence.Text = Localize.GetValue("DriverInfoLicence");
                 txtLicence.TextColor = AppStyle.GreyText;
-                txtTaxiType.Text = Resources.DriverInfoTaxiType;
+                txtTaxiType.Text = Localize.GetValue("DriverInfoTaxiType");
                 txtTaxiType.TextColor = AppStyle.GreyText;
-				txtMake.Text = Resources.DriverInfoMake;
+                txtMake.Text = Localize.GetValue("DriverInfoMake");
 				txtMake.TextColor = AppStyle.GreyText;
-				txtModel.Text = Resources.DriverInfoModel;
+                txtModel.Text = Localize.GetValue("DriverInfoModel");
 				txtModel.TextColor = AppStyle.GreyText;
-                txtColor.Text = Resources.DriverInfoColor;
+                txtColor.Text = Localize.GetValue("DriverInfoColor");
                 txtColor.TextColor = AppStyle.GreyText;
 
-                btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
+                btnChangeBooking.SetTitle(Localize.GetValue("ChangeBookingSettingsButton"), UIControlState.Normal);
 
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
                 topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/backPickupDestination.png"));
@@ -74,13 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 AppButtons.FormatStandardButton ((GradientButton)btnCallDriver, "", AppStyle.ButtonColor.Grey, "Assets/phone.png");
 
-                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
-                AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
-                AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton ((GradientButton)btnPay, Resources.StatusPayButton, AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton ((GradientButton)btnResend, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton((GradientButton)btnCall, Localize.GetValue("StatusCallButton"), AppStyle.ButtonColor.Black);
+                AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusCancelButton"), AppStyle.ButtonColor.Red);
+                AppButtons.FormatStandardButton((GradientButton)btnNewRide, Localize.GetValue("StatusNewRideButton"), AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton ((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
-                NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, true);
+                NavigationItem.TitleView = new TitleView(null, Localize.GetValue("GenericTitle"), true);
                                 
                 View.BringSubviewToFront (bottomBar);
 
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
             {
                 btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
-                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
+                AppButtons.FormatStandardButton((GradientButton)btnCall, Localize.GetValue("StatusCallButton"), AppStyle.ButtonColor.Black);
             }
             else
             {

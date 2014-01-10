@@ -35,8 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var emailIntent = new Intent(Intent.ActionSend);
 
-            var resource = TinyIoCContainer.Current.Resolve<IAppResource>();
-
             emailIntent.SetType("message/rfc822");
             emailIntent.PutExtra(Intent.ExtraEmail, new[] {supportEmail});
             emailIntent.PutExtra(Intent.ExtraSubject, subject);
@@ -48,14 +46,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
             try
             {
-                var intent = Intent.CreateChooser(emailIntent, resource.GetString("SendEmail"));
+                var intent = Intent.CreateChooser(emailIntent, TinyIoCContainer.Current.Resolve<ILocalization>()["SendEmail"]);
                 intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
                 Context.StartActivity(intent);
                 LoggerImpl.FlushNextWrite();
             }
             catch
             {
-                Toast.MakeText(Context, resource.GetString("NoMailClient"), ToastLength.Short).Show();
+                Toast.MakeText(Context, TinyIoCContainer.Current.Resolve<ILocalization>()["NoMailClient"], ToastLength.Short).Show();
             }
         }
 

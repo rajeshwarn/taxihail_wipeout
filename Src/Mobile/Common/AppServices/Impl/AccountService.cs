@@ -319,8 +319,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return GetAccount (true);
             } catch (Exception ex) {
 				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
-                    var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");
-                    var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionMessage");
+                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionTitle"];
+                    var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionMessage"];
                     var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
                     mService.ShowMessage (title, msg);
 					return null;
@@ -387,8 +387,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return null;
 			} catch{
                 if (showInvalidMessage) {
-                    var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessageTitle");
-                    var message = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessage");
+                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessageTitle"];
+                    var message = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessage"];
                     TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);
                 }
 
@@ -426,7 +426,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError;
 
             data.AccountId = Guid.NewGuid();
-            data.Language = TinyIoCContainer.Current.Resolve<IAppResource> ().CurrentLanguageCode;
+            data.Language = TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"];
 
             try {
                 lError = UseServiceClient<IAccountServiceClient> (service =>
@@ -512,7 +512,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.CompaniesList.Insert(0, new ListItem
                                             {
                     Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
                 });
             }
             
@@ -529,7 +529,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.VehiclesList.Insert(0, new ListItem
                                          {
                                             Id = null,
-                                            Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                                            Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
                                          });
             }
 
@@ -546,7 +546,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Insert(0, new ListItem
                 {
                     Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoPreference")
+                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
                 });
             }
 

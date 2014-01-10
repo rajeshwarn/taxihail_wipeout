@@ -75,8 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             tableCardsList.Source = source;
 
-            NavigationItem.Title = Resources.GetValue( "CreditCardsListTitle");
-            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+            NavigationItem.Title = Localize.GetValue( "CreditCardsListTitle");
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
             View.ApplyAppFont ();
         }   
         public override void ViewWillAppear (bool animated)

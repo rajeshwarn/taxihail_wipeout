@@ -80,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (!IsLocationServiceEnabled)
             {
-				TinyIoCContainer.Current.Resolve<ILogger>().LogError("Location service is not enabled");
                 throw new Exception("Please enable location services!!");
             }
 

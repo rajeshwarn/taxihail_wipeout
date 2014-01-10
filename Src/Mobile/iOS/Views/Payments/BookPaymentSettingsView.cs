@@ -71,14 +71,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             Container.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;
-			NavigationItem.Title = Resources.GetValue("View_PaymentCreditCardsOnFile");
+			NavigationItem.Title = Localize.GetValue("View_PaymentCreditCardsOnFile");
 
-			AppButtons.FormatStandardButton(btConfirm, Resources.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green );  
+			AppButtons.FormatStandardButton(btConfirm, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green );  
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);
 
-            lblCreditCardOnFile.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
+            lblCreditCardOnFile.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
 
             ClearKeyboardButton.TouchDown+= (sender, e) => {
                 UpdateAmounts();

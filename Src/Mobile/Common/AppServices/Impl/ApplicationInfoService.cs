@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (!isUpToDate)
             {
 
-                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
-                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
+                var title = TinyIoCContainer.Current.Resolve<ILocalization>()["AppNeedUpdateTitle"];
+                var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["AppNeedUpdateMessage"];
                 var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
 #pragma warning disable 4014
                 mService.ShowMessage(title, msg);
