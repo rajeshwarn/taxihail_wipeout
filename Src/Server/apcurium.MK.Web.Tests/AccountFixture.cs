@@ -65,6 +65,7 @@ namespace apcurium.MK.Web.Tests
             await sut.RegisterAccount(newAccount);
 
             var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateTwitter(newAccount.TwitterId);
+            sut = new AccountServiceClient(BaseUrl, auth.SessionId, "Test");
             var account = await sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.TwitterId, auth.UserName);
@@ -210,7 +211,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
         public async void when_registering_2_account_with_same_email()
         {
             var email = GetTempEmail();
@@ -234,11 +234,10 @@ namespace apcurium.MK.Web.Tests
                 Name = "First Name Test",
                 Password = "password"
             };
-            await sut.RegisterAccount(newAccount2);
+            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
         public async void when_registering_2_account_with_same_facebookId()
         {
             var facebookId = Guid.NewGuid();
@@ -262,11 +261,11 @@ namespace apcurium.MK.Web.Tests
                 Name = "First Name Test",
                 FacebookId = facebookId.ToString()
             };
-            await sut.RegisterAccount(newAccount2);
+
+            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
         public async void when_registering_2_account_with_same_twitterId()
         {
             var twitterId = Guid.NewGuid();
@@ -290,7 +289,8 @@ namespace apcurium.MK.Web.Tests
                 Name = "First Name Test",
                 TwitterId = twitterId.ToString()
             };
-            await sut.RegisterAccount(newAccount2);
+
+            Assert.Throws<WebServiceException>(async () => await sut.RegisterAccount(newAccount2), "CreateAccount_AccountAlreadyExist");
         }
 
         [Test]

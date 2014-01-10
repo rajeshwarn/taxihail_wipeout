@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 
@@ -33,19 +32,17 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
-        public async void when_user_sign_in_with_invalid_password()
+        public void when_user_sign_in_with_invalid_password()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            await sut.Authenticate(TestAccount.Email, "wrong password");
+            Assert.Throws<WebServiceException>(async () => await sut.Authenticate(TestAccount.Email, "wrong password"), "InvalidLoginMessage");
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
-        public async void when_user_sign_in_with_invalid_email()
+        public void when_user_sign_in_with_invalid_email()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+            Assert.Throws<WebServiceException>(async () => await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword), "InvalidLoginMessage");
         }
 
         [Test]

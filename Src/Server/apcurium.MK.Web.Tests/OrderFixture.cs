@@ -72,8 +72,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
-        public async void when_creating_order_without_passing_settings()
+        public void when_creating_order_without_passing_settings()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
@@ -88,7 +87,8 @@ namespace apcurium.MK.Web.Tests
                     Distance = 3
                 }
             };
-            await sut.CreateOrder(order);
+
+            Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order), "CreateOrder_SettingsRequired");
         }
     }
 

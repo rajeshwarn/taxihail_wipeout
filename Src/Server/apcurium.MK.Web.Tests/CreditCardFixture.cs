@@ -70,7 +70,7 @@ namespace apcurium.MK.Web.Tests
             const string last4Digits = "4025";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
-            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
+            var tokenResponse = await client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
 
             await sut.AddCreditCard(new CreditCardRequest
             {
