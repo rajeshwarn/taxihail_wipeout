@@ -38,12 +38,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate);
         }
 
-        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
+        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return Client.DeleteAsync(new DeleteTokenizedCreditcardCmtRequest
+            var result = await Client.DeleteAsync(new DeleteTokenizedCreditcardCmtRequest
             {
                 CardToken = cardToken
             });
+            return result;
         }
 
         public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,

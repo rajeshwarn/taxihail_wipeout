@@ -57,12 +57,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     "TaxiHail");
         }
 
-        public async Task<DeleteTokenizedCreditcardResponse> Delete(DeleteTokenizedCreditcardCmtRequest request)
+        public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardCmtRequest request)
         {
-            var response = await _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
+            var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
             {
                 CardToken = request.CardToken
             });
+            responseTask.Wait();
+            var response = responseTask.Result;
 
             return new DeleteTokenizedCreditcardResponse
             {
@@ -71,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        public async Task<PreAuthorizePaymentResponse> Post(PreAuthorizePaymentCmtRequest preAuthorizeRequest)
+        public PreAuthorizePaymentResponse Post(PreAuthorizePaymentCmtRequest preAuthorizeRequest)
         {
             try
             {
@@ -90,7 +92,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
                 };
 
-                var response = await _cmtPaymentServiceClient.PostAsync(request);
+                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                responseTask.Wait();
+                var response = responseTask.Result;
 
                 var isSuccessful = response.ResponseCode == 1;
                 if (isSuccessful)
@@ -125,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public async Task<CommitPreauthorizedPaymentResponse> Post(PreAuthorizeAndCommitPaymentCmtRequest request)
+        public CommitPreauthorizedPaymentResponse Post(PreAuthorizeAndCommitPaymentCmtRequest request)
         {
             try
             {
@@ -148,7 +152,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken
                 };
 
-                var authResponse = await _cmtPaymentServiceClient.PostAsync(authRequest);
+                var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
+                responseTask.Wait();
+                var authResponse = responseTask.Result;
                 message = authResponse.ResponseMessage;
 
                 if (authResponse.ResponseCode == 1)
@@ -172,11 +178,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Thread.Sleep(500);
 
                     // commit transaction
-                    var captureResponse = await _cmtPaymentServiceClient.PostAsync(new CaptureRequest
+                    var captureResponseTask = _cmtPaymentServiceClient.PostAsync(new CaptureRequest
                     {
                         MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                         TransactionId = transactionId.ToLong(),
                     });
+                    captureResponseTask.Wait();
+                    var captureResponse = captureResponseTask.Result;
 
                     message = captureResponse.ResponseMessage;
                     isSuccessful = captureResponse.ResponseCode == 1;
@@ -210,18 +218,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public async Task<CommitPreauthorizedPaymentResponse> Post(CommitPreauthorizedPaymentCmtRequest request)
+        public CommitPreauthorizedPaymentResponse Post(CommitPreauthorizedPaymentCmtRequest request)
         {
             try
             {
                 var payment = _orderPaymentDao.FindByTransactionId(request.TransactionId);
                 if (payment == null) throw new HttpError(HttpStatusCode.NotFound, "Payment not found");
 
-                var response = await _cmtPaymentServiceClient.PostAsync(new CaptureRequest
+                var responseTask = _cmtPaymentServiceClient.PostAsync(new CaptureRequest
                 {
                     MerchantToken = _configurationManager.GetPaymentSettings().CmtPaymentSettings.MerchantToken,
                     TransactionId = request.TransactionId.ToLong(),
                 });
+                responseTask.Wait();
+                var response = responseTask.Result;
 
                 var isSuccessful = response.ResponseCode == 1;
                 if (isSuccessful)
@@ -382,7 +392,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        public async void Post(CallbackRequest request)
+        public void Post(CallbackRequest request)
         {
             try
             {
@@ -393,7 +403,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     // this is the end of trip event
                     var orderPairingDetail = _orderDao.FindOrderPairingById(request.OrderId);
 
-                    await Post(new PreAuthorizeAndCommitPaymentCmtRequest
+                    Post(new PreAuthorizeAndCommitPaymentCmtRequest
                     {
                         OrderId = request.OrderId,
                         Amount = request.Fare + request.Tip,

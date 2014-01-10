@@ -16,10 +16,10 @@ namespace apcurium.MK.Web.Tests
     public abstract class BasePaymentClientFixture : BaseTest
     {
         [SetUp]
-        public async override void Setup()
+        public override void Setup()
         {
             base.Setup();
-            await CreateAndAuthenticateTestAccount();
+            CreateAndAuthenticateTestAccount().Wait();
         }
 
         [TestFixtureSetUp]
