@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task ResetPassword(string emailAddress)
         {
             var req = string.Format("/account/resetpassword/{0}", emailAddress);
-            return Client.PostAsync<string>(req, null);
+            return Client.PostAsync<string>(req, new object());
         }
 
         public Task<string> UpdatePassword(UpdatePassword updatePassword)
