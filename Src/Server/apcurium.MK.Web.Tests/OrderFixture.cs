@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
@@ -15,15 +16,15 @@ namespace apcurium.MK.Web.Tests
     public class given_no_order : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
         }
 
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -132,9 +133,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
         }
 
         [Test]

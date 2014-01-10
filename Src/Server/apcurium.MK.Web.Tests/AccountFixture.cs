@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using NUnit.Framework;
@@ -10,15 +11,15 @@ namespace apcurium.MK.Web.Tests
     public class AccountFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
         }
 
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -43,7 +44,9 @@ namespace apcurium.MK.Web.Tests
             await sut.RegisterAccount(newAccount);
 
             var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").AuthenticateFacebook(newAccount.FacebookId);
+            sut = new AccountServiceClient(BaseUrl, auth.SessionId, "Test");
             var account = await sut.GetMyAccount();
+
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
             Assert.IsNull(account.TwitterId);

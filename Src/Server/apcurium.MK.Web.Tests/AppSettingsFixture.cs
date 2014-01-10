@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using NUnit.Framework;
@@ -10,9 +11,9 @@ namespace apcurium.MK.Web.Tests
     public class AppSettingsFixture : BaseTest
     {
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -22,9 +23,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [SetUp]
-        public async override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
             await CreateAndAuthenticateTestAdminAccount();
             new AdministrationServiceClient(BaseUrl, SessionId, "Test").AddOrUpdateAppSettings(new ConfigurationsRequest
             {

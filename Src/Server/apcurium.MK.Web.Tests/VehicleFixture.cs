@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -7,9 +8,9 @@ namespace apcurium.MK.Web.Tests
     public class VehicleFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
 
             _sut = new VehicleServiceClient(BaseUrl, SessionId, "Test");
         }
@@ -17,9 +18,9 @@ namespace apcurium.MK.Web.Tests
         private VehicleServiceClient _sut;
 
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]

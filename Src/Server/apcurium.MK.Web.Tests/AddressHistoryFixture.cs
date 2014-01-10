@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
@@ -10,9 +11,9 @@ namespace apcurium.MK.Web.Tests
     internal class AddressHistoryFixture : BaseTest
     {
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -22,9 +23,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
         }
 
         [Test]

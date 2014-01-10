@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -7,15 +8,15 @@ namespace apcurium.MK.Web.Tests
     public class ApplicationInfoFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override Task Setup()
         {
-            base.Setup();
+            await base.Setup();
         }
 
         [TestFixtureSetUp]
-        public override void TestFixtureSetup()
+        public async override Task TestFixtureSetup()
         {
-            base.TestFixtureSetup();
+            await base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
@@ -23,7 +24,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureTearDown();
         }
-        
+
         [Test]
         public async void GetInfo()
         {
