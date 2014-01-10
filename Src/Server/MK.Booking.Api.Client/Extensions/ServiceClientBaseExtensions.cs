@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
-            client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
+            client.PutAsync<TResponse>(relativeOrAbsoluteUrl,
                 request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(error));
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
-            client.GetAsync<TResponse>(relativeOrAbsoluteUrl,
+            client.DeleteAsync<TResponse>(relativeOrAbsoluteUrl,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(error));
 
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
         {
             var tcs = new TaskCompletionSource<TResponse>();
 
-            client.GetAsync(request,
+            client.DeleteAsync(request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(error));
 
