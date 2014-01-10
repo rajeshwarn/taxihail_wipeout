@@ -1,12 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -14,25 +10,25 @@ namespace apcurium.MK.Web.Tests
     public class TariffFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
+            await CreateAndAuthenticateTestAdminAccount();
             var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
-            sut.CreateTariff(new Tariff
-            {
-                Id = (_knownTariffId = Guid.NewGuid()),
-                Type = (int) TariffType.Recurring,
-                DaysOfTheWeek = (int) DayOfTheWeek.Sunday,
-                StartTime = DateTime.MinValue.AddHours(2),
-                EndTime = DateTime.MinValue.AddHours(3),
-                Name = "Rate " + Guid.NewGuid(),
-                KilometricRate = 1.1,
-                FlatRate = 1.2m,
-                PassengerRate = 1.3m,
-                MarginOfError = 1.4,
-                KilometerIncluded = 0,
-            });
+            await sut.CreateTariff(new Tariff
+                {
+                    Id = (_knownTariffId = Guid.NewGuid()),
+                    Type = (int) TariffType.Recurring,
+                    DaysOfTheWeek = (int) DayOfTheWeek.Sunday,
+                    StartTime = DateTime.MinValue.AddHours(2),
+                    EndTime = DateTime.MinValue.AddHours(3),
+                    Name = "Rate " + Guid.NewGuid(),
+                    KilometricRate = 1.1,
+                    FlatRate = 1.2m,
+                    PassengerRate = 1.3m,
+                    MarginOfError = 1.4,
+                    KilometerIncluded = 0,
+                });
         }
 
         private Guid _knownTariffId;
@@ -50,27 +46,27 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddTariff()
+        public async void AddTariff()
         {
             var tariffId = Guid.NewGuid();
             var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.CreateTariff(new Tariff
-            {
-                Id = tariffId,
-                Type = (int) TariffType.Recurring,
-                DaysOfTheWeek = (int) DayOfTheWeek.Sunday,
-                StartTime = DateTime.Today.AddHours(2),
-                EndTime = DateTime.Today.AddHours(3),
-                Name = "Rate " + tariffId,
-                KilometricRate = 1.1,
-                FlatRate = 1.2m,
-                PassengerRate = 1.3m,
-                MarginOfError = 1.4,
-                KilometerIncluded = 1.6
-            });
+            await sut.CreateTariff(new Tariff
+                {
+                    Id = tariffId,
+                    Type = (int) TariffType.Recurring,
+                    DaysOfTheWeek = (int) DayOfTheWeek.Sunday,
+                    StartTime = DateTime.Today.AddHours(2),
+                    EndTime = DateTime.Today.AddHours(3),
+                    Name = "Rate " + tariffId,
+                    KilometricRate = 1.1,
+                    FlatRate = 1.2m,
+                    PassengerRate = 1.3m,
+                    MarginOfError = 1.4,
+                    KilometerIncluded = 1.6
+                });
 
-            var rates = sut.GetTariffs();
+            var rates = await sut.GetTariffs();
 
             Assert.AreEqual(1, rates.Count(x => x.Id == tariffId));
             var rate = rates.Single(x => x.Id == tariffId);
@@ -86,13 +82,13 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void DeleteTariff()
+        public async void DeleteTariff()
         {
             var sut = new TariffsServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.DeleteTariff(_knownTariffId);
+            await sut.DeleteTariff(_knownTariffId);
 
-            var rates = sut.GetTariffs();
+            var rates = await sut.GetTariffs();
 
             Assert.IsFalse(rates.Any(x => x.Id == _knownTariffId));
         }

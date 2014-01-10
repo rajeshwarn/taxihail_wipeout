@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Settings = new SendBookingConfirmationEmail.BookingSettings(),
                 Fare = 12,
                 TransactionDate = DateTime.Now,
-                VehicleNumber = 12345 + "Tony"
+                VehicleNumber = 12345.ToString()
             });
 
             _emailSenderMock.Verify(s => s

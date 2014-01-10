@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -33,7 +29,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddCreditCard()
+        public async void AddCreditCard()
         {
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";
@@ -41,7 +37,7 @@ namespace apcurium.MK.Web.Tests
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
-            AccountService.AddCreditCard(new CreditCardRequest
+            await AccountService.AddCreditCard(new CreditCardRequest
             {
                 CreditCardCompany = creditCardComapny,
                 FriendlyName = friendlyName,
@@ -50,7 +46,7 @@ namespace apcurium.MK.Web.Tests
                 Token = token
             });
 
-            var creditCards = AccountService.GetCreditCards();
+            var creditCards = await AccountService.GetCreditCards();
             var creditcard = creditCards.First(x => x.CreditCardId == creditCardId);
             Assert.NotNull(creditcard);
             Assert.AreEqual(TestAccount.Id, creditcard.AccountId);
@@ -60,10 +56,9 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(last4Digits, creditcard.Last4Digits);
             Assert.AreEqual(token, creditcard.Token);
         }
-
-
+        
         [Test]
-        public void RemoveCreditCard()
+        public async void RemoveCreditCard()
         {
             var client = GetFakePaymentClient();
 
@@ -73,13 +68,11 @@ namespace apcurium.MK.Web.Tests
             const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
-            //const string token = "jjwcnSLWm85";
 
             var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt);
-            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate,
-                cc.Discover.AvcCvvCvv2 + "");
+            var tokenResponse = client.Tokenize(cc.Discover.Number, cc.Discover.ExpirationDate, cc.Discover.AvcCvvCvv2 + "");
 
-            sut.AddCreditCard(new CreditCardRequest
+            await sut.AddCreditCard(new CreditCardRequest
             {
                 CreditCardCompany = creditCardComapny,
                 FriendlyName = friendlyName,
@@ -88,9 +81,9 @@ namespace apcurium.MK.Web.Tests
                 Token = tokenResponse.CardOnFileToken
             });
 
-            sut.RemoveCreditCard(creditCardId, tokenResponse.CardOnFileToken);
+            await sut.RemoveCreditCard(creditCardId, tokenResponse.CardOnFileToken);
 
-            var creditCards = sut.GetCreditCards();
+            var creditCards = await sut.GetCreditCards();
             Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
         }
     }

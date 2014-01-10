@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -8,30 +6,28 @@ using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class FavoriteAddressFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             _knownAddressId = Guid.NewGuid();
             base.Setup();
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-            sut.AddFavoriteAddress(new SaveAddress
-            {
-                Id = _knownAddressId,
-                Address = new Address
+            await sut.AddFavoriteAddress(new SaveAddress
                 {
-                    FriendlyName = "La Boite à Jojo",
-                    FullAddress = "1234 rue Saint-Denis",
-                    Latitude = 45.515065,
-                    Longitude = -73.558064
-                }
-            });
+                    Id = _knownAddressId,
+                    Address = new Address
+                        {
+                            FriendlyName = "La Boite à Jojo",
+                            FullAddress = "1234 rue Saint-Denis",
+                            Latitude = 45.515065,
+                            Longitude = -73.558064
+                        }
+                });
         }
 
         private Guid _knownAddressId;
@@ -49,27 +45,27 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddAddress()
+        public async void AddAddress()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
             var addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveAddress
-            {
-                Id = addressId,
-                Address = new Address
+            await sut.AddFavoriteAddress(new SaveAddress
                 {
-                    FriendlyName = "Chez François Cuvelier",
-                    Apartment = "3939",
-                    FullAddress = "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    BuildingName = "Hôtel de Ville",
-                    Latitude = 45.515065,
-                    Longitude = -73.558064
-                }
-            });
+                    Id = addressId,
+                    Address = new Address
+                        {
+                            FriendlyName = "Chez François Cuvelier",
+                            Apartment = "3939",
+                            FullAddress = "1234 rue Saint-Hubert",
+                            RingCode = "3131",
+                            BuildingName = "Hôtel de Ville",
+                            Latitude = 45.515065,
+                            Longitude = -73.558064
+                        }
+                });
 
-            var addresses = sut.GetFavoriteAddresses();
+            var addresses = await sut.GetFavoriteAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
             var address = addresses.Single(x => x.Id == addressId);
@@ -86,52 +82,53 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
-            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveAddress()));
+            Assert.Throws<WebServiceException>(async () => await sut.AddFavoriteAddress(new SaveAddress()));
         }
 
         [Test]
-        public void GetAddressList()
+        public async void GetAddressList()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
-            var addresses = sut.GetFavoriteAddresses();
+            var addresses = await sut.GetFavoriteAddresses();
 
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
         }
 
         [Test]
-        public void RemoveAddress()
+        public async void RemoveAddress()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.RemoveFavoriteAddress(_knownAddressId);
+            await sut.RemoveFavoriteAddress(_knownAddressId);
 
-            var addresses = sut.GetFavoriteAddresses();
+            var addresses = await sut.GetFavoriteAddresses();
             Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
-        public void UpdateAddress()
+        public async void UpdateAddress()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.UpdateFavoriteAddress(new SaveAddress
-            {
-                Id = _knownAddressId,
-                Address = new Address
+            await sut.UpdateFavoriteAddress(new SaveAddress
                 {
-                    FriendlyName = "Chez François Cuvelier",
-                    Apartment = "3939",
-                    FullAddress = "1234 rue Saint-Hubert",
-                    RingCode = "3131",
-                    BuildingName = "Le Manoir",
-                    Latitude = 12,
-                    Longitude = 34
-                }
-            });
+                    Id = _knownAddressId,
+                    Address = new Address
+                        {
+                            FriendlyName = "Chez François Cuvelier",
+                            Apartment = "3939",
+                            FullAddress = "1234 rue Saint-Hubert",
+                            RingCode = "3131",
+                            BuildingName = "Le Manoir",
+                            Latitude = 12,
+                            Longitude = 34
+                        }
+                });
 
-            var address = sut.GetFavoriteAddresses().Single(x => x.Id == _knownAddressId);
+            var addresses = await sut.GetFavoriteAddresses();
+            var address = addresses.Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);
@@ -147,17 +144,14 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
 
-            Assert.Throws<WebServiceException>(() => sut
-                .UpdateFavoriteAddress(new SaveAddress
+            Assert.Throws<WebServiceException>(async () => await sut.UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
                     {
-                        FriendlyName =
-                            "Chez François Cuvelier",
+                        FriendlyName = "Chez François Cuvelier",
                         Apartment = "3939",
-                        FullAddress =
-                            "1234 rue Saint-Hubert",
+                        FullAddress = "1234 rue Saint-Hubert",
                         RingCode = "3131",
                         Latitude = double.NaN,
                         Longitude = double.NaN

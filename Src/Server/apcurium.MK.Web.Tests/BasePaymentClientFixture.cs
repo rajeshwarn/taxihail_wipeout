@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
@@ -12,18 +10,16 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public abstract class BasePaymentClientFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAccount();
+            await CreateAndAuthenticateTestAccount();
         }
 
         [TestFixtureSetUp]
@@ -78,8 +74,7 @@ namespace apcurium.MK.Web.Tests
 
             var client = GetPaymentClient();
 
-            var tokenClient = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate,
-                TestCreditCards.Discover.AvcCvvCvv2 + "");
+            var tokenClient = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
             var token = tokenClient.CardOnFileToken;
 
             const double amount = 12.75;
@@ -87,26 +82,23 @@ namespace apcurium.MK.Web.Tests
             const double tip = 1.50;
 
             var authorization = client.PreAuthorize(token, amount, meter, tip, orderId);
-
             Assert.True(authorization.IsSuccessfull, authorization.Message);
 
             var response = client.CommitPreAuthorized(authorization.TransactionId);
-
             Assert.True(response.IsSuccessfull, response.Message);
 
             client.ResendConfirmationToDriver(orderId);
-
-
+            
             using (var context = ContextFactory.Invoke())
             {
-                var payement = context.Set<OrderPaymentDetail>().Single(p => p.OrderId == orderId);
+                var payment = context.Set<OrderPaymentDetail>().Single(p => p.OrderId == orderId);
 
-                Assert.AreEqual(amount, payement.Amount);
-                Assert.AreEqual(meter, payement.Meter);
-                Assert.AreEqual(tip, payement.Tip);
+                Assert.AreEqual(amount, payment.Amount);
+                Assert.AreEqual(meter, payment.Meter);
+                Assert.AreEqual(tip, payment.Tip);
 
-                Assert.AreEqual(PaymentType.CreditCard, payement.Type);
-                Assert.AreEqual(GetProvider(), payement.Provider);
+                Assert.AreEqual(PaymentType.CreditCard, payment.Type);
+                Assert.AreEqual(GetProvider(), payment.Provider);
             }
         }
 
@@ -136,20 +128,16 @@ namespace apcurium.MK.Web.Tests
 
             var client = GetPaymentClient();
 
-            var token =
-                client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate,
-                    TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 22.75;
             const double meter = 21.25;
             const double tip = 1.25;
 
             var authorization = client.PreAuthorize(token, amount, meter, tip, orderId);
-
             Assert.True(authorization.IsSuccessfull, authorization.Message);
 
             var response = client.CommitPreAuthorized(authorization.TransactionId);
-
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
@@ -158,11 +146,8 @@ namespace apcurium.MK.Web.Tests
         public void when_deleting_a_tokenized_credit_card()
         {
             var client = GetPaymentClient();
-
-
-            var token =
-                client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate,
-                    TestCreditCards.Visa.AvcCvvCvv2 + "").CardOnFileToken;
+            
+            var token = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "").CardOnFileToken;
 
             var response = client.ForgetTokenizedCard(token);
             Assert.True(response.IsSuccessfull, response.Message);
@@ -186,15 +171,13 @@ namespace apcurium.MK.Web.Tests
             }
             var client = GetPaymentClient();
 
-            var token =
-                client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate,
-                    TestCreditCards.Mastercard.AvcCvvCvv2 + "").CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 22.75;
             const double meter = 21.25;
             const double tip = 1.25;
-            var response = client.PreAuthorize(token, amount, meter, tip, orderId);
 
+            var response = client.PreAuthorize(token, amount, meter, tip, orderId);
             Assert.True(response.IsSuccessfull);
         }
 
@@ -224,16 +207,13 @@ namespace apcurium.MK.Web.Tests
 
             var client = GetPaymentClient();
 
-            var token =
-                client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate,
-                    TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
+            var token = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "").CardOnFileToken;
 
             const double amount = 31.50;
             const double meter = 21.25;
             const double tip = 10.25;
 
             var authorization = client.PreAuthorizeAndCommit(token, amount, meter, tip, orderId);
-
             Assert.True(authorization.IsSuccessfull, authorization.Message);
         }
 
@@ -241,9 +221,7 @@ namespace apcurium.MK.Web.Tests
         public void when_tokenizing_a_credit_card_amex()
         {
             var client = GetPaymentClient();
-
-            var response = client.Tokenize(TestCreditCards.AmericanExpress.Number,
-                TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2 + "");
+            var response = client.Tokenize(TestCreditCards.AmericanExpress.Number, TestCreditCards.AmericanExpress.ExpirationDate, TestCreditCards.AmericanExpress.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
@@ -251,9 +229,7 @@ namespace apcurium.MK.Web.Tests
         public void when_tokenizing_a_credit_card_discover()
         {
             var client = GetPaymentClient();
-
-            var response = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate,
-                TestCreditCards.Discover.AvcCvvCvv2 + "");
+            var response = client.Tokenize(TestCreditCards.Discover.Number, TestCreditCards.Discover.ExpirationDate, TestCreditCards.Discover.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
@@ -261,8 +237,7 @@ namespace apcurium.MK.Web.Tests
         public void when_tokenizing_a_credit_card_mastercard()
         {
             var client = GetPaymentClient();
-            var response = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate,
-                TestCreditCards.Mastercard.AvcCvvCvv2 + "");
+            var response = client.Tokenize(TestCreditCards.Mastercard.Number, TestCreditCards.Mastercard.ExpirationDate, TestCreditCards.Mastercard.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessfull, response.Message);
         }
 
@@ -270,8 +245,7 @@ namespace apcurium.MK.Web.Tests
         public void when_tokenizing_a_credit_card_visa()
         {
             var client = GetPaymentClient();
-            var response = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate,
-                TestCreditCards.Visa.AvcCvvCvv2 + "");
+            var response = client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessfull, response.Message);
         }
     }

@@ -1,10 +1,6 @@
-﻿#region
-
-using System.Linq;
+﻿using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -30,18 +26,18 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void Get()
+        public async void Get()
         {
             var sut = new ReferenceDataServiceClient(BaseUrl, SessionId, "Test");
-            var data = sut.GetReferenceData();
+            var data = await sut.GetReferenceData();
 
-            Assert.IsNotEmpty(data.Result.CompaniesList);
-            Assert.IsNotEmpty(data.Result.VehiclesList);
-            Assert.IsNotEmpty(data.Result.PaymentsList);
+            Assert.IsNotEmpty(data.CompaniesList);
+            Assert.IsNotEmpty(data.VehiclesList);
+            Assert.IsNotEmpty(data.PaymentsList);
 
 // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-            data.Result.VehiclesList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
-            data.Result.PaymentsList.All(v => data.Result.CompaniesList.Any(c => v.Parent == c));
+            data.VehiclesList.All(v => data.CompaniesList.Any(c => v.Parent == c));
+            data.PaymentsList.All(v => data.CompaniesList.Any(c => v.Parent == c));
 // ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
     }

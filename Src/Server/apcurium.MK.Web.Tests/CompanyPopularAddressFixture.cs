@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -8,18 +6,16 @@ using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class CompanyPopularAddressFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
+            await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddPopularAddress(new PopularAddress
             {
@@ -147,8 +143,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
-            Assert.Throws<WebServiceException>(() => sut
-                .UpdatePopularAddress(new PopularAddress
+            Assert.Throws<WebServiceException>(() => sut.UpdatePopularAddress(new PopularAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address

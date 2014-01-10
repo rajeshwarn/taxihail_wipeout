@@ -1,7 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -10,20 +9,17 @@ using apcurium.MK.Common.Extensions;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class RuleFixture : BaseTest
     {
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
-
-
+            await CreateAndAuthenticateTestAdminAccount();
+            
             var sut = new RulesServiceClient(BaseUrl, SessionId, "Test");
             DeleteAllRules(sut);
             sut.CreateRule(new Rule
@@ -76,9 +72,7 @@ namespace apcurium.MK.Web.Tests
                 });
             }
 
-            if (
-                sut.GetRules()
-                    .None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
+            if (sut.GetRules().None(r => (r.Category == (int) RuleCategory.DisableRule) && (r.Type == (int) RuleType.Default)))
             {
                 // Default rate does not exist for this company 
                 sut.CreateRule(new Rule
@@ -92,8 +86,7 @@ namespace apcurium.MK.Web.Tests
                 });
             }
         }
-
-
+        
         private void DeleteAllRules(RulesServiceClient sut)
         {
             var rules = sut.GetRules();
@@ -104,62 +97,60 @@ namespace apcurium.MK.Web.Tests
             }
         }
 
-        private OrderValidationResult ValidateOrder(Action<CreateOrder> update, string testZone = null)
+        private async Task<OrderValidationResult> ValidateOrder(Action<CreateOrder> update, string testZone = null)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-            };
-
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = Provider.MobileKnowledgeProviderId,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
+                {
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        },
+                };
 
             if (update != null)
             {
                 update(order);
             }
 
-            return sut.ValidateOrder(order, testZone);
+            return await sut.ValidateOrder(order, testZone);
         }
 
-        private string CreateOrder(Action<CreateOrder> update)
+        private async Task<string> CreateOrder(Action<CreateOrder> update)
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
                 {
-                    Price = 10,
-                    Distance = 3
-                }
-            };
-
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = Provider.MobileKnowledgeProviderId,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Price = 10,
+                            Distance = 3
+                        },
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        }
+                };
 
             if (update != null)
             {
@@ -168,7 +159,7 @@ namespace apcurium.MK.Web.Tests
 
             try
             {
-                sut.CreateOrder(order);
+                await sut.CreateOrder(order);
             }
             catch (WebServiceException wEx)
             {
@@ -201,8 +192,7 @@ namespace apcurium.MK.Web.Tests
                 IsActive = true,
                 Message = mess,
             };
-
-
+            
             if (update != null)
             {
                 update(newRule);
@@ -212,8 +202,7 @@ namespace apcurium.MK.Web.Tests
 
             return newRule;
         }
-
-
+        
         [Test]
         public void ActivateDeactivate()
         {
@@ -282,7 +271,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void TestAllRulesPriorities()
+        public async void TestAllRulesPriorities()
         {
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int) activeFromDateRef.DayOfWeek;
@@ -300,15 +289,13 @@ namespace apcurium.MK.Web.Tests
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
             });
-
-
+            
             CreateRule(r =>
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
                 r.Priority = 3;
             });
-
 
             CreateRule(r =>
             {
@@ -324,17 +311,15 @@ namespace apcurium.MK.Web.Tests
                 r.StartTime = activeFromDateRef.AddHours(-1);
                 r.EndTime = activeFromDateRef.AddHours(1);
             });
-
-
-            var validation = ValidateOrder(null, "101");
-
-
+            
+            var validation = await ValidateOrder(null, "101");
+            
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
         }
 
         [Test]
-        public void TestDateRuleIsApplied()
+        public async void TestDateRuleIsApplied()
         {
             var ruleId = Guid.NewGuid();
             var activeFromDateRef = DateTime.Now;
@@ -363,51 +348,47 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-            };
+                {
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = 13,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        },
+                };
 
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = 13,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-
-            var validation = sut.ValidateOrder(order);
+            var validation = await sut.ValidateOrder(order);
 
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(mess, validation.Message);
         }
-
-
+        
         [Test]
-        public void TestDefaultRule_Disable_NoZone()
+        public async void TestDefaultRule_Disable_NoZone()
         {
             var rule = CreateRule(r =>
             {
                 r.Category = RuleCategory.DisableRule;
                 r.Type = RuleType.Default;
             });
-
-
-            var validation = ValidateOrder(null);
+            
+            var validation = await ValidateOrder(null);
             Assert.IsFalse(validation.HasWarning);
 
-            var createResult = CreateOrder(null);
+            var createResult = await CreateOrder(null);
             Assert.AreEqual(createResult, rule.Message);
         }
-
-
+        
         [Test]
-        public void TestDefaultRule_Priority_NoZone()
+        public async void TestDefaultRule_Priority_NoZone()
         {
             CreateRule(r =>
             {
@@ -429,15 +410,14 @@ namespace apcurium.MK.Web.Tests
                 r.Type = RuleType.Default;
                 r.Priority = 6;
             });
-
-
-            var validation = ValidateOrder(null);
+            
+            var validation = await ValidateOrder(null);
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule2.Message, validation.Message);
         }
 
         [Test]
-        public void TestDefaultRule_SimpleNoZone_With_Rule_Zone()
+        public async void TestDefaultRule_SimpleNoZone_With_Rule_Zone()
         {
             CreateRule(r =>
             {
@@ -447,14 +427,13 @@ namespace apcurium.MK.Web.Tests
                 r.Priority = 2;
             });
 
-            var validation = ValidateOrder(null);
+            var validation = await ValidateOrder(null);
 
             Assert.IsFalse(validation.HasWarning);
         }
-
-
+        
         [Test]
-        public void TestDefaultRule_Simple_Zone()
+        public async void TestDefaultRule_Simple_Zone()
         {
             var rule1 = CreateRule(r =>
             {
@@ -464,13 +443,13 @@ namespace apcurium.MK.Web.Tests
                 r.Priority = 2;
             });
 
-            var validation = ValidateOrder(null, "101");
+            var validation = await ValidateOrder(null, "101");
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
         }
 
         [Test]
-        public void TestDefaultRule_Warning_Current_NoApplied()
+        public async void TestDefaultRule_Warning_Current_NoApplied()
         {
             CreateRule(r =>
             {
@@ -479,15 +458,14 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
             });
-
-
-            var validation = ValidateOrder(o => o.PickupDate = null);
+            
+            var validation = await ValidateOrder(o => o.PickupDate = null);
 
             Assert.IsFalse(validation.HasWarning);
         }
 
         [Test]
-        public void TestDefaultRule_Warning_Futuret_NoApplied()
+        public async void TestDefaultRule_Warning_Futuret_NoApplied()
         {
             CreateRule(r =>
             {
@@ -496,15 +474,14 @@ namespace apcurium.MK.Web.Tests
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
             });
-
-
-            var validation = ValidateOrder(o => o.PickupDate = DateTime.Now);
+            
+            var validation = await ValidateOrder(o => o.PickupDate = DateTime.Now);
 
             Assert.IsFalse(validation.HasWarning);
         }
 
         [Test]
-        public void TestDefaultRule_Warning_NoZone()
+        public async void TestDefaultRule_Warning_NoZone()
         {
             var rule = CreateRule(r =>
             {
@@ -513,18 +490,17 @@ namespace apcurium.MK.Web.Tests
             });
 
 
-            var validation = ValidateOrder(null);
+            var validation = await ValidateOrder(null);
 
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule.Message, validation.Message);
 
-            var createResult = CreateOrder(null);
+            var createResult = await CreateOrder(null);
             Assert.IsNullOrEmpty(createResult);
         }
-
-
+        
         [Test]
-        public void TestRecurrencyRule()
+        public async void TestRecurrencyRule()
         {
             var activeFromDateRef = DateTime.Now;
             var dayOfTheWeek = 1 << (int) activeFromDateRef.DayOfWeek;
@@ -543,15 +519,14 @@ namespace apcurium.MK.Web.Tests
                 r.EndTime = activeFromDateRef.AddHours(1);
             });
 
-            var validation = ValidateOrder(null, "101");
+            var validation = await ValidateOrder(null, "101");
 
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule1.Message, validation.Message);
         }
-
-
+        
         [Test]
-        public void TestRecurrencyRuleIsApplied()
+        public async void TestRecurrencyRuleIsApplied()
         {
             var ruleId = Guid.NewGuid();
             var activeFromDateRef = DateTime.Now;
@@ -580,101 +555,93 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-            };
+                {
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = 13,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        },
+                };
 
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = 13,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-
-            var validation = sut.ValidateOrder(order);
+            var validation = await sut.ValidateOrder(order);
 
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(mess, validation.Message);
         }
 
         [Test]
-        public void TestWarningRuleIsApplied()
+        public async void TestWarningRuleIsApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId, "Test");
             CreateDefaultRules(rules);
-            var rule = rules.GetRules()
-                .Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
+            var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rule.AppliesToCurrentBooking = true;
             rule.AppliesToFutureBooking = true;
             rule.IsActive = true;
             rules.UpdateRule(rule);
-
-
+            
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-            };
+                {
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = 13,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        },
+                };
 
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = 13,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-
-            var validation = sut.ValidateOrder(order);
+            var validation = await sut.ValidateOrder(order);
 
             Assert.IsTrue(validation.HasWarning);
             Assert.AreEqual(rule.Message, validation.Message);
         }
-
-
+        
         [Test]
-        public void TestWarningRuleIsNotApplied()
+        public async void TestWarningRuleIsNotApplied()
         {
             var rules = new RulesServiceClient(BaseUrl, SessionId, "Test");
             CreateDefaultRules(rules);
-            var rule = rules.GetRules()
-                .Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
+            var rule = rules.GetRules().Single(r => r.Category == RuleCategory.WarningRule && r.Type == RuleType.Default);
             rules.DeactivateRule(rule.Id);
-
-
+            
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-            };
+                {
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = 13,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        },
+                };
 
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = 13,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-
-            var validation = sut.ValidateOrder(order);
+            var validation = await sut.ValidateOrder(order);
 
             Assert.IsFalse(validation.HasWarning);
             Assert.IsNullOrEmpty(validation.Message);
@@ -693,8 +660,7 @@ namespace apcurium.MK.Web.Tests
             rule.Message = newMessage;
             rule.Name = newName;
             rule.Priority = 99;
-
-
+            
             rule.AppliesToCurrentBooking = false;
             rule.AppliesToFutureBooking = true;
             rule.ZoneList = "200,201";
@@ -704,8 +670,7 @@ namespace apcurium.MK.Web.Tests
             rule.StartTime = new DateTime(2000, 1, 1, 20, 18, 8);
             rule.EndTime = new DateTime(2000, 1, 1, 21, 19, 9);
             rule.IsActive = false;
-
-
+            
             sut.UpdateRule(rule);
 
             rule = sut.GetRules().Single(r => r.Id == _knownRuleId);

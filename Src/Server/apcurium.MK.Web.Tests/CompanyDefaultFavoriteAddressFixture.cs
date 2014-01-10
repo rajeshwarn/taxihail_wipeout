@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -8,18 +6,28 @@ using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class CompanyDefaultFavoriteAddressFixture : BaseTest
     {
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
         [SetUp]
-        public override void Setup()
+        public async override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
+            await CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
@@ -35,18 +43,6 @@ namespace apcurium.MK.Web.Tests
         }
 
         private Guid _knownAddressId = Guid.NewGuid();
-
-        [TestFixtureSetUp]
-        public override void TestFixtureSetup()
-        {
-            base.TestFixtureSetup();
-        }
-
-        [TestFixtureTearDown]
-        public override void TestFixtureTearDown()
-        {
-            base.TestFixtureTearDown();
-        }
 
         [Test]
         public void AddAddress()
@@ -147,8 +143,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
 
-            Assert.Throws<WebServiceException>(() => sut
-                .UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
+            Assert.Throws<WebServiceException>(() => sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address

@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,8 +8,6 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -37,39 +33,38 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void create_order()
+        public async void create_order()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
                 {
-                    Price = 10,
-                    Distance = 3
-                }
-            };
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Price = 10,
+                            Distance = 3
+                        },
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-12129",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith",
+                            LargeBags = 1
+                        }
+                };
 
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = Provider.MobileKnowledgeProviderId,
-                Phone = "514-555-12129",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith",
-                LargeBags = 1
-            };
-
-            var details = sut.CreateOrder(order);
+            var details = await sut.CreateOrder(order);
 
             Assert.NotNull(details);
 
-            var orderDetails = sut.GetOrder(details.OrderId);
+            var orderDetails = await sut.GetOrder(details.OrderId);
             Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
             Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
@@ -77,9 +72,8 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException",
-            ExpectedMessage = "CreateOrder_SettingsRequired")]
-        public void when_creating_order_without_passing_settings()
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
+        public async void when_creating_order_without_passing_settings()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
@@ -94,7 +88,7 @@ namespace apcurium.MK.Web.Tests
                     Distance = 3
                 }
             };
-            sut.CreateOrder(order);
+            await sut.CreateOrder(order);
         }
     }
 
@@ -103,39 +97,38 @@ namespace apcurium.MK.Web.Tests
         private readonly Guid _orderId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public new void TestFixtureSetup()
+        public async new void TestFixtureSetup()
         {
             base.TestFixtureSetup();
 
-            var auth = new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email,
-                TestAccountPassword);
+            var auth = await new AuthServiceClient(BaseUrl, SessionId, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = auth.SessionId;
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
-            {
-                Id = _orderId,
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
                 {
-                    Price = 10,
-                    Distance = 3
-                }
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = Provider.MobileKnowledgeProviderId,
-                Phone = "514-555-1212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith",
-                LargeBags = 1
-            };
-            sut.CreateOrder(order);
+                    Id = _orderId,
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Price = 10,
+                            Distance = 3
+                        },
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-1212",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith",
+                            LargeBags = 1
+                        }
+                };
+            await sut.CreateOrder(order);
         }
 
         [SetUp]
@@ -145,34 +138,34 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void ibs_order_was_created()
+        public async void ibs_order_was_created()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            var order = sut.GetOrder(_orderId);
+            var order = await sut.GetOrder(_orderId);
 
             Assert.IsNotNull(order);
             Assert.IsNotNull(order.IbsOrderId);
         }
 
         [Test]
-        public void can_not_get_order_another_account()
+        public async void can_not_get_order_another_account()
         {
-            CreateAndAuthenticateTestAccount();
+            await CreateAndAuthenticateTestAccount();
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
+            Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
         }
 
         [Test]
-        public void can_cancel_it()
+        public async void can_cancel_it()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            sut.CancelOrder(_orderId);
+            await sut.CancelOrder(_orderId);
 
             OrderStatusDetail status = null;
             for (var i = 0; i < 10; i++)
             {
-                status = sut.GetOrderStatus(_orderId);
+                status = await sut.GetOrderStatus(_orderId);
                 if (string.IsNullOrEmpty(status.IbsStatusId))
                 {
                     Thread.Sleep(1000);
@@ -189,28 +182,28 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void can_not_cancel_when_different_account()
+        public async void can_not_cancel_when_different_account()
         {
-            CreateAndAuthenticateTestAccount();
+            await CreateAndAuthenticateTestAccount();
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
-            Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
+            Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
         }
 
         [Test]
-        public void when_remove_it_should_not_be_in_history()
+        public async void when_remove_it_should_not_be_in_history()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.RemoveFromHistory(_orderId);
+            await sut.RemoveFromHistory(_orderId);
 
-            var orders = sut.GetOrders();
+            var orders = await sut.GetOrders();
             Assert.AreEqual(false, orders.Any(x => x.Id == _orderId));
         }
 
         [Test]
-        public void when_order_rated_ratings_should_not_be_null()
+        public async void when_order_rated_ratings_should_not_be_null()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
@@ -225,9 +218,9 @@ namespace apcurium.MK.Web.Tests
                 }
             };
 
-            sut.RateOrder(orderRatingsRequest);
+            await sut.RateOrder(orderRatingsRequest);
 
-            var orderRatingDetails = sut.GetOrderRatings(_orderId);
+            var orderRatingDetails = await sut.GetOrderRatings(_orderId);
 
             Assert.NotNull(orderRatingDetails);
             Assert.That(orderRatingDetails.Note, Is.EqualTo(orderRatingsRequest.Note));
@@ -235,20 +228,20 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void GetOrderList()
+        public async void GetOrderList()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
-            var orders = sut.GetOrders();
+            var orders = await sut.GetOrders();
             Assert.NotNull(orders);
         }
 
         [Test]
-        public void GetOrder()
+        public async void GetOrder()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
-            var orders = sut.GetOrder(_orderId);
+            var orders = await sut.GetOrder(_orderId);
             Assert.NotNull(orders);
 
             //TODO: Fix test

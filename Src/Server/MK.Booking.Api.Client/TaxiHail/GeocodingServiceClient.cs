@@ -1,11 +1,7 @@
-#region
-
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Entity;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -15,8 +11,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             : base(url, sessionId, userAgent)
         {
         }
-
-
+        
         public Address[] Search(string addressName)
         {
             var result = Client.Post<Address[]>("/geocode", new
@@ -25,7 +20,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             });
             return result;
         }
-
 
         public Task<Address[]> Search(double latitude, double longitude)
         {

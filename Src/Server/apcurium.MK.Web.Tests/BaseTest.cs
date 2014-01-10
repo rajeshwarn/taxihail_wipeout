@@ -34,16 +34,17 @@ namespace apcurium.MK.Web.Tests
         {
             return new FakePaymentClient();
         }
-        public virtual void TestFixtureSetup()
+
+        public async virtual void TestFixtureSetup()
         {
             AppHost.Start(BaseUrl);
 
-            TestAccount = AccountService.GetTestAccount(0);
+            TestAccount = await AccountService.GetTestAccount(0);
         }
 
-        public virtual void Setup()
+        public async virtual void Setup()
         {
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
         }
 
@@ -54,48 +55,46 @@ namespace apcurium.MK.Web.Tests
 
         protected  string GetTempEmail()
         {
-            var email = string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
-            return email;
+            return string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
         }
 
-        protected Account CreateAndAuthenticateTestAccount()
+        protected async Task<Account> CreateAndAuthenticateTestAccount()
         {
-            var newAccount = AccountService.CreateTestAccount();
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(newAccount.Email, TestAccountPassword);
+            var newAccount = await AccountService.CreateTestAccount();
+            var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;
         }
 
-        protected Account CreateAndAuthenticateTestAdminAccount()
+        protected async Task<Account> CreateAndAuthenticateTestAdminAccount()
         {
-            var newAccount = AccountService.CreateTestAdminAccount();
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(newAccount.Email, TestAccountPassword);
+            var newAccount = await AccountService.CreateTestAdminAccount();
+            var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;
         }
         
-
         protected async Task<Account> GetNewFacebookAccount()
         {
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
-            AccountService.RegisterAccount(newAccount);
+            await AccountService.RegisterAccount(newAccount);
 
             var client = new AuthServiceClient(BaseUrl, null, "Test");
             var authResponse = await client.AuthenticateFacebook(newAccount.FacebookId);
             SessionId = authResponse.SessionId;
 
-            return AccountService.GetMyAccount();
+            return await AccountService.GetMyAccount();
         }
 
-        protected Account GetNewTwitterAccount()
+        protected async Task<Account> GetNewTwitterAccount()
         {
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
-            AccountService.RegisterAccount(newAccount);
+            await AccountService.RegisterAccount(newAccount);
 
-            var authResponse = new AuthServiceClient(BaseUrl, null, "Test").AuthenticateTwitter(newAccount.TwitterId);
+            var authResponse = await new AuthServiceClient(BaseUrl, null, "Test").AuthenticateTwitter(newAccount.TwitterId);
             SessionId = authResponse.SessionId;
 
-            return AccountService.GetMyAccount();
+            return await AccountService.GetMyAccount();
         }
     }
 }
