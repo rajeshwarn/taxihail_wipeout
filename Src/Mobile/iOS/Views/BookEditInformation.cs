@@ -23,6 +23,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
+		public new BookEditInformationViewModel ViewModel
+		{
+			get
+			{
+				return (BookEditInformationViewModel)DataContext;
+			}
+		}
+
         public override void LoadView()
         {
             base.LoadView();

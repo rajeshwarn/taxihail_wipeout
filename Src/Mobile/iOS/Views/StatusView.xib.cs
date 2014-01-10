@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
+		public BookingStatusViewModel ViewModel
+		{
+			get
+			{
+				return (BookingStatusViewModel)DataContext;
+			}
+		}
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();

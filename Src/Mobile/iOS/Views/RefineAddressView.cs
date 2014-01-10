@@ -14,6 +14,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		public RefineAddressView() 
 			: base("RefineAddressView", null)
 		{
+		}
+
+		public new RefineAddressViewModel ViewModel
+		{
+			get
+			{
+				return (RefineAddressViewModel)DataContext;
+			}
 		}	
 		
 		public override void ViewDidLoad ()

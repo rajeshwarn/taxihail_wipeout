@@ -11,15 +11,25 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+	[MvxViewFor(typeof(BookConfirmationViewModel))]
     public partial class ConfirmationView : BaseViewController
     {
         public ConfirmationView () 
 			: base("ConfirmationView", null)
         {
         }
+
+		public new BookConfirmationViewModel ViewModel
+		{
+			get
+			{
+				return (BookConfirmationViewModel)DataContext;
+			}
+		}
 
 		public override string NibName
 		{

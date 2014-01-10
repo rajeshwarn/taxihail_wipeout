@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         }
 
+		public new LoginViewModel ViewModel
+		{
+			get
+			{
+				return (LoginViewModel)DataContext;
+			}
+		}
+
 
         #region INavigationView implementation
 

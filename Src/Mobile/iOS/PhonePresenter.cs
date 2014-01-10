@@ -5,6 +5,8 @@ using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -96,14 +98,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if (topViewController == null)
                 {
-                    MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
+					Mvx.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
                     return;
                 }
 
                 var topView = topViewController as IMvxTouchView;
                 if (topView == null)
                 {
-                    MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
+					Mvx.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
                     return;
                 }
 
