@@ -7,7 +7,7 @@ using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-    public sealed class SingleLinePictureCell : MvxTableViewCell
+	public sealed class SingleLinePictureCell : MvxStandardTableViewCell
     {
         private UIImageView _picture;
         private UILabel _rightText;

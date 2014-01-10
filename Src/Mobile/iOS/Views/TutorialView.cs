@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         void Initialize ()
         {
         }
+
+		public new TutorialViewModel ViewModel
+		{
+			get
+			{
+				return (TutorialViewModel)DataContext;
+			}
+		}
         
         public override void ViewDidLoad ()
         {

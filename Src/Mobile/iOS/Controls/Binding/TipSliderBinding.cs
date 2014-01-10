@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
         }
         
 		public TipSliderBinding(TipSliderControl target)
+			:base(target)
         {
 			target.ValueChanged += HandleSelectedChanged;
         }

@@ -35,6 +35,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         
 #endregion
 
+		public new BaseViewModel ViewModel
+		{
+			get
+			{
+				return (BaseViewModel)DataContext;
+			}
+		}
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
