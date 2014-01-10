@@ -7,17 +7,17 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
-	public class EmptyToResourceConverter: MvxBaseValueConverter, IMvxServiceConsumer<IAppResource>
+	public class EmptyToResourceConverter: MvxBaseValueConverter, IMvxServiceConsumer<ILocalization>
 	{
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			if (!string.IsNullOrEmpty(value as string)) {
 				return value;
 			}
-			if(string.IsNullOrEmpty((string)parameter)) {
-				return null;
-			}
-			return this.GetService().GetString(parameter.ToString());
+
+			return string.IsNullOrEmpty((string)parameter) 
+                ? null 
+                : this.GetService()[parameter.ToString()];
 		}
 	}
 }

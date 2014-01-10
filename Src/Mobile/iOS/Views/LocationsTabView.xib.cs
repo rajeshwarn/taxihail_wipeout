@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationList"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_LocationList"), true);
 
 			tableLocations.SectionHeaderHeight = 33;
             tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };

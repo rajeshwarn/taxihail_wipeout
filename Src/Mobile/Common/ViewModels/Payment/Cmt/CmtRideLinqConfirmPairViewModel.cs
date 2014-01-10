@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 					{                      
 						if (_paymentPreferences.SelectedCreditCard == null)
 						{
-							await this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+                            this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
 							return;
 						}
 

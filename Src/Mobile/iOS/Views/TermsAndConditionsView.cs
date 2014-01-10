@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
-            AppButtons.FormatStandardButton((GradientButton)btnAccept, Resources.GetValue("AcceptButton"), AppStyle.ButtonColor.Grey );          
-            AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Grey );          
+            AppButtons.FormatStandardButton((GradientButton)btnAccept, Localize.GetValue("AcceptButton"), AppStyle.ButtonColor.Grey );
+            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("CancelBoutton"), AppStyle.ButtonColor.Grey);          
 
             new [] { 
                 lblTitle
@@ -61,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblAcknowledgment.TextColor = AppStyle.GreyText;
             lblAcknowledgment.Font = AppStyle.GetNormalFont(txtTermsAndConditions.Font.PointSize);
 
-            lblTitle.Text = Resources.GetValue("TermsAndConditionsLabel");
-            lblAcknowledgment.Text = Resources.GetValue("TermsAndConditionsAcknowledgment");
+            lblTitle.Text = Localize.GetValue("TermsAndConditionsLabel");
+            lblAcknowledgment.Text = Localize.GetValue("TermsAndConditionsAcknowledgment");
 
             var bindings = new [] {
                 Tuple.Create<object,string>(btnAccept, "{'TouchUpInside':{'Path':'AcceptTermsAndConditions'}}"),

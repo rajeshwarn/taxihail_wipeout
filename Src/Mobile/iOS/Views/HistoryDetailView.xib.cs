@@ -41,25 +41,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             NavigationItem.HidesBackButton = false;
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryDetail"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_HistoryDetail"), true);
 
-            lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
-            lblRequested.Text = Resources.HistoryDetailRequestedLabel;
-            lblOrigin.Text = Resources.HistoryDetailOriginLabel;
-			lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
-            lblDestination.Text = Resources.HistoryDetailDestinationLabel;
+            lblConfirmationNo.Text = Localize.GetValue("HistoryDetailConfirmationLabel");
+            lblRequested.Text = Localize.GetValue("HistoryDetailRequestedLabel");
+            lblOrigin.Text = Localize.GetValue("HistoryDetailOriginLabel");
+            lblAptRingCode.Text = Localize.GetValue("HistoryDetailAptRingCodeLabel");
+            lblDestination.Text = Localize.GetValue("HistoryDetailDestinationLabel");
 			lblDestination.Hidden = ViewModel.HideDestination;
-			lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
-            lblStatus.Text = Resources.HistoryDetailStatusLabel;
-			lblAuthorization.Text = Resources.HistoryDetailAuthorizationLabel;
-           
-            btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
-            btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
-			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
-			btnRateTrip.SetTitle(Resources.RateBtn, UIControlState.Normal);
-			btnViewRating.SetTitle(Resources.ViewRatingBtn, UIControlState.Normal);
-		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
-			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusActionCancelButton, AppStyle.ButtonColor.Red );
+            lblPickupDate.Text = Localize.GetValue("HistoryDetailPickupDateLabel");
+            lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
+            lblAuthorization.Text = Localize.GetValue("HistoryDetailAuthorizationLabel");
+
+            btnRebook.SetTitle(Localize.GetValue("HistoryDetailRebookButton"), UIControlState.Normal);
+            btnStatus.SetTitle(Localize.GetValue("HistoryViewStatusButton"), UIControlState.Normal);
+            btnSendReceipt.SetTitle(Localize.GetValue("HistoryViewSendReceiptButton"), UIControlState.Normal);
+            btnRateTrip.SetTitle(Localize.GetValue("RateBtn"), UIControlState.Normal);
+            btnViewRating.SetTitle(Localize.GetValue("ViewRatingBtn"), UIControlState.Normal);
+            AppButtons.FormatStandardButton((GradientButton)btnHide, Localize.GetValue("DeleteButton"), AppStyle.ButtonColor.Red);
+            AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusActionCancelButton"), AppStyle.ButtonColor.Red);
 
 			this.AddBindings(new Dictionary<object, string>                          
             {

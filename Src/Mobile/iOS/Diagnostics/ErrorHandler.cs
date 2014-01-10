@@ -25,7 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 			if (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
             {
 				LastConnectError=DateTime.Now;
-				MessageHelper.Show (Resources.ServiceErrorCallTitle, Resources.ServiceErrorUnauthorized, () => {
+                MessageHelper.Show(Localize.GetValue("ServiceErrorCallTitle"), Localize.GetValue("ServiceErrorUnauthorized"), () =>
+                {
 					UIApplication.SharedApplication.InvokeOnMainThread (() => {
 						var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
 						dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
@@ -37,8 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 			else if (ex is WebException && ((WebException)ex).Status == WebExceptionStatus.ConnectFailure)
 			{
 				LastConnectError=DateTime.Now;
-				var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionTitle");
-				var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("NoConnectionMessage");
+				var title = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionTitle"];
+				var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionMessage"];
 				var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
 				mService.ShowMessage (title, msg);
 			}

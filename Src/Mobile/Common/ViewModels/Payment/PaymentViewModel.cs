@@ -141,9 +141,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (Amount > 100)
                     {
 
-                        string message = string.Format(this.Services().Resources.GetString("ConfirmationPaymentAmountOver100"), CultureProvider.FormatCurrency(Amount));
+                        string message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], CultureProvider.FormatCurrency(Amount));
 
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ConfirmationPaymentAmountOver100Title"), message, this.Services().Resources.GetString("OkButtonText"), () => Task.Factory.SafeStartNew(executePayment), this.Services().Resources.GetString("CancelBoutton"), Nothing);
+                        this.Services().Message.ShowMessage(this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, this.Services().Localize["OkButtonText"], () => Task.Factory.SafeStartNew(executePayment), this.Services().Localize["CancelBoutton"], Nothing);
 
                     }
                     else
@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             }
                             else
                             {
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PayPalExpressCheckoutCancelTitle"), this.Services().Resources.GetString("PayPalExpressCheckoutCancelMessage"));
+                                this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"], this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
                             }
                         });
                 }, error => { });
@@ -196,7 +196,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (!response.IsSuccessfull)
                     {
                         this.Services().Message.ShowProgress(false);
-                        await this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.CmtTransactionErrorMessage);
+                        this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["CmtTransactionErrorMessage"]);
                         return;
                     }
 
@@ -211,21 +211,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             if (requireCreditCard && PaymentPreferences.SelectedCreditCard == null)
             {
                 this.Services().Message.ShowProgress(false);
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+                this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
                 return false;
             }
 
             if (Amount <= 0)
             {
                 this.Services().Message.ShowProgress(false);
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoAmountSelectedMessage);
+                this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoAmountSelectedMessage"]);
                 return false;
             }
 
 			if (!Order.IbsOrderId.HasValue)
             {
                 this.Services().Message.ShowProgress(false);
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("PaymentErrorTitle"), Str.NoOrderId);
+                this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoOrderId"]);
                 return false;
             }			
 
@@ -234,18 +234,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private void ShowPayPalPaymentConfirmation()
         {
-            this.Services().Message.ShowMessage(this.Services().Resources.GetString("PayPalExpressCheckoutSuccessTitle"),
-                              this.Services().Resources.GetString("PayPalExpressCheckoutSuccessMessage"),
+            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
+                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"],
                               null, () => ReturnResult(""),
-                              Str.OkButtonText, () => ReturnResult(""));
+                              this.Services().Localize["OkButtonText"], () => ReturnResult(""));
         }
 
         private void ShowCreditCardPaymentConfirmation(string transactionId)
         {
-            this.Services().Message.ShowMessage(Str.CmtTransactionSuccessTitle,
-                              string.Format(Str.CmtTransactionSuccessMessage, transactionId),
+            this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
+                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId),
                               null, () => ReturnResult(""),
-                              Str.OkButtonText, () => ReturnResult(""));
+                              this.Services().Localize["OkButtonText"], () => ReturnResult(""));
         }
     }
 }

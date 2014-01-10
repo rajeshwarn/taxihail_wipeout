@@ -46,21 +46,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
             NavigationItem.HidesBackButton = false;
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationDetail"), true);
-            
-            
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_LocationDetail"), true);
 
-            lblName.Text = Resources.LocationDetailGiveItANameLabel;
+
+
+            lblName.Text = Localize.GetValue("LocationDetailGiveItANameLabel");
 
             ((TextField)txtAddress).PaddingLeft = 3;
             ((TextField)txtAptNumber).PaddingLeft = 3;
             ((TextField)txtRingCode).PaddingLeft = 3;
             ((TextField)txtName).PaddingLeft = 3;
 
-            txtAddress.Placeholder = Resources.LocationDetailStreetAddressPlaceholder;
-            txtAptNumber.Placeholder = Resources.LocationDetailAptPlaceholder;
-            txtRingCode.Placeholder = Resources.LocationDetailRingCodePlaceholder;
-            txtName.Placeholder = Resources.LocationDetailGiveItANamePlaceholder;
+            txtAddress.Placeholder = Localize.GetValue("LocationDetailStreetAddressPlaceholder");
+            txtAptNumber.Placeholder = Localize.GetValue("LocationDetailAptPlaceholder");
+            txtRingCode.Placeholder = Localize.GetValue("LocationDetailRingCodePlaceholder");
+            txtName.Placeholder = Localize.GetValue("LocationDetailGiveItANamePlaceholder");
 
             txtAddress.ShouldReturn = HandleShouldReturn;
             txtAptNumber.ShouldReturn = HandleShouldReturn;
@@ -68,9 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtName.ShouldReturn = HandleShouldReturn;
 
 
-            AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
-			(btnBook).SetTitle(Resources.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
-            AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
+            AppButtons.FormatStandardButton((GradientButton)btnSave, Localize.GetValue("SaveButton"), AppStyle.ButtonColor.Green); 
+			(btnBook).SetTitle(Localize.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
+            AppButtons.FormatStandardButton((GradientButton)btnDelete, Localize.GetValue("DeleteButton"), AppStyle.ButtonColor.Red); 
 
             if ( !ViewModel.ShowRingCodeField )
             {
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             btnSave.Hidden = true;
 
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(  Resources.SaveButton , UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute () );
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("SaveButton"), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute());
 
             View.ApplyAppFont ();
         }

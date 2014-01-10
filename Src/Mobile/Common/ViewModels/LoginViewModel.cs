@@ -112,19 +112,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 catch (Exception e)
                 {
-                    var title = this.Services().Resources.GetString("InvalidLoginMessageTitle");
-                    var message = this.Services().Resources.GetString(e.Message);
+                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                    var message = this.Services().Localize[e.Message];
 
                     if(e.Message == AuthenticationErrorCode.AccountDisabled){
 						if ( CallIsEnabled )
 						{
                             var companyName = this.Services().Settings.ApplicationName;
                             var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
-                            message = string.Format(this.Services().Resources.GetString(e.Message), companyName, phoneNumber);
+                            message = string.Format(this.Services().Localize[e.Message], companyName, phoneNumber);
 						}
 						else 
 						{
-                            message = this.Services().Resources.GetString("AccountDisabled_NoCall");
+                            message = this.Services().Localize["AccountDisabled_NoCall"];
 						}
                     }
                     this.Services().Message.ShowMessage(title, message);

@@ -165,9 +165,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Resources.GetString("BookTaxiTitle"), 
-					this.Services().Resources.GetString("BookTaxiPassengerName"), 
-					this.Services().Resources.GetString("Ok"), 
+				return GetCommand(() => this.Services().Message.ShowEditTextDialog(this.Services().Localize["BookTaxiTitle"],
+                    this.Services().Localize["BookTaxiPassengerName"],
+                    this.Services().Localize["Ok"], 
 					CreateOrder));
 			}
 		}
@@ -176,10 +176,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			get
 			{
-				return GetCommand<Guid>(orderId => 
-					this.Services().Message.ShowMessage(this.Services().Resources.GetString("CancelOrderTitle"), 
-						this.Services().Resources.GetString("CancelOrderMessage"), 
-						this.Services().Resources.GetString("Yes"), () => 
+				return GetCommand<Guid>(orderId =>
+                    this.Services().Message.ShowMessage(this.Services().Localize["CancelOrderTitle"],
+                        this.Services().Localize["CancelOrderMessage"],
+                        this.Services().Localize["Yes"], () => 
 						{
 							this.Services().Message.ShowProgress(true);
 
@@ -198,14 +198,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								}
 								catch 
 								{
-									this.Services().Message.ShowMessage(this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Services().Resources.GetString("ErrorCancellingOrderTitle"));
+                                    this.Services().Message.ShowMessage(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Localize["ErrorCancellingOrderTitle"]);
 								}
 							}
 							finally
 							{
 								this.Services().Message.ShowProgress(false);
 							}
-						}, this.Services().Resources.GetString("No"), () => { }));
+                        }, this.Services().Localize["No"], () => { }));
 			}
 		}
 
@@ -251,13 +251,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 						if (!string.IsNullOrEmpty(passengerName))
 						{
-							newOrderCreated.Note = string.Format(this.Services().Resources.GetString("Callbox.passengerName"), passengerName);
+                            newOrderCreated.Note = string.Format(this.Services().Localize["Callbox.passengerName"], passengerName);
 							newOrderCreated.Settings.Name = passengerName;
 						}
 						else
 						{
-							newOrderCreated.Note = this.Services().Resources.GetString("Callbox.noPassengerName");
-							newOrderCreated.Settings.Name = this.Services().Resources.GetString("NotSpecified");
+                            newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
+                            newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
 						}      
 
 						var orderInfo = this.Services().Booking.CreateOrder(newOrderCreated);
@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								}
 								else
 								{
-									this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), this.Services().Resources.GetString("NoPickupAddress"));
+                                    this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["NoPickupAddress"]);
 								}
 							});
 					}
@@ -295,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					{
 						InvokeOnMainThread(() =>
 							{
-								string err = string.Format(this.Services().Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), this.Services().Settings.ApplicationName, this.Services().Config.GetSetting( "DefaultPhoneNumberDisplay" ));
-								this.Services().Message.ShowMessage(this.Services().Resources.GetString("ErrorCreatingOrderTitle"), err);
+                                string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+                                this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							});
 					}
 					finally
