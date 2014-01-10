@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "Password Recovery",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class PasswordRecoveryActivity : BaseBindingActivity<ResetPasswordViewModel>
     {
