@@ -32,12 +32,13 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
 		{
 			var tcs = new TaskCompletionSource<TResponse>();
 
-			client.PostAsync<TResponse>(request,
+			client.PostAsync(request,
 				tcs.SetResult,
 				(result, error) => tcs.SetException(error));
 
 			return tcs.Task;
 		}
+        
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
 		{
@@ -68,6 +69,17 @@ namespace apcurium.MK.Booking.Api.Client.Extensions
             var tcs = new TaskCompletionSource<TResponse>();
 
             client.GetAsync<TResponse>(relativeOrAbsoluteUrl,
+                tcs.SetResult,
+                (result, error) => tcs.SetException(error));
+
+            return tcs.Task;
+        }
+
+        public static Task<TResponse> DeleteAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
+        {
+            var tcs = new TaskCompletionSource<TResponse>();
+
+            client.GetAsync(request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(error));
 

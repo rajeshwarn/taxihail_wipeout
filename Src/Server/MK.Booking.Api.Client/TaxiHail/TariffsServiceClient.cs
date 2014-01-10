@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Entity;
 
 #endregion
@@ -14,22 +16,22 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public void CreateTariff(Tariff tariff)
+        public Task CreateTariff(Tariff tariff)
         {
             var req = string.Format("/admin/tariffs");
-            Client.Post<string>(req, tariff);
+            return Client.PostAsync<string>(req, tariff);
         }
 
-        public void DeleteTariff(Guid tariffId)
+        public Task DeleteTariff(Guid tariffId)
         {
             var req = string.Format("/admin/tariffs/" + tariffId);
-            Client.Delete<string>(req);
+            return Client.DeleteAsync<string>(req);
         }
 
-        public IList<Tariff> GetTariffs()
+        public Task<IList<Tariff>> GetTariffs()
         {
             var req = string.Format("/admin/tariffs");
-            return Client.Get<IList<Tariff>>(req);
+            return Client.GetAsync<IList<Tariff>>(req);
         }
     }
 }

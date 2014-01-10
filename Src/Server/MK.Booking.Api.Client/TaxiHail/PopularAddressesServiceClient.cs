@@ -26,10 +26,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 #if  !CLIENT
-        public void Add(PopularAddress address)
+        public Task Add(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses");
-            Client.Post<object>(req, address);
+            return Client.PostAsync<object>(req, address);
         }
 #endif
     }
