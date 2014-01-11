@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.FacebookEnabled)
 			{
                 AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
-                this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
+				this.AddBindings(btnFbLogin, "TouchUpInside LoginFacebook");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.TwitterEnabled)
 			{
                 AppButtons.FormatStandardButton (btnTwLogin, Resources.TwitterButton, AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
-                this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
+				this.AddBindings (btnTwLogin, "TouchUpInside LoginTwitter");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
@@ -106,11 +106,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             
             this.AddBindings (new Dictionary<object, string> {
-                { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
-                { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
-                { txtEmail, "{'Text':{'Path':'Email'}}"},
-                { txtPassword, "{'Text':{'Path':'Password'}}"},
+				{ btnSignIn, "TouchUpInside SignInCommand"}, 
+				{ linkForgotPassword, "TouchUpInside ResetPassword"}, 
+				{ btnSignUp, "TouchUpInside SignUp"},               
+				{ txtEmail, "Text Email"},
+				{ txtPassword, "Text Password"},
             });
 
 

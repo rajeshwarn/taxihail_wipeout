@@ -60,11 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Mvx_
 		}
 		public void RegisterType<TFrom, TTo>() where TFrom : class where TTo : class, TFrom
 		{
-			_container.Register<TFrom, TTo>();
+			_container.Register<TFrom, TTo>().AsMultiInstance();
 		}
 		public void RegisterType(System.Type tFrom, System.Type tTo)
 		{
-			_container.Register(tFrom, tTo);
+			_container.Register(tFrom, tTo).AsMultiInstance();
 		}
 		public void RegisterSingleton<TInterface>(TInterface theObject) where TInterface : class
 		{
@@ -76,11 +76,13 @@ namespace apcurium.MK.Booking.Mobile.Mvx_
 		}
 		public void RegisterSingleton<TInterface>(System.Func<TInterface> theConstructor) where TInterface : class
 		{
-			_container.Register<TInterface>((_, __) => theConstructor()).AsSingleton();
+			var lazy = new Lazy<TInterface>(theConstructor);
+			_container.Register<TInterface>((_, __) => lazy.Value);
 		}
 		public void RegisterSingleton(System.Type tInterface, System.Func<object> theConstructor)
 		{
-			_container.Register(tInterface, theConstructor).AsSingleton();
+			var lazy = new Lazy<object>(theConstructor);
+			_container.Register(tInterface, (_, __) => lazy.Value);
 		}
 		public T IoCConstruct<T>() where T : class
 		{

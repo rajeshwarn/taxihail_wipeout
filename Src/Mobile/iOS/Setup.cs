@@ -57,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void InitializeLastChance()
         {
+			base.InitializeLastChance();
+
             TinyIoCServiceProviderSetup.Initialize();
 
             TinyIoCContainer.Current.Register<IAnalyticsService, GoogleAnalyticsService>();
@@ -128,19 +130,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return new TinyIoCProvider(TinyIoCContainer.Current);
 		}
 
-		public override void InitializePrimary()
+		protected override void InitializeBindingBuilder()
 		{
-			base.InitializePrimary();
-		}
-
-		public override void InitializeSecondary()
-		{
-			base.InitializeSecondary();
-		}
-
-		protected override void InitializeCommandCollectionBuilder()
-		{
-			Mvx.RegisterSingleton(() => CreateCommandCollectionBuilder());
+			RegisterBindingBuilderCallbacks();
+			var bindingBuilder = CreateBindingBuilder();
+			bindingBuilder.DoRegistration();
 		}
 
 #endregion
