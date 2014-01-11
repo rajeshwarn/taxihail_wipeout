@@ -11,20 +11,12 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[MvxViewFor(typeof(RideSummaryViewModel))]
-	public partial class RideSummaryPage  : BaseViewController
+	public partial class RideSummaryPage  : BaseViewController<RideSummaryViewModel>
 	{     
 		public RideSummaryPage() 
 			: base("RideSummaryPage", null)
 		{
 		}
-
-		public new RideSummaryViewModel ViewModel
-		{
-			get
-			{
-				return (RideSummaryViewModel)DataContext;
-			}
-		} 
 
 		public override void ViewDidLoad ()
 		{

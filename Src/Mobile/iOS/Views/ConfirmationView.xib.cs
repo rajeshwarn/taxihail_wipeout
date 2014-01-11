@@ -16,21 +16,14 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+	//TODO: [MvvmCRoss v3] Required? 
 	[MvxViewFor(typeof(BookConfirmationViewModel))]
-    public partial class ConfirmationView : BaseViewController
+	public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
         public ConfirmationView () 
 			: base("ConfirmationView", null)
         {
         }
-
-		public new BookConfirmationViewModel ViewModel
-		{
-			get
-			{
-				return (BookConfirmationViewModel)DataContext;
-			}
-		}
 
 		public override string NibName
 		{

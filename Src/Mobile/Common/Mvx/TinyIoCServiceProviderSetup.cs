@@ -2,17 +2,18 @@ using System;
 
 namespace apcurium.MK.Booking.Mobile.Mvx_
 {
+	//TODO: [MvvmCross v3] Remove this
      public static class TinyIoCServiceProviderSetup
     {
         public static void Initialize()
         {
-            var ioc = new TinyIoCProvider();
+			//var ioc = new TinyIoCProvider();
 			//MvxServiceProviderSetup.Initialize(ioc);
         }
 
         public static void Initialize(Type serviceProviderType)
         {
-            var ioc = new TinyIoCProvider();
+			//var ioc = new TinyIoCProvider();
 			//MvxServiceProviderSetup.Initialize(serviceProviderType, ioc);
         }
     }

@@ -10,12 +10,8 @@ using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BaseViewModel : MvxViewModel
+	public abstract class BaseViewModel : MvxViewModel 
     {
-        protected BaseViewModel()
-        {
-        }
-
         public static Action NoAction = () => { };
 
         public TinyIoCContainer Container

@@ -12,8 +12,9 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+	//TODO [MvvMCross v3] Required? 
 	[MvxViewFor(typeof(MyLocationsViewModel))]
-	public partial class LocationsTabView : BaseViewController
+	public partial class LocationsTabView : BaseViewController<MyLocationsViewModel>
 	{
         const string CellBindingText = @"
                 {

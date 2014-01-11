@@ -10,19 +10,11 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class UpdatePasswordView : BaseViewController
+	public partial class UpdatePasswordView : BaseViewController<UpdatePasswordViewModel>
 	{
 		public UpdatePasswordView() 
 			: base("UpdatePasswordView", null)
 		{
-		}
-
-		public new UpdatePasswordViewModel ViewModel
-		{
-			get
-			{
-				return (UpdatePasswordViewModel)DataContext;
-			}
 		}
 		
 		public override void ViewDidLoad ()

@@ -10,7 +10,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ResetPasswordView : BaseViewController
+	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>
     {
         public ResetPasswordView() 
 			: base("ResetPasswordView", null)

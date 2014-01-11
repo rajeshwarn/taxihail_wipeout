@@ -11,6 +11,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
+	//TODO: Rename (There are 3 c's in acccount)
     public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
 		readonly IFacebookService _facebookService;

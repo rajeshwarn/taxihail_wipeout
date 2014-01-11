@@ -12,20 +12,13 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
 	[MvxViewFor(typeof(PaymentViewModel))]
-    public partial class BookPaymentSettingsView : BaseViewController
+	public partial class BookPaymentSettingsView : BaseViewController<PaymentViewModel>
     {
         public BookPaymentSettingsView() 
 			: base("BookPaymentSettingsView", null)
         {
         }
-
-		public new PaymentViewModel ViewModel
-		{
-			get
-			{
-				return (PaymentViewModel)DataContext;
-			}
-		}
+		
 
         double MeterAmount{
             get{

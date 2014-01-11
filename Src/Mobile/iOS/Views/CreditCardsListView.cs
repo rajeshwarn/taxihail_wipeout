@@ -10,7 +10,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreditCardsListView :  BaseViewController
+	public partial class CreditCardsListView : BaseViewController<CreditCardsListViewModel>
     {
         
         private const string Cellid = "CreditCardsCell";

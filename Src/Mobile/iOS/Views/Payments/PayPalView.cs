@@ -5,20 +5,12 @@ using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public partial class PayPalView : BaseViewController
+	public partial class PayPalView : BaseViewController<PayPalViewModel>
     {
         public PayPalView() 
 			: base("PayPalView", null)
         {
         }
-
-		public new PayPalViewModel ViewModel
-		{
-			get
-			{
-				return (PayPalViewModel)DataContext;
-			}
-		}
 		
         public override void ViewDidLoad ()
         {

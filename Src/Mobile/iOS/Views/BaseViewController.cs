@@ -8,10 +8,12 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public abstract class BaseViewController : MvxViewController, IHaveViewModel
+	public abstract class BaseViewController<TViewModel> : MvxViewController, IHaveViewModel
+		where TViewModel : BaseViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
@@ -35,11 +37,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         
 #endregion
 
-		public new BaseViewModel ViewModel
+		public new TViewModel ViewModel
 		{
 			get
 			{
-				return (BaseViewModel)DataContext;
+				return (TViewModel)DataContext;
 			}
 		}
 

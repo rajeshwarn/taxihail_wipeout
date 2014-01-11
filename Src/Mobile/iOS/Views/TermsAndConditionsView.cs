@@ -11,7 +11,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class TermsAndConditionsView : BaseViewController
+	public partial class TermsAndConditionsView : BaseViewController<TermsAndConditionsViewModel>
     {
         public TermsAndConditionsView () 
 			: base("TermsAndConditionsView", null)

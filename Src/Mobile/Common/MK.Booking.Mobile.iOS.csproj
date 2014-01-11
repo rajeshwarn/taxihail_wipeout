@@ -122,7 +122,6 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
-    <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
@@ -190,7 +189,6 @@
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="Style\FontDefinition.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
-    <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -311,6 +309,8 @@
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
+    <Compile Include="IoC\TinyIoC.cs" />
+    <Compile Include="IoC\TinyIoCProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -378,5 +378,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppServices\Social\" />
+    <Folder Include="IoC\" />
   </ItemGroup>
 </Project>

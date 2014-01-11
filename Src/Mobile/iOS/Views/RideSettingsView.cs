@@ -10,25 +10,16 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class RideSettingsView : BaseViewController
+	public partial class RideSettingsView : BaseViewController<RideSettingsViewModel>
     {              
         public RideSettingsView() 
 			: base("RideSettingsView", null)
         {
         }
-
-		public new RideSettingsViewModel ViewModel
-		{
-			get
-			{
-				return (RideSettingsViewModel)DataContext;
-			}
-		}
 		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-
 
             NavigationController.NavigationBar.Hidden = false;
             Container.BackgroundColor =  UIColor.Clear;

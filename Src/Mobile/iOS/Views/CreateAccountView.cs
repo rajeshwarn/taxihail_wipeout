@@ -10,7 +10,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreateAccountView : BaseViewController
+	public partial class CreateAccountView : BaseViewController<CreateAcccountViewModel>
     {
         public CreateAccountView() 
 			: base("CreateAccountView", null)

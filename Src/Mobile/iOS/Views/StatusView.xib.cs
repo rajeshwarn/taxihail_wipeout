@@ -18,20 +18,12 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[MvxViewFor(typeof(BookingStatusViewModel))]
-    public partial class StatusView : BaseViewController
+	public partial class StatusView : BaseViewController<BookingStatusViewModel>
     {
         public StatusView () 
 			: base("StatusView", null)
         {
         }
-
-		public BookingStatusViewModel ViewModel
-		{
-			get
-			{
-				return (BookingStatusViewModel)DataContext;
-			}
-		}
 
         public override void ViewDidLoad ()
         {

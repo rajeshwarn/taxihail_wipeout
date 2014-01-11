@@ -9,7 +9,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreditCardAddView : BaseViewController
+	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
         public CreditCardAddView () 
 			: base("CreditCardAddView", null)

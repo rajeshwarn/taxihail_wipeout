@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
+using Cirrious.CrossCore;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -120,6 +121,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter()
 		{
 			return new PhonePresenter(base.ApplicationDelegate, base.Window);
+		}
+
+		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+		{
+			return new TinyIoCProvider(TinyIoCContainer.Current);
+		}
+
+		public override void InitializePrimary()
+		{
+			base.InitializePrimary();
+		}
+
+		public override void InitializeSecondary()
+		{
+			base.InitializeSecondary();
+		}
+
+		protected override void InitializeCommandCollectionBuilder()
+		{
+			Mvx.RegisterSingleton(() => CreateCommandCollectionBuilder());
 		}
 
 #endregion

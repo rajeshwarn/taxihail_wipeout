@@ -14,7 +14,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	[MvxViewFor(typeof(HistoryViewModel))]
-	public partial class HistoryTabView : BaseViewController
+	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
 	{
 
 		private const string Cellid = "HistoryCell";

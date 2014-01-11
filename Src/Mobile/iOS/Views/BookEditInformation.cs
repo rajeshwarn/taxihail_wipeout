@@ -17,20 +17,12 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookEditInformation : BaseViewController
+	public partial class BookEditInformation : BaseViewController<BookEditInformationViewModel>
     {
         public BookEditInformation() 
 			: base("BookEditInformation", null)
         {
         }
-
-		public new BookEditInformationViewModel ViewModel
-		{
-			get
-			{
-				return (BookEditInformationViewModel)DataContext;
-			}
-		}
 
         public override void LoadView()
         {

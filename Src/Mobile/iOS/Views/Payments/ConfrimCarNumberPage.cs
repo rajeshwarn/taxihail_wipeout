@@ -12,7 +12,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
 	[MvxViewFor(typeof(ConfirmCarNumberViewModel))]
-    public partial class ConfrimCarNumberPage :  BaseViewController
+	public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
     {
         public ConfrimCarNumberPage() 
 			: base("ConfrimCarNumberPage", null)
