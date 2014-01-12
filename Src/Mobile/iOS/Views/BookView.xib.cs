@@ -93,26 +93,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             this.AddBindings (new Dictionary<object, string> ()                            {
 
-                { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
-                { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection'}}"},                
-                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}, 'Hidden': {'Path': 'HideDestination'}}"},       
-                { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
-                { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'}, 'Hidden': {'Path': 'HideDestination'}}"},             
-                { mapView, @"{
-'Pickup':{'Path':'Pickup.Model'},
-'Dropoff':{'Path':'Dropoff.Model'},
-'MapMoved':{'Path':'SelectedAddress.SearchCommand'},
-'MapCenter':{'Path':'MapCenter'},
-'AvailableVehicles': {'Path': 'AvailableVehicles'},
-'AddressSelectionMode': {'Path': 'AddressSelectionMode'}
-}" },
-                { infoLabel, "{'Text':{'Path':'FareEstimate'}, 'Hidden':{'Path':'ShowEstimate', 'Converter':'BoolInverter'}}" },              
-                { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
-                { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
-                { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookNow'}}" },
-                { _bottomAction.BookLaterButton , "{'Hidden': {'Path': 'DisableFutureBooking'}}" },
+				{ _bottomAction.RefreshCurrentLocationButton, "TouchUpInside SelectedAddress.RequestCurrentLocationCommand"},                
+				{ pickupActivationButton, "TouchUpInside ActivatePickup; Selected AddressSelectionMode, Converter EnumToBool, ConverterParameter PickupSelection"},                
+				{ dropoffActivationButton, "TouchUpInside ActivateDropoff; Selected AddressSelectionMode, Converter EnumToBool, ConverterParameter DropoffSelection; Hidden HideDestination"},       
+				{ pickupButton, "TouchUpInside Pickup.PickAddress; TextLine1 Pickup.AddressLine1, Mode TwoWay; TextLine2 Pickup.AddressLine2, Mode TwoWay; IsSearching Pickup.IsExecuting, Mode TwoWay; IsPlaceholder Pickup.IsPlaceHolder, Mode TwoWay"},  
+				{ dropoffButton, "TouchUpInside Dropoff.PickAddress; TextLine1 Dropoff.AddressLine1, Mode TwoWay; TextLine2 Dropoff.AddressLine2, Mode TwoWay; IsSearching Dropoff.IsExecuting, Mode TwoWay; IsPlaceholder Dropoff.IsPlaceHolder, Mode TwoWay; Hidden HideDestination"},             
+                { mapView, @"
+Pickup Pickup.Model;
+Dropoff Dropoff.Model;
+MapMoved SelectedAddress.SearchCommand;
+MapCenter MapCenter;
+AvailableVehicles AvailableVehicles;
+AddressSelectionMode AddressSelectionMode
+" },
+				{ infoLabel, "Text FareEstimate; Hidden ShowEstimate, Converter BoolInverter" },              
+				{ _dateTimePicker, "DateChangedCommand PickupDateSelectedCommand" },
+				{ _bottomAction.ClearLocationButton, "Hidden CanClearAddress, Converter BoolInverter; Enabled CanClearAddress; TouchUpInside SelectedAddress.ClearPositionCommand" },
+				{ _bottomAction.BookNowButton , "TouchUpInside BookNow" },
+				{ _bottomAction.BookLaterButton , "Hidden DisableFutureBooking" },
 
-                { backBtn , "{'TouchUpInside': {'Path': 'ClosePanelCommand'},'Hidden': {'Path': 'Panel.MenuIsOpen', 'Converter': 'BoolInverter'}}" }        
+				{ backBtn , "TouchUpInside ClosePanelCommand; Hidden Panel.MenuIsOpen, Converter BoolInverter" }        
             });
 
             if (ViewModel.HideDestination)

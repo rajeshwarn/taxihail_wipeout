@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 
 			return string.IsNullOrEmpty((string)parameter) 
                 ? null 
-			return Mvx.Resolve<ILocalization>().GetString(parameter.ToString());
+                : Mvx.Resolve<ILocalization>()[parameter.ToString()];
 		}
 	}
 }

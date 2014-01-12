@@ -12,10 +12,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookConfirmationViewModel : BaseViewModel
 	{
-        public BookConfirmationViewModel(string order)
+		public void Init(string order)
 		{
-	        Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
-            RideSettings = new RideSettingsViewModel(Order.Settings);
+			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
+			RideSettings = new RideSettingsViewModel(Order.Settings);
 			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
 

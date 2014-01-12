@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Initialize();
         }
 
+		//TODO: [MvvmCross v3] Refactor this constructor
         public BookViewModel(string order)
         {
             Order = order.FromJson<CreateOrder>();
