@@ -23,11 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
-            lblEmail.Text = Resources.GetValue("CreateAccountEmail");
-            lblName.Text = Resources.GetValue("CreateAccountFullName");
-            lblPhone.Text = Resources.GetValue("CreateAccountPhone");
-            lblPassword.Text = Resources.GetValue("CreateAccountPassword");
-            lblConfirmPassword.Text = Resources.GetValue("CreateAccountPasswordConfrimation");
+            lblEmail.Text = Localize.GetValue("CreateAccountEmail");
+            lblName.Text = Localize.GetValue("CreateAccountFullName");
+            lblPhone.Text = Localize.GetValue("CreateAccountPhone");
+            lblPassword.Text = Localize.GetValue("CreateAccountPassword");
+            lblConfirmPassword.Text = Localize.GetValue("CreateAccountPasswordConfrimation");
 
             DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
             
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtConfirmPassword.SecureTextEntry = true;
 
             var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
-            AddButton(scrollView, 60, buttonsY, Resources.CreateAccountCreate, "CreateAccount", AppStyle.ButtonColor.Green);
+            AddButton(scrollView, 60, buttonsY, Localize.GetValue("CreateAccountCreate"), "CreateAccount", AppStyle.ButtonColor.Green);
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtName, "{'Text': {'Path': 'Data.Name', 'Mode': 'TwoWay' }}" },
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { lblConfirmPassword, "{'Hidden': {'Path': 'HasSocialInfo'}}" },
             });
 
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SignUp"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_SignUp"), true);
 
 
             View.ApplyAppFont ();

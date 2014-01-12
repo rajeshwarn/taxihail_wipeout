@@ -69,8 +69,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 }
                 catch (Exception e)
                 {
-					var title = this.Services().Resources.GetString("InvalidLoginMessageTitle");
-					var message = this.Services().Resources.GetString("InvalidLoginMessage");
+                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                    var message = this.Services().Localize["InvalidLoginMessage"];
 
                     Logger.LogError( e );
 

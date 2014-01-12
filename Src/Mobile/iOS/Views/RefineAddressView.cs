@@ -31,8 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-			lblAptNumber.Text = Resources.AptNumber;
-			lblRingCode.Text = Resources.RingCode;
+            lblAptNumber.Text = Localize.GetValue("AptNumber");
+            lblRingCode.Text = Localize.GetValue("RingCode");
 			
 			lblAptNumber.TextColor = AppStyle.TitleTextColor;
 			lblRingCode.TextColor = AppStyle.TitleTextColor;
@@ -47,9 +47,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			
 			txtAptNumber.ShouldReturn = ShouldReturnDelegate;
 			txtRingCode.ShouldReturn = ShouldReturnDelegate;
-			
 
-			var btnDone = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+
+            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            {
 				if( ViewModel.SaveCommand.CanExecute() )
 				{
 					ViewModel.SaveCommand.Execute();
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			});
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
-            NavigationItem.Title = Resources.GetValue( "View_RefineAddress");
+            NavigationItem.Title = Localize.GetValue( "View_RefineAddress");
 
 			this.AddBindings(new Dictionary<object, string>{
 				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,

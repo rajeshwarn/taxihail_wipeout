@@ -13,10 +13,10 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			if (!string.IsNullOrEmpty(value as string)) {
 				return value;
 			}
-			if(string.IsNullOrEmpty((string)parameter)) {
-				return null;
-			}
-			return Mvx.Resolve<IAppResource>().GetString(parameter.ToString());
+
+			return string.IsNullOrEmpty((string)parameter) 
+                ? null 
+			return Mvx.Resolve<ILocalization>().GetString(parameter.ToString());
 		}
 	}
 }

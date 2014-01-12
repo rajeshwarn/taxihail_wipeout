@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     task.ContinueWith(t=>{
                         var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
-                            this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"), this.Services().Resources.GetString("InvalidAddressMessage"));
+                            this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
                             return;
                         }
 
@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     try {
                         var location = this.Services().Geoloc.ValidateAddress(_address.FullAddress);
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
-                            this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"), this.Services().Resources.GetString("InvalidAddressMessage"));
+                            this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
                             return;
                         }
                     
@@ -225,14 +225,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (string.IsNullOrWhiteSpace(BookAddress))
             {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("InvalidAddressTitle"),
-                                                            this.Services().Resources.GetString("InvalidAddressMessage"));
+                this.Services().Message.ShowMessage(this.Services().Localize["InvalidAddressTitle"], this.Services().Localize["InvalidAddressMessage"]);
                 return false;
             }
             if (string.IsNullOrWhiteSpace(FriendlyName))
             {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("SaveAddressEmptyFieldTitle"),
-                                                            this.Services().Resources.GetString("SaveAddressEmptyFieldMessage"));
+                this.Services().Message.ShowMessage(this.Services().Localize["SaveAddressEmptyFieldTitle"], this.Services().Localize["SaveAddressEmptyFieldMessage"]);
                 return false;
             }
             return true;

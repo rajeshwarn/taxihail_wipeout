@@ -66,9 +66,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public void RemoveCreditCard (Guid creditCardId)
         {
-            this.Services().Message.ShowMessage(this.Services().Resources.GetString("RemoveCreditCardTitle"),
-                this.Services().Resources.GetString("RemoveCreditCardMessage"),
-                this.Services().Resources.GetString("YesButton"),
+            this.Services().Message.ShowMessage(this.Services().Localize["RemoveCreditCardTitle"],
+                this.Services().Localize["RemoveCreditCardMessage"],
+                this.Services().Localize["YesButton"],
                 () =>
                 {
                     this.Services().Account.RemoveCreditCard(creditCardId);
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Services().Resources.GetString("CancelBoutton"),
+                this.Services().Localize["CancelBoutton"],
                 () => { });
                                                                   
         }
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 var creditCards = this.Services().Account.GetCreditCards().ToList();
                 creditCards.Add(new CreditCardDetails
                 {
-                    FriendlyName = this.Services().Resources.GetString("AddCreditCardTitle"),
+                    FriendlyName = this.Services().Localize["AddCreditCardTitle"],
                 });
                 CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel
                 {

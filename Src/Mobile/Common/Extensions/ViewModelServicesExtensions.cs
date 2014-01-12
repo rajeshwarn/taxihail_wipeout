@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public IMessageService Message { get { return _viewModel.Container.Resolve<IMessageService>(); } }
 
-        public IAppResource Resources { get { return _viewModel.Container.Resolve<IAppResource>(); } }
+        public ILocalization Localize { get { return _viewModel.Container.Resolve<ILocalization>(); } }
 
         public ITinyMessengerHub MessengerHub { get { return _viewModel.Container.Resolve<ITinyMessengerHub>(); } }
 

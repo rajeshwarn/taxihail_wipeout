@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
-                controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+                controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
                 newDvc.Title = new CultureInfo("en-US",false).TextInfo.ToTitleCase ( _rootElement[0].Caption ); 
             }
@@ -82,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             var selected = 0;
             var section = new SectionWithBackground(title);
-            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
 
             foreach (var v in values)
             {
@@ -91,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var display = value.Display;
                 if (!value.Id.HasValue)
                 {
-                    display = resources.GetString("NoPreference");
+                    display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"];
                 }
 
                 var item = new RadioElementWithId<T>(value.Id, display, value.Image);

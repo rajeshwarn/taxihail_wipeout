@@ -71,18 +71,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		        ExpirationMonths = new List<ListItem>
 		        {
-		            new ListItem {Display = this.Services().Resources.GetString("January"), Id = 1},
-		            new ListItem {Display = this.Services().Resources.GetString("February"), Id = 2},
-		            new ListItem {Display = this.Services().Resources.GetString("March"), Id = 3},
-		            new ListItem {Display = this.Services().Resources.GetString("April"), Id = 4},
-		            new ListItem {Display = this.Services().Resources.GetString("May"), Id = 5},
-		            new ListItem {Display = this.Services().Resources.GetString("June"), Id = 6},
-		            new ListItem {Display = this.Services().Resources.GetString("July"), Id = 7},
-		            new ListItem {Display = this.Services().Resources.GetString("August"), Id = 8},
-		            new ListItem {Display = this.Services().Resources.GetString("September"), Id = 9},
-		            new ListItem {Display = this.Services().Resources.GetString("October"), Id = 10},
-		            new ListItem {Display = this.Services().Resources.GetString("November"), Id = 11},
-		            new ListItem {Display = this.Services().Resources.GetString("December"), Id = 12}
+		            new ListItem {Display = this.Services().Localize["January"], Id = 1},
+		            new ListItem {Display = this.Services().Localize["February"], Id = 2},
+		            new ListItem {Display = this.Services().Localize["March"], Id = 3},
+		            new ListItem {Display = this.Services().Localize["April"], Id = 4},
+		            new ListItem {Display = this.Services().Localize["May"], Id = 5},
+		            new ListItem {Display = this.Services().Localize["June"], Id = 6},
+		            new ListItem {Display = this.Services().Localize["July"], Id = 7},
+		            new ListItem {Display = this.Services().Localize["August"], Id = 8},
+		            new ListItem {Display = this.Services().Localize["September"], Id = 9},
+		            new ListItem {Display = this.Services().Localize["October"], Id = 10},
+		            new ListItem {Display = this.Services().Localize["November"], Id = 11},
+		            new ListItem {Display = this.Services().Localize["December"], Id = 12}
 		        };
 		    }
 
@@ -286,12 +286,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                    Data.ExpirationYear, 
                                    Data.CCV).Any (x => x.IsNullOrEmpty ())) 
             {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreditCardErrorTitle"), this.Services().Resources.GetString("CreditCardRequiredFields"));
+                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
 				return;
             }
 
             if (!IsValidate (Data.CardNumber)) {
-                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreditCardErrorTitle"), this.Services().Resources.GetString("CreditCardInvalidCrediCardNUmber"));
+                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
 				return;
             }
 

@@ -46,35 +46,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             scrollView.AutoSize ();
 
-			lblName.Text= Resources.GetValue("RideSettingsName");
-			lblPhone.Text= Resources.GetValue("RideSettingsPhone");
-			lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
-			lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
-			lblPassword.Text = Resources.GetValue("RideSettingsPassword");
+			lblName.Text= Localize.GetValue("RideSettingsName");
+			lblPhone.Text= Localize.GetValue("RideSettingsPhone");
+			lblVehicleType.Text= Localize.GetValue("RideSettingsVehiculeType");
+			lblChargeType.Text= Localize.GetValue("RideSettingsChargeType");
+			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 
             DismissKeyboardOnReturn(txtName, txtPhone);
-            
 
-            var button = new UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+
+            var button = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            {
                 ViewModel.SaveCommand.Execute();
             });
 
             NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
-            NavigationItem.Title = Resources.GetValue("View_RideSettings");
+            NavigationItem.Title = Localize.GetValue("View_RideSettings");
 
 // ReSharper disable CoVariantArrayConversion
-            (pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
-                ViewModel.SetVehiculeType.Execute(x.Id);
-            });
+            (pickerVehiculeType).Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
 
-            (pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
-                ViewModel.SetChargeType.Execute(x.Id);
-            });
+            (pickerChargeType).Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
  // ReSharper restore CoVariantArrayConversion
 
 
-            lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
+            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 

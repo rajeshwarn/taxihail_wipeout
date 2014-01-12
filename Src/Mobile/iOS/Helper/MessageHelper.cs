@@ -35,11 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
                 if ( neutralAction != null )
                 {
-                    av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle,neutralActionTitle );
+                    av = new UIAlertView(title, message, null, Localize.GetValue("Close"), positiveActionTitle, negativeActionTitle, neutralActionTitle);
                 }   
                 else
                 {
-                    av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle);
+                    av = new UIAlertView(title, message, null, Localize.GetValue("Close"), positiveActionTitle, negativeActionTitle);
                 }
                 av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                     if (e.ButtonIndex == 1) {
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                                                                 {      
                 var listTitle = additionalButton.Select(c=>c.Key).ToArray();
                 LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView ( title, message, null, Resources.Close, listTitle );
+                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), listTitle);
                 av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                     if(e.ButtonIndex!=0)
                     {
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
 			{					
                 LoadingOverlay.StopAnimatingLoading();
-				var av = new UIAlertView ( title, message, null, Resources.Close, null );
+                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
 				av.Dismissed += delegate {
 					onDismiss();
 				};
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             UIApplication.SharedApplication.InvokeOnMainThread( delegate
 			{					
                 LoadingOverlay.StopAnimatingLoading();
-				var av = new UIAlertView ( title, message, null, Resources.Close, null );
+                var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), null);
 				av.Dismissed += delegate {
 					tcs.TrySetResult(null);
 				};
@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
 			{								
                 LoadingOverlay.StopAnimatingLoading();
-				var av = new UIAlertView (  Resources.GenericTitle, message, null, Resources.Close, null );
+                var av = new UIAlertView(Localize.GetValue("GenericTitle"), message, null, Localize.GetValue("Close"), null);
 				av.Show (  );
 			} );
 			

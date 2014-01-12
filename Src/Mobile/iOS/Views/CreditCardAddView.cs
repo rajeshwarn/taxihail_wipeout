@@ -29,21 +29,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad ();
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtSecurityCode.Frame.Bottom + 200);
 			
-            NavigationItem.Title = Resources.GetValue("CreditCardsAddTitle");
+            NavigationItem.Title = Localize.GetValue("CreditCardsAddTitle");
 
             var save = new UIBarButtonItem(UIBarButtonSystemItem.Save, null, null);
             save.Clicked += (sender, e) => ViewModel.AddCreditCardCommand.Execute();
             NavigationItem.RightBarButtonItem = save;
 
             NavigationItem.HidesBackButton = false;
-            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 
-            lblNameOnCard.Text = Resources.GetValue("CreditCardName");
-            lblCardNumber.Text = Resources.GetValue("CreditCardNumber");
-            lblCardCategory.Text = Resources.GetValue("CreditCardCategory");
-            lblExpMonth.Text = Resources.GetValue("CreditCardExpMonth");
-            lblExpYear.Text = Resources.GetValue("CreditCardExpYear");
-            lblSecurityCode.Text = Resources.GetValue("CreditCardCCV");
+            lblNameOnCard.Text = Localize.GetValue("CreditCardName");
+            lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
+            lblCardCategory.Text = Localize.GetValue("CreditCardCategory");
+            lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
+            lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
+            lblSecurityCode.Text = Localize.GetValue("CreditCardCCV");
 
             txtNameOnCard.ShouldReturn += GoToNext;           
 
@@ -55,16 +55,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
 // ReSharper disable CoVariantArrayConversion
-            pickerCreditCardCategory.Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+            pickerCreditCardCategory.Configure(Localize.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
 
                 ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); });
 
-            pickerExpirationYear.Configure(Resources.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
+            pickerExpirationYear.Configure(Localize.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
                 ViewModel.ExpirationYear = x.Id;
             });
             
 
-            (pickerExpirationMonth).Configure(Resources.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
+            (pickerExpirationMonth).Configure(Localize.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
                 ViewModel.ExpirationMonth = x.Id;
             });
 // ReSharper restore CoVariantArrayConversion

@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _getAddress = getAddress;
             _setAddress = setAddress;
             _id = Guid.NewGuid().ToString();
-            _searchingTitle = this.Services().Resources.GetString("AddressSearchingText");
+            _searchingTitle = this.Services().Localize["AddressSearchingText"];
             this.Services().MessengerHub.Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
 
@@ -299,7 +299,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     if (!this.Services().Location.IsLocationServicesEnabled)
                     {
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("LocationServiceErrorTitle"), this.Services().Resources.GetString("LocationServiceErrorMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["LocationServiceErrorTitle"], this.Services().Localize["LocationServiceErrorMessage"]);
                         return ;
                     }
 

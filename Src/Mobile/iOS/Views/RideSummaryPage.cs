@@ -26,12 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			MessageLabel.TextColor = AppStyle.GreyText;
 			MessageLabel.Font = AppStyle.GetNormalFont (MessageLabel.Font.PointSize);
 
-
-			AppButtons.FormatStandardButton (SendRecieptButton, Resources.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
-			AppButtons.FormatStandardButton ((GradientButton)RateButton, Resources.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
-			AppButtons.FormatStandardButton (PayButton, Resources.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
-            AppButtons.FormatStandardButton (ReSendConfirmationButton, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
-
+			AppButtons.FormatStandardButton (SendRecieptButton, Localize.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton ((GradientButton)RateButton, Localize.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton (PayButton, Localize.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
+            AppButtons.FormatStandardButton (ReSendConfirmationButton, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
 			this.AddBindings(new Dictionary<object, string>{
 				{ TitleLabel, new B("Text","ThankYouTitle")},
@@ -52,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 if(ViewModel.ReceiptSent)
                 {
-					AppButtons.FormatStandardButton (SendRecieptButton, Resources.GetValue("HistoryViewSendReceiptSuccess"), AppStyle.ButtonColor.Grey);
+					AppButtons.FormatStandardButton (SendRecieptButton, Localize.GetValue("HistoryViewSendReceiptSuccess"), AppStyle.ButtonColor.Grey);
                     SendRecieptButton.Enabled = false;
                 }
 

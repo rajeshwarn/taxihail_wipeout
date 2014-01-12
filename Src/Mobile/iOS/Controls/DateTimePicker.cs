@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			_picker = new UIDatePicker ();
             _picker.MinimumDate = DateTime.Now.AddMinutes(10 );
 			BackgroundColor = UIColor.Gray;
-			
-            _accept = AppButtons.CreateStandardButton( new RectangleF (10, 5, 250, 35), Resources.DateTimePickerSetButton, AppStyle.ButtonColor.Green );
+
+            _accept = AppButtons.CreateStandardButton(new RectangleF(10, 5, 250, 35), Localize.GetValue("DateTimePickerSetButton"), AppStyle.ButtonColor.Green);
             _acceptDisableOverlay = new UIView{ BackgroundColor = UIColor.Black , Alpha = 0.5f };
             _acceptDisableOverlay.Frame = new RectangleF (10, 5, 250, 35);
              

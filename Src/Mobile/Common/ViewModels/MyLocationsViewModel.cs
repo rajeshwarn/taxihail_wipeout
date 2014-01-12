@@ -62,8 +62,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 AllAddresses.Clear ();
                 AllAddresses.Add (new AddressViewModel{ Address =  new Address
                     {
-                        FriendlyName = this.Services().Resources.GetString("LocationAddFavoriteTitle"),
-                        FullAddress = this.Services().Resources.GetString("LocationAddFavoriteSubtitle"),
+                        FriendlyName = this.Services().Localize["LocationAddFavoriteTitle"],
+                        FullAddress = this.Services().Localize["LocationAddFavoriteSubtitle"],
                     }, IsAddNew = true, ShowPlusSign=true});
 
 

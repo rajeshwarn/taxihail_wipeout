@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _status = new OrderStatusDetail
             {
-                IbsStatusDescription = this.Services().Resources.GetString("LoadingMessage")
+                IbsStatusDescription = this.Services().Localize["LoadingMessage"]
             };
         }
 
@@ -213,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-                           : this.Services().Resources.GetString("ConfirmDestinationNotSpecified");
+                           : this.Services().Localize["ConfirmDestinationNotSpecified"];
             }
         }
 
@@ -362,8 +362,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Resources.GetString("StatusConfirmCancelRide"), 
-                                                                                                   this.Services().Resources.GetString("YesButton"), () =>
+                return GetCommand(() => this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["StatusConfirmCancelRide"], 
+                                                                                                   this.Services().Localize["YesButton"], () =>
                 {
 
                     var isSuccess = this.Services().Booking.CancelOrder(OrderId);
@@ -374,28 +374,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Resources.GetString("StatusConfirmCancelRideErrorTitle"), 
-                                                                                            this.Services().Resources.GetString("StatusConfirmCancelRideError")));
+                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["StatusConfirmCancelRideErrorTitle"], 
+                                                                                            this.Services().Localize["StatusConfirmCancelRideError"]));
                     }
                 },
-                    this.Services().Resources.GetString("NoButton"), () => { })); 
+                    this.Services().Localize["NoButton"], () => { })); 
             }
         }
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            var result = date.HasValue ? date.Value.ToShortDateString() : this.Services().Resources.GetString("DateToday");
+            var result = date.HasValue ? date.Value.ToShortDateString() : this.Services().Localize["DateToday"];
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : this.Services().Resources.GetString("TimeNow");
+            result += time.HasValue ? time.Value.ToShortTimeString() : this.Services().Localize["TimeNow"];
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            var result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
+            var result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
             return result;
         }
     }

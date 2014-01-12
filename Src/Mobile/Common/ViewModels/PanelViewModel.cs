@@ -139,8 +139,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Action call = () => { this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")); };
                     this.Services().Message.ShowMessage(string.Empty,
                                                 this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
-                                               this.Services().Resources.GetString("CallButton"),
-                                               call, this.Services().Resources.GetString("CancelBoutton"), 
+                                               this.Services().Localize["CallButton"],
+                                               call, this.Services().Localize["CancelBoutton"], 
                                                () => {});
                 });
             }
@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(this.Services().Settings.ErrorLog, this.Services().Config.GetSetting("Client.SupportEmail"), this.Services().Resources.GetString("TechSupportEmailTitle")));
+                    InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(this.Services().Settings.ErrorLog, this.Services().Config.GetSetting("Client.SupportEmail"), this.Services().Localize["TechSupportEmailTitle"]));
                 });
             }
         }

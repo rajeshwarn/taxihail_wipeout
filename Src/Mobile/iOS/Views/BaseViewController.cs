@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             Background.LoadForRegularView (View);
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
         public override void DidReceiveMemoryWarning ()

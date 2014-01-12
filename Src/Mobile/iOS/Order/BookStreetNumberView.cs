@@ -43,13 +43,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             lblRefineAddress.Font = AppStyle.NormalTextFont;
-            lblRefineAddress.Text = Resources.GetValue("StreetNumberLabel");
+            lblRefineAddress.Text = Localize.GetValue("StreetNumberLabel");
             lblStreetName.Font = AppStyle.BoldTextFont;
             lblStreetName.TextColor = AppStyle.DarkText;
-            AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
-            AppButtons.FormatStandardButton(btnPlaces, Resources.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
+            AppButtons.FormatStandardButton((GradientButton)btnSearch, Localize.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
+            AppButtons.FormatStandardButton(btnPlaces, Localize.GetValue("StreetNumberPlacesBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchPlace.png", "Assets/Cells/rightArrow.png");
 
-            AppButtons.FormatStandardButton(btnClear, Resources.GetValue("DeleteAddressBt"), AppStyle.ButtonColor.Red, "Assets/Search/cancel.png");
+            AppButtons.FormatStandardButton(btnClear, Localize.GetValue("DeleteAddressBt"), AppStyle.ButtonColor.Red, "Assets/Search/cancel.png");
 
             btnSearch.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
             btnPlaces.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
@@ -70,7 +70,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
                 //return false;
             };
 
-            var button = new UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+            var button = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            {
                 ViewModel.SaveCommand.Execute();
             });
             NavigationItem.RightBarButtonItem = button;
@@ -90,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("StreetNumberTitle"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("StreetNumberTitle"), true);
         }
 
     }

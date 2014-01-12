@@ -22,8 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!IsEmail(Email))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ResetPasswordInvalidDataTitle"), 
-                                                                    this.Services().Resources.GetString("ResetPasswordInvalidDataMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;
 					}
 
@@ -33,8 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         Close( this );
                      }catch(Exception e)
                      {
-                         var msg = this.Services().Resources.GetString("ServiceError" + e.Message);
-                         var title = this.Services().Resources.GetString("ServiceErrorCallTitle");
+                         var msg = this.Services().Localize["ServiceError" + e.Message];
+                         var title = this.Services().Localize["ServiceErrorCallTitle"];
                          this.Services().Message.ShowMessage(title, msg);
                      }finally
 					 {

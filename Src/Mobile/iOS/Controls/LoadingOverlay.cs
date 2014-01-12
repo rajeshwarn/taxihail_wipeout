@@ -2,11 +2,8 @@ using System;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Localization;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -14,7 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         Center = 0,
         BottomRight = 1
-        
     }
 
     public enum CAlertViewType
@@ -26,12 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register("CAlertView")]
     public class CAlertView : UIAlertView
     {
-
-
         public CAlertViewType AlertViewType { get; set; }
-
         public UIProgressView ProgressView { get; set; }
-
         public UIActivityIndicatorView ActivityIndicator { get; set; }
 
         public CAlertView(IntPtr handle) : base(handle)
@@ -49,13 +41,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private float? _offset;
+        private bool _setUpComplete;
 
         public CAlertView(float offset)
         {
             _offset = offset;
         }
-
-        private bool _setUpComplete;
 
         public override void Draw(RectangleF rect)
         {
@@ -115,28 +106,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.Draw(rect);
         }
 
-        private void UpdateProgressBar()
-        {
-            ProgressView.SetNeedsDisplay();
-            SetNeedsDisplay();
-        }
-
-        ///
-        /// Updates the layout using the mainThread
-        ///
-        public void Update()
-        {
-            if (ProgressView != null)
-            {
-                InvokeOnMainThread(UpdateProgressBar);
-            }
-        }
-
         public void Hide(bool animated)
         {
             DismissWithClickedButtonIndex(0, animated);
         }
-        
     }
 
     public class LoadingOverlay : UIView
@@ -145,17 +118,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private static CAlertView _loading;
         private static readonly object Lock = new object();
 
-        public static void StartAnimatingLoading(LoadingOverlayPosition position, string text, int? width, int? height)
-        {
-            StartAnimatingLoading(position, text, width, height, null);
-        }
-
         public static void StartAnimatingLoading(LoadingOverlayPosition position, string text, int? width, int? height, Action canceled)
         {
-
             lock (Lock)
             {
-                
                 UIApplication.SharedApplication.InvokeOnMainThread(() =>
                 {
                     if (_loading == null)
@@ -179,15 +145,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         {
                             _loading = new CAlertView();
                         }
-                        if (text.IsNullOrEmpty())
-                        {
-                            _loading.Message = Resources.LoadingMessage;
-                        }
-                        else
-                        {
-                        
-                            _loading.Message = text;
-                        }
+
+                        _loading.Message = text.IsNullOrEmpty() ? Localize.GetValue("LoadingMessage") : text;
                     
                         if (canceled != null)
                         {
@@ -197,20 +156,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         _loading.Show();
                     }
                 });
-                
             }
-            
-            //owner.InvokeOnMainThread ( (  ) => _loading.StartAnimating ( position, text ) );
         }
 
         public static void StopAnimatingLoading()
         {
             lock (Lock)
             {
-            
                 if (_loading != null)
                 {
-        
                     try
                     {
                         UIApplication.SharedApplication.InvokeOnMainThread(() => _loading.Hide(false));
@@ -223,12 +177,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     }
                     _loading = null;
                 }
-            
             }
         }
-
-        private UIActivityIndicatorView _acitivty;
-        private UILabel _label;
 
         public LoadingOverlay(IntPtr handle) : base(handle)
         {
@@ -254,74 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         public int Width { get; set; }
-
         public int Height { get; set; }
-
-        public void StartAnimating(LoadingOverlayPosition position, string text)
-        {
-            float x = 0;
-            float y = 0;
-            if (position == LoadingOverlayPosition.Center)
-            {
-                x = 160 - (Width / 2);
-                y = 420 / 2;
-            }
-            else if (position == LoadingOverlayPosition.BottomRight)
-            {
-                x = 320 - Width - 5;
-                y = 420 - 25;
-            }
-            
-            
-            Frame = new RectangleF(x, y, Width, Height);
-            Layer.CornerRadius = 5;
-            BackgroundColor = UIColor.DarkGray;
-            Hidden = false;
-            if (_acitivty == null)
-            {
-                _acitivty = new UIActivityIndicatorView();
-                _acitivty.Frame = new RectangleF(8, 5, 20, 20);
-                AddSubview(_acitivty);
-            }
-            if (_label == null)
-            {
-                _label = new UILabel();
-                _label.BackgroundColor = UIColor.DarkGray;
-                _label.TextColor = UIColor.White;
-                _label.TextAlignment = UITextAlignment.Center;
-                
-                _label.Font = TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.English ? AppStyle.GetNormalFont(14) : AppStyle.GetNormalFont(12);
-                
-                _label.Frame = new RectangleF(36, 4, 86, 21);
-                
-                
-                
-                AddSubview(_label);
-            }
-            
-            if (text.HasValue())
-            {
-                _label.Text = text;
-            }
-            else
-            {
-                _label.Text = Resources.LoadingMessage;
-            }
-            
-            
-            _acitivty.StartAnimating();
-        }
-
-        public void StopAnimating()
-        {
-            Hidden = true;
-            if (_acitivty != null)
-            {
-                _acitivty.StopAnimating();
-            }
-            
-        }
-        
     }
 }
 

@@ -37,11 +37,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewDidLoad ();
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryList"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_HistoryList"), true);
 
-			lblInfo.Text = Resources.HistoryInfo;	
+            lblInfo.Text = Localize.GetValue("HistoryInfo");	
 			lblInfo.TextColor = AppStyle.TitleTextColor;
-			lblNoHistory.Text = Resources.NoHistoryLabel;
+            lblNoHistory.Text = Localize.GetValue("NoHistoryLabel");
             lblNoHistory.Hidden = true;
             tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableHistory.BackgroundColor = UIColor.Clear;

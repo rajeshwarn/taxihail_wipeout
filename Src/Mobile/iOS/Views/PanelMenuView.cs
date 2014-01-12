@@ -36,8 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.Frame = new RectangleF (View.Frame.X, View.Frame.Y, View.Frame.Width, View.Frame.Height);
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            
-            panelView.Title = Resources.TabSettings;
+
+            panelView.Title = Localize.GetValue("TabSettings");
             
             logoImageView.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
             versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
@@ -51,44 +51,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
           
             var structure = new InfoStructure (40, false);
             var sect = structure.AddSection ();
-            sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToMyLocations.Execute();
                 })              
             });
-            sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_MyOrders")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_MyOrders")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToOrderHistory.Execute();
                 })              
             });
-            sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_UpdateMyProfile")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_UpdateMyProfile")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToUpdateProfile.Execute();
                 })              
             });
 
             if (_viewModel.TutorialEnabled) {
-                sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToTutorial.Execute();
                 })              
             });
             }
 
             if (_viewModel.CanCall) {               
-                sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_CallDispatch")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_CallDispatch")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.Call.Execute();
                 })              
             });
             }
-            sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_AboutUs")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_AboutUs")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToAboutUs.Execute();
                 })              
             });
 
             if (_viewModel.CanReportProblem) {
-                sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_ReportProblem")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_ReportProblem")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                         _viewModel.ReportProblem.Execute();                 
                     })              
                 });
             }
-            sect.AddItem (new SingleLineItem (Resources.View_Book_Menu_SignOut) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem(new SingleLineItem(Localize.GetValue("View_Book_Menu_SignOut"))
+            {
+                OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.SignOut.Execute();
                 })              
             });

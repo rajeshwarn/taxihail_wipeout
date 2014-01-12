@@ -84,14 +84,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private void HandleCreateOrderError (Exception ex)
         {
-            var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
-            var title = appResource.GetString ("ErrorCreatingOrderTitle");
+            var title = TinyIoCContainer.Current.Resolve<ILocalization>()["ErrorCreatingOrderTitle"];
 
-			string message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall");
+            string message = TinyIoCContainer.Current.Resolve<ILocalization>()["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 
 			if (CallIsEnabled)
 			{
-				message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage");
+                message = TinyIoCContainer.Current.Resolve<ILocalization>()["ServiceError_ErrorCreatingOrderMessage"];
 			}
 
             try {
@@ -101,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     } else {
                         
 						var messageKey = "ServiceError" + ((WebServiceException)ex).ErrorCode;
-						var errorMessage = appResource.GetString (messageKey);
+                        var errorMessage = TinyIoCContainer.Current.Resolve<ILocalization>()[messageKey];
 						if(errorMessage != messageKey)
 						{
 							message = errorMessage;
@@ -110,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 						if ( !CallIsEnabled )
 						{
 							messageKey += "_NoCall";
-							errorMessage = appResource.GetString (messageKey);
+                            errorMessage = TinyIoCContainer.Current.Resolve<ILocalization>()[messageKey];
 							if(errorMessage != messageKey)
 							{
 								message = errorMessage;
@@ -255,8 +254,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
         {
-            var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
-            var fareEstimate = appResource.GetString (defaultFare);
+            var fareEstimate = TinyIoCContainer.Current.Resolve<ILocalization>()[defaultFare];
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {
@@ -267,11 +265,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 if (estimatedFare.Price.HasValue && willShowFare)
                 {                    
                     var maxEstimate = Config.GetSetting<double>("Client.MaxFareEstimate", 100);
-                    if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && appResource.GetString("EstimatePriceOver100").HasValue()))
+                    if (formatString.HasValue() || (estimatedFare.Price.Value > maxEstimate && TinyIoCContainer.Current.Resolve<ILocalization>()["EstimatePriceOver100"].HasValue()))
                     {
-                        fareEstimate = String.Format(appResource.GetString(estimatedFare.Price.Value > maxEstimate 
+                        fareEstimate = String.Format(TinyIoCContainer.Current.Resolve<ILocalization>()[estimatedFare.Price.Value > maxEstimate 
                                                                            ? "EstimatePriceOver100"
-                                                                           : formatString), 
+                                                                           : formatString], 
                                                  estimatedFare.FormattedPrice);
                     }
                     else
@@ -281,7 +279,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                     if (includeDistance && estimatedFare.Distance.HasValue)
                     {
-                        var destinationString = " " + String.Format(appResource.GetString("EstimateDistance"), estimatedFare.FormattedDistance);
+                        var destinationString = " " + String.Format(TinyIoCContainer.Current.Resolve<ILocalization>()["EstimateDistance"], estimatedFare.FormattedDistance);
                         if (!string.IsNullOrWhiteSpace(destinationString))
                         {
                             fareEstimate += destinationString;
@@ -290,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 else
                 {
-                    fareEstimate = String.Format(appResource.GetString(cannotGetFareText));
+                    fareEstimate = String.Format(TinyIoCContainer.Current.Resolve<ILocalization>()[cannotGetFareText]);
                 }
             }
 

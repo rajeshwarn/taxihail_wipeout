@@ -280,7 +280,7 @@
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
     <Compile Include="Helper\ThreadHelper.cs" />
-    <Compile Include="Localization\Resources.cs" />
+    <Compile Include="Localization\Localize.cs" />
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
@@ -798,7 +798,5 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PlatformIntegration\Social\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

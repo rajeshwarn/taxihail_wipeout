@@ -54,26 +54,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if (!IsEmail(Data.Email))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("ResetPasswordInvalidDataTitle"), this.Services().Resources.GetString("ResetPasswordInvalidDataMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;
 					}
 					
 					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("CreateAccountEmptyField"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);
 						return;
 					}
 					
 					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length < 6 || Data.Password.Length > 10)))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("CreateAccountInvalidPassword"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
 						return;
 					}
 					
 					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
 					{
-                        this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountInvalidDataTitle"), this.Services().Resources.GetString("InvalidPhoneErrorMessage"));
+                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
                     Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("AccountActivationTitle"), this.Services().Resources.GetString("AccountActivationMessage"));
+                                this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
 							}
                             ReturnResult(Data);
 						}
@@ -107,15 +107,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							if (error.Trim().IsNullOrEmpty())
 							{
-                                error = this.Services().Resources.GetString("CreateAccountErrorNotSpecified");
+                                error = this.Services().Localize["CreateAccountErrorNotSpecified"];
 							}
-                            if (this.Services().Resources.GetString("ServiceError" + error) != "ServiceError" + error)
+                            if (this.Services().Localize["ServiceError" + error] != "ServiceError" + error)
 							{
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountErrorTitle"), this.Services().Resources.GetString("CreateAccountErrorMessage") + " " + this.Services().Resources.GetString("ServiceError" + error));
+                                this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize["ServiceError" + error]);
 							}
 							else
 							{
-                                this.Services().Message.ShowMessage(this.Services().Resources.GetString("CreateAccountErrorTitle"), this.Services().Resources.GetString("CreateAccountErrorMessage") + " " + error);
+                                this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + error);
 							}
 						}
 					}

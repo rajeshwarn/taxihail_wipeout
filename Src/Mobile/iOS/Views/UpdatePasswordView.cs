@@ -21,18 +21,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewDidLoad ();
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtNewPassword.Frame.Bottom + 200);
-            NavigationItem.Title = Resources.GetValue("Password");
+            NavigationItem.Title = Localize.GetValue("Password");
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-			
-			lblCurrentPassword.Text = Resources.CurrentPasswordLabel;
-			lblNewPassword.Text = Resources.NewPasswordLabel;
-			lblNewPasswordConfirmation.Text = Resources.NewPasswordConfirmationLabel;
+
+            lblCurrentPassword.Text = Localize.GetValue("CurrentPasswordLabel");
+            lblNewPassword.Text = Localize.GetValue("NewPasswordLabel");
+            lblNewPasswordConfirmation.Text = Localize.GetValue("NewPasswordConfirmationLabel");
 			
             txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPasswordConfirmation.ShouldReturn = ShouldReturnDelegate;
-			
-			var btnDone = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+
+            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            {
 				if( ViewModel.UpdateCommand.CanExecute() )
 				{
 					ViewModel.UpdateCommand.Execute();

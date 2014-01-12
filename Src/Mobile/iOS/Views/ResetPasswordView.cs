@@ -23,18 +23,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
-            lblEmail.Text = Resources.GetValue("CreateAccountEmail");
+            lblEmail.Text = Localize.GetValue("CreateAccountEmail");
 
             DismissKeyboardOnReturn(txtEmail);
 
             var buttonsY = txtEmail.Frame.Y + txtEmail.Frame.Height + 25;
-            AddButton(scrollView, 60, buttonsY, Resources.View_PasswordRecovery, "ResetPassword", AppStyle.ButtonColor.Green);
+            AddButton(scrollView, 60, buttonsY, Localize.GetValue("View_PasswordRecovery"), "ResetPassword", AppStyle.ButtonColor.Green);
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtEmail, "{'Text': {'Path': 'Email', 'Mode': 'TwoWay' }}" },
             });
 
-            NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_PasswordRecovery_Label"), true);
+            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_PasswordRecovery_Label"), true);
 
             View.ApplyAppFont ();
 

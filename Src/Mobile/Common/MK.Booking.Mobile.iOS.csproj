@@ -124,7 +124,7 @@
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
-    <Compile Include="Infrastructure\IAppResource.cs" />
+    <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="AppServices\Impl\AccountService.cs" />
@@ -264,10 +264,6 @@
     <Compile Include="ViewModels\BookEditInformationViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
-    <Compile Include="ViewModels\Payment\Strings.Base.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookConfirmationViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookingStatusViewModel.cs" />
-    <Compile Include="ViewModels\Payment\Strings.BookPaymentSettingsViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
@@ -376,8 +372,6 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AppServices\Social\" />
+  <ItemGroup />
     <Folder Include="IoC\" />
-  </ItemGroup>
 </Project>

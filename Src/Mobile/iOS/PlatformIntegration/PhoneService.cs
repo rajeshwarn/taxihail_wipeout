@@ -36,8 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var url = new NSUrl ("tel://" + phoneNumber);
             
             if (!UIApplication.SharedApplication.OpenUrl (url)) 
-            {             
-                var av = new UIAlertView ("Not supported", "Calls are not supported on this device", null, Resources.Close, null);
+            {
+                var av = new UIAlertView("Not supported", "Calls are not supported on this device", null, Localize.GetValue("Close"), null);
                 av.Show ();
             }
         }

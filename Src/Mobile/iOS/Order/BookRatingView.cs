@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			base.ViewDidLoad ();
 
 			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-			submitRatingBtn.SetTitle(Resources.Submit, UIControlState.Normal);
+            submitRatingBtn.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
 			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,

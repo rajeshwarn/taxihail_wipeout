@@ -150,9 +150,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            string result = apt.HasValue() ? apt : this.Services().Resources.GetString("ConfirmNoApt");
+            string result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
             result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Resources.GetString("ConfirmNoRingCode");
+            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
             return result;
         }
 
@@ -162,14 +162,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return buildingName;
             }
-            return this.Services().Resources.GetString(this.Services().Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
+            return this.Services().Localize["HistoryDetailBuildingNameNotSpecified"];
         }
 
         private string FormatDateTime(DateTime? pickupDate)
         {
             var formatTime = new CultureInfo(CultureProvider.CultureInfoString).DateTimeFormat.ShortTimePattern;
             string format = "{0:ddd, MMM d}, {0:" + formatTime + "}";
-            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : this.Services().Resources.GetString("TimeNow");
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : this.Services().Localize["TimeNow"];
             return result;
         }
        
