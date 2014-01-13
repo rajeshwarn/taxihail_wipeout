@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton ((GradientButton)btnPay, Resources.StatusPayButton, AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton ((GradientButton)btnResend, Resources.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+				AppButtons.FormatStandardButton ((GradientButton)btnUnpair, Resources.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
 
                 this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, true);
                                 
@@ -105,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
                     btnPay.SetFrame(btnCancel.Frame);
                     btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
+					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
                     UpdateCallButtonSize (callFrame);
@@ -163,8 +165,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                         .Add("Enabled","IsResendButtonVisible")
                             .Add("TouchUpInside","ResendConfirmationToDriver") },
 
-                    { btnNewRide, new B("TouchUpInside","NewRide") }
-					
+					{ btnNewRide, new B("TouchUpInside","NewRide") },
+
+					{ btnCancel, new B("TouchUpInside","Unpair")
+							.Add("Hidden","IsUnpairButtonVisible","BoolInverter")}
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;

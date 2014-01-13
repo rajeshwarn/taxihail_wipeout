@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnResend { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnUnpair { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
 
 		[Outlet]
@@ -101,14 +104,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (viewLine != null) {
-				viewLine.Dispose ();
-				viewLine = null;
+			if (bottomBar != null) {
+				bottomBar.Dispose ();
+				bottomBar = null;
 			}
 
-			if (btnPay != null) {
-				btnPay.Dispose ();
-				btnPay = null;
+			if (btnCall != null) {
+				btnCall.Dispose ();
+				btnCall = null;
 			}
 
 			if (btnCallDriver != null) {
@@ -116,24 +119,49 @@ namespace apcurium.MK.Booking.Mobile.Client
 				btnCallDriver = null;
 			}
 
-			if (topVisibleStatus != null) {
-				topVisibleStatus.Dispose ();
-				topVisibleStatus = null;
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
 			}
 
-			if (topSlidingStatus != null) {
-				topSlidingStatus.Dispose ();
-				topSlidingStatus = null;
+			if (btnChangeBooking != null) {
+				btnChangeBooking.Dispose ();
+				btnChangeBooking = null;
+			}
+
+			if (btnNewRide != null) {
+				btnNewRide.Dispose ();
+				btnNewRide = null;
+			}
+
+			if (btnPay != null) {
+				btnPay.Dispose ();
+				btnPay = null;
+			}
+
+			if (btnRefresh != null) {
+				btnRefresh.Dispose ();
+				btnRefresh = null;
+			}
+
+			if (btnResend != null) {
+				btnResend.Dispose ();
+				btnResend = null;
+			}
+
+			if (imgGrip != null) {
+				imgGrip.Dispose ();
+				imgGrip = null;
+			}
+
+			if (lblColor != null) {
+				lblColor.Dispose ();
+				lblColor = null;
 			}
 
 			if (lblConfirmation != null) {
 				lblConfirmation.Dispose ();
 				lblConfirmation = null;
-			}
-
-			if (lblStatus != null) {
-				lblStatus.Dispose ();
-				lblStatus = null;
 			}
 
 			if (lblDriver != null) {
@@ -146,11 +174,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblLicence = null;
 			}
 
-			if (lblTaxiType != null) {
-				lblTaxiType.Dispose ();
-				lblTaxiType = null;
-			}
-
 			if (lblMake != null) {
 				lblMake.Dispose ();
 				lblMake = null;
@@ -161,39 +184,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblModel = null;
 			}
 
-			if (lblColor != null) {
-				lblColor.Dispose ();
-				lblColor = null;
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
 			}
 
-			if (bottomBar != null) {
-				bottomBar.Dispose ();
-				bottomBar = null;
-			}
-
-			if (btnNewRide != null) {
-				btnNewRide.Dispose ();
-				btnNewRide = null;
-			}
-
-			if (btnCancel != null) {
-				btnCancel.Dispose ();
-				btnCancel = null;
-			}
-
-			if (btnCall != null) {
-				btnCall.Dispose ();
-				btnCall = null;
-			}
-
-			if (btnChangeBooking != null) {
-				btnChangeBooking.Dispose ();
-				btnChangeBooking = null;
-			}
-
-			if (statusBar != null) {
-				statusBar.Dispose ();
-				statusBar = null;
+			if (lblTaxiType != null) {
+				lblTaxiType.Dispose ();
+				lblTaxiType = null;
 			}
 
 			if (mapStatus != null) {
@@ -201,9 +199,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 				mapStatus = null;
 			}
 
-			if (btnRefresh != null) {
-				btnRefresh.Dispose ();
-				btnRefresh = null;
+			if (statusBar != null) {
+				statusBar.Dispose ();
+				statusBar = null;
+			}
+
+			if (topSlidingStatus != null) {
+				topSlidingStatus.Dispose ();
+				topSlidingStatus = null;
+			}
+
+			if (topVisibleStatus != null) {
+				topVisibleStatus.Dispose ();
+				topVisibleStatus = null;
+			}
+
+			if (txtColor != null) {
+				txtColor.Dispose ();
+				txtColor = null;
 			}
 
 			if (txtDriver != null) {
@@ -216,11 +229,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtLicence = null;
 			}
 
-			if (txtTaxiType != null) {
-				txtTaxiType.Dispose ();
-				txtTaxiType = null;
-			}
-
 			if (txtMake != null) {
 				txtMake.Dispose ();
 				txtMake = null;
@@ -231,19 +239,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtModel = null;
 			}
 
-			if (imgGrip != null) {
-				imgGrip.Dispose ();
-				imgGrip = null;
+			if (txtTaxiType != null) {
+				txtTaxiType.Dispose ();
+				txtTaxiType = null;
 			}
 
-			if (txtColor != null) {
-				txtColor.Dispose ();
-				txtColor = null;
+			if (viewLine != null) {
+				viewLine.Dispose ();
+				viewLine = null;
 			}
 
-			if (btnResend != null) {
-				btnResend.Dispose ();
-				btnResend = null;
+			if (btnUnpair != null) {
+				btnUnpair.Dispose ();
+				btnUnpair = null;
 			}
 		}
 	}
