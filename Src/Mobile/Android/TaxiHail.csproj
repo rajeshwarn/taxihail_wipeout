@@ -368,6 +368,9 @@
     <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_pressed.xml" />
+    <AndroidResource Include="Resources\Drawable\logo3.png" />
+    <AndroidResource Include="Resources\Drawable\button_hili_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_hili_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
