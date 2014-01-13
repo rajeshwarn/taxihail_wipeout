@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile
 						{
 							if (_paymentPreferences.SelectedCreditCard == null)
 							{
-								MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+								MessageService.ShowMessage(Resources.GetString("CmtRideLinqErrorTitle"), Str.NoCreditCardSelectedMessage);
 								return;
 							}
 
@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile
 
 							if(!pairingResponse.IsSuccessfull)
 							{
-								MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Resources.GetString("CmtRideLinqGenericErrorMessage"));
+								MessageService.ShowMessage(Resources.GetString("CmtRideLinqErrorTitle"), Resources.GetString("CmtRideLinqGenericErrorMessage"));
 								return;
 							}
 

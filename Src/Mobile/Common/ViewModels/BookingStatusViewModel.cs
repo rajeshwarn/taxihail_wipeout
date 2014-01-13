@@ -632,21 +632,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-
-
+		
         public IMvxCommand Unpair
         {
             get
             {
                 return GetCommand(() =>
                 {
-                    var status = BookingService.GetOrderStatus(Order.Id);
-                    if (status != null)
-                    {
-						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
-						PaymentService.Unpair(Order.Id);
-                        UpdatePayCancelButtons(status.IBSStatusId);
-                    }
+					using(MessageService.ShowProgress())
+					{
+						var response = PaymentService.Unpair(Order.Id);
+
+						if(response.IsSuccessfull)
+						{
+							CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+						}
+						else
+						{
+							MessageService.ShowMessage(Resources.GetString("CmtRideLinqErrorTitle"), Resources.GetString("CmtRideLinqUnpairErrorMessage"));
+						}
+					}
                 });
             }
         }
