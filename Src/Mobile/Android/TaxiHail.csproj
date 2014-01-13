@@ -283,7 +283,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
@@ -522,7 +522,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

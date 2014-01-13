@@ -95,7 +95,6 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
-    <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -166,11 +165,9 @@
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
-    <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
-    <Compile Include="Practices\TinyIoC.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppServices\IAccountService.cs" />

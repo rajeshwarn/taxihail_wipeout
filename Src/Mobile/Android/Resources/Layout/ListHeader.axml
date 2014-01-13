@@ -7,4 +7,4 @@
 	android:paddingTop="9dip"
 	android:paddingBottom="2dip"
 	android:paddingLeft="5dip"	
-    style="@style/HeaderGroupTitle"/>
+  style="@style/HeaderGroupTitle"/>

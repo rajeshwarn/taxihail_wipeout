@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-            android:layout_width="fill_parent"
-            android:layout_marginTop="5dip"
-            android:layout_height="fill_parent"
-            android:id="@+id/LocationListView"
-            android:layout_marginBottom="5dip"
-            local:MvxItemTemplate="@layout/simplelistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AllAddresses&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToLocationDetailPage&apos;}}" />
-    </RelativeLayout>
+    android:layout_height="fill_parent">
+    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+      android:layout_width="fill_parent"
+      android:layout_marginTop="5dip"
+      android:layout_height="fill_parent"
+      android:id="@+id/LocationListView"
+      android:layout_marginBottom="5dip"
+      local:MvxItemTemplate="@layout/simplelistitem"
+      local:MvxBind="ItemsSource AllAddresses,ItemClick NavigateToLocationDetailPage" />
+  </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
