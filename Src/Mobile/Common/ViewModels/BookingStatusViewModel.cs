@@ -532,19 +532,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ResendConfirmationToDriver
-        {
-            get {
-                return GetCommand (() =>
-                                   {
-                     if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
-                    {
-                        this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
-                        this.Services().Payment.Unpair(Order.Id);
-                    }
-                });
-            }
-        }
+		public AsyncCommand ResendConfirmationToDriver
+		{
+			get
+			{
+				return GetCommand(() =>
+					{
+						if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
+						{
+							this.Services().Payment.ResendConfirmationToDriver(Order.Id);
+						}
+					});
+			}
+		}
+
+		public AsyncCommand Unpair
+		{
+			get
+			{
+				return GetCommand(() =>
+					{
+						using(this.Services().Message.ShowProgress())
+						{
+							var response = this.Services().Payment.Unpair(Order.Id);
+
+							if(response.IsSuccessfull)
+							{
+								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+							}
+							else
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["CmtRideLinqUnpairErrorMessage"]);
+							}
+						}
+					});
+			}
+		}
 
         bool _isUnpairButtonVisible;
         public bool IsUnpairButtonVisible

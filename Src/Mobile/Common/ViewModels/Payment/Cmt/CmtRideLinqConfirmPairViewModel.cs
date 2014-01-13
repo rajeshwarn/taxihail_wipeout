@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 						{   
 							if (_paymentPreferences.SelectedCreditCard == null)
 							{
-	                            this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
 								return;
 							}
 
@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 
 							if(!pairingResponse.IsSuccessfull)
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["CmtRideLinqGenericErrorMessage"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["CmtRideLinqGenericErrorMessage"]);
 								return;
 							}
 
