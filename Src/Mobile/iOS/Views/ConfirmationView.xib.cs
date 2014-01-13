@@ -117,19 +117,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
            
 
             var bindings = new [] {
-                Tuple.Create<object,string>(btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"),
-                Tuple.Create<object,string>(btnEdit   , "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"),
-                Tuple.Create<object,string>(lblNameValue, "{'Text': {'Path': 'OrderName'}}"),
-                Tuple.Create<object,string>(lblPhoneValue, "{'Text': {'Path': 'OrderPhone'}}"),
-                Tuple.Create<object,string>(lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}"),
-                Tuple.Create<object,string>(lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}"),
-                Tuple.Create<object,string>(lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}"),
-                Tuple.Create<object,string>(lblVehicleTypeValue, "{'Text': {'Path': 'RideSettings.VehicleTypeName'}}"),
-                Tuple.Create<object,string>(lblChargeTypeValue, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}"),
-                Tuple.Create<object,string>(lblLargeBagsValue, "{'Text': {'Path': 'OrderLargeBagsNumber'}}"),
-                Tuple.Create<object,string>(lblPickupValue, "{'Text': {'Path': 'Order.PickupAddress.DisplayAddress'}}"),
-                Tuple.Create<object,string>(lblDestinationValue, "{'Text': {'Path': 'Order.DropOffAddress.DisplayAddress'}}"),
-                Tuple.Create<object,string>(lblFareValue, "{'Text': {'Path': 'FareEstimate'}}"),
+				Tuple.Create<object,string>(btnConfirm, "TouchUpInside ConfirmOrderCommand"),
+				Tuple.Create<object,string>(btnEdit   , "TouchUpInside NavigateToEditInformations"),
+				Tuple.Create<object,string>(lblNameValue, "Text OrderName"),
+				Tuple.Create<object,string>(lblPhoneValue, "Text OrderPhone"),
+				Tuple.Create<object,string>(lblPassengersValue, "Text OrderPassengerNumber"),
+				Tuple.Create<object,string>(lblApartmentValue, "Text OrderApt"),
+				Tuple.Create<object,string>(lblEntryCodeValue, "Text OrderRingCode"),
+				Tuple.Create<object,string>(lblVehicleTypeValue, "Text RideSettings.VehicleTypeName"),
+				Tuple.Create<object,string>(lblChargeTypeValue, "Text RideSettings.ChargeTypeName"),
+				Tuple.Create<object,string>(lblLargeBagsValue, "Text OrderLargeBagsNumber"),
+				Tuple.Create<object,string>(lblPickupValue, "Text Order.PickupAddress.DisplayAddress"),
+				Tuple.Create<object,string>(lblDestinationValue, "Text Order.DropOffAddress.DisplayAddress"),
+				Tuple.Create<object,string>(lblFareValue, "Text FareEstimate"),
             }
                 .Where(x=> x.Item1 != null )
                 .ToDictionary(x=>x.Item1, x=>x.Item2);

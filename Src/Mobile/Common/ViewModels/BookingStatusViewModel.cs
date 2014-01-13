@@ -21,12 +21,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private int _refreshPeriod = 5; //in seconds
 	    private bool _waitingToNavigateAfterTimeOut;
 
-		public BookingStatusViewModel (string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-            IsCancelButtonVisible = true;			
-            _waitingToNavigateAfterTimeOut = false;
+			IsCancelButtonVisible = true;			
+			_waitingToNavigateAfterTimeOut = false;
 		}
 	
 		public override void Load ()
