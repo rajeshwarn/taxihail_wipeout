@@ -66,7 +66,6 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<ITutorialService, TutorialService>();
             container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
 
-
             container.Register<IGeolocService, GeolocService>();
             container.Register<IGoogleService, GoogleService>();
             container.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -79,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IMapsApiClient, MapsApiClient>();
             container.Register<IPopularAddressProvider, PopularAddressProvider>();
             container.Register<ITariffProvider, TariffProvider>();
+
             // ***** PayPal *****
             container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
             container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
@@ -91,32 +91,28 @@ namespace apcurium.MK.Booking.Mobile
                 return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
 			});
             
-
             container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger >(), c.Resolve<IPackageInfo>().UserAgent));
             container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
-
-
+			
 			container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
 			container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
         }
 
-
         void TaxiHailApp_LifetimeChanged(object sender, MvxLifetimeEventArgs e)
         {
             if ( (e.LifetimeEvent == MvxLifetimeEvent.Deactivated) || (e.LifetimeEvent == MvxLifetimeEvent.Closing) )  {
                 ClearAppCache ();
                 TinyIoCContainer.Current.Resolve<AbstractLocationService>().Stop();
-            } else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
+            } 
+			else if ((e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromDisk) || (e.LifetimeEvent == MvxLifetimeEvent.ActivatedFromMemory)|| (e.LifetimeEvent == MvxLifetimeEvent.Launching)) {
                 TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AppActivated(this));
-                //NavigateToFirstScreen();
                 RefreshAppData ();
             }
         }
-		
+
         private void LoadAppCache()
         {
             TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfoAsync();
@@ -134,12 +130,11 @@ namespace apcurium.MK.Booking.Mobile
         private void RefreshAppData()
         {
 			Task.Run(() =>
-			                      {
+			{
 				ClearAppCache();
 				LoadAppCache();
 			});
         }
-
         
         private string GetSessionId (TinyIoCContainer container)
         {
