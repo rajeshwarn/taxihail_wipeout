@@ -28,18 +28,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return cached;
             }
-            else
-            {
-
-                IEnumerable<Tariff> result = new Tariff[0];
-                UseServiceClient<TariffsServiceClient>(service =>
-                {
-                    result = service.GetTariffs();
-                }
-                    );
-                _cacheService.Set(CacheKey, result.ToArray());
-                return result;
-            }
+            var result = UseServiceClientAsync<TariffsServiceClient, IEnumerable<Tariff>>(service => service.GetTariffs());
+            var enumerable = result as Tariff[] ?? result.ToArray();
+            _cacheService.Set(CacheKey, enumerable.ToArray());
+            return enumerable;
         }
     }
 }

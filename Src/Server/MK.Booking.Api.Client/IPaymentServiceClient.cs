@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 #endregion
@@ -9,19 +10,19 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public interface IPaymentServiceClient
     {
-        void ResendConfirmationToDriver(Guid orderId);
-        TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
-        DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken);
+        Task ResendConfirmationToDriver(Guid orderId);
+        Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
+        Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);
 
-        PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount,
+        Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount,
             Guid orderId);
 
-        CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId);
+        Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId);
 
-        CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount,
+        Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount,
             double tipAmount, Guid orderId);
 
-        PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount);
-        BasePaymentResponse Unpair(Guid orderId);
+        Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount);
+        Task<BasePaymentResponse> Unpair(Guid orderId);
     }
 }

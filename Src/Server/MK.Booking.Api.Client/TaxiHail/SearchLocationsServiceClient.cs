@@ -2,6 +2,8 @@
 
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Common.Entity;
 
 #endregion
@@ -16,13 +18,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public Address[] Search(string name, double latitude, double longitude)
+        public async Task<Address[]> Search(string name, double latitude, double longitude)
         {
             var resource = string.Format(CultureInfo.InvariantCulture, "/searchlocation?Name={0}&Lat={1}&Lng={2}", name,
                 latitude, longitude);
 
-            Console.WriteLine(resource);
-            var result = Client.Post<Address[]>(resource, null);
+            var result = await Client.PostAsync<Address[]>(resource, new object());
             return result;
         }
     }

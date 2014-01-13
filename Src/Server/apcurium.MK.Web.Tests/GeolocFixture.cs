@@ -1,10 +1,6 @@
-﻿#region
-
-using System.Linq;
+﻿using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -42,14 +38,13 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Montreal", address.City);
             StringAssert.Contains("H2S", address.ZipCode);
         }
-
-
+        
         [Test]
-        public void BasicCoordinateSearch()
+        public async void BasicCoordinateSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search(45.5062, -73.5726);
-            Assert.True(addresses.Count() >= 1);
+            var addresses = await sut.Search(45.5062, -73.5726);
+            Assert.True(addresses.Any());
         }
 
         [Test]
@@ -62,36 +57,34 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void DefaultLocationIsAnAddress()
+        public async void DefaultLocationIsAnAddress()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var address = sut.DefaultLocation();
+            var address = await sut.DefaultLocation();
 
             Assert.IsNotNull(address);
             Assert.AreEqual(45.516667, address.Latitude);
             Assert.AreEqual(-73.65, address.Longitude);
         }
-
-
+        
         [Test]
-        public void RangeCoordinateSearch()
+        public async void RangeCoordinateSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search(45.5364, -73.6103);
-            Assert.True(addresses.Count() >= 1);
+            var addresses = await sut.Search(45.5364, -73.6103);
+            Assert.True(addresses.Any());
 
             Assert.False(addresses.First().StreetNumber.Contains("-"));
             Assert.False(addresses.First().FullAddress.Split(' ')[0].Contains("-"));
         }
 
         [Test]
-        public void SearchMiddleField()
+        public async void SearchMiddleField()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.Search(45.5364, -73.6103);
-
-
-            Assert.True(addresses.Count() >= 1);
+            var addresses = await sut.Search(45.5364, -73.6103);
+            
+            Assert.True(addresses.Any());
 
             Assert.False(addresses.First().StreetNumber.Contains("-"));
             Assert.False(addresses.First().FullAddress.Split(' ')[0].Contains("-"));

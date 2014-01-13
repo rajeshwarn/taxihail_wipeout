@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -8,8 +6,6 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -38,11 +34,11 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_creating_an_order_with_a_nearby_place()
+        public async void when_creating_an_order_with_a_nearby_place()
         {
             var orderId = Guid.NewGuid();
-            var address =
-                new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude).FirstOrDefault();
+            var addresses = await new NearbyPlacesClient(BaseUrl, SessionId, "Test").GetNearbyPlaces(Latitude, Longitude);
+            var address = addresses.FirstOrDefault();
 
             if (address == null)
             {
@@ -51,28 +47,28 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, "Test");
 
-            sut.CreateOrder(new CreateOrder
-            {
-                Id = orderId,
-                PickupAddress = address,
-                Settings =
-                    new BookingSettings
-                    {
-                        ChargeTypeId = 99,
-                        VehicleTypeId = 1,
-                        ProviderId = Provider.MobileKnowledgeProviderId,
-                        Phone = "514-555-1212",
-                        Passengers = 6,
-                        NumberOfTaxi = 1,
-                        Name = "Joe Smith"
-                    },
-                Estimate = new CreateOrder.RideEstimate
+            await sut.CreateOrder(new CreateOrder
                 {
-                    Distance = 3,
-                    Price = 10
-                }
-            });
-            var order = sut.GetOrder(orderId);
+                    Id = orderId,
+                    PickupAddress = address,
+                    Settings =
+                        new BookingSettings
+                            {
+                                ChargeTypeId = 99,
+                                VehicleTypeId = 1,
+                                ProviderId = Provider.MobileKnowledgeProviderId,
+                                Phone = "514-555-1212",
+                                Passengers = 6,
+                                NumberOfTaxi = 1,
+                                Name = "Joe Smith"
+                            },
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Distance = 3,
+                            Price = 10
+                        }
+                });
+            var order = await sut.GetOrder(orderId);
 
             Assert.NotNull(order);
             Assert.AreEqual(address.FullAddress, order.PickupAddress.FullAddress);
@@ -82,15 +78,14 @@ namespace apcurium.MK.Web.Tests
         public void when_location_is_not_provided()
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-            Assert.Throws<WebServiceException>(() => sut.GetNearbyPlaces(null, null),
-                ErrorCode.NearbyPlaces_LocationRequired.ToString());
+            Assert.Throws<WebServiceException>(async () => await sut.GetNearbyPlaces(null, null), ErrorCode.NearbyPlaces_LocationRequired.ToString());
         }
 
         [Test]
-        public void when_searching_for_nearby_places()
+        public async void when_searching_for_nearby_places()
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.GetNearbyPlaces(Latitude, Longitude);
+            var addresses = await sut.GetNearbyPlaces(Latitude, Longitude);
 
             if (!addresses.Any())
             {
@@ -103,11 +98,11 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_searching_for_nearby_places_with_a_max_radius()
+        public async void when_searching_for_nearby_places_with_a_max_radius()
         {
             var sut = new NearbyPlacesClient(BaseUrl, SessionId, "Test");
-            var greatRadius = sut.GetNearbyPlaces(Latitude, Longitude, 100);
-            var smallRadius = sut.GetNearbyPlaces(Latitude, Longitude, 10);
+            var greatRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 100);
+            var smallRadius = await sut.GetNearbyPlaces(Latitude, Longitude, 10);
 
             if (!greatRadius.Any() || !smallRadius.Any())
             {

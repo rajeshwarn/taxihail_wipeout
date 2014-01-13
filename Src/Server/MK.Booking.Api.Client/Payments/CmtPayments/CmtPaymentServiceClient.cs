@@ -2,6 +2,8 @@
 
 using System;
 using System.Net;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -45,19 +47,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         }
 
-        public T Get<T>(IReturn<T> request)
+        public Task<T> GetAsync<T>(IReturn<T> request)
         {
-            return Client.Get(request);
+            return Client.GetAsync(request);
         }
 
-        public T Delete<T>(IReturn<T> request)
+        public Task<T> DeleteAsync<T>(IReturn<T> request)
         {
-            return Client.Delete(request);
+            return Client.DeleteAsync(request);
         }
 
-        public T Post<T>(IReturn<T> request)
+        public Task<T> PostAsync<T>(IReturn<T> request)
         {
-            return Client.Post(request);
+            return Client.PostAsync(request);
         }
     }
 }
