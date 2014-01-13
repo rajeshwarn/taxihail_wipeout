@@ -81,18 +81,27 @@ namespace apcurium.MK.Booking.Mobile
 		{
 			get {
 				return GetCommand (() =>
-					{                      
-						if (_paymentPreferences.SelectedCreditCard == null)
+					{              
+						using(MessageService.ShowProgress())
 						{
-							MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
-							return;
+							if (_paymentPreferences.SelectedCreditCard == null)
+							{
+								MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Str.NoCreditCardSelectedMessage);
+								return;
+							}
+
+							var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+
+							CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
+
+							if(!pairingResponse.IsSuccessfull)
+							{
+								MessageService.ShowMessage(Resources.GetString("PaymentErrorTitle"), Resources.GetString("CmtRideLinqGenericErrorMessage"));
+								return;
+							}
+
+							RequestClose(this);
 						}
-
-						var pairingResponse = PaymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
-
-						CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
-
-						RequestClose(this);
 					});
 			}
 		}

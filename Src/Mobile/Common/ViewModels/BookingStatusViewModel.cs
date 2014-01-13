@@ -398,14 +398,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     CenterMap();
 
-					if(IsCmtRideLinq && AccountService.CurrentAccount.DefaultCreditCard != null)
+					var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+					if(isLoaded && IsCmtRideLinq && AccountService.CurrentAccount.DefaultCreditCard != null)
 					{
-						var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 						var isPaired = BookingService.IsPaired(Order.Id);
 						var pairState = CacheService.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
 						var isPairBypass = (pairState == CmtRideLinqPairingState.Failed) || (pairState == CmtRideLinqPairingState.Canceled) || (pairState == CmtRideLinqPairingState.Unpaired);
 
-						if (isLoaded && !isPaired && !IsCurrentlyPairing && !isPairBypass)
+						if (!isPaired && !IsCurrentlyPairing && !isPairBypass)
 						{
 							IsCurrentlyPairing = true;
 							GoToCmtPairScreen();
@@ -448,10 +448,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             IsPayButtonVisible = (statusId == VehicleStatuses.Common.Done
                                 || statusId == VehicleStatuses.Common.Loaded)
-                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue);
+                                && (isPayEnabled && !PaymentService.GetPaymentFromCache(Order.Id).HasValue)
+			                    && !IsUnpairButtonVisible;
 
-            IsCancelButtonVisible = statusId == null ||
-                                    statusId == VehicleStatuses.Common.Assigned
+            IsCancelButtonVisible = statusId == null 
+			                    || statusId == VehicleStatuses.Common.Assigned
                                 || statusId == VehicleStatuses.Common.Waiting
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;

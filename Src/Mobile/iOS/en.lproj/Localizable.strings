@@ -463,5 +463,8 @@
 "CmtChangePaymentInfo"="Change Payment Settings";
 "CmtCancelPayment"="Cancel";
 "CmtCardNumber"="Card Number:";
-"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment information";
+"View_Payments_CmtRideLinqChangePaymentTitle"="Change payment info";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm payment information";
+"CmtRideLinqCancelChanges"="Cancel";
+"CmtRideLinqSaveChanges"="Save";
+"CmtRideLinqGenericErrorMessage"="There was an error during pairing, verify your credit card information or try again later.";
