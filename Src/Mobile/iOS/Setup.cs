@@ -66,14 +66,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             var locationService = new LocationService( );
             locationService.Start();
 
-
             TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
-
-			// TODO: Is this required?
-			// TinyIoCContainer.Current.Register(base.Presenter);
 
             TinyIoCContainer.Current.Register<ILocalization, Localize>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
@@ -128,13 +124,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
 		{
 			return new TinyIoCProvider(TinyIoCContainer.Current);
-		}
-
-		protected override void InitializeBindingBuilder()
-		{
-			RegisterBindingBuilderCallbacks();
-			var bindingBuilder = CreateBindingBuilder();
-			bindingBuilder.DoRegistration();
 		}
 
 #endregion

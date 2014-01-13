@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Widget;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;

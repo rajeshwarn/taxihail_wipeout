@@ -1,9 +1,16 @@
-
-
 using System;
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Droid.Platform;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
+using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Settings;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Binding;
@@ -12,34 +19,37 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Mvx;
-using apcurium.MK.Booking.Mobile.Settings;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.Binding.Android;
-using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using TinyIoC;
+using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Mvx_;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup
-        : MvxBaseAndroidBindingSetup
+		: MvxAndroidSetup
     {
         public Setup(Context applicationContext)
             : base(applicationContext)
         {
         }
 
-        protected override void InitializeAdditionalPlatformServices()
+		protected override IMvxApplication CreateApp()
+		{
+			return new TaxiHailApp();
+		}
+
+		protected override List<Type> ValueConverterHolders
+		{
+			get
+			{
+				return new List<Type> { typeof(AppConverters) };
+			}
+		}
+
+		protected override void InitializeLastChance()
         {
-            base.InitializeAdditionalPlatformServices();
+			base.InitializeLastChance()();
 
 
             TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
@@ -67,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			InitializeSocialNetwork();
         }
 
-        protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
+		protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
         {
             base.FillTargetFactories(registry);
             registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem",
@@ -81,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             CustomBindingsLoader.Load(registry);
         }
 
-		public void InitializeSocialNetwork()
+		private void InitializeSocialNetwork()
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
@@ -103,28 +113,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		}
 
-        protected override MvxApplication CreateApp()
-        {
-            var app = new TaxiHailApp(_params);
-            return app;
-        }
+		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+		{
+			return new TinyIoCProvider(TinyIoCContainer.Current);
+		}
 
-
-        protected override void InitializeIoC()
-        {
-            TinyIoCServiceProviderSetup.Initialize();
-        }
-
-        protected override IEnumerable<Type> ValueConverterHolders
-        {
-            get { return new[] {typeof (AppConverters)}; }
-        }
-
-        private IDictionary<string, string> _params;
-
-        public void SetParams(IDictionary<string, string> @params)
-        {
-            _params = @params;
-        }
     }
 }
