@@ -356,7 +356,6 @@
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
     <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
-    <AndroidResource Include="Resources\Drawable\facebook_icon_hit.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
     <AndroidResource Include="Resources\Drawable\flag_selected.png" />
     <AndroidResource Include="Resources\Drawable\flag.png" />
@@ -376,7 +375,6 @@
     <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background.png" />
-    <AndroidResource Include="Resources\Drawable\twitter_icon_hit.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\main_btn_selected.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.9.png" />
@@ -395,6 +393,15 @@
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
     <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <AndroidResource Include="Resources\Values\Themes.xml" />
+    <AndroidResource Include="Resources\Drawable\button_pressed.xml" />
+    <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_hili_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_hili_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\logo3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\logo3.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
