@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  <LinearLayout
+    android:id="@+id/Table01"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-        android:id="@+id/Table01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-        <ImageButton
-            android:src="@drawable/target_selected"
-            android:background="@drawable/myLocationButton_state"
-            style="@style/ButtonTextGray"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:scaleType="fitCenter" />
-        <Button
-            android:id="@+id/BookItBtn"
-            android:text="@string/BookItButton"
-            android:layout_weight="0.8"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:adjustViewBounds="true"
-            android:layout_marginRight="-8dip" />
-        <Button
-            android:id="@+id/BookItBtn"
-            android:text="@string/BookItButton"
-            android:layout_weight="0.8"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:adjustViewBounds="true"
-            android:layout_marginRight="-8dip" />
-    </LinearLayout>
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="10dp">
+    <ImageButton
+      android:src="@drawable/target_selected"
+      android:background="@drawable/myLocationButton_state"
+      style="@style/ButtonTextGray"
+      android:layout_width="40dip"
+      android:layout_height="40dip"
+      android:scaleType="fitCenter" />
+    <Button
+      android:id="@+id/BookItBtn"
+      android:text="@string/BookItButton"
+      android:layout_weight="0.8"
+      android:layout_width="wrap_content"
+      android:layout_height="40dip"
+      android:adjustViewBounds="true"
+      android:layout_marginRight="-8dip" />
+    <Button
+      android:id="@+id/BookItBtn"
+      android:text="@string/BookItButton"
+      android:layout_weight="0.8"
+      android:layout_width="wrap_content"
+      android:layout_height="40dip"
+      android:adjustViewBounds="true"
+      android:layout_marginRight="-8dip" />
+  </LinearLayout>
 </LinearLayout>

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:background="#00000000"
+  android:orientation="horizontal">
+  <RelativeLayout
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="#00000000"
-    android:orientation="horizontal">
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <Button
-            style="@style/SearchButtonText"
-            android:text="@string/StreetNumberSearchBt"
-            android:background="@drawable/gray_button"
-            android:id="@+id/navigateButton"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent" />
-        <ImageView
-            android:src="@drawable/right_arrow_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp" />
-        <ImageView
-            android:src="@drawable/loupe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp" />
-    </RelativeLayout>
+    android:layout_height="wrap_content">
+    <Button
+      style="@style/SearchButtonText"
+      android:text="@string/StreetNumberSearchBt"
+      android:background="@drawable/gray_button"
+      android:id="@+id/navigateButton"
+      android:layout_height="fill_parent"
+      android:layout_width="fill_parent" />
+    <ImageView
+      android:src="@drawable/right_arrow_light"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_alignParentRight="true"
+      android:layout_marginRight="20dp" />
+    <ImageView
+      android:src="@drawable/loupe"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_alignParentLeft="true"
+      android:layout_marginLeft="20dp" />
+  </RelativeLayout>
 </LinearLayout>

@@ -1,312 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    local:HideLogo="false"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  local:HideLogo="false"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="0dip">
-            <View
-                android:id="@+id/statusInfo"
-                android:layout_width="fill_parent"
-                android:layout_height="45dip" />
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:paddingTop="0dip">
+      <View
+        android:id="@+id/statusInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="45dip" />
+      <FrameLayout
+        android:id="@+id/statusMapSection"
+        android:layout_below="@id/statusInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0"
+        android:layout_gravity="bottom">
+        <apcurium.mk.booking.mobile.client.controls.TouchMap
+          local:mapType="normal"
+          local:uiCompass="false"
+          local:uiZoomControls="false"
+          android:id="@+id/mapStatus"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:enabled="false"
+          local:MvxBind="Pickup Pickup.Model;TaxiLocation OrderStatusDetail;Center MapCenter"
+          android:clickable="true" />
+        <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal|bottom"
+          android:background="@drawable/StatusBottomBarBackground"
+          android:paddingTop="4dip"
+          android:paddingBottom="4dip">
+          <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Red"
+            android:id="@+id/CancelBtn"
+            style="@style/ButtonText"
+            android:background="@drawable/red_button"
+            android:layout_width="180dip"
+            android:layout_height="40dip"
+            android:layout_weight="0.5"
+            android:text="@string/StatusCancelButton"
+            local:MvxBind="Click CancelOrder;Visibility IsCancelButtonVisible,Converter=Visibility" />
+          <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
+            android:background="@drawable/green_button"
+            android:id="@+id/PayBtn"
+            style="@style/ButtonText"
+            android:layout_width="180dip"
+            android:layout_height="40dip"
+            android:layout_weight="0.5"
+            android:text="@string/StatusPayButton"
+            local:MvxBind="Click PayForOrderCommand;Visibility IsPayButtonVisible,Converter=Visibility" />
+          <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
+            android:background="@drawable/green_button"
+            android:id="@+id/ResendBtn"
+            style="@style/ButtonText"
+            android:layout_width="180dip"
+            android:layout_height="40dip"
+            android:layout_weight="0.5"
+            android:text="@string/ReSendConfirmationButton"
+            local:MvxBind="Click ResendConfirmationToDriver;Visibility IsResendButtonVisible,Converter=Visibility" />
+          <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
+            android:background="@drawable/green_button"
+            android:id="@+id/UnpairBtn"
+            style="@style/ButtonText"
+            android:layout_width="180dip"
+            android:layout_height="40dip"
+            android:layout_weight="0.5"
+            android:text="@string/CmtRideLinqUnpair"
+            local:MvxBind="Click Unpair;Visibility IsUnpairButtonVisible,Converter=Visibility" />
+          <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Black"
+            android:id="@+id/CallBtn"
+            style="@style/ButtonText"
+            android:background="@drawable/black_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"
+            android:layout_weight="0.5"
+            android:text="@string/StatusCallButton"
+            local:MvxBind="Click CallCompany;Visibility IsCallButtonVisible,Converter=Visibility" />
+        </LinearLayout>
+      </FrameLayout>
+      <apcurium.mk.booking.mobile.client.controls.SlidingPanel
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        local:MvxBind="IsEnabled IsDriverInfoAvailable">
+        <LinearLayout
+          android:id="@+id/hiddenTopContent"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@drawable/driverInfosBackGreyRepeat">
+          <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip">
+            <TextView
+              android:id="@+id/driverLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoDriver"
+              android:gravity="bottom|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="2dip" />
+            <TextView
+              android:id="@+id/driverValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.FullName"
+              android:gravity="top|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dip"
+              android:lines="1"
+              android:ellipsize="end"
+              android:singleLine="true"
+              android:layout_toRightOf="@id/driverLabel" />
+            <TextView
+              android:id="@+id/licenceLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoLicence"
+              android:gravity="center_vertical|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/driverLabel"
+              android:layout_marginTop="2dip" />
+            <TextView
+              android:id="@+id/licenceValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleRegistration"
+              android:gravity="center_vertical|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/licenceLabel"
+              android:paddingLeft="5dip"
+              android:layout_gravity="top"
+              android:layout_below="@id/driverLabel" />
+            <TextView
+              android:id="@+id/taxiTypeLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoTaxiType"
+              android:gravity="center_vertical|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/licenceLabel"
+              android:layout_marginTop="2dip"
+              local:MvxBind="Visibility VehicleTypeHidden,Converter=InvertedVisibility" />
+            <TextView
+              android:id="@+id/taxiTypeValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleType;Visibility VehicleTypeHidden,Converter=InvertedVisibility"
+              android:gravity="center_vertical|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/taxiTypeLabel"
+              android:paddingLeft="5dip"
+              android:layout_gravity="top"
+              android:layout_below="@id/licenceLabel" />
+            <TextView
+              android:id="@+id/makeLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoMake"
+              android:gravity="center_vertical|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/taxiTypeLabel"
+              android:layout_marginTop="2dip"
+              local:MvxBind="Visibility VehicleMakeHidden,Converter=InvertedVisibility" />
+            <TextView
+              android:id="@+id/makeValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake;Visibility VehicleMakeHidden,Converter=InvertedVisibility"
+              android:gravity="center_vertical|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dip"
+              android:layout_gravity="top"
+              android:layout_toRightOf="@id/makeLabel"
+              android:layout_below="@id/taxiTypeLabel" />
+            <TextView
+              android:id="@+id/modelLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoModel"
+              android:gravity="center_vertical|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/makeLabel"
+              android:layout_marginTop="2dip"
+              local:MvxBind="Visibility VehicleModelHidden,Converter=InvertedVisibility" />
+            <TextView
+              android:id="@+id/modelValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel;Visibility VehicleModelHidden,Converter=InvertedVisibility"
+              android:gravity="center_vertical|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dip"
+              android:layout_gravity="top"
+              android:layout_toRightOf="@id/modelLabel"
+              android:layout_below="@id/makeLabel" />
+            <TextView
+              android:id="@+id/ColorLabel"
+              style="@style/GrayText"
+              android:text="@string/DriverInfoColor"
+              android:gravity="center_vertical|right"
+              android:layout_width="90dip"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/modelLabel"
+              android:layout_marginTop="2dip"
+              local:MvxBind="Visibility VehicleColorHidden,Converter=InvertedVisibility" />
+            <TextView
+              android:id="@+id/ColorValue"
+              style="@style/BigTitleTextBlack"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor;Visibility VehicleColorHidden,Converter=InvertedVisibility"
+              android:gravity="center_vertical|left"
+              android:layout_width="150dip"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dip"
+              android:layout_gravity="top"
+              android:layout_toRightOf="@id/ColorLabel"
+              android:layout_below="@id/modelLabel" />
             <FrameLayout
-                android:id="@+id/statusMapSection"
-                android:layout_below="@id/statusInfo"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="0"
-                android:layout_gravity="bottom">
-                <apcurium.mk.booking.mobile.client.controls.TouchMap
-                    local:mapType="normal"
-                    local:uiCompass="false"
-                    local:uiZoomControls="false"
-                    android:id="@+id/mapStatus"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:enabled="false"
-                    local:MvxBind="{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'Center':{'Path':'MapCenter'} }"
-                    android:clickable="true" />
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|bottom"
-                    android:background="@drawable/StatusBottomBarBackground"
-                    android:paddingTop="4dip"
-                    android:paddingBottom="4dip">
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Red"
-                        android:id="@+id/CancelBtn"
-                        style="@style/ButtonText"
-                        android:background="@drawable/red_button"
-                        android:layout_width="180dip"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/StatusCancelButton"
-                        local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility':{'Path':'IsCancelButtonVisible', 'Converter':'Visibility'}}" />
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Green"
-                        android:background="@drawable/green_button"
-                        android:id="@+id/PayBtn"
-                        style="@style/ButtonText"
-                        android:layout_width="180dip"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/StatusPayButton"
-                        local:MvxBind="{'Click': {'Path': 'PayForOrderCommand'}, 'Visibility':{'Path':'IsPayButtonVisible', 'Converter':'Visibility'}}" />
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Green"
-                        android:background="@drawable/green_button"
-                        android:id="@+id/ResendBtn"
-                        style="@style/ButtonText"
-                        android:layout_width="180dip"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/ReSendConfirmationButton"
-                        local:MvxBind="{'Click': {'Path': 'ResendConfirmationToDriver'}, 'Visibility':{'Path':'IsResendButtonVisible', 'Converter':'Visibility'}}" />
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Green"
-                        android:background="@drawable/green_button"
-                        android:id="@+id/UnpairBtn"
-                        style="@style/ButtonText"
-                        android:layout_width="180dip"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/CmtRideLinqUnpair"
-                        local:MvxBind="{'Click': {'Path': 'Unpair'}, 'Visibility':{'Path':'IsUnpairButtonVisible', 'Converter':'Visibility'}}" />
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Black"
-                        android:id="@+id/CallBtn"
-                        style="@style/ButtonText"
-                        android:background="@drawable/black_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/StatusCallButton"
-                        local:MvxBind="{'Click': {'Path': 'CallCompany'}, 'Visibility':{'Path':'IsCallButtonVisible', 'Converter':'Visibility'}}" />
-                </LinearLayout>
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:paddingLeft="10dip"
+              android:layout_marginRight="10dip"
+              android:paddingRight="10dip">
+              <ImageButton
+                local:MvxBind="Click CallTaxi;Visibility IsCallTaxiVisible,Converter=Visibility"
+                android:src="@drawable/phone"
+                android:background="@drawable/gray_button"
+                style="@style/ButtonTextGray"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:layout_marginRight="10dip"
+                android:padding="7dip"
+                android:scaleType="fitCenter" />
             </FrameLayout>
-            <apcurium.mk.booking.mobile.client.controls.SlidingPanel
-                android:layout_width="fill_parent"
+          </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:orientation="vertical"
+          android:layout_height="60dip">
+          <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_weight="0"
+            android:background="#646464"
+            android:layout_below="@id/ColorLabel" />
+          <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:background="@drawable/driverInfosBackLightGreyRepeat"
+            android:paddingRight="10dip">
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal|center_vertical">
+              <TextView
+                style="@style/BigTextBlack"
+                local:MvxBind="Text ConfirmationNoTxt"
+                android:gravity="center_horizontal|top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+              <TextView
+                style="@style/BigTitleTextBlack"
+                android:gravity="center_horizontal|top"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                local:MvxBind="{'IsEnabled': {'Path': 'IsDriverInfoAvailable'}}">
-                <LinearLayout
-                    android:id="@+id/hiddenTopContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/driverInfosBackGreyRepeat">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dip">
-                        <TextView
-                            android:id="@+id/driverLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoDriver"
-                            android:gravity="bottom|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dip" />
-                        <TextView
-                            android:id="@+id/driverValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.FullName'}}"
-                            android:gravity="top|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dip"
-                            android:lines="1"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:layout_toRightOf="@id/driverLabel" />
-                        <TextView
-                            android:id="@+id/licenceLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoLicence"
-                            android:gravity="center_vertical|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/driverLabel"
-                            android:layout_marginTop="2dip" />
-                        <TextView
-                            android:id="@+id/licenceValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleRegistration'}}"
-                            android:gravity="center_vertical|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/licenceLabel"
-                            android:paddingLeft="5dip"
-                            android:layout_gravity="top"
-                            android:layout_below="@id/driverLabel" />
-                        <TextView
-                            android:id="@+id/taxiTypeLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoTaxiType"
-                            android:gravity="center_vertical|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/licenceLabel"
-                            android:layout_marginTop="2dip"
-                            local:MvxBind="{'Visibility':{'Path':'VehicleTypeHidden','Converter':'InvertedVisibility'}}" />
-                        <TextView
-                            android:id="@+id/taxiTypeValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleType'}, 'Visibility':{'Path':'VehicleTypeHidden','Converter':'InvertedVisibility'}}"
-                            android:gravity="center_vertical|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/taxiTypeLabel"
-                            android:paddingLeft="5dip"
-                            android:layout_gravity="top"
-                            android:layout_below="@id/licenceLabel" />
-                        <TextView
-                            android:id="@+id/makeLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoMake"
-                            android:gravity="center_vertical|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/taxiTypeLabel"
-                            android:layout_marginTop="2dip"
-                            local:MvxBind="{'Visibility':{'Path':'VehicleMakeHidden','Converter':'InvertedVisibility'}}" />
-                        <TextView
-                            android:id="@+id/makeValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleMake'}, 'Visibility':{'Path':'VehicleMakeHidden','Converter':'InvertedVisibility'}}"
-                            android:gravity="center_vertical|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dip"
-                            android:layout_gravity="top"
-                            android:layout_toRightOf="@id/makeLabel"
-                            android:layout_below="@id/taxiTypeLabel" />
-                        <TextView
-                            android:id="@+id/modelLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoModel"
-                            android:gravity="center_vertical|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/makeLabel"
-                            android:layout_marginTop="2dip"
-                            local:MvxBind="{'Visibility':{'Path':'VehicleModelHidden','Converter':'InvertedVisibility'}}" />
-                        <TextView
-                            android:id="@+id/modelValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleModel'}, 'Visibility':{'Path':'VehicleModelHidden','Converter':'InvertedVisibility'}}"
-                            android:gravity="center_vertical|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dip"
-                            android:layout_gravity="top"
-                            android:layout_toRightOf="@id/modelLabel"
-                            android:layout_below="@id/makeLabel" />
-                        <TextView
-                            android:id="@+id/ColorLabel"
-                            style="@style/GrayText"
-                            android:text="@string/DriverInfoColor"
-                            android:gravity="center_vertical|right"
-                            android:layout_width="90dip"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/modelLabel"
-                            android:layout_marginTop="2dip"
-                            local:MvxBind="{'Visibility':{'Path':'VehicleColorHidden','Converter':'InvertedVisibility'}}" />
-                        <TextView
-                            android:id="@+id/ColorValue"
-                            style="@style/BigTitleTextBlack"
-                            local:MvxBind="{'Text': {'Path': 'OrderStatusDetail.DriverInfos.VehicleColor'}, 'Visibility':{'Path':'VehicleColorHidden','Converter':'InvertedVisibility'}}"
-                            android:gravity="center_vertical|left"
-                            android:layout_width="150dip"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="5dip"
-                            android:layout_gravity="top"
-                            android:layout_toRightOf="@id/ColorLabel"
-                            android:layout_below="@id/modelLabel" />
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:paddingLeft="10dip"
-                            android:layout_marginRight="10dip"
-                            android:paddingRight="10dip">
-                            <ImageButton
-                                local:MvxBind="{'Click':{'Path':'CallTaxi'},'Visibility':{'Path':'IsCallTaxiVisible','Converter':'Visibility'}}"
-                                android:src="@drawable/phone"
-                                android:background="@drawable/gray_button"
-                                style="@style/ButtonTextGray"
-                                android:layout_width="40dip"
-                                android:layout_height="40dip"
-                                android:layout_marginRight="10dip"
-                                android:padding="7dip"
-                                android:scaleType="fitCenter" />
-                        </FrameLayout>
-                    </RelativeLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="60dip">
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="1px"
-                        android:layout_weight="0"
-                        android:background="#646464"
-                        android:layout_below="@id/ColorLabel" />
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="45dip"
-                        android:background="@drawable/driverInfosBackLightGreyRepeat"
-                        android:paddingRight="10dip">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_height="match_parent"
-                            android:gravity="center_horizontal|center_vertical">
-                            <TextView
-                                style="@style/BigTextBlack"
-                                local:MvxBind="{'Text': {'Path': 'ConfirmationNoTxt'}}"
-                                android:gravity="center_horizontal|top"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                            <TextView
-                                style="@style/BigTitleTextBlack"
-                                android:gravity="center_horizontal|top"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                local:MvxBind="{'Text': {'Path': 'StatusInfoText'}}" />
-                        </LinearLayout>
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:scaleType="fitXY"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/grip"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dip"
-                            local:MvxBind="{'Visibility':{'Path':'IsDriverInfoAvailable','Converter':'Visibility'}}" />
-                    </FrameLayout>
-                    <View
-                        android:layout_width="fill_parent"
-                        android:layout_height="3dip"
-                        android:layout_weight="0"
-                        android:background="@drawable/statusDropShadow"
-                        android:layout_gravity="bottom" />
-                </LinearLayout>
-            </apcurium.mk.booking.mobile.client.controls.SlidingPanel>
-        </RelativeLayout>
+                local:MvxBind="Text StatusInfoText" />
+            </LinearLayout>
+            <ImageView
+              android:layout_width="wrap_content"
+              android:scaleType="fitXY"
+              android:adjustViewBounds="true"
+              android:src="@drawable/grip"
+              android:layout_gravity="center_vertical|right"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="10dip"
+              local:MvxBind="Visibility IsDriverInfoAvailable,Converter=Visibility" />
+          </FrameLayout>
+          <View
+            android:layout_width="fill_parent"
+            android:layout_height="3dip"
+            android:layout_weight="0"
+            android:background="@drawable/statusDropShadow"
+            android:layout_gravity="bottom" />
+        </LinearLayout>
+      </apcurium.mk.booking.mobile.client.controls.SlidingPanel>
     </RelativeLayout>
+  </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
