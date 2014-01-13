@@ -106,28 +106,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 lblStatus.TextColor = AppStyle.DarkText;
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
-						{ lblStatus, "Text StatusInfoText" },
-						{ lblConfirmation, "Text ConfirmationNoTxt" },
-						{ lblDriver, "Text OrderStatusDetail.DriverInfos.FullName; Hidden VehicleDriverHidden" },
-						{ lblLicence, "Text OrderStatusDetail.DriverInfos.VehicleRegistration; Hidden VehicleLicenceHidden" },
-						{ lblTaxiType, "Text OrderStatusDetail.DriverInfos.VehicleType; Hidden VehicleTypeHidden" },
-						{ lblMake, "Text OrderStatusDetail.DriverInfos.VehicleMake; Hidden VehicleMakeHidden" },
-						{ lblModel, "Text OrderStatusDetail.DriverInfos.VehicleModel; Hidden VehicleModelHidden" },
-						{ lblColor, "Text OrderStatusDetail.DriverInfos.VehicleColor; Hidden VehicleColorHidden" },
-						{ txtDriver, "Hidden VehicleDriverHidden" },
-						{ txtLicence, "Hidden VehicleLicenceHidden" },
-						{ txtTaxiType, "Hidden VehicleTypeHidden" },
-						{ txtMake, "Hidden VehicleMakeHidden" },
-						{ txtModel, "Hidden VehicleModelHidden" },
-						{ txtColor, "Hidden VehicleColorHidden" },
-						{ statusBar, "IsEnabled IsDriverInfoAvailable" },
-						{ imgGrip, "Hidden IsDriverInfoAvailable, Converter BoolInverter" },
-						{ btnCallDriver, "TouchUpInside CallTaxi; Hidden IsCallTaxiVisible, Converter BoolInverter" },
+					{ lblStatus, "Text StatusInfoText" },
+					{ lblConfirmation, "Text ConfirmationNoTxt" },
+					{ lblDriver, "Text OrderStatusDetail.DriverInfos.FullName; Hidden VehicleDriverHidden" },
+					{ lblLicence, "Text OrderStatusDetail.DriverInfos.VehicleRegistration; Hidden VehicleLicenceHidden" },
+					{ lblTaxiType, "Text OrderStatusDetail.DriverInfos.VehicleType; Hidden VehicleTypeHidden" },
+					{ lblMake, "Text OrderStatusDetail.DriverInfos.VehicleMake; Hidden VehicleMakeHidden" },
+					{ lblModel, "Text OrderStatusDetail.DriverInfos.VehicleModel; Hidden VehicleModelHidden" },
+					{ lblColor, "Text OrderStatusDetail.DriverInfos.VehicleColor; Hidden VehicleColorHidden" },
+					{ txtDriver, "Hidden VehicleDriverHidden" },
+					{ txtLicence, "Hidden VehicleLicenceHidden" },
+					{ txtTaxiType, "Hidden VehicleTypeHidden" },
+					{ txtMake, "Hidden VehicleMakeHidden" },
+					{ txtModel, "Hidden VehicleModelHidden" },
+					{ txtColor, "Hidden VehicleColorHidden" },
+					{ statusBar, "IsEnabled IsDriverInfoAvailable" },
+					{ imgGrip, "Hidden IsDriverInfoAvailable, Converter BoolInverter" },
+					{ btnCallDriver, "TouchUpInside CallTaxi; Hidden IsCallTaxiVisible, Converter BoolInverter" },
 
-                   
-
-                    { btnNewRide, new B("TouchUpInside","NewRide") }
-					
                 });
 
 				var set = this.CreateBindingSet<StatusView, BookingStatusViewModel>();
@@ -142,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.MapCenter);
 
 				set.Bind(btnCancel)
-					.For(v => v.TouchUpInside)
+					.For("TouchUpInside")
 					.To(vm => vm.CancelOrder);
 				set.Bind(btnCancel)
 					.For(v => v.Hidden)
@@ -150,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.WithConversion("BoolInverter");
 
 				set.Bind(btnPay)
-					.For(v => v.TouchUpInside)
+					.For("TouchUpInside")
 					.To(vm => vm.PayForOrderCommand);
 				set.Bind(btnPay)
 					.For(v => v.Hidden)
@@ -165,18 +161,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.For(v => v.Enabled)
 					.To(vm => vm.IsCallButtonVisible);
 				set.Bind(btnCall)
-					.For(v => v.TouchUpInside)
+					.For("TouchUpInside")
 					.To(vm => vm.CallCompany);
-
-				/*{ btnResend, new B("Hidden","IsResendButtonVisible","BoolInverter")
-						.Add("Enabled","IsResendButtonVisible")
-						.Add("TouchUpInside","ResendConfirmationToDriver") },
 
 				set.Bind(btnResend)
 					.For(v => v.Hidden)
-					.To(vm => */
+					.To(vm => vm.IsResendButtonVisible)
+					.WithConversion("BoolInverter");
+				set.Bind(btnResend)
+					.For(v => v.Enabled)
+					.To(vm => vm.IsResendButtonVisible);
+				set.Bind(btnCall)
+					.For("TouchUpInside")
+					.To(vm => vm.ResendConfirmationToDriver);
 
-					
+				set.Bind(btnNewRide)
+					.For("TouchUpInside")
+					.To(vm => vm.NewRide);
+
 				set.Apply();
 
                 mapStatus.Delegate = new AddressMapDelegate ();
