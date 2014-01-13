@@ -12,8 +12,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
     {
-        public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
+		public void Init(string messageId, PaymentInformation paymentDetails)
         {
+			Init(messageId);
+
 			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
 		
             LoadCreditCards();

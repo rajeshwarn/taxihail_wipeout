@@ -37,8 +37,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public CreditCardAddViewModel (string messageId) : base(messageId)
+		public void Init(string messageId)
         {
+			Init(messageId);
+
             Data = new CreditCardInfos();
 
 			CardCategories = new List<ListItem>

@@ -79,7 +79,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         TipPercent = account.DefaultTipPercent,
                     };
 
-                    _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+					_paymentPreferences = new PaymentDetailsViewModel();
+					_paymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
                 }
                 return _paymentPreferences;
             }

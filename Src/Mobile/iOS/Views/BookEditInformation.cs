@@ -1,4 +1,3 @@
-
 using System;
 using System.Drawing;
 using System.Linq;
@@ -14,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
-
         }
 
         public override void ViewDidLoad()
@@ -50,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.Load();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;           
-                        
 
             lblName.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
             txtName.Maybe(x=> x.Hidden = !ViewModel.ShowPassengerName);
@@ -64,7 +62,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             contentStack.Maybe(x => x.VerticalAlignement = StackPanelAlignement.Top);
             contentStack.Maybe(x => x.TopOffset = 10);
 
-
             lblVehiculeType.Maybe(x => x.Text = Localize.GetValue("ConfirmVehiculeTypeLabel"));
             lblChargeType.Maybe(x => x.Text = Localize.GetValue("ChargeTypeLabel"));                     
             lblEntryCode.Maybe(x => x.Text = Localize.GetValue("EntryCodeLabel"));
@@ -73,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblPassengers.Maybe(x => x.Text = Localize.GetValue ("PassengerNumberLabel"));
             lblLargeBags.Maybe(x => x.Text = Localize.GetValue ("LargeBagsLabel"));
             lblPhone.Maybe(x => x.Text = Localize.GetValue ("PassengerPhoneLabel"));
-
 
             scrollView.ContentSize = new SizeF( 320, 700 );
 
@@ -92,20 +88,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                        x => ViewModel.SetChargeTypeId(x.Id), 
                                        ViewModel.OnPropertyChanged().Where( property => property == "Payments"));
 
-            var bindings = new [] {
-                Tuple.Create<object,string>(txtName, "{'Text':{'Path':'Order.Settings.Name'}}"),
-                Tuple.Create<object,string>(txtPhone, "{'Text':{'Path':'Order.Settings.Phone'}}"),
-                Tuple.Create<object,string>(txtNbPassengers, "{'Text':{'Path':'Order.Settings.Passengers'}}"),
-                Tuple.Create<object,string>(txtLargeBags, "{'Text':{'Path':'Order.Settings.LargeBags'}}"),
-                Tuple.Create<object,string>(txtAprtment, "{'Text':{'Path':'Order.PickupAddress.Apartment'}}"),
-                Tuple.Create<object,string>(txtEntryCode, "{'Text':{'Path':'Order.PickupAddress.RingCode'}}"),
-                Tuple.Create<object,string>(pickerVehicleType, "{'Text':{'Path':'VehicleName'}}"),
-                Tuple.Create<object,string>(pickerChargeType, "{'Text':{'Path':'ChargeType'}}")
-            }
-            .Where(x=> x.Item1 != null )
-            .ToDictionary(x=>x.Item1, x=>x.Item2);
+			var set = this.CreateBindingSet<BookEditInformation, BookEditInformationViewModel>();
 
-            this.AddBindings(bindings);
+			set.BindSafe(txtName)
+				.For(v => v.Text)
+				.To(vm => vm.Order.Settings.Name);
+
+			set.BindSafe(txtPhone)
+				.For(v => v.Text)
+				.To(vm => vm.Order.Settings.Phone);
+
+			set.BindSafe(txtNbPassengers)
+				.For(v => v.Text)
+				.To(vm => vm.Order.Settings.Passengers);
+
+			set.BindSafe(txtLargeBags)
+				.For(v => v.Text)
+				.To(vm => vm.Order.Settings.LargeBags);
+
+			set.BindSafe(txtAprtment)
+				.For(v => v.Text)
+				.To(vm => vm.Order.PickupAddress.Apartment);
+
+			set.BindSafe(txtEntryCode)
+				.For(v => v.Text)
+				.To(vm => vm.Order.PickupAddress.RingCode);
+
+			set.BindSafe(pickerVehicleType)
+				.For("Text")
+				.To(vm => vm.VehicleName);
+
+			set.BindSafe(pickerChargeType)
+				.For("Text")
+				.To(vm => vm.ChargeType);
+
+			set.Apply ();
               
             View.ApplyAppFont ();
         }
@@ -114,7 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             txtAprtment.Maybe(x => x.ResignFirstResponder ());
             txtEntryCode.Maybe(x => x.ResignFirstResponder ());
-         
         }
         
         public override void ViewDidAppear(bool animated)
@@ -131,9 +147,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
 
             NavigationItem.RightBarButtonItem = btnDone; 
-            
         }
-
-		
     }
 }

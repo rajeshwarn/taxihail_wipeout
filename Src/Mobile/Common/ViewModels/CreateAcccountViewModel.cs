@@ -21,9 +21,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
-        public CreateAcccountViewModel (string messageId, string data) : base(messageId)
+		public CreateAcccountViewModel()
 		{
 			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+		}
+
+		public void Init(string messageId, string data)
+		{
+			Init(messageId);
 
 			if (data != null)
 			{

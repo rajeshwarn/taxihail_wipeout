@@ -12,9 +12,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookStreetNumberViewModel : BaseViewModel
     {
-        private readonly string _ownerId;
+        private string _ownerId;
         private TinyMessageSubscriptionToken _token;
-        public BookStreetNumberViewModel (string ownerId, string address)
+		public void Init(string ownerId, string address)
         {
             _ownerId = ownerId;
             if (address != null) {
@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public int NumberOfCharAllowed
         {
             get{
-
-
                 var max = this.Services().Cache.Get<string>("Client.NumberOfCharInRefineAddress");
                 Task.Factory.SafeStartNew(() => this.Services().Cache.Set("Client.NumberOfCharInRefineAddress", this.Services().Config.GetSetting("Client.NumberOfCharInRefineAddress")));
                 int m;
@@ -47,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return 10;
             }
-
         }
 
         string _streetNumberOrBuildingName;

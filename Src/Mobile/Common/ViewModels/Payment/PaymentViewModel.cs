@@ -15,9 +15,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 
-        public PaymentViewModel(string order, string orderStatus, string messageId,IPayPalExpressCheckoutService palExpressCheckoutService) : base(messageId)
+		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService)
+		{
+			_palExpressCheckoutService = palExpressCheckoutService;
+		}
+
+		public void Init(string order, string orderStatus, string messageId, IPayPalExpressCheckoutService palExpressCheckoutService)
         {
-            _palExpressCheckoutService = palExpressCheckoutService;
+			Init(messageId);
+
             this.Services().Config.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
@@ -29,7 +35,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 CreditCardId = account.DefaultCreditCard,
                 TipPercent = account.DefaultTipPercent,
             };
-            PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+			PaymentPreferences = new PaymentDetailsViewModel();
+			PaymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;

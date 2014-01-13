@@ -8,10 +8,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqChangePaymentViewModel : BaseSubViewModel<PaymentInformation>
 	{
-		public CmtRideLinqChangePaymentViewModel(string messageId, string currentPaymentInformation): base(messageId)
+		public void Init(string messageId, string currentPaymentInformation)
 		{
+			Init(messageId);
+
 			DefaultPaymentInformations = JsonSerializer.DeserializeFromString<PaymentInformation>(currentPaymentInformation);
-			PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), DefaultPaymentInformations);
+			PaymentPreferences = new PaymentDetailsViewModel();
+			PaymentPreferences.Init(Guid.NewGuid().ToString(), DefaultPaymentInformations);
 			PaymentPreferences.LoadCreditCards();
 		}
 

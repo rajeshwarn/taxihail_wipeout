@@ -78,8 +78,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        public BookRatingViewModel(string messageId):base(messageId)
+		public void Init(string messageId)
         {
+			Init(messageId);
+
             RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
 			{
 				RatingTypeId = c.Id, 
@@ -88,10 +90,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.OrderBy(c=>c.RatingTypeId).ToList();
             CanRating = false;
         }
-       
 
-		public BookRatingViewModel (string messageId, string orderId, string canRate="false"):base(messageId)
+		public void Init(string messageId, string orderId, string canRate="false")
 		{
+			Init(messageId);
+
             var ratingTypes = this.Services().Booking.GetRatingType();
             RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
 			{
@@ -118,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Score = c.Score,
 					RatingTypeName = c.Name
 				}).OrderBy(c=>c.RatingTypeId).ToList();
-
             }
         }
 
