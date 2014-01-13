@@ -12,8 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	[Register ("ResetPasswordView")]
 	partial class ResetPasswordView
 	{
-
-
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnCancel { get; set; }
 
@@ -21,13 +19,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIButton btnReset { get; set; }
 
 		[Outlet]
-        MonoTouch.UIKit.UIImageView imageViewLogo { get; set; }
+		MonoTouch.UIKit.UIImageView imgViewLogo { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblSubTitle { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblTitle { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtEmail { get; set; }
@@ -44,24 +42,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnReset = null;
 			}
 
-			if (scrollView != null) {
-				scrollView.Dispose ();
-				scrollView = null;
+			if (imgViewLogo != null) {
+				imgViewLogo.Dispose ();
+				imgViewLogo = null;
 			}
 
-			if (txtEmail != null) {
-				txtEmail.Dispose ();
-				txtEmail = null;
-			}
-
-			if (imageViewLogo != null) {
-				imageViewLogo.Dispose ();
-				imageViewLogo = null;
+			if (lblSubTitle != null) {
+				lblSubTitle.Dispose ();
+				lblSubTitle = null;
 			}
 
 			if (lblTitle != null) {
 				lblTitle.Dispose ();
 				lblTitle = null;
+			}
+
+			if (txtEmail != null) {
+				txtEmail.Dispose ();
+				txtEmail = null;
 			}
 		}
 	}

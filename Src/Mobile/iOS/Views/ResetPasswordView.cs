@@ -58,26 +58,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			var logo = UIImage.FromFile("Assets/Logo.png");
-			imageViewLogo.Image = logo;
-
-			scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
-
 			base.DismissKeyboardOnReturn(txtEmail);
 
+			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
+			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");
 			txtEmail.Placeholder = Localize.GetValue("CreateAccountEmail");
+			btnReset.SetTitle(Localize.GetValue("ResetButton"), UIControlState.Normal);
+			btnCancel.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
 
 			this.AddBindings(new Dictionary<object, string>{
                 { txtEmail, "{'Text': {'Path': 'Email', 'Mode': 'TwoWay' }}" },
+				{ btnReset, "{'TouchUpInside': {'Path' : 'ResetPassword'}}" },
+				{ btnCancel, "{'TouchUpInside': {'Path' : 'Cancel'}}" }
             });
-             
-			btnReset.SetTitle(Localize.GetValue("View_PasswordRecovery_Label"), UIControlState.Normal);
-			btnCancel.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
-
-			this.AddBindings(btnReset, "{'TouchUpInside': {'Path' : 'ResetPassword'}}"); 
-			this.AddBindings(btnCancel, "{'TouchUpInside': {'Path' : 'Cancel'}}"); 
-
         }
+
     }
 }
 

@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                         string message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], CultureProvider.FormatCurrency(Amount));
 
-                        this.Services().Message.ShowMessage(this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, this.Services().Localize["OkButtonText"], () => Task.Factory.SafeStartNew(executePayment), this.Services().Localize["CancelBoutton"], Nothing);
+                        this.Services().Message.ShowMessage(this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, this.Services().Localize["OkButtonText"], () => Task.Factory.SafeStartNew(executePayment), this.Services().Localize["CancelButton"], Nothing);
 
                     }
                     else

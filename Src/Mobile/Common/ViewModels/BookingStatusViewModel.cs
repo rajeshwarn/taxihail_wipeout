@@ -249,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						                            OrderStatusDetail.DriverInfos.MobilePhone,
                                                     this.Services().Localize["CallButton"],
                                                     () => this.Services().Phone.Call(OrderStatusDetail.DriverInfos.MobilePhone),
-                                                    this.Services().Localize["CancelBoutton"], 
+                                                    this.Services().Localize["CancelButton"], 
 						                            () => {});   
                     }
                     else
@@ -524,7 +524,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
                                                this.Services().Localize["CallButton"],
                                                () => this.Services().Phone.Call(this.Services().Config.GetSetting("DefaultPhoneNumber")),
-                                               this.Services().Localize["CancelBoutton"], 
+                                               this.Services().Localize["CancelButton"], 
                                                () => {});                    
                 });
             }

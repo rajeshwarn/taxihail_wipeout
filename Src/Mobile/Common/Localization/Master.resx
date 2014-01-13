@@ -285,8 +285,11 @@
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Authorization:</value>
   </data>
-  <data name="CancelBoutton" xml:space="preserve">
+	<data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+<data name="ResetButton" xml:space="preserve">
+    <value>Reset</value>
   </data>
   <data name="ContinueButton" xml:space="preserve">
     <value>Continue</value>
@@ -596,6 +599,12 @@
   </data>
   <data name="LoginForgotPasswordButton" xml:space="preserve">
     <value>Forgot Password?</value>
+  </data>
+	<data name="LoginForgotPassword" xml:space="preserve">
+    	<value>Forgot your password?</value>
+  </data>
+	<data name="LoginForgotPasswordDetail" xml:space="preserve">
+    	<value>Enter your email and we'll send you a new one.</value>
   </data>
   <data name="TechSupportEmailTitle" xml:space="preserve">
     <value>Support Application Mobile</value>
@@ -950,12 +959,6 @@
   </data>
   <data name="View_LocationList" xml:space="preserve">
     <value>Locations</value>
-  </data>
-  <data name="View_PasswordRecovery" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
-  <data name="View_PasswordRecovery_Label" xml:space="preserve">
-    <value>Reset Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
     <value>Create Account</value>
@@ -1467,4 +1470,5 @@
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>You need to update Google Play Services in order to use this application.</value>
   </data>
+
 </root>
