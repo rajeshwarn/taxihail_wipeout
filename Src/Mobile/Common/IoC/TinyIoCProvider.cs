@@ -61,28 +61,34 @@ namespace apcurium.MK.Booking.Mobile.IoC
 		public void RegisterType<TFrom, TTo>() where TFrom : class where TTo : class, TFrom
 		{
 			_container.Register<TFrom, TTo>().AsMultiInstance();
+			ExecuteCallback(typeof(TFrom));
 		}
 		public void RegisterType(System.Type tFrom, System.Type tTo)
 		{
 			_container.Register(tFrom, tTo).AsMultiInstance();
+			ExecuteCallback(tFrom);
 		}
 		public void RegisterSingleton<TInterface>(TInterface theObject) where TInterface : class
 		{
 			_container.Register<TInterface>(theObject);
+			ExecuteCallback(typeof(TInterface));
 		}
 		public void RegisterSingleton(System.Type tInterface, object theObject)
 		{
 			_container.Register(tInterface, theObject);
+			ExecuteCallback(tInterface);
 		}
 		public void RegisterSingleton<TInterface>(System.Func<TInterface> theConstructor) where TInterface : class
 		{
 			var lazy = new Lazy<TInterface>(theConstructor);
 			_container.Register<TInterface>((_, __) => lazy.Value);
+			ExecuteCallback(typeof(TInterface));
 		}
 		public void RegisterSingleton(System.Type tInterface, System.Func<object> theConstructor)
 		{
 			var lazy = new Lazy<object>(theConstructor);
 			_container.Register(tInterface, (_, __) => lazy.Value);
+			ExecuteCallback(tInterface);
 		}
 		public T IoCConstruct<T>() where T : class
 		{
@@ -122,6 +128,26 @@ namespace apcurium.MK.Booking.Mobile.IoC
 
 
 		#endregion
+
+		private void ExecuteCallback(Type type)
+		{
+			List<Action> actions;
+			lock (this)
+			{
+				if (_waiters.TryGetValue(type, out actions))
+				{
+					_waiters.Remove(type);
+				}
+			}
+
+			if (actions != null)
+			{
+				foreach (var action in actions)
+				{
+					action();
+				}
+			}
+		}
 
     }
 }
