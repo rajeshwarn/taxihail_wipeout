@@ -1,11 +1,11 @@
 using System;
+using Cirrious.MvvmCross.Binding;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Binding.Android.Target;
-using Cirrious.MvvmCross.Binding.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class EditTextCreditCardNumberBinding : MvxBaseAndroidTargetBinding
+    public class EditTextCreditCardNumberBinding : MvxAndroidTargetBinding
     {
         private readonly EditTextLeftImage _control;
 

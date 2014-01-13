@@ -2,12 +2,11 @@ using System;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Interfaces;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class TipSliderBinding : MvxBaseTargetBinding
+    public class TipSliderBinding : MvxTargetBinding
     {
         private readonly TipSlider _control;
 

@@ -4,14 +4,13 @@ using System.Linq;
 using Android.App;
 using Android.Views;
 using Android.Widget;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Android.Views;
 using Java.Lang;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class GroupedLocationListAdapter : MvxBindableListAdapter
+    public class GroupedLocationListAdapter : MvxAdapter
     {
         public static int TYPE_SECTION_HEADER = 0;
         private readonly Activity _context;
@@ -55,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             }
         }
 
-        protected override void SetItemsSource(IList value)
+		protected override void SetItemsSource(IEnumerable value)
         {
             Sections.Clear();
             Headers.Clear();

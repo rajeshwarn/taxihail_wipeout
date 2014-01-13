@@ -4,7 +4,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Style;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 // ReSharper disable once MemberCanBePrivate.Global
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public IMvxCommand SelectedChangedCommand { get; set; }
+        public ICommand SelectedChangedCommand { get; set; }
 
         private void Initialize()
         {

@@ -1,12 +1,11 @@
 using System;
+using System.Windows.Input;
 using Android.Content;
 using Android.Runtime;
 using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -42,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public IMvxCommand NavigateCommand { get; set; }
+        public ICommand NavigateCommand { get; set; }
 
         public string Text
         {

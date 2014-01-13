@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void InitializeLastChance()
         {
-			base.InitializeLastChance()();
+			base.InitializeLastChance();
 
 
             TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
