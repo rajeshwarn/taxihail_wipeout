@@ -20,7 +20,7 @@ using Xamarin.FacebookBinding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "Login",
         ScreenOrientation = ScreenOrientation.Portrait)]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
