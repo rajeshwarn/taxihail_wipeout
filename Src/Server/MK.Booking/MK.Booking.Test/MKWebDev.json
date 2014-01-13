@@ -6,8 +6,8 @@
    "Direction.FlateRate" : "3.45",
    "Direction.MaxDistance" : "50",
    "Direction.RatePerKm" : "1.70",
-   "Direction.TarifMode" : "Ibs",
-   "Direction.NeedAValidTarif" : "true",   
+   "Direction.TarifMode" : "AppTarif",
+   "Direction.NeedAValidTarif" : "false",   
 
    "DistanceFormat" : "KM",
    "Email.NoReply" : "noreply@apcurium.com",  
