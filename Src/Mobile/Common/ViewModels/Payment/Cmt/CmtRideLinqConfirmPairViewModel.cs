@@ -77,18 +77,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		{
 			get {
 				return GetCommand (() =>
-					{                      
-						if (_paymentPreferences.SelectedCreditCard == null)
-						{
-                            this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
-							return;
+					{         
+						using(this.Services().Message.ShowProgress())
+						{   
+							if (_paymentPreferences.SelectedCreditCard == null)
+							{
+	                            this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
+								return;
+							}
+
+							var pairingResponse = this.Services().Payment.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+
+							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
+
+							if(!pairingResponse.IsSuccessfull)
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["PaymentErrorTitle"], this.Services().Localize["CmtRideLinqGenericErrorMessage"]);
+								return;
+							}
+
+							RequestClose(this);
 						}
-
-						var pairingResponse = this.Services().Payment.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
-
-						this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
-
-						RequestClose(this);
 					});
 			}
 		}

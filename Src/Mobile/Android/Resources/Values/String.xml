@@ -470,4 +470,5 @@
   <string name="View_Payments_CmtRideLinqChangePaymentTitle">Change payment info</string>
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="CmtRideLinqSaveChanges">Save</string>
+  <string name="CmtRideLinqGenericErrorMessage">There was an error during pairing, verify your credit card information or try again later.</string>
 </resources>
