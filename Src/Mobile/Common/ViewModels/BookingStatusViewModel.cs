@@ -646,6 +646,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						if(response.IsSuccessfull)
 						{
 							CacheService.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+							RefreshStatus();
 						}
 						else
 						{
