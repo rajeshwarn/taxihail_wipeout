@@ -10,9 +10,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookEditInformationViewModel : BaseSubViewModel<Order>
     {
-        public BookEditInformationViewModel(string messageId, string order)
-            : base(messageId)
+		public void Init(string messageId, string order)
         {
+			Init(messageId);
+
             Order = JsonSerializer.DeserializeFromString<Order>(order);
             RideSettings = new RideSettingsViewModel( Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => 
@@ -23,8 +24,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => VehicleName);
 				RaisePropertyChanged(() => ChargeType);
             });
-
-
         }
 
         public RideSettingsViewModel RideSettings { get; set; }
@@ -89,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
             }
         }
+
         public string BuildingName
         {
             get
@@ -96,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return FormatBuildingName(Order.PickupAddress.BuildingName);
             }
         }
+
         public string FormattedPickupDate
         {
             get
@@ -103,6 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return FormatDateTime(Order.PickupDate);
             }
         }
+
         private string _fareEstimate;
         public string FareEstimate
         {
@@ -130,9 +132,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged();
             }
         }
-
-        
-
 
         public AsyncCommand SaveCommand
         {

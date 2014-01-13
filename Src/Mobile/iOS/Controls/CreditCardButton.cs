@@ -26,20 +26,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
         [UsedImplicitly]
+		private string _last4Digits { get; set; }
         public string Last4Digits {
             set {
-
-                TextField.RightView = new UILabel(new RectangleF(0,0,100,Bounds.Height))
+				_last4Digits = string.IsNullOrEmpty (value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value;
+				TextField.RightView = new UILabel(new RectangleF(0,0,100,Bounds.Height))
                 {
-                    Text = string.IsNullOrEmpty(value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value,
+					Text = _last4Digits,
                     BackgroundColor = UIColor.Clear,
                     TextColor = UIColor.FromRGB(133, 133, 133),
                     Font = AppStyle.NormalTextFont,
                 };
 
                 TextField.RightViewMode = UITextFieldViewMode.Always;
-
             }
+			get {
+				return _last4Digits;
+			}
         }
 
         [UsedImplicitly]

@@ -508,6 +508,7 @@
     <Compile Include="PlatformIntegration\Social\OAuthAuthorizer.cs" />
     <Compile Include="PlatformIntegration\Social\TwitterService.cs" />
     <Compile Include="PlatformIntegration\Social\WebViewController.cs" />
+    <Compile Include="Extensions\MvvmCrossExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

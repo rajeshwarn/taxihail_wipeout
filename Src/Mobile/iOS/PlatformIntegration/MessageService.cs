@@ -9,6 +9,8 @@ using Cirrious.MvvmCross.Views;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using TinyIoC;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -77,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {
                 var presenter = TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
-                presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
+				presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
             });
         }
 

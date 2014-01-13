@@ -31,11 +31,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green); 
 
-            this.AddBindings(new Dictionary<object, string>{
-                { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 
-                { CarNumber, new B("Text","CarNumber") }, 
-            });
-            
+			var set = this.CreateBindingSet<ConfrimCarNumberPage, ConfirmCarNumberViewModel>();
+			set.Bind(ConfirmButton)
+				.For("TouchDown")
+				.To(vm => vm.ConfirmTaxiNumber);
+
+			set.Bind(CarNumber)
+				.For(v => v.Text)
+				.To(vm => vm.CarNumber);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
         }
     }

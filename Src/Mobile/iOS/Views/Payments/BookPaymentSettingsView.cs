@@ -135,24 +135,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				ViewModel.TipAmount = TipAmountLabel.Text;//Todo ugly binding done in code behind
 			};
 
-            this.AddBindings(new Dictionary<object, string> {         
-                { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},   
-                { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) },
-                //{ TotalAmountLabel, new B("Text","Amount")},//See above
-                { MeterAmountLabel, new B("Placeholder", "PlaceholderAmount")},
-                { TipAmountLabel, new B("Placeholder", "PlaceholderAmount") },
-				{ payPalToggle, 
-					new B("PayPalSelected", "PayPalSelected", B.Mode.TwoWay)
-						.Add("Hidden", "PaymentSelectorToggleIsVisible", "BoolInverter")
-				},
-                { btCreditCard, 
-                    new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
-                        .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
-                        .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
-                        .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList")
-				}
-            });
-			   
+			var set = this.CreateBindingSet<BookPaymentSettingsView, PaymentViewModel>();
+			set.Bind(btConfirm)
+				.For("TouchUpInside")
+				.To(vm => vm.ConfirmOrderCommand);
+
+			set.Bind(TipSlider)
+				.For(v => v.Value)
+				.To(vm => vm.PaymentPreferences.Tip);
+
+			set.Bind(MeterAmountLabel)
+				.For(v => v.Placeholder)
+				.To(vm => vm.PlaceholderAmount);
+
+			set.Bind(TipAmountLabel)
+				.For(v => v.Placeholder)
+				.To(vm => vm.PlaceholderAmount);
+
+			set.Bind(payPalToggle)
+				.For(v => v.PayPalSelected)
+				.To(vm => vm.PayPalSelected);
+			set.Bind(payPalToggle)
+				.For(v => v.Hidden)
+				.To(vm => vm.PaymentSelectorToggleIsVisible)
+				.WithConversion("BoolInverter");
+
+			set.Bind(btCreditCard)
+				.For("Text")
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
+			set.Bind(btCreditCard)
+				.For(v => v.Last4Digits)
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+			set.Bind(btCreditCard)
+				.For("CreditCardCompany")
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
+			set.Bind(btCreditCard)
+				.For(v => v.NavigateCommand)
+				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
+
+			set.Apply ();   
+
             View.ApplyAppFont ();
         }
 

@@ -2,9 +2,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RefineAddressViewModel : BaseSubViewModel<RefineAddressViewModel>
     {
-        public RefineAddressViewModel(string messageId, string apt, string ringCode, string buildingName)
-			:base(messageId)
+		public void Init(string messageId, string apt, string ringCode, string buildingName)
         {
+			Init(messageId);
+
             AptNumber = apt;
             RingCode  = ringCode;
             BuildingName = buildingName;

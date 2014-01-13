@@ -6,10 +6,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
-        
-
-        public ResetPasswordViewModel (string messageId) : base(messageId)
+		public void Init(string messageId)
 		{
+			Init(messageId);
 		}
 
 		public string Email { get; set; }

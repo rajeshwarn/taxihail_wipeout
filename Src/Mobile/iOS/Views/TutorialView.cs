@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -41,12 +42,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnClose.SetImage (UIImage.FromFile ("Assets/closeButton.png"), UIControlState.Normal);
             btnClose.SetTitle ("", UIControlState.Normal);
             View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.40f);
-            this.AddBindings (new Dictionary<object, string>{ 
-                { btnClose, "{'TouchUpInside':{'Path':'CloseCommand'}}"} 
-            });
-            
+
             CreatePanels (ViewModel.TutorialItemsList);
 
+			var set = this.CreateBindingSet<TutorialView, TutorialViewModel>();
+
+			set.BindSafe(btnClose)
+				.For("TouchUpInside")
+				.To(vm => vm.CloseCommand);
+
+			set.Apply ();
 
             View.ApplyAppFont ();
         }
