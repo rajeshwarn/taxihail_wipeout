@@ -1,5 +1,7 @@
 #region
 
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 
@@ -15,9 +17,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public Address GetPlaceDetail(string reference, string placeName)
+        public Task<Address> GetPlaceDetail(string reference, string placeName)
         {
-            var result = Client.Get(new PlaceDetailRequest
+            var result = Client.GetAsync(new PlaceDetailRequest
             {
                 ReferenceId = reference,
                 PlaceName = placeName

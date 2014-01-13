@@ -188,13 +188,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private void CreditCardFlow()
+        private async void CreditCardFlow()
         {
             if (CanProceedToPayment())
             {
                 using (this.Services().Message.ShowProgress())
                 {
-                    var response = this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
+                    var response = await this.Services().Payment.PreAuthorizeAndCommit(PaymentPreferences.SelectedCreditCard.Token, Amount, CultureProvider.ParseCurrency(MeterAmount), CultureProvider.ParseCurrency(TipAmount), Order.Id);
                     if (!response.IsSuccessfull)
                     {
                         this.Services().Message.ShowProgress(false);

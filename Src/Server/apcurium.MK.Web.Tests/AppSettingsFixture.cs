@@ -1,13 +1,9 @@
-﻿#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using NUnit.Framework;
 using ServiceStack.Text;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -29,47 +25,23 @@ namespace apcurium.MK.Web.Tests
         public override void Setup()
         {
             base.Setup();
-            CreateAndAuthenticateTestAdminAccount();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-            sut.AddOrUpdateAppSettings(new ConfigurationsRequest
+            var task = CreateAndAuthenticateTestAdminAccount();
+            task.Wait();
+
+            new AdministrationServiceClient(BaseUrl, SessionId, "Test").AddOrUpdateAppSettings(new ConfigurationsRequest
             {
                 AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWeb"}}
             });
         }
 
-        //[Test]
-        //public void AddAppSettings()
-        //{
-        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-
-        //    Assert.AreEqual(HttpStatusCode.OK.ToString(), sut.AddAppSettings(new ConfigurationsRequest()
-        //            {
-        //                AppSettings = new Dictionary<string, string> { { "Key.DefaultWeb", "Value.DefaultWeb" } } 
-        //            }).ToString(CultureInfo.InvariantCulture));
-
-        //}
-
         [Test]
         public void UpdateAppSettings()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-
-            sut.AddOrUpdateAppSettings(new ConfigurationsRequest
+            new AdministrationServiceClient(BaseUrl, SessionId, "Test").AddOrUpdateAppSettings(new ConfigurationsRequest
             {
                 AppSettings = new Dictionary<string, string> {{"Key.DefaultSetupWeb", "Value.DefaultSetupWebUpdated"}}
             });
         }
-
-        //[Test] //No more invalid data with AddOrUpdate
-        //public void UpdateAppSettingsWithInvalidData()
-        //{
-        //    var sut = new AdministrationServiceClient(BaseUrl, SessionId, "Test");
-
-        //    Assert.AreEqual(HttpStatusCode.Conflict.ToString(), sut.AddOrUpdateAppSettings(new ConfigurationsRequest()
-        //            {
-        //                AppSettings = new Dictionary<string, string> { { "Key.DefaultSetewfupWeb", "Value.DefaulSetuptWebUpdated" } }
-        //            }).ToString(CultureInfo.InvariantCulture));
-        //}
     }
 
     [Ignore]

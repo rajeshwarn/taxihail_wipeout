@@ -28,14 +28,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return cached;
             }
-            IEnumerable<Address> result = new Address[0];
-            UseServiceClient<PopularAddressesServiceClient>(service =>
-            {
-                result = service.GetPopularAddresses();
-            }
-                );
-            _cacheService.Set(PopularAddressesCacheKey, result.ToArray());
-            return result;
+            var result = UseServiceClientAsync<PopularAddressesServiceClient, IEnumerable<Address>>(service => service.GetPopularAddresses());
+            var popularAddresses = result as Address[] ?? result.ToArray();
+            _cacheService.Set(PopularAddressesCacheKey, popularAddresses.ToArray());
+            return popularAddresses;
         }
     }
 }

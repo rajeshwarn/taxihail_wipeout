@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 namespace apcurium.MK.Booking.Mobile
 {
     public class TaxiHailApp  : MvxApplication
+        , IMvxServiceProducer<IMvxStartNavigation>
     {    
       
 		public TaxiHailApp()
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile
                 return new PaymentService(baseUrl, sessionId, c.Resolve<IConfigurationManager>(), c.Resolve<ICacheService>());
 			});
             
-            container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<ILogger >(), c.Resolve<IPackageInfo>().UserAgent));
+            container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 			
 			container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;

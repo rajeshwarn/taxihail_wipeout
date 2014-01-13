@@ -1,15 +1,13 @@
-﻿#region
-
+﻿using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 
-#endregion
-
 namespace apcurium.MK.Web.Tests
 {
+    [TestFixture]
     public class BraintreePaymentServiceClientFixture : BasePaymentClientFixture
     {
         public BraintreePaymentServiceClientFixture() : base(TestCreditCards.TestCreditCardSetting.Braintree)

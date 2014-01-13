@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Fake;
 using apcurium.MK.Common.Configuration;
@@ -70,42 +71,42 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void ResendConfirmationToDriver(Guid orderId)
+        public Task ResendConfirmationToDriver(Guid orderId)
         {
-            GetClient().ResendConfirmationToDriver(orderId);
+            return GetClient().ResendConfirmationToDriver(orderId);
         }
 
-        public TokenizedCreditCardResponse Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
+        public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             return GetClient().Tokenize(creditCardNumber, expiryDate, cvv);
         }
 
-        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
+        public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
             return GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return GetClient().PreAuthorize(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
+        public Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId)
         {
             return GetClient().CommitPreAuthorized(transactionId);
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return GetClient().PreAuthorizeAndCommit(cardToken, amount, meterAmount, tipAmount, orderId);
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
             return GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             return GetClient().Unpair(orderId);
         }

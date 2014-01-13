@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             }
 
             client.LocalHttpWebRequestFilter = request => request.UserAgent = _userAgent;
+
             return client;
         }
     }

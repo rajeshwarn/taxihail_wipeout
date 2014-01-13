@@ -1446,6 +1446,9 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="CmtRideLinqGenericErrorMessage" xml:space="preserve">
+    <value>There was an error during pairing, verify your credit card information or try again later.</value>
+  </data>
   <data name="CmtTipAmount" xml:space="preserve">
     <value>Tip Amount:</value>
   </data>

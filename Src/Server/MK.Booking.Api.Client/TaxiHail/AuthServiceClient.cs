@@ -1,9 +1,9 @@
 #region
 
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Security;
 using System.Threading.Tasks;
-using ServiceStack.ServiceClient.Web;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else
@@ -21,24 +21,26 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public void CheckSession()
+        public Task CheckSession()
         {
-            Client.Get<Account>("/account");
+            return Client.GetAsync<Account>("/account");
         }
 
-        public AuthenticationData Authenticate(string email, string password)
+        public Task<AuthenticationData> Authenticate(string email, string password)
         {
-            var response = Authenticate(new Auth
-            {
-                UserName = email,
-                Password = password,
-                RememberMe = true,
-            }, "credentials");
-            return new AuthenticationData
+			var responseTask = AuthenticateAsync (new Auth {
+				UserName = email,
+				Password = password,
+				RememberMe = true,
+			}, "credentials");
+			//todo remove when using the async await patten in service layer
+			responseTask.Wait ();
+			var response = responseTask.Result;
+			return Task.FromResult(new AuthenticationData
             {
                 UserName = response.UserName,
                 SessionId = response.SessionId
-            };
+			});
         }
 
 		public async Task<AuthenticationData> AuthenticateFacebook(string facebookId)
@@ -58,33 +60,27 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			};
 		}
 
-        public AuthenticationData AuthenticateTwitter(string twitterId)
+        public Task<AuthenticationData> AuthenticateTwitter(string twitterId)
         {
-            var response = Authenticate(new Auth
+			var responseTask = AuthenticateAsync(new Auth
             {
                 UserName = twitterId,
                 Password = twitterId,
                 RememberMe = true,
             }, "credentialstw");
-
-            return new AuthenticationData
-            {
-                UserName = response.UserName,
-                SessionId = response.SessionId
-            };
+			//todo remove when using the async await patten in service layer
+			responseTask.Wait ();
+			var response = responseTask.Result;
+			return Task.FromResult(new AuthenticationData
+				{
+					UserName = response.UserName,
+					SessionId = response.SessionId
+				});
         }
 
-        private AuthResponse Authenticate(Auth auth, string provider)
-        {
-            var response = Client.Post<AuthResponse>("/auth/" + provider, auth);
-            return response;
-        }
-
-		private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
+        private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)
 		{
 			return Client.PostAsync<AuthResponse>("/auth/" + provider , auth);
 		}
-
-
     }
 }

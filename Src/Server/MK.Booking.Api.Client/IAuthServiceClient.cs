@@ -10,9 +10,10 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public interface IAuthServiceClient
     {
-        void CheckSession();
-		AuthenticationData Authenticate(string email, string password);
-        AuthenticationData AuthenticateTwitter(string twitterId);
+        Task CheckSession();
+
+		Task<AuthenticationData> Authenticate(string email, string password);
+        Task<AuthenticationData> AuthenticateTwitter(string twitterId);
 		Task<AuthenticationData> AuthenticateFacebook (string facebookId);
     }
 }

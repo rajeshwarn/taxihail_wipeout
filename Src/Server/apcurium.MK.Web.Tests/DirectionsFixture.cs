@@ -1,9 +1,5 @@
-﻿#region
-
-using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -29,10 +25,10 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void BasicDirectionSearch()
+        public async void BasicDirectionSearch()
         {
             var sut = new DirectionsServiceClient(BaseUrl, SessionId, "Test");
-            var direction = sut.GetDirectionDistance(45.5062, -73.5726, 45.5273, -73.6344);
+            var direction = await sut.GetDirectionDistance(45.5062, -73.5726, 45.5273, -73.6344);
 
             Assert.IsNotNull(direction);
             Assert.True(direction.Distance.HasValue);

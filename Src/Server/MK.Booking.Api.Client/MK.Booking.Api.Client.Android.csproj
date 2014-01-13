@@ -55,17 +55,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\CmtJsonServiceClient.cs" />
-    <Compile Include="Cmt\CmtAuthCredentials.cs" />
-    <Compile Include="Cmt\CmtAuthResponse.cs" />
-    <Compile Include="Cmt\CmtAuthServiceClient.cs" />
-    <Compile Include="Cmt\CmtBaseServiceClient.cs" />
-    <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
     <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
+    <Compile Include="Payments\CmtPayments\Authorization\OAuthAuthorizer.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureRequest.cs" />
     <Compile Include="Payments\CmtPayments\Capture\CaptureResponse.cs" />
     <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
@@ -123,7 +118,5 @@
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
