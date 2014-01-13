@@ -265,15 +265,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
                     //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
-                    CustomerId = orderStatusDetail.AccountId.ToString(),
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                     CustomerName = accountDetail.Name,
-                    DriverId = orderStatusDetail.DriverInfos.VehicleRegistration,
+                    DriverId = orderStatusDetail.DriverInfos.FirstName,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = request.CardToken
                 });
-
+                    
                 // wait for trip to be updated
                 var watch = new Stopwatch();
                 watch.Start();
