@@ -550,11 +550,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() =>
+				return GetCommand(async () =>
 					{
 						using(this.Services().Message.ShowProgress())
 						{
-							var response = this.Services().Payment.Unpair(Order.Id);
+							var response = await this.Services().Payment.Unpair(Order.Id);
 
 							if(response.IsSuccessfull)
 							{

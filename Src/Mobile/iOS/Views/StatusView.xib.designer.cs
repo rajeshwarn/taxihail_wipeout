@@ -4,9 +4,8 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -17,28 +16,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
-		GradientButton btnCall { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCall { get; set; }
 
 		[Outlet]
-		GradientButton btnCallDriver { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCallDriver { get; set; }
 
 		[Outlet]
-		GradientButton btnCancel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCancel { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
 
 		[Outlet]
-		GradientButton btnNewRide { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnNewRide { get; set; }
 
 		[Outlet]
-		GradientButton btnPay { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnPay { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
 
 		[Outlet]
-		GradientButton btnResend { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnResend { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnUnpair { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
@@ -71,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
 
 		[Outlet]
-		StatusBar statusBar { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.StatusBar statusBar { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIView topSlidingStatus { get; set; }
@@ -102,14 +104,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (viewLine != null) {
-				viewLine.Dispose ();
-				viewLine = null;
+			if (bottomBar != null) {
+				bottomBar.Dispose ();
+				bottomBar = null;
 			}
 
-			if (btnPay != null) {
-				btnPay.Dispose ();
-				btnPay = null;
+			if (btnCall != null) {
+				btnCall.Dispose ();
+				btnCall = null;
 			}
 
 			if (btnCallDriver != null) {
@@ -117,24 +119,49 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnCallDriver = null;
 			}
 
-			if (topVisibleStatus != null) {
-				topVisibleStatus.Dispose ();
-				topVisibleStatus = null;
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
 			}
 
-			if (topSlidingStatus != null) {
-				topSlidingStatus.Dispose ();
-				topSlidingStatus = null;
+			if (btnChangeBooking != null) {
+				btnChangeBooking.Dispose ();
+				btnChangeBooking = null;
+			}
+
+			if (btnNewRide != null) {
+				btnNewRide.Dispose ();
+				btnNewRide = null;
+			}
+
+			if (btnPay != null) {
+				btnPay.Dispose ();
+				btnPay = null;
+			}
+
+			if (btnRefresh != null) {
+				btnRefresh.Dispose ();
+				btnRefresh = null;
+			}
+
+			if (btnResend != null) {
+				btnResend.Dispose ();
+				btnResend = null;
+			}
+
+			if (imgGrip != null) {
+				imgGrip.Dispose ();
+				imgGrip = null;
+			}
+
+			if (lblColor != null) {
+				lblColor.Dispose ();
+				lblColor = null;
 			}
 
 			if (lblConfirmation != null) {
 				lblConfirmation.Dispose ();
 				lblConfirmation = null;
-			}
-
-			if (lblStatus != null) {
-				lblStatus.Dispose ();
-				lblStatus = null;
 			}
 
 			if (lblDriver != null) {
@@ -147,11 +174,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblLicence = null;
 			}
 
-			if (lblTaxiType != null) {
-				lblTaxiType.Dispose ();
-				lblTaxiType = null;
-			}
-
 			if (lblMake != null) {
 				lblMake.Dispose ();
 				lblMake = null;
@@ -162,39 +184,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblModel = null;
 			}
 
-			if (lblColor != null) {
-				lblColor.Dispose ();
-				lblColor = null;
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
 			}
 
-			if (bottomBar != null) {
-				bottomBar.Dispose ();
-				bottomBar = null;
-			}
-
-			if (btnNewRide != null) {
-				btnNewRide.Dispose ();
-				btnNewRide = null;
-			}
-
-			if (btnCancel != null) {
-				btnCancel.Dispose ();
-				btnCancel = null;
-			}
-
-			if (btnCall != null) {
-				btnCall.Dispose ();
-				btnCall = null;
-			}
-
-			if (btnChangeBooking != null) {
-				btnChangeBooking.Dispose ();
-				btnChangeBooking = null;
-			}
-
-			if (statusBar != null) {
-				statusBar.Dispose ();
-				statusBar = null;
+			if (lblTaxiType != null) {
+				lblTaxiType.Dispose ();
+				lblTaxiType = null;
 			}
 
 			if (mapStatus != null) {
@@ -202,9 +199,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				mapStatus = null;
 			}
 
-			if (btnRefresh != null) {
-				btnRefresh.Dispose ();
-				btnRefresh = null;
+			if (statusBar != null) {
+				statusBar.Dispose ();
+				statusBar = null;
+			}
+
+			if (topSlidingStatus != null) {
+				topSlidingStatus.Dispose ();
+				topSlidingStatus = null;
+			}
+
+			if (topVisibleStatus != null) {
+				topVisibleStatus.Dispose ();
+				topVisibleStatus = null;
+			}
+
+			if (txtColor != null) {
+				txtColor.Dispose ();
+				txtColor = null;
 			}
 
 			if (txtDriver != null) {
@@ -217,11 +229,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtLicence = null;
 			}
 
-			if (txtTaxiType != null) {
-				txtTaxiType.Dispose ();
-				txtTaxiType = null;
-			}
-
 			if (txtMake != null) {
 				txtMake.Dispose ();
 				txtMake = null;
@@ -232,19 +239,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtModel = null;
 			}
 
-			if (imgGrip != null) {
-				imgGrip.Dispose ();
-				imgGrip = null;
+			if (txtTaxiType != null) {
+				txtTaxiType.Dispose ();
+				txtTaxiType = null;
 			}
 
-			if (txtColor != null) {
-				txtColor.Dispose ();
-				txtColor = null;
+			if (viewLine != null) {
+				viewLine.Dispose ();
+				viewLine = null;
 			}
 
-			if (btnResend != null) {
-				btnResend.Dispose ();
-				btnResend = null;
+			if (btnUnpair != null) {
+				btnUnpair.Dispose ();
+				btnUnpair = null;
 			}
 		}
 	}
