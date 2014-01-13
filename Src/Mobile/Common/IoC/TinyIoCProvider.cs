@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Cirrious.CrossCore.Core;
 
-namespace apcurium.MK.Booking.Mobile.Mvx_
+namespace apcurium.MK.Booking.Mobile.IoC
 {
 	public class TinyIoCProvider : MvxSingleton<IMvxIoCProvider>, IMvxIoCProvider
     {

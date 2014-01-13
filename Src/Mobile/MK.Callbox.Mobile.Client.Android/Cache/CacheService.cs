@@ -1,133 +1,79 @@
+using System;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using ServiceStack.Text;
 using apcurium.MK.Common.Extensions;
-using System;
+using ServiceStack.Text;
 
-namespace apcurium.MK.Callbox.Mobile.Client.Cache
+namespace apcurium.MK.Booking.Mobile.Client.Cache
 {
-	public class AppCacheService : CacheService ,  IAppCacheService
-	{
-		
-		
-		protected override string CacheKey
-		{
-			get
-			{
-				return "MK.Callbox.Application.Cache";
-			}
-		}
-	}
-	
 	public class CacheService : ICacheService
 	{
-		private const string _cacheKey = "MK.Callbox.Cache";
-		
-		protected virtual string CacheKey
+		private readonly string _cacheKey;
+
+		public CacheService(string cacheKey = null)
 		{
-			get
-			{
-				return _cacheKey;
-			}
+			_cacheKey = cacheKey ?? "MK.Booking.Cache";
 		}
-		
-		
-		
-		public CacheService()
-		{
-			
-		}
-		
-		
-		
+
 		public T Get<T>(string key) where T : class
 		{
-			
-            var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-            var serialized = pref.GetString(key, null);
+			var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
+			var serialized = pref.GetString(key, null);
 
-            if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat"))) //We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
-            {
-                var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
-                if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
-                {
-                    return cacheItem.Value;
-                }
-            }
-            else if (serialized.HasValue()) //Support for older cached item
-            {
-                var item = JsonSerializer.DeserializeFromString<T>(serialized);
-                if (item != null)
-                {
-                    Set(key, item);
-                    return item;
-                }
-            }
+			if ((serialized.HasValue()) && (serialized.ToLower().Contains("expiresat")))
+				//We check for expires at in case the value was cached prior of expiration.  In a future version we should be able to remove this
+			{
+				var cacheItem = JsonSerializer.DeserializeFromString<CacheItem<T>>(serialized);
+				if (cacheItem != null && cacheItem.ExpiresAt > DateTime.Now)
+				{
+					return cacheItem.Value;
+				}
+			}
+			else if (serialized.HasValue()) //Support for older cached item
+			{
+				var item = JsonSerializer.DeserializeFromString<T>(serialized);
+				if (item != null)
+				{
+					Set(key, item);
+					return item;
+				}
+			}
 
 
-
-            return default(T);
+			return default(T);
 		}
-		
+
 		public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
 		{
 			var item = new CacheItem<T>(obj, expiresAt);
 			var serialized = JsonSerializer.SerializeToString(item);
-			var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-			pref.Edit().PutString( key, serialized ).Commit();
+			var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
+			pref.Edit().PutString(key, serialized).Commit();
 		}
-		
-		
-		
-		
+
+
 		public void Set<T>(string key, T obj) where T : class
 		{
-			Set(key, obj, DateTime.Now.AddYears( 100 ));
+			Set(key, obj, DateTime.MaxValue);
 		}
-		
-		//public void Set<T>(string key, T obj)
-		//{
-		//    var serialized = JsonSerializer.SerializeToString(obj);
-		//    
-		
-		//}
-		
+
+
 		public void Clear(string key)
 		{
-			var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
-			var serialized = pref.GetString( key , null );
+			var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
+			var serialized = pref.GetString(key, null);
 			if (serialized.HasValue())
 			{
 				pref.Edit().Remove(key).Commit();
 			}
 		}
-		
-		
+
+
 		public void ClearAll()
 		{
-			var pref = Application.Context.GetSharedPreferences(CacheKey, FileCreationMode.Private);
+			var pref = Application.Context.GetSharedPreferences(_cacheKey, FileCreationMode.Private);
 			pref.Edit().Clear().Commit();
 		}
-		
 	}
-	
-	
-	public class CacheItem<T> where T : class
-	{
-		public CacheItem(T value)
-		{
-			this.Value = value;
-		}
-		public CacheItem(T value, DateTime expireAt)
-		{
-			this.Value = value;
-			this.ExpiresAt = expireAt;
-		}
-		
-		public DateTime ExpiresAt { get; set; }
-		public T Value { get; set; }
-	}
-	
-
 }

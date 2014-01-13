@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Mvx_;
+using apcurium.MK.Booking.Mobile.IoC;
 using Cirrious.MvvmCross.Touch.Platform;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;

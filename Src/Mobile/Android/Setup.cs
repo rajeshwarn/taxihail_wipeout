@@ -22,7 +22,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Cirrious.MvvmCross.ViewModels;
-using apcurium.MK.Booking.Mobile.Mvx_;
+using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client
