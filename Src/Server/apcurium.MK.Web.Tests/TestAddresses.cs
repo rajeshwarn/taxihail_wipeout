@@ -1,8 +1,4 @@
-﻿#region
-
-using apcurium.MK.Common.Entity;
-
-#endregion
+﻿using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -33,7 +29,6 @@ namespace apcurium.MK.Web.Tests
             };
         }
 
-
         public static Address GetAddress3()
         {
             return new Address
@@ -45,7 +40,6 @@ namespace apcurium.MK.Web.Tests
                 Longitude = -73.658648
             };
         }
-
 
         internal static Address GetAddress1InZone()
         {

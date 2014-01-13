@@ -13,7 +13,6 @@ namespace apcurium.MK.Common.Configuration
         string GetSetting(string key);
         T GetSetting<T>(string key, T defaultValue) where T : struct;
         IDictionary<string, string> GetSettings();
-
         ClientPaymentSettings GetPaymentSettings(bool cleanCache = false);
     }
 }

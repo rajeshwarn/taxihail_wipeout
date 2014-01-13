@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public IMvxCommand ConfirmPayment
 		{
 			get {
-				return GetCommand (() =>
+				return GetCommand (async () =>
 					{         
 						using(this.Services().Message.ShowProgress())
 						{   
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 								return;
 							}
 
-							var pairingResponse = this.Services().Payment.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+						var pairingResponse = await this.Services().Payment.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
 
 							this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), pairingResponse.IsSuccessfull ? CmtRideLinqPairingState.Success : CmtRideLinqPairingState.Failed);
 

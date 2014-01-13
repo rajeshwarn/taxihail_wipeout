@@ -1,10 +1,5 @@
-﻿#region
-
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Common.Diagnostic;
+﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -16,7 +11,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
 
-            _sut = new VehicleServiceClient(BaseUrl, SessionId, new Logger(), "Test");
+            _sut = new VehicleServiceClient(BaseUrl, SessionId, "Test");
         }
 
         private VehicleServiceClient _sut;
@@ -34,9 +29,9 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void get_available_vehicles()
+        public async void get_available_vehicles()
         {
-            _sut.GetAvailableVehiclesAsync(45.420833, -75.69);
+            await _sut.GetAvailableVehiclesAsync(45.420833, -75.69);
 
             Assert.Inconclusive("Service returns no vehicles");
         }

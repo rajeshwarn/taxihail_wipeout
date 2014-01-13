@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -32,41 +28,40 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void when_creating_an_order_with_a_new_pickup_address()
+        public async void when_creating_an_order_with_a_new_pickup_address()
         {
             //Arrange
-            var newAccount = CreateAndAuthenticateTestAccount();
+            var newAccount = await CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
-            const int providerId = Provider.MobileKnowledgeProviderId;
 
             //Act
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
                 {
-                    Distance = 3,
-                    Price = 10
-                }
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 7,
-                ProviderId = providerId,
-                Phone = "514-555-1212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-            orderService.CreateOrder(order);
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Distance = 3,
+                            Price = 10
+                        },
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 7,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-1212",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        }
+                };
+            await orderService.CreateOrder(order);
 
             //Assert
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+            var addresses = await sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
             var address = addresses.Single();
 
@@ -78,12 +73,11 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(order.PickupAddress.Longitude, address.Longitude);
         }
 
-
         [Test]
-        public void when_save_a_favorite_address_with_an_historic_address_existing()
+        public async void when_save_a_favorite_address_with_an_historic_address_existing()
         {
             //Arrange
-            var newAccount = CreateAndAuthenticateTestAccount();
+            var newAccount = await CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
             var order = new CreateOrder
@@ -117,73 +111,70 @@ namespace apcurium.MK.Web.Tests
                     Price = 10
                 }
             };
-            orderService.CreateOrder(order);
-
-
+            await orderService.CreateOrder(order);
+            
             //Act
             var addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveAddress
-            {
-                Id = addressId,
-                Address = new Address
+            await sut.AddFavoriteAddress(new SaveAddress
                 {
-                    FriendlyName = "La Boite à Jojo",
-                    FullAddress = "1234 rue Saint-Denis",
-                    Latitude = 45.515065,
-                    Longitude = -73.558064,
-                    Apartment = "3939",
-                    RingCode = "3131"
-                }
-            });
+                    Id = addressId,
+                    Address = new Address
+                        {
+                            FriendlyName = "La Boite à Jojo",
+                            FullAddress = "1234 rue Saint-Denis",
+                            Latitude = 45.515065,
+                            Longitude = -73.558064,
+                            Apartment = "3939",
+                            RingCode = "3131"
+                        }
+                });
 
             //Assert
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+            var addresses = await sut.GetHistoryAddresses(newAccount.Id);
 
             Assert.IsFalse(addresses.Any(x => x.Id.Equals(addressId)));
         }
 
-
         [Test]
-        public void when_removing_with_a_new_pickup_address()
+        public async void when_removing_with_a_new_pickup_address()
         {
             //Arrange
-            var newAccount = CreateAndAuthenticateTestAccount();
+            var newAccount = await CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl, SessionId, "Test");
-
-
+            
             var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),
-                Estimate = new CreateOrder.RideEstimate
                 {
-                    Distance = 3,
-                    Price = 10
-                }
-            };
-            order.Settings = new BookingSettings
-            {
-                ChargeTypeId = 99,
-                VehicleTypeId = 1,
-                ProviderId = Provider.MobileKnowledgeProviderId,
-                Phone = "514-555-1212",
-                Passengers = 6,
-                NumberOfTaxi = 1,
-                Name = "Joe Smith"
-            };
-            orderService.CreateOrder(order);
+                    Id = Guid.NewGuid(),
+                    PickupAddress = TestAddresses.GetAddress1(),
+                    PickupDate = DateTime.Now,
+                    DropOffAddress = TestAddresses.GetAddress2(),
+                    Estimate = new CreateOrder.RideEstimate
+                        {
+                            Distance = 3,
+                            Price = 10
+                        },
+                    Settings = new BookingSettings
+                        {
+                            ChargeTypeId = 99,
+                            VehicleTypeId = 1,
+                            ProviderId = Provider.MobileKnowledgeProviderId,
+                            Phone = "514-555-1212",
+                            Passengers = 6,
+                            NumberOfTaxi = 1,
+                            Name = "Joe Smith"
+                        }
+                };
+            await orderService.CreateOrder(order);
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, "Test");
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+            var addresses = await sut.GetHistoryAddresses(newAccount.Id);
 
             //Act
             var addressId = addresses.First().Id;
-            sut.RemoveAddress(addressId);
+            await sut.RemoveAddress(addressId);
 
             //Assert
-            addresses = sut.GetHistoryAddresses(newAccount.Id);
+            addresses = await sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(false, addresses.Any(x => x.Id == addressId));
         }
     }

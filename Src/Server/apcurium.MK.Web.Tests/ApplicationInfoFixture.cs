@@ -1,9 +1,5 @@
-﻿#region
-
-using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
-
-#endregion
 
 namespace apcurium.MK.Web.Tests
 {
@@ -27,17 +23,15 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureTearDown();
         }
-
-
+        
         [Test]
-        public void GetInfo()
+        public async void GetInfo()
         {
             var client = new ApplicationInfoServiceClient(BaseUrl, null, "Test");
-            var appInfo = client.GetAppInfoAsync();
-
-
-            Assert.AreEqual(GetType().Assembly.GetName().Version.ToString(), appInfo.Result.Version);
-            Assert.AreEqual("Dev", appInfo.Result.SiteName);
+            var appInfo = await client.GetAppInfoAsync();
+            
+            Assert.AreEqual(GetType().Assembly.GetName().Version.ToString(), appInfo.Version);
+            Assert.AreEqual("Dev", appInfo.SiteName);
         }
     }
 }

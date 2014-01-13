@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
-                VehicleNumber = "Cab555",
+                VehicleNumber = "555",
                 Fare = 26.32,
                 Toll = 3.68,
                 Tip = 5.25,
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
-                VehicleNumber = "Cab555",
+                VehicleNumber = "555",
                 Fare = 26.32,
                 Toll = 3.68,
                 Tip = 5.25,
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             {
                 EmailAddress = "test@example.net",
                 IBSOrderId = 777,
-                VehicleNumber = "Cab555",
+                VehicleNumber = "555",
                 Fare = 26.32,
                 Toll = 3.68,
                 Tip = 5.25,
