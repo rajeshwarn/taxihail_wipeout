@@ -7,15 +7,13 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
-    local:BackgroundSource="backgroundblue"
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
             android:paddingTop="15dip"
             android:paddingRight="15dip"
             android:paddingLeft="15dip"
@@ -25,90 +23,119 @@
                 android:src="@drawable/logo3"
                 android:gravity="center_horizontal"
                 android:id="@+id/imgLogo"
-                android:paddingBottom="@dimen/VerticalPadding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <EditText
                 android:id="@+id/Username"
                 local:MvxBind="{'Text':{'Path':'Email'}}"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
-                android:paddingBottom="@dimen/VerticalPadding"
+                android:layout_height="44dip"
                 android:hint="@string/EmailLabel"
                 android:inputType="textEmailAddress"
                 android:nextFocusDown="@+id/Password"
                 android:nextFocusUp="@+id/LoginButton" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <EditText
                 android:id="@+id/Password"
                 local:MvxBind="{'Text':{'Path':'Password'}}"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
-                android:paddingBottom="@dimen/VerticalPadding"
+                android:layout_height="44dip"
                 android:hint="@string/PasswordLabel"
                 android:inputType="textPassword" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <TextView
                 android:id="@+id/ForgotPasswordButton"
                 style="@style/TitleTextBold"
                 android:layout_width="wrap_content"
-                android:layout_height="40dip"
+                android:layout_height="wrap_content"
                 local:MvxBind="{'Click':{'Path':'ResetPassword'}}"
                 android:text="@string/LoginForgotPasswordButton"
-                android:paddingBottom="@dimen/VerticalPadding"
                 android:layout_alignParentRight="true"
-                android:layout_gravity="right" />
+                android:layout_gravity="right"
+                android:layout_marginRight="3dp" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/Height"
                 android:layout_centerInParent="true"
-                android:paddingTop="15dip"
-                android:paddingBottom="@dimen/VerticalPadding"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/SignUpButton"
                     local:MvxBind="{'Click':{'Path':'SignUp'}}"
-                    android:text="@string/SignUpButton"
+                    android:text="Register"
                     android:layout_weight=".475"
                     android:layout_width="0dip"
-                    android:layout_height="40dip" />
+                    android:layout_height="@dimen/Height"
+                    android:singleLine="true" />
                 <View
-                    android:layout_height="20dip"
+                    android:layout_height="@dimen/Height"
                     android:layout_width="0dip"
                     android:layout_weight=".05"
-                    android:gravity="center"
                     android:visibility="invisible" />
                 <Button
                     local:MvxBind="{'Click':{'Path':'SignInCommand'}}"
-                    android:text="@string/SignInButton"
+                    android:text="Sign In"
                     android:layout_weight=".475"
                     android:layout_width="0dip"
-                    android:layout_height="40dip" />
+                    android:layout_height="@dimen/Height"
+                    style="@style/ButtonHiliStyle" />
             </LinearLayout>
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <Button
                 android:id="@+id/FacebookButton"
                 local:MvxBind="{'Click':{'Path':'LoginFacebook'}}"
                 android:text="@string/FacebookButton"
                 android:drawableLeft="@drawable/facebook_icon_state"
                 android:drawablePadding="-2dip"
-                android:paddingBottom="@dimen/VerticalPadding"
+                android:layout_gravity="center|left"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip" />
+                android:layout_height="@dimen/Height" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <Button
                 android:id="@+id/TwitterButton"
                 local:MvxBind="{'Click':{'Path':'LoginTwitter'}}"
                 android:text="@string/TwitterButton"
                 android:drawableLeft="@drawable/twitter_icon_state"
                 android:drawablePadding="-2dip"
-                android:paddingBottom="@dimen/VerticalPadding"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip" />
+                android:layout_height="@dimen/Height" />
+            <View
+                android:layout_height="@dimen/VerticalPadding"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:visibility="invisible" />
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/Height"
-                android:paddingBottom="@dimen/VerticalPadding"
+                android:layout_gravity="center|right"
                 android:id="@+id/ServerButton"
                 android:text="Change Server"
-                android:gravity="center"
                 android:drawablePadding="-2dip"
+                android:visibility="invisible"
                 android:drawableLeft="@drawable/server_button_state" />
         </LinearLayout>
     </RelativeLayout>

@@ -12,7 +12,6 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Controls;
@@ -93,15 +92,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }
 
-            var linkResetPassword = FindViewById<UnderlineTextView>(Resource.Id.ForgotPasswordButton);
-
-            linkResetPassword.SetTextColor(StyleManager.Current.NavigationTitleColor.ConvertToColor());
-
             Observable.FromEventPattern<EventHandler, EventArgs>(
                 ev => ViewModel.LoginSucceeded += ev,
                 ev => ViewModel.LoginSucceeded -= ev)
                 .Subscribe(_ => Observable.Timer(TimeSpan.FromSeconds(2))
                     .Subscribe(__ => RunOnUiThread(Finish)));
+
+			// There is no other way to clean the typeface for password hint
+			// http://stackoverflow.com/questions/3406534/password-hint-font-in-android
+
+			EditText password = FindViewById<EditText>(Resource.Id.Password);
+			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+
         }
 
         private void PromptServer()
