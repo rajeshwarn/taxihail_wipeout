@@ -86,5 +86,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
             }
         }
+
+		public AsyncCommand CancelCommand
+		{
+			get { return GetCommand (() => RequestClose (this)); }
+		}
+
     }
 }
