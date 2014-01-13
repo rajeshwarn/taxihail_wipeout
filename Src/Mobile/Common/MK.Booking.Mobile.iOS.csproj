@@ -372,6 +372,4 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup />
-  <Folder Include="IoC\" />
 </Project>
