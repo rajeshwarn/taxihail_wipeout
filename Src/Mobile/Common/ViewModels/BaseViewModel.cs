@@ -7,6 +7,7 @@ using System;
 using TinyIoC;
 using System.Runtime.CompilerServices;
 using Cirrious.MvvmCross.ViewModels;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -78,6 +79,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return new AsyncCommand<T>(action);
         }
+		
+		public ICommand CloseCommand
+		{
+			get
+			{
+				return GetCommand(() => Close(this));
+			}
+		}
 
         readonly IDictionary<string, AsyncCommand> _commands = new Dictionary<string, AsyncCommand>();
         protected AsyncCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
