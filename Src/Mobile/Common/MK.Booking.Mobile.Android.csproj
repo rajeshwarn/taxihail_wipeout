@@ -177,8 +177,6 @@
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
-    <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
-    <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

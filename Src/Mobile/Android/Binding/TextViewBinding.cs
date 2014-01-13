@@ -3,10 +3,11 @@ using Android.Widget;
 using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class TextViewBinding : MvxTargetBinding
+	public class TextViewBinding : MvxAndroidTargetBinding
     {
 		public TextViewBinding(TextView target)
 			:base(target)
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void HandleSelectedChanged(object sender, EventArgs e)
         {
-			var control = (TextView)target
+			var control = (TextView)Target;
             FireValueChanged(control.Text);
         }
 

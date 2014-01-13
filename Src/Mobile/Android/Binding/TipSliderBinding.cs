@@ -8,12 +8,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
     public class TipSliderBinding : MvxTargetBinding
     {
-        private readonly TipSlider _control;
-
-        public TipSliderBinding(TipSlider control)
+		public TipSliderBinding(TipSlider target)
+			:base(target)
         {
-            _control = control;
-            _control.PercentChanged += HandleSelectedChanged;
+			target.PercentChanged += HandleSelectedChanged;
         }
 
         public override MvxBindingMode DefaultMode
@@ -33,13 +31,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void HandleSelectedChanged(object sender, EventArgs e)
         {
-            FireValueChanged(_control.Percent);
+			var control = Target  as TipSlider;
+            FireValueChanged(control.Percent);
         }
 
 
         public override void SetValue(object value)
         {
-            _control.Percent = (int) value;
+			var control = Target  as TipSlider;
+            control.Percent = (int) value;
         }
     }
 }

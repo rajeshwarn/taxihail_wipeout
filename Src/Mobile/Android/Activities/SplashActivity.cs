@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Android.App;
 using Android.Content.PM;
+using Android.OS;
 using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 

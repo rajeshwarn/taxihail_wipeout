@@ -188,8 +188,6 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="Style\FontDefinition.cs" />
-    <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
-    <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="TaxiHailApp.cs" />

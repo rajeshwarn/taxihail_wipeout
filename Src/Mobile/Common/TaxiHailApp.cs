@@ -24,7 +24,6 @@ using apcurium.MK.Booking.Mobile.Messages;
 namespace apcurium.MK.Booking.Mobile
 {
     public class TaxiHailApp  : MvxApplication
-        , IMvxServiceProducer<IMvxStartNavigation>
     {    
       
 		public TaxiHailApp()

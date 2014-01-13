@@ -59,8 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			base.InitializeLastChance();
 
-            TinyIoCServiceProviderSetup.Initialize();
-
             TinyIoCContainer.Current.Register<IAnalyticsService, GoogleAnalyticsService>();
 
             var locationService = new LocationService( );
