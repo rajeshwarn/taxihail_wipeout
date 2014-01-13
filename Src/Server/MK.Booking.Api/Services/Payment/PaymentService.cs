@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Cmt.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -138,7 +139,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return response;
         }
 
-        public TestServerPaymentSettingsResponse Post(TestCmtSettingsRequest request)
+        public async Task<TestServerPaymentSettingsResponse> Post(TestCmtSettingsRequest request)
         {
             var response = new TestServerPaymentSettingsResponse
             {
@@ -149,8 +150,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             try
             {
                 var cc = new TestCreditCards(TestCreditCards.TestCreditCardSetting.Cmt).Visa;
-
-                if (CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate))
+                var result = await CmtPaymentClient.TestClient(request.CmtPaymentSettings, cc.Number, cc.ExpirationDate);
+                if (result)
                 {
                     return new TestServerPaymentSettingsResponse
                     {

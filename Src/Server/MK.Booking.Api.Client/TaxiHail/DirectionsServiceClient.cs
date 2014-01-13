@@ -1,6 +1,8 @@
 #region
 
 using System.Globalization;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 #endregion
@@ -15,13 +17,13 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public DirectionInfo GetDirectionDistance(double originLatitude, double originLongitude,
+        public Task<DirectionInfo> GetDirectionDistance(double originLatitude, double originLongitude,
             double destinationLatitude, double destinationLongitude)
         {
             var resource = string.Format(CultureInfo.InvariantCulture,
                 "/directions?OriginLat={0}&OriginLng={1}&DestinationLat={2}&DestinationLng={3}", originLatitude,
                 originLongitude, destinationLatitude, destinationLongitude);
-            var result = Client.Get<DirectionInfo>(resource);
+            var result = Client.GetAsync<DirectionInfo>(resource);
             return result;
         }
     }

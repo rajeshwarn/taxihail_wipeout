@@ -3,6 +3,8 @@
 using System;
 using System.Globalization;
 using System.Net;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Tokenize;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -31,23 +33,24 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         private CmtPaymentServiceClient CmtPaymentServiceClient { get; set; }
 
-        public TokenizedCreditCardResponse Tokenize(string accountNumber, DateTime expiryDate, string cvv)
+        public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
             return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate);
         }
 
-        public DeleteTokenizedCreditcardResponse ForgetTokenizedCard(string cardToken)
+        public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
-            return Client.Delete(new DeleteTokenizedCreditcardCmtRequest
+            var result = await Client.DeleteAsync(new DeleteTokenizedCreditcardCmtRequest
             {
                 CardToken = cardToken
             });
+            return result;
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(string cardToken, double amount, double meterAmount,
+        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,
             double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizePaymentCmtRequest
+            return Client.PostAsync(new PreAuthorizePaymentCmtRequest
             {
                 Amount = amount,
                 Meter = meterAmount,
@@ -57,18 +60,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPreAuthorized(string transactionId)
+        public Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId)
         {
-            return Client.Post(new CommitPreauthorizedPaymentCmtRequest
+            return Client.PostAsync(new CommitPreauthorizedPaymentCmtRequest
             {
                 TransactionId = transactionId,
             });
         }
 
-        public CommitPreauthorizedPaymentResponse PreAuthorizeAndCommit(string cardToken, double amount,
+        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-            return Client.Post(new PreAuthorizeAndCommitPaymentCmtRequest
+            return Client.PostAsync(new PreAuthorizeAndCommitPaymentCmtRequest
             {
                 Amount = amount,
                 MeterAmount = meterAmount,
@@ -78,16 +81,16 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             });
         }
 
-        public void ResendConfirmationToDriver(Guid orderId)
+        public Task ResendConfirmationToDriver(Guid orderId)
         {
-            Client.Post(new ResendPaymentConfirmationRequest {OrderId = orderId});
+            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
             try
             {
-                var response = Client.Post(new PairingRidelinqCmtRequest
+                var response = await Client.PostAsync(new PairingRidelinqCmtRequest
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
@@ -103,20 +106,20 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }            
         }
 
-        public BasePaymentResponse Unpair(Guid orderId)
+        public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return Client.Post(new UnpairingRidelinqCmtRequest
+            return Client.PostAsync(new UnpairingRidelinqCmtRequest
             {
                 OrderId = orderId
             });
         }
 
-        private static TokenizedCreditCardResponse Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
+        private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
             string accountNumber, DateTime expiryDate)
         {
             try
             {
-                var response = cmtPaymentServiceClient.Post(new TokenizeRequest
+                var response = await cmtPaymentServiceClient.PostAsync(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
                     ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
@@ -144,10 +147,11 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             }
         }
 
-        public static bool TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
+        public async static Task<bool> TestClient(CmtPaymentSettings serverPaymentSettings, string number, DateTime date)
         {
             var cmtPaymentServiceClient = new CmtPaymentServiceClient(serverPaymentSettings, null, "test");
-            return Tokenize(cmtPaymentServiceClient, number, date).IsSuccessfull;
+            var result = await Tokenize(cmtPaymentServiceClient, number, date);
+            return result.IsSuccessfull;
         }
     }
 }

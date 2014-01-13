@@ -325,13 +325,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMap ();
 
-                if (IsCmtRideLinq && this.Services().Account.CurrentAccount.DefaultCreditCard != null)
+				var isLoaded = status.IbsStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IbsStatusId.Equals(VehicleStatuses.Common.Done);
+				if (isLoaded && IsCmtRideLinq && this.Services().Account.CurrentAccount.DefaultCreditCard != null)
 					{
-                        var isLoaded = status.IbsStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IbsStatusId.Equals(VehicleStatuses.Common.Done);
-                        var isPaired = this.Services().Booking.IsPaired(Order.Id);
+						var isPaired = this.Services().Booking.IsPaired(Order.Id);
                         var pairState = this.Services().Cache.Get<string>("CmtRideLinqPairState" + Order.Id.ToString());
 						var isPairBypass = (pairState == CmtRideLinqPairingState.Failed) || (pairState == CmtRideLinqPairingState.Canceled) || (pairState == CmtRideLinqPairingState.Unpaired);
-						if (isLoaded && !isPaired && !_isCurrentlyPairing && !isPairBypass)
+						if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
 						{
 							_isCurrentlyPairing = true;
 							GoToCmtPairScreen();
@@ -367,12 +367,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             var isPaired = this.Services().Booking.IsPaired(Order.Id);
 			IsUnpairButtonVisible = IsCmtRideLinq && isPaired;
+
 			IsPayButtonVisible =  (statusId == VehicleStatuses.Common.Done
 								||statusId == VehicleStatuses.Common.Loaded)
-                                && (isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue);
+                                && (isPayEnabled && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
+			                    && !IsUnpairButtonVisible;
 			
-            IsCancelButtonVisible = statusId == null ||
-                                    statusId == VehicleStatuses.Common.Assigned 
+            IsCancelButtonVisible = statusId == null 
+			                    || statusId == VehicleStatuses.Common.Assigned 
                                 || statusId == VehicleStatuses.Common.Waiting 
                                 || statusId == VehicleStatuses.Common.Arrived
                                 || statusId == VehicleStatuses.Common.Scheduled;
@@ -530,19 +532,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ResendConfirmationToDriver
-        {
-            get {
-                return GetCommand (() =>
-                                   {
-                     if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
-                    {
-                        this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
-                        this.Services().Payment.Unpair(Order.Id);
-                    }
-                });
-            }
-        }
+		public AsyncCommand ResendConfirmationToDriver
+		{
+			get
+			{
+				return GetCommand(() =>
+					{
+						if (this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue)
+						{
+							this.Services().Payment.ResendConfirmationToDriver(Order.Id);
+						}
+					});
+			}
+		}
+
+		public AsyncCommand Unpair
+		{
+			get
+			{
+				return GetCommand(async () =>
+					{
+						using(this.Services().Message.ShowProgress())
+						{
+							var response = await this.Services().Payment.Unpair(Order.Id);
+
+							if(response.IsSuccessfull)
+							{
+								this.Services().Cache.Set("CmtRideLinqPairState" + Order.Id.ToString(), CmtRideLinqPairingState.Unpaired);
+								RefreshStatus();
+							}
+							else
+							{
+								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["CmtRideLinqUnpairErrorMessage"]);
+							}
+						}
+					});
+			}
+		}
 
         bool _isUnpairButtonVisible;
         public bool IsUnpairButtonVisible

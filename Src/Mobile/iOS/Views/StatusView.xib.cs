@@ -78,7 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusCancelButton"), AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Localize.GetValue("StatusNewRideButton"), AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton ((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+				AppButtons.FormatStandardButton((GradientButton)btnUnpair, Localize.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
 
                 NavigationItem.TitleView = new TitleView(null, Localize.GetValue("GenericTitle"), true);
                                 
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
                     btnPay.SetFrame(btnCancel.Frame);
                     btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
+					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
                     UpdateCallButtonSize (callFrame);
@@ -153,9 +155,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                     { btnResend, new B("Hidden","IsResendButtonVisible","BoolInverter")
                         .Add("Enabled","IsResendButtonVisible")
-                            .Add("TouchUpInside","ResendConfirmationToDriver") },
+                        .Add("TouchUpInside","ResendConfirmationToDriver") },
 
-                    { btnNewRide, new B("TouchUpInside","NewRide") }
+					{ btnNewRide, new B("TouchUpInside","NewRide") },
+
+					{ btnCancel, new B("TouchUpInside","Unpair")
+						.Add("Hidden","IsUnpairButtonVisible","BoolInverter")}
 					
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();

@@ -467,3 +467,6 @@
 "CmtCardNumber"="Card Number:";
 "CmtRideLinqCancelChanges"="Cancel";
 "CmtRideLinqSaveChanges"="Save";
+"CmtRideLinqGenericErrorMessage"="There was an error during pairing, verify your credit card information or try again later.";
+"CmtRideLinqUnpairErrorMessage"="There was an error during unpairing, please try again later.";
+"CmtRideLinqErrorTitle"="Error";

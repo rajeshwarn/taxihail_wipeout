@@ -1,8 +1,4 @@
-﻿#region
-
-using NUnit.Framework;
-
-#endregion
+﻿using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
 {

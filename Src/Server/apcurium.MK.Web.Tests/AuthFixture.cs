@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -11,7 +8,6 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class AuthFixture : BaseTest
     {
-
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -24,33 +20,30 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureTearDown();
         }
 
-
         [Test]
-        public void when_user_sign_in()
+        public async void when_user_sign_in()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.Authenticate(TestAccount.Email, TestAccountPassword);
+            var response = await sut.Authenticate(TestAccount.Email, TestAccountPassword);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
             Assert.AreEqual(TestAccount.Email, response.UserName);
         }
 
-
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
         public void when_user_sign_in_with_invalid_password()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.Authenticate(TestAccount.Email, "wrong password");
+            //todo remove when client is using good patterns async/await
+            Assert.Throws<AggregateException>(async () => await sut.Authenticate(TestAccount.Email, "wrong password"), "InvalidLoginMessage");
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "InvalidLoginMessage")]
         public void when_user_sign_in_with_invalid_email()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+            Assert.Throws<AggregateException>(async () => await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword), "InvalidLoginMessage");
         }
 
         [Test]
@@ -66,26 +59,18 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_user_sign_in_with_invalid_facebook_id()
+        public void when_user_sign_in_with_invalid_facebook_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            try
-            {
-                await sut.AuthenticateFacebook(Guid.NewGuid().ToString());
-                Assert.Fail();
-            }
-            catch(WebServiceException e)
-            {
-                Assert.AreEqual("Invalid UserName or Password", e.ErrorMessage);
-            }
+            Assert.Throws<WebServiceException>(async () => await sut.AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
 
         [Test]
         public async void when_user_sign_in_with_twitter()
         {
-            var account = GetNewTwitterAccount();
+            var account = await GetNewTwitterAccount();
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            var response = sut.AuthenticateTwitter(account.TwitterId);
+            var response = await sut.AuthenticateTwitter(account.TwitterId);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.SessionId, "Test");
@@ -96,8 +81,7 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_invalid_twitter_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(() => sut
-                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+            Assert.Throws<AggregateException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }

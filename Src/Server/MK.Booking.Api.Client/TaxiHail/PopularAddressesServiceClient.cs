@@ -1,6 +1,8 @@
 #region
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
 
@@ -16,18 +18,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public IList<Address> GetPopularAddresses()
+        public Task<IEnumerable<Address>> GetPopularAddresses()
         {
             var req = string.Format("/popularaddresses");
-            var addresses = Client.Get<IList<Address>>(req);
+            var addresses = Client.GetAsync<IEnumerable<Address>>(req);
             return addresses;
         }
 
 #if  !CLIENT
-        public void Add(PopularAddress address)
+        public Task Add(PopularAddress address)
         {
             var req = string.Format("/admin/popularaddresses");
-            Client.Post<object>(req, address);
+            return Client.PostAsync<object>(req, address);
         }
 #endif
     }
