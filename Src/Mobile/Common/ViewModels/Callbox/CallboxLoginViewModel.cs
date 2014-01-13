@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             set
             {
                 _email = value;
-                FirePropertyChanged(() => Email);
+				RaisePropertyChanged();
             }
         }
 
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             set
             {
                 _password = value;
-                FirePropertyChanged(() => Password);
+				RaisePropertyChanged();
             }
         }
 
@@ -82,13 +82,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     Password = string.Empty;
                     if (this.Services().Account.GetActiveOrdersStatus().Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
                     {
-                        RequestNavigate<CallboxOrderListViewModel>(true);
+						ShowViewModel<CallboxOrderListViewModel>();
                     }
                     else
                     {
-                        RequestNavigate<CallboxCallTaxiViewModel>(true);
+						ShowViewModel<CallboxCallTaxiViewModel>();
                     }
-                    RequestClose(this);
+                    Close(this);
                 }
             }
             finally

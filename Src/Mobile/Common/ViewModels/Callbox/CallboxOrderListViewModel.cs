@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 						if (  (!Orders.Any()) && ( _orderToCreate == null ) ) 
 						{
-							RequestNavigate<CallboxCallTaxiViewModel>(true);
+							ShowViewModel<CallboxCallTaxiViewModel>();
 							Close();
 						}
 
@@ -147,9 +147,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			}
 		}
 
-		protected override void Close()
+
+		protected void Close()
 		{
-			base.Close();
+			base.Close(this);
 
 			UnsubscribeToken();
 		}
@@ -222,7 +223,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 					Orders.Remove(orderToRemove) ;
 					if (!Orders.Any())
 					{                                                   
-						RequestNavigate<CallboxCallTaxiViewModel>(true);
+						ShowViewModel<CallboxCallTaxiViewModel>();
 						Close();
 					}
 				});
