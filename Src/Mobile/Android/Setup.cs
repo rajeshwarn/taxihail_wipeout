@@ -1,5 +1,3 @@
-
-
 using System;
 using System.Collections.Generic;
 using Android.App;
@@ -26,58 +24,45 @@ using Cirrious.MvvmCross.Binding.Android;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public class Setup
-        : MvxBaseAndroidBindingSetup
+	public class Setup : MvxBaseAndroidBindingSetup
     {
-        public Setup(Context applicationContext)
-            : base(applicationContext)
+		public Setup(Context applicationContext) : base(applicationContext)
         {
         }
 
         protected override void InitializeAdditionalPlatformServices()
         {
-            base.InitializeAdditionalPlatformServices();
+			base.InitializeAdditionalPlatformServices();
 
+			TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
+			TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
+			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(ApplicationContext));
+			TinyIoCContainer.Current.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-            TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
+			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
 
-            TinyIoCContainer.Current.Resolve<AbstractLocationService>().Start();
-
-
-            TinyIoCContainer.Current.Register<IAnalyticsService>(
-                (c, x) =>
-                    new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
-
-            TinyIoCContainer.Current.Register<IMessageService>(new MessageService(ApplicationContext));
-            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
-            TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
+			TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<ILocalization>(new Localize(ApplicationContext));
-            TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
-            TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-            TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
-            TinyIoCContainer.Current.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
+			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
+			TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+			TinyIoCContainer.Current.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
+			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
+			TinyIoCContainer.Current.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
 
-            TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
-            TinyIoCContainer.Current.Register<IPushNotificationService>(
-                (c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
-            
 			InitializeSocialNetwork();
         }
 
         protected override void FillTargetFactories(IMvxTargetBindingFactoryRegistry registry)
         {
             base.FillTargetFactories(registry);
-            registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem",
-                spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
-            registry.RegisterFactory(new MvxCustomBindingFactory<EditTextLeftImage>("CreditCardNumber",
-                editTextLeftImage => new EditTextCreditCardNumberBinding(editTextLeftImage)));
-            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom",
-                cell => new CellItemBinding(cell, CellItemBindingProperty.IsBottom)));
-            registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop",
-                cell => new CellItemBinding(cell, CellItemBindingProperty.IsTop)));
+			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem", spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
+			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextLeftImage>("CreditCardNumber", editTextLeftImage => new EditTextCreditCardNumberBinding(editTextLeftImage)));
+			registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsBottom", cell => new CellItemBinding(cell, CellItemBindingProperty.IsBottom)));
+			registry.RegisterFactory(new MvxCustomBindingFactory<ListViewCell2>("IsTop", cell => new CellItemBinding(cell, CellItemBindingProperty.IsTop)));
             CustomBindingsLoader.Load(registry);
         }
 
@@ -90,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var oauthConfig = new OAuthConfig
 			{
-
 				ConsumerKey = settings.TwitterConsumerKey,
 				Callback = settings.TwitterCallback,
 				ConsumerSecret = settings.TwitterConsumerSecret,
@@ -100,7 +84,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			};
 
 			TinyIoCContainer.Current.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
-
 		}
 
         protected override MvxApplication CreateApp()
@@ -108,7 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             var app = new TaxiHailApp(_params);
             return app;
         }
-
 
         protected override void InitializeIoC()
         {
