@@ -1,16 +1,21 @@
 using System.Collections.Generic;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
+using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
-    {
+    {    
         public ResetPasswordView () 
             : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -38,12 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			DismissKeyboardOnReturn(txtEmail);
+			FlatButtonStyle.Main.ApplyTo(btnReset); 
 
-			/*Add border on button*/
-			btnCancel.Layer.BorderWidth = 0.5f;
-			btnCancel.Layer.BorderColor = UIColor.Black.CGColor;
-			btnCancel.Layer.CornerRadius = 0.5f;
+			DismissKeyboardOnReturn(txtEmail);
 
 			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
 			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");

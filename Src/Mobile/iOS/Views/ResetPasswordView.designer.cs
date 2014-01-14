@@ -13,10 +13,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class ResetPasswordView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnCancel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnReset { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReset { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView imgViewLogo { get; set; }

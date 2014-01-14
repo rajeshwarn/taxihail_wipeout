@@ -13,22 +13,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class LoginView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnFbLogin { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnFbLogin { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnForgotPassword { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnForgotPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnServer { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnServer { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnSignIn { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSignIn { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnSignUp { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSignUp { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnTwLogin { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTwLogin { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtEmail { get; set; }

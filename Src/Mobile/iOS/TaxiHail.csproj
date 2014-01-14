@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -490,6 +490,8 @@
     <Compile Include="PlatformIntegration\Social\OAuthAuthorizer.cs" />
     <Compile Include="PlatformIntegration\Social\TwitterService.cs" />
     <Compile Include="PlatformIntegration\Social\WebViewController.cs" />
+    <Compile Include="Controls\Widgets\FlatButton.cs" />
+    <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
