@@ -166,17 +166,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                // TODO: Remove it, it's a tweak!
-
-//				return GetCommand(() => RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
-//                                                                                                              if(email.HasValue())
-//                                                                                                              {
-//                                                                                                                  Email = email;
-//                                                                                                              }
-//                }));
-//
-				return GetCommand (() => RequestNavigate<UpdatePasswordViewModel> ());
-
+                return GetCommand(() => RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
+                                                                                                              if(email.HasValue())
+                                                                                                              {
+                                                                                                                  Email = email;
+                                                                                                              }
+                }));
             }
         }
 
