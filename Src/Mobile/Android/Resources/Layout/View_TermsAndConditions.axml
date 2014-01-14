@@ -20,7 +20,7 @@
             android:paddingLeft="10dip" />
         <TextView
             android:id="@+id/TermsAndConditionsTextView"
-            android:background="@drawable/textedit_background_std"
+            android:background="@drawable/edit_text_rounded"
             local:MvxBind="{'Text':{'Path':'TermsAndConditions'}}"
             android:padding="10dip"
             android:layout_marginLeft="10dip"
