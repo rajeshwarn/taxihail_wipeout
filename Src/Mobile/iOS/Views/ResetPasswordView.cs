@@ -59,8 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnCancel.Layer.BorderColor = UIColor.Black.CGColor;
 			btnCancel.Layer.CornerRadius = 0.5f;
 
-
-
 			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
 			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");
 			txtEmail.Placeholder = Localize.GetValue("CreateAccountEmail");
@@ -73,7 +71,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				{ btnCancel, "{'TouchUpInside': {'Path' : 'Cancel'}}" }
             });
         }
-
     }
 }
 
