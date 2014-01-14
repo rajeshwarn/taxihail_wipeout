@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 			if (settings.FacebookEnabled)
 			{
-				btnFbLogin.SetLeftImage("Assets/Social/FB/fbIcon.png");
+				btnFbLogin.SetLeftImage("Assets/Social/FB/facebook-icon.png");
 				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);               
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (settings.TwitterEnabled)
 			{
-				btnTwLogin.SetLeftImage("Assets/Social/TW/twIcon.png");
+				btnTwLogin.SetLeftImage("Assets/Social/TW/twitter.png");
 				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
                 this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }

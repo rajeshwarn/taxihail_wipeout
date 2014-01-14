@@ -9,7 +9,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -579,8 +578,6 @@
     <Content Include="Assets\location%402x.png" />
     <Content Include="Assets\navBar.png" />
     <Content Include="Assets\navBar%402x.png" />
-    <Content Include="Assets\Social\FB\fbIcon.png" />
-    <Content Include="Assets\Social\FB\fbIcon%402x.png" />
     <Content Include="Assets\Social\FB\login.png" />
     <Content Include="Assets\Social\FB\login_down.png" />
     <Content Include="Assets\Social\FB\logout.png" />
@@ -589,8 +586,6 @@
     <Content Include="Assets\Social\TW\login_down.png" />
     <Content Include="Assets\Social\TW\logout.png" />
     <Content Include="Assets\Social\TW\logout_down.png" />
-    <Content Include="Assets\Social\TW\twIcon.png" />
-    <Content Include="Assets\Social\TW\twIcon%402x.png" />
     <Content Include="Assets\server.png" />
     <Content Include="Assets\server%402x.png" />
     <Content Include="Assets\Cells\rightArrow.png" />
@@ -733,6 +728,10 @@
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
     <BundleResource Include="Resources\th-logo.png" />
     <BundleResource Include="Resources\th-logo%402x.png" />
+    <BundleResource Include="Assets\Social\FB\facebook-icon.png" />
+    <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
+    <BundleResource Include="Assets\Social\TW\twitter.png" />
+    <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
