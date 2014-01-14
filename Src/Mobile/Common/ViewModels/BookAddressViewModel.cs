@@ -17,15 +17,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
        {
         private CancellationTokenSource _cancellationToken;
         private bool _isExecuting;
-        private readonly Func<Address> _getAddress;
-        private readonly Action<Address> _setAddress;
-        private readonly string _id;
-        private readonly string _searchingTitle;
+        private Func<Address> _getAddress;
+        private Action<Address> _setAddress;
+        private string _id;
+        private string _searchingTitle;
 
         public event EventHandler AddressChanged;
         public event EventHandler AddressCleared;
 
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
+		public void Init(Func<Address> getAddress, Action<Address> setAddress)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;

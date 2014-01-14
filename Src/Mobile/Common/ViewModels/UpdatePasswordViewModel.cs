@@ -57,7 +57,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 return GetCommand(() =>
                 {
 					if (!CanUpdatePassword)
@@ -82,7 +81,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }finally{
                         this.Services().Message.ShowProgress(false);
                     }					
-
 				});
             }
         }

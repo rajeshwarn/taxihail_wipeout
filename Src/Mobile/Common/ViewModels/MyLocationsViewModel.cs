@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-
         public override void Start(bool firstStart = false)
         {
             base.Start (firstStart);
@@ -51,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
         public Task LoadAllAddresses ()
         {
             var tasks = new [] {
@@ -90,7 +90,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
         
-
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{

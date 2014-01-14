@@ -12,13 +12,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
-		public LocationDetailViewModel (string address)
+		public void Init(string address)
 		{
             _address = address.FromJson<Address>();
             IsNew = false;
 		}
 
-        public LocationDetailViewModel ()
+		public void Init()
         {
             _address = new Address();
             IsNew = true;
@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.Services().Config.GetSetting("Client.ShowRingCodeField") != "false";
             }
-            
         }
-		private readonly Address _address;
+
+		private Address _address;
 		
         public string BookAddress {
             get {
@@ -130,7 +130,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         });
                         
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
-
                 });
             }
         }
@@ -143,10 +142,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand SaveAddress
         {
             get {
-
                 return GetCommand(() =>
                 {
-                
                     if (!ValidateFields()) return;
                     var progressShowing = true;
                     this.Services().Message.ShowProgress(true);
@@ -170,7 +167,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-
                         if (progressShowing) this.Services().Message.ShowProgress(false);
                     }
                 });
@@ -182,7 +178,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-
                     this.Services().Message.ShowProgress(true);
                 
                     try {
@@ -197,11 +192,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     } finally {
                         this.Services().Message.ShowProgress(false);
                     }
-           
-            
                 });
             }
-        
         }
 
         public AsyncCommand RebookOrder
@@ -209,14 +201,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return GetCommand(() =>
-				                                 {
-                 var order = new Order {PickupAddress = _address};
+				{
+	                 var order = new Order {PickupAddress = _address};
 
-                 var account = this.Services().Account.CurrentAccount;
-                 order.Settings = account.Settings;
-                 var serialized = JsonSerializer.SerializeToString(order);
-						// TODO: [MvvmCroos v3] ClearTop parameter was removed here
-				 ShowViewModel<BookViewModel>(new { order = serialized });
+	                 var account = this.Services().Account.CurrentAccount;
+	                 order.Settings = account.Settings;
+	                 var serialized = JsonSerializer.SerializeToString(order);
+							// TODO: [MvvmCroos v3] ClearTop parameter was removed here
+					 ShowViewModel<BookViewModel>(new { order = serialized });
 				});
 			}
 		}
@@ -234,7 +226,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
             return true;
-            
         }
 	}
 }

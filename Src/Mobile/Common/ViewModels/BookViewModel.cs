@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 		//TODO: [MvvmCross v3] Refactor this constructor
-        public BookViewModel(string order)
+		public void Init(string order)
         {
             Order = order.FromJson<CreateOrder>();
              
@@ -49,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected async void Initialize()
         {
-
             if (_initialized)
                 throw new InvalidOperationException();
 
@@ -127,13 +126,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         void ClearAddresses()
         {
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address) {
-                IsExecuting = true,
-                EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address) {
-                EmptyAddressPlaceholder = this.Services().Localize["BookDropoffLocationEmptyPlaceholder"]
-            };
+			Pickup = new BookAddressViewModel(){
+				IsExecuting = true,
+				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
+			};
+			Pickup.Init(() => Order.PickupAddress, address => Order.PickupAddress = address);
+
+			Dropoff = new BookAddressViewModel() {
+				EmptyAddressPlaceholder = this.Services().Localize["BookDropoffLocationEmptyPlaceholder"]
+			};
+			Dropoff.Init(() => Order.DropOffAddress, address => Order.DropOffAddress = address);
         }
 
         private void AppActivated()
@@ -142,8 +144,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 NewOrder();
             });
-            
-            
         }
 
         public override void Start(bool firstStart = false)

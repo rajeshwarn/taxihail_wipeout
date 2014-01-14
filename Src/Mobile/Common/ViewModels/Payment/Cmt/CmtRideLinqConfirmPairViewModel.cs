@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 {
 	public class CmtRideLinqConfirmPairViewModel : BaseViewModel
 	{
-		public CmtRideLinqConfirmPairViewModel(string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  

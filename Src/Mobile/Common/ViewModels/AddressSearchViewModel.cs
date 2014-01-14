@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AddressSearchViewModel : BaseViewModel
     {
-        private readonly string _ownerId;
+        private string _ownerId;
         private readonly IGoogleService _googleService;
         private readonly ObservableCollection<AddressViewModel> _addressViewModels = new ObservableCollection<AddressViewModel> ();
         private bool _isSearching;
@@ -23,25 +23,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private IDisposable Disposable { get; set; }
 
-        public AddressSearchViewModel (string ownerId, string search, IGoogleService googleService, string places = "false")
+        public AddressSearchViewModel (IGoogleService googleService)
         {
-            _ownerId = ownerId;
             _googleService = googleService;
-        
-            IsPlaceSearch = places == "true";
-
-            Criteria = search;
-
-            var searchTextChanged = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs> (
-                ev => PropertyChanged += ev,
-                ev => PropertyChanged -= ev)
-                .Where (ev => ev.EventArgs.PropertyName == "Criteria");
-
-            searchTextChanged.Subscribe (o => OnSearchStart ());
-            searchTextChanged.Throttle (TimeSpan.FromMilliseconds (700)).Subscribe (o => OnSearch ());
-
-            OnSearch ();
         }
+
+		public void Init(string ownerId, string search, string places = "false")
+		{
+			_ownerId = ownerId;
+
+			IsPlaceSearch = places == "true";
+
+			Criteria = search;
+
+			var searchTextChanged = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs> (
+				ev => PropertyChanged += ev,
+				ev => PropertyChanged -= ev)
+				.Where (ev => ev.EventArgs.PropertyName == "Criteria");
+
+			searchTextChanged.Subscribe (o => OnSearchStart ());
+			searchTextChanged.Throttle (TimeSpan.FromMilliseconds (700)).Subscribe (o => OnSearch ());
+
+			OnSearch ();
+		}
 
         public bool IsPlaceSearch{ get; set; }
 

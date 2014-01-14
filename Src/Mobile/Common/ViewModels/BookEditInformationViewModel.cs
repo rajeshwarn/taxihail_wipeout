@@ -15,9 +15,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Init(messageId);
 
             Order = JsonSerializer.DeserializeFromString<Order>(order);
-            RideSettings = new RideSettingsViewModel( Order.Settings);
+			RideSettings = new RideSettingsViewModel();
+			RideSettings.Init(Order.Settings);
             RideSettings.OnPropertyChanged().Subscribe(p => 
-                                                       {
+            {
 				RaisePropertyChanged(()=> RideSettings);
 				RaisePropertyChanged(() => Payments);
 				RaisePropertyChanged(() => Vehicles);

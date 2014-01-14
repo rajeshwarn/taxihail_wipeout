@@ -82,11 +82,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.Phone);
 
 			set.Bind(pickerVehiculeType)
-				.For(v => v.Text)
+				.For("Text")
 				.To(vm => vm.VehicleTypeName);
 
 			set.Bind(pickerChargeType)
-				.For(v => v.Text)
+				.For("Text")
 				.To(vm => vm.ChargeTypeName);
 
 			set.Bind(txtPassword)
@@ -94,13 +94,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToUpdatePassword);
 
 			set.Bind(btnCreditCard)
-				.For(v => v.Text)
+				.For("Text")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
 			set.Bind(btnCreditCard)
 				.For(v => v.Last4Digits)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
 			set.Bind(btnCreditCard)
-				.For(v => v.CreditCardCompany)
+				.For("CreditCardCompany")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
 			set.Bind(btnCreditCard)
 				.For(v => v.NavigateCommand)
