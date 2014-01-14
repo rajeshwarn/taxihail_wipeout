@@ -61,7 +61,7 @@
         <Button
           android:id="@+id/settingsCallCompany"
           style="@style/BigTitleTextBlack"
-          local:MvxBind="Click Panel.Call;Visibility Panel.CanCall,Converter=Visibility"
+          local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
           android:background="@drawable/cell_middle_state"
           android:layout_width="fill_parent"
           android:layout_height="40dip"
@@ -72,7 +72,7 @@
         <Button
           android:id="@+id/settingsTutorial"
           style="@style/BigTitleTextBlack"
-          local:MvxBind="Click Panel.NavigateToTutorial;Visibility Panel.TutorialEnabled,Converter=Visibility"
+          local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
           android:background="@drawable/cell_middle_state"
           android:layout_width="fill_parent"
           android:layout_height="40dip"
@@ -93,7 +93,7 @@
           android:gravity="left|center_vertical" />
         <Button
           android:id="@+id/settingsSupport"
-          local:MvxBind="Click Panel.ReportProblem;Visibility Panel.CanReportProblem,Converter=Visibility"
+          local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
           style="@style/BigTitleTextBlack"
           android:background="@drawable/cell_middle_state"
           android:layout_width="fill_parent"

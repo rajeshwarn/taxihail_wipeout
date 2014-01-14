@@ -10,7 +10,7 @@
     android:paddingRight="6dip"
     android:layout_height="wrap_content">
     <ImageButton
-      local:MvxBind="Click SelectedAddress.RequestCurrentLocationCommand;Enabled CanClearAddress,Converter=BoolInverter;Visibility CanClearAddress,Converter=InvertedVisibility"
+      local:MvxBind="Click SelectedAddress.RequestCurrentLocationCommand; Enabled CanClearAddress, Converter=BoolInverter; Visibility CanClearAddress, Converter=InvertedVisibility"
       android:src="@drawable/target_selected"
       android:background="@drawable/black_button"
       style="@style/ButtonTextGray"
@@ -20,7 +20,7 @@
       android:layout_centerVertical="true"
       android:layout_alignParentLeft="true" />
     <ImageButton
-      local:MvxBind="Click SelectedAddress.ClearPositionCommand;Enabled CanClearAddress;Visibility CanClearAddress,Converter=Visibility"
+      local:MvxBind="Click SelectedAddress.ClearPositionCommand; Enabled CanClearAddress; Visibility CanClearAddress, Converter=Visibility"
       android:src="@drawable/cancel"
       android:background="@drawable/red_button"
       style="@style/ButtonTextGray"
@@ -42,7 +42,7 @@
       local:MvxBind="Click BookNow" />
     <ImageButton
       android:id="@+id/pickupDateButton"
-      local:MvxBind="Visibility DisableFutureBooking,Converter=InvertedVisibility"
+      local:MvxBind="Visibility DisableFutureBooking, Converter=InvertedVisibility"
       android:src="@drawable/bookLater_state"
       android:background="@drawable/black_button"
       style="@style/ButtonTextGray"

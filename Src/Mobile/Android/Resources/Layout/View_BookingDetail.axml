@@ -32,7 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        local:MvxBind="Visibility ShowPassengerName,Converter=Visibility">
+        local:MvxBind="Visibility ShowPassengerName, Converter=Visibility">
         <TextView
           style="@style/FormLabelDataText"
           android:text="@string/PassengerNameLabel"
@@ -61,7 +61,7 @@
         android:paddingBottom="0dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        local:MvxBind="Visibility ShowPassengerPhone,Converter=Visibility">
+        local:MvxBind="Visibility ShowPassengerPhone, Converter=Visibility">
         <TextView
           style="@style/FormLabelDataText"
           android:text="@string/PassengerPhoneLabel"
@@ -90,7 +90,7 @@
         android:paddingBottom="0dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        local:MvxBind="Visibility ShowPassengerNumber,Converter=Visibility">
+        local:MvxBind="Visibility ShowPassengerNumber, Converter=Visibility">
         <TextView
           style="@style/FormLabelDataText"
           android:text="@string/PassengerNumberLabel"
