@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Settings = new SendBookingConfirmationEmail.BookingSettings
                         {
                             Name = account.Name,
-                            Phone = account.Phone,
+                            Phone = account.Settings.Phone,
                             ChargeType = order.Settings.ChargeType,
                             Passengers = order.Settings.Passengers,
                             VehicleType = order.Settings.VehicleType
