@@ -463,7 +463,7 @@ Global
 		$4.scope = text/x-csharp
 		$0.TextStylePolicy = $5
 		$5.FileWidth = 120
-		$5.TabsToSpaces = False
+		$5.NoTabsAfterNonTabs = True
 		$5.EolMarker = Windows
 		$5.inheritsSet = VisualStudio
 		$5.inheritsScope = text/plain
@@ -499,6 +499,12 @@ Global
 		$0.StandardHeader = $15
 		$15.Text = 
 		$15.IncludeInNewFiles = True
+		$0.TextStylePolicy = $16
+		$16.inheritsSet = null
+		$16.scope = application/config+xml
+		$0.XmlFormattingPolicy = $17
+		$17.inheritsSet = null
+		$17.scope = application/config+xml
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

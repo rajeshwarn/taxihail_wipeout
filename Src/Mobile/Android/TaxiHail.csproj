@@ -424,6 +424,14 @@
     <AndroidResource Include="Resources\Drawable\visa.png" />
     <AndroidResource Include="Resources\Drawable\Icon.png" />
     <Compile Include="Cache\CacheItem.cs" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
