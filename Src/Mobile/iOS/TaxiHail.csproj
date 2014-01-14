@@ -352,12 +352,6 @@
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="Controls\DateTimePicker.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
-    <Compile Include="Views\RefineAddressView.cs">
-      <DependentUpon>RefineAddressView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RefineAddressView.designer.cs">
-      <DependentUpon>RefineAddressView.xib</DependentUpon>
-    </Compile>
     <Compile Include="PlatformIntegration\LocationService.cs" />
     <Compile Include="PlatformIntegration\LocationManagerDelegate.cs" />
     <Compile Include="Views\UpdatePasswordView.cs">
@@ -527,7 +521,6 @@
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
-    <InterfaceDefinition Include="Views\RefineAddressView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
     <InterfaceDefinition Include="Order\BookRatingView.xib" />

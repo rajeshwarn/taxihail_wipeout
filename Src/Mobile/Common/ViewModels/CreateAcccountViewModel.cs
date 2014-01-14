@@ -26,10 +26,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
-		public void Init(string messageId, string data)
+		public void Init(string data)
 		{
-			Init(messageId);
-
 			if (data != null)
 			{
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);

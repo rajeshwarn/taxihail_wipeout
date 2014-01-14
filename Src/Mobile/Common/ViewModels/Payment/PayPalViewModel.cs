@@ -4,10 +4,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class PayPalViewModel : BaseSubViewModel<bool>
     {
-		public void Init(string url, string messageId)
+		public new void Init(string url)
         {
-			Init(messageId);
-
             Url = url;
         }
 

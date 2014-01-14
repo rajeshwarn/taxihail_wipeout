@@ -5,12 +5,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class TermsAndConditionsViewModel : BaseSubViewModel<bool>
 	{
-		public void Init (string messageId)
-        {
-			Init(messageId);
-        }
-
-        public AsyncCommand RejectTermsAndConditions
+		public AsyncCommand RejectTermsAndConditions
 		{
 			get
 			{

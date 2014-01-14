@@ -165,7 +165,6 @@
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
-    <Compile Include="Activities\Book\RefineAddressActivity.cs" />
     <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\ShowDialogActivity.cs" />
@@ -433,6 +432,8 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
     <Compile Include="BootstrapContent\VisibilityPluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Drawable\history.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\history.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
