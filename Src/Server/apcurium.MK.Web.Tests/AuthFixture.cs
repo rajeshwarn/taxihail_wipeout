@@ -35,14 +35,15 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_invalid_password()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(async () => await sut.Authenticate(TestAccount.Email, "wrong password"), "InvalidLoginMessage");
+            //todo remove when client is using good patterns async/await
+            Assert.Throws<AggregateException>(async () => await sut.Authenticate(TestAccount.Email, "wrong password"), "InvalidLoginMessage");
         }
 
         [Test]
         public void when_user_sign_in_with_invalid_email()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(async () => await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword), "InvalidLoginMessage");
+            Assert.Throws<AggregateException>(async () => await sut.Authenticate("wrong_email@wrong.com", TestAccountPassword), "InvalidLoginMessage");
         }
 
         [Test]
@@ -80,7 +81,7 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_invalid_twitter_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<WebServiceException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+            Assert.Throws<AggregateException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }

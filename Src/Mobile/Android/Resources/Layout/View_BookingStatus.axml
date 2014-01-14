@@ -77,8 +77,8 @@
             android:text="@string/ReSendConfirmationButton"
             local:MvxBind="Click ResendConfirmationToDriver;Visibility IsResendButtonVisible,Converter=Visibility" />
           <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:background="@drawable/green_button"
+            local:ButtonStyle="Red"
+            android:background="@drawable/red_button"
             android:id="@+id/UnpairBtn"
             style="@style/ButtonText"
             android:layout_width="180dip"

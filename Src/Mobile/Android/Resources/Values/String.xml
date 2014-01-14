@@ -471,4 +471,6 @@
   <string name="CmtRideLinqCancelChanges">Cancel</string>
   <string name="CmtRideLinqSaveChanges">Save</string>
   <string name="CmtRideLinqGenericErrorMessage">There was an error during pairing, verify your credit card information or try again later.</string>
+  <string name="CmtRideLinqUnpairErrorMessage">There was an error during unpairing, please try again later.</string>
+  <string name="CmtRideLinqErrorTitle">Error</string>
 </resources>

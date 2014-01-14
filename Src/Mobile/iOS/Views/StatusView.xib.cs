@@ -65,7 +65,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusCancelButton"), AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Localize.GetValue("StatusNewRideButton"), AppStyle.ButtonColor.Green);
                 AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton ((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+				AppButtons.FormatStandardButton((GradientButton)btnUnpair, Localize.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
 
                 NavigationItem.TitleView = new TitleView(null, Localize.GetValue("GenericTitle"), true);
                                 
@@ -84,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
                     btnPay.SetFrame(btnCancel.Frame);
                     btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
+					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
                     UpdateCallButtonSize (callFrame);
@@ -171,13 +173,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				set.Bind(btnResend)
 					.For(v => v.Enabled)
 					.To(vm => vm.IsResendButtonVisible);
-				set.Bind(btnCall)
+				set.Bind(btnResend)
 					.For("TouchUpInside")
 					.To(vm => vm.ResendConfirmationToDriver);
 
 				set.Bind(btnNewRide)
 					.For("TouchUpInside")
 					.To(vm => vm.NewRide);
+
+				set.Bind(btnUnpair)
+					.For("TouchUpInside")
+					.To(vm => vm.Unpair);
+				set.Bind(btnUnpair)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsUnpairButtonVisible)
+					.WithConversion("BoolInverter");
 
 				set.Apply();
 
