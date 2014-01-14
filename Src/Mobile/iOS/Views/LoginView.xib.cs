@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.FacebookEnabled)
 			{
                 AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
-                this.Bind(btnFbLogin, "TouchUpInside LoginFacebook");
+                this.AddBindings(btnFbLogin, "TouchUpInside LoginFacebook");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.TwitterEnabled)
 			{
                 AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
-				this.Bind(btnTwLogin, "TouchUpInside LoginTwitter");
+                this.AddBindings(btnTwLogin, "TouchUpInside LoginTwitter");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 

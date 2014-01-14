@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.MapCenter)
                 .To(vm => vm.MapCenter);
             set.Bind(mapView)
-                .For(v => v.AvailableVehicles)
+                .For("AvailableVehicles")
                 .To(vm => vm.AvailableVehicles);
             set.Bind(mapView)
                 .For(v => v.AddressSelectionMode)

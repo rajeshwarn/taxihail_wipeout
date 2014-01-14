@@ -293,7 +293,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 ShowAvailableVehicles (Clusterize(value.ToArray()));
-                //ShowAvailableVehicles (value.ToArray());
             }
         }
 
