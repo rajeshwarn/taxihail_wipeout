@@ -6,15 +6,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-
-
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("FlatButton")]
     public class FlatButton : UIButton
     {
         UIImage _leftImage;
-		private float _radiusCorner = 2;
+        private const float RadiusCorner = 2;
 
         public FlatButton (IntPtr handle) : base (handle)
         {
@@ -25,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
 			ApplyTo ();
         }
-        public FlatButton () : base ()
+        public FlatButton ()
         {
 			ApplyTo ();
         }
@@ -46,11 +44,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void ApplyTo()
 		{
-			UIColor Blue = UIColor.FromRGB(0, 71, 133);
+			var blue = UIColor.FromRGB(0, 71, 133);
 
-			SetFillColor(Blue, UIControlState.Normal);
-			SetFillColor(Blue.ColorWithAlpha(0.5f), UIControlState.Selected);
-			SetFillColor(Blue.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+			SetFillColor(blue, UIControlState.Normal);
+			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
+			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
 			SetTitleColor(UIColor.White, UIControlState.Normal);
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
@@ -66,29 +64,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var context = UIGraphics.GetCurrentContext ();
 
             var states = new [] { UIControlState.Disabled, UIControlState.Highlighted, UIControlState.Selected, UIControlState.Normal }
-            .Where (x=> this.State.HasFlag(x)).Select(x=>(uint)x).ToArray();
+            .Where (x=> State.HasFlag(x)).Select(x=>(uint)x).ToArray();
 
             var fillColor = states.Where(x=> _fillColors.ContainsKey(x)).Select(x=> _fillColors[x]).FirstOrDefault() ?? UIColor.Clear;
             var strokeColor = states.Where(x=> _strokeColors.ContainsKey(x)).Select(x=> _strokeColors[x]).FirstOrDefault() ?? UIColor.Clear;
-            var textColor = TitleColor(State) ?? UIColor.White;
 
-			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
 
             DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor); 
-            DrawStroke(context, rect, roundedRectanglePath, strokeColor.CGColor);
+            DrawStroke(context, roundedRectanglePath, strokeColor.CGColor);
 
             if (_leftImage != null)
             {
-                this.SetImage(_leftImage, UIControlState.Normal);
-                this.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-                this.ImageEdgeInsets = new UIEdgeInsets(0.0f, 10.0f, 0.0f, 0.0f);
+                SetImage(_leftImage, UIControlState.Normal);
+                HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+                ImageEdgeInsets = new UIEdgeInsets(0.0f, 10.0f, 0.0f, 0.0f);
                 //compute the left margin for the text and center it
-                var halfTextSize = this.TitleLabel.Frame.Width / 2; 
-                var center = (this.Frame.Width - _leftImage.Size.Width - 10 - 3) / 2;
-                this.TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
+                var halfTextSize = TitleLabel.Frame.Width / 2; 
+                var center = (Frame.Width - _leftImage.Size.Width - 10 - 3) / 2;
+                TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
             }
-
-            DrawText(context, rect, textColor.CGColor);
 
         }
 
@@ -134,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.RestoreState ();
         }
 
-        void DrawStroke (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor strokeColor)
+        void DrawStroke (CGContext context, UIBezierPath roundedRectanglePath, CGColor strokeColor)
         {
             context.SaveState ();
             context.SetStrokeColorWithColor(strokeColor);
@@ -143,12 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.StrokePath();
             context.RestoreState ();
         }
-
-        protected virtual void DrawText(CGContext context, RectangleF rect, CGColor textColor)
-        {
-
-        }
-
+        
         public void SetLeftImage( string image )
         {
             if (image != null)
