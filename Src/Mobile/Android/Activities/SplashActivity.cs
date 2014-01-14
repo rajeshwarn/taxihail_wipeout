@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 			if (Intent.Extras != null && Intent.Extras.ContainsKey("orderId"))
 			{
-                var starter = (StartNavigation)Mvx.Resolve<IMvxAppStart>();
-
                 this._params = new Dictionary<string, string>
 					{
 						{"orderId", Intent.Extras.GetString("orderId")}
