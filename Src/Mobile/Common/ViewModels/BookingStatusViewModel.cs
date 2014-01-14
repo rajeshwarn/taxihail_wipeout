@@ -495,7 +495,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
 #else
 					if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
-						MessageService.ShowMessage(Localize.GetString("VehicleNumberErrorTitle"), Localize.GetString("VehicleNumberErrorMessage"));
+							this.Services().Message.ShowMessage(this.Services().Localize["VehicleNumberErrorTitle"], 
+								this.Services().Localize["VehicleNumberErrorMessage"]);
 						return;
 					}
 #endif
