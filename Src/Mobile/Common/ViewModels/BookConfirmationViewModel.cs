@@ -15,10 +15,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void Init(string order)
 		{
 			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
-			RideSettings = new RideSettingsViewModel(Order.Settings);
+			RideSettings = new RideSettingsViewModel();
+			RideSettings.Init(Order.Settings);
 			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
-
 
 		public override void Load()
 		{
@@ -33,7 +33,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return FormatPrice(Order.Estimate.Price);
 			}
-
 		}
 
 		public RideSettingsViewModel RideSettings { get; set; }
@@ -42,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return RideSettings != null ? RideSettings.VehicleTypeName : null;
 			}
 		}
@@ -210,18 +208,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return GetCommand(() =>
 				{
-
-
 					Order.Id = Guid.NewGuid();
 					try
 					{
                         this.Services().Message.ShowProgress(true);
                         var orderInfo = this.Services().Booking.CreateOrder(Order);
 
-							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
+						if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
 
 						var orderCreated = new Order
@@ -263,7 +258,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowProgress(false);
 					}                         
 				}); 
-               
 			}
 		}
 
@@ -271,10 +265,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
                 return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
-
 		}
 
         public AsyncCommand CancelOrderCommand
@@ -294,7 +286,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var validationInfo = await this.Services().Booking.ValidateOrder(Order);
 			if (validationInfo.HasWarning)
 			{
-
                 this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                     validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelBoutton"], () => Close(this));

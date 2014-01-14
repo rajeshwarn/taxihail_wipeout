@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _parent = parent;
         }
+
         public bool TutorialEnabled {
             get{
                 return this.Services().Config.GetSetting("Client.TutorialEnabled", true);
@@ -113,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        
         public bool CanCall
         {
             get
@@ -122,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        
         public bool CanReportProblem
         {
             get {

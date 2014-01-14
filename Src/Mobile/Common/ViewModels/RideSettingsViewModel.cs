@@ -9,36 +9,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RideSettingsViewModel: BaseViewModel
     {
-        private readonly BookingSettings _bookingSettings;
+        private BookingSettings _bookingSettings;
 
-        public RideSettingsViewModel(string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
+		public void Init(string bookingSettings)
         {
+			Init(bookingSettings.FromJson<BookingSettings>());
         }
 
-        public RideSettingsViewModel(BookingSettings bookingSettings)
+		public void Init(BookingSettings bookingSettings)
         {
             _bookingSettings = bookingSettings;
-
 
             var refDataTask = this.Services().Account.GetReferenceDataAsync();
 
             refDataTask.ContinueWith(result =>
-                                     {
+            {
                 var v = this.Services().Account.GetVehiclesList();
                 _vehicules = v == null ? new ListItem[0] : v.ToArray();
-				RaisePropertyChanged( ()=> Vehicles );
-				RaisePropertyChanged( ()=> VehicleTypeId );
-				RaisePropertyChanged( ()=> VehicleTypeName );
-
+				RaisePropertyChanged(() => Vehicles );
+				RaisePropertyChanged(() => VehicleTypeId );
+				RaisePropertyChanged(() => VehicleTypeName );
 
                 var p = this.Services().Account.GetPaymentsList();
                 _payments = p == null ? new ListItem[0] : p.ToArray();
-
-				RaisePropertyChanged( ()=> Payments );
-				RaisePropertyChanged( ()=> ChargeTypeId );
-				RaisePropertyChanged( ()=> ChargeTypeName );
+				RaisePropertyChanged(() => Payments );
+				RaisePropertyChanged(() => ChargeTypeId );
+				RaisePropertyChanged(() => ChargeTypeName );
             });
-
         }
 
         public bool ShouldDisplayTipSlider
@@ -65,7 +62,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private PaymentDetailsViewModel _paymentPreferences;
-
         public PaymentDetailsViewModel PaymentPreferences
         {
             get
@@ -87,7 +83,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private ListItem[] _vehicules;
-
         public ListItem[] Vehicles
         {
             get
@@ -97,7 +92,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private ListItem[] _payments;
-
         public ListItem[] Payments
         {
             get
@@ -127,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 if (!VehicleTypeId.HasValue)
                 {
                     return this.Services().Localize["NoPreference"];
@@ -170,7 +163,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return this.Services().Localize["NoPreference"];
                 }
-
 
                 if (Payments == null)
                 {
@@ -225,7 +217,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     VehicleTypeId = id;
                 });
             }
-
         }
 
         public AsyncCommand NavigateToUpdatePassword
@@ -261,9 +252,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand<int?>(id =>
                 {
-
                     _bookingSettings.ProviderId = id;
-
                 });
             }
         }

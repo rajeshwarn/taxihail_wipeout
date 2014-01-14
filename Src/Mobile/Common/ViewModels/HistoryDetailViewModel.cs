@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-        public HistoryDetailViewModel()
+		public void Init()
         {
             _status = new OrderStatusDetail
             {
@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
         private OrderStatusDetail _status;
-
 		public OrderStatusDetail Status 
         {
 			get{ return _status; }
@@ -65,7 +64,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged("SendReceiptAvailable");
 		    }
 		}
-        
         
         public bool SendReceiptAvailable 
         {
@@ -226,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryDetailViewModel(string orderId)
+		public void Init(string orderId)
         {
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {

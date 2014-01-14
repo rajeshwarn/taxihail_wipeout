@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: BaseViewModel
 	{
-		public RideSummaryViewModel (string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{			
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsRatingButtonShown = this.Services().Config.GetSetting( "Client.RatingEnabled", false );  
 
 		}
+
         public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
@@ -75,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
                 var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
-             
 			}
 		}
 
@@ -114,15 +114,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}));
 			}
 		}
+
         public AsyncCommand ResendConfirmationCommand
         {
             get {
                 return new AsyncCommand (() =>
                 {
-                    this.Services().Message.ShowMessage("Confirmation",
-                        this.Services().Localize["ConfirmationOfPaymentSent"]);
+					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
                     this.Services().Payment.ResendConfirmationToDriver(Order.Id);
-
                 });
             }
         }

@@ -27,11 +27,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         private const string AmexPattern = "^3[47][0-9]{13}$";
 #endregion
 
-
         public class DummyVisa
         {
 			public static string BraintreeNumber = "4009 3488 8888 1881".Replace(" ", "");
-
             public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
             public static int AvcCvvCvv2 = 135;
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);

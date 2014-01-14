@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public TutorialViewModel()
+		public void Init()
 		{
             
 			TutorialItemsList = this.Services().Tutorial

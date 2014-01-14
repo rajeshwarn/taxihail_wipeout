@@ -35,15 +35,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-            Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
-            {
+			Pickup = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-            };
+			};
+			Pickup.Init(() => Order.PickupAddress, address => Order.PickupAddress = address);
 
-            Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address)
-            {
+			Dropoff = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-            };
+			};
+			Dropoff.Init(() => Order.DropOffAddress, address => Order.DropOffAddress = address);
 
             CenterMap ();
         }

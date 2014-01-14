@@ -8,6 +8,7 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -26,9 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewDidLoad ()
         {
-
             base.ViewDidLoad();
-//            ViewModel.Load();
+
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
@@ -51,15 +51,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblTitle.Text = Localize.GetValue("TermsAndConditionsLabel");
             lblAcknowledgment.Text = Localize.GetValue("TermsAndConditionsAcknowledgment");
 
-            var bindings = new [] {
-                Tuple.Create<object,string>(btnAccept, "{'TouchUpInside':{'Path':'AcceptTermsAndConditions'}}"),
-                Tuple.Create<object,string>(btnCancel, "{'TouchUpInside':{'Path':'RejectTermsAndConditions'}}"),
-                Tuple.Create<object,string>(txtTermsAndConditions, "{'Text': {'Path': 'TermsAndConditions'}}")
-            }
-            .Where(x=> x.Item1 != null )
-                .ToDictionary(x=>x.Item1, x=>x.Item2);
+			var set = this.CreateBindingSet<TermsAndConditionsView, TermsAndConditionsViewModel> ();
 
-            this.AddBindings(bindings);
+			set.BindSafe(btnAccept)
+				.For("TouchUpInside")
+				.To(vm => vm.AcceptTermsAndConditions);
+
+			set.BindSafe(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.RejectTermsAndConditions);
+
+			set.BindSafe(txtTermsAndConditions)
+				.For(v => v.Text)
+				.To(vm => vm.TermsAndConditions);
+
+			set.Apply ();
 
             View.ApplyAppFont ();
         }
@@ -68,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidAppear (animated);
             NavigationItem.TitleView = new TitleView (null, string.Empty, false);
-
         }
     }
 }

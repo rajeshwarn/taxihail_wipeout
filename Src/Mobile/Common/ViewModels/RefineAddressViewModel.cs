@@ -70,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 return GetCommand(() => ReturnResult(this));
             }
         }
