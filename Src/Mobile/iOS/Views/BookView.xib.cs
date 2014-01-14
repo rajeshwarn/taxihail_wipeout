@@ -91,29 +91,125 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _dateTimePicker.Show (ViewModel.Order.PickupDate);
             };                      
 
-            this.AddBindings (new Dictionary<object, string> ()                            {
+            var set = this.CreateBindingSet<BookView, BookViewModel>();
 
-				{ _bottomAction.RefreshCurrentLocationButton, "TouchUpInside SelectedAddress.RequestCurrentLocationCommand"},                
-				{ pickupActivationButton, "TouchUpInside ActivatePickup; Selected AddressSelectionMode, Converter EnumToBool, ConverterParameter PickupSelection"},                
-				{ dropoffActivationButton, "TouchUpInside ActivateDropoff; Selected AddressSelectionMode, Converter EnumToBool, ConverterParameter DropoffSelection; Hidden HideDestination"},       
-				{ pickupButton, "TouchUpInside Pickup.PickAddress; TextLine1 Pickup.AddressLine1, Mode TwoWay; TextLine2 Pickup.AddressLine2, Mode TwoWay; IsSearching Pickup.IsExecuting, Mode TwoWay; IsPlaceholder Pickup.IsPlaceHolder, Mode TwoWay"},  
-				{ dropoffButton, "TouchUpInside Dropoff.PickAddress; TextLine1 Dropoff.AddressLine1, Mode TwoWay; TextLine2 Dropoff.AddressLine2, Mode TwoWay; IsSearching Dropoff.IsExecuting, Mode TwoWay; IsPlaceholder Dropoff.IsPlaceHolder, Mode TwoWay; Hidden HideDestination"},             
-                { mapView, @"
-Pickup Pickup.Model;
-Dropoff Dropoff.Model;
-MapMoved SelectedAddress.SearchCommand;
-MapCenter MapCenter;
-AvailableVehicles AvailableVehicles;
-AddressSelectionMode AddressSelectionMode
-" },
-				{ infoLabel, "Text FareEstimate; Hidden ShowEstimate, Converter BoolInverter" },              
-				{ _dateTimePicker, "DateChangedCommand PickupDateSelectedCommand" },
-				{ _bottomAction.ClearLocationButton, "Hidden CanClearAddress, Converter BoolInverter; Enabled CanClearAddress; TouchUpInside SelectedAddress.ClearPositionCommand" },
-				{ _bottomAction.BookNowButton , "TouchUpInside BookNow" },
-				{ _bottomAction.BookLaterButton , "Hidden DisableFutureBooking" },
+            set.Bind(_bottomAction.RefreshCurrentLocationButton)
+                .For("TouchUpInside")
+                .To(vm =>  vm.SelectedAddress.RequestCurrentLocationCommand);
 
-				{ backBtn , "TouchUpInside ClosePanelCommand; Hidden Panel.MenuIsOpen, Converter BoolInverter" }        
-            });
+            set.Bind(pickupActivationButton)
+                .For("TouchUpInside")
+                .To(vm => vm.ActivatePickup);
+            set.Bind(pickupActivationButton)
+                .For(v => v.Selected)
+                .To(vm => vm.AddressSelectionMode)
+                .WithConversion("EnumToBool", "PickupSelection");
+
+            set.Bind(dropoffActivationButton)
+                .For("TouchUpInside")
+                .To(vm => vm.ActivateDropoff);
+            set.Bind(dropoffActivationButton)
+                .For(v => v.Selected)
+                .To(vm => vm.AddressSelectionMode)
+                .WithConversion("EnumToBool", "DropoffSelection");
+            set.Bind(dropoffActivationButton)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideDestination);
+
+            set.Bind(pickupButton)
+                .For("TouchUpInside")
+                .To(vm => vm.Pickup.PickAddress);
+            set.Bind(pickupButton)
+                .For(v => v.TextLine1)
+                .To(vm => vm.Pickup.AddressLine1);
+            set.Bind(pickupButton)
+                .For(v => v.TextLine2)
+                .To(vm => vm.Pickup.AddressLine2);
+            set.Bind(pickupButton)
+                .For(v => v.IsSearching)
+                .To(vm => vm.Pickup.IsExecuting);
+            set.Bind(pickupButton)
+                .For(v => v.IsPlaceholder)
+                .To(vm => vm.Pickup.IsPlaceHolder);
+
+            set.Bind(dropoffButton)
+                .For("TouchUpInside")
+                .To(vm => vm.Dropoff.PickAddress);
+            set.Bind(dropoffButton)
+                .For(v => v.TextLine1)
+                .To(vm => vm.Dropoff.AddressLine1);
+            set.Bind(dropoffButton)
+                .For(v => v.TextLine2)
+                .To(vm => vm.Dropoff.AddressLine2);
+            set.Bind(dropoffButton)
+                .For(v => v.IsSearching)
+                .To(vm => vm.Dropoff.IsExecuting);
+            set.Bind(dropoffButton)
+                .For(v => v.IsPlaceholder)
+                .To(vm => vm.Dropoff.IsPlaceHolder);
+            set.Bind(dropoffButton)
+                .For(v => v.Hidden)
+                .To(vm => vm.HideDestination);
+
+
+            set.Bind(mapView)
+                .For(v => v.Pickup)
+                .To(vm => vm.Pickup.Model);
+            set.Bind(mapView)
+                .For(v => v.Dropoff)
+                .To(vm => vm.Dropoff.Model);
+            set.Bind(mapView)
+                .For(v => v.MapMoved)
+                .To(vm => vm.SelectedAddress.SearchCommand);
+            set.Bind(mapView)
+                .For(v => v.MapCenter)
+                .To(vm => vm.MapCenter);
+            set.Bind(mapView)
+                .For(v => v.AvailableVehicles)
+                .To(vm => vm.AvailableVehicles);
+            set.Bind(mapView)
+                .For(v => v.AddressSelectionMode)
+                .To(vm => vm.AddressSelectionMode);
+
+            set.Bind(infoLabel)
+                .For(v => v.Text)
+                .To(vm => vm.FareEstimate);
+            set.Bind(infoLabel)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowEstimate)
+                .WithConversion("BoolInverter");
+
+            set.Bind(_dateTimePicker)
+                .For(v => v.DateChangedCommand)
+                .To(vm => vm.PickupDateSelectedCommand);
+
+            set.Bind(_bottomAction.ClearLocationButton)
+                .For(v => v.Hidden)
+                .To(vm => vm.CanClearAddress)
+                .WithConversion("BoolInverter");
+            set.Bind(_bottomAction.ClearLocationButton)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanClearAddress);
+            set.Bind(_bottomAction.ClearLocationButton)
+                .For("TouchUpInside")
+                .To(vm => vm.SelectedAddress.ClearPositionCommand);
+
+            set.Bind(_bottomAction.BookNowButton)
+                .For("TouchUpInside")
+                .To(vm => vm.BookNow);
+
+            set.Bind(_bottomAction.BookLaterButton)
+                .For(v => v.Hidden)
+                .To(vm => vm.DisableFutureBooking);
+
+            set.Bind(backBtn)
+                .For("TouchUpInside")
+                .To(vm => vm.ClosePanelCommand);
+            set.Bind(backBtn)
+                .For(v => v.Hidden)
+                .To(vm => vm.Panel.MenuIsOpen)
+                .WithConversion("BoolInverter");
+
 
             if (ViewModel.HideDestination)
             {
