@@ -2,7 +2,6 @@ using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using MonoTouch.CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -10,20 +9,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	[Register("FlatTextField")]
 	public class FlatTextField : UITextField
 	{
-		private float _radiusCorner = 2;
+	    private const float RadiusCorner = 2;
 
-		public FlatTextField (IntPtr handle) : base (handle)
+	    public FlatTextField (IntPtr handle) : base (handle)
 		{
 			Initialize();
 		}
 
-		public FlatTextField (float radius) : base()
-		{
-			_radiusCorner = radius;
-			Initialize();
-		}
-
-		public FlatTextField () : base()
+		public FlatTextField ()
 		{
 			Initialize();
 		}
@@ -35,32 +28,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		void Initialize ()
 		{
-			this.Height = 40;
-			this.Font = UIFont.SystemFontOfSize(34/2);
-			this.LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
-			this.LeftViewMode = UITextFieldViewMode.Always;
+			Font = UIFont.SystemFontOfSize(34/2);
+			LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
+			LeftViewMode = UITextFieldViewMode.Always;
 		}
 
-		public float Height
-		{
-			get;
-			set;
-		}
 
 		public override void Draw (RectangleF rect)
-		{           
-			this.Frame = Frame.SetHeight(Height);
-
-			var fillColor = this.State.HasFlag (UIControlState.Normal)
+		{   
+            var fillColor = State.HasFlag (UIControlState.Normal)
 			                ? UIColor.White 
 			                : UIColor.Clear;
 
-			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
 
 			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
-
-			this.SetNeedsDisplay();
+			SetNeedsDisplay();
 		}
 
 		public override bool Enabled {
@@ -69,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			set {
 				base.Enabled = value;
-				this.SetNeedsDisplay();
+				SetNeedsDisplay();
 			}
 		}
 
@@ -86,10 +70,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void DrawStroke(CGColor fillColor)
 		{
-			this.BorderStyle = UITextBorderStyle.None;
-			this.Layer.BorderWidth = 1.0f;
-			this.Layer.BorderColor = fillColor;
-			this.Layer.CornerRadius = _radiusCorner;
+			BorderStyle = UITextBorderStyle.None;
+			Layer.BorderWidth = 1.0f;
+			Layer.BorderColor = fillColor;
+			Layer.CornerRadius = RadiusCorner;
 		}
 	}
 }

@@ -1,12 +1,8 @@
 using System.Collections.Generic;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
-using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -42,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			base.DismissKeyboardOnReturn(txtEmail);
+			DismissKeyboardOnReturn(txtEmail);
 
 			/*Add border on button*/
 			btnCancel.Layer.BorderWidth = 0.5f;
