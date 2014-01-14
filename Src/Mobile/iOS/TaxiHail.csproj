@@ -747,5 +747,6 @@
   <ItemGroup />
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Controls\Widgets\" />
   </ItemGroup>
 </Project>

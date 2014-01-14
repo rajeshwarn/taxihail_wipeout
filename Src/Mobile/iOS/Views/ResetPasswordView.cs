@@ -14,7 +14,7 @@ using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
+	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
     {
         #region Constructors
         
@@ -35,30 +35,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         
         #endregion
 
-        #region INavigationView implementation
+		#region INavigationView implementation
 
-        public bool HideNavigationBar
-        {
-            get
-            {
-                return true;
-            }
-        }
+		public bool HideNavigationBar
+		{
+			get
+			{
+				return true;
+			}
+		}
 
-        #endregion
-		
-        public override void DidReceiveMemoryWarning ()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning ();			
-            // Release any cached data, images, etc that aren't in use.
-        }
-		
+		#endregion
+
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
 			base.DismissKeyboardOnReturn(txtEmail);
+
+			/*Add border on button*/
+			btnCancel.Layer.BorderWidth = 0.5f;
+			btnCancel.Layer.BorderColor = UIColor.Black.CGColor;
+			btnCancel.Layer.CornerRadius = 0.5f;
+
+
 
 			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
 			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");
