@@ -7,40 +7,31 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : MvxViewController, INavigationView
     {
-
-        #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-        public LoginView () 
-            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-            
-        }
-        
-        public LoginView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            
-        }
-        
-        public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+		public LoginView () 
+			: base("LoginView", null)
         {
 
         }
+
+		public new LoginViewModel ViewModel
+		{
+			get
+			{
+				return (LoginViewModel)DataContext;
+			}
+		}
 
 
         #region INavigationView implementation
@@ -92,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.FacebookEnabled)
 			{
                 AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
-                this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
+                this.AddBindings(btnFbLogin, "TouchUpInside LoginFacebook");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -100,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.TwitterEnabled)
 			{
                 AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
-                this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
+                this.AddBindings(btnTwLogin, "TouchUpInside LoginTwitter");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
@@ -112,20 +103,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
-            
-            
-            this.AddBindings (new Dictionary<object, string> {
-                { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
-                { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
-                { txtEmail, "{'Text':{'Path':'Email'}}"},
-                { txtPassword, "{'Text':{'Path':'Password'}}"},
-            });
+
+            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+
+            set.Bind(btnSignIn)
+                .For("TouchUpInside")
+                .To(vm => vm.SignInCommand);
+
+            set.Bind(linkForgotPassword)
+                .For("TouchUpInside")
+                .To(vm => vm.ResetPassword);
+
+            set.Bind(btnSignUp)
+                .For("TouchUpInside")
+                .To(vm => vm.SignUp);
+
+            set.Bind(txtEmail)
+                .For(v=> v.Text)
+                .To(vm => vm.Email);
+
+            set.Bind(txtPassword)
+                .For(v=> v.Text)
+                .To(vm => vm.Password);
+
+            set.Apply();
 
 
             if (!UIHelper.Is4InchDisplay)
             {
-
                 btnSignUp.IncrementY(-25);
             }
 
@@ -153,8 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
             popup.Show ();
         }
-
-        #endregion
+		
     }
 }
 

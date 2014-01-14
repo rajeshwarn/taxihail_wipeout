@@ -1,10 +1,10 @@
 using System;
 using Android.Graphics;
-using Cirrious.MvvmCross.Converters;
+using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
-    public class OrderStatusToTextColorConverter: MvxBaseValueConverter
+    public class OrderStatusToTextColorConverter: MvxValueConverter
 	{
 		public override object Convert (object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{

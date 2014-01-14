@@ -1,13 +1,12 @@
 using System.Drawing;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Touch.Views.Presenters;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Touch.Interfaces;
-using Cirrious.MvvmCross.Platform.Diagnostics;
-using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
-using Cirrious.MvvmCross.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Linq;
+using Cirrious.MvvmCross.Touch.Views;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
+using Cirrious.MvvmCross.ViewModels;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -99,22 +98,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if (topViewController == null)
                 {
-                    MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
+					Mvx.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
                     return;
                 }
 
                 var topView = topViewController as IMvxTouchView;
                 if (topView == null)
                 {
-                    MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
+					Mvx.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - topmost is not a touchview");
                     return;
                 }
 
-                var viewModel = topView.ReflectionGetViewModel();
+				var viewModel = topView.ViewModel;
                 if (viewModel != toClose)
                 {
                     var viewControllers = _masterNavigationController.ViewControllers.ToList();
-                    var toCloseController = (UIViewController)viewControllers.OfType<IHaveViewModel>().FirstOrDefault(vc => vc.MyViewModel == toClose);
+                    var toCloseController = (UIViewController)viewControllers.OfType<IHaveViewModel>().FirstOrDefault(vc => vc.ViewModel == toClose);
 
 
                     if (toCloseController == null)
@@ -133,16 +132,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if (_masterNavigationController.ViewControllers.Length >= 2)
                 {
-
                     var typeController = _masterNavigationController.ViewControllers[1].GetType();
-                    if (typeController.IsDefined(typeof(NoHistoryAttribute), false))
+					//TODO: [MvvmCross v3] NoHistoryAttribute is not defined
+					/*if (typeController.IsDefined(typeof(NoHistoryAttribute), false))
                     {
                         var newStack = _masterNavigationController.ViewControllers.ToList();
                         newStack.RemoveAt(1);
                         _masterNavigationController.SetViewControllers(newStack.ToArray(), true);
-                    }
+                    }*/
                 }
-                _masterNavigationController.PopViewControllerAnimatedPause(true);
+				// TODO: [MvvmCross v3] Figure out what this method was doing
+				//_masterNavigationController.PopViewControllerAnimatedPause(true);
+                _masterNavigationController.PopViewControllerAnimated(true);
             }
         }
 

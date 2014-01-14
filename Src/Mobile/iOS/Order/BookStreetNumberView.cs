@@ -3,33 +3,32 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-    [NoHistory]
-    public partial class BookStreetNumberView : MvxBindingTouchViewController<BookStreetNumberViewModel>
+	//TODO: [MvvmCross v3] NoHistory attribute not defined
+    //[NoHistory]
+    public partial class BookStreetNumberView : MvxViewController
     {
         public BookStreetNumberView() 
-            : base(new MvxShowViewModelRequest<BookStreetNumberViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("BookStreetNumberView", null)
         {
         }
-        
-        public BookStreetNumberView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public BookStreetNumberView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-		
+
+		public new BookStreetNumberViewModel ViewModel
+		{
+			get
+			{
+				return (BookStreetNumberViewModel)DataContext;
+			}
+		}
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
@@ -77,13 +76,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             });
             NavigationItem.RightBarButtonItem = button;
 
-            this.AddBindings(new Dictionary<object, string> {
-                { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
-                { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},               
-                { btnPlaces, "{'TouchUpInside': {'Path': 'NavigateToPlaces'}}" },
-                { btnClear, "{'TouchUpInside': {'Path': 'DeleteAddressCommand'}}" },
-                { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
-            });
+            var set = this.CreateBindingSet<BookStreetNumberView, BookStreetNumberViewModel>();
+
+            set.Bind(txtStreetNumber)
+                .For(v => v.Text)
+                .To(vm => vm.StreetNumberOrBuildingName);
+
+            set.Bind(lblStreetName)
+                .For(v => v.Text)
+                .To(vm => vm.StreetCity);
+
+            set.Bind(btnPlaces)
+                .For("TouchUpInside")
+                .To(vm => vm.NavigateToPlaces);
+
+            set.Bind(btnClear)
+                .For("TouchUpInside")
+                .To(vm => vm.DeleteAddressCommand);
+
+            set.Bind(btnSearch)
+                .For("TouchUpInside")
+                .To(vm => vm.NavigateToSearch);
+
+            set.Apply();
             
             ViewModel.Load();
             View.ApplyAppFont ();

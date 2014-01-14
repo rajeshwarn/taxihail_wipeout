@@ -6,7 +6,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class ConfirmCarNumberViewModel : BaseViewModel
 	{
-		public ConfirmCarNumberViewModel (string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get {
 				return GetCommand (() =>
 				{ 
-                    RequestSubNavigate<PaymentViewModel,object>(
+						ShowSubViewModel<PaymentViewModel,object>(
                     new { 
                         order = Order.ToJson(),
                         orderStatus = OrderStatus.ToJson(),
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     _=>{
                     });
 					
-					RequestClose(this);
+					Close(this);
 				});
 			}
 		}

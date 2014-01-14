@@ -1,16 +1,16 @@
 using System;
+using System.Drawing;
+using System.Globalization;
+using CrossUI.Touch.Dialog.Elements;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MonoTouchDialog;
-using MonoTouch.Foundation;
-using System.Drawing;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
-using Cirrious.MvvmCross.Dialog.Touch.Dialog;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
-using System.Globalization;
+using CrossUI.Touch.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

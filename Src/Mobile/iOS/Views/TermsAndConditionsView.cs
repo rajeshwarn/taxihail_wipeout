@@ -4,30 +4,18 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class TermsAndConditionsView : BaseViewController<TermsAndConditionsViewModel>
+	public partial class TermsAndConditionsView : BaseViewController<TermsAndConditionsViewModel>
     {
-
-
         public TermsAndConditionsView () 
-            : base(new MvxShowViewModelRequest<TermsAndConditionsViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-
-        public TermsAndConditionsView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-
-        public TermsAndConditionsView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("TermsAndConditionsView", null)
         {
         }
 
@@ -39,9 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public override void ViewDidLoad ()
         {
-
             base.ViewDidLoad();
-//            ViewModel.Load();
+
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
@@ -64,15 +51,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblTitle.Text = Localize.GetValue("TermsAndConditionsLabel");
             lblAcknowledgment.Text = Localize.GetValue("TermsAndConditionsAcknowledgment");
 
-            var bindings = new [] {
-                Tuple.Create<object,string>(btnAccept, "{'TouchUpInside':{'Path':'AcceptTermsAndConditions'}}"),
-                Tuple.Create<object,string>(btnCancel, "{'TouchUpInside':{'Path':'RejectTermsAndConditions'}}"),
-                Tuple.Create<object,string>(txtTermsAndConditions, "{'Text': {'Path': 'TermsAndConditions'}}")
-            }
-            .Where(x=> x.Item1 != null )
-                .ToDictionary(x=>x.Item1, x=>x.Item2);
+			var set = this.CreateBindingSet<TermsAndConditionsView, TermsAndConditionsViewModel> ();
 
-            this.AddBindings(bindings);
+			set.BindSafe(btnAccept)
+				.For("TouchUpInside")
+				.To(vm => vm.AcceptTermsAndConditions);
+
+			set.BindSafe(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.RejectTermsAndConditions);
+
+			set.BindSafe(txtTermsAndConditions)
+				.For(v => v.Text)
+				.To(vm => vm.TermsAndConditions);
+
+			set.Apply ();
 
             View.ApplyAppFont ();
         }
@@ -81,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidAppear (animated);
             NavigationItem.TitleView = new TitleView (null, string.Empty, false);
-
         }
     }
 }

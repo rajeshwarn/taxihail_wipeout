@@ -8,12 +8,10 @@ using Android.Util;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities;
-
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using PushSharp.Client;
@@ -176,10 +174,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             //Create an intent to show ui
             var uiIntent = new Intent(this, typeof (SplashActivity));
-            var request = new MvxShowViewModelRequest(
+            var request = new MvxViewModelRequest(
                 typeof (MvxNullViewModel),
-                new Dictionary<string, string>(),
-                true,
+				null,
+				null,
                 MvxRequestedBy.UserAction);
             var launchData = request.ToJson();
 

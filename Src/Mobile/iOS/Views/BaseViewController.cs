@@ -1,49 +1,49 @@
+using System;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public abstract class BaseViewController<TViewModel> : MvxBindingTouchViewController<TViewModel>, IHaveViewModel where TViewModel: BaseViewModel, IMvxViewModel
+	public abstract class BaseViewController<TViewModel> : MvxViewController, IHaveViewModel
+		where TViewModel : BaseViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
 
-		#region IHaveViewModel implementation
-
-		public BaseViewModel MyViewModel {
-			get {
-				return ViewModel;
-			}
-		}
-
-		#endregion
-
         #region Constructors
 
-        public BaseViewController () 
-            : base(new MvxShowViewModelRequest<TViewModel>( null, true, new MvxRequestedBy()   ) )
+        public BaseViewController ()
         {
         }
         
-        public BaseViewController(MvxShowViewModelRequest request) 
-            : base(request)
+		public BaseViewController(IntPtr handle) 
+			: base(handle)
         {
         }
         
-        public BaseViewController(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+		protected BaseViewController(string nibName, NSBundle bundle) 
+            : base(nibName, bundle)
         {
         }
         
 #endregion
+
+		public new TViewModel ViewModel
+		{
+			get
+			{
+				return (TViewModel)DataContext;
+			}
+		}
 
         public override void ViewWillAppear (bool animated)
         {

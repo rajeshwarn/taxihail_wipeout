@@ -5,46 +5,34 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+	[MvxViewFor(typeof(HistoryViewModel))]
 	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
 	{
 
 		private const string Cellid = "HistoryCell";
 		
-		static readonly string CellBindingText =
-			   new B("FirstLine","Title")
-				.Add("FirstLineTextColor","Status","OrderStatusToTextColorConverter")
-				.Add("SecondLine","PickupAddress.DisplayAddress")
-				.Add("ShowRightArrow","ShowRightArrow")
-				.Add("ShowPlusSign","ShowPlusSign")
-				.Add("IsFirst","IsFirst")
-				.Add("IsLast","IsLast");
-
-		#region Constructors
-
+		static readonly string CellBindingText = @"
+					FirstLine Title;
+					FirstLineTextColor Status, Converter OrderStatusToTextColorConverter;
+					SecondLine PickupAddress.DisplayAddress;
+					ShowRightArrow ShowRightArrow;
+					ShowPlusSign ShowPlusSign;
+					IsFirst IsFirst;
+					IsLast IsLast
+				";
+			
 		public HistoryTabView() 
-			: base(new MvxShowViewModelRequest<HistoryViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("HistoryTabView", null)
 		{
 		}
-		
-		public HistoryTabView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public HistoryTabView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-		}
-
-		#endregion
 
 		public override void ViewDidLoad ()
 		{
@@ -69,12 +57,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			source.CellCreator = (tview , iPath, state ) => { 
                 return new TwoLinesCell( Cellid, CellBindingText ); 
             };
-			this.AddBindings(new Dictionary<object, string>{
-                {tableHistory, "{'Hidden': {'Path': 'HasOrders', 'Converter': 'BoolInverter'}}"},
-                {lblNoHistory, "{'Hidden': {'Path': 'HasOrders'}}"},
-                {source, "{'ItemsSource':{'Path':'Orders'}, 'SelectedCommand':{'Path':'NavigateToHistoryDetailPage'}}"} ,
-			});
-			
+
+			var set = this.CreateBindingSet<HistoryTabView, HistoryViewModel> ();
+
+			set.Bind(tableHistory)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasOrders)
+				.WithConversion("BoolInverter");
+
+			set.Bind(lblNoHistory)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasOrders);
+
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.Orders);
+			set.Bind(source)
+				.For(v => v.SelectedCommand)
+				.To(vm => vm.NavigateToHistoryDetailPage);
+
+			set.Apply ();
+
 			tableHistory.Source = source;
 
             View.ApplyAppFont ();

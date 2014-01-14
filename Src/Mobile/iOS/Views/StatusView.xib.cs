@@ -9,34 +9,21 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class StatusView : BaseViewController<BookingStatusViewModel>
+	[MvxViewFor(typeof(BookingStatusViewModel))]
+	public partial class StatusView : BaseViewController<BookingStatusViewModel>
     {
-        #region Constructors
-
         public StatusView () 
-            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("StatusView", null)
         {
         }
-        
-        public StatusView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public StatusView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
-
-        #endregion
 
         public override void ViewDidLoad ()
         {
@@ -119,50 +106,162 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 lblConfirmation.TextColor = AppStyle.GreyText;
                 lblStatus.TextColor = AppStyle.DarkText;
-                this.AddBindings (new Dictionary<object, string> ()                            
-                {
-                    { lblStatus, "{'Text':{'Path':'StatusInfoText'}}" },
-                    { lblConfirmation, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
-					{ lblDriver, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.FullName'}, 'Hidden':{'Path':'VehicleDriverHidden'}}" },
-					{ lblLicence, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleRegistration'}, 'Hidden':{'Path':'VehicleLicenceHidden'}}" },
-					{ lblTaxiType, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleType'}, 'Hidden':{'Path':'VehicleTypeHidden'}}" },
-					{ lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}, 'Hidden':{'Path':'VehicleMakeHidden'}}" },
-					{ lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}, 'Hidden':{'Path':'VehicleModelHidden'}}" },
-					{ lblColor, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleColor'}, 'Hidden':{'Path':'VehicleColorHidden'}}" },
-					{ txtDriver, "{'Hidden':{'Path':'VehicleDriverHidden'}}" },
-					{ txtLicence, "{'Hidden':{'Path':'VehicleLicenceHidden'}}" },
-					{ txtTaxiType, "{'Hidden':{'Path':'VehicleTypeHidden'}}" },
-					{ txtMake, "{'Hidden':{'Path':'VehicleMakeHidden'}}" },
-					{ txtModel, "{'Hidden':{'Path':'VehicleModelHidden'}}" },
-					{ txtColor, "{'Hidden':{'Path':'VehicleColorHidden'}}" },
-                    { statusBar, "{'IsEnabled':{'Path':'IsDriverInfoAvailable'}}" },
-                    { imgGrip, "{'Hidden':{'Path':'IsDriverInfoAvailable', 'Converter':'BoolInverter'}}" },
-                    { btnCallDriver, "{'TouchUpInside': {'Path': 'CallTaxi'}, 'Hidden':{'Path':'IsCallTaxiVisible', 'Converter':'BoolInverter'}}" },
-				
-                    { mapStatus, new B("Pickup","Pickup.Model")
-                        .Add("TaxiLocation","OrderStatusDetail")
-                        .Add("MapCenter","MapCenter") },
 
-                    { btnCancel, new B("TouchUpInside","CancelOrder")
-                        .Add("Hidden","IsCancelButtonVisible","BoolInverter")},
+				var set = this.CreateBindingSet<StatusView, BookingStatusViewModel>();
 
-                    { btnPay, new B("TouchUpInside","PayForOrderCommand")
-                        .Add("Hidden","IsPayButtonVisible","BoolInverter")},
+                set.Bind(lblStatus)
+                    .For(v => v.Text)
+                    .To(vm => vm.StatusInfoText);
 
-                    { btnCall, new B("Hidden","IsCallButtonVisible","BoolInverter")
-                        .Add("Enabled","IsCallButtonVisible")
-                        .Add("TouchUpInside","CallCompany") },
+                set.Bind(lblConfirmation)
+                    .For(v => v.Text)
+                    .To(vm => vm.ConfirmationNoTxt);
 
-                    { btnResend, new B("Hidden","IsResendButtonVisible","BoolInverter")
-                        .Add("Enabled","IsResendButtonVisible")
-                        .Add("TouchUpInside","ResendConfirmationToDriver") },
+                set.Bind(lblDriver)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.FullName);
+                set.Bind(lblDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleDriverHidden);
 
-					{ btnNewRide, new B("TouchUpInside","NewRide") },
+                set.Bind(lblLicence)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleRegistration);
+                set.Bind(lblLicence)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleLicenceHidden);
 
-					{ btnCancel, new B("TouchUpInside","Unpair")
-						.Add("Hidden","IsUnpairButtonVisible","BoolInverter")}
-					
-                });
+                set.Bind(lblTaxiType)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleType);
+                set.Bind(lblTaxiType)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleTypeHidden);
+
+                set.Bind(lblMake)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleMake);
+                set.Bind(lblMake)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMakeHidden);
+
+                set.Bind(lblModel)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleModel);
+                set.Bind(lblModel)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleModelHidden);
+
+                set.Bind(lblColor)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleColor);
+                set.Bind(lblColor)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleColorHidden);
+
+                set.Bind(txtDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleDriverHidden);
+
+                set.Bind(txtLicence)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleLicenceHidden);
+
+                set.Bind(txtTaxiType)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleTypeHidden);
+
+                set.Bind(txtMake)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMakeHidden);
+
+                set.Bind(txtModel)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleModelHidden);
+
+                set.Bind(txtColor)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleColorHidden);
+
+                set.Bind(statusBar)
+                    .For(v => v.IsEnabled)
+                    .To(vm => vm.IsDriverInfoAvailable);
+
+                set.Bind(imgGrip)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.IsDriverInfoAvailable)
+                    .WithConversion("BoolInverter");
+                    
+                set.Bind(btnCallDriver)
+                    .For("TouchUpInside")
+                    .To(vm => vm.CallTaxi);
+                set.Bind(btnCallDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.IsCallTaxiVisible)
+                    .WithConversion("BoolInverter");
+
+				set.Bind(mapStatus)
+					.For(v => v.Pickup)
+					.To(vm => vm.Pickup.Model);
+				set.Bind(mapStatus)
+					.For(v => v.TaxiLocation)
+					.To(vm => vm.OrderStatusDetail);
+				set.Bind(mapStatus)
+					.For(v => v.MapCenter)
+					.To(vm => vm.MapCenter);
+
+				set.Bind(btnCancel)
+					.For("TouchUpInside")
+					.To(vm => vm.CancelOrder);
+				set.Bind(btnCancel)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsCancelButtonVisible)
+					.WithConversion("BoolInverter");
+
+				set.Bind(btnPay)
+					.For("TouchUpInside")
+					.To(vm => vm.PayForOrderCommand);
+				set.Bind(btnPay)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsPayButtonVisible)
+					.WithConversion("BoolInverter");
+
+				set.Bind(btnCall)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsCallButtonVisible)
+					.WithConversion("BoolInverter");
+				set.Bind(btnCall)
+					.For(v => v.Enabled)
+					.To(vm => vm.IsCallButtonVisible);
+				set.Bind(btnCall)
+					.For("TouchUpInside")
+					.To(vm => vm.CallCompany);
+
+				set.Bind(btnResend)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsResendButtonVisible)
+					.WithConversion("BoolInverter");
+				set.Bind(btnResend)
+					.For(v => v.Enabled)
+					.To(vm => vm.IsResendButtonVisible);
+				set.Bind(btnResend)
+					.For("TouchUpInside")
+					.To(vm => vm.ResendConfirmationToDriver);
+
+				set.Bind(btnNewRide)
+					.For("TouchUpInside")
+					.To(vm => vm.NewRide);
+
+				set.Bind(btnUnpair)
+					.For("TouchUpInside")
+					.To(vm => vm.Unpair);
+				set.Bind(btnUnpair)
+					.For(v => v.Hidden)
+					.To(vm => vm.IsUnpairButtonVisible)
+					.WithConversion("BoolInverter");
+
+				set.Apply();
+
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 

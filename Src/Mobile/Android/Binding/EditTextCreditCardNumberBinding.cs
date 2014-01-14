@@ -1,19 +1,16 @@
 using System;
+using Cirrious.MvvmCross.Binding;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Binding.Android.Target;
-using Cirrious.MvvmCross.Binding.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class EditTextCreditCardNumberBinding : MvxBaseAndroidTargetBinding
+    public class EditTextCreditCardNumberBinding : MvxAndroidTargetBinding
     {
-        private readonly EditTextLeftImage _control;
-
-        public EditTextCreditCardNumberBinding(EditTextLeftImage control)
+        public EditTextCreditCardNumberBinding(EditTextLeftImage target)
+			:base(target)
         {
-            _control = control;
-
-            _control.AfterCreditCardNumberChanged += HandleCreditCardNumberChanged;
+			target.AfterCreditCardNumberChanged += HandleCreditCardNumberChanged;
         }
 
         public override MvxBindingMode DefaultMode
@@ -28,19 +25,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void HandleCreditCardNumberChanged(object sender, EventArgs e)
         {
-            FireValueChanged(_control.CreditCardNumber);
+			var control = Target as EditTextLeftImage;
+            FireValueChanged(control.CreditCardNumber);
         }
 
-        public override void SetValue(object value)
+		protected override void SetValueImpl(object target, object value)
         {
-            _control.CreditCardNumber = (string) value;
+			var control = target as EditTextLeftImage;
+            control.CreditCardNumber = (string) value;
         }
 
         protected override void Dispose(bool isDisposing)
         {
             if (isDisposing)
             {
-                _control.AfterCreditCardNumberChanged -= HandleCreditCardNumberChanged;
+				var control = Target as EditTextLeftImage;
+                control.AfterCreditCardNumberChanged -= HandleCreditCardNumberChanged;
             }
             base.Dispose(isDisposing);
         }

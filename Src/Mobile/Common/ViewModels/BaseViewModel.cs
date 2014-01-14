@@ -1,22 +1,18 @@
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
 using System;
 using TinyIoC;
 using System.Runtime.CompilerServices;
+using Cirrious.MvvmCross.ViewModels;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BaseViewModel : MvxViewModel
+	public abstract class BaseViewModel : MvxViewModel 
     {
-        protected BaseViewModel()
-        {
-        }
-
         public static Action NoAction = () => { };
 
         public TinyIoCContainer Container
@@ -46,12 +42,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        protected void RequestNavigate<T>(object param, bool clearTop) where T : IMvxViewModel
-        {
-            RequestNavigate<T>(param, clearTop, MvxRequestedBy.UserAction);
-        }
-
-        protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues,
+		protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
             where TViewModel : BaseSubViewModel<TResult>
         {
@@ -76,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             },
             msg => msg.MessageId == messageId);
 
-            return RequestNavigate<TViewModel>(parameterValues);
+			return ShowViewModel<TViewModel>(parameterValues);
         }
 
         protected AsyncCommand GetCommand(Action action)
@@ -88,6 +79,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return new AsyncCommand<T>(action);
         }
+		
+		public ICommand CloseCommand
+		{
+			get
+			{
+				return GetCommand(() => Close(this));
+			}
+		}
 
         readonly IDictionary<string, AsyncCommand> _commands = new Dictionary<string, AsyncCommand>();
         protected AsyncCommand GetCommand(Action execute, Func<bool> canExecute, [CallerMemberName] string memberName = null)
@@ -101,6 +100,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     : (_commands[memberName] = new AsyncCommand(execute, canExecute));
 
         }
+
+		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
+		{
+			base.RaisePropertyChanged(whichProperty);
+		}
     }
 
 }

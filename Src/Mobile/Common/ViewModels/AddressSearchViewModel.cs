@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AddressSearchViewModel : BaseViewModel
     {
-        private readonly string _ownerId;
+        private string _ownerId;
         private readonly IGoogleService _googleService;
         private readonly ObservableCollection<AddressViewModel> _addressViewModels = new ObservableCollection<AddressViewModel> ();
         private bool _isSearching;
@@ -23,25 +23,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private IDisposable Disposable { get; set; }
 
-        public AddressSearchViewModel (string ownerId, string search, IGoogleService googleService, string places = "false")
+        public AddressSearchViewModel (IGoogleService googleService)
         {
-            _ownerId = ownerId;
             _googleService = googleService;
-        
-            IsPlaceSearch = places == "true";
-
-            Criteria = search;
-
-            var searchTextChanged = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs> (
-                ev => PropertyChanged += ev,
-                ev => PropertyChanged -= ev)
-                .Where (ev => ev.EventArgs.PropertyName == "Criteria");
-
-            searchTextChanged.Subscribe (o => OnSearchStart ());
-            searchTextChanged.Throttle (TimeSpan.FromMilliseconds (700)).Subscribe (o => OnSearch ());
-
-            OnSearch ();
         }
+
+		public void Init(string ownerId, string search, string places = "false")
+		{
+			_ownerId = ownerId;
+
+			IsPlaceSearch = places == "true";
+
+			Criteria = search;
+
+			var searchTextChanged = Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs> (
+				ev => PropertyChanged += ev,
+				ev => PropertyChanged -= ev)
+				.Where (ev => ev.EventArgs.PropertyName == "Criteria");
+
+			searchTextChanged.Subscribe (o => OnSearchStart ());
+			searchTextChanged.Throttle (TimeSpan.FromMilliseconds (700)).Subscribe (o => OnSearch ());
+
+			OnSearch ();
+		}
 
         public bool IsPlaceSearch{ get; set; }
 
@@ -87,15 +91,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _criteria; }
             set {
                 _criteria = value;
-                FirePropertyChanged (() => Criteria);
+				RaisePropertyChanged ();
             }
         }
 
         public bool IsSearching {
-            get { return _isSearching; }
+            get
+			{ 
+				return _isSearching;
+			}
             set {
                 _isSearching = value;
-                FirePropertyChanged (() => IsSearching);
+				RaisePropertyChanged ("IsSearching");
             }
         }
         protected IEnumerable<AddressViewModel> SearchPlaces ()
@@ -168,7 +175,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        [Obsolete("This is terrible - why would you do this?")]
         public  void BubbleSort (ObservableCollection<AddressViewModel> o)
         {
             for (var i = o.Count - 1; i >= 0; i--) {
@@ -216,13 +222,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 placeAddress.FullAddress = address.Address.FullAddress;
                             }
-                            RequestClose (this);
+                            Close (this);
                             InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, placeAddress, _ownerId, true)));
                         } else if (address.Address.AddressType == "localContact") {
 
                             var addresses = this.Services().Geoloc.SearchAddress(address.Address.FullAddress);
                             if (addresses.Any()) {
-                                RequestClose (this);
+                                Close (this);
                                 InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId, true)));
                             } else {
 
@@ -231,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 this.Services().Message.ShowMessage(title, msg);
                             }
                         } else {
-                            RequestClose (this);
+                            Close (this);
 
                             InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new AddressSelected(this, address.Address, _ownerId, true)));
                         }
@@ -241,7 +247,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand CloseViewCommand
         {
-            get { return GetCommand (() => RequestClose (this)); }
+            get { return GetCommand (() => Close (this)); }
         }
 
 

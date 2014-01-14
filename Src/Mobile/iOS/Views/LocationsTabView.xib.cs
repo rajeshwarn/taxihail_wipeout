@@ -1,53 +1,37 @@
 using System.Collections.Generic;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
+	//TODO [MvvMCross v3] Required? 
+	[MvxViewFor(typeof(MyLocationsViewModel))]
 	public partial class LocationsTabView : BaseViewController<MyLocationsViewModel>
 	{
         const string CellBindingText = @"
-                {
-                   'FirstLine':{'Path':'Address.FriendlyName'},
-                   'SecondLine':{'Path':'Address.FullAddress'},
-                   'ShowRightArrow':{'Path':'ShowRightArrow'},
-                   'ShowPlusSign':{'Path':'ShowPlusSign'},
-                   'IsFirst':{'Path':'IsFirst'},
-                   'IsLast':{'Path':'IsLast'},
-                    'Icon':{'Path':'Icon'},
-                   'IsAddNewCell': {'Path': 'IsAddNew'}
-                }";
-
-		#region Constructors
+				   FirstLine Address.FriendlyName;
+                   SecondLine Address.FullAddress;
+                   ShowRightArrow ShowRightArrow;
+                   ShowPlusSign ShowPlusSign;
+                   IsFirst IsFirst;
+                   IsLast IsLast;
+                   Icon Icon;
+                   IsAddNewCell IsAddNew
+                ";
 
         public LocationsTabView () 
-            : base(new MvxShowViewModelRequest<MyLocationsViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("LocationsTabView", null)
         {
             Initialize();
         }
-        
-        public LocationsTabView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            Initialize();
-        }
-        
-        public LocationsTabView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-            Initialize();
-        }
-
-        #endregion
-        
         
         void Initialize()
         {
@@ -74,9 +58,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
             source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( new NSString("LocationCell"), CellBindingText ); };
 
-            this.AddBindings(new Dictionary<object, string>{
-                { source, "{'ItemsSource': {'Path': 'AllAddresses'}, 'SelectedCommand': {'Path': 'NavigateToLocationDetailPage'}}" },
-            });
+			var set = this.CreateBindingSet<LocationsTabView, MyLocationsViewModel> ();
+
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.AllAddresses);
+			set.Bind(source)
+				.For(v => v.SelectedCommand)
+				.To(vm => vm.NavigateToLocationDetailPage);
+
+			set.Apply ();
 
             tableLocations.Source = source;
             View.ApplyAppFont ();

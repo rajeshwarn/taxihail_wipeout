@@ -1,13 +1,13 @@
 using System;
+using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using MonoTouch.Foundation;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	public partial class BookRatingCell : MvxBindableTableViewCell
+	public partial class BookRatingCell : MvxStandardTableViewCell
 	{
 		public static NSString Identifier = new NSString("BookRatingCell");
 		public const string BindingText = @"{'RatingTypeName':{'Path':'RatingTypeName'},
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 		}
 	
 
-		public IMvxCommand SetRateCommand {
+		public ICommand SetRateCommand {
 			get ;
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
 			set ;

@@ -1,156 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:layout_height="fill_parent"
+  android:layout_width="fill_parent">
+  <RelativeLayout
+    android:id="@+id/fakeLayout"
+    android:layout_marginLeft="100px"
+    android:layout_width="0dip"
+    android:layout_height="fill_parent" />
+  <apcurium.mk.booking.mobile.client.controls.HeaderedLayout
+    android:id="@+id/HeaderLayoutMenu"
+    local:HideLogo="true"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
+    android:layout_toRightOf="@id/fakeLayout">
     <RelativeLayout
-        android:id="@+id/fakeLayout"
-        android:layout_marginLeft="100px"
-        android:layout_width="0dip"
-        android:layout_height="fill_parent" />
-    <apcurium.mk.booking.mobile.client.controls.HeaderedLayout
-        android:id="@+id/HeaderLayoutMenu"
-        local:HideLogo="true"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+      <LinearLayout
+        android:id="@+id/mainSettingsLayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dip"
         android:layout_toRightOf="@id/fakeLayout">
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <LinearLayout
-                android:id="@+id/mainSettingsLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="10dip"
-                android:layout_toRightOf="@id/fakeLayout">
-                <Button
-                    android:id="@+id/settingsFavorites"
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/cell_top_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_MyLocations"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{'Click': {'Path': 'Panel.NavigateToMyLocations'}}" />
-                <Button
-                    android:id="@+id/settingsHistory"
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_MyOrders"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToOrderHistory'}}" />
-                <Button
-                    android:id="@+id/settingsProfile"
-                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToUpdateProfile'}}"
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_UpdateMyProfile"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <Button
-                    android:id="@+id/settingsCallCompany"
-                    style="@style/BigTitleTextBlack"
-                    local:MvxBind="{'Click':{'Path':'Panel.Call'},'Visibility':{'Path':'Panel.CanCall','Converter':'Visibility'}}"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_CallDispatch"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <Button
-                    android:id="@+id/settingsTutorial"
-                    style="@style/BigTitleTextBlack"
-                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToTutorial'},'Visibility':{'Path':'Panel.TutorialEnabled','Converter':'Visibility'}}"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_Tutorial"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <Button
-                    android:id="@+id/settingsAbout"
-                    style="@style/BigTitleTextBlack"
-                    local:MvxBind="{'Click':{'Path':'Panel.NavigateToAboutUs'}}"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_AboutUs"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <Button
-                    android:id="@+id/settingsSupport"
-                    local:MvxBind="{'Click':{'Path':'Panel.ReportProblem'},'Visibility':{'Path':'Panel.CanReportProblem','Converter':'Visibility'}}"
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/cell_middle_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_ReportProblem"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-                <Button
-                    android:id="@+id/settingsLogout"
-                    style="@style/BigTitleTextBlack"
-                    android:background="@drawable/cell_bottom_state"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:text="@string/View_Book_Menu_SignOut"
-                    android:paddingRight="10dip"
-                    android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
-
-
-
-
-            </LinearLayout>
-            <RelativeLayout
-                android:id="@+id/apcuriumLogoLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_toRightOf="@id/fakeLayout"
-                android:layout_alignParentBottom="true">
-                <ImageView
-                    android:id="@+id/apcuriumLogo"
-                    android:src="@drawable/apcuriumLogo"
-                    android:layout_width="140dip"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginRight="20dip"
-                    android:paddingBottom="10dip"
-                    android:layout_centerHorizontal="true" />
-                <TextView
-                    android:text="v0.0.0"
-                    local:MvxBind="{'Text':{'Path':'Panel.Version'}}"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/apcuriumLogo"
-                    style="@style/FinePrint"
-                    android:gravity="bottom|right"
-                    android:layout_gravity="right" />
-            </RelativeLayout>
-        </RelativeLayout>
-    </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
-    <RelativeLayout
-        android:id="@+id/DShadow"
-        android:layout_width="5dip"
-        android:layout_height="fill_parent"
+        <Button
+          android:id="@+id/settingsFavorites"
+          style="@style/BigTitleTextBlack"
+          android:background="@drawable/cell_top_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_MyLocations"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          local:MvxBind="Click Panel.NavigateToMyLocations" />
+        <Button
+          android:id="@+id/settingsHistory"
+          style="@style/BigTitleTextBlack"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_MyOrders"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          local:MvxBind="Click Panel.NavigateToOrderHistory" />
+        <Button
+          android:id="@+id/settingsProfile"
+          local:MvxBind="Click Panel.NavigateToUpdateProfile"
+          style="@style/BigTitleTextBlack"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_UpdateMyProfile"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+        <Button
+          android:id="@+id/settingsCallCompany"
+          style="@style/BigTitleTextBlack"
+          local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_CallDispatch"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+        <Button
+          android:id="@+id/settingsTutorial"
+          style="@style/BigTitleTextBlack"
+          local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_Tutorial"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+        <Button
+          android:id="@+id/settingsAbout"
+          style="@style/BigTitleTextBlack"
+          local:MvxBind="Click Panel.NavigateToAboutUs"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_AboutUs"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+        <Button
+          android:id="@+id/settingsSupport"
+          local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
+          style="@style/BigTitleTextBlack"
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_ReportProblem"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+        <Button
+          android:id="@+id/settingsLogout"
+          style="@style/BigTitleTextBlack"
+          android:background="@drawable/cell_bottom_state"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:text="@string/View_Book_Menu_SignOut"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical" />
+      </LinearLayout>
+      <RelativeLayout
+        android:id="@+id/apcuriumLogoLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_toRightOf="@id/fakeLayout"
-        android:background="@drawable/drop_shadow" />
+        android:layout_alignParentBottom="true">
+        <ImageView
+          android:id="@+id/apcuriumLogo"
+          android:src="@drawable/apcuriumLogo"
+          android:layout_width="140dip"
+          android:scaleType="fitCenter"
+          android:adjustViewBounds="true"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dip"
+          android:layout_marginRight="20dip"
+          android:paddingBottom="10dip"
+          android:layout_centerHorizontal="true" />
+        <TextView
+          android:text="v0.0.0"
+          local:MvxBind="Text Panel.Version"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/apcuriumLogo"
+          style="@style/FinePrint"
+          android:gravity="bottom|right"
+          android:layout_gravity="right" />
+      </RelativeLayout>
+    </RelativeLayout>
+  </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+  <RelativeLayout
+    android:id="@+id/DShadow"
+    android:layout_width="5dip"
+    android:layout_height="fill_parent"
+    android:layout_toRightOf="@id/fakeLayout"
+    android:background="@drawable/drop_shadow" />
 </RelativeLayout>

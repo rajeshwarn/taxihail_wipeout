@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemoCallbox"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frameLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -85,7 +85,7 @@
             android:layout_height="1dip"
             android:layout_below="@id/listTitle"
             android:background="@color/black" />
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:id="@+id/OrderList"
             android:minWidth="25px"
             android:minHeight="25px"

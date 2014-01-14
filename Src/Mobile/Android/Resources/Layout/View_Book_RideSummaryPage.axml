@@ -1,99 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    local:HideLogo="false"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  local:HideLogo="false"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:orientation="vertical"
+    android:paddingLeft="20px"
+    android:paddingRight="20px"
+    android:paddingTop="25dip">
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingLeft="20px"
-        android:paddingRight="20px"
-        android:paddingTop="25dip">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <TextView
-                style="@style/BigTitleTextBlack"
-                android:text="[ThankYouTitle]"
-                local:MvxBind="{'Text':{'Path':'ThankYouTitle'} }"
-                android:layout_width="250dp"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/darkgray"
-                android:layout_marginBottom="10dip" />
-            <TextView
-                style="@style/BigTextBlack"
-                android:text="@string/View_BookingStatus_ThankYouMessage"
-                local:MvxBind="{'Text':{'Path':'ThankYouMessage'} }"
-                android:layout_width="250dp"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/darkgray"
-                android:layout_marginBottom="20dip" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                android:id="@+id/SendReceiptBtn"
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
-                local:MvxBind="{'Click':{'Path':'SendReceiptCommand'}, 'Visibility':{'Path':'IsSendReceiptButtonShown','Converter':'Visibility'} }"
-                android:background="@drawable/green_button"
-                android:text="@string/HistoryDetailSendReceiptButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:gravity="center"
-                android:paddingBottom="5dip"
-                android:paddingTop="5dip"
-                android:width="10dip"
-                android:layout_marginBottom="10dip" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
-                local:MvxBind="{'Click':{'Path':'NavigateToRatingPage'}, 'Visibility':{'Path':'IsRatingButtonShown','Converter':'Visibility'} }"
-                android:background="@drawable/green_button"
-                android:text="@string/RateBtn"
-                android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:gravity="center"
-                android:paddingBottom="5dip"
-                android:paddingTop="5dip"
-                android:width="10dip"
-                android:layout_marginBottom="10dip" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
-                local:MvxBind="{'Click':{'Path':'ResendConfirmationCommand'}, 'Visibility':{'Path':'IsResendConfirmationButtonShown','Converter':'Visibility' } }"
-                android:background="@drawable/green_button"
-                android:text="@string/ReSendConfirmationButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:gravity="center"
-                android:paddingBottom="5dip"
-                android:paddingTop="5dip"
-                android:width="10dip"
-                android:layout_marginBottom="10dip" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
-                local:MvxBind="{'Click':{'Path':'PayCommand'}, 'Visibility':{'Path':'IsPayButtonShown','Converter':'Visibility'} }"
-                android:background="@drawable/green_button"
-                android:text="@string/StatusPayButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dip"
-                android:gravity="center"
-                android:paddingBottom="5dip"
-                android:paddingTop="5dip"
-                android:width="10dip"
-                android:layout_marginBottom="10dip" />
-        </LinearLayout>
+      android:orientation="vertical"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center">
+      <TextView
+        style="@style/BigTitleTextBlack"
+        android:text="[ThankYouTitle]"
+        local:MvxBind="Text ThankYouTitle"
+        android:layout_width="250dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/darkgray"
+        android:layout_marginBottom="10dip" />
+      <TextView
+        style="@style/BigTextBlack"
+        android:text="@string/View_BookingStatus_ThankYouMessage"
+        local:MvxBind="Text ThankYouMessage'"
+        android:layout_width="250dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/darkgray"
+        android:layout_marginBottom="20dip" />
+      <apcurium.mk.booking.mobile.client.controls.StyledButton
+        android:id="@+id/SendReceiptBtn"
+        local:ButtonStyle="Green"
+        style="@style/ButtonText"
+        local:MvxBind="Click SendReceiptCommand; Visibility IsSendReceiptButtonShown, Converter=Visibility"
+        android:background="@drawable/green_button"
+        android:text="@string/HistoryDetailSendReceiptButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:width="10dip"
+        android:layout_marginBottom="10dip" />
+      <apcurium.mk.booking.mobile.client.controls.StyledButton
+        local:ButtonStyle="Green"
+        style="@style/ButtonText"
+        local:MvxBind="Click NavigateToRatingPage; Visibility IsRatingButtonShown, Converter=Visibility"
+        android:background="@drawable/green_button"
+        android:text="@string/RateBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:width="10dip"
+        android:layout_marginBottom="10dip" />
+      <apcurium.mk.booking.mobile.client.controls.StyledButton
+        local:ButtonStyle="Green"
+        style="@style/ButtonText"
+        local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
+        android:background="@drawable/green_button"
+        android:text="@string/ReSendConfirmationButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:width="10dip"
+        android:layout_marginBottom="10dip" />
+      <apcurium.mk.booking.mobile.client.controls.StyledButton
+        local:ButtonStyle="Green"
+        style="@style/ButtonText"
+        local:MvxBind="Click PayCommand; Visibility IsPayButtonShown, Converter=Visibility"
+        android:background="@drawable/green_button"
+        android:text="@string/StatusPayButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:width="10dip"
+        android:layout_marginBottom="10dip" />
     </LinearLayout>
+  </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

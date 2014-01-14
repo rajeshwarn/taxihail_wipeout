@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Mvx;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Dialog.Touch;
-using Cirrious.MvvmCross.Touch.Interfaces;
+using apcurium.MK.Booking.Mobile.IoC;
 using Cirrious.MvvmCross.Touch.Platform;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -23,59 +19,55 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using MonoTouch.FacebookConnect;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
+using Cirrious.CrossCore;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup
-        : MvxTouchDialogBindingSetup
+    public class Setup: MvxTouchSetup
     {
-        readonly IMvxTouchViewPresenter _presenter;
-        readonly IDictionary<string, string> _options;
-
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter, IDictionary<string, string> options)
-            : base(applicationDelegate, presenter)
+        public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
+			: base(applicationDelegate, window)
         {
-            _presenter = presenter;
-            _options = options;
         }
         
         #region Overrides of MvxBaseSetup
         
-        protected override MvxApplication CreateApp()
+		protected override IMvxApplication CreateApp()
         {
-            var app = new TaxiHailApp(_options);
-            return app;
+			return new TaxiHailApp();
         }
 
-		protected override IEnumerable<Type> ValueConverterHolders {
-			get {
-				return new[] { typeof(AppConverters) };
+		protected override List<Type> ValueConverterHolders
+		{
+			get
+			{
+				return new List<Type> { typeof(AppConverters) };
 			}
 		}
 
-        protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
+		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
         {
             base.FillTargetFactories (registry);
             registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
             CustomBindingsLoader.Load(registry);
         }
 
-        protected override void InitializeIoC()
+		protected override void InitializeLastChance()
         {
-            TinyIoCServiceProviderSetup.Initialize();
+			base.InitializeLastChance();
 
             TinyIoCContainer.Current.Register<IAnalyticsService, GoogleAnalyticsService>();
 
             var locationService = new LocationService( );
             locationService.Start();
 
-
             TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
-            TinyIoCContainer.Current.Register(_presenter);
 
             TinyIoCContainer.Current.Register<ILocalization, Localize>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
@@ -121,6 +113,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
+
+		protected override Cirrious.MvvmCross.Touch.Views.Presenters.IMvxTouchViewPresenter CreatePresenter()
+		{
+			return new PhonePresenter(base.ApplicationDelegate, base.Window);
+		}
+
+		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
+		{
+			return new TinyIoCProvider(TinyIoCContainer.Current);
+		}
 
 #endregion
     }

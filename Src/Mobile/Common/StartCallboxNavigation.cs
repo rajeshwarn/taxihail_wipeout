@@ -1,5 +1,4 @@
 using System.Linq;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -11,9 +10,11 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class StartCallboxNavigation : MvxApplicationObject, IMvxStartNavigation
+	public class StartCallboxNavigation:
+			MvxNavigatingObject,
+			IMvxAppStart
 	{
-		public void Start()
+		public void Start(object hint)
 		{
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
@@ -23,15 +24,15 @@ namespace apcurium.MK.Booking.Mobile
 
 			if (TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
 			{
-				RequestNavigate<CallboxLoginViewModel>();
+				ShowViewModel<CallboxLoginViewModel>();
 			}
 			else if (activeOrderStatusDetails != null && activeOrderStatusDetails.Any(c => TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IbsStatusId)))
 			{
-				RequestNavigate<CallboxOrderListViewModel>();
+				ShowViewModel<CallboxOrderListViewModel>();
 			}
 			else
 			{
-				RequestNavigate<CallboxCallTaxiViewModel>();
+				ShowViewModel<CallboxCallTaxiViewModel>();
 			}
 
 			TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);

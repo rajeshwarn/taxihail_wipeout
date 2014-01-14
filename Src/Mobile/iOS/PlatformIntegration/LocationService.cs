@@ -1,6 +1,6 @@
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Touch.ExtensionMethods;
+using Cirrious.CrossCore.Touch;
 using MonoTouch.CoreLocation;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

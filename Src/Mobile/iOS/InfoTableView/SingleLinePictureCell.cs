@@ -1,20 +1,20 @@
 using System;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Drawing;
+using System.Windows.Input;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.Foundation;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-    public sealed class SingleLinePictureCell : MvxBindableTableViewCell
+	public sealed class SingleLinePictureCell : MvxStandardTableViewCell
     {
         private UIImageView _picture;
         private UILabel _rightText;
         private UILabel _leftText;
         private UIImageView _plusSignImage;
         private UIButton _removeButton;
-        private IMvxCommand _deleteCommand;
+        private ICommand _deleteCommand;
         private bool _showPlusSign;
         private bool _showArrow;
         private float _rowHeight = 44f;
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             }
         }
 
-        public IMvxCommand DeleteCommand{
+        public ICommand DeleteCommand{
             get{ return _deleteCommand;}
             set{
                 _deleteCommand = value;
@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             _removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
             _removeButton.SetImage(UIImage.FromFile("Assets/CreditCard/delete_card_btn.png"),UIControlState.Normal);
             _removeButton.TouchUpInside += (sender, e) => {
-                DeleteCommand.Execute();
+				DeleteCommand.Execute();
             };
             AddSubview ( _removeButton ); 
         }

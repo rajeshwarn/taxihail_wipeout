@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-
         public override void Start(bool firstStart = false)
         {
             base.Start (firstStart);
@@ -28,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if(value != _allAddresses) {
                     _allAddresses = value;
-                    FirePropertyChanged("AllAddresses");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -42,15 +41,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if(a.Address.Id == Guid.Empty)
                     {
                         // New address
-                        RequestNavigate<LocationDetailViewModel>();
+                        ShowViewModel<LocationDetailViewModel>();
                     } else {
-                        RequestNavigate<LocationDetailViewModel>(new Dictionary<string,string>{
+                        ShowViewModel<LocationDetailViewModel>(new Dictionary<string,string>{
                             { "address", a.Address.ToJson() }
                         });
                     }
                 });
             }
         }
+
         public Task LoadAllAddresses ()
         {
             var tasks = new [] {
@@ -85,12 +85,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     a.IsLast = a.Equals(AllAddresses.Last());                    
                 });
 
-                FirePropertyChanged( () =>AllAddresses );
+				RaisePropertyChanged( () =>AllAddresses );
 
             }, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
         
-
         private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{

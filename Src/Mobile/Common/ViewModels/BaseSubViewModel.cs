@@ -6,7 +6,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public abstract class BaseSubViewModel<TResult>: BaseViewModel
 	{
-		public BaseSubViewModel(string messageId)
+		protected void Init(string messageId)
 		{
 			MessageId = messageId;
 		}
@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		protected void ReturnResult(TResult result)
 		{
 			var message = new SubNavigationResultMessage<TResult>(this, MessageId, result);		
-			Close();
+			Close(this);
             this.Services().MessengerHub.Publish(message);
 		}
 	}

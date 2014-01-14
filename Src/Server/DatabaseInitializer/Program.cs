@@ -205,7 +205,7 @@ namespace DatabaseInitializer
                     Console.WriteLine("Done playing events...");
 
                     var accounts = new AccountDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    var admin = accounts.GetAll().FirstOrDefault(x => x.Email == "taxihail@apcurium.com");
+                    var admin = accounts.FindByEmail("taxihail@apcurium.com");
 
                     if (admin != null)
                     {
@@ -221,6 +221,23 @@ namespace DatabaseInitializer
                             AccountId = admin.Id,
                             ConfimationToken = admin.ConfirmationToken
                         });
+                    }
+
+                    var john = accounts.FindByEmail("john@taxihail.com");
+
+                    if (john != null)
+                    {
+                        var updateAccountCommand = new UpdateBookingSettings
+                        {
+                            AccountId = john.Id,
+                            Phone = "6132875020",
+                            Name = "John Doe",
+                            NumberOfTaxi = john.Settings.NumberOfTaxi,
+                            ChargeTypeId = john.Settings.ChargeTypeId,
+                            DefaultCreditCard = john.DefaultCreditCard,
+                            DefaultTipPercent = john.DefaultTipPercent
+                        };
+                        commandBus.Send(updateAccountCommand);
                     }
                 }
                 else
@@ -267,7 +284,7 @@ namespace DatabaseInitializer
                         AccountId = Guid.NewGuid(),
                         Email = "john@taxihail.com",
                         Name = "John Doe",
-                        Phone = "5146543024",
+                        Phone = "6132875020",
                         Password = "password"
                     };
 
@@ -299,7 +316,7 @@ namespace DatabaseInitializer
                         AccountId = Guid.NewGuid(),
                         Email = "taxihail@apcurium.com",
                         Name = "Administrator",
-                        Phone = "5146543024",
+                        Phone = "6132875020",
                         Password = "1l1k3B4n4n@", //Todo Make the admin portal customizable
                         IsAdmin = true
                     };

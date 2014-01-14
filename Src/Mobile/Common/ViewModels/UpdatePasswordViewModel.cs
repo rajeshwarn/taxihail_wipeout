@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_currentPassword = value;
-				FirePropertyChanged(() => CurrentPassword);
+				RaisePropertyChanged();
 			}
 		}
 
@@ -24,8 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_newPassword = value;
-				FirePropertyChanged(() => NewPassword);
-				FirePropertyChanged(() => NewPasswordIsConfirmed);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => NewPasswordIsConfirmed);
 			}
 		}
 
@@ -36,8 +36,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set
 			{
 				_newPasswordConfirmation = value;
-				FirePropertyChanged(() => NewPasswordConfirmation);
-				FirePropertyChanged(() => NewPasswordIsConfirmed);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => NewPasswordIsConfirmed);
 			}
 		}
 
@@ -57,7 +57,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return GetCommand(() =>
 				                  {
 					if (!CanUpdatePassword)
@@ -73,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						this.Services().Account.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
 						var title = this.Services().Settings.ApplicationName;
-						this.Services().Message.ShowMessage(title, msg, () => RequestNavigate<LoginViewModel>(true));
+						this.Services().Message.ShowMessage(title, msg, () => ShowViewModel<LoginViewModel>(true));
 					}catch(Exception e)
 					{
 						var msg = this.Services().Localize["ServiceError" + e.Message];
@@ -82,14 +81,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}finally{
 						this.Services().Message.ShowProgress(false);
 					}					
-
 				});
 			}
-		}
-
-		public AsyncCommand CancelCommand
-		{
-			get { return GetCommand (() => RequestClose (this)); }
 		}
 
 	}

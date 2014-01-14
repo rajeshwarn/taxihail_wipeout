@@ -1,120 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <RelativeLayout
+    android:layout_height="fill_parent">
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:paddingLeft="10px"
+      android:paddingRight="10px"
+      android:layout_below="@+id/HeaderImage"
+      android:paddingTop="6dip">
+      <TextView
+        android:id="@+id/LocationDetailGiveName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/LocationDetailGiveItANameLabel"
+        style="@style/FormLabelText" />
+      <EditText
+        android:id="@+id/LocationFriendlyName"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingLeft="10px"
-            android:paddingRight="10px"
-            android:layout_below="@+id/HeaderImage"
-            android:paddingTop="6dip">
-            <TextView
-                android:id="@+id/LocationDetailGiveName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/LocationDetailGiveItANameLabel"
-                style="@style/FormLabelText" />
-            <EditText
-                android:id="@+id/LocationFriendlyName"
-                android:layout_width="fill_parent"
-                android:layout_height="42dp"
-                android:paddingLeft="7dip"
-                android:paddingRight="7dip"
-                android:hint="@string/LocationDetailGiveItANamePlaceholder"
-                android:inputType="text"
-                local:MvxBind="{'Text': {'Path': 'FriendlyName'}}" />
-            <EditText
-                android:id="@+id/LocationAddress"
-                android:layout_width="fill_parent"
-                android:layout_height="42dp"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip"
-                android:hint="@string/LocationDetailStreetAddressPlaceholder"
-                android:inputType="text"
-                local:MvxBind="{'Text': {'Path': 'BookAddress'}}" />
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                local:MvxBind="{'Visibility':{'Path':'ShowRingCodeField', 'Converter':'Visibility'}}"
-                android:gravity="center_horizontal">
-                <EditText
-                    android:id="@+id/LocationAppartment"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dp"
-                    android:paddingLeft="7dip"
-                    android:paddingRight="7dip"
-                    android:layout_weight="1"
-                    android:hint="@string/ApartmentLabel"
-                    android:inputType="text"
-                    android:lines="0"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    local:MvxBind="{'Text': {'Path': 'Apartment'}}" />
-                <EditText
-                    android:id="@+id/RingCode"
-                    android:layout_width="fill_parent"
-                    android:layout_height="42dp"
-                    android:paddingLeft="7dip"
-                    android:paddingRight="7dip"
-                    android:layout_weight="1"
-                    android:hint="@string/EntryCodeLabel"
-                    android:lines="0"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:inputType="text"
-                    local:MvxBind="{'Text': {'Path': 'RingCode'}}" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:weightSum="1.0">
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
-                    android:id="@+id/LocationSaveBtn"
-                    style="@style/ButtonText"
-                    android:background="@drawable/green_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:layout_weight="0.33"
-                    android:singleLine="true"
-                    android:lines="1"
-                    android:text="@string/SaveButton"
-                    local:MvxBind="{'Click': {'Path': 'SaveAddress'}}" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Red"
-                    android:id="@+id/LocationDeleteBtn"
-                    style="@style/ButtonText"
-                    android:background="@drawable/red_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:layout_weight="0.33"
-                    android:text="@string/DeleteButton"
-                    local:MvxBind="{'Click': {'Path': 'DeleteAddress'}, Visibility: {'Path': 'IsNew', 'Converter': 'InvertedVisibility'}}" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Grey"
-                    android:id="@+id/LocationBookBtn"
-                    style="@style/ButtonText"
-                    android:background="@drawable/gray_button"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dip"
-                    android:layout_weight="0.33"
-                    android:text="@string/LocationDetailRebookButton"
-                    local:MvxBind="{'Click': {'Path': 'RebookOrder'}, Visibility: {'Path': 'RebookIsAvailable', 'Converter': 'Visibility'}}" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+        android:layout_height="42dp"
+        android:paddingLeft="7dip"
+        android:paddingRight="7dip"
+        android:hint="@string/LocationDetailGiveItANamePlaceholder"
+        android:inputType="text"
+        local:MvxBind="Text FriendlyName" />
+      <EditText
+        android:id="@+id/LocationAddress"
+        android:layout_width="fill_parent"
+        android:layout_height="42dp"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:hint="@string/LocationDetailStreetAddressPlaceholder"
+        android:inputType="text"
+        local:MvxBind="Text BookAddress" />
+      <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        local:MvxBind="Visibility ShowRingCodeField, Converter=Visibility"
+        android:gravity="center_horizontal">
+        <EditText
+          android:id="@+id/LocationAppartment"
+          android:layout_width="fill_parent"
+          android:layout_height="42dp"
+          android:paddingLeft="7dip"
+          android:paddingRight="7dip"
+          android:layout_weight="1"
+          android:hint="@string/ApartmentLabel"
+          android:inputType="text"
+          android:lines="0"
+          android:singleLine="true"
+          android:ellipsize="end"
+          local:MvxBind="Text Apartment" />
+        <EditText
+          android:id="@+id/RingCode"
+          android:layout_width="fill_parent"
+          android:layout_height="42dp"
+          android:paddingLeft="7dip"
+          android:paddingRight="7dip"
+          android:layout_weight="1"
+          android:hint="@string/EntryCodeLabel"
+          android:lines="0"
+          android:singleLine="true"
+          android:ellipsize="end"
+          android:inputType="text"
+          local:MvxBind="Text RingCode" />
+      </LinearLayout>
+      <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:weightSum="1.0">
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+          local:ButtonStyle="Green"
+          android:id="@+id/LocationSaveBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/green_button"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:layout_weight="0.33"
+          android:singleLine="true"
+          android:lines="1"
+          android:text="@string/SaveButton"
+          local:MvxBind="Click SaveAddress" />
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+          local:ButtonStyle="Red"
+          android:id="@+id/LocationDeleteBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/red_button"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:layout_weight="0.33"
+          android:text="@string/DeleteButton"
+          local:MvxBind="Click DeleteAddress,VisibilityIsNew, Converter=InvertedVisibility" />
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+          local:ButtonStyle="Grey"
+          android:id="@+id/LocationBookBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/gray_button"
+          android:layout_width="fill_parent"
+          android:layout_height="40dip"
+          android:layout_weight="0.33"
+          android:text="@string/LocationDetailRebookButton"
+          local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
+      </LinearLayout>
+    </LinearLayout>
+  </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

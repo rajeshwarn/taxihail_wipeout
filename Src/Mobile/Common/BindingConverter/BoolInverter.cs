@@ -1,12 +1,10 @@
 using System;
 using System.Globalization;
-using Cirrious.MvvmCross.Converters;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.Localization;
+using Cirrious.CrossCore.Converters;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
-    public class BoolInverter : MvxBaseValueConverter, IMvxServiceConsumer<IMvxTextProvider>
+	public class BoolInverter : MvxValueConverter
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

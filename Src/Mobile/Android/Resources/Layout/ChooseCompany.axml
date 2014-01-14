@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <ImageView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:scaleType="fitXY"
+      android:adjustViewBounds="true" />
+    <TextView
+      android:id="@+id/HistoryDetailTitle"
+      style="@style/BigTitleText"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:gravity="center_horizontal"
+      android:text="@string/DefaultRideSettingsViewTitle" />
+    <Button
+      android:id="@+id/DoneBtn"
+      style="@style/ButtonText"
+      android:background="@drawable/black_button"
+      android:layout_width="wrap_content"
+      android:gravity="right"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:layout_height="wrap_content"
+      android:text="@string/DoneButton" />
+  </RelativeLayout>
+  <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true" />
-        <TextView
-            android:id="@+id/HistoryDetailTitle"
-            style="@style/BigTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:text="@string/DefaultRideSettingsViewTitle" />
-        <Button
-            android:id="@+id/DoneBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/black_button"
-            android:layout_width="wrap_content"
-            android:gravity="right"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
-            android:text="@string/DoneButton" />
-    </RelativeLayout>
+    android:paddingLeft="15dip"
+    android:paddingRight="15dip"
+    android:paddingTop="15dip"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+    <TextView
+      android:id="@+id/chooseCompanyListHeader"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:textStyle="bold"
+      android:textSize="14sp"
+      android:textColor="@color/darkgray"
+      android:background="#00000000" />
     <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+      <ListView
+        android:id="@+id/android:list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingLeft="15dip"
-        android:paddingRight="15dip"
-        android:paddingTop="15dip"
-        android:background="@drawable/background"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/chooseCompanyListHeader"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/darkgray"
-            android:background="#00000000" />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/android:list"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray"
-                android:dividerHeight="1dp"
-                android:choiceMode="singleChoice"
-                android:background="#00000000" />
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        android:divider="@color/gray"
+        android:dividerHeight="1dp"
+        android:choiceMode="singleChoice"
+        android:background="#00000000" />
     </LinearLayout>
+  </LinearLayout>
 </LinearLayout>

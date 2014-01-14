@@ -15,9 +15,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
     {
         private readonly IPayPalExpressCheckoutService _palExpressCheckoutService;
 
-        public PaymentViewModel(string order, string orderStatus, string messageId,IPayPalExpressCheckoutService palExpressCheckoutService) : base(messageId)
+		public PaymentViewModel(IPayPalExpressCheckoutService palExpressCheckoutService)
+		{
+			_palExpressCheckoutService = palExpressCheckoutService;
+		}
+
+		public void Init(string order, string orderStatus, string messageId, IPayPalExpressCheckoutService palExpressCheckoutService)
         {
-            _palExpressCheckoutService = palExpressCheckoutService;
+			Init(messageId);
+
             this.Services().Config.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
@@ -29,7 +35,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 CreditCardId = account.DefaultCreditCard,
                 TipPercent = account.DefaultTipPercent,
             };
-            PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+			PaymentPreferences = new PaymentDetailsViewModel();
+			PaymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;
@@ -69,7 +76,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
-                    FirePropertyChanged(() => PayPalSelected);
+					//TODO: Property should RaisePropertyChanged
+					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
@@ -81,7 +89,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
-                    FirePropertyChanged(() => PayPalSelected);
+					//TODO: Property should RaisePropertyChanged
+					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
@@ -170,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     .Do(_ => this.Services().Message.ShowProgress(false), _ => this.Services().Message.ShowProgress(false))
 					.Subscribe(checkoutUrl => {
                         var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
-                        RequestSubNavigate<PayPalViewModel, bool>(@params, success =>
+						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
                         {
                             if (success)
                             {

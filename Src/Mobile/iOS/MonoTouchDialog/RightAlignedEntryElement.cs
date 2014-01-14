@@ -1,5 +1,5 @@
 using System.Drawing;
-using MonoTouch.Dialog;
+using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
@@ -17,11 +17,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
             {
             }
 
-        public override UITableViewCell GetCell(UITableView tv)
+		protected override UITableViewCell GetCellImpl(UITableView tv)
         {
             var cell = base.GetCell(tv);
             cell.BackgroundColor = UIColor.Clear;
-            //cell.BackgroundView = new UIView();
             return cell;
         }
             protected override UITextField CreateTextField (RectangleF frame)

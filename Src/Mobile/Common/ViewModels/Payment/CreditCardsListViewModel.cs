@@ -19,7 +19,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public ObservableCollection<CreditCardViewModel> CreditCards
         {
             get { return _creditCards; }
-            set { _creditCards = value; FirePropertyChanged("CreditCards"); }
+            set
+			{ 
+				_creditCards = value;
+				RaisePropertyChanged(); }
         }
 
         private bool _hasCards;
@@ -34,15 +37,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if (value != _hasCards)
                 {
                     _hasCards = value;
-                    FirePropertyChanged("HasCards");
+					RaisePropertyChanged();
                 }
             }
         }
 
 
 
-        public CreditCardsListViewModel(string messageId):base(messageId)
+		public void Init(string messageId)
         {
+			Init(messageId);
+
             LoadCreditCards();
         }
 
@@ -73,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     if (creditCardToRemove != null)
                     {
                         InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
-                        FirePropertyChanged("CreditCards");
+						RaisePropertyChanged("CreditCards");
                     }
                     CreditCards[0].IsFirst = true;
 
@@ -134,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             get
             {
-				return GetCommand(() => RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
+				return GetCommand(() => ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
                 {
                     InvokeOnMainThread(()=>
                     {
@@ -149,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                              },
                              Picture = newCreditCard.CreditCardCompany
                         });
-                        FirePropertyChanged("CreditCards");
+						RaisePropertyChanged("CreditCards");
                     });                                                                                         
                     CreditCards[0].IsFirst=true;
                     CreditCards.Last().IsFirst=false;                        

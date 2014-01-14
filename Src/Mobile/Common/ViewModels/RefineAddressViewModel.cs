@@ -2,9 +2,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RefineAddressViewModel : BaseSubViewModel<RefineAddressViewModel>
     {
-        public RefineAddressViewModel(string messageId, string apt, string ringCode, string buildingName)
-			:base(messageId)
+		public void Init(string messageId, string apt, string ringCode, string buildingName)
         {
+			Init(messageId);
+
             AptNumber = apt;
             RingCode  = ringCode;
             BuildingName = buildingName;
@@ -17,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _streetNumber = value;
-                FirePropertyChanged(() => StreetNumber);
+				RaisePropertyChanged();
             }
         }
 
@@ -28,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _streetAddress = value;
-                FirePropertyChanged(() => StreetAddress);
+				RaisePropertyChanged();
             }
         }
 
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _aptNumber = value;
-                FirePropertyChanged(() => AptNumber);
+				RaisePropertyChanged();
             }
         }
 
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _ringCode = value;
-                FirePropertyChanged(() => RingCode);
+				RaisePropertyChanged();
             }
         }
 
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _buildingName = value;
-                FirePropertyChanged(() => BuildingName);
+				RaisePropertyChanged();
             }
         }
 
@@ -69,7 +70,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 return GetCommand(() => ReturnResult(this));
             }
         }

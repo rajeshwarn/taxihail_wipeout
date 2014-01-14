@@ -15,24 +15,31 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Models;
-
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Android.Views;
 using TinyIoC;
 using TinyMessenger;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
-    public class BookActivity : MvxBindingActivityView<BookViewModel>
+    public class BookActivity : MvxActivity
     {
         private readonly DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
         private int _menuWidth = 400;
         private TouchMap _touchMap;
+
+		public new BookViewModel ViewModel
+		{
+			get
+			{
+				return (BookViewModel)DataContext;
+			}
+		}
 
         protected override void OnCreate(Bundle bundle)
         {

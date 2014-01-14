@@ -27,18 +27,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         private const string AmexPattern = "^3[47][0-9]{13}$";
 #endregion
 
-
         public class DummyVisa
         {
 			public static string BraintreeNumber = "4009 3488 8888 1881".Replace(" ", "");
-
             public static string CmtNumber = "4012 0000 3333 0026".Replace(" ", "");
             public static int AvcCvvCvv2 = 135;
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public CreditCardAddViewModel (string messageId) : base(messageId)
+		public void Init(string messageId)
         {
+			Init(messageId);
+
             Data = new CreditCardInfos();
 
 			CardCategories = new List<ListItem>
@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         }
                     }
                 }
-                FirePropertyChanged("CreditCardNumber");
+				RaisePropertyChanged();
             }
         }
 
@@ -177,8 +177,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			set {
 				_creditCardCategory = value;
-				FirePropertyChanged("CreditCardCategory");
-				FirePropertyChanged("CreditCardCategoryName");
+				RaisePropertyChanged();
+				RaisePropertyChanged("CreditCardCategoryName");
 			}
 		}
 
@@ -195,9 +195,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get {return _creditCardType;}
             set {
                 _creditCardType = value;
-                FirePropertyChanged("CreditCardType");
-                FirePropertyChanged("CreditCardTypeName");
-                FirePropertyChanged("CreditCardImagePath");
+				RaisePropertyChanged();
+				RaisePropertyChanged("CreditCardTypeName");
+				RaisePropertyChanged("CreditCardImagePath");
             }
         }
 
@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if(year != current){
                     Data.ExpirationYear = year.ToSafeString();
-                    FirePropertyChanged("ExpirationYear");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -244,8 +244,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 if(month != current){
                     Data.ExpirationMonth = month.ToSafeString();
-                    FirePropertyChanged("ExpirationMonth");
-                    FirePropertyChanged("ExpirationMonthDisplay");
+					RaisePropertyChanged("ExpirationMonth");
+					RaisePropertyChanged("ExpirationMonthDisplay");
                 }
             }
         }

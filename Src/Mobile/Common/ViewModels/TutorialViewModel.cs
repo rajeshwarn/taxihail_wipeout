@@ -4,21 +4,33 @@ using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TutorialViewModel : BaseViewModel
+	public class TutorialViewModel : BaseViewModel
+	{
+		private TutorialItemModel[] _tutorialItemsList;
 
-    {
-        private TutorialItemModel[] _tutorialItemsList;
-        public TutorialItemModel[] TutorialItemsList
-        {
-            get { return _tutorialItemsList; }
-            set { _tutorialItemsList =value; FirePropertyChanged(()=>TutorialItemsList); }
-        }
+		public TutorialItemModel[] TutorialItemsList
+		{
+			get { return _tutorialItemsList; }
+			set
+			{ 
+				_tutorialItemsList = value;
+				RaisePropertyChanged();
+			}
+		}
 
-        public TutorialViewModel()
-        {
+		public void Init()
+		{
             
-            TutorialItemsList = this.Services().Tutorial.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
-        }
-
-    }
+			TutorialItemsList = this.Services().Tutorial
+				.GetTutorialItems()
+				.Select(item => new TutorialItemModel
+					{ 
+						TopText = item.TopText,
+						TopTitle = item.TopTitle,
+						BottomText = item.BottomText,
+						BottomTitle = item.BottomTitle,
+						ImageUri = item.ImageUri
+					}).ToArray(); 
+		}
+	}
 }

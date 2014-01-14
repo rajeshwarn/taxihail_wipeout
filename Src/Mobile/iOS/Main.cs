@@ -12,10 +12,7 @@ using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
-using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Touch.Platform;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
@@ -23,6 +20,8 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Configuration.Impl;
 using MonoTouch.FacebookConnect;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -42,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         } 
     }
 
-    public partial class AppDelegate : MvxApplicationDelegate, IMvxServiceConsumer<IMvxStartNavigation>
+    public partial class AppDelegate : MvxApplicationDelegate
     {
         private bool _callbackFromFb;
         private bool _isStarting;
@@ -63,18 +62,17 @@ namespace apcurium.MK.Booking.Mobile.Client
                     @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
                 }
             }
-			var setup = new Setup(this, new PhonePresenter( this, window ), @params );
+
+			var setup = new Setup(this, window);
             setup.Initialize();
 
+			var startup = Mvx.Resolve<IMvxAppStart>();
+			startup.Start(@params);
 
             window.MakeKeyAndVisible();
 
-
-			var start = this.GetService();
-			start.Start();     
-
-			window.RootViewController = AppContext.Current.Controller;
             return true;
+
         }
 
         // This method is required in iPhoneOS 3.0

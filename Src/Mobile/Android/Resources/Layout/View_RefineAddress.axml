@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <LinearLayout
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dip">
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dip">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip">
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/aptNumberEditText"
-                android:layout_weight="1"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;AptNumber&apos;}}"
-                android:layout_marginRight="15dip"
-                android:hint="@string/AptNumber" />
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:id="@+id/ringCodeEditText"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;RingCode&apos;}}"
-                android:layout_weight="1"
-                android:hint="@string/RingCode" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dip"
-            android:background="@color/transparent">
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Green"
-                android:id="@+id/SaveButton"
-                style="@style/ButtonText"
-                android:background="@drawable/green_button"
-                android:layout_width="fill_parent"
-                android:layout_height="40dip"
-                android:layout_weight="0.33"
-                android:singleLine="true"
-                android:lines="1"
-                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SaveCommand&apos;}}"
-                android:text="@string/SaveButton" />
-        </LinearLayout>
+      android:orientation="horizontal"
+      android:minWidth="25px"
+      android:minHeight="25px"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="10dip"
+      android:layout_marginLeft="10dip"
+      android:layout_marginRight="10dip">
+      <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/aptNumberEditText"
+        android:layout_weight="1"
+        local:MvxBind="Text AptNumber"
+        android:layout_marginRight="15dip"
+        android:hint="@string/AptNumber" />
+      <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:id="@+id/ringCodeEditText"
+        local:MvxBind="Text RingCode"
+        android:layout_weight="1"
+        android:hint="@string/RingCode" />
     </LinearLayout>
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="15dip"
+      android:background="@color/transparent">
+      <apcurium.mk.booking.mobile.client.controls.StyledButton
+        local:ButtonStyle="Green"
+        android:id="@+id/SaveButton"
+        style="@style/ButtonText"
+        android:background="@drawable/green_button"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:layout_weight="0.33"
+        android:singleLine="true"
+        android:lines="1"
+        local:MvxBind="Click SaveCommand"
+        android:text="@string/SaveButton" />
+    </LinearLayout>
+  </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

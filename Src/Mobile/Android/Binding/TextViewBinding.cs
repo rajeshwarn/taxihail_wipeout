@@ -1,20 +1,18 @@
 using System;
 using Android.Widget;
+using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Binding.Interfaces;
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class TextViewBinding : MvxBaseTargetBinding
+	public class TextViewBinding : MvxAndroidTargetBinding
     {
-        private readonly TextView _control;
-
-        public TextViewBinding(TextView control)
+		public TextViewBinding(TextView target)
+			:base(target)
         {
-            _control = control;
-            _control.AfterTextChanged += HandleSelectedChanged;
+			target.AfterTextChanged += HandleSelectedChanged;
         }
 
         public override MvxBindingMode DefaultMode
@@ -29,7 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void HandleSelectedChanged(object sender, EventArgs e)
         {
-            FireValueChanged(_control.Text);
+			var control = (TextView)Target;
+            FireValueChanged(control.Text);
         }
 
         public static void Register(IMvxTargetBindingFactoryRegistry registry)
@@ -37,9 +36,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             registry.RegisterFactory(new MvxCustomBindingFactory<TextView>("Text", cell => new TextViewBinding(cell)));
         }
 
-        public override void SetValue(object value)
+		protected override void SetValueImpl(object target, object value)
         {
-            _control.Text = (string) value;
+			var control = (TextView)target;
+            control.Text = (string) value;
         }
     }
 }

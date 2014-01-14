@@ -1,15 +1,16 @@
 using System;
 using System.IO;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.EventKit;
 using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -60,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             mailComposer.SetSubject (subject);
             mailComposer.Finished += delegate
             {
-                presenter.Close ( null ); 
-                //presenter.NativeModalViewControllerDisappearedOnItsOwn();
+				//TODO: Does this work with null ?
+				presenter.ChangePresentation(new MvxClosePresentationHint(null)); 
                 if (File.Exists (errorLogPath))
                 {
                     File.Delete (errorLogPath);
