@@ -36,9 +36,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Initialize();
         }
 
-		//TODO: [MvvmCross v3] Refactor this constructor
 		public void Init(string order)
         {
+			if (order == null)
+			{
+				// Default navigation without parameter
+				return;
+			}
+
             Order = order.FromJson<CreateOrder>();
              
             Order.Id = Guid.Empty;
