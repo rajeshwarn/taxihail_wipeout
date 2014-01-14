@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/loupe" />
         </RelativeLayout>
-        <cirrious.mvvmcross.binding.android.views.MvxListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/topSection"

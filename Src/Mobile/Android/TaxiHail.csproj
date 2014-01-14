@@ -432,6 +432,7 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <Compile Include="BootstrapContent\VisibilityPluginBootstrap.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -535,6 +536,7 @@
     <Folder Include="Resources\drawable-ldpi\" />
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="BootstrapContent\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

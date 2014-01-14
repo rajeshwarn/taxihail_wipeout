@@ -85,7 +85,7 @@
             android:layout_height="1dip"
             android:layout_below="@id/listTitle"
             android:background="@color/black" />
-        <cirrious.mvvmcross.binding.android.views.MvxListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:id="@+id/OrderList"
             android:minWidth="25px"
             android:minHeight="25px"

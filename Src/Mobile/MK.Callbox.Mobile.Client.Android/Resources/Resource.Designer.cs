@@ -65,8 +65,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f01008e
 			public const int BackgroundSource = 2130772110;
 			
-			// aapt resource value: 0x7f010093
-			public const int ButtonStyle = 2130772115;
+			// aapt resource value: 0x7f010095
+			public const int ButtonStyle = 2130772117;
 			
 			// aapt resource value: 0x7f01008c
 			public const int HideLogo = 2130772108;
@@ -74,14 +74,20 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f01008f
 			public const int MvxBind = 2130772111;
 			
-			// aapt resource value: 0x7f010091
-			public const int MvxDropDownItemTemplate = 2130772113;
+			// aapt resource value: 0x7f010093
+			public const int MvxDropDownItemTemplate = 2130772115;
 			
 			// aapt resource value: 0x7f010092
-			public const int MvxHttpSource = 2130772114;
+			public const int MvxItemTemplate = 2130772114;
 			
 			// aapt resource value: 0x7f010090
-			public const int MvxItemTemplate = 2130772112;
+			public const int MvxLang = 2130772112;
+			
+			// aapt resource value: 0x7f010094
+			public const int MvxSource = 2130772116;
+			
+			// aapt resource value: 0x7f010091
+			public const int MvxTemplate = 2130772113;
 			
 			// aapt resource value: 0x7f01008d
 			public const int RightButtonSource = 2130772109;
@@ -1279,86 +1285,83 @@ namespace apcurium.MK.Callbox.Mobile.Client
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f060061
+			public const int BackgroundImage = 2131099745;
+			
 			// aapt resource value: 0x7f060062
-			public const int BackgroundImage = 2131099746;
-			
-			// aapt resource value: 0x7f060063
-			public const int ContentLayout = 2131099747;
-			
-			// aapt resource value: 0x7f06006d
-			public const int ContentSection = 2131099757;
-			
-			// aapt resource value: 0x7f06006e
-			public const int HeaderSection = 2131099758;
-			
-			// aapt resource value: 0x7f060071
-			public const int LoginButton = 2131099761;
+			public const int ContentLayout = 2131099746;
 			
 			// aapt resource value: 0x7f06006c
-			public const int LogoutButton = 2131099756;
+			public const int ContentSection = 2131099756;
 			
-			// aapt resource value: 0x7f060065
-			public const int MainLogo = 2131099749;
+			// aapt resource value: 0x7f06006d
+			public const int HeaderSection = 2131099757;
 			
-			// aapt resource value: 0x7f06001e
-			public const int MvxBindableListItemTagUnique = 2131099678;
+			// aapt resource value: 0x7f060070
+			public const int LoginButton = 2131099760;
+			
+			// aapt resource value: 0x7f06006b
+			public const int LogoutButton = 2131099755;
+			
+			// aapt resource value: 0x7f060064
+			public const int MainLogo = 2131099748;
 			
 			// aapt resource value: 0x7f06001d
 			public const int MvxBindingTagUnique = 2131099677;
 			
-			// aapt resource value: 0x7f06006b
-			public const int MyButton = 2131099755;
+			// aapt resource value: 0x7f06006a
+			public const int MyButton = 2131099754;
 			
-			// aapt resource value: 0x7f060064
-			public const int NavBarImage = 2131099748;
+			// aapt resource value: 0x7f060063
+			public const int NavBarImage = 2131099747;
+			
+			// aapt resource value: 0x7f06005d
+			public const int NavBarSection = 2131099741;
 			
 			// aapt resource value: 0x7f06005e
-			public const int NavBarSection = 2131099742;
+			public const int NavBarSectionBackground = 2131099742;
 			
-			// aapt resource value: 0x7f06005f
-			public const int NavBarSectionBackground = 2131099743;
-			
-			// aapt resource value: 0x7f060078
-			public const int OrderList = 2131099768;
-			
-			// aapt resource value: 0x7f060070
-			public const int Password = 2131099760;
-			
-			// aapt resource value: 0x7f060073
-			public const int ServerButton = 2131099763;
+			// aapt resource value: 0x7f060077
+			public const int OrderList = 2131099767;
 			
 			// aapt resource value: 0x7f06006f
-			public const int Username = 2131099759;
+			public const int Password = 2131099759;
 			
-			// aapt resource value: 0x7f060061
-			public const int ViewNavBarRightButton = 2131099745;
+			// aapt resource value: 0x7f060072
+			public const int ServerButton = 2131099762;
+			
+			// aapt resource value: 0x7f06006e
+			public const int Username = 2131099758;
 			
 			// aapt resource value: 0x7f060060
-			public const int ViewTitle = 2131099744;
+			public const int ViewNavBarRightButton = 2131099744;
 			
-			// aapt resource value: 0x7f060021
-			public const int action_bar = 2131099681;
+			// aapt resource value: 0x7f06005f
+			public const int ViewTitle = 2131099743;
+			
+			// aapt resource value: 0x7f060020
+			public const int action_bar = 2131099680;
 			
 			// aapt resource value: 0x7f060015
 			public const int action_bar_activity_content = 2131099669;
 			
-			// aapt resource value: 0x7f060020
-			public const int action_bar_container = 2131099680;
-			
-			// aapt resource value: 0x7f060024
-			public const int action_bar_overlay_layout = 2131099684;
-			
 			// aapt resource value: 0x7f06001f
-			public const int action_bar_root = 2131099679;
+			public const int action_bar_container = 2131099679;
 			
-			// aapt resource value: 0x7f060028
-			public const int action_bar_subtitle = 2131099688;
+			// aapt resource value: 0x7f060023
+			public const int action_bar_overlay_layout = 2131099683;
+			
+			// aapt resource value: 0x7f06001e
+			public const int action_bar_root = 2131099678;
 			
 			// aapt resource value: 0x7f060027
-			public const int action_bar_title = 2131099687;
+			public const int action_bar_subtitle = 2131099687;
 			
-			// aapt resource value: 0x7f060022
-			public const int action_context_bar = 2131099682;
+			// aapt resource value: 0x7f060026
+			public const int action_bar_title = 2131099686;
+			
+			// aapt resource value: 0x7f060021
+			public const int action_context_bar = 2131099681;
 			
 			// aapt resource value: 0x7f060016
 			public const int action_menu_divider = 2131099670;
@@ -1366,17 +1369,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060017
 			public const int action_menu_presenter = 2131099671;
 			
-			// aapt resource value: 0x7f060036
-			public const int action_mode_bar = 2131099702;
-			
 			// aapt resource value: 0x7f060035
-			public const int action_mode_bar_stub = 2131099701;
+			public const int action_mode_bar = 2131099701;
+			
+			// aapt resource value: 0x7f060034
+			public const int action_mode_bar_stub = 2131099700;
+			
+			// aapt resource value: 0x7f060028
+			public const int action_mode_close_button = 2131099688;
 			
 			// aapt resource value: 0x7f060029
-			public const int action_mode_close_button = 2131099689;
-			
-			// aapt resource value: 0x7f06002a
-			public const int activity_chooser_view_content = 2131099690;
+			public const int activity_chooser_view_content = 2131099689;
 			
 			// aapt resource value: 0x7f06000b
 			public const int always = 2131099659;
@@ -1384,77 +1387,77 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060011
 			public const int beginning = 2131099665;
 			
-			// aapt resource value: 0x7f06006a
-			public const int cancelOrderButton = 2131099754;
+			// aapt resource value: 0x7f060069
+			public const int cancelOrderButton = 2131099753;
 			
-			// aapt resource value: 0x7f060032
-			public const int checkbox = 2131099698;
+			// aapt resource value: 0x7f060031
+			public const int checkbox = 2131099697;
 			
 			// aapt resource value: 0x7f06000d
 			public const int collapseActionView = 2131099661;
 			
-			// aapt resource value: 0x7f06004b
-			public const int com_facebook_login_activity_progress_bar = 2131099723;
-			
 			// aapt resource value: 0x7f06004a
-			public const int com_facebook_picker_activity_circle = 2131099722;
-			
-			// aapt resource value: 0x7f06004d
-			public const int com_facebook_picker_checkbox = 2131099725;
-			
-			// aapt resource value: 0x7f060051
-			public const int com_facebook_picker_checkbox_stub = 2131099729;
-			
-			// aapt resource value: 0x7f060055
-			public const int com_facebook_picker_divider = 2131099733;
-			
-			// aapt resource value: 0x7f060054
-			public const int com_facebook_picker_done_button = 2131099732;
-			
-			// aapt resource value: 0x7f06004e
-			public const int com_facebook_picker_image = 2131099726;
-			
-			// aapt resource value: 0x7f060052
-			public const int com_facebook_picker_list_section_header = 2131099730;
+			public const int com_facebook_login_activity_progress_bar = 2131099722;
 			
 			// aapt resource value: 0x7f060049
-			public const int com_facebook_picker_list_view = 2131099721;
-			
-			// aapt resource value: 0x7f06004f
-			public const int com_facebook_picker_profile_pic_stub = 2131099727;
+			public const int com_facebook_picker_activity_circle = 2131099721;
 			
 			// aapt resource value: 0x7f06004c
-			public const int com_facebook_picker_row_activity_circle = 2131099724;
+			public const int com_facebook_picker_checkbox = 2131099724;
 			
 			// aapt resource value: 0x7f060050
-			public const int com_facebook_picker_title = 2131099728;
+			public const int com_facebook_picker_checkbox_stub = 2131099728;
 			
-			// aapt resource value: 0x7f060057
-			public const int com_facebook_picker_title_bar = 2131099735;
-			
-			// aapt resource value: 0x7f060056
-			public const int com_facebook_picker_title_bar_stub = 2131099734;
+			// aapt resource value: 0x7f060054
+			public const int com_facebook_picker_divider = 2131099732;
 			
 			// aapt resource value: 0x7f060053
-			public const int com_facebook_picker_top_bar = 2131099731;
+			public const int com_facebook_picker_done_button = 2131099731;
 			
-			// aapt resource value: 0x7f060058
-			public const int com_facebook_placepickerfragment_search_box_stub = 2131099736;
+			// aapt resource value: 0x7f06004d
+			public const int com_facebook_picker_image = 2131099725;
 			
-			// aapt resource value: 0x7f06005d
-			public const int com_facebook_usersettingsfragment_login_button = 2131099741;
+			// aapt resource value: 0x7f060051
+			public const int com_facebook_picker_list_section_header = 2131099729;
 			
-			// aapt resource value: 0x7f06005b
-			public const int com_facebook_usersettingsfragment_logo_image = 2131099739;
+			// aapt resource value: 0x7f060048
+			public const int com_facebook_picker_list_view = 2131099720;
+			
+			// aapt resource value: 0x7f06004e
+			public const int com_facebook_picker_profile_pic_stub = 2131099726;
+			
+			// aapt resource value: 0x7f06004b
+			public const int com_facebook_picker_row_activity_circle = 2131099723;
+			
+			// aapt resource value: 0x7f06004f
+			public const int com_facebook_picker_title = 2131099727;
+			
+			// aapt resource value: 0x7f060056
+			public const int com_facebook_picker_title_bar = 2131099734;
+			
+			// aapt resource value: 0x7f060055
+			public const int com_facebook_picker_title_bar_stub = 2131099733;
+			
+			// aapt resource value: 0x7f060052
+			public const int com_facebook_picker_top_bar = 2131099730;
+			
+			// aapt resource value: 0x7f060057
+			public const int com_facebook_placepickerfragment_search_box_stub = 2131099735;
 			
 			// aapt resource value: 0x7f06005c
-			public const int com_facebook_usersettingsfragment_profile_name = 2131099740;
+			public const int com_facebook_usersettingsfragment_login_button = 2131099740;
 			
-			// aapt resource value: 0x7f060066
-			public const int dateTextView = 2131099750;
+			// aapt resource value: 0x7f06005a
+			public const int com_facebook_usersettingsfragment_logo_image = 2131099738;
 			
-			// aapt resource value: 0x7f06002d
-			public const int default_activity_button = 2131099693;
+			// aapt resource value: 0x7f06005b
+			public const int com_facebook_usersettingsfragment_profile_name = 2131099739;
+			
+			// aapt resource value: 0x7f060065
+			public const int dateTextView = 2131099749;
+			
+			// aapt resource value: 0x7f06002c
+			public const int default_activity_button = 2131099692;
 			
 			// aapt resource value: 0x7f06000e
 			public const int dialog = 2131099662;
@@ -1465,20 +1468,20 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06000f
 			public const int dropdown = 2131099663;
 			
-			// aapt resource value: 0x7f06003d
-			public const int edit_query = 2131099709;
+			// aapt resource value: 0x7f06003c
+			public const int edit_query = 2131099708;
 			
 			// aapt resource value: 0x7f060013
 			public const int end = 2131099667;
 			
-			// aapt resource value: 0x7f06002b
-			public const int expand_activities_button = 2131099691;
+			// aapt resource value: 0x7f06002a
+			public const int expand_activities_button = 2131099690;
 			
-			// aapt resource value: 0x7f060031
-			public const int expanded_menu = 2131099697;
+			// aapt resource value: 0x7f060030
+			public const int expanded_menu = 2131099696;
 			
-			// aapt resource value: 0x7f060074
-			public const int frameLayout = 2131099764;
+			// aapt resource value: 0x7f060073
+			public const int frameLayout = 2131099763;
 			
 			// aapt resource value: 0x7f060014
 			public const int home = 2131099668;
@@ -1489,32 +1492,32 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06001a
 			public const int hybrid = 2131099674;
 			
-			// aapt resource value: 0x7f06002f
-			public const int icon = 2131099695;
+			// aapt resource value: 0x7f06002e
+			public const int icon = 2131099694;
 			
 			// aapt resource value: 0x7f06000a
 			public const int ifRoom = 2131099658;
 			
-			// aapt resource value: 0x7f06002c
-			public const int image = 2131099692;
+			// aapt resource value: 0x7f06002b
+			public const int image = 2131099691;
 			
 			// aapt resource value: 0x7f06001c
 			public const int large = 2131099676;
 			
-			// aapt resource value: 0x7f060038
-			public const int left_icon = 2131099704;
+			// aapt resource value: 0x7f060037
+			public const int left_icon = 2131099703;
 			
-			// aapt resource value: 0x7f060072
-			public const int linearLayout0 = 2131099762;
+			// aapt resource value: 0x7f060071
+			public const int linearLayout0 = 2131099761;
 			
 			// aapt resource value: 0x7f060001
 			public const int listMode = 2131099649;
 			
-			// aapt resource value: 0x7f060076
-			public const int listTitle = 2131099766;
+			// aapt resource value: 0x7f060075
+			public const int listTitle = 2131099765;
 			
-			// aapt resource value: 0x7f06002e
-			public const int list_item = 2131099694;
+			// aapt resource value: 0x7f06002d
+			public const int list_item = 2131099693;
 			
 			// aapt resource value: 0x7f060012
 			public const int middle = 2131099666;
@@ -1528,74 +1531,74 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060000
 			public const int normal = 2131099648;
 			
-			// aapt resource value: 0x7f060075
-			public const int orderListLayout = 2131099765;
-			
-			// aapt resource value: 0x7f060068
-			public const int orderNumberTextView = 2131099752;
-			
-			// aapt resource value: 0x7f060069
-			public const int orderStatusTextView = 2131099753;
+			// aapt resource value: 0x7f060074
+			public const int orderListLayout = 2131099764;
 			
 			// aapt resource value: 0x7f060067
-			public const int passengerTextView = 2131099751;
+			public const int orderNumberTextView = 2131099751;
 			
-			// aapt resource value: 0x7f06005a
-			public const int picker_subtitle = 2131099738;
+			// aapt resource value: 0x7f060068
+			public const int orderStatusTextView = 2131099752;
 			
-			// aapt resource value: 0x7f06003b
-			public const int progress_circular = 2131099707;
+			// aapt resource value: 0x7f060066
+			public const int passengerTextView = 2131099750;
 			
-			// aapt resource value: 0x7f06003c
-			public const int progress_horizontal = 2131099708;
-			
-			// aapt resource value: 0x7f060034
-			public const int radio = 2131099700;
-			
-			// aapt resource value: 0x7f060039
-			public const int right_container = 2131099705;
+			// aapt resource value: 0x7f060059
+			public const int picker_subtitle = 2131099737;
 			
 			// aapt resource value: 0x7f06003a
-			public const int right_icon = 2131099706;
+			public const int progress_circular = 2131099706;
+			
+			// aapt resource value: 0x7f06003b
+			public const int progress_horizontal = 2131099707;
+			
+			// aapt resource value: 0x7f060033
+			public const int radio = 2131099699;
+			
+			// aapt resource value: 0x7f060038
+			public const int right_container = 2131099704;
+			
+			// aapt resource value: 0x7f060039
+			public const int right_icon = 2131099705;
 			
 			// aapt resource value: 0x7f060018
 			public const int satellite = 2131099672;
 			
-			// aapt resource value: 0x7f06003f
-			public const int search_badge = 2131099711;
-			
 			// aapt resource value: 0x7f06003e
-			public const int search_bar = 2131099710;
+			public const int search_badge = 2131099710;
 			
-			// aapt resource value: 0x7f060059
-			public const int search_box = 2131099737;
+			// aapt resource value: 0x7f06003d
+			public const int search_bar = 2131099709;
 			
-			// aapt resource value: 0x7f060040
-			public const int search_button = 2131099712;
+			// aapt resource value: 0x7f060058
+			public const int search_box = 2131099736;
 			
-			// aapt resource value: 0x7f060045
-			public const int search_close_btn = 2131099717;
-			
-			// aapt resource value: 0x7f060041
-			public const int search_edit_frame = 2131099713;
-			
-			// aapt resource value: 0x7f060047
-			public const int search_go_btn = 2131099719;
-			
-			// aapt resource value: 0x7f060042
-			public const int search_mag_icon = 2131099714;
-			
-			// aapt resource value: 0x7f060043
-			public const int search_plate = 2131099715;
+			// aapt resource value: 0x7f06003f
+			public const int search_button = 2131099711;
 			
 			// aapt resource value: 0x7f060044
-			public const int search_src_text = 2131099716;
+			public const int search_close_btn = 2131099716;
 			
-			// aapt resource value: 0x7f060048
-			public const int search_voice_btn = 2131099720;
+			// aapt resource value: 0x7f060040
+			public const int search_edit_frame = 2131099712;
 			
-			// aapt resource value: 0x7f060033
-			public const int shortcut = 2131099699;
+			// aapt resource value: 0x7f060046
+			public const int search_go_btn = 2131099718;
+			
+			// aapt resource value: 0x7f060041
+			public const int search_mag_icon = 2131099713;
+			
+			// aapt resource value: 0x7f060042
+			public const int search_plate = 2131099714;
+			
+			// aapt resource value: 0x7f060043
+			public const int search_src_text = 2131099715;
+			
+			// aapt resource value: 0x7f060047
+			public const int search_voice_btn = 2131099719;
+			
+			// aapt resource value: 0x7f060032
+			public const int shortcut = 2131099698;
 			
 			// aapt resource value: 0x7f060007
 			public const int showCustom = 2131099655;
@@ -1609,14 +1612,14 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06001b
 			public const int small = 2131099675;
 			
-			// aapt resource value: 0x7f060023
-			public const int split_action_bar = 2131099683;
+			// aapt resource value: 0x7f060022
+			public const int split_action_bar = 2131099682;
 			
-			// aapt resource value: 0x7f060077
-			public const int stroke = 2131099767;
+			// aapt resource value: 0x7f060076
+			public const int stroke = 2131099766;
 			
-			// aapt resource value: 0x7f060046
-			public const int submit_area = 2131099718;
+			// aapt resource value: 0x7f060045
+			public const int submit_area = 2131099717;
 			
 			// aapt resource value: 0x7f060002
 			public const int tabMode = 2131099650;
@@ -1624,17 +1627,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060019
 			public const int terrain = 2131099673;
 			
-			// aapt resource value: 0x7f060030
-			public const int title = 2131099696;
+			// aapt resource value: 0x7f06002f
+			public const int title = 2131099695;
 			
-			// aapt resource value: 0x7f060037
-			public const int title_container = 2131099703;
+			// aapt resource value: 0x7f060036
+			public const int title_container = 2131099702;
+			
+			// aapt resource value: 0x7f060024
+			public const int top_action_bar = 2131099684;
 			
 			// aapt resource value: 0x7f060025
-			public const int top_action_bar = 2131099685;
-			
-			// aapt resource value: 0x7f060026
-			public const int up = 2131099686;
+			public const int up = 2131099685;
 			
 			// aapt resource value: 0x7f060003
 			public const int useLogo = 2131099651;
@@ -3004,30 +3007,41 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0
 			public const int MenuView_android_windowAnimationStyle = 0;
 			
-			public static int[] MvxBindableListView = new int[]
-			{
-					2130772112,
-					2130772113};
-			
-			// aapt resource value: 1
-			public const int MvxBindableListView_MvxDropDownItemTemplate = 1;
-			
-			// aapt resource value: 0
-			public const int MvxBindableListView_MvxItemTemplate = 0;
-			
 			public static int[] MvxBinding = new int[]
 			{
-					2130772111};
+					2130772111,
+					2130772112};
 			
 			// aapt resource value: 0
 			public const int MvxBinding_MvxBind = 0;
 			
-			public static int[] MvxHttpImageView = new int[]
+			// aapt resource value: 1
+			public const int MvxBinding_MvxLang = 1;
+			
+			public static int[] MvxControl = new int[]
 			{
-					2130772114};
+					2130772113};
 			
 			// aapt resource value: 0
-			public const int MvxHttpImageView_MvxHttpSource = 0;
+			public const int MvxControl_MvxTemplate = 0;
+			
+			public static int[] MvxImageView = new int[]
+			{
+					2130772116};
+			
+			// aapt resource value: 0
+			public const int MvxImageView_MvxSource = 0;
+			
+			public static int[] MvxListView = new int[]
+			{
+					2130772114,
+					2130772115};
+			
+			// aapt resource value: 1
+			public const int MvxListView_MvxDropDownItemTemplate = 1;
+			
+			// aapt resource value: 0
+			public const int MvxListView_MvxItemTemplate = 0;
 			
 			public static int[] SearchView = new int[]
 			{
@@ -3154,7 +3168,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			public static int[] apcurium_mk_callbox_mobile_client_controls_StyledButton = new int[]
 			{
-					2130772115};
+					2130772117};
 			
 			// aapt resource value: 0
 			public const int apcurium_mk_callbox_mobile_client_controls_StyledButton_ButtonStyle = 0;

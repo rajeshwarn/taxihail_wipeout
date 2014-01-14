@@ -90,7 +90,7 @@
                         android:layout_marginLeft="7dip"
                         android:layout_marginRight="5dip"
                         android:layout_marginTop="5dip"
-                        local:MvxBind="Visibility ShowEstimate', 'Converter=Visibility">
+                        local:MvxBind="Visibility ShowEstimate, Converter=Visibility">
                         <apcurium.mk.booking.mobile.client.controls.TextProgressButton
                             android:id="@+id/destinationAddressButton"
                             android:layout_width="fill_parent"

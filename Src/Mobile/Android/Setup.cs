@@ -103,6 +103,5 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			return new TinyIoCProvider(TinyIoCContainer.Current);
 		}
-
     }
 }

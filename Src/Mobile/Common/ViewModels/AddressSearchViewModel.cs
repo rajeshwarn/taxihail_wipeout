@@ -96,10 +96,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         public bool IsSearching {
-            get { return _isSearching; }
+            get
+			{ 
+				return _isSearching;
+			}
             set {
                 _isSearching = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged ("IsSearching");
             }
         }
         protected IEnumerable<AddressViewModel> SearchPlaces ()
@@ -172,7 +175,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        [Obsolete("This is terrible - why would you do this?")]
         public  void BubbleSort (ObservableCollection<AddressViewModel> o)
         {
             for (var i = o.Count - 1; i >= 0; i--) {
