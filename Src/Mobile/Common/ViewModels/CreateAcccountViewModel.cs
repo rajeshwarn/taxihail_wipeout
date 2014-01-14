@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
-		public void Init(string data)
+        public new void Init(string data)
 		{
 			if (data != null)
 			{
