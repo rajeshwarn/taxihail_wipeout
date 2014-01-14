@@ -106,29 +106,100 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 lblConfirmation.TextColor = AppStyle.GreyText;
                 lblStatus.TextColor = AppStyle.DarkText;
-                this.AddBindings (new Dictionary<object, string> ()                            
-                {
-					{ lblStatus, "Text StatusInfoText" },
-					{ lblConfirmation, "Text ConfirmationNoTxt" },
-					{ lblDriver, "Text OrderStatusDetail.DriverInfos.FullName; Hidden VehicleDriverHidden" },
-					{ lblLicence, "Text OrderStatusDetail.DriverInfos.VehicleRegistration; Hidden VehicleLicenceHidden" },
-					{ lblTaxiType, "Text OrderStatusDetail.DriverInfos.VehicleType; Hidden VehicleTypeHidden" },
-					{ lblMake, "Text OrderStatusDetail.DriverInfos.VehicleMake; Hidden VehicleMakeHidden" },
-					{ lblModel, "Text OrderStatusDetail.DriverInfos.VehicleModel; Hidden VehicleModelHidden" },
-					{ lblColor, "Text OrderStatusDetail.DriverInfos.VehicleColor; Hidden VehicleColorHidden" },
-					{ txtDriver, "Hidden VehicleDriverHidden" },
-					{ txtLicence, "Hidden VehicleLicenceHidden" },
-					{ txtTaxiType, "Hidden VehicleTypeHidden" },
-					{ txtMake, "Hidden VehicleMakeHidden" },
-					{ txtModel, "Hidden VehicleModelHidden" },
-					{ txtColor, "Hidden VehicleColorHidden" },
-					{ statusBar, "IsEnabled IsDriverInfoAvailable" },
-					{ imgGrip, "Hidden IsDriverInfoAvailable, Converter BoolInverter" },
-					{ btnCallDriver, "TouchUpInside CallTaxi; Hidden IsCallTaxiVisible, Converter BoolInverter" },
-
-                });
 
 				var set = this.CreateBindingSet<StatusView, BookingStatusViewModel>();
+
+                set.Bind(lblStatus)
+                    .For(v => v.Text)
+                    .To(vm => vm.StatusInfoText);
+
+                set.Bind(lblConfirmation)
+                    .For(v => v.Text)
+                    .To(vm => vm.ConfirmationNoTxt);
+
+                set.Bind(lblDriver)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.FullName);
+                set.Bind(lblDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleDriverHidden);
+
+                set.Bind(lblLicence)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleRegistration);
+                set.Bind(lblLicence)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleLicenceHidden);
+
+                set.Bind(lblTaxiType)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleType);
+                set.Bind(lblTaxiType)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleTypeHidden);
+
+                set.Bind(lblMake)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleMake);
+                set.Bind(lblMake)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMakeHidden);
+
+                set.Bind(lblModel)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleModel);
+                set.Bind(lblModel)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleModelHidden);
+
+                set.Bind(lblColor)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.DriverInfos.VehicleColor);
+                set.Bind(lblColor)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleColorHidden);
+
+                set.Bind(txtDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleDriverHidden);
+
+                set.Bind(txtLicence)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleLicenceHidden);
+
+                set.Bind(txtTaxiType)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleTypeHidden);
+
+                set.Bind(txtMake)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleMakeHidden);
+
+                set.Bind(txtModel)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleModelHidden);
+
+                set.Bind(txtColor)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.VehicleColorHidden);
+
+                set.Bind(statusBar)
+                    .For(v => v.IsEnabled)
+                    .To(vm => vm.IsDriverInfoAvailable);
+
+                set.Bind(imgGrip)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.IsDriverInfoAvailable)
+                    .WithConversion("BoolInverter");
+                    
+                set.Bind(btnCallDriver)
+                    .For("TouchUpInside")
+                    .To(vm => vm.CallTaxi);
+                set.Bind(btnCallDriver)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.IsCallTaxiVisible)
+                    .WithConversion("BoolInverter");
+
 				set.Bind(mapStatus)
 					.For(v => v.Pickup)
 					.To(vm => vm.Pickup.Model);
