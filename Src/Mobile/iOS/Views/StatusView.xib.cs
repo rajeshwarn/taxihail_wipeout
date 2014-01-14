@@ -163,12 +163,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                     { btnResend, new B("Hidden","IsResendButtonVisible","BoolInverter")
                         .Add("Enabled","IsResendButtonVisible")
-                            .Add("TouchUpInside","ResendConfirmationToDriver") },
+                        .Add("TouchUpInside","ResendConfirmationToDriver") },
 
 					{ btnNewRide, new B("TouchUpInside","NewRide") },
 
-					{ btnCancel, new B("TouchUpInside","Unpair")
-							.Add("Hidden","IsUnpairButtonVisible","BoolInverter")}
+					{ btnUnpair, new B("TouchUpInside","Unpair")
+						.Add("Hidden","IsUnpairButtonVisible","BoolInverter")}
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
                 mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;
