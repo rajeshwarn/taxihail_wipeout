@@ -15,14 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			: base("CreditCardAddView", null)
         {
         }
-
-		public new CreditCardAddViewModel ViewModel
-		{
-			get
-			{
-				return (CreditCardAddViewModel)DataContext;
-			}
-		}
 		
         public override void ViewDidLoad ()
         {
@@ -55,28 +47,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
 // ReSharper disable CoVariantArrayConversion
-            pickerCreditCardCategory.Configure(Localize.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+			pickerCreditCardCategory.Configure(Localize.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory, x => { 
+				ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); 
+			});
 
-                ViewModel.CreditCardCategory =  x.Id.GetValueOrDefault(); });
-
-            pickerExpirationYear.Configure(Localize.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x=> {
+			pickerExpirationYear.Configure(Localize.GetValue("CreditCardExpYear"), ViewModel.ExpirationYears.ToArray(), ViewModel.ExpirationYear, x => {
                 ViewModel.ExpirationYear = x.Id;
             });
-            
 
             (pickerExpirationMonth).Configure(Localize.GetValue("CreditCardExpMonth"), ViewModel.ExpirationMonths.ToArray(), ViewModel.ExpirationMonth, x=> {
                 ViewModel.ExpirationMonth = x.Id;
             });
 // ReSharper restore CoVariantArrayConversion
-            this.AddBindings(new Dictionary<object, string>{
-                { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
-				{ txtCardNumber, "{'Text': {'Path': 'CreditCardNumber', 'Mode': 'TwoWay' }, 'ImageLeftSource': {'Path': 'CreditCardImagePath'}}" }, 
-                { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
-                { pickerExpirationMonth, "{'Text': {'Path': 'ExpirationMonthDisplay'}}" }, 
-                { pickerExpirationYear, "{'Text': {'Path': 'ExpirationYear' }}" }, 
-                { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }
-            });
-         
+
+			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
+
+			set.Bind(txtNameOnCard)
+				.For(v => v.Text)
+				.To(vm => vm.Data.NameOnCard);
+
+			set.Bind(txtCardNumber)
+				.For(v => v.Text)
+				.To(vm => vm.CreditCardNumber);
+			set.Bind(txtCardNumber)
+				.For(v => v.ImageLeftSource)
+				.To(vm => vm.CreditCardImagePath);
+
+			set.Bind(pickerCreditCardCategory)
+				.For("Text")
+				.To(vm => vm.CreditCardCategoryName);
+
+			set.Bind(pickerExpirationMonth)
+				.For("Text")
+				.To(vm => vm.ExpirationMonthDisplay);
+
+			set.Bind(pickerExpirationYear)
+				.For("Text")
+				.To(vm => vm.ExpirationYear);
+
+			set.Bind(txtSecurityCode)
+				.For(v => v.Text)
+				.To(vm => vm.Data.CCV);
+
+			set.Apply ();
+
             View.ApplyAppFont();     
         }
 
@@ -85,7 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtNameOnCard.ResignFirstResponder ();
             txtCardNumber.BecomeFirstResponder();
             return true;
-
         }
     }
 }

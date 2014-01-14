@@ -121,26 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 slideAnimation.Animate ();
             });
         }
-//
-//        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-//        {
-//            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-//        }
-//
-//        public override void ViewDidUnload ()
-//        {
-//            base.ViewDidUnload ();
-//            
-//            ReleaseDesignerOutlets ();
-//        }
-//
-//        public override void ViewWillUnload ()
-//        {
-//            base.ViewWillUnload ();
-//            _viewModel.PropertyChanged -= HandlePropertyChanged;
-//        }
-            
-
     }
 }
 

@@ -12,33 +12,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardsListView : BaseViewController<CreditCardsListViewModel>
     {
-        
         private const string Cellid = "CreditCardsCell";
         
         const string CellBindingText = @"
-                {
-                   'LeftText':{'Path':'CreditCardDetails.FriendlyName'} ,
-                   'RightText':{'Path':'Last4DigitsWithStars'} ,
-                   'ShowPlusSign':{'Path':'ShowPlusSign'} ,
-                   'IsFirst':{'Path':'IsFirst'} ,
-                   'IsLast':{'Path':'IsLast'},
-                   'Picture':{'Path':'Picture'},
-                   'IsAddNewCell':{'Path':'IsAddNew'},
-                   'DeleteCommand':{'Path':'RemoveCreditCards'}
-                }";
+                   LeftText CreditCardDetails.FriendlyName;
+                   RightText Last4DigitsWithStars;
+                   ShowPlusSign ShowPlusSign;
+                   IsFirst IsFirst;
+                   IsLast IsLast;
+                   Picture Picture;
+                   IsAddNewCell IsAddNew;
+                   DeleteCommand RemoveCreditCards
+                ";
         
         public CreditCardsListView () 
 			: base("CreditCardsListView", null)
         {
         }
-        
-        
+   
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
             
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-
 
             tableCardsList.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableCardsList.BackgroundColor = UIColor.Clear;
@@ -53,14 +49,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             source.CellCreator = (tview , iPath, state ) => { 
                 return new SingleLinePictureCell( Cellid, CellBindingText ); 
             };
-            this.AddBindings(new Dictionary<object, string>{
-                {tableCardsList, "{'Hidden': {'Path': 'HasCards', 'Converter': 'BoolInverter'}}"} ,
-                {source, "{'ItemsSource':{'Path':'CreditCards'}, 'SelectedCommand':{'Path':'NavigateToAddOrSelect'}}"}  ,
-            });
-            
+
+			var set = this.CreateBindingSet<CreditCardsListView, CreditCardsListViewModel>();
+
+			set.Bind(tableCardsList)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasCards)
+				.WithConversion("BoolInverter");
+
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.CreditCards);
+			set.Bind(source)
+				.For(v => v.SelectedCommand)
+				.To(vm => vm.NavigateToAddOrSelect);
+
+			set.Apply();
+
             tableCardsList.Source = source;
 
-            NavigationItem.Title = Localize.GetValue( "CreditCardsListTitle");
+            NavigationItem.Title = Localize.GetValue("CreditCardsListTitle");
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
             View.ApplyAppFont ();
         }   

@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtAptNumber.ShouldReturn = ShouldReturnDelegate;
 			txtRingCode.ShouldReturn = ShouldReturnDelegate;
 
-
             var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
             {
 				if( ViewModel.SaveCommand.CanExecute() )
@@ -56,14 +55,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					ViewModel.SaveCommand.Execute();
 				}
 			});
+
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
             NavigationItem.Title = Localize.GetValue( "View_RefineAddress");
 
-			this.AddBindings(new Dictionary<object, string>{
-				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,
-				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,			
-			});
+			var set = this.CreateBindingSet<RefineAddressView, RefineAddressViewModel> ();
+
+			set.Bind(txtAptNumber)
+				.For(v => v.Text)
+				.To(vm => vm.AptNumber);
+			set.Bind(txtRingCode)
+				.For(v => v.Text)
+				.To(vm => vm.RingCode);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
 		}
 		

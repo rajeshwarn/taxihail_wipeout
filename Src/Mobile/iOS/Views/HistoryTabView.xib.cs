@@ -19,15 +19,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private const string Cellid = "HistoryCell";
 		
-		static readonly string CellBindingText =
-			   new B("FirstLine","Title")
-				.Add("FirstLineTextColor","Status","OrderStatusToTextColorConverter")
-				.Add("SecondLine","PickupAddress.DisplayAddress")
-				.Add("ShowRightArrow","ShowRightArrow")
-				.Add("ShowPlusSign","ShowPlusSign")
-				.Add("IsFirst","IsFirst")
-				.Add("IsLast","IsLast");
-
+		static readonly string CellBindingText = @"
+					FirstLine Title;
+					FirstLineTextColor Status, Converter OrderStatusToTextColorConverter;
+					SecondLine PickupAddress.DisplayAddress;
+					ShowRightArrow ShowRightArrow;
+					ShowPlusSign ShowPlusSign;
+					IsFirst IsFirst;
+					IsLast IsLast
+				";
+			
 		public HistoryTabView() 
 			: base("HistoryTabView", null)
 		{
@@ -56,12 +57,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			source.CellCreator = (tview , iPath, state ) => { 
                 return new TwoLinesCell( Cellid, CellBindingText ); 
             };
-			this.AddBindings(new Dictionary<object, string>{
-                {tableHistory, "{'Hidden': {'Path': 'HasOrders', 'Converter': 'BoolInverter'}}"},
-                {lblNoHistory, "{'Hidden': {'Path': 'HasOrders'}}"},
-                {source, "{'ItemsSource':{'Path':'Orders'}, 'SelectedCommand':{'Path':'NavigateToHistoryDetailPage'}}"} ,
-			});
-			
+
+			var set = this.CreateBindingSet<HistoryTabView, HistoryViewModel> ();
+
+			set.Bind(tableHistory)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasOrders)
+				.WithConversion("BoolInverter");
+
+			set.Bind(lblNoHistory)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasOrders);
+
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.Orders);
+			set.Bind(source)
+				.For(v => v.SelectedCommand)
+				.To(vm => vm.NavigateToHistoryDetailPage);
+
+			set.Apply ();
+
 			tableHistory.Source = source;
 
             View.ApplyAppFont ();
