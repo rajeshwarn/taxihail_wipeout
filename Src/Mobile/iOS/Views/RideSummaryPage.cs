@@ -31,20 +31,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			AppButtons.FormatStandardButton (PayButton, Localize.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
             AppButtons.FormatStandardButton (ReSendConfirmationButton, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 
-			this.AddBindings(new Dictionary<object, string>{
-				{ TitleLabel, new B("Text","ThankYouTitle")},
-				{ MessageLabel, new B("Text","ThankYouMessage")},
-				{ SendRecieptButton, new B("TouchUpInside","SendReceiptCommand")
-					.Add("Hidden", "IsSendReceiptButtonShown", "BoolInverter") },
-				{ RateButton, new B("TouchUpInside","NavigateToRatingPage")
-					.Add("Hidden", "IsRatingButtonShown", "BoolInverter")  },
-                { ReSendConfirmationButton, new B("TouchUpInside","ResendConfirmationCommand")
-                    .Add("Hidden", "IsResendConfirmationButtonShown", "BoolInverter") },
-				{ PayButton, new B("TouchUpInside","PayCommand")
-					.Add("Hidden", "IsPayButtonShown", "BoolInverter")  },
-			});
-
 			ButtonHolderView.BackgroundColor = UIColor.Clear;
+
+			var set = this.CreateBindingSet<RideSummaryPage, RideSummaryViewModel> ();
+
+			set.Bind(TitleLabel)
+				.For(v => v.Text)
+				.To(vm => vm.ThankYouTitle);
+
+			set.Bind(MessageLabel)
+				.For(v => v.Text)
+				.To(vm => vm.ThankYouMessage);
+
+			set.Bind(SendRecieptButton)
+				.For("TouchUpInside")
+				.To(vm => vm.SendReceiptCommand);
+			set.Bind(SendRecieptButton)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsSendReceiptButtonShown)
+				.WithConversion("BoolInverter");
+
+			set.Bind(RateButton)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToRatingPage);
+			set.Bind(RateButton)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsRatingButtonShown)
+				.WithConversion("BoolInverter");
+
+			set.Bind(ReSendConfirmationButton)
+				.For("TouchUpInside")
+				.To(vm => vm.ResendConfirmationCommand);
+			set.Bind(ReSendConfirmationButton)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsResendConfirmationButtonShown)
+				.WithConversion("BoolInverter");
+
+			set.Bind(PayButton)
+				.For("TouchUpInside")
+				.To(vm => vm.PayCommand);
+			set.Bind(PayButton)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsPayButtonShown)
+				.WithConversion("BoolInverter");
+
+			set.Apply ();
 
             ViewModel.PropertyChanged += (sender, e) => 
             {

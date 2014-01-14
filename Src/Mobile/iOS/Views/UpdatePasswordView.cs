@@ -41,12 +41,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			});
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
-			
-			this.AddBindings(new Dictionary<object, string>{
-				{txtCurrentPassword, "{'Text':{'Path':'CurrentPassword'}}"} ,
-				{txtNewPassword, "{'Text':{'Path':'NewPassword'}}"} ,
-				{txtNewPasswordConfirmation, "{'Text':{'Path':'NewPasswordConfirmation'}}"} ,
-			});
+
+			var set = this.CreateBindingSet<UpdatePasswordView, UpdatePasswordViewModel>();
+
+			set.Bind(txtCurrentPassword)
+				.For(v => v.Text)
+				.To(vm => vm.CurrentPassword);
+
+			set.Bind(txtNewPassword)
+				.For(v => v.Text)
+				.To(vm => vm.NewPassword);
+
+			set.Bind(txtNewPasswordConfirmation)
+				.For(v => v.Text)
+				.To(vm => vm.NewPasswordConfirmation);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
 		}
 

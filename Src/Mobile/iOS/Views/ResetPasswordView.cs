@@ -30,9 +30,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var buttonsY = txtEmail.Frame.Y + txtEmail.Frame.Height + 25;
             AddButton(scrollView, 60, buttonsY, Localize.GetValue("View_PasswordRecovery"), "ResetPassword", AppStyle.ButtonColor.Green);
 
-            this.AddBindings(new Dictionary<object, string>{
-                { txtEmail, "{'Text': {'Path': 'Email', 'Mode': 'TwoWay' }}" },
-            });
+			var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel> ();
+
+			set.Bind(txtEmail)
+				.For(v => v.Text)
+				.To(vm => vm.Email);
+
+			set.Apply ();
 
             NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_PasswordRecovery_Label"), true);
 
@@ -44,7 +48,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var btn = AppButtons.CreateStandardButton(new RectangleF(x, y, 200, 40), title, bcolor);
             btn.TextShadowColor = null;
             parent.AddSubview(btn);
-            this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");              
+
+			var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel> ();
+
+			set.Bind(btn)
+				.For("TouchUpInside")
+				.To(command);    
+
+			set.Apply ();
         }
 
     }

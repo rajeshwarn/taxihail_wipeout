@@ -80,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 );
                 view.AddSubview (labelBottom);
 
-
                 var labelBottomTitle = new ValignLabel ();
                 labelBottomTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
                 labelBottomTitle.TextColor = AppStyle.GreyText;
@@ -91,8 +90,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelBottomTitle.Lines = 1;
                 labelBottomTitle.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 40, scrollview.Frame.Width, 30 ); 
                 view.AddSubview (labelBottomTitle);
-
-
 
                 var labelTop = new ValignLabel ();
                 labelTop.VerticalAlignment = ValignLabel.VerticalAlignments.Middle ;
@@ -117,10 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 view.AddSubview (labelTopTitle);
 
                 image.SetPosition (scrollview.Frame.Width * i, 115);
-
-
-
-
 
                 view.AddSubview (image);
 
