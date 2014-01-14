@@ -1,11 +1,11 @@
+using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
 using MonoTouch.Foundation;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
-	public class BindableCommandTableViewSource : MvxActionBasedBindableTableViewSource
+	public class BindableCommandTableViewSource : MvxActionBasedTableViewSource
 	{
         public BindableCommandTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
 			base( tableView, cellStyle, identifier, bindingText, accessory )
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-		public IMvxCommand SelectedCommand { get; set; }
+		public ICommand SelectedCommand { get; set; }
 // ReSharper restore MemberCanBePrivate.Global
 
 	}

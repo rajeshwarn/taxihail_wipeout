@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    local:HideLogo="false"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  local:HideLogo="false"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="@string/TermsAndConditionsLabel"
-            android:paddingLeft="10dip"
-            android:textColor="#000000"
-            style="@style/DataLabelText" />
-        <TextView
-            android:id="@+id/TermsAndConditionsTextView"
-            android:background="@drawable/textedit_background_std"
-            local:MvxBind="{'Text':{'Path':'TermsAndConditions'}}"
-            android:padding="10dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginBottom="15dip"
-            android:scrollbars="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            style="@style/MultilineFormLabelText.Small" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Grey"
-            android:id="@+id/AcceptBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/gray_button"
-            android:layout_width="180dip"
-            android:layout_height="45dip"
-            android:layout_gravity="center"
-            local:MvxBind="{'Click':{'Path':'AcceptTermsAndConditions'}}"
-            android:text="@string/AcceptButton" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Grey"
-            android:id="@+id/CancelBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/gray_button"
-            android:layout_width="180dip"
-            android:layout_height="45dip"
-            android:layout_gravity="center"
-            local:MvxBind="{'Click':{'Path':'RejectTermsAndConditions'}}"
-            android:text="@string/CancelBoutton" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="25dip"
-            android:text="@string/TermsAndConditionsAcknowledgment"
-            style="@style/MultilineFormLabelText.Medium" />
-    </LinearLayout>
+    android:orientation="vertical">
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dip"
+      android:text="@string/TermsAndConditionsLabel"
+      android:paddingLeft="10dip"
+      android:textColor="#000000"
+      style="@style/DataLabelText" />
+    <TextView
+      android:id="@+id/TermsAndConditionsTextView"
+      android:background="@drawable/textedit_background_std"
+      local:MvxBind="Text TermsAndConditions"
+      android:padding="10dip"
+      android:layout_marginLeft="10dip"
+      android:layout_marginRight="10dip"
+      android:layout_marginBottom="15dip"
+      android:scrollbars="vertical"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_weight="1"
+      style="@style/MultilineFormLabelText.Small" />
+    <apcurium.mk.booking.mobile.client.controls.StyledButton
+      local:ButtonStyle="Grey"
+      android:id="@+id/AcceptBtn"
+      style="@style/ButtonText"
+      android:background="@drawable/gray_button"
+      android:layout_width="180dip"
+      android:layout_height="45dip"
+      android:layout_gravity="center"
+      local:MvxBind="Click AcceptTermsAndConditions"
+      android:text="@string/AcceptButton" />
+    <apcurium.mk.booking.mobile.client.controls.StyledButton
+      local:ButtonStyle="Grey"
+      android:id="@+id/CancelBtn"
+      style="@style/ButtonText"
+      android:background="@drawable/gray_button"
+      android:layout_width="180dip"
+      android:layout_height="45dip"
+      android:layout_gravity="center"
+      local:MvxBind="Click RejectTermsAndConditions"
+      android:text="@string/CancelBoutton" />
+    <TextView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:padding="25dip"
+      android:text="@string/TermsAndConditionsAcknowledgment"
+      style="@style/MultilineFormLabelText.Medium" />
+  </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

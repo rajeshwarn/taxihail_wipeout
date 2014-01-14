@@ -6,45 +6,33 @@ using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
+    public partial class AddressSearchView : MvxViewController
 	{
 		private const string Cellid = "AdressCell";
 
 		const string CellBindingText = @"
-                {
-                   'FirstLine':{'Path':'DisplayLine1'},
-                   'SecondLine':{'Path':'DisplayLine2'},
-				   'ShowRightArrow':{'Path':'ShowRightArrow'},
-				   'ShowPlusSign':{'Path':'ShowPlusSign'},
-                   'Icon':{'Path':'Icon'},
-				   'IsFirst':{'Path':'IsFirst'},
-				   'IsLast':{'Path':'IsLast'},
-				}";
-		#region Constructors
-        public AddressSearchView() 
-            : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-
-        public AddressSearchView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-
-        public AddressSearchView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+				   FirstLine DisplayLine1;
+                   SecondLine DisplayLine2;
+				   ShowRightArrow ShowRightArrow;
+				   ShowPlusSign ShowPlusSign;
+                   Icon Icon;
+				   IsFirst IsFirst;
+				   IsLast IsLast
+				";
+        
+		public AddressSearchView() 
+			: base("AddressSearchView", null)
         {
         }	
-		#endregion
 
 		public override void ViewDidLoad ()
 		{
@@ -64,10 +52,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( Cellid, CellBindingText ); };
 
-            this.AddBindings(new Dictionary<object, string>{			
-                {source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,				
-                {SearchTextField, "{'Text':{'Path':'Criteria'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
-			});
+ 			var set = this.CreateBindingSet<AddressSearchView, AddressSearchViewModel>();
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.AddressViewModels);
+			set.Bind(source)
+				.For(v => v.SelectedCommand)
+				.To(vm => vm.RowSelectedCommand);
+
+			set.Bind(SearchTextField)
+				.For(v => v.Text)
+				.To(vm => vm.Criteria);
+			set.Bind(SearchTextField)
+				.For("IsProgressing")
+				.To(vm => vm.IsSearching);
+
+			set.Apply ();
 
             AddressListView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             AddressListView.Source = source;

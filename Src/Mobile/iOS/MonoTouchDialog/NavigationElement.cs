@@ -1,7 +1,8 @@
 using System;
-using MonoTouch.Dialog;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using CrossUI.Touch.Dialog.Elements;
+using CrossUI.Touch.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
 {
@@ -16,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
         }
 
        
-        public override UITableViewCell GetCell(UITableView tv)
+		protected override UITableViewCell GetCellImpl(UITableView tv)
         {
             var cell =  base.GetCell(tv);
             cell.BackgroundColor = UIColor.Clear;

@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Style;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				Selected = !Selected;
 				if (Selected
 				    && SelectedChangedCommand != null
-				    && SelectedChangedCommand.CanExecute())
+					&& SelectedChangedCommand.CanExecute())
 				{
 					SelectedChangedCommand.Execute(Tag2);
 				}
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-		public IMvxCommand SelectedChangedCommand { get; set; }
+		public ICommand SelectedChangedCommand { get; set; }
 
 		public string Tag2 { get; set; }
 

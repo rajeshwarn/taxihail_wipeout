@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto">
+  xmlns:local="http://schemas.android.com/apk/res-auto">
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/tutorial_background"
+    android:layout_marginTop="15dip"
+    android:layout_marginRight="15dip"
+    android:layout_marginBottom="15dip"
+    android:layout_marginLeft="15dip"
+    android:layout_gravity="center"
+    android:id="@+id/layout_main">
+    <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
+      android:id="@+id/details"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_gravity="center"
+      local:MvxBind="TutorialItemModel TutorialItemsList"
+      android:layout_weight="0.7" />
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@drawable/tutorial_background"
-        android:layout_marginTop="15dip"
-        android:layout_marginRight="15dip"
-        android:layout_marginBottom="15dip"
-        android:layout_marginLeft="15dip"
-        android:layout_gravity="center"
-        android:id="@+id/layout_main">
-        <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
-            android:id="@+id/details"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            local:MvxBind="{&apos;TutorialItemModel&apos;: {&apos;Path&apos;: &apos;TutorialItemsList&apos;}}"
-            android:layout_weight="0.7" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/layout_pips"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="10" />
-    </LinearLayout>
-    <ImageButton
-        android:background="@android:color/transparent"
-        android:src="@drawable/closeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CloseCommand&apos;}}" />
+      android:orientation="horizontal"
+      android:layout_width="wrap_content"
+      android:layout_height="fill_parent"
+      android:id="@+id/layout_pips"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:layout_weight="10" />
+  </LinearLayout>
+  <ImageButton
+    android:background="@android:color/transparent"
+    android:src="@drawable/closeButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    local:MvxBind="Click CloseCommand" />
 </RelativeLayout>

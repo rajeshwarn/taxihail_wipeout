@@ -7,32 +7,28 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class HistoryDetailView : MvxBindingTouchViewController<HistoryDetailViewModel>
+	public partial class HistoryDetailView : MvxViewController
     {
-        #region Constructors
-
 		public HistoryDetailView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("HistoryDetailView", null)
 		{
 		}
-		
-		public HistoryDetailView(MvxShowViewModelRequest request) 
-			: base(request)
+
+		public new HistoryDetailViewModel ViewModel
 		{
-		}
-		
-		public HistoryDetailView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
+			get
+			{
+				return (HistoryDetailViewModel)DataContext;
+			}
 		}
 
         public override void ViewDidLoad()
@@ -61,30 +57,103 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             AppButtons.FormatStandardButton((GradientButton)btnHide, Localize.GetValue("DeleteButton"), AppStyle.ButtonColor.Red);
             AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusActionCancelButton"), AppStyle.ButtonColor.Red);
 
-			this.AddBindings(new Dictionary<object, string>                          
-            {
-				{ btnRebook, "{'Hidden':{'Path': 'RebookIsAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'RebookOrder'}}"},
+			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
-				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'DeleteOrder'}}"},
-				{ btnStatus, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'NavigateToOrderStatus'}}"},
+			set.Bind(btnRebook)
+				.For(v => v.Hidden)
+				.To(vm => vm.RebookIsAvailable)
+				.WithConversion("BoolInverter");
+			set.Bind(btnRebook)
+				.For("TouchUpInside")
+				.To(vm => vm.RebookOrder);
 
-				{ btnCancel, "{'Hidden':{'Path': 'IsCompleted'}, 'TouchUpInside':{'Path':'CancelOrder'}}"},
-				{ btnRateTrip, "{'Hidden':{'Path': 'ShowRateButton', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
-				{ btnViewRating, "{'Hidden':{'Path': 'HasRated', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'NavigateToRatingPage'}}"},
+			set.Bind(btnHide)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsCompleted)
+				.WithConversion("BoolInverter");
+			set.Bind(btnHide)
+				.For("TouchUpInside")
+				.To(vm => vm.DeleteOrder);
 
-				{ btnSendReceipt, "{'Hidden':{'Path': 'SendReceiptAvailable', 'Converter':'BoolInverter'}, 'TouchUpInside':{'Path':'SendReceipt'}}"},
+			set.Bind(btnStatus)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsCompleted);
+			set.Bind(btnStatus)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToOrderStatus);
 
-                { txtConfirmationNo, "{'Text':{'Path': 'ConfirmationTxt'}}"},
-				{ txtDestination, "{'Text':{'Path': 'DestinationTxt'}, 'Hidden':{'Path': 'HideDestination'}}"},
-				{ txtOrigin, "{'Text':{'Path': 'OriginTxt'}}"},
-				{ txtRequested, "{'Text':{'Path': 'RequestedTxt'}}"},
-				{ txtAptCode, "{'Text':{'Path': 'AptRingTxt'}}"},
-				{ txtStatus, "{'Text':{'Path': 'Status.IBSStatusDescription'}}"},
-				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"},
-                
-                { lblAuthorization, new B("Hidden","AuthorizationNumber",typeof(NoValueToTrueConverter))},
-                { txtAthorization, "{'Text':{'Path': 'AuthorizationNumber'}}"}
-			});
+			set.Bind(btnCancel)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsCompleted);
+			set.Bind(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.CancelOrder);
+
+			set.Bind(btnRateTrip)
+				.For(v => v.Hidden)
+				.To(vm => vm.ShowRateButton)
+				.WithConversion("BoolInverter");
+			set.Bind(btnRateTrip)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToRatingPage);
+
+			set.Bind(btnViewRating)
+				.For(v => v.Hidden)
+				.To(vm => vm.HasRated)
+				.WithConversion("BoolInverter");
+			set.Bind(btnViewRating)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToRatingPage);
+
+			set.Bind(btnSendReceipt)
+				.For(v => v.Hidden)
+				.To(vm => vm.SendReceiptAvailable)
+				.WithConversion("BoolInverter");
+			set.Bind(btnSendReceipt)
+				.For("TouchUpInside")
+				.To(vm => vm.SendReceipt);
+
+			set.Bind(txtConfirmationNo)
+				.For(v => v.Text)
+				.To(vm => vm.ConfirmationTxt);
+
+			set.Bind(txtDestination)
+				.For(v => v.Text)
+				.To(vm => vm.DestinationTxt);
+			set.Bind(txtDestination)
+				.For(v => v.Hidden)
+				.To(vm => vm.HideDestination);
+
+			set.Bind(txtOrigin)
+				.For(v => v.Text)
+				.To(vm => vm.OriginTxt);
+
+			set.Bind(txtRequested)
+				.For(v => v.Text)
+				.To(vm => vm.RequestedTxt);
+
+			set.Bind(txtAptCode)
+				.For(v => v.Text)
+				.To(vm => vm.AptRingTxt);
+
+			set.Bind(txtStatus)
+				.For(v => v.Text)
+				.To(vm => vm.Status.IbsStatusDescription);
+
+			set.Bind(txtPickupDate)
+				.For(v => v.Text)
+				.To(vm => vm.PickUpDateTxt);
+
+			set.Bind(lblAuthorization)
+				.For(v => v.Hidden)
+				.To(vm => vm.AuthorizationNumber)
+				.WithConversion("NoValueToTrueConverter");
+
+			set.Bind(txtAthorization)
+				.For(v => v.Text)
+				.To(vm => vm.AuthorizationNumber);
+
+			set.Apply ();
 
 			ViewModel.Loaded+= (sender, e) => {
 				InvokeOnMainThread(()=>{
@@ -148,5 +217,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		}
     }
 }
-
-#endregion

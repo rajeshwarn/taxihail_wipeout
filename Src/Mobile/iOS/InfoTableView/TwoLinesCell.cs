@@ -6,7 +6,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-    public sealed class TwoLinesCell : MvxBindableTableViewCell
+	public sealed class TwoLinesCell : MvxStandardTableViewCell
     {
         private UIImageView _arrowImage;
         //private UIImageView _plusSignImage;

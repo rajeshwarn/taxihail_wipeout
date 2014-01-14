@@ -7,13 +7,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:layout_width="fill_parent"
             android:layout_marginTop="5dip"
             android:layout_height="fill_parent"
             android:id="@+id/CreditCardsListView"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/creditcardlistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;CreditCards&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToAddOrSelect&apos;}}" />
+            local:MvxBind="ItemsSource CreditCards; ItemClick NavigateToAddOrSelect" />
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

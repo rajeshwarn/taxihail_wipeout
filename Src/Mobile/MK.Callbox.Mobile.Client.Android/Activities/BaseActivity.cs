@@ -1,7 +1,7 @@
 using Android.App;
 using Android.Widget;
-using Cirrious.MvvmCross.Binding.Android.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
@@ -22,10 +22,17 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         }
     }
 
-    public abstract class BaseBindingActivity<TViewModel> : MvxBindingActivityView<TViewModel> where TViewModel : BaseViewModel, IMvxViewModel
+    public abstract class BaseBindingActivity<TViewModel> : MvxActivity where TViewModel : BaseViewModel, IMvxViewModel
     {
         protected abstract int ViewTitleResourceId { get; }
 
+		public new TViewModel ViewModel
+		{
+			get
+			{
+				return (TViewModel)DataContext;
+			}
+		}
 
         protected override void OnResume()
         {

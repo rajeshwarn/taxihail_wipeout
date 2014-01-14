@@ -1,41 +1,35 @@
-using apcurium.MK.Booking.Mobile.Mvx;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using TinyIoC;
-using TinyMessenger;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Mobile.AppServices;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Platform;
+using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Client;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Api.Contract.Security;
+using apcurium.MK.Booking.Google;
+using apcurium.MK.Booking.Google.Impl;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
-using apcurium.MK.Booking.Google.Impl;
-using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Provider;
-using apcurium.MK.Booking.Api.Contract.Security;
-using Cirrious.MvvmCross.Interfaces.Platform.Lifetime;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Provider;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class TaxiHailApp  : MvxApplication
-        , IMvxServiceProducer<IMvxStartNavigation>
     {    
-		public TaxiHailApp() : this(default(IDictionary<string, string>))
-        {
-        }
-
-        public TaxiHailApp(IDictionary<string, string> @params)
-        {
+      
+		public TaxiHailApp()
+		{
             InitalizeServices();
-            InitializeStartNavigation(@params);
+            InitializeStartNavigation();
         }
         
         private void InitalizeServices()
@@ -100,8 +94,8 @@ namespace apcurium.MK.Booking.Mobile
             container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             container.Register<IIbsFareClient>((c, p) => new IbsFareServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 			
-            container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
-            container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
+			container.Resolve<IMvxLifetime>().LifetimeChanged -= TaxiHailApp_LifetimeChanged;
+			container.Resolve<IMvxLifetime>().LifetimeChanged += TaxiHailApp_LifetimeChanged;
 
             RefreshAppData();
         }
@@ -152,16 +146,11 @@ namespace apcurium.MK.Booking.Mobile
             return sessionId;
         }
         
-        private void InitializeStartNavigation(IDictionary<string, string> @params)
+        private void InitializeStartNavigation()
         {
-            var startApplicationObject = new StartNavigation(@params);
-            this.RegisterServiceInstance(startApplicationObject);
+			Mvx.RegisterSingleton<IMvxAppStart>(new StartNavigation());
         }
 
-        protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
-        {
-            return new TinyIocViewModelLocator();
-        }
     }
 }
 

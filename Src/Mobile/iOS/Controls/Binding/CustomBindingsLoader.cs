@@ -1,4 +1,4 @@
-using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {

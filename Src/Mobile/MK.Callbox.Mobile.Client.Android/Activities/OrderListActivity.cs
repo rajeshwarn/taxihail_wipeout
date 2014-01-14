@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -8,15 +9,14 @@ using Android.Media;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Cirrious.MvvmCross.Binding.Android.Views;
+using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
-using System.Linq;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
 	[Activity(Label = "Order List", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
-	public class OrderListActivity : MvxBindingActivityView<CallboxOrderListViewModel>
+	public class OrderListActivity : MvxActivity
 	{
 		private const int NbClick = 5;
 		private TimeSpan TimeOut = TimeSpan.FromSeconds(5);
@@ -26,9 +26,12 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
 		private MediaPlayer _mediaPlayer;
 
-		public OrderListActivity()
+		public new CallboxOrderListViewModel ViewModel
 		{
-
+			get
+			{
+				return (CallboxOrderListViewModel)DataContext;
+			}
 		}
 
 		protected override void OnViewModelSet()
@@ -41,7 +44,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 				.Where(e => e.EventArgs.Event.Action == MotionEventActions.Down)
 				.Buffer(TimeOut, NbClick)
 				.Where(s => s.Count == 5)
-				.Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute(null)));
+				.Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute()));
 
 			_mediaPlayer = MediaPlayer.Create(this, Resource.Raw.vehicle);
 

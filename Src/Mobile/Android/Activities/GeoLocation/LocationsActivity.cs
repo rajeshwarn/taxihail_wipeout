@@ -3,12 +3,11 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
-
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Android.Views;
 using TinyIoC;
 using TinyMessenger;
+using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
@@ -50,11 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 
         private void SetAdapter()
         {
-            var adapter = new MvxBindableListAdapter(this);
+            var adapter = new MvxAdapter(this);
 
             RunOnUiThread(() =>
             {
-                ((MvxBindableListView) _listView).Adapter = adapter;
+                ((MvxListView) _listView).Adapter = adapter;
                 _listView.Divider = null;
                 _listView.DividerHeight = 0;
                 _listView.SetPadding(10, 0, 10, 0);

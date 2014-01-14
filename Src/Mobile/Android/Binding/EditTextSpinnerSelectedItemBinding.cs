@@ -3,20 +3,19 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
-using Cirrious.MvvmCross.Binding.Android.Target;
-using Cirrious.MvvmCross.Binding.Interfaces;
+using Cirrious.MvvmCross.Binding.Droid.Target;
+using Cirrious.MvvmCross.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
-    public class EditTextSpinnerSelectedItemBinding : MvxBaseAndroidTargetBinding
+    public class EditTextSpinnerSelectedItemBinding : MvxAndroidTargetBinding
     {
-        private readonly EditTextSpinner _control;
         private object _currentValue;
 
-        public EditTextSpinnerSelectedItemBinding(EditTextSpinner control)
+		public EditTextSpinnerSelectedItemBinding(EditTextSpinner target)
+			:base(target)
         {
-            _control = control;
-            _control.ItemSelected += _spinner_ItemSelected;
+			target.ItemSelected += _spinner_ItemSelected;
         }
 
         public override MvxBindingMode DefaultMode
@@ -31,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
         private void _spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            var spinner = _control.GetSpinner();
+			var control = (EditTextSpinner)Target;
+            var spinner = control.GetSpinner();
             var item = spinner.GetItemAtPosition(e.Position).Cast<ListItemData>();
 
             var newValue = item.Key;
@@ -50,20 +50,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             }
         }
 
-        public override void SetValue(object value)
+		protected override void SetValueImpl(object target, object value)
         {
+			var control = (EditTextSpinner)target;
             if (value != _currentValue)
             {
                 _currentValue = value;
-                _control.SetSelection((int) value);
+                control.SetSelection((int) value);
             }
         }
 
         protected override void Dispose(bool isDisposing)
         {
+			var control = (EditTextSpinner)Target;
             if (isDisposing)
             {
-                _control.ItemSelected -= _spinner_ItemSelected;
+                control.ItemSelected -= _spinner_ItemSelected;
             }
             base.Dispose(isDisposing);
         }

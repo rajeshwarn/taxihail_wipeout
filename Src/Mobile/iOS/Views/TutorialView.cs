@@ -4,43 +4,35 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class TutorialView : MvxBindingTouchViewController<TutorialViewModel>, IMvxModalTouchView
+    public partial class TutorialView : MvxViewController, IMvxModalTouchView
     {
-        #region Constructors
-        
         public TutorialView () 
-            : base(new MvxShowViewModelRequest<TutorialViewModel>( null, true, new MvxRequestedBy()   ) )
+			: base("TutorialView", null)
         {
             Initialize ();
         }
-        
-        public TutorialView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            Initialize ();
-        }
-        
-        public TutorialView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-            Initialize ();
-        }
-        
-#endregion
         
         void Initialize ()
         {
         }
+
+		public new TutorialViewModel ViewModel
+		{
+			get
+			{
+				return (TutorialViewModel)DataContext;
+			}
+		}
         
         public override void ViewDidLoad ()
         {
@@ -50,12 +42,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnClose.SetImage (UIImage.FromFile ("Assets/closeButton.png"), UIControlState.Normal);
             btnClose.SetTitle ("", UIControlState.Normal);
             View.BackgroundColor = UIColor.FromRGBA (0, 0, 0, 0.40f);
-            this.AddBindings (new Dictionary<object, string>{ 
-                { btnClose, "{'TouchUpInside':{'Path':'CloseCommand'}}"} 
-            });
-            
+
             CreatePanels (ViewModel.TutorialItemsList);
 
+			var set = this.CreateBindingSet<TutorialView, TutorialViewModel>();
+
+			set.BindSafe(btnClose)
+				.For("TouchUpInside")
+				.To(vm => vm.CloseCommand);
+
+			set.Apply ();
 
             View.ApplyAppFont ();
         }
@@ -84,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelBottom.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 110, scrollview.Frame.Width, 95 );
                 view.AddSubview (labelBottom);
 
-
                 var labelBottomTitle = new ValignLabel ();
                 labelBottomTitle.VerticalAlignment = ValignLabel.VerticalAlignments.Middle;
                 labelBottomTitle.TextColor = AppStyle.GreyText;
@@ -95,8 +90,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 labelBottomTitle.Lines = 1;
                 labelBottomTitle.Frame = new RectangleF( scrollview.Frame.Width * i, scrollview.Frame.Height - 40, scrollview.Frame.Width, 30 ); 
                 view.AddSubview (labelBottomTitle);
-
-
 
                 var labelTop = new ValignLabel ();
                 labelTop.VerticalAlignment = ValignLabel.VerticalAlignments.Middle ;
@@ -121,10 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 view.AddSubview (labelTopTitle);
 
                 image.SetPosition (scrollview.Frame.Width * i, 115);
-
-
-
-
 
                 view.AddSubview (image);
 

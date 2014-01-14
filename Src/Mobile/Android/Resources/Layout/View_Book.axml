@@ -66,7 +66,7 @@
                             android:layout_weight="1"
                             android:background="@color/transparent"
                             android:drawableRight="@drawable/right_arrow"
-                            local:MvxBind="{'Click':{'Path':'Pickup.PickAddress'}, 'Cancel':{'Path':'Pickup.CancelCurrentLocationCommand'},'IsProgressing':{'Path':'Pickup.IsExecuting'},'TextLine1' : {'Path':'Pickup.AddressLine1'}, 'TextLine2' : {'Path':'Pickup.AddressLine2'},'IsPlaceHolder' : {'Path':'Pickup.IsPlaceHolder'} }" />
+                            local:MvxBind="Click Pickup.PickAddress; Cancel Pickup.CancelCurrentLocationCommand; IsProgressing Pickup.IsExecuting; TextLine1 Pickup.AddressLine1; TextLine2 Pickup.AddressLine2; IsPlaceHolder Pickup.IsPlaceHolder" />
                         <ImageButton
                             android:id="@+id/pickupIsActiveButton"
                             android:background="@drawable/address_selector_button"
@@ -76,7 +76,7 @@
                             android:layout_width="40dip"
                             android:padding="7dip"
                             android:layout_marginTop="1dip"
-                            local:MvxBind="{'Click':{'Path':'ActivatePickup'}, 'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection' }}"
+                            local:MvxBind="Click ActivatePickup; Selected AddressSelectionMode, Converter=EnumToBool, ConverterParameter=PickupSelection"
                             android:layout_gravity="fill"
                             android:scaleType="fitCenter" />
                     </LinearLayout>
@@ -90,7 +90,7 @@
                         android:layout_marginLeft="7dip"
                         android:layout_marginRight="5dip"
                         android:layout_marginTop="5dip"
-                        local:MvxBind="{'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}">
+                        local:MvxBind="Visibility ShowEstimate, Converter=Visibility">
                         <apcurium.mk.booking.mobile.client.controls.TextProgressButton
                             android:id="@+id/destinationAddressButton"
                             android:layout_width="fill_parent"
@@ -98,7 +98,7 @@
                             android:layout_marginBottom="5dip"
                             android:gravity="left"
                             android:layout_weight="1"
-                            local:MvxBind="{'Click':{'Path':'Dropoff.PickAddress'}, 'Cancel':{'Path':'Dropoff.CancelCurrentLocationCommand'},'IsProgressing':{'Path':'Dropoff.IsExecuting'},'TextLine1' : {'Path':'Dropoff.AddressLine1'}, 'TextLine2' : {'Path':'Dropoff.AddressLine2'},'IsPlaceHolder' : {'Path':'Dropoff.IsPlaceHolder'}, 'Visibility':{'Path':'HideDestination', 'Converter':'InvertedVisibility'} }"
+                            local:MvxBind="Click Dropoff.PickAddress; Cancel Dropoff.CancelCurrentLocationCommand; IsProgressing Dropoff.IsExecuting; TextLine1 Dropoff.AddressLine1; TextLine2 Dropoff.AddressLine2; IsPlaceHolder Dropoff.IsPlaceHolder; Visibility HideDestination, Converter=InvertedVisibility"
                             android:background="@color/transparent"
                             android:layout_marginRight="5dip"
                             android:paddingRight="5dip"
@@ -108,7 +108,7 @@
                             android:background="@drawable/address_selector_button"
                             android:src="@drawable/flag_state"
                             style="@style/ButtonTextGray"
-                            local:MvxBind="{'Click':{'Path':'ActivateDropoff'}, 'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}, 'Visibility':{'Path':'HideDestination', 'Converter':'InvertedVisibility'}}"
+                            local:MvxBind="Click ActivateDropoff; Selected AddressSelectionMode, Converter=EnumToBool, ConverterParameter=DropoffSelection; Visibility HideDestination, Converter=InvertedVisibility"
                             android:layout_height="40dip"
                             android:layout_gravity="fill"
                             android:layout_marginLeft="10dip"
@@ -129,13 +129,13 @@
                         android:paddingTop="3dip"
                         android:paddingBottom="3dip"
                         android:paddingRight="3dip"
-                        local:MvxBind="{'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}">
+                        local:MvxBind="Visibility ShowEstimate, Converter=Visibility">
                         <TextView
                             android:id="@+id/FareEstimateLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
-                            local:MvxBind="{'Text':{'Path':'FareEstimate'}, 'Visibility':{'Path':'ShowEstimate', 'Converter':'Visibility'}}"
+                            local:MvxBind="Text FareEstimate; Visibility ShowEstimate, Converter=Visibility"
                             android:gravity="center_horizontal|top"
                             style="@style/SmallTitle"
                             android:layout_gravity="center_horizontal|top" />
@@ -160,7 +160,7 @@
                                 android:layout_marginBottom="-50px"
                                 android:enabled="true"
                                 android:layout_margin="-20dip"
-                                local:MvxBind="{                                 'Pickup':{'Path':'Pickup.Model'},                                 'Dropoff':{'Path':'Dropoff.Model'},                                 'MapMoved':{'Path':'SelectedAddress.SearchCommand'},                                 'Center':{'Path':'MapCenter'},                                 'AvailableVehicles':{'Path':'AvailableVehicles'},                                 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}                                 }"
+                                local:MvxBind="Pickup Pickup.Model; Dropoff Dropoff.Model ;MapMoved SelectedAddress.SearchCommand; Center MapCenter; AvailableVehicles AvailableVehicles; AddressSelectionMode AddressSelectionMode"
                                 android:clickable="true" />
                             <View
                                 android:id="@+id/anchor"
@@ -216,7 +216,7 @@
                     android:layout_width="50dip"
                     android:layout_height="fill_parent"
                     android:layout_gravity="right"
-                    local:MvxBind="{'Visibility':{'Path':'Panel.MenuIsOpen', 'Converter':'Visibility'}}" />
+                    local:MvxBind="Visibility Panel.MenuIsOpen, Converter=Visibility" />
             </FrameLayout>
         </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
     </RelativeLayout>

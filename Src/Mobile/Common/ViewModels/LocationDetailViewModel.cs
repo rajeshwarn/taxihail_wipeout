@@ -12,13 +12,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	{
 	    readonly CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
-		public LocationDetailViewModel (string address)
+		public void Init(string address)
 		{
             _address = address.FromJson<Address>();
             IsNew = false;
 		}
 
-        public LocationDetailViewModel ()
+		public void Init()
         {
             _address = new Address();
             IsNew = true;
@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.Services().Config.GetSetting("Client.ShowRingCodeField") != "false";
             }
-            
         }
-		private readonly Address _address;
+
+		private Address _address;
 		
         public string BookAddress {
             get {
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.FullAddress)
                 {
                     _address.FullAddress = value;
-                    FirePropertyChanged("BookAddress");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.Apartment)
                 {
                     _address.Apartment = value;
-                    FirePropertyChanged("Apartment");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.RingCode)
                 {
                     _address.RingCode = value;
-                    FirePropertyChanged("RingCode");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _address.FriendlyName)
                 {
                     _address.FriendlyName = value;
-                    FirePropertyChanged("FriendlyName");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -94,8 +94,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if(value != _isNew)
                 {
                     _isNew = value;
-                    FirePropertyChanged(() => IsNew);
-					FirePropertyChanged(() => RebookIsAvailable);
+					RaisePropertyChanged();
+					RaisePropertyChanged(() => RebookIsAvailable);
                 }
             }
         }
@@ -126,11 +126,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         InvokeOnMainThread (() =>
                         {
 							location.CopyTo(_address);
-							FirePropertyChanged(()=>BookAddress);
+							RaisePropertyChanged(()=>BookAddress);
                         });
                         
                     }, TaskContinuationOptions.OnlyOnRanToCompletion);
-
                 });
             }
         }
@@ -143,10 +142,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand SaveAddress
         {
             get {
-
                 return GetCommand(() =>
                 {
-                
                     if (!ValidateFields()) return;
                     var progressShowing = true;
                     this.Services().Message.ShowProgress(true);
@@ -159,18 +156,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     
                         location.CopyTo( _address );
 
-                        FirePropertyChanged (() => BookAddress );
+						RaisePropertyChanged (() => BookAddress );
 
                         this.Services().Account.UpdateAddress(_address);
 
                         this.Services().Message.ShowProgress(false);
 						progressShowing = false;
-						Close();
+						Close(this);
                     
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-
                         if (progressShowing) this.Services().Message.ShowProgress(false);
                     }
                 });
@@ -182,7 +178,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-
                     this.Services().Message.ShowProgress(true);
                 
                     try {
@@ -191,17 +186,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         } else {
                             this.Services().Account.DeleteFavoriteAddress(_address.Id);
                         }
-                        Close ();
+							Close (this);
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
                         this.Services().Message.ShowProgress(false);
                     }
-           
-            
                 });
             }
-        
         }
 
         public AsyncCommand RebookOrder
@@ -209,13 +201,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return GetCommand(() =>
-				                                 {
-                 var order = new Order {PickupAddress = _address};
+				{
+	                 var order = new Order {PickupAddress = _address};
 
-                 var account = this.Services().Account.CurrentAccount;
-                 order.Settings = account.Settings;
-                 var serialized = JsonSerializer.SerializeToString(order);
-				 RequestNavigate<BookViewModel>(new { order = serialized }, true);
+	                 var account = this.Services().Account.CurrentAccount;
+	                 order.Settings = account.Settings;
+	                 var serialized = JsonSerializer.SerializeToString(order);
+							// TODO: [MvvmCroos v3] ClearTop parameter was removed here
+					 ShowViewModel<BookViewModel>(new { order = serialized });
 				});
 			}
 		}
@@ -233,7 +226,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
             return true;
-            
         }
 	}
 }

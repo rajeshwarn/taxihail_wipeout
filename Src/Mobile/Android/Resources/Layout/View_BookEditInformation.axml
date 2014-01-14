@@ -1,195 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:noHistory="true"
+  android:focusableInTouchMode="true">
+  <ScrollView
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:noHistory="true"
-    android:focusableInTouchMode="true">
-    <ScrollView
+    android:layout_height="fill_parent">
+    <LinearLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical">
+      <LinearLayout
+        android:id="@+id/passengerNameInfoLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:orientation="vertical"
+        local:MvxBind="Visibility ShowPassengerName, Converter=Visibility">
+        <TextView
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:paddingLeft="5dp"
+          android:paddingRight="5dp"
+          android:paddingTop="2dp"
+          android:paddingBottom="2dp"
+          android:text="@string/PassengerNameLabel"
+          style="@style/FormLabelText" />
+        <EditText
+          local:MvxBind="Text Order.Settings.Name"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:layout_width="fill_parent"
+          android:gravity="top|left"
+          android:scrollHorizontally="false"
+          android:paddingLeft="15dp" />
+      </LinearLayout>
+      <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:stretchColumns="0,2">
+        <TableRow>
+          <LinearLayout
+            android:id="@+id/passengerPhoneInfoLayout"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            local:MvxBind="Visibility ShowPassengerPhone, Converter=Visibility">
+            <TextView
+              android:layout_width="120dip"
+              android:layout_height="wrap_content"
+              android:text="@string/PassengerPhoneLabel"
+              style="@style/FormLabelText" />
+            <EditText
+              local:MvxBind="Text Order.Settings.Phone"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:layout_width="fill_parent"
+              android:layout_marginRight="0.0dp" />
+          </LinearLayout>
+          <View
+            android:layout_width="5dip"
+            android:layout_height="5dip" />
+          <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passengerNumberInfoLayout"
+            local:MvxBind="Visibility ShowPassengerNumber, Converter=Visibility">
+            <TextView
+              android:layout_width="120dip"
+              android:layout_height="wrap_content"
+              android:text="@string/PassengerNumberLabel"
+              style="@style/FormLabelText" />
+            <EditText
+              local:MvxBind="Text Order.Settings.Passengers"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:layout_width="fill_parent" />
+          </LinearLayout>
+        </TableRow>
+      </TableLayout>
+      <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:stretchColumns="0,2">
+        <TableRow>
+          <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+              android:layout_width="120dip"
+              android:layout_height="wrap_content"
+              android:text="@string/ApartmentLabel"
+              style="@style/FormLabelText" />
+            <EditText
+              android:id="@+id/SignUpPassword"
+              local:MvxBind="Text Order.PickupAddress.Apartment"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:layout_width="fill_parent"
+              android:layout_marginRight="0.0dp" />
+          </LinearLayout>
+          <View
+            android:layout_width="5dip"
+            android:layout_height="5dip" />
+          <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+              android:layout_width="120dip"
+              android:layout_height="wrap_content"
+              android:text="@string/EntryCodeLabel"
+              style="@style/FormLabelText" />
+            <EditText
+              android:id="@+id/SignUpConfirmPassword"
+              local:MvxBind="Text Order.PickupAddress.RingCode"
+              android:layout_height="wrap_content"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:layout_width="fill_parent" />
+          </LinearLayout>
+        </TableRow>
+      </TableLayout>
+      <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="@string/RideSettingsVehiculeType"
+        style="@style/FormLabelText" />
+      <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        local:MvxBind="Text VehicleName; Data Vehicles; SelectedItem VehicleTypeId" />
+      <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="@string/RideSettingsChargeType"
+        style="@style/FormLabelText" />
+      <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        local:MvxBind="Text ChargeType; Data Payments; SelectedItem ChargeTypeId" />
+      <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/passengerNameInfoLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:orientation="vertical"
-                local:MvxBind="{'Visibility':{'Path':'ShowPassengerName','Converter':'Visibility'}}">
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text="@string/PassengerNameLabel"
-                    style="@style/FormLabelText" />
-                <EditText
-                    local:MvxBind="{'Text':{'Path':'Order.Settings.Name'}}"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_width="fill_parent"
-                    android:gravity="top|left"
-                    android:scrollHorizontally="false"
-                    android:paddingLeft="15dp" />
-            </LinearLayout>
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:stretchColumns="0,2">
-                <TableRow>
-                    <LinearLayout
-                        android:id="@+id/passengerPhoneInfoLayout"
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        local:MvxBind="{'Visibility':{'Path':'ShowPassengerPhone','Converter':'Visibility'}}">
-                        <TextView
-                            android:layout_width="120dip"
-                            android:layout_height="wrap_content"
-                            android:text="@string/PassengerPhoneLabel"
-                            style="@style/FormLabelText" />
-                        <EditText
-                            local:MvxBind="{'Text':{'Path':'Order.Settings.Phone'}}"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:layout_width="fill_parent"
-                            android:layout_marginRight="0.0dp" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="5dip"
-                        android:layout_height="5dip" />
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/passengerNumberInfoLayout"
-                        local:MvxBind="{'Visibility':{'Path':'ShowPassengerNumber','Converter':'Visibility'}}">
-                        <TextView
-                            android:layout_width="120dip"
-                            android:layout_height="wrap_content"
-                            android:text="@string/PassengerNumberLabel"
-                            style="@style/FormLabelText" />
-                        <EditText
-                            local:MvxBind="{'Text':{'Path':'Order.Settings.Passengers'}}"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:layout_width="fill_parent" />
-                    </LinearLayout>
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:stretchColumns="0,2">
-                <TableRow>
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="120dip"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ApartmentLabel"
-                            style="@style/FormLabelText" />
-                        <EditText
-                            android:id="@+id/SignUpPassword"
-                            local:MvxBind="{'Text':{'Path':'Order.PickupAddress.Apartment'}}"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:layout_width="fill_parent"
-                            android:layout_marginRight="0.0dp" />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="5dip"
-                        android:layout_height="5dip" />
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="120dip"
-                            android:layout_height="wrap_content"
-                            android:text="@string/EntryCodeLabel"
-                            style="@style/FormLabelText" />
-                        <EditText
-                            android:id="@+id/SignUpConfirmPassword"
-                            local:MvxBind="{'Text':{'Path':'Order.PickupAddress.RingCode'}}"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:layout_width="fill_parent" />
-                    </LinearLayout>
-                </TableRow>
-            </TableLayout>
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:text="@string/RideSettingsVehiculeType"
-                style="@style/FormLabelText" />
-            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                local:MvxBind="{'Text':{'Path':'VehicleName'}, 'Data': {'Path': 'Vehicles'}, 'SelectedItem': {'Path': 'VehicleTypeId'}}" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:text="@string/RideSettingsChargeType"
-                style="@style/FormLabelText" />
-            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                local:MvxBind="{'Text':{'Path':'ChargeType'}, 'Data': {'Path': 'Payments'}, 'SelectedItem': {'Path': 'ChargeTypeId'}}" />
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
-                    style="@style/ButtonTextLarge"
-                    android:background="@drawable/green_button"
-                    android:layout_width="180dip"
-                    android:layout_height="40dip"
-                    android:text="@string/SaveButton"
-                    android:layout_centerInParent="true"
-                    android:layout_marginRight="5dp"
-                    local:MvxBind="{'Click': {'Path': 'SaveCommand'}}" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+          local:ButtonStyle="Green"
+          style="@style/ButtonTextLarge"
+          android:background="@drawable/green_button"
+          android:layout_width="180dip"
+          android:layout_height="40dip"
+          android:text="@string/SaveButton"
+          android:layout_centerInParent="true"
+          android:layout_marginRight="5dp"
+          local:MvxBind="Click SaveCommand" />
+      </RelativeLayout>
+    </LinearLayout>
+  </ScrollView>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

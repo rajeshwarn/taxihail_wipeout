@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 Longitude = location.Longitude
             };
 
-            foreach (var observer in _observers)
+            foreach (var observer in _observers.ToArray())
             {
                 observer.OnNext(position);
             }

@@ -21,12 +21,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private int _refreshPeriod = 5; //in seconds
 	    private bool _waitingToNavigateAfterTimeOut;
 
-		public BookingStatusViewModel (string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);      
-            IsCancelButtonVisible = true;			
-            _waitingToNavigateAfterTimeOut = false;
+			IsCancelButtonVisible = true;			
+			_waitingToNavigateAfterTimeOut = false;
 		}
 	
 		public override void Load ()
@@ -35,15 +35,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
 
-            Pickup = new BookAddressViewModel (() => Order.PickupAddress, address => Order.PickupAddress = address)
-            {
+			Pickup = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-            };
+			};
+			Pickup.Init(() => Order.PickupAddress, address => Order.PickupAddress = address);
 
-            Dropoff = new BookAddressViewModel (() => Order.DropOffAddress, address => Order.DropOffAddress = address)
-            {
+			Dropoff = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
-            };
+			};
+			Dropoff.Init(() => Order.DropOffAddress, address => Order.DropOffAddress = address);
 
             CenterMap ();
         }
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _mapCenter; }
 			private set {
 				_mapCenter = value;
-				FirePropertyChanged (() => MapCenter);
+				RaisePropertyChanged ();
 			}
 		}
 		
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_pickupViewModel = value;
-				FirePropertyChanged (() => Pickup); 
+				RaisePropertyChanged (); 
 			}
 		}
 		
@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_dropoffViewModel = value;
-				FirePropertyChanged (() => Dropoff); 
+				RaisePropertyChanged (); 
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _isPayButtonVisible;
 			} set{
 				_isPayButtonVisible = value;
-				FirePropertyChanged (() => IsPayButtonVisible); 
+				RaisePropertyChanged (); 
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return _isCancelButtonVisible;
 			} set{
 				_isCancelButtonVisible = value;
-				FirePropertyChanged (() => IsCancelButtonVisible); 
+				RaisePropertyChanged (); 
 			}
 		}
 		
@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _isResendButtonVisible;
             } set{
                 _isResendButtonVisible = value;
-                FirePropertyChanged (() => IsResendButtonVisible); 
+				RaisePropertyChanged (); 
             }
         }
 
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set {
 				_confirmationNoTxt = value;
-				FirePropertyChanged (() => ConfirmationNoTxt);
+				RaisePropertyChanged ();
 			}
 		}
         public bool IsCallTaxiVisible
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _statusInfoText; }
 			set {
 				_statusInfoText = value;
-				FirePropertyChanged (() => StatusInfoText);
+				RaisePropertyChanged ();
 			}
 		}
 
@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return Pickup.Model; }
 			set {
 				Pickup.Model = value;
-				FirePropertyChanged (() => PickupModel);
+				RaisePropertyChanged ();
 			}
 		}
 
@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _order; }
 			set {
 				_order = value;
-				FirePropertyChanged (() => Order);
+				RaisePropertyChanged ();
 			}
 		}
 		
@@ -226,15 +226,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
-				FirePropertyChanged (() => OrderStatusDetail);
-				FirePropertyChanged (() => VehicleDriverHidden);
-				FirePropertyChanged (() => VehicleLicenceHidden);
-				FirePropertyChanged (() => VehicleTypeHidden);
-				FirePropertyChanged (() => VehicleMakeHidden);
-				FirePropertyChanged (() => VehicleModelHidden);
-				FirePropertyChanged (() => VehicleColorHidden);
-                FirePropertyChanged (() => IsDriverInfoAvailable);
-                FirePropertyChanged (() => IsCallTaxiVisible);
+				RaisePropertyChanged (() => OrderStatusDetail);
+				RaisePropertyChanged (() => VehicleDriverHidden);
+				RaisePropertyChanged (() => VehicleLicenceHidden);
+				RaisePropertyChanged (() => VehicleTypeHidden);
+				RaisePropertyChanged (() => VehicleMakeHidden);
+				RaisePropertyChanged (() => VehicleModelHidden);
+				RaisePropertyChanged (() => VehicleColorHidden);
+				RaisePropertyChanged (() => IsDriverInfoAvailable);
+				RaisePropertyChanged (() => IsCallTaxiVisible);
 			}
 		}
 
@@ -384,7 +384,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary(){
 
-			RequestNavigate<RideSummaryViewModel> (new {
+			ShowViewModel<RideSummaryViewModel> (new {
 				order = Order.ToJson(),
 				orderStatus = OrderStatusDetail.ToJson()
 			}.ToStringDictionary());
@@ -398,15 +398,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 			this.Services().Booking.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
-                        RequestNavigate<BookViewModel>(clearTop: true);
-                        RequestClose(this);
+							// TODO: [MvvmCross v3] ClearTop parameter was removed here
+                        ShowViewModel<BookViewModel>();
+						Close(this);
                     }));
             }
         }
 
         public void GoToCmtPairScreen()
         {
-            RequestNavigate<CmtRideLinqConfirmPairViewModel>(new
+            ShowViewModel<CmtRideLinqConfirmPairViewModel>(new
             {
                 order = Order.ToJson(),
                 orderStatus = OrderStatusDetail.ToJson()
@@ -439,7 +440,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-                        RequestNavigate<BookViewModel> (clearTop: true);
+					//TODO: [MvvmCross v3] ClearTop parameter was removed here
+                    ShowViewModel<BookViewModel> ();
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -469,7 +471,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-                                    RequestNavigate<BookViewModel> (clearTop: true);
+								//TODO: [MvvmCross v3] ClearTop parameter was removed here
+                                ShowViewModel<BookViewModel> ();
                                 } 
                                 else 
                                 {
@@ -506,12 +509,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<ConfirmCarNumberViewModel>(
+                        ShowViewModel<ConfirmCarNumberViewModel>(
                             new
                             {
                                 order = Order.ToJson(),
                                 orderStatus = OrderStatusDetail.ToJson()
-                            }, false);
+                            });
                     }
                 });
             }
@@ -580,7 +583,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _isUnpairButtonVisible = value;
-                FirePropertyChanged(() => IsUnpairButtonVisible);
+				RaisePropertyChanged();
             }
         }
 

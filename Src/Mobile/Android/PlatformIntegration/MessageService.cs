@@ -8,16 +8,14 @@ using Android.Content;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client.Messages;
-
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.Android.Interfaces;
-using Cirrious.MvvmCross.Android.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using TinyIoC;
 using TinyMessenger;
+using Cirrious.MvvmCross.Droid.Views;
+using Cirrious.CrossCore.Droid.Platform;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -38,13 +36,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void ShowDialogActivity(Type type)
         {
             var presenter = new MvxAndroidViewPresenter();
-            presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
+			presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
         }
 
         public Task ShowMessage(string title, string message)
         {
             var ownerId = Guid.NewGuid().ToString();
-            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 
             dispatcher.RequestMainThreadAction(() =>
@@ -180,7 +178,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowProgress(bool show)
         {
-            TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>
+            TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
             {
                 var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
 
@@ -222,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowToast(string message, ToastDuration duration)
         {
-            TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>
+            TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
             {
                 Toast toast = Toast.MakeText(Context, message,
                     duration == ToastDuration.Short ? ToastLength.Short : ToastLength.Long);

@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _parent = parent;
         }
+
         public bool TutorialEnabled {
             get{
                 return this.Services().Config.GetSetting("Client.TutorialEnabled", true);
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if (value != _menuIsOpen) {
                     _menuIsOpen = value;
-                    FirePropertyChanged ("MenuIsOpen");
+					RaisePropertyChanged ();
                 }
             }
         }
@@ -38,9 +39,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     MenuIsOpen = false;
                     this.Services().Account.SignOut();         
-                    RequestNavigate<LoginViewModel> (true);
+                    ShowViewModel<LoginViewModel> (true);
 
-                    RequestClose( _parent );
+                    Close( _parent );
                 });
             }
         }
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<HistoryViewModel> ();
+                    ShowViewModel<HistoryViewModel> ();
                 });
             }
         }
@@ -62,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<MyLocationsViewModel> ();
+                    ShowViewModel<MyLocationsViewModel> ();
                 });
             }
         }
@@ -75,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 if (value != _version) {
                     _version = value;
-                    FirePropertyChanged ("Version");
+					RaisePropertyChanged ();
                 }
             }
         }
@@ -86,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestNavigate<RideSettingsViewModel>(new { bookingSettings = this.Services().Account.CurrentAccount.Settings.ToJson() });
+                    ShowViewModel<RideSettingsViewModel>(new { bookingSettings = this.Services().Account.CurrentAccount.Settings.ToJson() });
                 });
             }
         }
@@ -94,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand NavigateToAboutUs
         {
             get {
-                return GetCommand(() => RequestNavigate<AboutUsViewModel>());
+                return GetCommand(() => ShowViewModel<AboutUsViewModel>());
             }
         }
 
@@ -113,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        
         public bool CanCall
         {
             get
@@ -122,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        
         public bool CanReportProblem
         {
             get {

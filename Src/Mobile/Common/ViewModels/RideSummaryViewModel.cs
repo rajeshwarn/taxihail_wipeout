@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class RideSummaryViewModel: BaseViewModel
 	{
-		public RideSummaryViewModel (string order, string orderStatus)
+		public void Init(string order, string orderStatus)
 		{			
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
@@ -20,12 +20,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsRatingButtonShown = this.Services().Config.GetSetting( "Client.RatingEnabled", false );  
 
 		}
+
         public override void Start(bool firstStart = false)
         {
             base.Start(firstStart);
-            FirePropertyChanged(() => IsPayButtonShown);
-            FirePropertyChanged(() => IsResendConfirmationButtonShown);
-            FirePropertyChanged(() => IsSendReceiptButtonShown);
+			RaisePropertyChanged(() => IsPayButtonShown);
+			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
+			RaisePropertyChanged(() => IsSendReceiptButtonShown);
         }
 
 		public string ThankYouTitle {
@@ -46,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _receiptSent; }
             set {
                 _receiptSent = value;
-                FirePropertyChanged(() => ReceiptSent);
+				RaisePropertyChanged();
             }
         }
 
@@ -75,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get{
                 var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
-             
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			set { 
 				_isRatingButtonShow = value;
-				FirePropertyChanged (() => IsRatingButtonShown);
+				RaisePropertyChanged ();
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand NavigateToRatingPage
         {
 			get {
-				return new AsyncCommand (() => RequestSubNavigate<BookRatingViewModel, OrderRated> (new 
+				return new AsyncCommand (() => ShowSubViewModel<BookRatingViewModel, OrderRated> (new 
 				{
 				    orderId = Order.Id.ToString (), 
 				    canRate = true.ToString (CultureInfo.InvariantCulture), 
@@ -114,15 +114,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}));
 			}
 		}
+
         public AsyncCommand ResendConfirmationCommand
         {
             get {
                 return new AsyncCommand (() =>
                 {
-                    this.Services().Message.ShowMessage("Confirmation",
-                        this.Services().Localize["ConfirmationOfPaymentSent"]);
+					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
                     this.Services().Payment.ResendConfirmationToDriver(Order.Id);
-
                 });
             }
         }
@@ -130,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand PayCommand
         {
 			get {
-				return new AsyncCommand (() => RequestNavigate<ConfirmCarNumberViewModel>(
+				return new AsyncCommand (() => ShowViewModel<ConfirmCarNumberViewModel>(
 				    new 
 				    { 
 				        order = Order.ToJson(),

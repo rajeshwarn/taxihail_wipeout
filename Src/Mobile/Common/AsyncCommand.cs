@@ -1,14 +1,14 @@
 using System;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class AsyncCommand : IMvxCommand, IDisposable
+    public class AsyncCommand : ICommand, IDisposable
     {
 		readonly ILogger _logger;
         private Func<bool> _canExecute;
@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile
 
     }
 
-    public class AsyncCommand<T> : IMvxCommand, IDisposable
+    public class AsyncCommand<T> : ICommand, IDisposable
     {
 		readonly ILogger _logger;
         private Func<T,bool> _canExecute;

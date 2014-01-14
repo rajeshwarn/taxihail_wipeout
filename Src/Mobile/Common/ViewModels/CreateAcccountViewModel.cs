@@ -11,6 +11,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
+	//TODO: Rename (There are 3 c's in acccount)
     public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
 		readonly IFacebookService _facebookService;
@@ -20,9 +21,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
-        public CreateAcccountViewModel (string messageId, string data) : base(messageId)
+		public CreateAcccountViewModel()
 		{
 			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
+		}
+
+		public void Init(string messageId, string data)
+		{
+			Init(messageId);
 
 			if (data != null)
 			{
@@ -84,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var showTermsAndConditions = this.Services().Config.GetSetting("Client.ShowTermsAndConditions", false);
                         if( showTermsAndConditions && !_termsAndConditionsApproved )
                         {
-                            RequestSubNavigate<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
+							ShowSubViewModel<TermsAndConditionsViewModel, bool>( null, OnTermsAndConditionsCallback);
                             return;
                         }
 

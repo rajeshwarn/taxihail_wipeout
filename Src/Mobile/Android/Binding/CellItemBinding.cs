@@ -1,7 +1,7 @@
 using System;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Binding.Android.Target;
-using Cirrious.MvvmCross.Binding.Interfaces;
+using Cirrious.MvvmCross.Binding;
+using Cirrious.MvvmCross.Binding.Droid.Target;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {
@@ -11,14 +11,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
         IsTop = 1,
     }
 
-    public class CellItemBinding : MvxBaseAndroidTargetBinding
+    public class CellItemBinding : MvxAndroidTargetBinding
     {
-        private readonly ListViewCell2 _control;
         private readonly CellItemBindingProperty _property;
 
-        public CellItemBinding(ListViewCell2 control, CellItemBindingProperty property)
+		public CellItemBinding(ListViewCell2 target, CellItemBindingProperty property)
+			:base(target)
         {
-            _control = control;
             _property = property;
         }
 
@@ -33,15 +32,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
             get { return typeof (bool); }
         }
 
-        public override void SetValue(object value)
+		protected override void SetValueImpl(object target, object value)
         {
+			var control = (ListViewCell2)target;
             if (_property == CellItemBindingProperty.IsBottom)
             {
-                _control.IsBottom = (bool) value;
+                control.IsBottom = (bool) value;
             }
             else if (_property == CellItemBindingProperty.IsTop)
             {
-                _control.IsTop = (bool) value;
+                control.IsTop = (bool) value;
             }
         }
     }

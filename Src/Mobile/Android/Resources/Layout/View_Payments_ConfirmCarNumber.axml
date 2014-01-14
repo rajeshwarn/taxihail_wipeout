@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <LinearLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:gravity="fill">
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="15dp"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="@string/VehicleNumberInfo"
-            style="@style/MultilineFormLabelText"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4585"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:gravity="center"
-            local:MvxBind="{'Text':{'Path':'CarNumber'}}"
-            android:width="200dp"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="5dp"
-            android:layout_weight="1" />
-        <TextView
-            android:textSize="13dp"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:text="@string/VehicleNumberNotice"
-            android:textStyle="normal"
-            style="@style/MultilineFormLabelText"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal" />
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="35dp"
-            android:layout_weight="1" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            android:id="@+id/ConfirmBtn"
-            style="@style/ButtonText"
-            android:background="@drawable/green_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/CreateAccountPasswordConfrimation"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            local:MvxBind="{'Click': {'Path': 'ConfirmTaxiNumber'}}"
-            android:layout_gravity="bottom"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentBottom="true" />
-    </LinearLayout>
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:gravity="fill">
+    <View
+      android:layout_width="fill_parent"
+      android:layout_height="15dp"
+      android:layout_weight="1" />
+    <TextView
+      android:layout_width="200dp"
+      android:layout_height="wrap_content"
+      android:text="@string/VehicleNumberInfo"
+      style="@style/MultilineFormLabelText"
+      android:gravity="center_horizontal"
+      android:layout_gravity="center_horizontal" />
+    <View
+      android:layout_width="fill_parent"
+      android:layout_height="20dp"
+      android:layout_weight="1" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="4585"
+      android:textSize="30dp"
+      android:textStyle="bold"
+      android:textColor="@color/black"
+      android:gravity="center"
+      local:MvxBind="Text CarNumber"
+      android:width="200dp"
+      android:layout_gravity="center_horizontal" />
+    <View
+      android:layout_width="fill_parent"
+      android:layout_height="5dp"
+      android:layout_weight="1" />
+    <TextView
+      android:textSize="13dp"
+      android:layout_width="250dp"
+      android:layout_height="wrap_content"
+      android:text="@string/VehicleNumberNotice"
+      android:textStyle="normal"
+      style="@style/MultilineFormLabelText"
+      android:gravity="center_horizontal"
+      android:layout_gravity="center_horizontal" />
+    <View
+      android:layout_width="fill_parent"
+      android:layout_height="35dp"
+      android:layout_weight="1" />
+    <apcurium.mk.booking.mobile.client.controls.StyledButton
+      local:ButtonStyle="Green"
+      android:id="@+id/ConfirmBtn"
+      style="@style/ButtonText"
+      android:background="@drawable/green_button"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/CreateAccountPasswordConfrimation"
+      android:layout_marginRight="5dp"
+      android:layout_weight="1"
+      local:MvxBind="Click ConfirmTaxiNumber"
+      android:layout_gravity="bottom"
+      android:layout_alignParentLeft="false"
+      android:layout_alignParentTop="false"
+      android:layout_alignParentBottom="true" />
+  </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

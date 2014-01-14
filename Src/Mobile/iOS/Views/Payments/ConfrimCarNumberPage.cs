@@ -4,16 +4,18 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Binding;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-    public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
+	[MvxViewFor(typeof(ConfirmCarNumberViewModel))]
+	public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
     {
-        public ConfrimCarNumberPage(MvxShowViewModelRequest request) 
-            : base(request)
+        public ConfrimCarNumberPage() 
+			: base("ConfrimCarNumberPage", null)
         {
         }
 
@@ -29,11 +31,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green); 
 
-            this.AddBindings(new Dictionary<object, string>{
-                { ConfirmButton, new B("TouchDown","ConfirmTaxiNumber") }, 
-                { CarNumber, new B("Text","CarNumber") }, 
-            });
-            
+			var set = this.CreateBindingSet<ConfrimCarNumberPage, ConfirmCarNumberViewModel>();
+			set.Bind(ConfirmButton)
+				.For("TouchDown")
+				.To(vm => vm.ConfirmTaxiNumber);
+
+			set.Bind(CarNumber)
+				.For(v => v.Text)
+				.To(vm => vm.CarNumber);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
         }
     }
