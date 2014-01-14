@@ -10,6 +10,8 @@
 	<color name="button_background_color">#004785</color>
 	<color name="button_pressed_background_color">#0469c2</color>
 	<color name="button_hili_background_color">#004f94</color>
+	<color name="listitem_text_line1_color">#565656</color>
+	<color name="listitem_text_line2_color">#323232</color>	
 	
 	<!--- Dimensions -->
 	<dimen name="Height">44dip</dimen>

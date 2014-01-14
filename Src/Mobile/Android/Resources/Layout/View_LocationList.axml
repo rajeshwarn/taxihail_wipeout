@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -17,6 +17,6 @@
             android:id="@+id/LocationListView"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/simplelistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AllAddresses&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToLocationDetailPage&apos;}}" />
+            local:MvxBind="{'ItemsSource':{'Path':'AllAddresses'},'ItemClick':{'Path':'NavigateToLocationDetailPage'}}" />
     </RelativeLayout>
-</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+</RelativeLayout>

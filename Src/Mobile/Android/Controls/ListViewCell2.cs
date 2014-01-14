@@ -71,14 +71,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public void Ctor()
         {
-            TextColorLine1 = new Color(50, 50, 50, 255);
+			TextColorLine1 = Resources.GetColor (Resource.Color.listitem_text_line1_color);
         }
 
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
 
-            var gray = new Color(86, 86, 86, 255);
+			var TextColorLine2 = Resources.GetColor (Resource.Color.listitem_text_line2_color);
 
             var textX = ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
 
@@ -90,16 +90,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (!TextLine1.IsNullOrEmpty())
             {
                 DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold, TextColorLine1);
-                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, gray);
+                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, TextColorLine2);
             }
             else
             {
-                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), AppFonts.Regular, gray);
+                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), AppFonts.Regular, TextColorLine2);
             }
 
             if (ShowRightArrow)
-            {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow),
+            {                
+				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow),
                     Width - (20.ToPixels()), 16.ToPixels(), null);
             }
 
