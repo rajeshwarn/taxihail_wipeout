@@ -55,29 +55,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-             
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
 
-            AppButtons.FormatStandardButton(btnSignIn, Localize.GetValue("SignInButton"), AppStyle.ButtonColor.Black);
-            AppButtons.FormatStandardButton(btnSignUp, Localize.GetValue("SignUpButton"), AppStyle.ButtonColor.Grey);          
+			//Localize.GetValue("SignInButton")
+			//Localize.GetValue("SignUpButton")      
 
-            ((TextField)txtEmail).PaddingLeft = 5;
-            ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
-            ((TextField)txtEmail).FieldHeight = 48;
-            ((TextField)txtPassword).FieldHeight = 48;
-
+ 
             txtEmail.Placeholder = Localize.GetValue("EmailLabel");
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-            txtEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
-            txtEmail.AutocorrectionType = UITextAutocorrectionType.No;
+
+ 
             txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
             txtEmail.ShouldReturn = delegate {                          
                 txtEmail.ResignFirstResponder ();
                 return true;
             };
-
-            ((TextField)txtPassword).PaddingLeft = 5;
-            ((TextField)txtPassword).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
 
             txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
             txtPassword.SecureTextEntry = true;
@@ -89,9 +80,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            if (settings.FacebookEnabled)
+            
+			if (settings.FacebookEnabled)
 			{
-                AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
+				//Localize.GetValue("FacebookButton") "Assets/Social/FB/fbIcon.png"               
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
@@ -99,21 +91,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (settings.TwitterEnabled)
 			{
-                AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
+				//Localize.GetValue("TwitterButton") "Assets/Social/TW/twIcon.png"
                 this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-            if (settings.CanChangeServiceUrl)
-			{
-                AppButtons.FormatStandardButton (btnServer, "Change Server", AppStyle.ButtonColor.Grey, "Assets/server.png");
-                btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            }
-            btnServer.Hidden = !settings.CanChangeServiceUrl;
+			//"Change Server" "Assets/server.png"
+            btnServer.TouchUpInside += ChangeServerTouchUpInside;
+			btnServer.Hidden = true;
 
-            linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
-            
-            
+ 
             this.AddBindings (new Dictionary<object, string> {
                 { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
                 { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
@@ -121,14 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { txtEmail, "{'Text':{'Path':'Email'}}"},
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
-
-
-            if (!UIHelper.Is4InchDisplay)
-            {
-
-                btnSignUp.IncrementY(-25);
-            }
-
+		
             ViewModel.Load ();
             View.ApplyAppFont();           
 

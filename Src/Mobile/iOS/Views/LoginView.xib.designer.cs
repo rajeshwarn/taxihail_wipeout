@@ -1,12 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,28 +13,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class LoginView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnFbLogin { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnServer { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnSignIn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnSignUp { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnTwLogin { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel linkForgotPassword { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField txtEmail { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtPassword { get; set; }
-
-		[Outlet]
-		GradientButton btnSignIn { get; set; }
-
-		[Outlet]
-		UnderlinedLabel linkForgotPassword { get; set; }
-
-		[Outlet]
-		GradientButton btnSignUp { get; set; }
-
-		[Outlet]
-		GradientButton btnFbLogin { get; set; }
-
-		[Outlet]
-		GradientButton btnTwLogin { get; set; }
-
-		[Outlet]
-		GradientButton btnServer { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
