@@ -50,10 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void SetAppearance()
 		{
-			//set background for buttons
-			UIButton.Appearance.BackgroundColor = UIColor.FromRGB(0,71,148);
-			//set textcolor for button
-			UIButton.Appearance.SetTitleColor (UIColor.White, UIControlState.Normal);
 		
 		}
 

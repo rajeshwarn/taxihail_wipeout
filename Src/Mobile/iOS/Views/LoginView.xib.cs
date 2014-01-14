@@ -14,6 +14,7 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -56,6 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
+
+			FlatButtonStyle.Clear.ApplyTo(btnForgotPassword);
+			FlatButtonStyle.Main.ApplyTo (btnSignIn);
+
 			Localize.GetValue ("SignInButton");
 			Localize.GetValue ("SignUpButton"); 
 
@@ -80,19 +85,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 			if (settings.FacebookEnabled)
 			{
-				//Localize.GetValue("FacebookButton") "Assets/Social/FB/fbIcon.png"               
+				btnFbLogin.SetLeftImage("Assets/Social/FB/fbIcon.png");
+				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);               
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
             if (settings.TwitterEnabled)
 			{
-				//Localize.GetValue("TwitterButton") "Assets/Social/TW/twIcon.png"
+				btnTwLogin.SetLeftImage("Assets/Social/TW/twIcon.png");
+				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
                 this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-			//"Change Server" "Assets/server.png"
+			btnServer.SetLeftImage("Assets/server.png");
+			btnServer.SetTitle (Localize.GetValue ("Change Server"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
 			btnServer.Hidden = true;
 
@@ -106,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
             ViewModel.Load ();
             View.ApplyAppFont();           
-
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)

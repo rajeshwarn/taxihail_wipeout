@@ -5,10 +5,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public abstract class FlatButtonStyle
 	{
-		//TO DELETE
-		UIColor DarkYellow = UIColor.FromRGB(229, 184, 49);
-		UIColor LightYellow = UIColor.FromRGB(255, 211, 80);
-
 		UIColor Gray = UIColor.FromRGB(45, 45, 45);
 		UIColor DarkGreen = UIColor.FromRGB(30, 192, 34);
 		UIColor LightGreen = UIColor.FromRGB(49, 143, 51);
@@ -131,13 +127,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if(button == null) return;
 
                 button.SetFillColor(UIColor.Clear, UIControlState.Normal);
-				button.SetFillColor(DarkYellow, UIControlState.Selected);
-				button.SetFillColor(DarkYellow, UIControlState.Highlighted);
+				button.SetFillColor(UIColor.Clear, UIControlState.Selected);
+				button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
-                button.SetTitleColor(UIColor.Black, UIControlState.Normal);
-                button.SetTitleColor(UIColor.Black.ColorWithAlpha(0.5f), UIControlState.Selected);
-                button.SetTitleColor(UIColor.Black.ColorWithAlpha(0.5f), UIControlState.Highlighted);
-                button.SetTitleColor(UIColor.Black.ColorWithAlpha(0.5f), UIControlState.Highlighted | UIControlState.Selected);
+				button.SetTitleColor(UIColor.White, UIControlState.Normal);
+				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
+				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
                 button.SetStrokeColor(UIColor.Clear, UIControlState.Normal);
                 button.SetStrokeColor(UIColor.Clear, UIControlState.Selected);
