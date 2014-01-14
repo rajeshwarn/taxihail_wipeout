@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">13A603</string>
+		<string key="IBDocument.SystemVersion">13B42</string>
 		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
 		<string key="IBDocument.AppKitVersion">1265</string>
-		<string key="IBDocument.HIToolboxVersion">695.00</string>
+		<string key="IBDocument.HIToolboxVersion">696.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">3747</string>
@@ -14,7 +14,6 @@
 			<string>IBProxyObject</string>
 			<string>IBUIButton</string>
 			<string>IBUIImageView</string>
-			<string>IBUILabel</string>
 			<string>IBUITextField</string>
 			<string>IBUIView</string>
 		</array>
@@ -199,46 +198,13 @@
 						<reference key="IBUIFontDescription" ref="429045997"/>
 						<reference key="IBUIFont" ref="78825776"/>
 					</object>
-					<object class="IBUILabel" id="686982025">
-						<reference key="NSNextResponder" ref="743681201"/>
-						<int key="NSvFlags">1316</int>
-						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{166, 176}, {146, 21}}</string>
-						<reference key="NSSuperview" ref="743681201"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="610077119"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">4</int>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Forgot password ?</string>
-						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwLjI1MDk4MDQwNyAwLjUwMTk2MDgxNAA</bytes>
-						</object>
-						<nil key="IBUIHighlightedColor"/>
-						<int key="IBUIBaselineAdjustment">0</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription">
-							<string key="name">Helvetica-Bold</string>
-							<string key="family">Helvetica</string>
-							<int key="traits">2</int>
-							<double key="pointSize">16</double>
-						</object>
-						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">16</double>
-							<int key="NSfFlags">16</int>
-						</object>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-					</object>
 					<object class="IBUIImageView" id="255375898">
 						<reference key="NSNextResponder" ref="743681201"/>
 						<int key="NSvFlags">1316</int>
 						<string key="NSFrame">{{40, 0}, {240, 128}}</string>
 						<reference key="NSSuperview" ref="743681201"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="686982025"/>
+						<reference key="NSNextKeyView" ref="174000495"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="NSHuggingPriority">{251, 251}</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -260,6 +226,27 @@
 						<reference key="IBUINormalTitleColor" ref="332363510"/>
 						<reference key="IBUIHighlightedTitleColor" ref="1019306342"/>
 						<string key="IBUINormalTitle">Button</string>
+						<reference key="IBUINormalTitleShadowColor" ref="446369067"/>
+						<reference key="IBUIFontDescription" ref="429045997"/>
+						<reference key="IBUIFont" ref="78825776"/>
+					</object>
+					<object class="IBUIButton" id="174000495">
+						<reference key="NSNextResponder" ref="743681201"/>
+						<int key="NSvFlags">1316</int>
+						<string key="NSFrame">{{166, 176}, {146, 21}}</string>
+						<reference key="NSSuperview" ref="743681201"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="610077119"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MCAwIDAAA</bytes>
+						</object>
+						<string key="IBUINormalTitle">Forgot password ?</string>
 						<reference key="IBUINormalTitleShadowColor" ref="446369067"/>
 						<reference key="IBUIFontDescription" ref="429045997"/>
 						<reference key="IBUIFont" ref="78825776"/>
@@ -318,14 +305,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">linkForgotPassword</string>
-						<reference key="source" ref="1019410832"/>
-						<reference key="destination" ref="686982025"/>
-					</object>
-					<string key="id">60</string>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">txtEmail</string>
 						<reference key="source" ref="1019410832"/>
 						<reference key="destination" ref="581796609"/>
@@ -356,6 +335,14 @@
 					</object>
 					<string key="id">PJQ-89-Wcw</string>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btnForgotPassword</string>
+						<reference key="source" ref="1019410832"/>
+						<reference key="destination" ref="174000495"/>
+					</object>
+					<string key="id">tiG-k9-yk3</string>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -383,12 +370,12 @@
 							<reference ref="581796609"/>
 							<reference ref="108241193"/>
 							<reference ref="255375898"/>
-							<reference ref="686982025"/>
 							<reference ref="610077119"/>
 							<reference ref="633574213"/>
 							<reference ref="859979700"/>
 							<reference ref="433312664"/>
 							<reference ref="883086938"/>
+							<reference ref="174000495"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -423,11 +410,6 @@
 						<reference key="parent" ref="743681201"/>
 					</object>
 					<object class="IBObjectRecord">
-						<string key="id">53</string>
-						<reference key="object" ref="686982025"/>
-						<reference key="parent" ref="743681201"/>
-					</object>
-					<object class="IBObjectRecord">
 						<string key="id">JHs-is-vVY</string>
 						<reference key="object" ref="255375898"/>
 						<reference key="parent" ref="743681201"/>
@@ -435,6 +417,11 @@
 					<object class="IBObjectRecord">
 						<string key="id">Svn-Cp-asR</string>
 						<reference key="object" ref="883086938"/>
+						<reference key="parent" ref="743681201"/>
+					</object>
+					<object class="IBObjectRecord">
+						<string key="id">S0S-Wn-RWF</string>
+						<reference key="object" ref="174000495"/>
 						<reference key="parent" ref="743681201"/>
 					</object>
 				</array>
@@ -452,9 +439,6 @@
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<reference key="10.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="10.showNotes"/>
-				<string key="53.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<reference key="53.IBUserGuides" ref="0"/>
-				<boolean value="NO" key="53.showNotes"/>
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<reference key="57.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="57.showNotes"/>
@@ -471,6 +455,8 @@
 				<reference key="9.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="9.showNotes"/>
 				<string key="JHs-is-vVY.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="S0S-Wn-RWF.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<real value="0.0" key="S0S-Wn-RWF.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 				<string key="Svn-Cp-asR.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<reference key="Svn-Cp-asR.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="Svn-Cp-asR.showNotes"/>
@@ -487,17 +473,21 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="btnFbLogin">UIButton</string>
+						<string key="btnForgotPassword">UIButton</string>
 						<string key="btnServer">UIButton</string>
 						<string key="btnSignIn">UIButton</string>
 						<string key="btnSignUp">UIButton</string>
 						<string key="btnTwLogin">UIButton</string>
-						<string key="linkForgotPassword">UILabel</string>
 						<string key="txtEmail">UITextField</string>
 						<string key="txtPassword">UITextField</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="btnFbLogin">
 							<string key="name">btnFbLogin</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="btnForgotPassword">
+							<string key="name">btnForgotPassword</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="btnServer">
@@ -515,10 +505,6 @@
 						<object class="IBToOneOutletInfo" key="btnTwLogin">
 							<string key="name">btnTwLogin</string>
 							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="linkForgotPassword">
-							<string key="name">linkForgotPassword</string>
-							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="txtEmail">
 							<string key="name">txtEmail</string>

@@ -56,14 +56,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			//Localize.GetValue("SignInButton")
-			//Localize.GetValue("SignUpButton")      
+			Localize.GetValue ("SignInButton");
+			Localize.GetValue ("SignUpButton"); 
 
- 
             txtEmail.Placeholder = Localize.GetValue("EmailLabel");
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
 
- 
             txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
             txtEmail.ShouldReturn = delegate {                          
                 txtEmail.ResignFirstResponder ();
@@ -78,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 return true;
             };            
 
-
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             
 			if (settings.FacebookEnabled)
@@ -87,7 +84,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
-
 
             if (settings.TwitterEnabled)
 			{
@@ -100,10 +96,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
 			btnServer.Hidden = true;
 
- 
             this.AddBindings (new Dictionary<object, string> {
                 { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
-                { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
+				{ btnForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
                 { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
                 { txtEmail, "{'Text':{'Path':'Email'}}"},
                 { txtPassword, "{'Text':{'Path':'Password'}}"},

@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIButton btnFbLogin { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnForgotPassword { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnServer { get; set; }
 
 		[Outlet]
@@ -28,9 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIButton btnTwLogin { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel linkForgotPassword { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UITextField txtEmail { get; set; }
 
 		[Outlet]
@@ -38,6 +38,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnFbLogin != null) {
+				btnFbLogin.Dispose ();
+				btnFbLogin = null;
+			}
+
+			if (btnServer != null) {
+				btnServer.Dispose ();
+				btnServer = null;
+			}
+
+			if (btnSignIn != null) {
+				btnSignIn.Dispose ();
+				btnSignIn = null;
+			}
+
+			if (btnSignUp != null) {
+				btnSignUp.Dispose ();
+				btnSignUp = null;
+			}
+
+			if (btnTwLogin != null) {
+				btnTwLogin.Dispose ();
+				btnTwLogin = null;
+			}
+
+			if (btnForgotPassword != null) {
+				btnForgotPassword.Dispose ();
+				btnForgotPassword = null;
+			}
+
 			if (txtEmail != null) {
 				txtEmail.Dispose ();
 				txtEmail = null;
@@ -46,36 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtPassword != null) {
 				txtPassword.Dispose ();
 				txtPassword = null;
-			}
-
-			if (btnSignIn != null) {
-				btnSignIn.Dispose ();
-				btnSignIn = null;
-			}
-
-			if (linkForgotPassword != null) {
-				linkForgotPassword.Dispose ();
-				linkForgotPassword = null;
-			}
-
-			if (btnSignUp != null) {
-				btnSignUp.Dispose ();
-				btnSignUp = null;
-			}
-
-			if (btnFbLogin != null) {
-				btnFbLogin.Dispose ();
-				btnFbLogin = null;
-			}
-
-			if (btnTwLogin != null) {
-				btnTwLogin.Dispose ();
-				btnTwLogin = null;
-			}
-
-			if (btnServer != null) {
-				btnServer.Dispose ();
-				btnServer = null;
 			}
 		}
 	}
