@@ -84,12 +84,6 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
-    <Reference Include="Cirrious.MvvmCross.Android">
-      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Android">
-      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
