@@ -84,6 +84,12 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Android">
+      <HintPath>..\Libraries\Monodroid\Cirrious.MvvmCross.Binding.Android.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -120,42 +126,6 @@
     <Reference Include="Xamarin.Facebook">
       <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Serialization">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Xml.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.CrossCore.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.CrossCore">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Localization">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
@@ -176,6 +146,7 @@
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
@@ -190,6 +161,7 @@
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Controls\UnderlineTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
+    <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -362,7 +334,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_BookEditInformation_Thriev.axml">
-      <SubType>Designer</SubType>
+      <SubType>AndroidResource</SubType>
     </AndroidResource>
     <Compile Include="Activities\Book\BookEditInformationActivity.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
@@ -380,7 +352,6 @@
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
     <Compile Include="Services\Social\TwitterService.cs" />
-    <AndroidResource Include="Resources\Values\Themes.xml" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_selector.xml" />
@@ -397,16 +368,10 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
-    <Compile Include="Cache\CacheItem.cs" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
-    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
-    <Compile Include="BootstrapContent\VisibilityPluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Drawable\favorites.png" />
+    <AndroidResource Include="Resources\Drawable\history.png" />
+    <AndroidResource Include="Resources\Drawable\add_location.png" />
+    <AndroidResource Include="Resources\Values\Themes.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -614,9 +579,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="BootstrapContent\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
@@ -640,7 +603,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
-      <SubType>Designer</SubType>
+      <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
@@ -702,8 +665,5 @@
   <ItemGroup>
     <Folder Include="Localization\" />
     <Folder Include="Resources\Non-Utilise-Drawable\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

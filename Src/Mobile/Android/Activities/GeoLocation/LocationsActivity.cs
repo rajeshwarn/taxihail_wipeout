@@ -56,14 +56,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
                 ((MvxListView) _listView).Adapter = adapter;
                 _listView.Divider = null;
                 _listView.DividerHeight = 0;
-                _listView.SetPadding(10, 0, 10, 0);
+                _listView.SetPadding(0, 0, 0, 0);
             });
         }
 
         private void UpdateUi()
         {
             _listView = FindViewById<ListView>(Resource.Id.LocationListView);
-            _listView.CacheColorHint = Color.Transparent;
+			_listView.CacheColorHint = Color.White;
         }
 
         protected override void OnResume()

@@ -2,20 +2,35 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
-    <color name="main_background_color">#004785</color>	
+    <color name="main_background_color">#004785</color>		
+	
 	<color name="edit_text_background_color">#ffffff</color>
 	<color name="edit_text_foreground_color">#000000</color>
 	<color name="edit_text_border_color">#000000</color>				 
+	
 	<color name="button_border">#000000</color>
 	<color name="button_background_color">#004785</color>
 	<color name="button_pressed_background_color">#0469c2</color>
 	<color name="button_hili_background_color">#004f94</color>
-	<color name="listitem_text_line1_color">#565656</color>
-	<color name="listitem_text_line2_color">#323232</color>	
+	<color name="button_hili_pressed_background_color">#004f94</color>
+	
+	<color name="listitem_text_line1_color">#000000</color>
+	<color name="listitem_text_line2_color">#000000</color>	
+	<color name="listitem_behind_color">#f0f0f0</color>	
+	<color name="itemlist_cell_background_color">#ffffff</color>
+	<color name="itemlist_cell_border_color">#727272</color>
+	<color name="itemlist_cell_selected_semi_transparent_color">#dd727272</color>
+	
+	<color name="location_top_bar_color">#ffffff</color>	
+	<color name="location_top_bar_separator_color">#000000</color>	
+	
+	<color name="top_bar_title_color">#000000</color>	
 	
 	<!--- Dimensions -->
 	<dimen name="Height">44dip</dimen>
 	<dimen name="VerticalPadding">22dip</dimen>
+	<dimen name="DefaultFontSize">14dip</dimen>
+	<dimen name="top_bar_title_font_size">22dp</dimen>
 
 	<!--- Styles -->
 
@@ -41,7 +56,7 @@
         <item name="android:color">@color/edit_text_foreground_color</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">#FFFFFFFF</item>
-        <item name="android:textSize">18dip</item>
+        <item name="android:textSize">20dip</item>
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
