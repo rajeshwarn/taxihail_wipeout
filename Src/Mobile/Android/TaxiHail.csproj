@@ -352,7 +352,6 @@
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Services\Social\FacebookService.cs" />
     <Compile Include="Services\Social\TwitterService.cs" />
-    <AndroidResource Include="Resources\Values\Themes.xml" />
     <AndroidResource Include="Resources\Drawable\edit_text_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_selector.xml" />
@@ -369,6 +368,10 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\Drawable\favorites.png" />
+    <AndroidResource Include="Resources\Drawable\history.png" />
+    <AndroidResource Include="Resources\Drawable\add_location.png" />
+    <AndroidResource Include="Resources\Values\Themes.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

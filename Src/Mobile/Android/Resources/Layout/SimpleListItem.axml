@@ -5,7 +5,8 @@
     android:layout_width="fill_parent"
     android:layout_height="50dip"
     android:layout_weight="1"
+    android:layout_margin="0dp"
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="{&apos;TextLine1&apos;:{&apos;Path&apos;:&apos;DisplayLine1&apos;}, &apos;TextLine2&apos;:{&apos;Path&apos;:&apos;DisplayLine2&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowRightArrow&apos;: {&apos;Path&apos;: &apos;ShowRightArrow&apos;}, &apos;ShowPlusSign&apos;:{&apos;Path&apos;: &apos;ShowPlusSign&apos;}, &apos;Icon&apos;:{&apos;Path&apos;: &apos;Icon&apos;}}" />
+    local:MvxBind="{'TextLine1':{'Path':'DisplayLine1'}, 'TextLine2':{'Path':'DisplayLine2'}, 'IsTop':{'Path':'IsFirst'}, 'IsBottom':{'Path':'IsLast'}, 'ShowRightArrow': {'Path': 'ShowRightArrow'}, 'ShowPlusSign':{'Path': 'ShowPlusSign'}, 'Icon':{'Path': 'Icon'}}" />
