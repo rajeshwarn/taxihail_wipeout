@@ -76,13 +76,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             });
             NavigationItem.RightBarButtonItem = button;
 
-            this.AddBindings(new Dictionary<object, string> {
-                { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
-                { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},               
-                { btnPlaces, "{'TouchUpInside': {'Path': 'NavigateToPlaces'}}" },
-                { btnClear, "{'TouchUpInside': {'Path': 'DeleteAddressCommand'}}" },
-                { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
-            });
+            var set = this.CreateBindingSet<BookStreetNumberView, BookStreetNumberViewModel>();
+
+            set.Bind(txtStreetNumber)
+                .For(v => v.Text)
+                .To(vm => vm.StreetNumberOrBuildingName);
+
+            set.Bind(lblStreetName)
+                .For(v => v.Text)
+                .To(vm => vm.StreetCity);
+
+            set.Bind(btnPlaces)
+                .For("TouchUpInside")
+                .To(vm => vm.NavigateToPlaces);
+
+            set.Bind(btnClear)
+                .For("TouchUpInside")
+                .To(vm => vm.DeleteAddressCommand);
+
+            set.Bind(btnSearch)
+                .For("TouchUpInside")
+                .To(vm => vm.NavigateToSearch);
+
+            set.Apply();
             
             ViewModel.Load();
             View.ApplyAppFont ();
