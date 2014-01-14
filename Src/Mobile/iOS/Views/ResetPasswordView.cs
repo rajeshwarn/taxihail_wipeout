@@ -11,13 +11,10 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
     {
-        #region Constructors
-        
         public ResetPasswordView () 
             : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -33,10 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
         
-        #endregion
-
-		#region INavigationView implementation
-
 		public bool HideNavigationBar
 		{
 			get
@@ -44,9 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				return true;
 			}
 		}
-
-		#endregion
-
 
         public override void ViewDidLoad ()
         {

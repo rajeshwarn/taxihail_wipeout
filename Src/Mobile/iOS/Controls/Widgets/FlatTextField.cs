@@ -35,10 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		void Initialize ()
 		{
-			Height = 40;
-			Font = UIFont.SystemFontOfSize(34/2);
-			LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
-			LeftViewMode = UITextFieldViewMode.Always;
+			this.Height = 40;
+			this.Font = UIFont.SystemFontOfSize(34/2);
+			this.LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
+			this.LeftViewMode = UITextFieldViewMode.Always;
 		}
 
 		public float Height
@@ -49,25 +49,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public override void Draw (RectangleF rect)
 		{           
-			Frame = Frame.SetHeight(Height);
+			this.Frame = Frame.SetHeight(Height);
 
-			this.BackgroundColor = UIColor.Clear;
-
-			var context = UIGraphics.GetCurrentContext ();
 			var fillColor = this.State.HasFlag (UIControlState.Normal)
 			                ? UIColor.White 
 			                : UIColor.Clear;
 
-			var textColor = this.State.HasFlag (UIControlState.Selected)
-			                ? UIColor.LightGray.CGColor
-			                : UIColor.Black.CGColor;
-
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
-			DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor);
+			DrawBackground(UIGraphics.GetCurrentContext(), rect, roundedRectanglePath, fillColor.CGColor);
 			DrawStroke(fillColor.CGColor);
 
-			SetNeedsDisplay();
+			this.SetNeedsDisplay();
 		}
 
 		public override bool Enabled {
@@ -76,11 +69,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			set {
 				base.Enabled = value;
-				SetNeedsDisplay();
+				this.SetNeedsDisplay();
 			}
 		}
 
-		private void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
+		private void DrawBackground(CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
 		{
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
@@ -93,10 +86,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void DrawStroke(CGColor fillColor)
 		{
-			BorderStyle = UITextBorderStyle.None;
-			Layer.BorderWidth = 1.0f;
-			Layer.BorderColor = fillColor;
-			Layer.CornerRadius = _radiusCorner;
+			this.BorderStyle = UITextBorderStyle.None;
+			this.Layer.BorderWidth = 1.0f;
+			this.Layer.BorderColor = fillColor;
+			this.Layer.CornerRadius = _radiusCorner;
 		}
 	}
 }
