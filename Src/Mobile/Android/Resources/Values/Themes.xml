@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
     <!--- Colors -->
-    <color name="main_background_color">#004785</color>
-	
+    <color name="main_background_color">#004785</color>	
 	<color name="edit_text_background_color">#ffffff</color>
 	<color name="edit_text_foreground_color">#000000</color>
 	<color name="edit_text_border_color">#000000</color>				 
 	<color name="button_border">#000000</color>
 	<color name="button_background_color">#004785</color>
-	<color name="button_foreground_color">#FFFFFF</color>
 	<color name="button_pressed_background_color">#0469c2</color>
 	<color name="button_hili_background_color">#004f94</color>
-
-
+	<color name="listitem_text_line1_color">#565656</color>
+	<color name="listitem_text_line2_color">#323232</color>	
+	
 	<!--- Dimensions -->
 	<dimen name="Height">44dip</dimen>
-	<dimen name="VerticalPadding">15dip</dimen>
+	<dimen name="VerticalPadding">22dip</dimen>
 
 	<!--- Styles -->
 
@@ -40,11 +40,13 @@
         <item name="android:paddingRight">10dp</item>
         <item name="android:color">@color/edit_text_foreground_color</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textColor">@color/button_foreground_color</item>
+        <item name="android:textColor">#FFFFFFFF</item>
         <item name="android:textSize">18dip</item>
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_gravity">clip_vertical</item>
     </style>
 
     <!--- Button Hightlighted -->
