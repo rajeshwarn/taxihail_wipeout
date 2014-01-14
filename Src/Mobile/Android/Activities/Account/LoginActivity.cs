@@ -8,13 +8,10 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using Xamarin.FacebookBinding;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -23,16 +20,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         ScreenOrientation = ScreenOrientation.Portrait)]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-		private readonly IMessageService _messageService;
 		private readonly FacebookService _facebookService;
 		private UiLifecycleHelper _uiHelper;
 		public static LoginActivity TopInstance { get; private set;}
 		public LoginActivity ()
 		{
 			TopInstance = this;
-			this._messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
-			this._facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
-
+			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
 		protected override void OnCreate(Bundle bundle)
