@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -9,14 +11,15 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
+
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>
+    public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
     {
         #region Constructors
         
         public ResetPasswordView () 
-            : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
         
@@ -30,36 +33,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
         
-#endregion
+        #endregion
+
+        #region INavigationView implementation
+
+        public bool HideNavigationBar
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        #endregion
+		
+        public override void DidReceiveMemoryWarning ()
+        {
+            // Releases the view if it doesn't have a superview.
+            base.DidReceiveMemoryWarning ();			
+            // Release any cached data, images, etc that aren't in use.
+        }
 		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-			
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
-            lblEmail.Text = Localize.GetValue("CreateAccountEmail");
+			base.DismissKeyboardOnReturn(txtEmail);
 
-            DismissKeyboardOnReturn(txtEmail);
+			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
+			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");
+			txtEmail.Placeholder = Localize.GetValue("CreateAccountEmail");
+			btnReset.SetTitle(Localize.GetValue("ResetButton"), UIControlState.Normal);
+			btnCancel.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
 
-            var buttonsY = txtEmail.Frame.Y + txtEmail.Frame.Height + 25;
-            AddButton(scrollView, 60, buttonsY, Localize.GetValue("View_PasswordRecovery"), "ResetPassword", AppStyle.ButtonColor.Green);
-
-            this.AddBindings(new Dictionary<object, string>{
+			this.AddBindings(new Dictionary<object, string>{
                 { txtEmail, "{'Text': {'Path': 'Email', 'Mode': 'TwoWay' }}" },
+				{ btnReset, "{'TouchUpInside': {'Path' : 'ResetPassword'}}" },
+				{ btnCancel, "{'TouchUpInside': {'Path' : 'Cancel'}}" }
             });
-
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_PasswordRecovery_Label"), true);
-
-            View.ApplyAppFont ();
-
-        }
-        private void AddButton(UIView parent, float x, float y, string title, string command, AppStyle.ButtonColor bcolor)
-        {
-            var btn = AppButtons.CreateStandardButton(new RectangleF(x, y, 200, 40), title, bcolor);
-            btn.TextShadowColor = null;
-            parent.AddSubview(btn);
-            this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");              
         }
 
     }

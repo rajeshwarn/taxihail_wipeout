@@ -47,8 +47,25 @@ namespace apcurium.MK.Booking.Mobile.Client
         private bool _callbackFromFb;
         private bool _isStarting;
 
+
+		private void SetAppearance()
+		{
+
+			//set background for buttons
+			UIButton.Appearance.BackgroundColor = UIColor.FromRGB(0,71,148);
+			//set textcolor for button
+			UIButton.Appearance.SetTitleColor (UIColor.White, UIControlState.Normal);
+		
+		}
+
+
+
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
+
+			SetAppearance ();
+
+
             _isStarting = true;
             ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 

@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-                    validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelBoutton"], () => RequestClose(this));
+                    validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelButton"], () => RequestClose(this));
 			}
 		}
 

@@ -70,8 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications ();
 
-            Background.LoadForRegularView (View);
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
