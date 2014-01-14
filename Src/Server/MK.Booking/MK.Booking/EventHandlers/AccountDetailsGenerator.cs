@@ -85,7 +85,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = @event.Name,
                     Email = @event.Email,
                     Password = @event.Password,
-                    Phone = @event.Phone,
                     Id = @event.SourceId,
                     IBSAccountId = @event.IbsAcccountId,
                     FacebookId = @event.FacebookId,
@@ -107,7 +106,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Name = account.Name,
                     NumberOfTaxi = 1,
                     Passengers = nbPassenger,
-                    Phone = account.Phone
+                    Phone = @event.Phone,
                 };
 
                 context.Save(account);
