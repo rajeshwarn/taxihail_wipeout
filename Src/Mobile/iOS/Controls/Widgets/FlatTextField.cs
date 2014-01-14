@@ -33,7 +33,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			LeftViewMode = UITextFieldViewMode.Always;
 		}
 
-
 		public override void Draw (RectangleF rect)
 		{   
             var fillColor = State.HasFlag (UIControlState.Normal)
