@@ -72,7 +72,7 @@
       android:clickable="false"
       android:background="@drawable/transparentAllStates"
       local:MvxItemTemplate="@layout/simplelistitem"
-      local:MvxBind="ItemsSource AddressViewModels,ItemClick RowSelectedCommand"
+      local:MvxBind="ItemsSource AddressViewModels; ItemClick RowSelectedCommand"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp" />
   </RelativeLayout>

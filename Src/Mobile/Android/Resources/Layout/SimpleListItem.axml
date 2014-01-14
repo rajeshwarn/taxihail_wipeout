@@ -8,4 +8,4 @@
   android:paddingTop="5dip"
   android:paddingBottom="5dip"
   android:paddingLeft="15dip"
-  local:MvxBind="TextLine1 DisplayLine;TextLine2 DisplayLine2;IsTop IsFirst;IsBottom IsLast;ShowRightArrow ShowRightArrow;ShowPlusSign ShowPlusSign;Icon Icon" />
+  local:MvxBind="TextLine1 DisplayLine; TextLine2 DisplayLine2; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow; ShowPlusSign ShowPlusSign; Icon Icon" />

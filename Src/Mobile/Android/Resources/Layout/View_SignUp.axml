@@ -61,7 +61,7 @@
         <TableLayout
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          local:MvxBind="Visibility HasSocialInfo,Converter=InvertedVisibility"
+          local:MvxBind="Visibility HasSocialInfo, Converter=InvertedVisibility"
           android:stretchColumns="0,2">
           <TableRow>
             <LinearLayout

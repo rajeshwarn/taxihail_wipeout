@@ -8,4 +8,4 @@
   android:paddingTop="5dip"
   android:paddingBottom="5dip"
   android:paddingLeft="15dip"
-  local:MvxBind="TextLine1 Title,TextColorLine1 Status', 'Converter=OrderStatusToTextColorConverter'}, 'TextLine2 PickupAddress.DisplayAddress,IsTop IsFirst,IsBottom IsLast,ShowRightArrow ShowRightArrow" />
+  local:MvxBind="TextLine1 Title; TextColorLine1 Status, Converter=OrderStatusToTextColorConverter; TextLine2 PickupAddress.DisplayAddress; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow" />

@@ -103,7 +103,7 @@
           android:layout_height="40dip"
           android:layout_weight="0.33"
           android:text="@string/DeleteButton"
-          local:MvxBind="Click DeleteAddress,VisibilityIsNew,Converter=InvertedVisibility" />
+          local:MvxBind="Click DeleteAddress,VisibilityIsNew, Converter=InvertedVisibility" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Grey"
           android:id="@+id/LocationBookBtn"
@@ -113,7 +113,7 @@
           android:layout_height="40dip"
           android:layout_weight="0.33"
           android:text="@string/LocationDetailRebookButton"
-          local:MvxBind="Click RebookOrder,Visibility RebookIsAvailable,Converter=Visibility" />
+          local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
       </LinearLayout>
     </LinearLayout>
   </RelativeLayout>

@@ -14,6 +14,6 @@
       android:id="@+id/CreditCardsListView"
       android:layout_marginBottom="5dip"
       local:MvxItemTemplate="@layout/creditcardlistitem"
-      local:MvxBind="ItemsSource CreditCards;ItemClick NavigateToAddOrSelect" />
+      local:MvxBind="ItemsSource CreditCards; ItemClick NavigateToAddOrSelect" />
   </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

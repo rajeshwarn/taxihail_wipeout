@@ -17,6 +17,6 @@
       android:id="@+id/LocationListView"
       android:layout_marginBottom="5dip"
       local:MvxItemTemplate="@layout/simplelistitem"
-      local:MvxBind="ItemsSource AllAddresses,ItemClick NavigateToLocationDetailPage" />
+      local:MvxBind="ItemsSource AllAddresses; ItemClick NavigateToLocationDetailPage" />
   </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

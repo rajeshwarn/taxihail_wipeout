@@ -117,7 +117,7 @@
           android:layout_width="100dp"
           android:gravity="right"
           android:layout_height="wrap_content"
-          local:MvxBind="Visibility HideDestination', 'Converter=InvertedVisibility" />
+          local:MvxBind="Visibility HideDestination, Converter=InvertedVisibility" />
         <TextView
           android:id="@+id/DestinationTxt"
           style="@style/DetailText"
@@ -126,7 +126,7 @@
           android:paddingLeft="5dp"
           android:paddingRight="5dp"
           android:text="Destination Non specifie"
-          local:MvxBind="Text DestinationTxt,Visibility HideDestination, Converter=InvertedVisibility" />
+          local:MvxBind="Text DestinationTxt; Visibility HideDestination, Converter=InvertedVisibility" />
       </LinearLayout>
       <LinearLayout
         android:orientation="horizontal"
@@ -183,7 +183,7 @@
           android:layout_width="100dp"
           android:gravity="right"
           android:layout_height="wrap_content"
-          local:MvxBind="Visibility AuthorizationNumber,Converter=HasValueToVisibilityConverter" />
+          local:MvxBind="Visibility AuthorizationNumber, Converter=HasValueToVisibilityConverter" />
         <TextView
           android:id="@+id/AuthorizationTxt"
           style="@style/DetailText"
@@ -210,7 +210,7 @@
           android:paddingTop="5dip"
           android:paddingBottom="5dip"
           android:visibility="gone"
-          local:MvxBind="Enabled IsCompleted,Visibility RebookIsAvailable,Converter=Visibility,Click RebookOrder" />
+          local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Grey"
           android:id="@+id/StatusBtn"
@@ -220,7 +220,7 @@
           android:layout_width="fill_parent"
           android:layout_height="40dip"
           android:visibility="gone"
-          local:MvxBind="Enabled IsCompleted,Converter=BoolInverter;Visibility IsCompleted,Converter=InvertedVisibility;Click NavigateToOrderStatus" />
+          local:MvxBind="Enabled IsCompleted; Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click NavigateToOrderStatus" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Grey"
           android:id="@+id/RateBtn"
@@ -230,7 +230,7 @@
           android:layout_width="fill_parent"
           android:layout_height="40dip"
           android:visibility="gone"
-          local:MvxBind="Click NavigateToRatingPage,Enabled ShowRateButton;Visibility ShowRateButton,Converter=Visibility" />
+          local:MvxBind="Click NavigateToRatingPage; Enabled ShowRateButton; Visibility ShowRateButton, Converter=Visibility" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Grey"
           android:id="@+id/ViewRatingBtn"
@@ -240,7 +240,7 @@
           android:layout_width="fill_parent"
           android:layout_height="40dip"
           android:visibility="gone"
-          local:MvxBind="Click NavigateToRatingPage,Enabled HasRated;Visibility HasRated,Converter=Visibility" />
+          local:MvxBind="Click NavigateToRatingPage; Enabled HasRated; Visibility HasRated, Converter=Visibility" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Red"
           android:paddingTop="5dip"
@@ -252,7 +252,7 @@
           android:layout_width="fill_parent"
           android:layout_height="40dip"
           android:visibility="gone"
-          local:MvxBind="Enabled IsCompleted,Converter=BoolInverter;Visibility IsCompleted,Converter=InvertedVisibility;Click CancelOrder" />
+          local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click CancelOrder" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Grey"
           android:paddingTop="5dip"
@@ -264,7 +264,7 @@
           android:layout_width="fill_parent"
           android:layout_height="40dip"
           android:visibility="gone"
-          local:MvxBind="Enabled SendReceiptAvailable;Visibility SendReceiptAvailable,Converter=Visibility;Click SendReceipt" />
+          local:MvxBind="Enabled SendReceiptAvailable; Visibility SendReceiptAvailable, Converter=Visibility; Click SendReceipt" />
         <apcurium.mk.booking.mobile.client.controls.StyledButton
           local:ButtonStyle="Red"
           android:id="@+id/HistoryOrderDeleteBtn"
@@ -275,7 +275,7 @@
           android:layout_weight="0.33"
           android:text="@string/DeleteButton"
           android:visibility="gone"
-          local:MvxBind="Enabled IsCompleted;Visibility IsCompleted,Converter=Visibility;Click DeleteOrder" />
+          local:MvxBind="Enabled IsCompleted; Visibility IsCompleted, Converter=Visibility; Click DeleteOrder" />
       </LinearLayout>
     </LinearLayout>
   </RelativeLayout>

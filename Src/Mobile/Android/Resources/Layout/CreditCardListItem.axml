@@ -9,7 +9,7 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="TextLeft CreditCardDetails.FriendlyName;TextRight Last4DigitsWithStars;IsTop IsFirst;IsBottom IsLast;ShowAddSign ShowPlusSign;Picture Picture" />
+    local:MvxBind="TextLeft CreditCardDetails.FriendlyName; TextRight Last4DigitsWithStars; IsTop IsFirst; IsBottom IsLast ;ShowAddSign ShowPlusSign; Picture Picture" />
   <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -17,5 +17,5 @@
     android:layout_gravity="center_vertical|right"
     android:background="@drawable/delete_card_btn"
     android:focusable="false"
-    local:MvxBind="Visibility IsLast,Converter=InvertedVisibility,Click RemoveCreditCards" />
+    local:MvxBind="Visibility IsLast, Converter=InvertedVisibility; Click RemoveCreditCards" />
 </FrameLayout>

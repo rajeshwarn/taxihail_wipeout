@@ -26,7 +26,7 @@
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:orientation="vertical"
-        local:MvxBind="Visibility ShowPassengerName,Converter=Visibility">
+        local:MvxBind="Visibility ShowPassengerName, Converter=Visibility">
         <TextView
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            local:MvxBind="Visibility ShowPassengerPhone,Converter=Visibility">
+            local:MvxBind="Visibility ShowPassengerPhone, Converter=Visibility">
             <TextView
               android:layout_width="120dip"
               android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/passengerNumberInfoLayout"
-            local:MvxBind="Visibility ShowPassengerNumber,Converter=Visibility">
+            local:MvxBind="Visibility ShowPassengerNumber, Converter=Visibility">
             <TextView
               android:layout_width="120dip"
               android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
         android:paddingRight="5dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        local:MvxBind="Text VehicleName,Data Vehicles,SelectedItem VehicleTypeId" />
+        local:MvxBind="Text VehicleName; Data Vehicles; SelectedItem VehicleTypeId" />
       <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
         android:paddingRight="5dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        local:MvxBind="Text ChargeType,Data Payments,SelectedItem ChargeTypeId" />
+        local:MvxBind="Text ChargeType; Data Payments; SelectedItem ChargeTypeId" />
       <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">

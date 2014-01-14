@@ -36,7 +36,7 @@
           android:layout_width="fill_parent"
           android:layout_height="fill_parent"
           android:enabled="false"
-          local:MvxBind="Pickup Pickup.Model;TaxiLocation OrderStatusDetail;Center MapCenter"
+          local:MvxBind="Pickup Pickup.Model; TaxiLocation OrderStatusDetail; Center MapCenter"
           android:clickable="true" />
         <LinearLayout
           android:orientation="horizontal"
@@ -55,7 +55,7 @@
             android:layout_height="40dip"
             android:layout_weight="0.5"
             android:text="@string/StatusCancelButton"
-            local:MvxBind="Click CancelOrder;Visibility IsCancelButtonVisible,Converter=Visibility" />
+            local:MvxBind="Click CancelOrder; Visibility IsCancelButtonVisible, Converter=Visibility" />
           <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
             android:background="@drawable/green_button"
@@ -65,7 +65,7 @@
             android:layout_height="40dip"
             android:layout_weight="0.5"
             android:text="@string/StatusPayButton"
-            local:MvxBind="Click PayForOrderCommand;Visibility IsPayButtonVisible,Converter=Visibility" />
+            local:MvxBind="Click PayForOrderCommand; Visibility IsPayButtonVisible, Converter=Visibility" />
           <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
             android:background="@drawable/green_button"
@@ -75,7 +75,7 @@
             android:layout_height="40dip"
             android:layout_weight="0.5"
             android:text="@string/ReSendConfirmationButton"
-            local:MvxBind="Click ResendConfirmationToDriver;Visibility IsResendButtonVisible,Converter=Visibility" />
+            local:MvxBind="Click ResendConfirmationToDriver; Visibility IsResendButtonVisible, Converter=Visibility" />
           <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Red"
             android:background="@drawable/red_button"
@@ -85,7 +85,7 @@
             android:layout_height="40dip"
             android:layout_weight="0.5"
             android:text="@string/CmtRideLinqUnpair"
-            local:MvxBind="Click Unpair;Visibility IsUnpairButtonVisible,Converter=Visibility" />
+            local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
           <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Black"
             android:id="@+id/CallBtn"
@@ -95,7 +95,7 @@
             android:layout_height="40dip"
             android:layout_weight="0.5"
             android:text="@string/StatusCallButton"
-            local:MvxBind="Click CallCompany;Visibility IsCallButtonVisible,Converter=Visibility" />
+            local:MvxBind="Click CallCompany; Visibility IsCallButtonVisible, Converter=Visibility" />
         </LinearLayout>
       </FrameLayout>
       <apcurium.mk.booking.mobile.client.controls.SlidingPanel
@@ -161,11 +161,11 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/licenceLabel"
               android:layout_marginTop="2dip"
-              local:MvxBind="Visibility VehicleTypeHidden,Converter=InvertedVisibility" />
+              local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility" />
             <TextView
               android:id="@+id/taxiTypeValue"
               style="@style/BigTitleTextBlack"
-              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleType;Visibility VehicleTypeHidden,Converter=InvertedVisibility"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleType; Visibility VehicleTypeHidden, Converter=InvertedVisibility"
               android:gravity="center_vertical|left"
               android:layout_width="150dip"
               android:layout_height="wrap_content"
@@ -182,11 +182,11 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/taxiTypeLabel"
               android:layout_marginTop="2dip"
-              local:MvxBind="Visibility VehicleMakeHidden,Converter=InvertedVisibility" />
+              local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility" />
             <TextView
               android:id="@+id/makeValue"
               style="@style/BigTitleTextBlack"
-              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake;Visibility VehicleMakeHidden,Converter=InvertedVisibility"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleMake; Visibility VehicleMakeHidden, Converter=InvertedVisibility"
               android:gravity="center_vertical|left"
               android:layout_width="150dip"
               android:layout_height="wrap_content"
@@ -203,11 +203,11 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/makeLabel"
               android:layout_marginTop="2dip"
-              local:MvxBind="Visibility VehicleModelHidden,Converter=InvertedVisibility" />
+              local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility" />
             <TextView
               android:id="@+id/modelValue"
               style="@style/BigTitleTextBlack"
-              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel;Visibility VehicleModelHidden,Converter=InvertedVisibility"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleModel; Visibility VehicleModelHidden, Converter=InvertedVisibility"
               android:gravity="center_vertical|left"
               android:layout_width="150dip"
               android:layout_height="wrap_content"
@@ -224,11 +224,11 @@
               android:layout_height="wrap_content"
               android:layout_below="@id/modelLabel"
               android:layout_marginTop="2dip"
-              local:MvxBind="Visibility VehicleColorHidden,Converter=InvertedVisibility" />
+              local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility" />
             <TextView
               android:id="@+id/ColorValue"
               style="@style/BigTitleTextBlack"
-              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor;Visibility VehicleColorHidden,Converter=InvertedVisibility"
+              local:MvxBind="Text OrderStatusDetail.DriverInfos.VehicleColor; Visibility VehicleColorHidden, Converter=InvertedVisibility"
               android:gravity="center_vertical|left"
               android:layout_width="150dip"
               android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
               android:layout_marginRight="10dip"
               android:paddingRight="10dip">
               <ImageButton
-                local:MvxBind="Click CallTaxi;Visibility IsCallTaxiVisible,Converter=Visibility"
+                local:MvxBind="Click CallTaxi; Visibility IsCallTaxiVisible, Converter=Visibility"
                 android:src="@drawable/phone"
                 android:background="@drawable/gray_button"
                 style="@style/ButtonTextGray"
@@ -297,7 +297,7 @@
               android:layout_gravity="center_vertical|right"
               android:layout_height="wrap_content"
               android:layout_marginRight="10dip"
-              local:MvxBind="Visibility IsDriverInfoAvailable,Converter=Visibility" />
+              local:MvxBind="Visibility IsDriverInfoAvailable, Converter=Visibility" />
           </FrameLayout>
           <View
             android:layout_width="fill_parent"
