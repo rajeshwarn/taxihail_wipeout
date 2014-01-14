@@ -37,10 +37,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 				return BookRatingCell.LoadFromNib(tableView);
 			};
 					
-			this.AddBindings(new Dictionary<object, string> {
-				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}, 'Enabled': {'Path': 'CanSubmit'}}"},                
-				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
-			});
+            var set = this.CreateBindingSet<BookRatingView, BookRatingViewModel>();
+
+            set.Bind(submitRatingBtn)
+                .For("TouchUpInside")
+                .To(vm => vm.RateOrder);
+            set.Bind(submitRatingBtn)
+                .For(v => v.Hidden)
+                .To(vm => vm.CanRating)
+                .WithConversion("BoolInverter");
+            set.Bind(submitRatingBtn)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanSubmit);
+
+            set.Bind(source)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.RatingList);
+
+            set.Apply();
 
             ratingTableView.BackgroundColor = UIColor.Clear;
             ratingTableView.BackgroundView = new UIView();

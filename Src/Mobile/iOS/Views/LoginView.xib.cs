@@ -131,7 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (!UIHelper.Is4InchDisplay)
             {
-
                 btnSignUp.IncrementY(-25);
             }
 
