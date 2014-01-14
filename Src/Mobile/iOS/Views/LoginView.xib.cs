@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.FacebookEnabled)
 			{
                 AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
-				this.AddBindings(btnFbLogin, "TouchUpInside LoginFacebook");
+                this.Bind(btnFbLogin, "TouchUpInside LoginFacebook");
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.TwitterEnabled)
 			{
                 AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
-				this.AddBindings (btnTwLogin, "TouchUpInside LoginTwitter");
+				this.Bind(btnTwLogin, "TouchUpInside LoginTwitter");
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
@@ -103,15 +103,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
-            
-            
-            this.AddBindings (new Dictionary<object, string> {
-				{ btnSignIn, "TouchUpInside SignInCommand"}, 
-				{ linkForgotPassword, "TouchUpInside ResetPassword"}, 
-				{ btnSignUp, "TouchUpInside SignUp"},               
-				{ txtEmail, "Text Email"},
-				{ txtPassword, "Text Password"},
-            });
+
+            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+
+            set.Bind(btnSignIn)
+                .For("TouchUpInside")
+                .To(vm => vm.SignInCommand);
+
+            set.Bind(linkForgotPassword)
+                .For("TouchUpInside")
+                .To(vm => vm.ResetPassword);
+
+            set.Bind(btnSignUp)
+                .For("TouchUpInside")
+                .To(vm => vm.SignUp);
+
+            set.Bind(txtEmail)
+                .For(v=> v.Text)
+                .To(vm => vm.Email);
+
+            set.Bind(txtPassword)
+                .For(v=> v.Text)
+                .To(vm => vm.Password);
+
+            set.Apply();
 
 
             if (!UIHelper.Is4InchDisplay)

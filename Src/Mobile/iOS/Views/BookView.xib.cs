@@ -210,6 +210,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.Panel.MenuIsOpen)
                 .WithConversion("BoolInverter");
 
+            set.Apply();
 
             if (ViewModel.HideDestination)
             {
