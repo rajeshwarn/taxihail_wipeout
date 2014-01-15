@@ -10,8 +10,7 @@ namespace MK.DeploymentService.Mobile
 {
 	public class FileUploader
 	{   
-        private ILog logger = LogManager.GetLogger("DeploymentJobService");
-		private static Random random = new Random((int)DateTime.Now.Ticks);//thanks to McAden
+        private static Random random = new Random((int)DateTime.Now.Ticks);//thanks to McAden
 		private string RandomString(int size)
 		{
 			var builder = new StringBuilder();

@@ -4,15 +4,12 @@ using System.Linq;
 using System.Threading;
 using DeploymentServiceTools;
 using log4net;
-using MK.ConfigurationManager.Entities;
 using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Threading.Tasks;
@@ -23,7 +20,6 @@ namespace MK.DeploymentService.Mobile
 	{
 
 		private Timer _timer;
-		private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
 		private MonoBuilder _builder;
@@ -105,8 +101,8 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob ("FetchSource");
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));
 
-					UpdateJob ("Customize");
-					Customize (sourceDirectory, _job);
+					//UpdateJob ("Customize");
+					//Customize (sourceDirectory, _job);
 
 					UpdateJob ("Build");
 					BuildMobile (sourceDirectory);
@@ -223,8 +219,6 @@ namespace MK.DeploymentService.Mobile
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
-			var hg = new MecurialTools (HG_PATH, sourceDirectory);
-
 			if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore) {
 				string targetDirWithoutFileName = Path.Combine (System.Configuration.ConfigurationManager.AppSettings ["DeployDir"], 
 					company.CompanyKey,
@@ -367,8 +361,19 @@ namespace MK.DeploymentService.Mobile
 		private void BuildMobile (string sourceDirectory)
 		{			
 			//Build
-			_logger.DebugFormat ("Launch Customization");
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
+
+			_logger.DebugFormat ("Restore NuGet Packages");
+			var restoreProcess = ProcessEx.GetProcess ("mono", string.Format ("--runtime=v4.0 \"/Users/matthieugd/Library/Application Support/XamarinStudio-4.0/LocalInstall/Addins/MonoDevelop.PackageManagement.0.8/NuGet.exe\" restore \"{0}/TaxiHail.sln\"", 
+										sourceMobileFolder), sourceMobileFolder);
+
+			using (var exeProcess = Process.Start (restoreProcess)) {
+				var output = ProcessEx.GetOutput (exeProcess);
+				if (exeProcess.ExitCode > 0) {
+					throw new Exception ("Error during Restore NuGet Packages, " + output);
+				}
+				UpdateJob ("Restore NuGet Packages Successful");
+			}
 
 			_logger.DebugFormat ("Build Solution");
 
