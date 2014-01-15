@@ -1,7 +1,6 @@
 using System;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 
