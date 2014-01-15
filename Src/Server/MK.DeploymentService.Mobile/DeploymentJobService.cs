@@ -4,15 +4,12 @@ using System.Linq;
 using System.Threading;
 using DeploymentServiceTools;
 using log4net;
-using MK.ConfigurationManager.Entities;
 using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-
 using MK.DeploymentService.Service;
 using CustomerPortal.Web.Entities;
 using System.Threading.Tasks;
@@ -23,7 +20,6 @@ namespace MK.DeploymentService.Mobile
 	{
 
 		private Timer _timer;
-		private readonly Object _resourceLock = new System.Object ();
 		private readonly ILog _logger;
 		DeploymentJob _job;
 		private MonoBuilder _builder;
@@ -223,8 +219,6 @@ namespace MK.DeploymentService.Mobile
 
 		void Deploy (string sourceDirectory, Company company, string ipaAdHocPath, string ipaAppStorePath, string apkPath, string apkPathCallBox)
 		{
-			var hg = new MecurialTools (HG_PATH, sourceDirectory);
-
 			if (_job.Android || _job.CallBox || _job.IosAdhoc || _job.IosAppStore) {
 				string targetDirWithoutFileName = Path.Combine (System.Configuration.ConfigurationManager.AppSettings ["DeployDir"], 
 					company.CompanyKey,
@@ -233,7 +227,7 @@ namespace MK.DeploymentService.Mobile
 					Directory.CreateDirectory (targetDirWithoutFileName);
 				}
 
-				CopySettingsFileToOutputDir (GetSettingsFilePath (sourceDirectory, company.CompanyKey), Path.Combine (targetDirWithoutFileName, "Settings.txt"));
+				//CopySettingsFileToOutputDir (GetSettingsFilePath (sourceDirectory, company.CompanyKey), Path.Combine (targetDirWithoutFileName, "Settings.txt"));
 
 				if (_job.Android) {
 					_logger.DebugFormat ("Copying Apk");
@@ -367,8 +361,19 @@ namespace MK.DeploymentService.Mobile
 		private void BuildMobile (string sourceDirectory)
 		{			
 			//Build
-			_logger.DebugFormat ("Launch Customization");
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
+
+			_logger.DebugFormat ("Restore NuGet Packages");
+			var restoreProcess = ProcessEx.GetProcess ("mono", string.Format ("--runtime=v4.0 \"/Users/apcurium/Library/Application Support/XamarinStudio-4.0/LocalInstall/Addins/MonoDevelop.PackageManagement.0.8/NuGet.exe\" restore \"{0}/TaxiHail.sln\"", 
+										sourceMobileFolder), sourceMobileFolder);
+
+			using (var exeProcess = Process.Start (restoreProcess)) {
+				var output = ProcessEx.GetOutput (exeProcess);
+				if (exeProcess.ExitCode > 0) {
+					throw new Exception ("Error during Restore NuGet Packages, " + output);
+				}
+				UpdateJob ("Restore NuGet Packages Successful");
+			}
 
 			_logger.DebugFormat ("Build Solution");
 
@@ -403,20 +408,8 @@ namespace MK.DeploymentService.Mobile
 			if (!_job.Android && !_job.CallBox)
 				return;
 
-
-
 			const string configAndroid = "Release";
 			var projectLists = new List<string> {
-				"Android_System.Reactive.Interfaces", 
-				"Android_System.Reactive.Core", 
-				"Android_System.Reactive.PlatformServices", 
-				"Android_System.Reactive.Linq",
-				"PushSharp.Client.MonoForAndroid.Gcm",
-				"Newtonsoft.Json.MonoDroid", 
-				"Cirrious.MvvmCross.Android", 
-				"Cirrious.MvvmCross.Binding.Android", 
-				"Cirrious.MvvmCross.Android.Maps",
-				"BraintreeEncryption.Library.Android",
 				"MK.Common.Android",
 				"MK.Booking.Google.Android", 
 				"MK.Booking.Maps.Android", 
@@ -428,10 +421,9 @@ namespace MK.DeploymentService.Mobile
 			_builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
 			if (_job.Android) {
-				UpdateJob ("Building project");
+				UpdateJob ("Building project  Android");
 
-				var buildClient = string.Format ("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					"MK.Booking.Mobile.Client.Android",
+				var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
 					configAndroid,
 					sourceMobileFolder);
 				_builder.BuildProject (buildClient);

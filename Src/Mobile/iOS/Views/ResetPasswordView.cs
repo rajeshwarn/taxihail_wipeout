@@ -1,63 +1,56 @@
-using System.Collections.Generic;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>
-    {
-        public ResetPasswordView() 
-			: base("ResetPasswordView", null)
+	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
+    {    
+		public ResetPasswordView () : base("ResetPasswordView", null)
         {
         }
         
+		public bool HideNavigationBar
+		{
+			get
+			{
+				return true;
+			}
+		}
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-			
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
-            lblEmail.Text = Localize.GetValue("CreateAccountEmail");
+			FlatButtonStyle.Main.ApplyTo(btnReset); 
 
-            DismissKeyboardOnReturn(txtEmail);
+			DismissKeyboardOnReturn(txtEmail);
 
-            var buttonsY = txtEmail.Frame.Y + txtEmail.Frame.Height + 25;
-            AddButton(scrollView, 60, buttonsY, Localize.GetValue("View_PasswordRecovery"), "ResetPassword", AppStyle.ButtonColor.Green);
+			lblTitle.Text = Localize.GetValue ("LoginForgotPassword");
+			lblSubTitle.Text = Localize.GetValue ("LoginForgotPasswordDetail");
+			txtEmail.Placeholder = Localize.GetValue("CreateAccountEmail");
+			btnReset.SetTitle(Localize.GetValue("ResetButton"), UIControlState.Normal);
+			btnCancel.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
 
-			var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel> ();
+            var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel>();
 
-			set.Bind(txtEmail)
-				.For(v => v.Text)
-				.To(vm => vm.Email);
+            set.Bind(btnReset)
+                .For("TouchUpInside")
+                .To(x => x.ResetPassword);
 
-			set.Apply ();
+            set.Bind(btnCancel)
+                .For("TouchUpInside")
+                .To(x => x.CloseCommand);
 
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_PasswordRecovery_Label"), true);
+            set.Bind(txtEmail)
+                .For(v => v.Text)
+                .To(vm => vm.Email);
 
-            View.ApplyAppFont ();
-
+            set.Apply();
         }
-        private void AddButton(UIView parent, float x, float y, string title, string command, AppStyle.ButtonColor bcolor)
-        {
-            var btn = AppButtons.CreateStandardButton(new RectangleF(x, y, 200, 40), title, bcolor);
-            btn.TextShadowColor = null;
-            parent.AddSubview(btn);
-
-			var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel> ();
-
-			set.Bind(btn)
-				.For("TouchUpInside")
-				.To(command);    
-
-			set.Apply ();
-        }
-
     }
 }
 

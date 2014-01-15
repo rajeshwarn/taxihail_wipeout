@@ -16,12 +16,10 @@ namespace DeploymentServiceTools
 {
 	public class CustomerPortalRepository
     {
-		private readonly ILog _logger;
 		private HttpClient client;
 
 		public CustomerPortalRepository()
 		{
-			_logger = LogManager.GetLogger ("DeploymentJobService");
 
 			client = new HttpClient ();
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
