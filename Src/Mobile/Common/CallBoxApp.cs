@@ -1,15 +1,16 @@
-using TinyIoC;
-using TinyMessenger;
+using Cirrious.CrossCore;
+using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
+using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.IoC;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -66,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile
         private void InitialiseStartNavigation()
         {
 			Mvx.RegisterSingleton<IMvxAppStart>(new StartCallboxNavigation());
+        }
+
+        protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
+        {
+            return new ViewModelLocator(Mvx.Resolve<IAnalyticsService>());
         }
     }
 }

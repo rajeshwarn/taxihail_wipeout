@@ -293,6 +293,7 @@
     <Compile Include="IoC\TinyIoC.cs" />
     <Compile Include="IoC\TinyIoCProvider.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
+    <Compile Include="IoC\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
