@@ -16,8 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
     public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {
         private TinyMessageSubscriptionToken _closeViewToken;
-        private ListView _listView;
-
 
         protected override int ViewTitleResourceId
         {
@@ -28,14 +26,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
         {
             base.OnCreate(bundle);
 
-            _closeViewToken =
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
-            UpdateUi();
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
         }
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_LocationList);
+            var listView = FindViewById<ListView>(Resource.Id.LocationListView);
+            listView.CacheColorHint = Color.Transparent;
+            listView.Divider = null;
+            listView.DividerHeight = 0;
+            listView.SetPadding(10, 0, 10, 0);
         }
 
         protected override void OnDestroy()
@@ -47,29 +48,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
             }
         }
 
-        private void SetAdapter()
-        {
-            var adapter = new MvxAdapter(this);
-
-            RunOnUiThread(() =>
-            {
-                ((MvxListView) _listView).Adapter = adapter;
-                _listView.Divider = null;
-                _listView.DividerHeight = 0;
-                _listView.SetPadding(10, 0, 10, 0);
-            });
-        }
-
-        private void UpdateUi()
-        {
-            _listView = FindViewById<ListView>(Resource.Id.LocationListView);
-            _listView.CacheColorHint = Color.Transparent;
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-            SetAdapter();
-        }
     }
 }
