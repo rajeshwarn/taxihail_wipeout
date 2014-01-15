@@ -46,8 +46,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         private bool _callbackFromFb;
         private bool _isStarting;
 
+
+		private void SetAppearance()
+		{
+		
+		}
+
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
+
+			SetAppearance ();
+
+
             _isStarting = true;
             ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 

@@ -5,10 +5,11 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
+using MonoTouch.ObjCRuntime;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -18,21 +19,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
+		protected const float BottomPadding = 20f;
 
         #region Constructors
 
         public BaseViewController ()
         {
+			Initialize ();
         }
         
 		public BaseViewController(IntPtr handle) 
 			: base(handle)
         {
+			Initialize ();
         }
         
 		protected BaseViewController(string nibName, NSBundle bundle) 
             : base(nibName, bundle)
         {
+			Initialize ();
         }
         
 #endregion
@@ -42,6 +47,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			get
 			{
 				return (TViewModel)DataContext;
+			}
+		}
+
+		private void Initialize()
+		{
+			if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+			{
+				AutomaticallyAdjustsScrollViewInsets = false;
 			}
 		}
 
@@ -55,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ViewModel.Restart();
                 ViewModel.Start();
             }
-
         }
 
         public override void ViewWillDisappear (bool animated)
@@ -70,8 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications ();
 
-            Background.LoadForRegularView (View);
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
@@ -120,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (activeView == null)
                 return;
             
-            var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+			var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
                 return;
             
