@@ -272,7 +272,6 @@
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
     </Compile>
-    <Compile Include="AppContext.cs" />
     <Compile Include="Helper\DeviceHardware.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
@@ -774,6 +773,10 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+    <BundleResource Include="Assets\Social\TW\back.png" />
+    <BundleResource Include="Assets\Social\TW\back%402x.png" />
+    <BundleResource Include="Assets\Social\TW\forward.png" />
+    <BundleResource Include="Assets\Social\TW\forward%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

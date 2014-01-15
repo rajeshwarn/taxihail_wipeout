@@ -263,13 +263,11 @@
 "Notes"="Notes";
 "NotesToDriverHint"="Name of business, specific entrance";
 "CreateAccoutPhoneNumberLabel"="Mobile:";
-"DropoffWasActivatedToastMessage"="Destination selection is active.";
 "OrderNoteGPSApproximate"=" (approx. address)";
 "ConfirmButton"="Confirm";
 "SignInButton"="Sign In";
 "RideHistoryButton"="Ride History";
 "SendEmail"="Send mail...";
-"PickupWasActivatedToastMessage"="Pickup selection is active.";
 "InvalidLoginMessageTitle"="Login error";
 "View_About"="About Us";
 "NoConnectionTitle"="Connection error";

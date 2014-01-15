@@ -876,12 +876,6 @@
   <data name="BuildingName" xml:space="preserve">
     <value>Building Name / Remark</value>
   </data>
-  <data name="DropoffWasActivatedToastMessage" xml:space="preserve">
-    <value>Destination selection is active.</value>
-  </data>
-  <data name="PickupWasActivatedToastMessage" xml:space="preserve">
-    <value>Pickup selection is active.</value>
-  </data>
   <data name="InvalidLocalContactTitle" xml:space="preserve">
     <value>Invalid contact</value>
   </data>

@@ -268,13 +268,11 @@
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="Notes">Notes</string>
   <string name="CreateAccoutPhoneNumberLabel">Mobile:</string>
-  <string name="DropoffWasActivatedToastMessage">Destination selection is active.</string>
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="ConfirmButton">Confirm</string>
   <string name="SignInButton">Sign In</string>
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendEmail">Send mail...</string>
-  <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
   <string name="InvalidLoginMessageTitle">Login error</string>
   <string name="View_About">About Us</string>
   <string name="NoConnectionTitle">Connection error</string>

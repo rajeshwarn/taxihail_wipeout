@@ -106,9 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AuthorizeUrl = settings.TwitterAuthorizeUrl 
             };
 
-			var twitterService = new TwitterService(oauthConfig, ()=> {
-                return AppContext.Current.Controller; 
-            });
+            var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
             
 			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             

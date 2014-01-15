@@ -53,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Background.Load (window, "Assets/background_full_nologo.png", false);          
 
-            AppContext.Initialize (window);
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
                 var remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
@@ -127,10 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (!_callbackFromFb)
             {    
-
-				if( !_isStarting &&  AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+                var navController = Mvx.Resolve<UINavigationController>();
+                if( !_isStarting &&  navController != null && navController.TopViewController is BookView )
 				{
-					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+                    var model = ((BookView)navController.TopViewController).ViewModel;
                     model.Reset ();
                     if ( model.AddressSelectionMode != AddressSelectionMode.PickupSelection )
                     {
