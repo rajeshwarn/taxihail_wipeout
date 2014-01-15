@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        public virtual void Start(bool firstStart = false)
+        public virtual void Start(bool firstStart)
         {
         }
 

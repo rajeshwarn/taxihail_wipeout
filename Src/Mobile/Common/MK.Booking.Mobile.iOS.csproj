@@ -217,8 +217,6 @@
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
-    <Compile Include="ViewModels\RefineAddressViewModel.cs" />
-    <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />

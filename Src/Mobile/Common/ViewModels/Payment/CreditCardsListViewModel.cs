@@ -44,10 +44,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 
 
-		public void Init(string messageId)
+		public void Init()
         {
-			Init(messageId);
-
             LoadCreditCards();
         }
 
@@ -89,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Services().Localize["CancelBoutton"],
+                this.Services().Localize["CancelButton"],
                 () => { });
                                                                   
         }

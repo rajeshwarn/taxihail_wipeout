@@ -20,10 +20,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_palExpressCheckoutService = palExpressCheckoutService;
 		}
 
-		public void Init(string order, string orderStatus, string messageId, IPayPalExpressCheckoutService palExpressCheckoutService)
+		public void Init(string order, string orderStatus, IPayPalExpressCheckoutService palExpressCheckoutService)
         {
-			Init(messageId);
-
             this.Services().Config.GetPaymentSettings();
 
             Order = JsonSerializer.DeserializeFromString<Order>(order); 
@@ -36,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 TipPercent = account.DefaultTipPercent,
             };
 			PaymentPreferences = new PaymentDetailsViewModel();
-			PaymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
+			PaymentPreferences.Init(paymentInformation);
 
             PaymentSelectorToggleIsVisible = IsPayPalEnabled && IsCreditCardEnabled;
             PayPalSelected = !IsCreditCardEnabled;

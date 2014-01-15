@@ -9,6 +9,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
+using MonoTouch.ObjCRuntime;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -18,24 +20,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
+		protected const float BottomPadding = 20f;
 
         #region Constructors
 
         public BaseViewController ()
         {
+			Initialize ();
         }
         
 		public BaseViewController(IntPtr handle) 
 			: base(handle)
         {
+			Initialize ();
         }
         
 		protected BaseViewController(string nibName, NSBundle bundle) 
             : base(nibName, bundle)
         {
+			Initialize ();
         }
         
 #endregion
+
+		private void Initialize()
+		{
+			if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+			{
+				AutomaticallyAdjustsScrollViewInsets = false;
+			}
+		}
 
 		public new TViewModel ViewModel
 		{
@@ -53,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ViewModel.Start (firstStart: true);
             } else {
                 ViewModel.Restart();
-                ViewModel.Start();
+                ViewModel.Start(firstStart: false);
             }
 
         }

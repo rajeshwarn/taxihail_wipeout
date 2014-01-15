@@ -10,12 +10,10 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
+    public class PaymentDetailsViewModel: BaseViewModel
     {
-		public void Init(string messageId, PaymentInformation paymentDetails)
+		public void Init(PaymentInformation paymentDetails)
         {
-			Init(messageId);
-
 			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
 		
             LoadCreditCards();
