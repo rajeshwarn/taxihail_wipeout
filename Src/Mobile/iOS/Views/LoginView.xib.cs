@@ -1,116 +1,86 @@
 using System;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Touch.Views;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using TinyIoC;
-using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LoginView : MvxViewController, INavigationView
+	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
     {
-		public LoginView () 
-			: base("LoginView", null)
+		public LoginView () : base("LoginView", null)
         {
-
         }
-
-		public new LoginViewModel ViewModel
-		{
-			get
-			{
-				return (LoginViewModel)DataContext;
-			}
-		}
-
-
-        #region INavigationView implementation
 
         public bool HideNavigationBar {
             get { return true;}
         }
 
-        #endregion
-
-
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-             
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
 
-            AppButtons.FormatStandardButton(btnSignIn, Localize.GetValue("SignInButton"), AppStyle.ButtonColor.Black);
-            AppButtons.FormatStandardButton(btnSignUp, Localize.GetValue("SignUpButton"), AppStyle.ButtonColor.Grey);          
+			txtEmail.Placeholder = Localize.GetValue("EmailLabel");
+			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
 
-            ((TextField)txtEmail).PaddingLeft = 5;
-            ((TextField)txtEmail).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
-            ((TextField)txtEmail).FieldHeight = 48;
-            ((TextField)txtPassword).FieldHeight = 48;
+			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
+			txtEmail.ShouldReturn = delegate {                          
+				txtEmail.ResignFirstResponder ();
+				return true;
+			};
 
-            txtEmail.Placeholder = Localize.GetValue("EmailLabel");
-            txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-            txtEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
-            txtEmail.AutocorrectionType = UITextAutocorrectionType.No;
-            txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtEmail.ShouldReturn = delegate {                          
-                txtEmail.ResignFirstResponder ();
-                return true;
-            };
+			txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
+			txtPassword.SecureTextEntry = true;
+			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
+			txtPassword.ShouldReturn = delegate {                          
+				txtPassword.ResignFirstResponder ();
+				return true;
+			};  
 
-            ((TextField)txtPassword).PaddingLeft = 5;
-            ((TextField)txtPassword).StrokeColor = UIColor.FromRGBA (7, 34, 57, 255);
+			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
+			FlatButtonStyle.Main.ApplyTo (btnSignIn);
 
-            txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
-            txtPassword.SecureTextEntry = true;
-            txtPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtPassword.ShouldReturn = delegate {                          
-                txtPassword.ResignFirstResponder ();
-                return true;
-            };            
-
+			btnSignIn.SetTitle (Localize.GetValue ("SignInButton"), UIControlState.Normal);
+			btnSignUp.SetTitle (Localize.GetValue ("SignUpButton"), UIControlState.Normal);
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            if (settings.FacebookEnabled)
+
+            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+
+			if (settings.FacebookEnabled)
 			{
-                AppButtons.FormatStandardButton(btnFbLogin, Localize.GetValue("FacebookButton"), AppStyle.ButtonColor.Grey, "Assets/Social/FB/fbIcon.png");               
-                this.AddBindings(btnFbLogin, "TouchUpInside LoginFacebook");
+				btnFbLogin.SetLeftImage("facebook_icon.png");
+				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);
+                set.Bind(btnFbLogin)
+                    .For("TouchUpInside")
+                    .To(vm => vm.LoginFacebook);
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
-
             if (settings.TwitterEnabled)
 			{
-                AppButtons.FormatStandardButton(btnTwLogin, Localize.GetValue("TwitterButton"), AppStyle.ButtonColor.Grey, "Assets/Social/TW/twIcon.png");
-                this.AddBindings(btnTwLogin, "TouchUpInside LoginTwitter");
+				btnTwLogin.SetLeftImage("twitter_icon.png");
+				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
+                set.Bind(btnTwLogin)
+                    .For("TouchUpInside")
+                    .To(vm => vm.LoginTwitter);
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-            if (settings.CanChangeServiceUrl)
-			{
-                AppButtons.FormatStandardButton (btnServer, "Change Server", AppStyle.ButtonColor.Grey, "Assets/server.png");
-                btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            }
-            btnServer.Hidden = !settings.CanChangeServiceUrl;
-
-            linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
-
-            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+			btnServer.SetLeftImage("server.png");
+			btnServer.SetTitle (Localize.GetValue ("Change Server"), UIControlState.Normal);
+            btnServer.TouchUpInside += ChangeServerTouchUpInside;
+			btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
                 .To(vm => vm.SignInCommand);
 
-            set.Bind(linkForgotPassword)
+            set.Bind(btnForgotPassword)
                 .For("TouchUpInside")
                 .To(vm => vm.ResetPassword);
 
@@ -119,24 +89,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.SignUp);
 
             set.Bind(txtEmail)
-                .For(v=> v.Text)
+                .For(v => v.Text)
                 .To(vm => vm.Email);
 
             set.Bind(txtPassword)
-                .For(v=> v.Text)
+                .For(v => v.Text)
                 .To(vm => vm.Password);
 
             set.Apply();
 
+			// adjust contentview height
+			if (!btnServer.Hidden)
+				constraintContentViewHeight.Constant = btnServer.Frame.Bottom + BottomPadding;
+			else if (!btnTwLogin.Hidden)
+				constraintContentViewHeight.Constant = btnTwLogin.Frame.Bottom + BottomPadding;
+			else if (!btnFbLogin.Hidden)
+				constraintContentViewHeight.Constant = btnFbLogin.Frame.Bottom + BottomPadding;
+			else
+				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding;
 
-            if (!UIHelper.Is4InchDisplay)
-            {
-                btnSignUp.IncrementY(-25);
-            }
-
-            ViewModel.Load ();
-            View.ApplyAppFont();           
-
+            ViewModel.Load ();      
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)
@@ -158,7 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
             popup.Show ();
         }
-		
     }
 }
 
