@@ -227,7 +227,7 @@ namespace MK.DeploymentService.Mobile
 					Directory.CreateDirectory (targetDirWithoutFileName);
 				}
 
-				CopySettingsFileToOutputDir (GetSettingsFilePath (sourceDirectory, company.CompanyKey), Path.Combine (targetDirWithoutFileName, "Settings.txt"));
+				//CopySettingsFileToOutputDir (GetSettingsFilePath (sourceDirectory, company.CompanyKey), Path.Combine (targetDirWithoutFileName, "Settings.txt"));
 
 				if (_job.Android) {
 					_logger.DebugFormat ("Copying Apk");
