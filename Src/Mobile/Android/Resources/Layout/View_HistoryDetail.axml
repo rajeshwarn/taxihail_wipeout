@@ -34,7 +34,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailConfirmationLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -56,7 +56,7 @@
             android:paddingTop="10dip"
             android:paddingBottom="5dip">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailRequestedLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -78,7 +78,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailOriginLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -100,7 +100,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailAptRingCodeLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -122,7 +122,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/DestinationViewDestinationLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -145,7 +145,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailPickupDateLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -167,7 +167,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailStatusLabel"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
             android:paddingTop="10dip"
             android:paddingBottom="15dip">
             <TextView
-                style="@style/SimpleText"
+                style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailAuthorizationLabel"
                 android:layout_width="100dp"
                 android:gravity="right"
@@ -210,78 +210,61 @@
             android:layout_height="wrap_content"
             android:paddingLeft="20dip"
             android:paddingRight="20dip">
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
+            <Button
                 local:ButtonStyle="Green"
+                style="@style/ButtonNoBgGreenStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"                    
                 android:id="@+id/RebookTripBtn"
-                android:background="@drawable/green_button"
-                style="@style/ButtonText"
                 android:text="@string/HistoryDetailRebookButton"
-                android:layout_height="40dip"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
                 android:visibility="gone"
                 local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
-                android:id="@+id/StatusBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/gray_button"
-                android:text="@string/HistoryViewStatusButton"
+            <Button
+                style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
+                android:layout_height="@dimen/HeightButton"                    
+                android:id="@+id/StatusBtn"
+                android:text="@string/HistoryViewStatusButton"
                 android:visibility="gone"
                 local:MvxBind="Enabled IsCompleted; Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click NavigateToOrderStatus" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
-                android:id="@+id/RateBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/gray_button"
-                android:text="@string/RateBtn"
+            <Button
+                style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
+                android:layout_height="@dimen/HeightButton"                                    
+                android:id="@+id/RateBtn"
+                android:text="@string/RateBtn"
                 android:visibility="gone"
                 local:MvxBind="Click NavigateToRatingPage; Enabled ShowRateButton; Visibility ShowRateButton, Converter=Visibility" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
-                android:id="@+id/ViewRatingBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/gray_button"
-                android:text="@string/ViewRatingBtn"
+            <Button
+                style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
+                android:layout_height="@dimen/HeightButton"                    
+                android:id="@+id/ViewRatingBtn"
+                android:text="@string/ViewRatingBtn"
                 android:visibility="gone"
                 local:MvxBind="Click NavigateToRatingPage; Enabled HasRated; Visibility HasRated, Converter=Visibility" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Red"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                android:id="@+id/CancelTripBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/red_button"
-                android:text="@string/StatusActionCancelButton"
+            <Button
+                style="@style/ButtonNoBgRedStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
+                android:layout_height="@dimen/HeightButton"                    
+                android:id="@+id/CancelTripBtn"
+                android:text="@string/StatusActionCancelButton"
                 android:visibility="gone"
                 local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click CancelOrder" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Grey"
-                android:paddingTop="5dip"
-                android:paddingBottom="5dip"
-                android:id="@+id/SendReceiptBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/gray_button"
-                android:text="@string/HistoryDetailSendReceiptButton"
+            <Button
+                style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="40dip"
+                android:layout_height="@dimen/HeightButton"                    
+                android:id="@+id/SendReceiptBtn"
+                android:text="@string/HistoryDetailSendReceiptButton"
                 android:visibility="gone"
                 local:MvxBind="Enabled SendReceiptAvailable; Visibility SendReceiptAvailable, Converter=Visibility; Click SendReceipt" />
-            <apcurium.mk.booking.mobile.client.controls.StyledButton
-                local:ButtonStyle="Red"
+            <Button
+                style="@style/ButtonNoBgRedStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"                    
                 android:id="@+id/HistoryOrderDeleteBtn"
                 style="@style/ButtonText"
-                android:background="@drawable/red_button"
-                android:layout_width="fill_parent"
-                android:layout_height="40dip"
                 android:layout_weight="0.33"
                 android:text="@string/DeleteButton"
                 android:visibility="gone"
