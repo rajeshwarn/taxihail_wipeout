@@ -258,6 +258,9 @@
   <data name="PickupTimeTextPlaceholder" xml:space="preserve">
     <value>Time: Now</value>
   </data>
+  <data name="dummyaaa" xml:space="preserve">
+    <value>xaaa</value>
+  </data>
   <data name="BookDestinationLabel" xml:space="preserve">
     <value>Enter your destination</value>
   </data>
@@ -951,12 +954,6 @@
   <data name="View_LocationList" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_PasswordRecovery" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
-  <data name="View_PasswordRecovery_Label" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
   <data name="View_SignUp" xml:space="preserve">
     <value>Create Account</value>
   </data>
@@ -1043,6 +1040,12 @@
   </data>
   <data name="View_UpdatePassword" xml:space="preserve">
     <value>Update Password</value>
+  </data>
+  <data name="View_PasswordRecoveryReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ResetPasswordLabel" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="NbPassenger" xml:space="preserve">
     <value> ({0} passenger)</value>

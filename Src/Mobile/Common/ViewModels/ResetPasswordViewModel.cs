@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			
 		}
+        
 
 		private bool IsEmail(string inputEmail)
 		{
