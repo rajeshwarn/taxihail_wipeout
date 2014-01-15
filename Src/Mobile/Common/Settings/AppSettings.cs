@@ -4,19 +4,18 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.IO;
 using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
         readonly AppSettingsData _data;
-		readonly IConfigurationManager _configurationManager;
 		readonly ICacheService _cacheService;
 
-		public AppSettings (IConfigurationManager configurationManager, ICacheService cacheService)
+		public AppSettings (ICacheService cacheService)
         {
 			_cacheService = cacheService;
-			_configurationManager = configurationManager;
             
 			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
@@ -62,7 +61,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
             set {
                 if (CanChangeServiceUrl) {
-					_configurationManager.Reset ();
+
+					// TODO: AppSettings should not depend on Configuration Manager
+					Mvx.Resolve<IConfigurationManager>().Reset ();
 
                     if (string.IsNullOrEmpty (value)) {
 						_cacheService.Clear ("TaxiHail.ServiceUrl");
