@@ -162,14 +162,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand ResetPassword
         {
+            //get
+            //{
+            //    return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email => {
+            //                                                                                                  if(email.HasValue())
+            //                                                                                                  {
+            //                                                                                                      Email = email;
+            //                                                                                                  }
+            //    }));
+            //}
+
             get
             {
-				return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email => {
-                                                                                                              if(email.HasValue())
-                                                                                                              {
-                                                                                                                  Email = email;
-                                                                                                              }
-                }));
+                return GetCommand(() => ShowViewModel<ResetPasswordViewModel>());
             }
         }
 

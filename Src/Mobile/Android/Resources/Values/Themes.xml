@@ -8,15 +8,33 @@
 	<color name="edit_text_foreground_color">#000000</color>
 	<color name="edit_text_border_color">#000000</color>				 
 	
-	<color name="button_border">#000000</color>
+	<color name="button_border_color">#000000</color>
 	<color name="button_background_color">#004785</color>
 	<color name="button_pressed_background_color">#0469c2</color>
-	<color name="button_hili_background_color">#004f94</color>
-	<color name="button_hili_pressed_background_color">#004f94</color>
-	
-	<color name="listitem_text_line1_color">#000000</color>
-	<color name="listitem_text_line2_color">#000000</color>	
-	<color name="listitem_behind_color">#f0f0f0</color>	
+
+  <color name="button_main_background_color">#004f94</color>
+	<color name="button_main_pressed_background_color">#004f94</color>
+
+  <color name="button_green_border_color">#1fbf21</color>
+  <color name="button_red_border_color">#ff0000</color>
+  <color name="button_gray_border_color">#707070</color><!-- temp color -->
+  <color name="button_black_border_color">#000000</color>
+  
+  <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
+
+  <color name="button_subview_color">#000000</color>
+  <color name="button_background_color">#004785</color>
+  <color name="button_pressed_background_color">#0469c2</color>
+
+  <color name="button_border_color">#000000</color>
+  <color name="button_background_color">#004785</color>
+  <color name="button_pressed_background_color">#0469c2</color>
+
+  <color name="subview_background_color">#f0f0f0</color>
+  <color name="subview_label_color">#f0f0f0</color>
+
+  <color name="listitem_text_line1_color">#000000</color>
+	<color name="listitem_text_line2_color">#000000</color>		
 	<color name="itemlist_cell_background_color">#ffffff</color>
 	<color name="itemlist_cell_border_color">#727272</color>
 	<color name="itemlist_cell_selected_semi_transparent_color">#dd727272</color>
@@ -27,7 +45,9 @@
 	<color name="top_bar_title_color">#000000</color>	
 	
 	<!--- Dimensions -->
-	<dimen name="Height">44dip</dimen>
+  <dimen name="Height">41dip</dimen>
+  <dimen name="HeightButton">41dip</dimen>
+  <dimen name="HeightEditText">40dip</dimen>
 	<dimen name="VerticalPadding">22dip</dimen>
 	<dimen name="DefaultFontSize">14dip</dimen>
 	<dimen name="top_bar_title_font_size">22dp</dimen>
@@ -64,12 +84,29 @@
         <item name="android:layout_gravity">clip_vertical</item>
     </style>
 
-    <!--- Button Hightlighted -->
-    <style name="ButtonHiliStyle" parent="@style/custom_ButtonStyle">
-    	<item name="android:background">@drawable/button_hili_selector</item>
+    <!--- Buttons  -->
+    <style name="ButtonMainStyle" parent="@style/custom_ButtonStyle">
+    	<item name="android:background">@drawable/button_main_selector</item>
     </style>
 
-    <!--- Custom Theme Design -->
+    <style name="ButtonNoBgGreenStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_nobg_green_selector</item>
+    </style>
+
+    <style name="ButtonNoBgRedStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_nobg_red_selector</item>
+    </style>
+
+    <style name="ButtonNoBgGrayStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_nobg_gray_selector</item>
+    </style>
+
+    <style name="ButtonNoBgBlackStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_nobg_black_selector</item>
+    </style>
+
+
+  <!--- Custom Theme Design -->
 
     <style name="CustomTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowBackground">@color/main_background_color</item>
