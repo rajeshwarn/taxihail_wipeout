@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
 using System.Text;
 using System.Threading.Tasks;
 using CustomerPortal.Web.Entities;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Formatting;
-
-
 
 namespace MK.DeploymentService.Service
 {
@@ -19,14 +16,7 @@ namespace MK.DeploymentService.Service
 
         public DeploymentJob GetNext()
         {
-
             var url = GetUrl();
-
-
-
-
-
-
             using (var client = new HttpClient(new HttpClientHandler{ Credentials = new NetworkCredential("taxihail@apcurium.com", "apcurium5200!")}))
             {
                 client.BaseAddress = new Uri(url);          
@@ -41,21 +31,14 @@ namespace MK.DeploymentService.Service
                 {
                     return null;
                 }
-
-            }
-            
+            }            
         }
-
-
-
 
         private static string GetUrl()
         {
 			var url = System.Configuration.ConfigurationManager.AppSettings["CustomerPortalUrl"];
-
 			return url;
         }
-
 
         public void UpdateStatus(string jobId, string details, JobStatus? status = null)
         {
@@ -75,12 +58,8 @@ namespace MK.DeploymentService.Service
 				var result = client.PostAsync("deployments/" + jobId + "/updatedetails", content).Result;
                 result.ToString();
 
-
             }
-
         }
-
-
 
     }
 }

@@ -63,16 +63,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DeploymentJobService.cs" />
     <Compile Include="PetaPoco.cs" />
-    <Compile Include="..\MK.ConfigurationManager\Entities\KeyAttribute.cs">
-      <Link>FakeAttributes\KeyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\MK.ConfigurationManager\Entities\NotMappedAttribute.cs">
-      <Link>FakeAttributes\NotMappedAttribute.cs</Link>
-    </Compile>
     <Compile Include="FileUploader.cs" />
-    <Compile Include="..\MK.ConfigurationManager\Entities\AppVersion.cs">
-      <Link>Entities\AppVersion.cs</Link>
-    </Compile>
     <Compile Include="..\MK.DeploymentService\WebEntities\AppStatus.cs">
       <Link>WebEntities\AppStatus.cs</Link>
     </Compile>
@@ -134,5 +125,7 @@
     <Folder Include="Services\" />
     <Folder Include="WebEntities\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Entities\" />
+    <Folder Include="FakeAttributes\" />
   </ItemGroup>
 </Project>
