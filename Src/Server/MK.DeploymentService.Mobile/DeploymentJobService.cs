@@ -101,8 +101,8 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob ("FetchSource");
 					taxiRepo.FetchSource (_job.Revision.Commit, str => UpdateJob (str));
 
-					//UpdateJob ("Customize");
-					//Customize (sourceDirectory, _job);
+					UpdateJob ("Customize");
+					Customize (sourceDirectory, _job);
 
 					UpdateJob ("Build");
 					BuildMobile (sourceDirectory);
