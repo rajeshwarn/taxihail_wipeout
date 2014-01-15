@@ -17,8 +17,6 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	//TODO: [MvvmCRoss v3] Required? 
-	[MvxViewFor(typeof(BookConfirmationViewModel))]
 	public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
         public ConfirmationView () 

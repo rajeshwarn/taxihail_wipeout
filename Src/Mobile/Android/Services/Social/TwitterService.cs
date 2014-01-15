@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Android.App;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using Android.Content;
+using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 {
@@ -11,9 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Services.Social
 		Activity _parent;
 		const string KEY = "twitter-session";
 
-		public TwitterServiceMonoDroid (OAuthConfig oauthConfig, Activity parent) : base(oauthConfig)
+        public TwitterServiceMonoDroid (OAuthConfig oauthConfig, IMvxAndroidCurrentTopActivity topActivity) : base(oauthConfig)
 		{
-			_parent = parent;
+            _parent = topActivity.Activity;
 			LoadCredentials();
 		}
 

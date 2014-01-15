@@ -12,8 +12,6 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	//TODO: [MvvmCross v3] NoHistory attribute not defined
-    //[NoHistory]
     public partial class BookStreetNumberView : MvxViewController
     {
         public BookStreetNumberView() 

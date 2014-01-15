@@ -436,14 +436,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.PickupSelection;
 
-                        if (AddressSelectionMode == AddressSelectionMode.PickupSelection 
-							/* TODO: IsVisible does not existsin v3 
-							 * http://stackoverflow.com/questions/16299639/detecting-whether-a-viewmodels-associated-view-is-showing-not-showing
-							 * && IsVisible
-							 */)
-                        {
-                            this.Services().Message.ShowToast(this.Services().Localize["PickupWasActivatedToastMessage"], ToastDuration.Long);
-                        }
 						RaisePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
                     }));
@@ -463,14 +455,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.DropoffSelection;
 
-                        if (AddressSelectionMode == AddressSelectionMode.DropoffSelection 
-							/* TODO: IsVisible does not exist in v3
-							 * http://stackoverflow.com/questions/16299639/detecting-whether-a-viewmodels-associated-view-is-showing-not-showing
-							 * && IsVisible
-							 */)
-                        {
-                            this.Services().Message.ShowToast(this.Services().Localize["DropoffWasActivatedToastMessage"], ToastDuration.Long);
-                        }
 						RaisePropertyChanged(() => SelectedAddress);
                         CenterMap(false);
                     }));

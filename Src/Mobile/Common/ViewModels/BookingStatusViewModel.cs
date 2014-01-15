@@ -398,7 +398,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 			this.Services().Booking.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
-							// TODO: [MvvmCross v3] ClearTop parameter was removed here
                         ShowViewModel<BookViewModel>();
 						Close(this);
                     }));
@@ -440,8 +439,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-					//TODO: [MvvmCross v3] ClearTop parameter was removed here
-                    ShowViewModel<BookViewModel> ();
+                    	ShowViewModel<BookViewModel> ();
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -471,8 +469,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-								//TODO: [MvvmCross v3] ClearTop parameter was removed here
-                                ShowViewModel<BookViewModel> ();
+									ShowViewModel<BookViewModel> ();
                                 } 
                                 else 
                                 {

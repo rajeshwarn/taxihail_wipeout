@@ -9,7 +9,6 @@ using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -19,14 +18,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService
     {
-        IConfigurationManager _configurationManager;
+		readonly IConfigurationManager _configurationManager;
+		readonly ICacheService _cache;
+		readonly IPackageInfo _packageInfo;
+
         string _baseUrl;
         string _sessionId;
-        ICacheService _cache;
         private const string PayedCacheSuffix = "_Payed";
 
-        public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache)
+		public PaymentService(string url, string sessionId, IConfigurationManager configurationManager, ICacheService cache, IPackageInfo  packageInfo)
         {
+			_packageInfo = packageInfo;
             _baseUrl = url;
             _sessionId = sessionId;
             _cache = cache;
@@ -58,11 +60,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             switch (settings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
-                    return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
+					return new BraintreeServiceClient(_baseUrl, _sessionId, settings.BraintreeClientSettings.ClientKey, _packageInfo.UserAgent);
 
                 case PaymentMethod.RideLinqCmt:
                 case PaymentMethod.Cmt:
-                    return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, TinyIoCContainer.Current.Resolve<IPackageInfo>().UserAgent);
+					return new CmtPaymentClient(_baseUrl, _sessionId, settings.CmtPaymentSettings, _packageInfo.UserAgent);
 
                 case PaymentMethod.Fake:
                     return new FakePaymentClient();

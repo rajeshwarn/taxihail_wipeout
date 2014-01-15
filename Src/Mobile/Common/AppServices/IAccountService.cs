@@ -11,8 +11,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        bool CheckSession();
-        
         void UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
         
         Account GetAccount(string email, string password);

@@ -248,6 +248,12 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -272,7 +278,6 @@
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
     </Compile>
-    <Compile Include="AppContext.cs" />
     <Compile Include="Helper\DeviceHardware.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
@@ -503,6 +508,7 @@
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -735,6 +741,10 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
+    <BundleResource Include="Assets\Social\TW\back.png" />
+    <BundleResource Include="Assets\Social\TW\back%402x.png" />
+    <BundleResource Include="Assets\Social\TW\forward.png" />
+    <BundleResource Include="Assets\Social\TW\forward%402x.png" />
     <BundleResource Include="Resources\th-logo.png" />
     <BundleResource Include="Resources\th-logo%402x.png" />
     <BundleResource Include="Assets\Social\FB\facebook-icon.png" />

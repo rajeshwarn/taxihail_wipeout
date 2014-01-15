@@ -3,13 +3,20 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Data;
 using System.IO;
 using ServiceStack.Text;
-using TinyIoC;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class TutorialService : ITutorialService
     {
+		readonly IConfigurationManager _configurationManager;
+
+		public TutorialService(IConfigurationManager configurationManager)
+		{
+			_configurationManager = configurationManager;
+        	
+		}
+
         private TutorialContent _content;
         public TutorialContent Content 
 		{
@@ -28,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return Content.Items.OrderBy ( i=>i.Position ).ToArray ();
         }
 
-        private static TutorialContent LoadTutorialContent ()
+        private TutorialContent LoadTutorialContent ()
         {
             TutorialContent result = null;
             string resourceName = "";
@@ -49,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     }
             }
 
-            var disabledSlidesString = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.DisabledTutorialSlides");
+			var disabledSlidesString = _configurationManager.GetSetting("Client.DisabledTutorialSlides");
 			if (!string.IsNullOrWhiteSpace(disabledSlidesString))
 			{
 				var disabledSlides = disabledSlidesString

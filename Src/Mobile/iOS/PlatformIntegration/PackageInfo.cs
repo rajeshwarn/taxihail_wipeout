@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 if ( _userAgent == null )
                 {
                     _userAgent = "";
+                    //TODO: This will probably not work on the first call;
 					TinyIoCContainer.Current.Resolve<IMvxMainThreadDispatcher>().RequestMainThreadAction(() =>
                     {
                         try
