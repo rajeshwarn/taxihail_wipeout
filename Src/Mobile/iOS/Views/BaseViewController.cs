@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (activeView == null)
                 return;
             
-            var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+			var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
                 return;
             
