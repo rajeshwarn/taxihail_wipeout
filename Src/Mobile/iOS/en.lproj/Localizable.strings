@@ -1,6 +1,6 @@
 "EstimateDistance"=" ({0})";
 "CreateAccoutCancel"="Cancel";
-"SignUpButton"="Create a free account";
+"SignUpButton"="Register";
 "ResetPasswordPlaceholder"="Enter your email here";
 "BookDropoffLocationButtonTitle"="Destination";
 "ConfirmPhoneLabel"="Mobile:";
@@ -468,3 +468,9 @@
 "CmtRideLinqGenericErrorMessage"="There was an error during pairing, verify your credit card information or try again later.";
 "CmtRideLinqUnpairErrorMessage"="There was an error during unpairing, please try again later.";
 "CmtRideLinqErrorTitle"="Error";
+"LoginForgotPassword"="Forgot your password?";
+"LoginForgotPasswordDetail"="Enter your email and we'll send you a new one.";
+"ResetButton"="Reset";
+"CancelButton"="Cancel";
+"View_PasswordRecoveryReset"="Reset";
+"dummyaaa"="xaaa";

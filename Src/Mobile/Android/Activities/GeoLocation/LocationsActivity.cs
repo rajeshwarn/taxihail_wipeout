@@ -11,7 +11,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
-    [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "Locations",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {
@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
         {
             SetContentView(Resource.Layout.View_LocationList);
             var listView = FindViewById<ListView>(Resource.Id.LocationListView);
-            listView.CacheColorHint = Color.Transparent;
+            listView.CacheColorHint = Color.White;
             listView.Divider = null;
             listView.DividerHeight = 0;
-            listView.SetPadding(10, 0, 10, 0);
+            listView.SetPadding(0, 0, 0, 0);
         }
 
         protected override void OnDestroy()

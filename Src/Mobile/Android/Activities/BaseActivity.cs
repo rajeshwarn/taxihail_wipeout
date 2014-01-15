@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         where TViewModel : BaseViewModel, IMvxViewModel
     {
         private bool _firstStart = true;
-        protected abstract int ViewTitleResourceId { get; }
+		protected abstract int ViewTitleResourceId { get; }
 
 		public new TViewModel ViewModel
 		{
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnResume();
 
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-            if (txt != null) txt.Text = GetString(ViewTitleResourceId);
+			if (txt != null) txt.Text = GetString(ViewTitleResourceId);
         }
 
         protected override void OnStart()
