@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using MonoTouch.ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -31,19 +32,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public BaseViewController () 
             : base(new MvxShowViewModelRequest<TViewModel>( null, true, new MvxRequestedBy()   ) )
         {
+			Init ();
         }
         
         public BaseViewController(MvxShowViewModelRequest request) 
             : base(request)
         {
+			Init ();
         }
         
         public BaseViewController(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
+			Init ();
         }
         
 #endregion
+
+		private void Init()
+		{
+			if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+			{
+				AutomaticallyAdjustsScrollViewInsets = false;
+			}
+		}
 
         public override void ViewWillAppear (bool animated)
         {

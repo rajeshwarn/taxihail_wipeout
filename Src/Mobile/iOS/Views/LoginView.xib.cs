@@ -25,19 +25,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public LoginView () 
             : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new MvxRequestedBy()   ) )
         {
-            
         }
         
         public LoginView (MvxShowViewModelRequest request) 
             : base(request)
         {
-            
         }
         
         public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
-
         }
 
 
@@ -54,29 +51,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
+			txtEmail.Placeholder = Localize.GetValue("EmailLabel");
+			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
 
-			FlatButtonStyle.Clear.ApplyTo(btnForgotPassword);
+			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
+			txtEmail.ShouldReturn = delegate {                          
+				txtEmail.ResignFirstResponder ();
+				return true;
+			};
+
+			txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
+			txtPassword.SecureTextEntry = true;
+			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
+			txtPassword.ShouldReturn = delegate {                          
+				txtPassword.ResignFirstResponder ();
+				return true;
+			};  
+
+			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
 			FlatButtonStyle.Main.ApplyTo (btnSignIn);
 
-			Localize.GetValue ("SignInButton");
-			Localize.GetValue ("SignUpButton"); 
-
-            txtEmail.Placeholder = Localize.GetValue("EmailLabel");
-            txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-
-            txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtEmail.ShouldReturn = delegate {                          
-                txtEmail.ResignFirstResponder ();
-                return true;
-            };
-
-            txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
-            txtPassword.SecureTextEntry = true;
-            txtPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtPassword.ShouldReturn = delegate {                          
-                txtPassword.ResignFirstResponder ();
-                return true;
-            };            
+			btnSignIn.SetTitle (Localize.GetValue ("SignInButton"), UIControlState.Normal);
+			btnSignUp.SetTitle (Localize.GetValue ("SignUpButton"), UIControlState.Normal);
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             
@@ -109,8 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
 		
-            ViewModel.Load ();
-            View.ApplyAppFont();           
+            ViewModel.Load ();      
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)
