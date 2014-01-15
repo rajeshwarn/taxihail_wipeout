@@ -214,7 +214,7 @@
                 local:ButtonStyle="Green"
                 style="@style/ButtonNoBgGreenStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/RebookTripBtn"
                 android:text="@string/HistoryDetailRebookButton"
                 android:visibility="gone"
@@ -222,7 +222,7 @@
             <Button
                 style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/StatusBtn"
                 android:text="@string/HistoryViewStatusButton"
                 android:visibility="gone"
@@ -230,7 +230,7 @@
             <Button
                 style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/RateBtn"
                 android:text="@string/RateBtn"
                 android:visibility="gone"
@@ -238,7 +238,7 @@
             <Button
                 style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/ViewRatingBtn"
                 android:text="@string/ViewRatingBtn"
                 android:visibility="gone"
@@ -246,7 +246,7 @@
             <Button
                 style="@style/ButtonNoBgRedStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/CancelTripBtn"
                 android:text="@string/StatusActionCancelButton"
                 android:visibility="gone"
@@ -254,7 +254,7 @@
             <Button
                 style="@style/ButtonNoBgGrayStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/SendReceiptBtn"
                 android:text="@string/HistoryDetailSendReceiptButton"
                 android:visibility="gone"
@@ -262,9 +262,8 @@
             <Button
                 style="@style/ButtonNoBgRedStyle"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"                    
+                android:layout_height="@dimen/HeightButton"
                 android:id="@+id/HistoryOrderDeleteBtn"
-                style="@style/ButtonText"
                 android:layout_weight="0.33"
                 android:text="@string/DeleteButton"
                 android:visibility="gone"
