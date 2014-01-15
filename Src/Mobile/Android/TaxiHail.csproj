@@ -280,7 +280,6 @@
     <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
     <Compile Include="Controls\SearchButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
@@ -391,9 +390,7 @@
     <AndroidResource Include="Resources\Drawable\button_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_pressed.xml" />
     <AndroidResource Include="Resources\Drawable\logo3.png" />
-    <AndroidResource Include="Resources\Drawable\button_hili_rounded.xml" />
-    <AndroidResource Include="Resources\Drawable\button_hili_selector.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\logo3.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\th_logo.png" />
     <AndroidResource Include="Resources\Drawable\target_selected.png" />
     <Compile Include="Localization\Localize.cs" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
@@ -406,7 +403,9 @@
     <AndroidResource Include="Resources\Drawable\history.png" />
     <AndroidResource Include="Resources\drawable-hdpi\history.png" />
     <AndroidResource Include="Resources\Drawable\add_location.png" />
-    <AndroidResource Include="Resources\Values\Themes.xml" />
+    <AndroidResource Include="Resources\Values\Themes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -498,16 +497,11 @@
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
-    <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\email_cell.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\password_cell.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\Drawable\newBlackButton.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
       <SubType>Designer</SubType>
       <DependentUpon>cell_middle_state.xml</DependentUpon>
@@ -605,6 +599,15 @@
     <AndroidResource Include="Resources\drawable-ldpi\splash.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
+    <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
+    <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_nobg_black_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_nobg_gray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_nobg_green_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_nobg_red_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_location.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\favorites.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,7 +26,7 @@
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
-                android:layout_height="50dip"
+                android:layout_height="52dip"
                 android:gravity="center" />
         </LinearLayout>
         <LinearLayout

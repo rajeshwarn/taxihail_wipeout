@@ -194,7 +194,7 @@
   </style>
   <style name="TopTitleText">
     <item name="android:textSize">@dimen/top_bar_title_font_size</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textColor">@color/top_bar_title_color</item>
   </style>
   <style name="SimpleText" >
