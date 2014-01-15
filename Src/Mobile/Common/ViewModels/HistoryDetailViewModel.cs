@@ -334,8 +334,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-						// TODO: Clear top parameter has been removed when migrating to MvvMCRoss v3
-						// Find out if it was necessary
                     ShowViewModel<BookViewModel>(new { order = serialized });
                 });
             }

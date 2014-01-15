@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile
 
             container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 
-            container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
+			container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
             
             container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().ServiceUrl, GetSessionId(c), c.Resolve<IPackageInfo>().UserAgent));
 

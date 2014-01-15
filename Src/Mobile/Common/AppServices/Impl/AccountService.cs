@@ -8,6 +8,7 @@ using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using Cirrious.CrossCore;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -20,7 +21,6 @@ using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Net;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
@@ -32,10 +32,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string FavoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
-        protected IConfigurationManager Config
-        {
-            get { return TinyIoCContainer.Current.Resolve < IConfigurationManager>(); }
-        }
+
+		readonly IConfigurationManager _configurationManager;
+		readonly IAppSettings _appSettings;
+		readonly IFacebookService _facebookService;
+		readonly ITwitterService _twitterService;
+		readonly IMessageService _messageService;
+		readonly ILocalization _localize;
+
+		public AccountService(IConfigurationManager configurationManager,
+			IAppSettings appSettings,
+			IFacebookService facebookService,
+			ITwitterService twitterService,
+			IMessageService messageService,
+			ILocalization localize)
+		{
+			_localize = localize;
+			_messageService = messageService;
+			_twitterService = twitterService;
+			_facebookService = facebookService;
+			_appSettings = appSettings;
+			_configurationManager = configurationManager;
+
+		}
 	
         [Obsolete("User async method instead")]
         public ReferenceData GetReferenceData()
@@ -46,10 +65,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var referenceData = GetReferenceDataAsync();
                 referenceData.Start();
-//                if (!referenceData.IsCompleted)
-//                {
-//                    Task.WaitAll(referenceData);
-//                }
+
                 return referenceData.Result;
             }
             return cached;
@@ -82,37 +98,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearCache ()
         {
-            var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
+			var serverUrl = _appSettings.ServiceUrl;
+
             Cache.Clear (HistoryAddressesCacheKey);
             Cache.Clear (FavoriteAddressesCacheKey);
             Cache.Clear ("AuthenticationData");
             Cache.ClearAll ();
-            TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
+			// TODO: Clearing the cache should not clear ServiceUrl
+			_appSettings.ServiceUrl = serverUrl; 
         }
 
         public void SignOut ()
         {
             try
 			{
-                var facebook = TinyIoCContainer.Current.Resolve<IFacebookService> ();
-                facebook.Disconnect ();
+				_facebookService.Disconnect ();
             } 
 			catch( Exception ex )
             {
-                Console.WriteLine(ex.Message);
+				Logger.LogError(ex);
             }
 
             try
 			{
-                var twitterService = TinyIoCContainer.Current.Resolve<ITwitterService> ();
-                if (twitterService.IsConnected)
+				if (_twitterService.IsConnected)
 				{
-                    twitterService.Disconnect ();
+					_twitterService.Disconnect ();
                 }
             } 
             catch( Exception ex )
             {
-                Console.WriteLine(ex.Message);
+				Logger.LogError(ex);
             }
 
             ClearCache ();
@@ -144,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<IList<Order>> GetHistoryOrders ()
         {
-            var client = TinyIoCContainer.Current.Resolve<OrderServiceClient>();
+			var client = Mvx.Resolve<OrderServiceClient>();
             return client.GetOrders();
         }
 
@@ -240,19 +256,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }                
             }
         }
-
-        public bool CheckSession ()
-        {
-            try {
-                var client = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
-                client.CheckSession ();
-
-                return true;
-
-            } catch {
-                return false;
-            }
-        }
+		
         public void UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
         {
             var bsr = new BookingSettingsRequest
@@ -294,10 +298,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return GetAccount (true);
             } catch (Exception ex) {
 				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
-                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionTitle"];
-                    var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionMessage"];
-                    var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
-                    mService.ShowMessage (title, msg);
+					var title = _localize["NoConnectionTitle"];
+					var msg = _localize["NoConnectionMessage"];
+					_messageService.ShowMessage (title, msg);
 					return null;
 				}
 				throw;
@@ -306,13 +309,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private static void SaveCredentials (AuthenticationData authResponse)
         {         
-            TinyIoCContainer.Current.Resolve < ICacheService>().Set ("AuthenticationData", authResponse);
+			Mvx.Resolve<ICacheService>().Set ("AuthenticationData", authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
         {
             try {
-                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
+				var auth = Mvx.Resolve<IAuthServiceClient> ();
 				var authResponse = auth
 					.AuthenticateFacebook(facebookId)
 					.ConfigureAwait(false);
@@ -356,13 +359,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 
             } catch (WebException ex) {
-                TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+				Mvx.Resolve<IErrorHandler>().HandleError (ex);
                 return null;
 			} catch{
                 if (showInvalidMessage) {
-                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessageTitle"];
-                    var message = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessage"];
-                    TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);
+					var title = _localize["InvalidLoginMessageTitle"];
+					var message = _localize["InvalidLoginMessage"];
+					_messageService.ShowMessage (title, message);
                 }
 
                 return null;
@@ -396,7 +399,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError;
 
             data.AccountId = Guid.NewGuid();
-            data.Language = TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"];
+			data.Language = _localize["LanguageCode"];
 
             try {
                 lError = UseServiceClient<IAccountServiceClient> (service =>
@@ -476,13 +479,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetCompaniesList ()
         {
             var refData = GetReferenceData();
-            if (!Config.GetSetting("Client.HideNoPreference", false)
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.CompaniesList != null)
             {
                 refData.CompaniesList.Insert(0, new ListItem
                                             {
                     Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
+						Display = _localize["NoPreference"]
                 });
             }
             
@@ -493,13 +496,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var refData = GetReferenceData();
 
-            if (!Config.GetSetting("Client.HideNoPreference", false)
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.VehiclesList != null)
             {
                 refData.VehiclesList.Insert(0, new ListItem
                                          {
                                             Id = null,
-                                            Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
+						Display = _localize["NoPreference"]
                                          });
             }
 
@@ -510,13 +513,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var refData = GetReferenceData();
 		
-		    if (!Config.GetSetting("Client.HideNoPreference", false)
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
                 refData.PaymentsList.Insert(0, new ListItem
                 {
                     Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
+						Display = _localize["NoPreference"]
                 });
             }
 
@@ -567,9 +570,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return true;
 
         }
-
-
-
     }
 }
 

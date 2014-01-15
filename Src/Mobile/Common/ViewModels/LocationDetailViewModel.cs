@@ -207,7 +207,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                 var account = this.Services().Account.CurrentAccount;
 	                 order.Settings = account.Settings;
 	                 var serialized = JsonSerializer.SerializeToString(order);
-							// TODO: [MvvmCroos v3] ClearTop parameter was removed here
 					 ShowViewModel<BookViewModel>(new { order = serialized });
 				});
 			}
