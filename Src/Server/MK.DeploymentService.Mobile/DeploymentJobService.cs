@@ -364,7 +364,7 @@ namespace MK.DeploymentService.Mobile
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
 
 			_logger.DebugFormat ("Restore NuGet Packages");
-			var restoreProcess = ProcessEx.GetProcess ("mono", string.Format ("--runtime=v4.0 \"/Users/matthieugd/Library/Application Support/XamarinStudio-4.0/LocalInstall/Addins/MonoDevelop.PackageManagement.0.8/NuGet.exe\" restore \"{0}/TaxiHail.sln\"", 
+			var restoreProcess = ProcessEx.GetProcess ("mono", string.Format ("--runtime=v4.0 \"/Users/apcurium/Library/Application Support/XamarinStudio-4.0/LocalInstall/Addins/MonoDevelop.PackageManagement.0.8/NuGet.exe\" restore \"{0}/TaxiHail.sln\"", 
 										sourceMobileFolder), sourceMobileFolder);
 
 			using (var exeProcess = Process.Start (restoreProcess)) {
