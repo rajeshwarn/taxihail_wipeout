@@ -23,10 +23,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
 		private readonly FacebookService _facebookService;
 		private UiLifecycleHelper _uiHelper;
-		public static LoginActivity TopInstance { get; private set;}
 		public LoginActivity ()
 		{
-			TopInstance = this;
 			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 

@@ -248,6 +248,12 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -502,6 +508,7 @@
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

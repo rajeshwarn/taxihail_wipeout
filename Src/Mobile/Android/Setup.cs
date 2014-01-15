@@ -24,6 +24,7 @@ using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -83,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
-			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
+            var facebookService = new FacebookService(settings.FacebookAppId, () => TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
 			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
 
 			var oauthConfig = new OAuthConfig
@@ -96,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				AuthorizeUrl = settings.TwitterAuthorizeUrl
 			};
 
-			TinyIoCContainer.Current.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
+            TinyIoCContainer.Current.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>()));
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
