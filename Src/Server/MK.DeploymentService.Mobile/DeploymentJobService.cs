@@ -408,20 +408,8 @@ namespace MK.DeploymentService.Mobile
 			if (!_job.Android && !_job.CallBox)
 				return;
 
-
-
 			const string configAndroid = "Release";
 			var projectLists = new List<string> {
-				"Android_System.Reactive.Interfaces", 
-				"Android_System.Reactive.Core", 
-				"Android_System.Reactive.PlatformServices", 
-				"Android_System.Reactive.Linq",
-				"PushSharp.Client.MonoForAndroid.Gcm",
-				"Newtonsoft.Json.MonoDroid", 
-				"Cirrious.MvvmCross.Android", 
-				"Cirrious.MvvmCross.Binding.Android", 
-				"Cirrious.MvvmCross.Android.Maps",
-				"BraintreeEncryption.Library.Android",
 				"MK.Common.Android",
 				"MK.Booking.Google.Android", 
 				"MK.Booking.Maps.Android", 
@@ -433,10 +421,9 @@ namespace MK.DeploymentService.Mobile
 			_builder.BuildAndroidProject (projectLists, configAndroid, string.Format ("{0}/MK.Booking.Mobile.Solution.Android.sln", sourceMobileFolder));
 
 			if (_job.Android) {
-				UpdateJob ("Building project");
+				UpdateJob ("Building project  Android");
 
-				var buildClient = string.Format ("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-					"MK.Booking.Mobile.Client.Android",
+				var buildClient = string.Format ("build \"--project:TaxiHail\" \"--configuration:{0}\" \"--target:SignAndroidPackage\"  \"{1}/MK.Booking.Mobile.Solution.Android.sln\"",
 					configAndroid,
 					sourceMobileFolder);
 				_builder.BuildProject (buildClient);
