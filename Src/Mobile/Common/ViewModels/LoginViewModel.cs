@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 serialized = registerDataFromSocial.ToJson();
             }
-			ShowSubViewModel<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
+			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
         }
 
         void OnAccountCreated(RegisterAccount data)
