@@ -29,7 +29,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 		{
 			Intent emailIntent = new Intent(Intent.ActionSend);
 
-			var resource = TinyIoC.TinyIoCContainer.Current.Resolve<IAppResource>();
+			var resource = TinyIoC.TinyIoCContainer.Current.Resolve<ILocalization>();
 			
 			emailIntent.SetType("message/rfc822");
 			emailIntent.PutExtra(Intent.ExtraEmail, new String[] { supportEmail });
@@ -42,14 +42,14 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			}
 			try
 			{
-				var intent = Intent.CreateChooser(emailIntent, resource.GetString("SendEmail"));                    
+				var intent = Intent.CreateChooser(emailIntent, resource["SendEmail"]);                    
 				intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 				Context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();
 			}
 			catch
 			{
-				Toast.MakeText(Context, resource.GetString("NoMailClient"), ToastLength.Short).Show();
+				Toast.MakeText(Context, resource["NoMailClient"], ToastLength.Short).Show();
 			}
 		}
 

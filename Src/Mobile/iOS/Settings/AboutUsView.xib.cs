@@ -1,32 +1,26 @@
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MonoTouch.Foundation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Touch.Views;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class AboutUsView : MvxBindingTouchViewController<AboutUsViewModel> 
-	{
-		#region Constructors
+	public partial class AboutUsView : MvxViewController
+	{   
+        public AboutUsView (string nibName, NSBundle bundle) 
+			: base("AboutUsView", null)
+        {
+        }
 
-		// The IntPtr and initWithCoder constructors are required for items that need 
-		// to be able to be created from a xib rather than from managed code
-
-        public AboutUsView () 
-            : base(new MvxShowViewModelRequest<AboutUsViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-        
-        public AboutUsView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public AboutUsView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-        }
+		public new AboutUsViewModel ViewModel
+		{
+			get
+			{
+				return (AboutUsViewModel)DataContext;
+			}
+		}
 		
 		public override void ViewDidLoad ()
 		{
@@ -42,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			NavigationController.NavigationBar.Hidden = false;
 		}
-		
-		#endregion
 	}
 }
 

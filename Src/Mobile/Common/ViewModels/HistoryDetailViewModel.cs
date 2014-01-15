@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-        public HistoryDetailViewModel()
+		public void Init()
         {
             _status = new OrderStatusDetail
             {
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_orderId = value; 
-				FirePropertyChanged(()=>OrderId); 
+				RaisePropertyChanged(); 
 			}
         }
 
@@ -43,29 +43,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_order.TransactionId != default(long)) {
                     AuthorizationNumber = _order.TransactionId + "";
                 }
-                FirePropertyChanged(()=>Order); 
-                FirePropertyChanged(()=>ConfirmationTxt); 
-                FirePropertyChanged(()=>RequestedTxt); 
-                FirePropertyChanged(()=>OriginTxt); 
-                FirePropertyChanged(()=>AptRingTxt); 
-                FirePropertyChanged(()=>DestinationTxt); 
-                FirePropertyChanged(()=>PickUpDateTxt); 
+				RaisePropertyChanged(()=>Order); 
+				RaisePropertyChanged(()=>ConfirmationTxt); 
+				RaisePropertyChanged(()=>RequestedTxt); 
+				RaisePropertyChanged(()=>OriginTxt); 
+				RaisePropertyChanged(()=>AptRingTxt); 
+				RaisePropertyChanged(()=>DestinationTxt); 
+				RaisePropertyChanged(()=>PickUpDateTxt); 
             }
 		}
 
         private OrderStatusDetail _status;
-
 		public OrderStatusDetail Status 
         {
 			get{ return _status; }
 		    set
 		    {
 		        _status = value;
-		        FirePropertyChanged("Status");
-		        FirePropertyChanged("SendReceiptAvailable");
+				RaisePropertyChanged();
+				RaisePropertyChanged("SendReceiptAvailable");
 		    }
 		}
-        
         
         public bool SendReceiptAvailable 
         {
@@ -85,8 +83,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_isDone = value; 
-				FirePropertyChanged(()=>IsDone); 
-				FirePropertyChanged(()=>ShowRateButton); 
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(()=>ShowRateButton); 
 			}
         }
 
@@ -98,8 +96,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set { 
 				if (value != _isCompleted) {
 					_isCompleted = value;
-					FirePropertyChanged (()=>IsCompleted);
-					FirePropertyChanged (()=>RebookIsAvailable);
+					RaisePropertyChanged ();
+					RaisePropertyChanged (()=>RebookIsAvailable);
 				}
 			}
 		}
@@ -120,8 +118,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { 
 				_hasRated = value; 
-				FirePropertyChanged(()=>HasRated); 
-				FirePropertyChanged(()=>ShowRateButton);  
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(()=>ShowRateButton);  
 			}
         }
 
@@ -143,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _canCancel)
                 {
                     _canCancel = value;
-                    FirePropertyChanged(()=>CanCancel);
+					RaisePropertyChanged();
                 }
             }
         }
@@ -167,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set{
                 _authorizationNumber = value;
-                FirePropertyChanged (()=>AuthorizationNumber);
+				RaisePropertyChanged ();
             }
         }
 
@@ -226,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryDetailViewModel(string orderId)
+		public void Init(string orderId)
         {
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {
@@ -280,7 +278,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-													RequestSubNavigate<BookRatingViewModel,OrderRated>(new 
+													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 					            	                    {														
 															orderId = OrderId, 
 															canRate = canRate.ToString()
@@ -305,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							VehicleLatitude = null,
 							VehicleLongitude = null
 					};
-					RequestNavigate<BookingStatusViewModel>(new {
+					ShowViewModel<BookingStatusViewModel>(new {
 						order =  Order.ToJson(),
 						orderStatus = orderStatus.ToJson()
 					});
@@ -323,7 +321,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         this.Services().Booking.RemoveFromHistory(OrderId);
                         this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
-                        Close();
+						Close(this);
                     }
                 });
             }
@@ -336,7 +334,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-                    RequestNavigate<BookViewModel>(new { order = serialized }, true);
+						// TODO: Clear top parameter has been removed when migrating to MvvMCRoss v3
+						// Find out if it was necessary
+                    ShowViewModel<BookViewModel>(new { order = serialized });
                 });
             }
         }
@@ -351,7 +351,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         this.Services().Booking.SendReceipt(OrderId);
                     }
-                    RequestClose(this);
+                    Close(this);
                 });
             }
         }

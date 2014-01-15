@@ -12,9 +12,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>
     {
-        public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
+		public void Init(string messageId, PaymentInformation paymentDetails)
         {
-	    CreditCards.CollectionChanged += (sender, e) =>  FirePropertyChanged(()=>HasCreditCards);
+			Init(messageId);
+
+			CreditCards.CollectionChanged += (sender, e) =>  RaisePropertyChanged(()=>HasCreditCards);
 		
             LoadCreditCards();
         
@@ -39,8 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 if(value != _selectedCreditCardId)
                 {
                     _selectedCreditCardId = value;
-                    FirePropertyChanged(()=>SelectedCreditCardId);
-                    FirePropertyChanged(()=>SelectedCreditCard);
+					RaisePropertyChanged(()=>SelectedCreditCardId);
+					RaisePropertyChanged(()=>SelectedCreditCard);
                 }
             
             }
@@ -71,9 +73,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return _tip;
             }
-            set{
+            set
+			{
                 _tip = value;
-                FirePropertyChanged(()=>Tip);
+				RaisePropertyChanged();
             }
         }
 
@@ -91,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 
                                            if(CreditCards.Count == 0)
                                            {
-                                               RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
+												ShowSubViewModel<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => InvokeOnMainThread(()=>
                                                {
                                                    CreditCards.Add (new CreditCardDetails
                                                    {
@@ -106,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                            }else{
                     
                     
-                                               RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
+												ShowSubViewModel<CreditCardsListViewModel, Guid>(null, result => {
                                                                                                                       if(result != default(Guid))
                                                                                                                       {
                                                                                                                           SelectedCreditCardId = result;
@@ -131,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                                                 CreditCards.Add(card);
                                                             }
                                                             // refresh selected credit card
-                                                            FirePropertyChanged(()=>SelectedCreditCard);
+															RaisePropertyChanged(()=>SelectedCreditCard);
                             });
             }).HandleErrors();
         

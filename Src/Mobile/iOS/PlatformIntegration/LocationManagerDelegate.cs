@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Touch.ExtensionMethods;
+using Cirrious.CrossCore.Touch;
 using MK.Common.iOS.Patterns;
 using MonoTouch.CoreLocation;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {

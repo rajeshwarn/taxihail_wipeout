@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <TextView
-            android:id="@+id/HistoricListViewTitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="9dip"
-            android:paddingBottom="2dip"
-            android:paddingLeft="5dip"
-            style="@style/HeaderGroupTitle"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/HistoryInfo" />
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-            android:id="@+id/HistoryList"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:layout_marginBottom="5dip"
-            android:layout_marginLeft="5dip"
-            android:layout_marginRight="5dip"
-            android:layout_marginTop="10dip"
-            android:layout_below="@id/HistoricListViewTitle"
-            local:MvxItemTemplate="@layout/simpleorderlistitem"
-            local:MvxBind="{'ItemsSource':{'Path':'Orders'},'ItemClick':{'Path':'NavigateToHistoryDetailPage'}}" />
-    </RelativeLayout>
+    android:layout_height="fill_parent">
+    <TextView
+      android:id="@+id/HistoricListViewTitle"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="9dip"
+      android:paddingBottom="2dip"
+      android:paddingLeft="5dip"
+      style="@style/HeaderGroupTitle"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:text="@string/HistoryInfo" />
+    <cirrious.mvvmcross.binding.droid.views.MvxListView
+      android:id="@+id/HistoryList"
+      android:minWidth="25px"
+      android:minHeight="25px"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:background="@android:color/transparent"
+      android:cacheColorHint="@android:color/transparent"
+      android:layout_marginBottom="5dip"
+      android:layout_marginLeft="5dip"
+      android:layout_marginRight="5dip"
+      android:layout_marginTop="10dip"
+      android:layout_below="@id/HistoricListViewTitle"
+      local:MvxItemTemplate="@layout/simpleorderlistitem"
+      local:MvxBind="ItemsSource Orders; ItemClick NavigateToHistoryDetailPage" />
+  </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

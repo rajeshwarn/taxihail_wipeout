@@ -5,16 +5,25 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Cirrious.MvvmCross.Binding.Android.Views;
+using Cirrious.MvvmCross.Droid.Views;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
     [Activity(Label = "Call Taxi", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape,LaunchMode = Android.Content.PM.LaunchMode.SingleInstance )]
-    public class CallTaxiActivity : MvxBindingActivityView<CallboxCallTaxiViewModel>
+    public class CallTaxiActivity : MvxActivity
     {
         private const int NbClick = 5;
         private static  TimeSpan TimeOut = TimeSpan.FromSeconds(5);
+
+		public new CallboxCallTaxiViewModel ViewModel
+		{
+			get
+			{
+				return (CallboxCallTaxiViewModel)DataContext;
+			}
+		}
+
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_CallTaxi);
@@ -23,7 +32,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                       .Where(e => e.EventArgs.Event.Action == MotionEventActions.Down)
                       .Buffer(TimeOut,NbClick)
                       .Where(s => s.Count == 5)
-                      .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute(null)));
+                      .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute()));
 
             ViewModel.Load();
         }

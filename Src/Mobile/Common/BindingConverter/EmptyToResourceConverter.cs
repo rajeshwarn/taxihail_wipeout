@@ -1,13 +1,12 @@
 using System;
 using System.Globalization;
+using Cirrious.CrossCore;
+using Cirrious.CrossCore.Converters;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using Cirrious.MvvmCross.Converters;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
-	public class EmptyToResourceConverter: MvxBaseValueConverter, IMvxServiceConsumer<ILocalization>
+	public class EmptyToResourceConverter: MvxValueConverter
 	{
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{
@@ -17,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 
 			return string.IsNullOrEmpty((string)parameter) 
                 ? null 
-                : this.GetService()[parameter.ToString()];
+                : Mvx.Resolve<ILocalization>()[parameter.ToString()];
 		}
 	}
 }

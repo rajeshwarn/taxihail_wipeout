@@ -1,55 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+  xmlns:local="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:gravity="center_horizontal"
+  android:focusable="true"
+  android:focusableInTouchMode="true">
+  <RelativeLayout
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-            android:layout_width="fill_parent"
-            android:layout_marginTop="5dip"
-            android:layout_height="wrap_content"
-            android:id="@+id/RatingListView"
-            android:layout_marginBottom="5dip"
-            local:MvxItemTemplate="@layout/ratinglistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;RatingList&apos;}}"
-            android:layout_centerHorizontal="true" />
-    <!--EditText
-            android:id="@+id/RatingNote"
-            android:layout_below="@id/RatingListView"
-            android:layout_width="fill_parent"
-            android:layout_height="84dp"
-            android:textSize="14dp"
-            android:paddingLeft="5dip"
-            android:paddingRight="5dip"
-            android:inputType="textMultiLine"
-            android:singleLine="false"
-            android:lines="4"
-            android:gravity="top|left"
-            android:scrollbars="vertical"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Note&apos;},&apos;Focusable&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
-            android:hint="@string/Notes"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_marginBottom="10dip"
-            android:layout_centerHorizontal="true" /-->
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Green"
-            style="@style/ButtonText"
-            android:background="@drawable/green_button"
-            android:id="@+id/RateOrderButton"
-            android:layout_below="@id/RatingListView"
-            android:text="@string/Submit"
-            android:layout_height="40dip"
-            android:layout_gravity="center"
-            android:layout_width="150dip"
-            android:padding="7dip"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RateOrder&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanRating&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+    android:layout_height="fill_parent">
+    <cirrious.mvvmcross.binding.droid.views.MvxListView
+      android:layout_width="fill_parent"
+      android:layout_marginTop="5dip"
+      android:layout_height="wrap_content"
+      android:id="@+id/RatingListView"
+      android:layout_marginBottom="5dip"
+      local:MvxItemTemplate="@layout/ratinglistitem"
+      local:MvxBind="ItemsSource RatingList"
+      android:layout_centerHorizontal="true" />
+    <apcurium.mk.booking.mobile.client.controls.StyledButton
+      local:ButtonStyle="Green"
+      style="@style/ButtonText"
+      android:background="@drawable/green_button"
+      android:id="@+id/RateOrderButton"
+      android:layout_below="@id/RatingListView"
+      android:text="@string/Submit"
+      android:layout_height="40dip"
+      android:layout_gravity="center"
+      android:layout_width="150dip"
+      android:padding="7dip"
+      local:MvxBind="Click RateOrder; Visibility CanRating, Converter=Visibility"
+      android:layout_centerHorizontal="true" />
+  </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

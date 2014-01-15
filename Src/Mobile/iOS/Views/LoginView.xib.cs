@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
@@ -22,22 +17,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
-        public LoginView () 
-            : base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new MvxRequestedBy()   ) )
+        public LoginView ()
+            : base("LoginView", null)
         {
             
-        }
-        
-        public LoginView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-            
-        }
-        
-        public LoginView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
-        {
-
         }
 
 
@@ -79,12 +62,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };            
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-            
+
+            var set = this.CreateBindingSet<LoginView, LoginViewModel>();
+
 			if (settings.FacebookEnabled)
 			{
 				btnFbLogin.SetLeftImage("Assets/Social/FB/facebook-icon.png");
-				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);               
-                this.AddBindings (btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
+				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);
+                set.Bind(btnFbLogin)
+                    .For("TouchUpInside")
+                    .To(vm => vm.LoginFacebook);
             }
             btnFbLogin.Hidden = !settings.FacebookEnabled;
 
@@ -92,7 +79,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			{
 				btnTwLogin.SetLeftImage("Assets/Social/TW/twitter.png");
 				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
-                this.AddBindings (btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
+                set.Bind(btnTwLogin)
+                    .For("TouchUpInside")
+                    .To(vm => vm.LoginTwitter);
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
@@ -101,13 +90,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
 			btnServer.Hidden = true;
 
-            this.AddBindings (new Dictionary<object, string> {
-                { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
-				{ btnForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
-                { txtEmail, "{'Text':{'Path':'Email'}}"},
-                { txtPassword, "{'Text':{'Path':'Password'}}"},
-            });
+            set.Bind(btnSignIn)
+                .For("TouchUpInside")
+                .To(vm => vm.SignInCommand);
+
+            set.Bind(btnForgotPassword)
+                .For("TouchUpInside")
+                .To(vm => vm.ResetPassword);
+
+            set.Bind(btnSignUp)
+                .For("TouchUpInside")
+                .To(vm => vm.SignUp);
+
+            set.Bind(txtEmail)
+                .For(v => v.Text)
+                .To(vm => vm.Email);
+
+            set.Bind(txtPassword)
+                .For(v => v.Text)
+                .To(vm => vm.Password);
+
+            set.Apply();
+
 		
             ViewModel.Load ();
             View.ApplyAppFont();           

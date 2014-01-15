@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Android.Content;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
@@ -12,14 +13,12 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Client.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
-using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -60,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public IMvxCommand MapMoved { get; set; }
+        public ICommand MapMoved { get; set; }
 
         private bool IsMapTouchDown { get; set; }
 

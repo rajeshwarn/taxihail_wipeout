@@ -1,8 +1,3 @@
-using apcurium.MK.Booking.Mobile.Mvx;
-using Cirrious.MvvmCross.Application;
-using Cirrious.MvvmCross.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ServiceProvider;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Client;
@@ -13,11 +8,12 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class CallBoxApp: MvxApplication
-        , IMvxServiceProducer<IMvxStartNavigation>
     {
 
         public CallBoxApp()
@@ -69,13 +65,7 @@ namespace apcurium.MK.Booking.Mobile
         
         private void InitialiseStartNavigation()
         {
-            var startApplicationObject = new StartCallboxNavigation();
-            this.RegisterServiceInstance(startApplicationObject);
-        }
-
-        protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
-        {
-            return new TinyIocViewModelLocator();
+			Mvx.RegisterSingleton<IMvxAppStart>(new StartCallboxNavigation());
         }
     }
 }

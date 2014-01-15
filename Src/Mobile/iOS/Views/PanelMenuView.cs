@@ -17,17 +17,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
     {
         private readonly UIView _viewToAnimate;
         private readonly PanelViewModel _viewModel;
-
-        public PanelMenuView (IntPtr handle) : base(handle)
-        {
-        }
         
-        [Export("initWithCoder:")]
-        public PanelMenuView (NSCoder coder) : base(coder)
-        {
-        }
-        
-        public PanelMenuView () : base("PanelMenuView", null)
+        public PanelMenuView () 
+			: base("PanelMenuView", null)
         {
         }
 
@@ -129,26 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 slideAnimation.Animate ();
             });
         }
-//
-//        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-//        {
-//            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-//        }
-//
-//        public override void ViewDidUnload ()
-//        {
-//            base.ViewDidUnload ();
-//            
-//            ReleaseDesignerOutlets ();
-//        }
-//
-//        public override void ViewWillUnload ()
-//        {
-//            base.ViewWillUnload ();
-//            _viewModel.PropertyChanged -= HandlePropertyChanged;
-//        }
-            
-
     }
 }
 

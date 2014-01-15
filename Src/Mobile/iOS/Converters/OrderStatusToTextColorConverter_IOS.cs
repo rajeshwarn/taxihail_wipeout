@@ -1,11 +1,11 @@
 using System;
 using System.Globalization;
-using Cirrious.MvvmCross.Converters;
+using Cirrious.CrossCore.Converters;
 using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
-	public class OrderStatusToTextColorConverter: MvxBaseValueConverter
+	public class OrderStatusToTextColorConverter: MvxValueConverter
 	{
 		public override object Convert (object value, Type targetType, object parameter, CultureInfo culture)
 		{

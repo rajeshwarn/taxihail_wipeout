@@ -9,36 +9,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RideSettingsViewModel: BaseViewModel
     {
-        private readonly BookingSettings _bookingSettings;
+        private BookingSettings _bookingSettings;
 
-        public RideSettingsViewModel(string bookingSettings) : this( bookingSettings.FromJson<BookingSettings>())
+		public void Init(string bookingSettings)
         {
+			Init(bookingSettings.FromJson<BookingSettings>());
         }
 
-        public RideSettingsViewModel(BookingSettings bookingSettings)
+		public void Init(BookingSettings bookingSettings)
         {
             _bookingSettings = bookingSettings;
-
 
             var refDataTask = this.Services().Account.GetReferenceDataAsync();
 
             refDataTask.ContinueWith(result =>
-                                     {
+            {
                 var v = this.Services().Account.GetVehiclesList();
                 _vehicules = v == null ? new ListItem[0] : v.ToArray();
-                FirePropertyChanged( ()=> Vehicles );
-                FirePropertyChanged( ()=> VehicleTypeId );
-                FirePropertyChanged( ()=> VehicleTypeName );
-
+				RaisePropertyChanged(() => Vehicles );
+				RaisePropertyChanged(() => VehicleTypeId );
+				RaisePropertyChanged(() => VehicleTypeName );
 
                 var p = this.Services().Account.GetPaymentsList();
                 _payments = p == null ? new ListItem[0] : p.ToArray();
-
-                FirePropertyChanged( ()=> Payments );
-                FirePropertyChanged( ()=> ChargeTypeId );
-                FirePropertyChanged( ()=> ChargeTypeName );
+				RaisePropertyChanged(() => Payments );
+				RaisePropertyChanged(() => ChargeTypeId );
+				RaisePropertyChanged(() => ChargeTypeName );
             });
-
         }
 
         public bool ShouldDisplayTipSlider
@@ -65,7 +62,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private PaymentDetailsViewModel _paymentPreferences;
-
         public PaymentDetailsViewModel PaymentPreferences
         {
             get
@@ -79,14 +75,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         TipPercent = account.DefaultTipPercent,
                     };
 
-                    _paymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
+					_paymentPreferences = new PaymentDetailsViewModel();
+					_paymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
                 }
                 return _paymentPreferences;
             }
         }
 
         private ListItem[] _vehicules;
-
         public ListItem[] Vehicles
         {
             get
@@ -96,7 +92,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private ListItem[] _payments;
-
         public ListItem[] Payments
         {
             get
@@ -116,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.VehicleTypeId)
                 {
                     _bookingSettings.VehicleTypeId = value;
-                    FirePropertyChanged("VehicleTypeId");
-                    FirePropertyChanged("VehicleTypeName");
+					RaisePropertyChanged();
+					RaisePropertyChanged("VehicleTypeName");
                 }
             }
         }
@@ -126,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 if (!VehicleTypeId.HasValue)
                 {
                     return this.Services().Localize["NoPreference"];
@@ -155,8 +149,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.ChargeTypeId)
                 {
                     _bookingSettings.ChargeTypeId = value;
-                    FirePropertyChanged("ChargeTypeId");
-                    FirePropertyChanged("ChargeTypeName");
+					RaisePropertyChanged();
+					RaisePropertyChanged("ChargeTypeName");
                 }
             }
         }
@@ -169,7 +163,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return this.Services().Localize["NoPreference"];
                 }
-
 
                 if (Payments == null)
                 {
@@ -194,7 +187,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Name)
                 {
                     _bookingSettings.Name = value;
-                    FirePropertyChanged("Name");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -210,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _bookingSettings.Phone)
                 {
                     _bookingSettings.Phone = value;
-                    FirePropertyChanged("Phone");
+					RaisePropertyChanged();
                 }
             }
         }
@@ -224,14 +217,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     VehicleTypeId = id;
                 });
             }
-
         }
 
         public AsyncCommand NavigateToUpdatePassword
         {
             get
             {
-                return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+                return GetCommand(() => ShowViewModel<UpdatePasswordViewModel>());
             }
         }
 
@@ -260,9 +252,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand<int?>(id =>
                 {
-
                     _bookingSettings.ProviderId = id;
-
                 });
             }
         }
@@ -277,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
                         this.Services().Account.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-                        Close();
+						Close(this);
                     }
                 });
             }

@@ -3,19 +3,16 @@
      <item android:state_pressed="true" android:drawable="@drawable/cell_selected"  />
     <item>
         <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-            <item>
-                <shape xmlns:android="http://schemas.android.com/apk/res/android">
-                    <solid android:color="#696969" />                    
+            <item android:left="40dip">
+                <shape xmlns:android="http://schemas.android.com/apk/res/android">                    
+                    <solid android:color="@color/itemlist_cell_border_color" />
                 </shape>
             </item>
                <item android:left="1px" android:right="1px" android:bottom="1px">     
-                <shape android:shape="rectangle">
-                
-                    <solid android:color="#f8f8f8" />                    
+                <shape android:shape="rectangle">                
+                 	<solid android:color="@color/itemlist_cell_background_color" />
                 </shape>
-            </item>
-            
-            
+            </item>                       
         </layer-list>
     </item>
 </selector>

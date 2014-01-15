@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         {
             var accountId = Guid.NewGuid();
 
-            Sut.Handle(new AccountRegistered
+            var accountRegistered = new AccountRegistered
             {
                 SourceId = accountId,
                 Name = "Bob",
@@ -106,7 +106,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Phone = "555.555.2525",
                 Password = new byte[] {1},
                 IbsAcccountId = 666
-            });
+            };
+            Sut.Handle(accountRegistered);
 
             using (var context = new BookingDbContext(DbName))
             {
@@ -114,7 +115,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(dto.Settings.Name, dto.Name);
-                Assert.AreEqual(dto.Settings.Phone, dto.Phone);
+                Assert.AreEqual(accountRegistered.Phone, dto.Settings.Phone);
 
                 var config = new TestConfigurationManager();
                 Assert.IsNull(dto.Settings.ChargeTypeId);

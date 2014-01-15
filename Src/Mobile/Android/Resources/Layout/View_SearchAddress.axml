@@ -25,7 +25,7 @@
                 android:maxLines="1"
                 android:background="@drawable/cell_full_state"
                 android:hint="@string/searchHint"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}}"
+                local:MvxBind="Text Criteria"
                 android:drawablePadding="1dp"
                 android:paddingLeft="36dp"
                 android:paddingRight="35dip" />
@@ -39,7 +39,7 @@
                 android:layout_marginRight="5dip" />
             <ProgressBar
                 android:id="@+id/progress_bar"
-                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                local:MvxBind="Visibility IsSearching, Converter=Visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="28dip"
@@ -52,7 +52,7 @@
                 android:indeterminate="true" />
             <ImageView
                 android:id="@+id/progress_bar"
-                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
+                local:MvxBind="Visibility IsSearching, Converter=InvertedVisibility"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="6dip"
                 android:layout_alignParentLeft="true"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/loupe" />
         </RelativeLayout>
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_below="@id/topSection"
@@ -72,7 +72,7 @@
             android:clickable="false"
             android:background="@drawable/transparentAllStates"
             local:MvxItemTemplate="@layout/simplelistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
+            local:MvxBind="ItemsSource AddressViewModels; ItemClick RowSelectedCommand"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp" />
     </RelativeLayout>

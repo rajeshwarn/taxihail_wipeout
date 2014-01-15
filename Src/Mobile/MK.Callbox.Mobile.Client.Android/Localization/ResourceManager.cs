@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Localization
 {
-    public class ResourceManager : IAppResource
+	public class ResourceManager : ILocalization
     {
         
         private Context _context;
@@ -64,25 +64,28 @@ namespace apcurium.MK.Callbox.Mobile.Client.Localization
             get { return Application.Context.GetString(Resource.String.CarAssigned); }
         }
 
-        public string GetString(string key)
+		public string this[string key]
         {
-            var identifier = _context.Resources.GetIdentifier(key,"string", _context.PackageName);
-            return _context.Resources.GetString(identifier);
+			get
+			{
+				var identifier = _context.Resources.GetIdentifier(key, "string", _context.PackageName);
+				return _context.Resources.GetString(identifier);
+			}
         }
 
         public List<TutorialItemModel> GetTutorialItemsList()
         {
             return new List<TutorialItemModel>()
-                                   {
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen03",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen04",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen05",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen06",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen07",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tutorial_screen08",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
-                                   };
+			{
+				new TutorialItemModel() {ImageUri = "tutorial_screen01", TopText = this["Tuto01Top"], BottomText = this["Tuto01Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen02",  TopText = this["Tuto02Top"], BottomText = this["Tuto02Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen03",  TopText = this["Tuto02Top"], BottomText = this["Tuto03Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen04",  TopText = this["Tuto03Top"], BottomText = this["Tuto04Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen05",  TopText = this["Tuto04Top"], BottomText = this["Tuto05Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen06",  TopText = this["Tuto05Top"], BottomText = this["Tuto06Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen07",  TopText = this["Tuto06Top"], BottomText = this["Tuto07Bottom"]},
+				new TutorialItemModel() {ImageUri = "tutorial_screen08",  TopText = this["Tuto07Top"], BottomText = this["Tuto08Bottom"]}
+			};
         }
 
     }

@@ -7,46 +7,36 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
+	//TODO: [MvvmCRoss v3] Required? 
+	[MvxViewFor(typeof(BookConfirmationViewModel))]
+	public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
-       
-
         public ConfirmationView () 
-            : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new MvxRequestedBy()   ) )
-        {
-        }
-        
-        public ConfirmationView (MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public ConfirmationView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+			: base("ConfirmationView", null)
         {
         }
 
-        public override void LoadView()
-        {
-            base.LoadView();
-            var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            var isThriev = appSettings.ApplicationName == "Thriev";
-            if (isThriev)
-            {
-                NSBundle.MainBundle.LoadNib ("ConfirmationView_Thriev", this, null);
-            } else {
-                NSBundle.MainBundle.LoadNib ("ConfirmationView", this, null);
-            }
-        }
+		public override string NibName
+		{
+			get
+			{
+				var appSettings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+				var isThriev = appSettings.ApplicationName == "Thriev";
+				return isThriev
+					? "ConfirmationView_Thriev"
+					: "ConfirmationView";
+			}
+		}
 
         public override void ViewWillAppear (bool animated)
         {
@@ -125,28 +115,62 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .ForEach(x => x.TextColor = AppStyle.DarkText)
                 .ForEach(x => x.Font = AppStyle.GetBoldFont(x.Font.PointSize));
 
-           
+			var set = this.CreateBindingSet<ConfirmationView, BookConfirmationViewModel>();
 
-            var bindings = new [] {
-                Tuple.Create<object,string>(btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"),
-                Tuple.Create<object,string>(btnEdit   , "{'TouchUpInside':{'Path':'NavigateToEditInformations'}}"),
-                Tuple.Create<object,string>(lblNameValue, "{'Text': {'Path': 'OrderName'}}"),
-                Tuple.Create<object,string>(lblPhoneValue, "{'Text': {'Path': 'OrderPhone'}}"),
-                Tuple.Create<object,string>(lblPassengersValue, "{'Text': {'Path': 'OrderPassengerNumber'}}"),
-                Tuple.Create<object,string>(lblApartmentValue, "{'Text': {'Path': 'OrderApt'}}"),
-                Tuple.Create<object,string>(lblEntryCodeValue, "{'Text': {'Path': 'OrderRingCode'}}"),
-                Tuple.Create<object,string>(lblVehicleTypeValue, "{'Text': {'Path': 'RideSettings.VehicleTypeName'}}"),
-                Tuple.Create<object,string>(lblChargeTypeValue, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}"),
-                Tuple.Create<object,string>(lblLargeBagsValue, "{'Text': {'Path': 'OrderLargeBagsNumber'}}"),
-                Tuple.Create<object,string>(lblPickupValue, "{'Text': {'Path': 'Order.PickupAddress.DisplayAddress'}}"),
-                Tuple.Create<object,string>(lblDestinationValue, "{'Text': {'Path': 'Order.DropOffAddress.DisplayAddress'}}"),
-                Tuple.Create<object,string>(lblFareValue, "{'Text': {'Path': 'FareEstimate'}}"),
-            }
-                .Where(x=> x.Item1 != null )
-                .ToDictionary(x=>x.Item1, x=>x.Item2);
-        
-            this.AddBindings(bindings);
-            
+			set.BindSafe(btnConfirm)
+				.For("TouchUpInside")
+				.To(vm => vm.ConfirmOrderCommand);
+
+			set.BindSafe(btnEdit)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToEditInformations);
+
+			set.BindSafe(lblNameValue)
+				.For("Text")
+				.To(vm => vm.OrderName);
+
+			set.BindSafe(lblPhoneValue)
+				.For("Text")
+				.To(vm => vm.OrderPhone);
+
+			set.BindSafe(lblPassengersValue)
+				.For("Text")
+				.To(vm => vm.OrderPassengerNumber);
+
+			set.BindSafe(lblApartmentValue)
+				.For("Text")
+				.To(vm => vm.OrderApt);
+
+			set.BindSafe(lblEntryCodeValue)
+				.For("Text")
+				.To(vm => vm.OrderRingCode);
+
+			set.BindSafe(lblVehicleTypeValue)
+				.For("Text")
+				.To(vm => vm.RideSettings.VehicleTypeName);
+
+			set.BindSafe(lblChargeTypeValue)
+				.For("Text")
+				.To(vm => vm.RideSettings.ChargeTypeName);
+
+			set.BindSafe(lblLargeBagsValue)
+				.For("Text")
+				.To(vm => vm.OrderLargeBagsNumber);
+
+			set.BindSafe(lblPickupValue)
+				.For("Text")
+				.To(vm => vm.Order.PickupAddress.DisplayAddress);
+
+			set.BindSafe(lblDestinationValue)
+				.For("Text")
+				.To(vm => vm.Order.DropOffAddress.DisplayAddress);
+
+			set.BindSafe(lblFareValue)
+				.For("Text")
+				.To(vm => vm.FareEstimate);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
         }
 

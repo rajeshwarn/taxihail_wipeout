@@ -1,33 +1,29 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class RefineAddressView : MvxBindingTouchViewController<RefineAddressViewModel>
+	public partial class RefineAddressView : MvxViewController
 	{
-		#region Constructors
-		public RefineAddressView(string apt, string ringCode, string buildingName) 
-			: base(new MvxShowViewModelRequest<RefineAddressViewModel>( new Dictionary<string, string>{{"apt", apt}, {"ringCode", ringCode},  {"buildingName", buildingName}}, false, new MvxRequestedBy()   ) )
+		public RefineAddressView() 
+			: base("RefineAddressView", null)
 		{
 		}
-		
-		public RefineAddressView(MvxShowViewModelRequest request) 
-			: base(request)
+
+		public new RefineAddressViewModel ViewModel
 		{
-		}
-		
-		public RefineAddressView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
+			get
+			{
+				return (RefineAddressViewModel)DataContext;
+			}
 		}	
-		#endregion
 		
 		public override void ViewDidLoad ()
 		{
@@ -52,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtAptNumber.ShouldReturn = ShouldReturnDelegate;
 			txtRingCode.ShouldReturn = ShouldReturnDelegate;
 
-
             var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
             {
 				if( ViewModel.SaveCommand.CanExecute() )
@@ -60,14 +55,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					ViewModel.SaveCommand.Execute();
 				}
 			});
+
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
             NavigationItem.Title = Localize.GetValue( "View_RefineAddress");
 
-			this.AddBindings(new Dictionary<object, string>{
-				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,
-				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,			
-			});
+			var set = this.CreateBindingSet<RefineAddressView, RefineAddressViewModel> ();
+
+			set.Bind(txtAptNumber)
+				.For(v => v.Text)
+				.To(vm => vm.AptNumber);
+			set.Bind(txtRingCode)
+				.For(v => v.Text)
+				.To(vm => vm.RingCode);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
 		}
 		

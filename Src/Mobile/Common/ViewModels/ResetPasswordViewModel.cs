@@ -6,12 +6,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
-        
-
-        public ResetPasswordViewModel (string messageId) : base(messageId)
-		{
-		}
-
 		public string Email { get; set; }
 
 		public AsyncCommand ResetPassword
@@ -29,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowProgress(true);
 					try{
                         this.Services().Account.ResetPassword(Email);
-                        RequestClose( this );
+                        Close( this );
                      }catch(Exception e)
                      {
                          var msg = this.Services().Localize["ServiceError" + e.Message];
@@ -43,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			
 		}
+        
 
 		private bool IsEmail(string inputEmail)
 		{

@@ -6,8 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Diagnostic;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
 using ServiceStack.ServiceClient.Web;
@@ -28,8 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
                 MessageHelper.Show(Localize.GetValue("ServiceErrorCallTitle"), Localize.GetValue("ServiceErrorUnauthorized"), () =>
                 {
 					UIApplication.SharedApplication.InvokeOnMainThread (() => {
-						var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
-						dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
+						var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ();
+						dispatch.ShowViewModel(new MvxViewModelRequest (typeof(LoginViewModel), null, null, MvxRequestedBy.UserAction));
 					});
 
 					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();

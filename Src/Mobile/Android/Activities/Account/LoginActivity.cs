@@ -8,32 +8,26 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
-
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using Xamarin.FacebookBinding;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "Login",
         ScreenOrientation = ScreenOrientation.Portrait)]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-		private readonly IMessageService _messageService;
 		private readonly FacebookService _facebookService;
 		private UiLifecycleHelper _uiHelper;
 		public static LoginActivity TopInstance { get; private set;}
 		public LoginActivity ()
 		{
 			TopInstance = this;
-			this._messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
-			this._facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
-
+			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
 		protected override void OnCreate(Bundle bundle)
@@ -93,15 +87,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }
 
-            var linkResetPassword = FindViewById<UnderlineTextView>(Resource.Id.ForgotPasswordButton);
-
-            linkResetPassword.SetTextColor(StyleManager.Current.NavigationTitleColor.ConvertToColor());
-
             Observable.FromEventPattern<EventHandler, EventArgs>(
                 ev => ViewModel.LoginSucceeded += ev,
                 ev => ViewModel.LoginSucceeded -= ev)
                 .Subscribe(_ => Observable.Timer(TimeSpan.FromSeconds(2))
                     .Subscribe(__ => RunOnUiThread(Finish)));
+
+			// There is no other way to clean the typeface for password hint
+			// http://stackoverflow.com/questions/3406534/password-hint-font-in-android
+
+			EditText password = FindViewById<EditText>(Resource.Id.Password);
+			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+
         }
 
         private void PromptServer()

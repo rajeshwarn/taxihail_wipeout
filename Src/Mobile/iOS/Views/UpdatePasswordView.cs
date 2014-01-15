@@ -3,32 +3,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class UpdatePasswordView : BaseViewController<UpdatePasswordViewModel>
 	{
-		#region Constructors
-		public UpdatePasswordView(Guid accountId) 
-			: base(new MvxShowViewModelRequest<UpdatePasswordViewModel>( new Dictionary<string, string>{{"accountId", accountId.ToString()}}, false, new MvxRequestedBy()))
+		public UpdatePasswordView() 
+			: base("UpdatePasswordView", null)
 		{
 		}
-		
-		public UpdatePasswordView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public UpdatePasswordView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-		}	
-		#endregion
 		
 		public override void ViewDidLoad ()
 		{
@@ -54,12 +41,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			});
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
-			
-			this.AddBindings(new Dictionary<object, string>{
-				{txtCurrentPassword, "{'Text':{'Path':'CurrentPassword'}}"} ,
-				{txtNewPassword, "{'Text':{'Path':'NewPassword'}}"} ,
-				{txtNewPasswordConfirmation, "{'Text':{'Path':'NewPasswordConfirmation'}}"} ,
-			});
+
+			var set = this.CreateBindingSet<UpdatePasswordView, UpdatePasswordViewModel>();
+
+			set.Bind(txtCurrentPassword)
+				.For(v => v.Text)
+				.To(vm => vm.CurrentPassword);
+
+			set.Bind(txtNewPassword)
+				.For(v => v.Text)
+				.To(vm => vm.NewPassword);
+
+			set.Bind(txtNewPasswordConfirmation)
+				.For(v => v.Text)
+				.To(vm => vm.NewPasswordConfirmation);
+
+			set.Apply ();
+
             View.ApplyAppFont ();
 		}
 

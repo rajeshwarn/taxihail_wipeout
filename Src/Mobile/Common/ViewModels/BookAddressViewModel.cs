@@ -17,15 +17,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
        {
         private CancellationTokenSource _cancellationToken;
         private bool _isExecuting;
-        private readonly Func<Address> _getAddress;
-        private readonly Action<Address> _setAddress;
-        private readonly string _id;
-        private readonly string _searchingTitle;
+        private Func<Address> _getAddress;
+        private Action<Address> _setAddress;
+        private string _id;
+        private string _searchingTitle;
 
         public event EventHandler AddressChanged;
         public event EventHandler AddressCleared;
 
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress)
+		public void Init(Func<Address> getAddress, Action<Address> setAddress)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                FirePropertyChanged(() => IsPlaceHolder);
+				RaisePropertyChanged(() => IsPlaceHolder);
                 if (IsExecuting)
                 {
                     return _searchingTitle;
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (this.Services().Config.GetSetting("Client.StreetNumberScreenEnabled", true)
                         && Model.BookAddress.HasValue())
                     {
-                        RequestNavigate<BookStreetNumberViewModel>(new
+                        ShowViewModel<BookStreetNumberViewModel>(new
                             {
                                 address = JsonSerializer.SerializeToString(Model),
                                 ownerId = _id
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        RequestNavigate<AddressSearchViewModel>(new
+                        ShowViewModel<AddressSearchViewModel>(new
                             {
                                 search = Model.FullAddress,
                                 ownerId = _id, 
@@ -200,9 +200,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _isExecuting = value;
-                FirePropertyChanged(() => IsExecuting);
-                FirePropertyChanged(() => AddressLine1);
-                FirePropertyChanged(() => AddressLine2);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => AddressLine1);
+				RaisePropertyChanged(() => AddressLine2);
             }
         }
 
@@ -247,9 +247,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 address.CopyTo(Model);
 
-                FirePropertyChanged(() => AddressLine1);
-                FirePropertyChanged(() => AddressLine2);
-                FirePropertyChanged(() => Model);
+				RaisePropertyChanged(() => AddressLine1);
+				RaisePropertyChanged(() => AddressLine2);
+				RaisePropertyChanged(() => Model);
 
 
                 if (AddressChanged != null)
@@ -265,9 +265,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 var clearAddress = new Address();
                 clearAddress.CopyTo(Model);
-                FirePropertyChanged(() => AddressLine1);
-                FirePropertyChanged(() => AddressLine2);
-                FirePropertyChanged(() => Model);
+				RaisePropertyChanged(() => AddressLine1);
+				RaisePropertyChanged(() => AddressLine2);
+				RaisePropertyChanged(() => Model);
                 IsExecuting = false;
                 if (AddressChanged != null)
                 {

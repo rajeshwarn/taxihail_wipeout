@@ -1,14 +1,7 @@
-using System.Collections.Generic;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
-using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
@@ -16,18 +9,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
     {    
-        public ResetPasswordView () 
-            : base(new MvxShowViewModelRequest<ResetPasswordViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
-        {
-        }
-        
-        public ResetPasswordView(MvxShowViewModelRequest request) 
-            : base(request)
-        {
-        }
-        
-        public ResetPasswordView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-            : base(request, nibName, bundle)
+        public ResetPasswordView ()
+            : base("ResetPasswordView", null)
         {
         }
         
@@ -53,11 +36,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnReset.SetTitle(Localize.GetValue("ResetButton"), UIControlState.Normal);
 			btnCancel.SetTitle(Localize.GetValue("CancelButton"), UIControlState.Normal);
 
-			this.AddBindings(new Dictionary<object, string>{
-                { txtEmail, "{'Text': {'Path': 'Email', 'Mode': 'TwoWay' }}" },
-				{ btnReset, "{'TouchUpInside': {'Path' : 'ResetPassword'}}" },
-				{ btnCancel, "{'TouchUpInside': {'Path' : 'Cancel'}}" }
-            });
+            var set = this.CreateBindingSet<ResetPasswordView, ResetPasswordViewModel>();
+
+            set.Bind(btnReset)
+                .For("TouchUpInside")
+                .To(x => x.ResetPassword);
+
+            set.Bind(btnCancel)
+                .For("TouchUpInside")
+                .To(x => x.CloseCommand);
+
+            set.Bind(txtEmail)
+                .For(v => v.Text)
+                .To(vm => vm.Email);
+
+            set.Apply();
         }
     }
 }

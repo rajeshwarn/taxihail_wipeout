@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
@@ -7,7 +8,6 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Common.Extensions;
-using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -35,10 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-        public IMvxCommand TextChangedCommand { get; set; }
+        public ICommand TextChangedCommand { get; set; }
 
 
-        public IMvxCommand OnTypeStarted { get; set; }
+        public ICommand OnTypeStarted { get; set; }
 
         public bool IsAddressSearching { get; set; }
 // ReSharper restore UnusedAutoPropertyAccessor.Global

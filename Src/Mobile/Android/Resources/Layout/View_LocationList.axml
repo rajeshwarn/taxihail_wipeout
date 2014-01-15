@@ -1,22 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:background="@color/listitem_behind_color"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
-    <RelativeLayout
+    <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_marginTop="5dip"
+            android:layout_height="wrap_content"
+            android:background="@color/location_top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Locations"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@color/location_top_bar_separator_color"
+            android:orientation="horizontal" />
+        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+            android:layout_marginLeft="0dip"
+            android:layout_marginRight="0dip"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="15dip"
             android:layout_height="fill_parent"
             android:id="@+id/LocationListView"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/simplelistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AllAddresses&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToLocationDetailPage&apos;}}" />
-    </RelativeLayout>
-</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+            local:MvxBind="{'ItemsSource':{'Path':'AllAddresses'},'ItemClick':{'Path':'NavigateToLocationDetailPage'}}" />
+    </LinearLayout>
+</RelativeLayout>

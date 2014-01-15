@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Windows.Input;
 using MonoTouch.Foundation;
-using Cirrious.MvvmCross.Interfaces.Commands;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Button.TouchUpInside += HandleTouchUpInside;
         }
 
-        public IMvxCommand NavigateCommand {
+		public ICommand NavigateCommand {
 // ReSharper disable once UnusedAutoPropertyAccessor.Global
             get;set;
         }
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if(controller == null) return;
 
             controller.View.EndEditing(true);
-            if(NavigateCommand != null) NavigateCommand.Execute();
+			if(NavigateCommand != null) NavigateCommand.Execute();
 
         }
     }

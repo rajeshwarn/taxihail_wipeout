@@ -6,17 +6,24 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Android.Views;
+using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Theme = "@style/Theme.Modal", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class TutorialActivity : MvxBindingActivityView<TutorialViewModel>
+    public class TutorialActivity : MvxActivity
     {
         private BitmapDrawable _grayCircle;
         private BitmapDrawable _yellowCircle;
+
+		public new TutorialViewModel ViewModel
+		{
+			get
+			{
+				return (TutorialViewModel)DataContext;
+			}
+		}
 
         protected override void OnViewModelSet()
         {

@@ -4,30 +4,27 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class RideSettingsView : BaseViewController<RideSettingsViewModel>
+	public partial class RideSettingsView : BaseViewController<RideSettingsViewModel>
     {              
-        public RideSettingsView(MvxShowViewModelRequest request) 
-            : base(request)
+        public RideSettingsView() 
+			: base("RideSettingsView", null)
         {
-        }    
+        }
 		
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-
             NavigationController.NavigationBar.Hidden = false;
-            Container.BackgroundColor =  UIColor.Clear;
-            scrollView.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-
+            Container.BackgroundColor = UIColor.Clear;
+			scrollView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             View.BackgroundColor = UIColor.Clear; 
-
 
 			if (!ViewModel.ShouldDisplayCreditCards) {
                 lblCreditCard.Hidden = true;           
@@ -55,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             DismissKeyboardOnReturn(txtName, txtPhone);
 
-
             var button = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
             {
                 ViewModel.SaveCommand.Execute();
@@ -71,34 +67,51 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             (pickerChargeType).Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
  // ReSharper restore CoVariantArrayConversion
 
-
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
-            this.AddBindings(new Dictionary<object, string>(){
-                { txtName, new B("Text","Name") },
-                { txtPhone, new B("Text","Phone") },
-                { pickerVehiculeType, new B("Text","VehicleTypeName") },
-                { pickerChargeType, new B("Text","ChargeTypeName") },
-                { txtPassword, new B("NavigateCommand","NavigateToUpdatePassword") },
-                { btnCreditCard, 
-                    new B("Text","PaymentPreferences.SelectedCreditCard.FriendlyName")
-                    .Add("Last4Digits","PaymentPreferences.SelectedCreditCard.Last4Digits")
-                    .Add("CreditCardCompany","PaymentPreferences.SelectedCreditCard.CreditCardCompany")
-                    .Add("NavigateCommand","PaymentPreferences.NavigateToCreditCardsList") },
-                { TipSlider, new B("Value","PaymentPreferences.Tip",B.Mode.TwoWay) }
-            });         
+			var set = this.CreateBindingSet<RideSettingsView, RideSettingsViewModel> ();
 
+			set.Bind(txtName)
+				.For(v => v.Text)
+				.To(vm => vm.Name);
+
+			set.Bind(txtPhone)
+				.For(v => v.Text)
+				.To(vm => vm.Phone);
+
+			set.Bind(pickerVehiculeType)
+				.For("Text")
+				.To(vm => vm.VehicleTypeName);
+
+			set.Bind(pickerChargeType)
+				.For("Text")
+				.To(vm => vm.ChargeTypeName);
+
+			set.Bind(txtPassword)
+				.For(v => v.NavigateCommand)
+				.To(vm => vm.NavigateToUpdatePassword);
+
+			set.Bind(btnCreditCard)
+				.For("Text")
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
+			set.Bind(btnCreditCard)
+				.For(v => v.Last4Digits)
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
+			set.Bind(btnCreditCard)
+				.For("CreditCardCompany")
+				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
+			set.Bind(btnCreditCard)
+				.For(v => v.NavigateCommand)
+				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
+
+			set.Bind(TipSlider)
+				.For("Value")
+				.To(vm => vm.PaymentPreferences.Tip);
+
+			set.Apply ();       
         }
-
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-
-
-        }
-
     }
 }
 

@@ -19,18 +19,18 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 
         public void HandleError(Exception ex)
         {
-
+			var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
             if (ex is WebServiceException)
             {
                 var webServiceException = (WebServiceException)ex;
-                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorCallTitle");
-                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorDefaultMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+				var title = localize["ServiceErrorCallTitle"];
+				var message = localize["ServiceErrorDefaultMessage"];
 
                 try
                 {
 
-                    message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceError" + webServiceException.ErrorCode);
+					message = localize["ServiceError" + webServiceException.ErrorCode];
                 }
                 catch
                 {
@@ -47,8 +47,8 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
                     var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
                     if ((cm == null) || (cm.ActiveNetworkInfo == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
                     {
-                        var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
-                        var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+						var title = localize["NetworkErrorTitle"];
+						var message = localize["NetworkErrorMessage"];
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
                     }
                 }

@@ -16,7 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return _ratingList; }
             set { _ratingList = value; 
-				FirePropertyChanged(()=>RatingList); }
+				RaisePropertyChanged();
+			}
         }
         
         private string _note;
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _note; }
             set { 
 				_note = value; 
-				FirePropertyChanged(()=>Note);
+				RaisePropertyChanged();
 			}
         }
 
@@ -39,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set {
 				_canRating = value;
-				FirePropertyChanged(()=>CanRating); 
+				RaisePropertyChanged(); 
 			}
 
         }
@@ -56,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(value != _canSubmit)
 				{
 					_canSubmit = value;
-					FirePropertyChanged(()=>CanSubmit);
+					RaisePropertyChanged();
 				}
 			}
 			
@@ -72,13 +73,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set 
 			{
 				_orderId = value; 
-				FirePropertyChanged(()=>OrderId); 
+				RaisePropertyChanged(); 
 			}
 
         }
 
-        public BookRatingViewModel(string messageId):base(messageId)
+		public void Init(string messageId)
         {
+			Init(messageId);
+
             RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
 			{
 				RatingTypeId = c.Id, 
@@ -87,10 +90,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				.OrderBy(c=>c.RatingTypeId).ToList();
             CanRating = false;
         }
-       
 
-		public BookRatingViewModel (string messageId, string orderId, string canRate="false"):base(messageId)
+		public void Init(string messageId, string orderId, string canRate="false")
 		{
+			Init(messageId);
+
             var ratingTypes = this.Services().Booking.GetRatingType();
             RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
 			{
@@ -117,7 +121,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Score = c.Score,
 					RatingTypeName = c.Name
 				}).OrderBy(c=>c.RatingTypeId).ToList();
-
             }
         }
 

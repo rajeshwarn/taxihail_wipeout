@@ -3,7 +3,6 @@ using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Messages;
-using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -13,13 +12,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class BookConfirmationViewModel : BaseViewModel
 	{
-        public BookConfirmationViewModel(string order)
+		public void Init(string order)
 		{
-	        Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
-            RideSettings = new RideSettingsViewModel(Order.Settings);
-            RideSettings.OnPropertyChanged().Subscribe(p => FirePropertyChanged(() => RideSettings));
+			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
+			RideSettings = new RideSettingsViewModel();
+			RideSettings.Init(Order.Settings);
+			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
-
 
 		public override void Load()
 		{
@@ -34,7 +33,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return FormatPrice(Order.Estimate.Price);
 			}
-
 		}
 
 		public RideSettingsViewModel RideSettings { get; set; }
@@ -43,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return RideSettings != null ? RideSettings.VehicleTypeName : null;
 			}
 		}
@@ -146,12 +143,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
+				return GetCommand(() => ShowSubViewModel<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
 				{
-					{ "apt", Order.PickupAddress.Apartment },
-					{ "ringCode", Order.PickupAddress.RingCode },
-					{ "buildingName", Order.PickupAddress.BuildingName },
-				}, result =>
+						{ "apt", Order.PickupAddress.Apartment },
+						{ "ringCode", Order.PickupAddress.RingCode },
+						{ "buildingName", Order.PickupAddress.BuildingName },
+					}.ToStringDictionary(), result =>
 				{
 					if (result == null)
 						return;
@@ -161,8 +158,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.PickupAddress.BuildingName = result.BuildingName;
 					InvokeOnMainThread(() =>
 					{
-						FirePropertyChanged(() => AptRingCode);
-						FirePropertyChanged(() => BuildingName);
+						RaisePropertyChanged(() => AptRingCode);
+						RaisePropertyChanged(() => BuildingName);
 					});
 				}));
 			}
@@ -172,10 +169,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() => RequestSubNavigate<BookEditInformationViewModel, Order>(
+				return GetCommand(() => ShowSubViewModel<BookEditInformationViewModel, Order>(
 					new {
                             order = Order.ToJson()
-                        }.ToSimplePropertyDictionary(), result =>
+					}.ToStringDictionary(), result =>
 				{
 					if (result == null)
 						return;
@@ -191,17 +188,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.Settings.LargeBags = result.Settings.LargeBags;
 					InvokeOnMainThread(() =>
 					{
-						FirePropertyChanged(() => RideSettings);
-						FirePropertyChanged(() => AptRingCode);
-						FirePropertyChanged(() => BuildingName);
-						FirePropertyChanged(() => OrderPassengerNumber);
-						FirePropertyChanged(() => OrderLargeBagsNumber);
-						FirePropertyChanged(() => OrderPhone);
-						FirePropertyChanged(() => OrderName);
-						FirePropertyChanged(() => OrderApt);
-						FirePropertyChanged(() => OrderRingCode);
-						FirePropertyChanged(() => VehicleName);
-						FirePropertyChanged(() => ChargeType);
+						RaisePropertyChanged(() => RideSettings);
+						RaisePropertyChanged(() => AptRingCode);
+						RaisePropertyChanged(() => BuildingName);
+						RaisePropertyChanged(() => OrderPassengerNumber);
+						RaisePropertyChanged(() => OrderLargeBagsNumber);
+						RaisePropertyChanged(() => OrderPhone);
+						RaisePropertyChanged(() => OrderName);
+						RaisePropertyChanged(() => OrderApt);
+						RaisePropertyChanged(() => OrderRingCode);
+						RaisePropertyChanged(() => VehicleName);
+						RaisePropertyChanged(() => ChargeType);
 					});
 				}));
 			}
@@ -211,18 +208,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return GetCommand(() =>
 				{
-
-
 					Order.Id = Guid.NewGuid();
 					try
 					{
                         this.Services().Message.ShowProgress(true);
                         var orderInfo = this.Services().Booking.CreateOrder(Order);
 
-							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
+						if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
 							return;
 
 						var orderCreated = new Order
@@ -236,12 +230,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							Settings = Order.Settings
 						};
 	    						
-						RequestNavigate<BookingStatusViewModel>(new
+						ShowViewModel<BookingStatusViewModel>(new
 						        {
 						            order = orderCreated.ToJson(),
 						            orderStatus = orderInfo.ToJson()
 						        });	
-						Close();
+						Close(this);
                         this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
 					}
 					catch
@@ -264,7 +258,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowProgress(false);
 					}                         
 				}); 
-               
 			}
 		}
 
@@ -272,10 +265,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
                 return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
 			}
-
 		}
 
         public AsyncCommand CancelOrderCommand
@@ -284,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return GetCommand(() =>
 				{
-					Close();
+						Close(this);
                     this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));
 				});            
 			}
@@ -295,14 +286,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var validationInfo = await this.Services().Booking.ValidateOrder(Order);
 			if (validationInfo.HasWarning)
 			{
-
                 this.Services().Message.ShowMessage(this.Services().Localize["WarningTitle"], 
 // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-                    validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelButton"], () => RequestClose(this));
+                    validationInfo.Message, this.Services().Localize["ContinueButton"], () => validationInfo.ToString(), this.Services().Localize["CancelBoutton"], () => Close(this));
 			}
 		}
 
-        //todo refactorer ça, avec un getdefault value
+        //todo refactorer a, avec un getdefault value
 		private bool ShowEstimate
 		{
 			get

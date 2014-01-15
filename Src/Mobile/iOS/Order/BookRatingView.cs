@@ -1,29 +1,19 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	public partial class BookRatingView : MvxBindingTouchViewController<BookRatingViewModel>
+	public partial class BookRatingView : MvxViewController
 	{
 		public BookRatingView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new MvxRequestedBy()   ) )
-		{
-		}
-		
-		public BookRatingView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public BookRatingView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
+			: base("BookRatingView", null)
 		{
 		}
 		
@@ -35,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             submitRatingBtn.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
-			var source = new MvxActionBasedBindableTableViewSource(
+			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,
 				UITableViewCellStyle.Default,
 				BookRatingCell.Identifier ,
@@ -47,10 +37,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 				return BookRatingCell.LoadFromNib(tableView);
 			};
 					
-			this.AddBindings(new Dictionary<object, string> {
-				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}, 'Enabled': {'Path': 'CanSubmit'}}"},                
-				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
-			});
+            var set = this.CreateBindingSet<BookRatingView, BookRatingViewModel>();
+
+            set.Bind(submitRatingBtn)
+                .For("TouchUpInside")
+                .To(vm => vm.RateOrder);
+            set.Bind(submitRatingBtn)
+                .For(v => v.Hidden)
+                .To(vm => vm.CanRating)
+                .WithConversion("BoolInverter");
+            set.Bind(submitRatingBtn)
+                .For(v => v.Enabled)
+                .To(vm => vm.CanSubmit);
+
+            set.Bind(source)
+                .For(v => v.ItemsSource)
+                .To(vm => vm.RatingList);
+
+            set.Apply();
 
             ratingTableView.BackgroundColor = UIColor.Clear;
             ratingTableView.BackgroundView = new UIView();
