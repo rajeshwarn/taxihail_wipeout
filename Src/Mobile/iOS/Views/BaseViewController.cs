@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ViewModel.Start (firstStart: true);
             } else {
                 ViewModel.Restart();
-                ViewModel.Start();
+                ViewModel.Start(firstStart: false);
             }
 
         }

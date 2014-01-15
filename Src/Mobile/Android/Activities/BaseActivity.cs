@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     public abstract class BaseBindingActivity<TViewModel> : MvxActivity
         where TViewModel : BaseViewModel, IMvxViewModel
     {
+        private bool _firstStart = true;
         protected abstract int ViewTitleResourceId { get; }
 
 		public new TViewModel ViewModel
@@ -46,7 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnStart()
         {
             base.OnStart();
-            ViewModel.Start();
+            ViewModel.Start(_firstStart);
+            _firstStart = false;
         }
 
         protected override void OnRestart()
