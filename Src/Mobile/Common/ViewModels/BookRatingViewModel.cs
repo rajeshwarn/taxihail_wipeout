@@ -78,10 +78,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		public void Init(string messageId)
+		public void Init()
         {
-			Init(messageId);
-
             RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
 			{
 				RatingTypeId = c.Id, 
@@ -91,11 +89,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CanRating = false;
         }
 
-		public void Init(string messageId, string orderId, string canRate="false")
+		public void Init(string orderId, string canRate="false")
 		{
-			Init(messageId);
-
-            var ratingTypes = this.Services().Booking.GetRatingType();
+			var ratingTypes = this.Services().Booking.GetRatingType();
             RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
 			{
 				RatingTypeId = c.Id, 

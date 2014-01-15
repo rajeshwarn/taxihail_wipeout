@@ -166,7 +166,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CallboxOrderCreated.cs" />
@@ -222,7 +221,6 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
-    <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />

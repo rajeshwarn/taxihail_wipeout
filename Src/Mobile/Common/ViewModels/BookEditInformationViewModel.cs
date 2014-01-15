@@ -10,10 +10,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookEditInformationViewModel : BaseSubViewModel<Order>
     {
-		public void Init(string messageId, string order)
+		public void Init(string order)
         {
-			Init(messageId);
-
             Order = JsonSerializer.DeserializeFromString<Order>(order);
 			RideSettings = new RideSettingsViewModel();
 			RideSettings.Init(Order.Settings);
