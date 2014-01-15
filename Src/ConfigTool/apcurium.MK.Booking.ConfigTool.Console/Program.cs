@@ -22,20 +22,18 @@ namespace apcurium.MK.Booking.ConfigTool
 
 				var fullPath = Path.GetFullPath(PathConverter.Convert(ToolSettings.Default.RootDirectory));
                 var directories = Directory.GetDirectories(fullPath);
-                if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "config") ||
-                    !directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))
+                if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Cannot find the config and src folder in : " + fullPath + Environment.NewLine +
+                    Console.WriteLine("Cannot find the src folder in : " + fullPath + Environment.NewLine +
                                       "Press any key to exit...");                    
                     return 1;
                 }
 
-                var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");                                
-                var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");                
-                var common = Directory.GetDirectories(configRootFolder).Single(name => Path.GetFileName(name).ToLower().Equals("common"));
-                
-				var config = companies.Select(company => new AppConfig( company.CompanyKey ,company, src, Path.Combine(configRootFolder, company.CompanyKey ) , common)).ToArray();
+                                               
+                var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
+				var configFolders = Path.Combine(fullPath, "Config");
+				var config = companies.Select(company => new AppConfig( company.CompanyKey ,company, src, Path.Combine(configFolders, company.CompanyKey))).ToArray();
 
 				if (args.Length >= 2)
                 {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
@@ -15,14 +15,12 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath, string commonDirectoryPath)
+		public AppConfig(string name, Company company, string srcDirectoryPath, string configDirectoryPath)
         {
             Name = name;
             Company = company;
             SrcDirectoryPath = srcDirectoryPath;
-            CommonDirectoryPath = commonDirectoryPath;
 			ConfigDirectoryPath = configDirectoryPath;
-
         }
 
         private void Init()
