@@ -9,6 +9,9 @@ using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Cirrious.CrossCore;
+using TinyIoC;
+
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;

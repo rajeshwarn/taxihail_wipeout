@@ -96,22 +96,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return default(TResult);
         }
 
-        protected void QueueCommand<T>(Action<T> action) where T : class
-        {
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                try
-                {
-                    UseServiceClient(action);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
-            });
-            
-        }
-
         private ILogger _logger;
         protected ILogger Logger
         {
