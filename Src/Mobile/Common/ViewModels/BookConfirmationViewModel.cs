@@ -139,32 +139,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public AsyncCommand NavigateToRefineAddress
-		{
-			get
-			{
-				return GetCommand(() => ShowSubViewModel<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>
-				{
-						{ "apt", Order.PickupAddress.Apartment },
-						{ "ringCode", Order.PickupAddress.RingCode },
-						{ "buildingName", Order.PickupAddress.BuildingName },
-					}.ToStringDictionary(), result =>
-				{
-					if (result == null)
-						return;
-
-					Order.PickupAddress.Apartment = result.AptNumber;
-					Order.PickupAddress.RingCode = result.RingCode;
-					Order.PickupAddress.BuildingName = result.BuildingName;
-					InvokeOnMainThread(() =>
-					{
-						RaisePropertyChanged(() => AptRingCode);
-						RaisePropertyChanged(() => BuildingName);
-					});
-				}));
-			}
-		}
-
         public AsyncCommand NavigateToEditInformations
 		{
 			get

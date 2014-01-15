@@ -44,10 +44,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 
 
-		public void Init(string messageId)
+		public void Init()
         {
-			Init(messageId);
-
             LoadCreditCards();
         }
 

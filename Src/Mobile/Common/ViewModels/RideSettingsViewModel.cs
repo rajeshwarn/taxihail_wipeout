@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     };
 
 					_paymentPreferences = new PaymentDetailsViewModel();
-					_paymentPreferences.Init(Guid.NewGuid().ToString(), paymentInformation);
+					_paymentPreferences.Init(paymentInformation);
                 }
                 return _paymentPreferences;
             }
