@@ -6,7 +6,6 @@ using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.UIKit;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -16,6 +15,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PhoneService : IPhoneService
     {
+        readonly ILogger _logger;
+        readonly IMvxTouchViewPresenter _viewPresenter;
+
+        public PhoneService(ILogger logger, IMvxTouchViewPresenter viewPresenter)
+        {
+            _viewPresenter = viewPresenter;
+            _logger = logger;
+            
+        }
 
         private EKEventStore _eventStore;
 
@@ -29,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 return _eventStore;
             }
         }
-        #region IPhoneService implementation
 
         public void Call (string phoneNumber)
         {
@@ -55,25 +62,23 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");
             }
-            var presenter = TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+
             mailComposer.SetToRecipients (new [] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (subject);
             mailComposer.Finished += delegate
             {
 				//TODO: Does this work with null ?
-				presenter.ChangePresentation(new MvxClosePresentationHint(null)); 
+                _viewPresenter.ChangePresentation(new MvxClosePresentationHint(null)); 
                 if (File.Exists (errorLogPath))
                 {
                     File.Delete (errorLogPath);
                 }
             };
 
-            presenter.PresentModalViewController(mailComposer, true);
+            _viewPresenter.PresentModalViewController(mailComposer, true);
         }
 
-
-        #region IPhoneService implementation
 
 
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
@@ -88,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         }
                         else
                         {
-                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                            _logger.LogMessage("Cant save reminder. User Denied Access to Calendar Data");
                         }
                 } );
             }else{
@@ -109,24 +114,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             NSError err;
             EventStore.SaveEvent (newEvent, EKSpan.ThisEvent, out err);
             if (err != null) {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Err Saving Event : " + err);
+                _logger.LogMessage ("Err Saving Event : " + err);
             }
             else {
-                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
+                _logger.LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
             }
         }
 
-
-        #region IPhoneService implementation
 
         public bool CanUseCalendarAPI ()
         {
             return true;
         }
 
-        #endregion
-        #endregion
-        #endregion
     }
 }
 

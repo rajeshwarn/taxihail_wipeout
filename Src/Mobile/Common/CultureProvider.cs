@@ -2,13 +2,13 @@ using System;
 using System.Globalization;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class CultureProvider
     {
-        
-        public static string FormatTime(DateTime date )
+		public static string FormatTime(DateTime date )
         {
             var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
             string format = "{0:"+formatTime+"}";
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile
         public static string CultureInfoString
         {
             get{
-                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
+                var culture = Mvx.Resolve<IConfigurationManager>().GetSetting("PriceFormat");
                 if (string.IsNullOrEmpty(culture))
                 {
                     return "en-US";
