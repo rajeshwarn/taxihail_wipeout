@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             _isStarting = true;
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 
             Background.Load (window, "Assets/background_full_nologo.png", false);          
 
@@ -98,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread ( () =>        Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 
