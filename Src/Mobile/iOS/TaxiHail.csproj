@@ -9,7 +9,6 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -749,6 +748,12 @@
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
     <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
+    <BundleResource Include="Resources\server.png" />
+    <BundleResource Include="Resources\server%402x.png" />
+    <BundleResource Include="Resources\twitter_icon.png" />
+    <BundleResource Include="Resources\twitter_icon%402x.png" />
+    <BundleResource Include="Resources\facebook_icon.png" />
+    <BundleResource Include="Resources\facebook_icon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

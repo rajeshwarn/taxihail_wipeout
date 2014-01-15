@@ -8,6 +8,8 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
+using MonoTouch.ObjCRuntime;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -17,44 +19,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
         private bool _firstStart = true;
+		protected const float BottomPadding = 20f;
 
         #region Constructors
 
         public BaseViewController ()
         {
-			Init ();
+			Initialize ();
         }
         
 		public BaseViewController(IntPtr handle) 
 			: base(handle)
         {
-			Init ();
+			Initialize ();
         }
         
 		protected BaseViewController(string nibName, NSBundle bundle) 
             : base(nibName, bundle)
         {
-			Init ();
+			Initialize ();
         }
         
 #endregion
 
-	public new TViewModel ViewModel
-	{
-		get
+		public new TViewModel ViewModel
 		{
-			return (TViewModel)DataContext;
+			get
+			{
+				return (TViewModel)DataContext;
+			}
 		}
-	}
 
-	private void Init()
-	{
-		if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+		private void Initialize()
 		{
-			AutomaticallyAdjustsScrollViewInsets = false;
+			if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+			{
+				AutomaticallyAdjustsScrollViewInsets = false;
+			}
 		}
-	}
-
 
         public override void ViewWillAppear (bool animated)
         {
@@ -66,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ViewModel.Restart();
                 ViewModel.Start();
             }
-
         }
 
         public override void ViewWillDisappear (bool animated)

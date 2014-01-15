@@ -9,8 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class ResetPasswordView : BaseViewController<ResetPasswordViewModel>, INavigationView
     {    
-        public ResetPasswordView ()
-            : base("ResetPasswordView", null)
+		public ResetPasswordView () : base("ResetPasswordView", null)
         {
         }
         

@@ -13,6 +13,7 @@
                 <outlet property="btnSignIn" destination="4Fj-tf-DCU" id="kHq-0X-PtP"/>
                 <outlet property="btnSignUp" destination="kn0-uG-mWR" id="S9A-tb-uPt"/>
                 <outlet property="btnTwLogin" destination="gc1-ON-5gQ" id="5O6-sv-Qgq"/>
+                <outlet property="constraintContentViewHeight" destination="nI8-Tm-nFR" id="KxD-1k-Sge"/>
                 <outlet property="txtEmail" destination="p8r-Qe-uM1" id="UKx-th-Yi2"/>
                 <outlet property="txtPassword" destination="uHJ-ag-0kH" id="1Gd-kp-QbF"/>
                 <outlet property="view" destination="1" id="7"/>

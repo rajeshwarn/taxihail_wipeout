@@ -12,26 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
     {
-
-        #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-        public LoginView ()
-            : base("LoginView", null)
+		public LoginView () : base("LoginView", null)
         {
-
         }
-
-
-        #region INavigationView implementation
 
         public bool HideNavigationBar {
             get { return true;}
         }
-
-        #endregion
-
 
         public override void ViewDidLoad ()
         {
@@ -66,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			if (settings.FacebookEnabled)
 			{
-				btnFbLogin.SetLeftImage("Assets/Social/FB/facebook-icon.png");
+				btnFbLogin.SetLeftImage("facebook_icon.png");
 				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);
                 set.Bind(btnFbLogin)
                     .For("TouchUpInside")
@@ -76,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             if (settings.TwitterEnabled)
 			{
-				btnTwLogin.SetLeftImage("Assets/Social/TW/twitter.png");
+				btnTwLogin.SetLeftImage("twitter_icon.png");
 				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
                 set.Bind(btnTwLogin)
                     .For("TouchUpInside")
@@ -84,10 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-			btnServer.SetLeftImage("Assets/server.png");
+			btnServer.SetLeftImage("server.png");
 			btnServer.SetTitle (Localize.GetValue ("Change Server"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
-			btnServer.Hidden = true;
+			btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
@@ -111,7 +98,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Apply();
 
-		
+			// adjust contentview height
+			if (!btnServer.Hidden)
+				constraintContentViewHeight.Constant = btnServer.Frame.Bottom + BottomPadding;
+			else if (!btnTwLogin.Hidden)
+				constraintContentViewHeight.Constant = btnTwLogin.Frame.Bottom + BottomPadding;
+			else if (!btnFbLogin.Hidden)
+				constraintContentViewHeight.Constant = btnFbLogin.Frame.Bottom + BottomPadding;
+			else
+				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding;
+
             ViewModel.Load ();      
         }
 
@@ -134,8 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
             popup.Show ();
         }
-
-        #endregion
     }
 }
 
