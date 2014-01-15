@@ -29,14 +29,14 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
-            android:paddingTop="5dip"
+            android:paddingTop="15dip"
             android:paddingBottom="5dip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailConfirmationLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content" />
             <TextView
@@ -51,14 +51,14 @@
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dip"
-            android:paddingBottom="5dip">
+            android:layout_height="wrap_content">
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailRequestedLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content" />
             <TextView
@@ -80,7 +80,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailOriginLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content" />
             <TextView
@@ -102,7 +102,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailAptRingCodeLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content" />
             <TextView
@@ -124,7 +124,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/DestinationViewDestinationLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content"
                 local:MvxBind="Visibility HideDestination, Converter=InvertedVisibility" />
@@ -147,7 +147,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailPickupDateLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content" />
             <TextView
@@ -169,7 +169,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailStatusLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:gravity="right" />
             <TextView
@@ -190,7 +190,7 @@
             <TextView
                 style="@style/BlackTextLabel"
                 android:text="@string/HistoryDetailAuthorizationLabel"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:gravity="right"
                 android:layout_height="wrap_content"
                 local:MvxBind="Visibility AuthorizationNumber, Converter=HasValueToVisibilityConverter" />
@@ -211,7 +211,6 @@
             android:paddingLeft="20dip"
             android:paddingRight="20dip">
             <Button
-                local:ButtonStyle="Green"
                 style="@style/ButtonNoBgGreenStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
