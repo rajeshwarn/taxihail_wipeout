@@ -196,7 +196,7 @@
     <value>Sign In</value>
   </data>
   <data name="SignUpButton" xml:space="preserve">
-    <value>Create a free account</value>
+    <value>Register</value>
   </data>
   <data name="TermsAndConditionsLabel" xml:space="preserve">
     <value>Terms and Conditions</value>

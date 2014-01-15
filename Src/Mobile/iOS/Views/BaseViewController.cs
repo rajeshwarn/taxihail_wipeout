@@ -5,7 +5,6 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
@@ -23,27 +22,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         public BaseViewController ()
         {
+			Init ();
         }
         
 		public BaseViewController(IntPtr handle) 
 			: base(handle)
         {
+			Init ();
         }
         
 		protected BaseViewController(string nibName, NSBundle bundle) 
             : base(nibName, bundle)
         {
+			Init ();
         }
         
 #endregion
 
-		public new TViewModel ViewModel
+	public new TViewModel ViewModel
+	{
+		get
 		{
-			get
-			{
-				return (TViewModel)DataContext;
-			}
+			return (TViewModel)DataContext;
 		}
+	}
+
+	private void Init()
+	{
+		if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+		{
+			AutomaticallyAdjustsScrollViewInsets = false;
+		}
+	}
+
 
         public override void ViewWillAppear (bool animated)
         {

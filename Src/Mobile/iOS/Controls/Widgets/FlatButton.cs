@@ -16,18 +16,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public FlatButton (IntPtr handle) : base (handle)
         {
-			ApplyTo ();
+			ApplyDefaultStyle ();
         }
 
         public FlatButton (RectangleF frame) : base (frame)
         {
-			ApplyTo ();
+			ApplyDefaultStyle ();
         }
         public FlatButton ()
         {
-			ApplyTo ();
+			ApplyDefaultStyle ();
         }
-
 
 		IDictionary<uint, UIColor> _fillColors = new Dictionary<uint, UIColor>();
         public void SetFillColor (UIColor color, UIControlState state)
@@ -39,10 +38,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public void SetStrokeColor (UIColor color, UIControlState state)
         {
 			_strokeColors[(uint)state] = color;
-
         }
 
-		private void ApplyTo()
+		private void ApplyDefaultStyle()
 		{
 			var blue = UIColor.FromRGB(0, 71, 133);
 
@@ -84,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var center = (Frame.Width - _leftImage.Size.Width - 10 - 3) / 2;
                 TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
             }
-
         }
 
         public override bool Enabled {
@@ -116,7 +113,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 SetNeedsDisplay();
             }
         }
-
 
         void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
         {
