@@ -71,18 +71,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public void Ctor()
         {
-            TextColorLine1 = new Color(50, 50, 50, 255);
+			TextColorLine1 = Resources.GetColor (Resource.Color.listitem_text_line1_color);
         }
 
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
 
-            var gray = new Color(86, 86, 86, 255);
+			var TextColorLine2 = Resources.GetColor (Resource.Color.listitem_text_line2_color);
 
-            var textX = ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
+            //var textX = ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
+			var textX = 8.ToPixels();
 
-            if (!ShowPlusSign && Icon.HasValue())
+            if (ShowPlusSign || Icon.HasValue())
             {
                 textX = 40.ToPixels();
             }
@@ -90,30 +91,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (!TextLine1.IsNullOrEmpty())
             {
                 DrawText(canvas, TextLine1, textX, 21.ToPixels(), 16.ToPixels(), AppFonts.Bold, TextColorLine1);
-                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, gray);
+                DrawText(canvas, TextLine2 ?? "", textX, 41.ToPixels(), 15.ToPixels(), AppFonts.Regular, TextColorLine2);
             }
             else
             {
-                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), AppFonts.Regular, gray);
+                DrawText(canvas, TextLine2 ?? "", textX, 32.ToPixels(), 16.ToPixels(), AppFonts.Regular, TextColorLine2);
             }
 
             if (ShowRightArrow)
-            {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow),
+            {                
+				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow),
                     Width - (20.ToPixels()), 16.ToPixels(), null);
             }
 
             if (ShowPlusSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 6.ToPixels(),
-                    10.ToPixels(), null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_location), 6.ToPixels(),
+                    15.ToPixels(), null);
             }
             else if (Icon.HasValue())
             {
                 var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
 
 
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 10.ToPixels(), null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 15.ToPixels(), null);
             }
 
 

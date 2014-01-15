@@ -170,7 +170,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                   Email = email;
                                                                                                               }
                 }));
-
             }
         }
 
