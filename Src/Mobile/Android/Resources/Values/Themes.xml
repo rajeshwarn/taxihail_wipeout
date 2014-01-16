@@ -10,6 +10,7 @@
 	
 	<color name="button_border_color">#000000</color>
 	<color name="button_background_color">#004785</color>
+	<color name="button_text_color">#ffffff</color>
 	<color name="button_pressed_background_color">#0469c2</color>
 
   	<color name="button_main_background_color">#004f94</color>
@@ -87,7 +88,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:textColor">@color/edit_text_foreground_color</item>
+        <item name="android:textColor">@color/button_text_color</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>        
         <item name="android:textSize">20dip</item>
         <item name="android:background">@drawable/button_selector</item>
