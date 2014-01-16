@@ -51,8 +51,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// navigation bar
 			if (UIHelper.IsOS7orHigher) {
 				UINavigationBar.Appearance.BarTintColor = UIColor.White;
+				UINavigationBar.Appearance.TintColor = UIColor.FromRGB (44, 44, 44); //in ios7, this is for the back chevron
 			} else {
-				UINavigationBar.Appearance.TintColor = UIColor.White;
+				UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
+
+				//change the default ios6 back button look to the ios7 look
+				var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
+				var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 8, 15, 0));
+				UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
+				UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
 			}
 
 			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
@@ -62,26 +69,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 				TextShadowOffset = new UIOffset(0,0)
 			});
 
-			var redTextColor = new UITextAttributes () {
+			var buttonTextColor = new UITextAttributes () {
 				Font = UIFont.SystemFontOfSize (18),
 				TextColor = UIColor.FromRGB (44, 44, 44),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
-			var selectedRedTextColor = new UITextAttributes () {
+			var selectedButtonTextColor = new UITextAttributes () {
 				Font = UIFont.SystemFontOfSize (18),
 				TextColor = UIColor.FromRGB (44, 44, 44).ColorWithAlpha(0.5f),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
 
-			UIBarButtonItem.Appearance.SetTitleTextAttributes(redTextColor, UIControlState.Normal);
-			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedRedTextColor, UIControlState.Highlighted);
-			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedRedTextColor, UIControlState.Selected);
-
-			var clearBackground = UIImage.FromFile("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
-			UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
-			UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
 		}
 
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)

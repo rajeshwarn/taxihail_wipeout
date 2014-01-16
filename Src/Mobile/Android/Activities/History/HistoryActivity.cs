@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_HistoryList; }
+            get { return Resource.String.View_History; }
         }
 
         protected override void OnCreate(Bundle bundle)

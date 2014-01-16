@@ -496,11 +496,5 @@
 "LoginViewEmailPlaceHolder"="Email";
 "LocationDetailRingCodeLabel"="Entry code";
 "View_MyLocations"="Locations";
-"HistoryDetailPickupLabel"="Pickup:";
-"LoadingText"="Loading...";
-"NoAptText"="No apt.";
-"DestinationNotSpecifiedText"="Destination not specified";
-"SendReceipt"="Send receipt";
-"HistoryDetailOrderLabel"="Order:";
-"BuildingNameText"="Not specified";
-"NoRingCodeText"="No code";
+"HistoryViewNoHistoryLabel"="No booking history";
+"View_History"="History";

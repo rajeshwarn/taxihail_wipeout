@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using TinyIoC;
 using TinyMessenger;
-using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -46,10 +46,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			navBar.TopItem.Title = string.Empty;
 
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-      
-                               
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
+                       
+            this.Services().MessengerHub.Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
+            this.Services().MessengerHub.Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
             _dateTimePicker = new DateTimePicker (CultureProvider.CultureInfoString);
             _dateTimePicker.ShowPastDate = false;
 
@@ -259,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void OnStatusCloseRequested (StatusCloseRequested msg)
         {
-			TinyIoCContainer.Current.Resolve<IBookingService> ().ClearLastOrder();
+            this.Services().Booking.ClearLastOrder();
             NavigationController.NavigationBar.Hidden = true;
             NavigationController.PopToRootViewController (true);
             ViewModel.Reset ();

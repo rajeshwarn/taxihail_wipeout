@@ -360,7 +360,7 @@
   <data name="ChangeBookingSettingsButton" xml:space="preserve">
     <value>Change booking settings</value>
   </data>
-  <data name="NoHistoryLabel" xml:space="preserve">
+  <data name="HistoryViewNoHistoryLabel" xml:space="preserve">
     <value>No booking history</value>
   </data>
   <data name="LocationNoHistory" xml:space="preserve">
@@ -954,7 +954,7 @@
   <data name="View_BookSettingMenu" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="View_HistoryList" xml:space="preserve">
+  <data name="View_History" xml:space="preserve">
     <value>History</value>
   </data>
   <data name="View_MyLocations" xml:space="preserve">

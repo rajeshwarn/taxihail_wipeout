@@ -66,12 +66,10 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
             android:visibility="invisible" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:orientation="horizontal">
             <Button
                 local:MvxBind="Click SignUp"
@@ -93,11 +91,11 @@
                 android:layout_height="@dimen/HeightButton"
                 style="@style/ButtonMainStyle" />
         </LinearLayout>
+    <!-- Unknown spacer here? -->
         <View
-            android:layout_height="@dimen/VerticalPadding"
+            android:layout_height="6dip"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:id="@+id/FacebookButton"
             local:MvxBind="Click  LoginFacebook"
@@ -110,8 +108,7 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:id="@+id/TwitterButton"
             local:MvxBind="Click  LoginTwitter"
@@ -123,12 +120,12 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"
             android:layout_gravity="center|right"
+            local:MvxBind="Click  Cancel"
             android:id="@+id/ServerButton"
             android:text="Change Server"
             android:drawablePadding="-2dip"
