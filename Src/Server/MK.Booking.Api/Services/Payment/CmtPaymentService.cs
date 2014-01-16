@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -259,12 +260,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 // Determine the root path to the app 
                 //var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
                 
-                var response = CmtMobileServiceClient.Post(new PairingRequest
+                var pairingRequest = new PairingRequest
                 {
                     AutoTipAmount = request.AutoTipAmount,
                     AutoTipPercentage = request.AutoTipPercentage,
                     AutoCompletePayment = true,
-                    //CallbackUrl = new Uri(root + "/api/payments/cmt/callback/" + request.OrderId).AbsoluteUri,
+                    CallbackUrl = "",
                     CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.FirstName,
@@ -272,7 +273,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
                     Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = request.CardToken
-                });
+                };
+
+
+                _logger.LogMessage( "Pairing request : " + pairingRequest.ToJson());
+                var response = CmtMobileServiceClient.Post(pairingRequest);
+                _logger.LogMessage("Pairing response : " + response.ToJson());
+                
                     
                 // wait for trip to be updated
                 var watch = new Stopwatch();
@@ -285,6 +292,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
                     {
+                        _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
                         throw new TimeoutException("Could not be paired with vehicle");
                     }
                 }
