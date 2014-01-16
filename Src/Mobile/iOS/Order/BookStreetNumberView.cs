@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views;
@@ -32,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
         }
-		
-      
 
         public override void ViewDidLoad ()
         {
@@ -105,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("StreetNumberTitle"), true);
+			NavigationItem.Title = Localize.GetValue("StreetNumberTitle");
         }
 
     }

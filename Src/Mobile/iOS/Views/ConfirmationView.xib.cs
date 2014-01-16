@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_BookingDetail"), true);
+			NavigationItem.Title = Localize.GetValue("View_BookingDetail");
           
         }
     }

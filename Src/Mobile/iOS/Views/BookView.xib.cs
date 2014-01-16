@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -20,7 +19,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class BookView : MvxViewController , INavigationView
+    public partial class BookView : MvxViewController
     {
         private PanelMenuView _menu;
         private DateTimePicker _dateTimePicker;
@@ -40,19 +39,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 		}
 
-        #region INavigationView implementation
-
-        public bool HideNavigationBar {
-            get { return true;}
-        }
-
-        #endregion
-
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
             navBar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
-            navBar.TopItem.TitleView = new TitleView (null, "", false);
+			navBar.TopItem.Title = string.Empty;
 
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
       

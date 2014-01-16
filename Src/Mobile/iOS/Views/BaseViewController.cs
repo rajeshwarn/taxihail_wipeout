@@ -5,7 +5,6 @@ using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
@@ -45,9 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private void Initialize()
 		{
-			if (this.RespondsToSelector(new Selector("setAutomaticallyAdjustsScrollViewInsets:")))
+			// Preserve iOS6 Behavior for compatibility reasons
+			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("automaticallyAdjustsScrollViewInsets")))
 			{
 				AutomaticallyAdjustsScrollViewInsets = false;
+			}
+
+			// To have the views under the nav bar and not under it
+			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("edgesForExtendedLayout")))
+			{
+				this.EdgesForExtendedLayout = UIRectEdge.Bottom;
 			}
 		}
 
@@ -69,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 ViewModel.Restart();
                 ViewModel.Start(firstStart: false);
             }
-
         }
 
         public override void ViewWillDisappear (bool animated)
@@ -84,8 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications ();
 
-            Background.LoadForRegularView (View);
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
@@ -134,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (activeView == null)
                 return;
             
-            var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+			var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
                 return;
             

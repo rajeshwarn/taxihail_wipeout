@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
 				AppButtons.FormatStandardButton((GradientButton)btnUnpair, Localize.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
 
-                NavigationItem.TitleView = new TitleView(null, Localize.GetValue("GenericTitle"), true);
+				NavigationItem.Title = Localize.GetValue("GenericTitle");
                                 
                 View.BringSubviewToFront (bottomBar);
 

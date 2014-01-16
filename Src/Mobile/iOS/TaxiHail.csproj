@@ -331,9 +331,7 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\TwoLinesCell.cs" />
     <Compile Include="InfoTableView\SingleLineCell.cs" />
-    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
     <Compile Include="InfoTableView\TableViewDelegate.cs" />
     <Compile Include="InfoTableView\TableViewDataSource.cs" />
     <Compile Include="Animations\SlideViewAnimation.cs" />
@@ -375,7 +373,6 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\INavigationView.cs" />
     <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
     <Compile Include="Views\HistoryTabView.xib.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
@@ -390,12 +387,6 @@
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
     <Compile Include="PlatformIntegration\PhoneService.cs" />
-    <Compile Include="Views\LocationsTabView.xib.cs">
-      <DependentUpon>LocationsTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LocationsTabView.xib.designer.cs">
-      <DependentUpon>LocationsTabView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\LocationDetailView.xib.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
@@ -407,7 +398,6 @@
       <DependentUpon>TutorialView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UndelinedLabel.cs" />
-    <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Views\BookViewActionsView.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
@@ -509,7 +499,21 @@
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
+    <Compile Include="Views\MyLocationsView.cs" />
+    <Compile Include="Views\MyLocationsView.designer.cs">
+      <DependentUpon>MyLocationsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Extensions\UITableViewExtensions.cs" />
+    <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
+    <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
+    <Compile Include="Controls\Widgets\Line.cs" />
+    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
+    <Compile Include="InfoTableView\TwoLinesCell.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -534,7 +538,6 @@
     <InterfaceDefinition Include="Order\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\HistoryTabView.xib" />
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
-    <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
@@ -553,6 +556,9 @@
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
+    <InterfaceDefinition Include="Views\MyLocationsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -746,8 +752,6 @@
     <BundleResource Include="Assets\Social\TW\back%402x.png" />
     <BundleResource Include="Assets\Social\TW\forward.png" />
     <BundleResource Include="Assets\Social\TW\forward%402x.png" />
-    <BundleResource Include="Resources\th-logo.png" />
-    <BundleResource Include="Resources\th-logo%402x.png" />
     <BundleResource Include="Assets\Social\FB\facebook-icon.png" />
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
@@ -758,6 +762,19 @@
     <BundleResource Include="Resources\twitter_icon%402x.png" />
     <BundleResource Include="Resources\facebook_icon.png" />
     <BundleResource Include="Resources\facebook_icon%402x.png" />
+    <BundleResource Include="Resources\add_location.png" />
+    <BundleResource Include="Resources\add_location%402x.png" />
+    <BundleResource Include="Resources\favorites.png" />
+    <BundleResource Include="Resources\favorites%402x.png" />
+    <BundleResource Include="Resources\history.png" />
+    <BundleResource Include="Resources\history%402x.png" />
+    <BundleResource Include="Resources\right_arrow.png" />
+    <BundleResource Include="Resources\right_arrow%402x.png" />
+    <BundleResource Include="Resources\th_logo.png" />
+    <BundleResource Include="Resources\th_logo%402x.png" />
+    <BundleResource Include="Assets\Logo.png" />
+    <BundleResource Include="Assets\Logo%402x.png" />
+    <BundleResource Include="Resources\clearButton.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

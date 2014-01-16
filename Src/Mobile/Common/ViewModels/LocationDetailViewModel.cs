@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_address = new Address();
 			IsNew = true;
 
-			if (!string.IsNullOrEmpty (address)) 
+			if (!string.IsNullOrEmpty (address))
 			{
 				_address = address.FromJson<Address>();
 				IsNew = false;

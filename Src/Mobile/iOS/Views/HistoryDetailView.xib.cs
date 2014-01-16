@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             NavigationItem.HidesBackButton = false;
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_HistoryDetail"), true);
+			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
 
             lblConfirmationNo.Text = Localize.GetValue("HistoryDetailConfirmationLabel");
             lblRequested.Text = Localize.GetValue("HistoryDetailRequestedLabel");

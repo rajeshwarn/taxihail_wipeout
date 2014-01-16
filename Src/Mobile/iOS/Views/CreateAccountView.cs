@@ -10,19 +10,31 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
+<<<<<<< mine
+{
+	public partial class CreateAccountView : BaseViewController<CreateAccountViewModel>
+=======
 {
 	[MvxViewFor(typeof(CreateAccountViewModel))]
 	public partial class CreateAccountView : BaseViewController<CreateAccountViewModel>
+>>>>>>> theirs
     {
         public CreateAccountView() 
 			: base("CreateAccountView", null)
         {
         }
-		
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-			
+
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
             lblEmail.Text = Localize.GetValue("CreateAccountEmail");
@@ -77,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Apply ();
 
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_SignUp"), true);
+			NavigationItem.Title = Localize.GetValue("View_SignUp");
 
             View.ApplyAppFont ();
         }

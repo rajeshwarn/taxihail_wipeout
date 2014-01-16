@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         UIImage _leftImage;
         private const float RadiusCorner = 2;
+		private const float StandardImagePadding = 10f;
+		private const float StandardImageWidth = 35f;
 
         public FlatButton (IntPtr handle) : base (handle)
         {
@@ -42,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void ApplyDefaultStyle()
 		{
-			var blue = UIColor.FromRGB(0, 71, 133);
+			var blue = UIColor.FromRGB(0, 72, 129);
 
 			SetFillColor(blue, UIControlState.Normal);
 			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
@@ -76,10 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 SetImage(_leftImage, UIControlState.Normal);
                 HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-                ImageEdgeInsets = new UIEdgeInsets(0.0f, 10.0f, 0.0f, 0.0f);
+				var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; //calculate the left padding for this image to have images centered instead of left-aligned
+				ImageEdgeInsets = new UIEdgeInsets(0.0f, leftPaddingForThisImage, 0.0f, 0.0f);
                 //compute the left margin for the text and center it
                 var halfTextSize = TitleLabel.Frame.Width / 2; 
-                var center = (Frame.Width - _leftImage.Size.Width - 10 - 3) / 2;
+				var center = (Frame.Width - _leftImage.Size.Width - StandardImagePadding - 3) / 2;
                 TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
             }
         }
