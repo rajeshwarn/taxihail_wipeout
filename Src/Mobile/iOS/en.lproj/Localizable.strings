@@ -496,3 +496,5 @@
 "LoginViewEmailPlaceHolder"="Email";
 "LocationDetailRingCodeLabel"="Entry code";
 "View_MyLocations"="Locations";
+"HistoryViewNoHistoryLabel"="No booking history";
+"View_History"="History";
