@@ -66,12 +66,10 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
             android:visibility="invisible" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:orientation="horizontal">
             <Button
                 local:MvxBind="Click SignUp"
@@ -94,10 +92,9 @@
                 style="@style/ButtonMainStyle" />
         </LinearLayout>
         <View
-            android:layout_height="@dimen/VerticalPadding"
+            android:layout_height="3dip"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:id="@+id/FacebookButton"
             local:MvxBind="Click  LoginFacebook"
@@ -110,8 +107,7 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:id="@+id/TwitterButton"
             local:MvxBind="Click  LoginTwitter"
@@ -123,8 +119,7 @@
         <View
             android:layout_height="@dimen/VerticalPadding"
             android:layout_width="fill_parent"
-            android:gravity="center"
-            android:visibility="invisible" />
+            android:gravity="center" />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"

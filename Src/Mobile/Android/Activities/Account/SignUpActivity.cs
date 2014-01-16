@@ -10,6 +10,10 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -28,87 +32,94 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			DroidResources.Initialize (typeof (Resource.Layout));
 
 			SetContentView(Resource.Layout.View_SignUp);
-//			EditText password = FindViewById<EditText>(Resource.Id.SignUpPassword);
-//			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
-//
-//			password = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword);
-//			password.SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);					
-//
-			LinearLayout mainContainer = FindViewById<LinearLayout>(Resource.Id.mainContainer);
-			DialogListView signMenu = new DialogListView(this);
-			signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
-			mainContainer.AddView(signMenu, 3);
-			signMenu.Root = InitializeRoot();
-			signMenu.VerticalScrollBarEnabled = false;
-			signMenu.SetScrollContainer (false);
 
+			ViewGroup mainContainer = (ViewGroup)FindViewById<LinearLayout>(Resource.Id.mainContainer);
+
+			SetDialog (mainContainer, 3);
         }	
 
-		RootElement InitializeRoot()
+		public void SetDialog(ViewGroup mainContainer, int positionInMainContainer)
 		{
-			RootElement root = new RootElement("Elements");
-			Section section = new Section("Section");
+			DialogListView signMenu = new DialogListView(this);
+			signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
+			signMenu.Root = InitializeRoot(signMenu);
+			signMenu.SetScrollContainer (false);
+			mainContainer.AddView(signMenu, positionInMainContainer);
+//			SetPasswordTypeface (mainContainer);
 
-			// The one and only example:
-			//https://github.com/slodge/Android.Dialog/blob/master/DialogSampleApp/DialogListViewActivity.cs
+		}
 
-			// Make an helper:
-			// Create the child with parent, position within, size, other, remove scroll (clean up), layout to use, etc.
-			// , section.
-			// Try to attach binding
+//		public void SetPasswordTypeface(ViewGroup container)
+//		{
+//			for (int i=0; i<((ViewGroup)container).ChildCount; ++i) {
+//				View nextChild = ((ViewGroup)container).GetChildAt (i);
+//				if (typeof(ViewGroup).IsInstanceOfType (nextChild)) {
+//					SetPasswordTypeface ((ViewGroup)nextChild);
+//				} else {
+//					// Check if it's an EditText with attribute for password
+//					if (typeof(EditText).IsInstanceOfType (nextChild)) { // its a password
+//						((EditText)nextChild).SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
+//					}
+//				}
+//			}
+//		}
 
-			section = new Section () {
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-				new EntryElement (null, "Email", null, "EditTextEntry"),
-			};
+		RootElement InitializeRoot(DialogListView dlv)
+		{
+			RootElement root = new RootElement();
 
-			var Email = new EntryElement () {
-				Caption = null, 
-				Value = null,
-				LayoutName = "EditTextEntry",
-				Hint = "Email",
-				Password = false
-			};
+			Section section = new Section ();
 
-			var Name = new EntryElement () {
-				Caption = null, 
-				Value = null,
-				LayoutName = "EditTextEntry",
-				Hint = "Name",
-				Password = false
-			};
+			section = new Section ();
 
-			var Phone = new EntryElement () {
-				Caption = null, 
-				Value = null,
-				LayoutName = "EditTextEntry",
-				Hint = "Phone",
-				Password = false
-			};
+			var Email = new TaxiHailEntryElement (Localize ("CreateAccountEmail"), "DialogTop",  
+			                                      (s, e) => { 
+				ViewModel.Data.Email = ((EntryElement)s).Value; 
+			});
 
-			var Password = new EntryElement () {
-				Caption = null, 
-				Value = null,
-				LayoutName = "EditTextEntry",
-				Hint = "Password",
-				Password = true
-			};
+			var Name = new TaxiHailEntryElement (Localize ("CreateAccountFullName"), "DialogCenter",  
+			                                     (s, e) => { 
+				ViewModel.Data.Name = ((EntryElement)s).Value; 
+			});
 
-			var PasswordConfirm = new EntryElement () {
-				Caption = null, 
-				Value = null,
-				LayoutName = "EditTextEntry",
-				Hint = "Confirm Password",
-				Password = true
-			};
+			var Phone = new TaxiHailEntryElement (Localize ("CreateAccountPhone"), "DialogCenter",  
+			                                      (s, e) => { 
+				ViewModel.Data.Phone = ((EntryElement)s).Value; 
+			});
 
-			root.Add(section);
+			var Password = new TaxiHailEntryElement (Localize ("CreateAccountPassword"), "DialogCenter",  
+			                                         (s, e) => { 
+				ViewModel.Data.Password = ((EntryElement)s).Value; 
+			}, true);
+
+			var PasswordConfirm = new TaxiHailEntryElement (Localize ("CreateAccountPasswordConfrimation"), "DialogBottom",  
+			                                                (s, e) => {
+				ViewModel.ConfirmPassword = ((EntryElement)s).Value;
+			}, true);
+
+			section.Add (new Element[] { Email, Name, Phone });
+
+			if (!ViewModel.HasSocialInfo) {
+				section.Add (new Element[] { Password, PasswordConfirm });
+			}
+
+			root.Add (section);
 
 			return root;
+		}
+
+		public class TaxiHailEntryElement: EntryElement
+		{
+			public TaxiHailEntryElement(string hint, string layoutName, EventHandler action, bool isPassword = false, string prePopulatedWith = null):base(null,hint,prePopulatedWith, layoutName)
+			{
+				Password = isPassword;
+				ValueChanged += action;
+			}
+		}
+
+		private string Localize(string value)
+		{
+			return TinyIoCContainer.Current.Resolve<ILocalization> () [value];
 		}
     }
 }
