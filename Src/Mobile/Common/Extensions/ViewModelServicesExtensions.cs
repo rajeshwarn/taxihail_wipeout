@@ -3,64 +3,72 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using TinyMessenger;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class ViewModelServicesExtensions
     {
-        public static ServicesExtensionPoint Services(this BaseViewModel viewModel)
+		public static ServicesExtensionPoint Services(this IMvxViewModel viewModel)
         {
-            return new ServicesExtensionPoint(viewModel);
+            return new ServicesExtensionPoint();
         }
+
+		public static ServicesExtensionPoint Services(this IMvxView view)
+		{
+			return new ServicesExtensionPoint();
+		}
     }
 
     public class ServicesExtensionPoint
     {
-        private readonly BaseViewModel _viewModel;
-
-        public ServicesExtensionPoint(BaseViewModel viewModel)
+        readonly TinyIoCContainer _container;
+        public ServicesExtensionPoint()
         {
-            _viewModel = viewModel;
+            _container = TinyIoCContainer.Current;
         }
 
-        public IConfigurationManager Config { get { return _viewModel.Container.Resolve<IConfigurationManager>(); } }
+        public IConfigurationManager Config { get { return _container.Resolve<IConfigurationManager>(); } }
 
-        public IMessageService Message { get { return _viewModel.Container.Resolve<IMessageService>(); } }
+        public IMessageService Message { get { return _container.Resolve<IMessageService>(); } }
 
-        public ILocalization Localize { get { return _viewModel.Container.Resolve<ILocalization>(); } }
+        public ILocalization Localize { get { return _container.Resolve<ILocalization>(); } }
 
-        public ITinyMessengerHub MessengerHub { get { return _viewModel.Container.Resolve<ITinyMessengerHub>(); } }
+        public ITinyMessengerHub MessengerHub { get { return _container.Resolve<ITinyMessengerHub>(); } }
 
-        public IAppSettings Settings { get { return _viewModel.Container.Resolve<IAppSettings>(); } }
+        public IAppSettings Settings { get { return _container.Resolve<IAppSettings>(); } }
 
-        public IPhoneService Phone { get { return _viewModel.Container.Resolve<IPhoneService>(); } }
+        public IPhoneService Phone { get { return _container.Resolve<IPhoneService>(); } }
 
-        public AbstractLocationService Location { get { return _viewModel.Container.Resolve<AbstractLocationService>(); } }
+        public AbstractLocationService Location { get { return _container.Resolve<AbstractLocationService>(); } }
 
-        public IBookingService Booking { get { return _viewModel.Container.Resolve<IBookingService>(); } }
+        public IBookingService Booking { get { return _container.Resolve<IBookingService>(); } }
 
-        public ICacheService Cache { get { return _viewModel.Container.Resolve<ICacheService>(); } }
+        public ICacheService Cache { get { return _container.Resolve<ICacheService>(); } }
 
-        public ICacheService AppCache { get { return _viewModel.Container.Resolve<ICacheService>("AppCache"); } }
+        public ICacheService AppCache { get { return _container.Resolve<ICacheService>("AppCache"); } }
 
-        public IAppSettings AppSettings { get { return _viewModel.Container.Resolve<IAppSettings>(); } }
+        public IAppSettings AppSettings { get { return _container.Resolve<IAppSettings>(); } }
 
-        public IApplicationInfoService ApplicationInfo { get { return _viewModel.Container.Resolve<IApplicationInfoService>(); } }
+        public IApplicationInfoService ApplicationInfo { get { return _container.Resolve<IApplicationInfoService>(); } }
 
-        public IGeolocService Geoloc { get { return _viewModel.Container.Resolve<IGeolocService>(); } }
+        public IGeolocService Geoloc { get { return _container.Resolve<IGeolocService>(); } }
 
-        public IAccountService Account { get { return _viewModel.Container.Resolve<IAccountService>(); } }
+        public IAccountService Account { get { return _container.Resolve<IAccountService>(); } }
 
-        public IPaymentService Payment { get { return _viewModel.Container.Resolve<IPaymentService>(); } }
+        public IPaymentService Payment { get { return _container.Resolve<IPaymentService>(); } }
 
-        public ITutorialService Tutorial { get { return _viewModel.Container.Resolve<ITutorialService>(); } }
+        public ITutorialService Tutorial { get { return _container.Resolve<ITutorialService>(); } }
 
-        public ITermsAndConditionsService Terms { get { return _viewModel.Container.Resolve<ITermsAndConditionsService>(); } }
+        public ITermsAndConditionsService Terms { get { return _container.Resolve<ITermsAndConditionsService>(); } }
 
-        public IPushNotificationService PushNotification { get { return _viewModel.Container.Resolve<IPushNotificationService>(); } }
+        public IPushNotificationService PushNotification { get { return _container.Resolve<IPushNotificationService>(); } }
 
-        public IPackageInfo PackageInfo { get { return _viewModel.Container.Resolve<IPackageInfo>(); } }
+        public IPackageInfo PackageInfo { get { return _container.Resolve<IPackageInfo>(); } }
 
-		public IVehicleService Vehicle { get { return _viewModel.Container.Resolve<IVehicleService>(); } }
+        public IVehicleService Vehicle { get { return _container.Resolve<IVehicleService>(); } }
     }
 }
