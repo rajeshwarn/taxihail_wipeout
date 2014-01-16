@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <apcurium.mk.booking.mobile.client.controls.EditTextEntry
-        android:id="@+id/dialog_ValueField"
+  <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+      android:id="@+id/dialog_ValueField"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/HeightEditText"
         android:background="@drawable/dialog_center"

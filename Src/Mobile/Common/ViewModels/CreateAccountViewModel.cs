@@ -3,27 +3,19 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
-		readonly IFacebookService _facebookService;
 
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
-		public CreateAccountViewModel()
-		{
-			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
-		}
 
         public new void Init(string data)
 		{
@@ -49,15 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    return (false);
 		}
 
-		public AsyncCommand Cancel {
-		get {
-				return GetCommand (() => {
-					Close();
-				});
-			}
-		}	
-
-        public AsyncCommand CreateAccount
+		public AsyncCommand CreateAccount
 		{
 			get
 			{

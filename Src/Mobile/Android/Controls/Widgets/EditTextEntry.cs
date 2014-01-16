@@ -1,12 +1,10 @@
 using System;
 using Android.Content;
-using Android.Graphics;
 using Android.Runtime;
-using Android.Text;
 using Android.Util;
 using Android.Widget;
 
-namespace apcurium.MK.Booking.Mobile.Client.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class EditTextEntry : EditText
 	{
