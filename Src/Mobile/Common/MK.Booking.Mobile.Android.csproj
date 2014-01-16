@@ -297,6 +297,8 @@
     <Compile Include="Extensions\ICommandExtensions.cs" />
     <Compile Include="IoC\ViewModelLocator.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
+    <Compile Include="AppServices\AuthException.cs" />
+    <Compile Include="AppServices\AuthFailure.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

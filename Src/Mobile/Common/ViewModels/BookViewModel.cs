@@ -101,15 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (! _useExistingOrder ) 
             {
-                var tutorialWasDisplayed = this.Services().AppCache.Get<string>("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty() || !tutorialWasDisplayed.SoftEqual(this.Services().Account.CurrentAccount.Email))
-                {
-                    Task.Run( () => Pickup.RequestCurrentLocationCommand.Execute());
-                }
-                else
-                {
-                    Pickup.RequestCurrentLocationCommand.Execute();            
-                }
+                Pickup.RequestCurrentLocationCommand.Execute();
             }
             else
             {                
@@ -197,12 +189,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void CheckVersion()
         {
-            //The 2 second delay is required because the view might not be created.
-            await Task.Delay(2000);
-            if (this.Services().Account.CurrentAccount != null)
-            {
-                this.Services().ApplicationInfo.CheckVersionAsync();
-            }
+            await Task.Delay(1000);
+            this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
         void AddressChanged(object sender, EventArgs e)

@@ -10,6 +10,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using Cirrious.CrossCore;
 using TinyIoC;
+using apcurium.MK.Common.Enumeration;
 
 
 #if IOS
@@ -293,20 +294,41 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return response;
         }
 
-        public Account GetAccount (string email, string password)
+		public async Task<Account> SignIn (string email, string password)
         {
-            try {
-                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.Authenticate (email, password));
+			Logger.LogMessage("SignIn with server {0}", _appSettings.ServiceUrl);
+            try 
+			{
+				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service
+					.Authenticate (email, password),
+					error => { /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
-                return GetAccount (true);
-            } catch (Exception ex) {
-				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
-					var title = _localize["NoConnectionTitle"];
-					var msg = _localize["NoConnectionMessage"];
-					_messageService.ShowMessage (title, msg);
-					return null;
-				}
-				throw;
+                return await GetAccount (false);
+            }
+            catch(WebException e)
+            {
+                // Happen when device is not connected
+                throw new AuthException("Network error", AuthFailure.NetworkError, e);
+            }
+            catch(WebServiceException e)
+            {
+                if (e.StatusCode == (int)HttpStatusCode.NotFound)
+                {
+                    throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
+                }
+                else if (e.StatusCode == (int)HttpStatusCode.Unauthorized)
+                {
+                    throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                }
+                throw;
+            }
+            catch (Exception e)
+            {
+                if(e.Message == AuthenticationErrorCode.AccountDisabled)
+                {
+                    throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
+                }
+                throw;
             }
         }
 
@@ -325,7 +347,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 				SaveCredentials (await authResponse);
 
-                return GetAccount (false);
+                //TODO: refactor to async
+                var account = GetAccount (false);
+                account.Wait();
+                return account.Result;
 
 			} catch(Exception e) {
 				Logger.LogError(e);
@@ -341,31 +366,41 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials (authResponse);
 
                 parameters.Add ("credential", authResponse);
-                return GetAccount (false);
+                //TODO: refactor to async
+                var account = GetAccount (false);
+                account.Wait();
+                return account.Result;
             } catch {
                 return null;
             }
         }
 
-        private Account GetAccount (bool showInvalidMessage)
+		private async Task<Account> GetAccount (bool showInvalidMessage)
         {
             Account data = null;
 
-            try {
+            try
+			{
                 Cache.Clear (HistoryAddressesCacheKey);
                 Cache.Clear (FavoriteAddressesCacheKey);
 
-                var account = UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount ());
-                if (account != null) {
+				var account = await UseServiceClient<IAccountServiceClient, Account>(service => service.GetMyAccount ());
+                if (account != null)
+				{
                     CurrentAccount = account;
                     data = account;
                 }
                 
-            } catch (WebException ex) {
+            }
+			catch (WebException ex)
+			{
 				Mvx.Resolve<IErrorHandler>().HandleError (ex);
                 return null;
-			} catch{
-                if (showInvalidMessage) {
+			}
+			catch
+			{
+                if (showInvalidMessage)
+				{
 					var title = _localize["InvalidLoginMessageTitle"];
 					var message = _localize["InvalidLoginMessage"];
 					_messageService.ShowMessage (title, message);

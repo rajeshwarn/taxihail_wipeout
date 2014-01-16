@@ -8,6 +8,7 @@ using TinyIoC;
 using System.Runtime.CompilerServices;
 using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -74,6 +75,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return new AsyncCommand(action);
         }
+
+		protected AsyncCommand GetCommand(Func<Task> action)
+		{
+			return new AsyncCommand(action);
+		}
 
         protected AsyncCommand<T> GetCommand<T>(Action<T> action)
         {

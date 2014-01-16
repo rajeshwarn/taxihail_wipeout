@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {        
         void UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
         
-        Account GetAccount(string email, string password);
+		Task<Account> SignIn(string email, string password);
         
 		Task<Account> GetFacebookAccount(string facebookId);
         

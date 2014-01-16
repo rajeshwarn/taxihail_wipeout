@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -55,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
         }
 
-        private void SignIn()
+        private async Task SignIn()
         {
             try
             {
@@ -65,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
                 try
                 {
-                    account = this.Services().Account.GetAccount(Email, Password);
+                    account = await this.Services().Account.SignIn(Email, Password);
                 }
                 catch (Exception e)
                 {

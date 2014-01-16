@@ -13,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,26 +33,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 
-            CheckVersion();
         }
 
-        public override void Load()
+        public override void Start()
         {
-            base.Load();
 #if DEBUG
             Email = "john@taxihail.com";
-            Password = "password";			
+            Password = "password";          
 #endif
+        }
+
+        public override void Start(bool firstStart)
+        {
+            base.Start(firstStart);
+
+            CheckVersion();
         }
 
         private async void CheckVersion()
         {
-            //The 2 second delay is required because the view might not be created.
-            await Task.Delay(2000);
-            if (this.Services().Account.CurrentAccount != null)
-            {
-                this.Services().ApplicationInfo.CheckVersionAsync();
-            }
+            await Task.Delay(1000);
+            this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
 
@@ -81,10 +83,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() =>
+				return GetCommand(async () =>
                 {
                     this.Services().Account.ClearCache();
-                    SignIn();
+					await SignIn();
                 });
             }
         }
@@ -96,67 +98,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 		}
-        private void SignIn()
+
+        private async Task SignIn()
         {
-            bool needToHideProgress = true;
-            try
+            using(this.Services().Message.ShowProgress())
             {
-                Logger.LogMessage("SignIn with server {0}", this.Services().Settings.ServiceUrl);
-                this.Services().Message.ShowProgress(true);
-                var account = default(Account);
                 try
                 {
-                    account = this.Services().Account.GetAccount(Email, Password);                 
+                    await this.Services().Account.SignIn(Email, Password);   
+                    Password = string.Empty;
+                    OnLoginSuccess();
+                                 
+                }
+                catch (AuthException e)
+                {
+                    var localize = this.Services().Localize;
+                    if(e.Failure == AuthFailure.NetworkError || e.Failure == AuthFailure.InvalidServiceUrl)
+                    {
+                        var title = localize["NoConnectionTitle"];
+                        var msg = localize["NoConnectionMessage"];
+                        this.Services().Message.ShowMessage (title, msg);
+                    }
+                    else if(e.Failure == AuthFailure.InvalidUsernameOrPassword)
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["InvalidLoginMessage"];
+                        this.Services().Message.ShowMessage (title, message);
+                    }
+                    else if(e.Failure == AuthFailure.AccountDisabled)
+                    {
+                        var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                        string message = null;
+                        if (CallIsEnabled)
+                        {
+                            var companyName = this.Services().Settings.ApplicationName;
+                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
+                            message = string.Format(localize[e.Message], companyName, phoneNumber);
+                        }
+                        else 
+                        {
+                            message = localize["AccountDisabled_NoCall"];
+                        }
+                        this.Services().Message.ShowMessage(title, message);
+                    }
                 }
                 catch (Exception e)
                 {
-                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                    var message = this.Services().Localize[e.Message];
+                    var localize = this.Services().Localize;
+                    var title = localize["InvalidLoginMessageTitle"];
+                    var message = localize[e.Message];
 
-                    if(e.Message == AuthenticationErrorCode.AccountDisabled){
-						if ( CallIsEnabled )
-						{
-                            var companyName = this.Services().Settings.ApplicationName;
-                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
-                            message = string.Format(this.Services().Localize[e.Message], companyName, phoneNumber);
-						}
-						else 
-						{
-                            message = this.Services().Localize["AccountDisabled_NoCall"];
-						}
-                    }
                     this.Services().Message.ShowMessage(title, message);
                 }
 
-                if (account != null)
-                {
-                    needToHideProgress = false;
-                    Password = string.Empty;
-                
-
-                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
-
-                    Task.Factory.SafeStartNew(() =>
-                        {
-                            try
-                            {
-                                OnLoginSuccess();
-                            }
-                            finally
-                            {
-                                Thread.Sleep(1000);
-								InvokeOnMainThread(() => this.Services().Message.ShowProgress(false));
-                            }
-                        });
-
-                }
-            }
-            finally
-            {
-                if (needToHideProgress)
-                {
-                    this.Services().Message.ShowProgress(false);
-                }
+                InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
             }
         }
 
@@ -192,7 +187,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
         }
 
-        void OnAccountCreated(RegisterAccount data)
+        async void OnAccountCreated(RegisterAccount data)
         {
             if (data != null)
             {
@@ -220,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                         else
                         {
-                            account = this.Services().Account.GetAccount(data.Email, data.Password);
+                            account = await this.Services().Account.SignIn(data.Email, data.Password);
                         }
 
                         if (account != null)
