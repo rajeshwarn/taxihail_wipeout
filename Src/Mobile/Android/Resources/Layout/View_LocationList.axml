@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:background="@color/listitem_behind_color"
-    android:orientation="vertical"
+    android:background="@color/subview_background_color"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
@@ -26,7 +25,7 @@
                 style="@style/TopTitleText"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
-                android:layout_height="50dip"
+                android:layout_height="@dimen/top_bar_title_height"
                 android:gravity="center" />
         </LinearLayout>
         <LinearLayout
@@ -35,15 +34,15 @@
             android:layout_height="1dip"
             android:background="@color/location_top_bar_separator_color"
             android:orientation="horizontal" />
-        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:layout_marginLeft="0dip"
             android:layout_marginRight="0dip"
             android:layout_width="fill_parent"
             android:layout_marginTop="15dip"
             android:layout_height="fill_parent"
-            android:id="@+id/LocationListView"
             android:layout_marginBottom="5dip"
+            android:id="@+id/LocationListView"
             local:MvxItemTemplate="@layout/simplelistitem"
-            local:MvxBind="{'ItemsSource':{'Path':'AllAddresses'},'ItemClick':{'Path':'NavigateToLocationDetailPage'}}" />
+            local:MvxBind="ItemsSource AllAddresses; ItemClick NavigateToLocationDetailPage" />
     </LinearLayout>
 </RelativeLayout>

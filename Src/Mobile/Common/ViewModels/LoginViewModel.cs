@@ -164,11 +164,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email => {
-                                                                                                              if(email.HasValue())
-                                                                                                              {
-                                                                                                                  Email = email;
-                                                                                                              }
+                return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
+                {
+                    if (email.HasValue())
+                    {
+                        Email = email;
+                    }
                 }));
             }
         }
@@ -188,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 serialized = registerDataFromSocial.ToJson();
             }
-			ShowSubViewModel<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
+			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
         }
 
         void OnAccountCreated(RegisterAccount data)

@@ -14,15 +14,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string address)
 		{
-            _address = address.FromJson<Address>();
-            IsNew = false;
-		}
+			_address = new Address();
+			IsNew = true;
 
-		public void Init()
-        {
-            _address = new Address();
-            IsNew = true;
-        }
+			if (!string.IsNullOrEmpty (address)) 
+			{
+				_address = address.FromJson<Address>();
+				IsNew = false;
+			} 
+		}
 
         public bool ShowRingCodeField {
             get
