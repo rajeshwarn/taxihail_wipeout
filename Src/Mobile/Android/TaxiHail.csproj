@@ -159,7 +159,7 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
     </Reference>
-     <Reference Include="CrossUI.Core">
+    <Reference Include="CrossUI.Core">
       <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
     </Reference>
     <Reference Include="CrossUI.Droid">
@@ -202,7 +202,6 @@
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Controls\UnderlineTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
-    <Compile Include="Converters\OrderStatusToTextColorConverter.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
@@ -414,6 +413,18 @@
     </AndroidResource>
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Canceled.png" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Completed.png" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Created.png" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Pending.png" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Removed.png" />
+    <AndroidResource Include="Resources\Drawable\orderStatus_Unknown.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Canceled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Completed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Created.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Pending.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Removed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Unknown.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
