@@ -1,7 +1,6 @@
 using System;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 
@@ -10,6 +9,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     public class ApplicationInfoService : BaseService, IApplicationInfoService
     {
         private const string AppInfoCacheKey = "ApplicationInfo";
+
+		readonly ILocalization _localize;
+		readonly IMessageService _messageService;
+
+		public ApplicationInfoService(ILocalization localize, IMessageService messageService)
+		{
+			_messageService = messageService;
+			_localize = localize;
+        	
+		}
 
         public async Task<ApplicationInfo> GetAppInfoAsync( )
         {
@@ -45,12 +54,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if (!isUpToDate)
             {
 
-                var title = TinyIoCContainer.Current.Resolve<ILocalization>()["AppNeedUpdateTitle"];
-                var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["AppNeedUpdateMessage"];
-                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
-#pragma warning disable 4014
-                mService.ShowMessage(title, msg);
-#pragma warning restore 4014
+				var title = _localize["AppNeedUpdateTitle"];
+				var msg = _localize["AppNeedUpdateMessage"];
+				await _messageService.ShowMessage(title, msg);
             }
         }
     }

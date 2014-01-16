@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using MonoTouch.UIKit;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -143,11 +144,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 	
 		public static void ShowToast ( string message, int duration )
 		{
-			
 			UIApplication.SharedApplication.InvokeOnMainThread ( delegate 
-			                                                  {									
+			                                                  {
+                var navController = Mvx.Resolve<UINavigationController>(); 								
                 LoadingOverlay.StopAnimatingLoading();
-                var toast = new ToastMessage( AppContext.Current.Controller.TopViewController.View, message );
+                var toast = new ToastMessage( navController.TopViewController.View, message );
 				toast.Show(duration);
 			} );
 			

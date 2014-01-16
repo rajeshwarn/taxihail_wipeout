@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Entity;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -14,16 +13,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
     public class GeolocService : BaseService, IGeolocService
     {
+		readonly IGeocoding _geocoding;
+		readonly IAddresses _addresses;
+		readonly IDirections _directions;
+		readonly IAccountService _accountService;
+
+		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, IAccountService accountService)
+		{
+			_accountService = accountService;
+			_directions = directions;
+			_addresses = addresses;
+			_geocoding = geocoding;
+		}
+
         public Address ValidateAddress(string address)
         {
             try
             {
-                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(address);
+				var addresses = _geocoding.Search(address);
                 return addresses.FirstOrDefault();
             }
             catch (Exception ex)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
+				Logger.LogError (ex);
                 return null;
             }
         }
@@ -32,12 +44,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {                
-                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
+				var addresses = _geocoding.Search(latitude, longitude, geoResult: null, searchPopularAddresses: searchPopularAddresses);
                 return addresses;
             }
             catch (Exception ex)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+				Logger.LogError(ex);
                 return new Address[0];
             }
         }
@@ -46,12 +58,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {                
-                var addresses = TinyIoCContainer.Current.Resolve<IAddresses>().Search(address, latitude, longitude);
+				var addresses = _addresses.Search(address, latitude, longitude);
                 return addresses;
             }
             catch( Exception ex )
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
+				Logger.LogError (ex);
                 return new Address[0];
             }
 
@@ -71,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
             {
-                var direction = TinyIoCContainer.Current.Resolve<IDirections>().GetDirection(originLat, originLong, destLat, destLong, date);
+				var direction = _directions.GetDirection(originLat, originLong, destLat, destLong, date);
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, FormattedPrice = direction.FormattedPrice, Price = direction.Price };
             }
             catch
@@ -92,14 +104,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             }
 
-            var favAddresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
+			var favAddresses = _accountService.GetFavoriteAddresses();
             var items = favAddresses as Address[] ?? favAddresses.ToArray();
             if (items.Any())
             {
                 addresses.AddRange(items);
             }
 
-            var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
+			var historic = _accountService.GetHistoryAddresses();
 
 
             var hists = historic as Address[] ?? historic.ToArray();

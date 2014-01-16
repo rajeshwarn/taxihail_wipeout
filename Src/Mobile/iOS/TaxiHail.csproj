@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -248,6 +248,12 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -272,7 +278,6 @@
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
     </Compile>
-    <Compile Include="AppContext.cs" />
     <Compile Include="Helper\DeviceHardware.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MessageHelper.cs" />
@@ -325,9 +330,7 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\TwoLinesCell.cs" />
     <Compile Include="InfoTableView\SingleLineCell.cs" />
-    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
     <Compile Include="InfoTableView\TableViewDelegate.cs" />
     <Compile Include="InfoTableView\TableViewDataSource.cs" />
     <Compile Include="Animations\SlideViewAnimation.cs" />
@@ -369,14 +372,7 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\INavigationView.cs" />
     <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
-    <Compile Include="Views\HistoryTabView.xib.cs">
-      <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HistoryTabView.xib.designer.cs">
-      <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -384,12 +380,6 @@
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
     <Compile Include="PlatformIntegration\PhoneService.cs" />
-    <Compile Include="Views\LocationsTabView.xib.cs">
-      <DependentUpon>LocationsTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LocationsTabView.xib.designer.cs">
-      <DependentUpon>LocationsTabView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Views\LocationDetailView.xib.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
@@ -401,7 +391,6 @@
       <DependentUpon>TutorialView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UndelinedLabel.cs" />
-    <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Views\BookViewActionsView.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
@@ -494,7 +483,6 @@
     <Compile Include="Views\TermsAndConditionsView.designer.cs">
       <DependentUpon>TermsAndConditionsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\OrderStatusToTextColorConverter_IOS.cs" />
     <Compile Include="PlatformIntegration\Social\FacebookService.cs" />
     <Compile Include="PlatformIntegration\Social\OAuthAuthorizer.cs" />
     <Compile Include="PlatformIntegration\Social\TwitterService.cs" />
@@ -503,6 +491,25 @@
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatButtonStyle.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
+    <Compile Include="Views\MyLocationsView.cs" />
+    <Compile Include="Views\MyLocationsView.designer.cs">
+      <DependentUpon>MyLocationsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Extensions\UITableViewExtensions.cs" />
+    <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
+    <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
+    <Compile Include="Controls\Widgets\Line.cs" />
+    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
+    <Compile Include="InfoTableView\TwoLinesCell.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
+    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs" />
+    <Compile Include="Views\HistoryView.cs" />
+    <Compile Include="Views\HistoryView.designer.cs">
+      <DependentUpon>HistoryView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -525,9 +532,7 @@
     <InterfaceDefinition Include="Views\LoginView.xib" />
     <InterfaceDefinition Include="Order\BookRatingView.xib" />
     <InterfaceDefinition Include="Order\BookRatingCell.xib" />
-    <InterfaceDefinition Include="Views\HistoryTabView.xib" />
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
-    <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
@@ -546,6 +551,10 @@
     <InterfaceDefinition Include="Views\ConfirmationView_Thriev.xib" />
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
+    <InterfaceDefinition Include="Views\MyLocationsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
+    <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
+    <InterfaceDefinition Include="Views\HistoryView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -735,8 +744,10 @@
     <BundleResource Include="Assets\pin_cluster.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic.png" />
     <BundleResource Include="Assets\CreditCard\credit_card_generic%402x.png" />
-    <BundleResource Include="Resources\th-logo.png" />
-    <BundleResource Include="Resources\th-logo%402x.png" />
+    <BundleResource Include="Assets\Social\TW\back.png" />
+    <BundleResource Include="Assets\Social\TW\back%402x.png" />
+    <BundleResource Include="Assets\Social\TW\forward.png" />
+    <BundleResource Include="Assets\Social\TW\forward%402x.png" />
     <BundleResource Include="Assets\Social\FB\facebook-icon.png" />
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
@@ -747,6 +758,33 @@
     <BundleResource Include="Resources\twitter_icon%402x.png" />
     <BundleResource Include="Resources\facebook_icon.png" />
     <BundleResource Include="Resources\facebook_icon%402x.png" />
+    <BundleResource Include="Resources\add_location.png" />
+    <BundleResource Include="Resources\add_location%402x.png" />
+    <BundleResource Include="Resources\favorites.png" />
+    <BundleResource Include="Resources\favorites%402x.png" />
+    <BundleResource Include="Resources\history.png" />
+    <BundleResource Include="Resources\history%402x.png" />
+    <BundleResource Include="Resources\right_arrow.png" />
+    <BundleResource Include="Resources\right_arrow%402x.png" />
+    <BundleResource Include="Resources\th_logo.png" />
+    <BundleResource Include="Resources\th_logo%402x.png" />
+    <BundleResource Include="Assets\Logo.png" />
+    <BundleResource Include="Assets\Logo%402x.png" />
+    <BundleResource Include="Resources\clearButton.png" />
+    <BundleResource Include="Resources\orderStatus_Canceled.png" />
+    <BundleResource Include="Resources\orderStatus_Canceled%402x.png" />
+    <BundleResource Include="Resources\orderStatus_Completed.png" />
+    <BundleResource Include="Resources\orderStatus_Completed%402x.png" />
+    <BundleResource Include="Resources\orderStatus_Created.png" />
+    <BundleResource Include="Resources\orderStatus_Created%402x.png" />
+    <BundleResource Include="Resources\orderStatus_Pending.png" />
+    <BundleResource Include="Resources\orderStatus_Pending%402x.png" />
+    <BundleResource Include="Resources\orderStatus_Removed.png" />
+    <BundleResource Include="Resources\orderStatus_Removed%402x.png" />
+    <BundleResource Include="Resources\orderStatus_Unknown.png" />
+    <BundleResource Include="Resources\orderStatus_Unknown%402x.png" />
+    <BundleResource Include="Resources\left_arrow.png" />
+    <BundleResource Include="Resources\left_arrow%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

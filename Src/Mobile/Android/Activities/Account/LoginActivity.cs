@@ -7,13 +7,14 @@ using Android.OS;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.ViewModels;
+using Xamarin.FacebookBinding;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Client.Services.Social;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using TinyIoC;
-using Xamarin.FacebookBinding;
-using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -23,10 +24,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
 		private readonly FacebookService _facebookService;
 		private UiLifecycleHelper _uiHelper;
-		public static LoginActivity TopInstance { get; private set;}
 		public LoginActivity ()
 		{
-			TopInstance = this;
 			_facebookService = (FacebookService)TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
 
@@ -68,12 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             SetContentView(Resource.Layout.View_Login);
 
-			if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
+            var settings = this.Services().AppSettings;
+
+            if (!settings.FacebookEnabled)
 			{
                 FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
 			}
 
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
+            if (settings.CanChangeServiceUrl)
             {
                 FindViewById<Button>(Resource.Id.ServerButton).Click += delegate { PromptServer(); };
             }
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Invisible;
             }
 
-            if (!TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
+            if (!settings.TwitterEnabled)
             {
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }
@@ -110,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var input = new EditText(this)
             {
                 InputType = InputTypes.TextFlagNoSuggestions,
-                Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl
+                Text = this.Services().AppSettings.ServiceUrl
             };
 
             alert.SetView(input);

@@ -1,4 +1,5 @@
 using MonoTouch.UIKit;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 {
@@ -11,6 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             get { return UIScreen.MainScreen.Bounds.Height > 500; }
         }
 
+		public static bool IsOS7orHigher
+		{
+			get{
+				var first = UIDevice.CurrentDevice.SystemVersion.Split('.')[0];
+				return Convert.ToInt32(first) >= 7;
+			}
+		}
     }
 }
 

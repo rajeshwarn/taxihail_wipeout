@@ -11,18 +11,24 @@ using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[MvxViewFor(typeof(CreateAcccountViewModel))]
-	public partial class CreateAccountView : BaseViewController<CreateAcccountViewModel>
+	public partial class CreateAccountView : BaseViewController<CreateAccountViewModel>
     {
         public CreateAccountView() 
 			: base("CreateAccountView", null)
         {
         }
-		
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-			
+
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
             lblEmail.Text = Localize.GetValue("CreateAccountEmail");
@@ -39,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
 			AddButton(scrollView, 60, buttonsY, Localize.GetValue("CreateAccountCreate"), "CreateAccount", AppStyle.ButtonColor.Green);
 
-			var set = this.CreateBindingSet<CreateAccountView, CreateAcccountViewModel>();
+			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
 
 			set.Bind(txtName)
 				.For(v => v.Text)
@@ -77,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Apply ();
 
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_SignUp"), true);
+			NavigationItem.Title = Localize.GetValue("View_SignUp");
 
             View.ApplyAppFont ();
         }
@@ -88,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             btn.TextShadowColor = null;
             parent.AddSubview(btn);
 
-			var set = this.CreateBindingSet<CreateAccountView, CreateAcccountViewModel>();
+			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
 
 			set.Bind(btn)
 				.For("TouchUpInside")

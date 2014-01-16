@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField txtPassword { get; set; }

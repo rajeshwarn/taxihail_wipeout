@@ -7,7 +7,6 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using TinyIoC;
 using TinyMessenger;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Callbox.Mobile.Client.Activities;
@@ -17,23 +16,31 @@ using System.Threading.Tasks;
 using Cirrious.MvvmCross.Droid.Views;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore.Droid.Platform;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
-
         public const string ACTION_SERVICE_MESSAGE = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
         public const string ACTION_EXTRA_MESSAGE = "Mk_Taxi.ACTION_EXTRA_MESSAGE";
 
+		readonly Context _context;
+		readonly ITinyMessengerHub _messengerHub;
+		readonly IMvxViewDispatcher _viewDispatcher;
+		readonly IMvxAndroidCurrentTopActivity _topActivity;
 
-
-		public MessageService(Context context)
+		public MessageService(IMvxAndroidGlobals globals,
+			ITinyMessengerHub messengerHub,
+			IMvxViewDispatcher viewDispatcher,
+			IMvxAndroidCurrentTopActivity topActivity)
         {
-            Context = context;
+			_topActivity = topActivity;
+			_viewDispatcher = viewDispatcher;
+			_messengerHub = messengerHub;
+			_context = globals.ApplicationContext;
         }
 
-        public Context Context { get; set; }
 
 		/// <summary>
 		/// put the content of on activity on a modal dialog ( type = viewmodel Type )
@@ -47,24 +54,22 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 		public Task ShowMessage(string title, string message)
 		{
 			var ownerId = Guid.NewGuid().ToString();
-			var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
-			var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 
-			dispatcher.RequestMainThreadAction(() =>{
-				var i = new Intent(Context, typeof(AlertDialogActivity));
+			_viewDispatcher.RequestMainThreadAction(() =>{
+				var i = new Intent(_context, typeof(AlertDialogActivity));
 				i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 				i.PutExtra("Title", title);
 				i.PutExtra("Message", message);
 				i.PutExtra("OwnerId", ownerId );
-				Context.StartActivity(i); 
+				_context.StartActivity(i); 
 			});
 
 			var tcs = new TaskCompletionSource<object>();
 			TinyMessageSubscriptionToken token = null;
-			token = messengerHub.Subscribe<ActivityCompleted>(a =>
+			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
 				{
 					tcs.TrySetResult(null);
-					messengerHub.Unsubscribe<ActivityCompleted>( token );
+					_messengerHub.Unsubscribe<ActivityCompleted>( token );
 					token.Dispose();
 				}, a => a.OwnerId == ownerId );
 
@@ -74,7 +79,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
             var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof(AlertDialogActivity));
+            var i = new Intent(_context, typeof(AlertDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);
             i.PutExtra("Message", message);
@@ -84,7 +89,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             i.PutExtra("OwnerId", ownerId );
 
             TinyMessageSubscriptionToken token = null;
-            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>( a=>
+			token = _messengerHub.Subscribe<ActivityCompleted>( a=>
                         {
                                 if ( a.Content == positiveButtonTitle )
                                 {
@@ -94,17 +99,17 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
                                 {
                                     negativeAction();
                                 }
-                                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>( token );
+								_messengerHub.Unsubscribe<ActivityCompleted>( token );
                                 token.Dispose();
                         }, a=>a.OwnerId == ownerId );            
 
-            Context.StartActivity(i); 
+            _context.StartActivity(i); 
         }
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
         {
             var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof(AlertDialogActivity));
+            var i = new Intent(_context, typeof(AlertDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);
             i.PutExtra("Message", message);
@@ -115,7 +120,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             i.PutExtra("OwnerId", ownerId);
 
             TinyMessageSubscriptionToken token = null;
-            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
             {
                 if (a.Content == positiveButtonTitle)
                 {
@@ -129,11 +134,11 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
                 {
                     neutralAction();
                 }
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				_messengerHub.Unsubscribe<ActivityCompleted>(token);
                 token.Dispose();
             }, a => a.OwnerId == ownerId);
 
-            Context.StartActivity(i);
+            _context.StartActivity(i);
         }
 
         public void ShowMessage (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
@@ -144,7 +149,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
         public void ShowMessage(string title, string message, Action additionalAction)
         {            
 			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(Context, typeof(AlertDialogActivity));
+			var i = new Intent(_context, typeof(AlertDialogActivity));
 			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 			i.PutExtra("Title", title);
 			i.PutExtra("Message", message);
@@ -153,23 +158,23 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			i.PutExtra("OwnerId", ownerId);
 			
 			TinyMessageSubscriptionToken token = null;
-			token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
 			{				
 				additionalAction();				
-				TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				_messengerHub.Unsubscribe<ActivityCompleted>(token);
 				token.Dispose();
 			}, a => a.OwnerId == ownerId);
 			
-			Context.StartActivity(i);
+			_context.StartActivity(i);
         }
 
 		Stack<ProgressDialog> progressDialogs = new Stack<ProgressDialog>();
 
         public void ShowProgress (bool show)
 		{
-			TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>{
+			_viewDispatcher.RequestMainThreadAction(() =>{
 
-				var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+				var activity = _topActivity.Activity;
 
 				if(show)
 				{ 		
@@ -203,15 +208,14 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
         public void ShowToast(string message, ToastDuration duration )
         {
-			TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>{
-	            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+			_viewDispatcher.RequestMainThreadAction(() =>{
+	            Toast toast = Toast.MakeText(_context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
 	            toast.Show();
 			});
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
 		{
-			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
 			var list = items.ToArray();
 			if (displayNameSelector == null) {
 				displayNameSelector = x => x.ToString ();
@@ -224,27 +228,29 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 
 
 			var ownerId = Guid.NewGuid().ToString();
-			var i = new Intent(Context, typeof(SelectItemDialogActivity));
+			var i = new Intent(_context, typeof(SelectItemDialogActivity));
 			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 			i.PutExtra("Title", title);
 			i.PutExtra("Items", displayList);
 			i.PutExtra("OwnerId", ownerId );
 			TinyMessageSubscriptionToken token = null;
-			token = messenger.Subscribe<SubNavigationResultMessage<int>>(msg =>
+			token = _messengerHub.Subscribe<SubNavigationResultMessage<int>>(msg =>
 			                                                                    {
 				if (token != null)
-					messenger.Unsubscribe<SubNavigationResultMessage<int>>(token);
+				{
+					_messengerHub.Unsubscribe<SubNavigationResultMessage<int>>(token);
+				}
 
 				onResult(list[msg.Result]);
 			},
 			msg => msg.MessageId == ownerId);
-			Context.StartActivity(i); 
+			_context.StartActivity(i); 
 		}
 
         public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)
         {
             var ownerId = Guid.NewGuid().ToString();
-            var i = new Intent(Context, typeof(EditTextDialogActivity));
+            var i = new Intent(_context, typeof(EditTextDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);
             i.PutExtra("Message", message);
@@ -252,13 +258,13 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
             i.PutExtra("OwnerId", ownerId);
 
             TinyMessageSubscriptionToken token = null;
-            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			token = _messengerHub.Subscribe<ActivityCompleted>(a =>
             {
                 positiveAction(a.Content);
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				_messengerHub.Unsubscribe<ActivityCompleted>(token);
                 token.Dispose();
             }, a => a.OwnerId == ownerId);
-            Context.StartActivity(i);
+            _context.StartActivity(i);
         }
     }
 }

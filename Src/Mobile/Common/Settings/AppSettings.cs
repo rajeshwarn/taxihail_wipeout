@@ -4,17 +4,20 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.IO;
 using apcurium.MK.Common.Configuration;
-using TinyIoC;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
     public class AppSettings : IAppSettings
     {
-        private readonly AppSettingsData _data;
+        readonly AppSettingsData _data;
+		readonly ICacheService _cacheService;
 
-        public AppSettings ()
+		public AppSettings (ICacheService cacheService)
         {
-            using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
+			_cacheService = cacheService;
+            
+			using (var stream = GetType().Assembly.GetManifestResourceStream(GetType ().Assembly.GetManifestResourceNames().FirstOrDefault(x => x.Contains("Settings.json")))) 
 			{
 			    if (stream != null)
 			        using (var reader = new StreamReader(stream)) 
@@ -46,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get {
                 string url;
                 try {
-                    url = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
+					url = _cacheService.Get<string> ("TaxiHail.ServiceUrl");
                 } catch {
                     return _data.ServiceUrl;
                 }
@@ -58,14 +61,16 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
             set {
                 if (CanChangeServiceUrl) {
-                    TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
+
+					// TODO: AppSettings should not depend on Configuration Manager
+					Mvx.Resolve<IConfigurationManager>().Reset ();
 
                     if (string.IsNullOrEmpty (value)) {
-                        TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
+						_cacheService.Clear ("TaxiHail.ServiceUrl");
                     } else if (value.ToLower ().StartsWith ("http")) {
-                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
+						_cacheService.Set<string> ("TaxiHail.ServiceUrl", value);
                     } else {
-                        TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
+						_cacheService.Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
                     }
                 }
             }
