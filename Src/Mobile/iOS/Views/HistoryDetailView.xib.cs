@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad();
             
-            
+			View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
+
             NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
 
