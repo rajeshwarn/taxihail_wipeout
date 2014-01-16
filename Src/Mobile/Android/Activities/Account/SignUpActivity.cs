@@ -42,12 +42,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			signMenu.VerticalScrollBarEnabled = false;
 			signMenu.SetScrollContainer (false);
 
-        }
+        }	
 
 		RootElement InitializeRoot()
 		{
 			RootElement root = new RootElement("Elements");
 			Section section = new Section("Section");
+
+			// The one and only example:
+			//https://github.com/slodge/Android.Dialog/blob/master/DialogSampleApp/DialogListViewActivity.cs
 
 			// Make an helper:
 			// Create the child with parent, position within, size, other, remove scroll (clean up), layout to use, etc.
@@ -63,7 +66,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 				new EntryElement (null, "Email", null, "EditTextEntry"),
 			};
 
+			var Email = new EntryElement () {
+				Caption = null, 
+				Value = null,
+				LayoutName = "EditTextEntry",
+				Hint = "Email",
+				Password = false
+			};
 
+			var Name = new EntryElement () {
+				Caption = null, 
+				Value = null,
+				LayoutName = "EditTextEntry",
+				Hint = "Name",
+				Password = false
+			};
+
+			var Phone = new EntryElement () {
+				Caption = null, 
+				Value = null,
+				LayoutName = "EditTextEntry",
+				Hint = "Phone",
+				Password = false
+			};
+
+			var Password = new EntryElement () {
+				Caption = null, 
+				Value = null,
+				LayoutName = "EditTextEntry",
+				Hint = "Password",
+				Password = true
+			};
+
+			var PasswordConfirm = new EntryElement () {
+				Caption = null, 
+				Value = null,
+				LayoutName = "EditTextEntry",
+				Hint = "Confirm Password",
+				Password = true
+			};
 
 			root.Add(section);
 
