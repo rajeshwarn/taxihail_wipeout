@@ -499,3 +499,16 @@
 "HistoryViewNoHistoryLabel"="No booking history";
 "View_History"="History";
 "View_CreateAccount"="Create your account";
+"HistoryDetailPickupLabel"="Pickup:";
+"NoAptText"="No apt.";
+"LoadingText"="Loading...";
+"DestinationNotSpecifiedText"="Destination not specified";
+"SendReceipt"="Send receipt";
+"HistoryDetailOrderLabel"="Order:";
+"BuildingNameText"="Not specified";
+"NoRingCodeText"="No code";
+"CreateAccountPasswordConfirmationPlaceHolder"="Confirm";
+"CreateAccountPasswordPlaceHolder"="Password";
+"CreateAccountFullNamePlaceHolder"="Full Name";
+"CreateAccountPhonePlaceHolder"="Mobile";
+"CreateAccountEmailPlaceHolder"="Email";

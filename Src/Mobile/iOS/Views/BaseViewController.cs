@@ -21,8 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private bool _firstStart = true;
 		protected const float BottomPadding = 20f;
 
-        #region Constructors
-
         public BaseViewController ()
         {
 			Initialize ();
@@ -39,8 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
 			Initialize ();
         }
-        
-#endregion
 
 		private void Initialize()
 		{
@@ -97,7 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             UnregisterKeyboardNotifications();
             ViewModel.Unload ();
             base.DidReceiveMemoryWarning ();
-
         }
 
         protected void DismissKeyboardOnReturn (params UITextField[] textFields)
@@ -116,13 +111,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         protected virtual void RegisterForKeyboardNotifications ()
         {
-            _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.DidShowNotification, KeyboardWillShowNotification);
+			_keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.DidShowNotification, KeyboardWillShowNotification);
             _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillHideNotification, KeyboardWillHideNotification);
         }
         
         protected virtual void UnregisterKeyboardNotifications()
         {
-            NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillShow);
+			NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillShow);
             NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillHide);
         }
         
@@ -141,26 +136,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (scrollView == null)
                 return;
             
-            var keyboardBounds = UIKeyboard.FrameBeginFromNotification(notification);
-            
-            var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardBounds.Size.Height, 0.0f);
-            scrollView.ContentInset = contentInsets;
-            scrollView.ScrollIndicatorInsets = contentInsets;
-            
-            // If activeField is hidden by keyboard, scroll it so it's visible
-            var viewRectAboveKeyboard = new RectangleF(View.Frame.Location, new SizeF(View.Frame.Width, View.Frame.Size.Height - keyboardBounds.Size.Height));
-            
-            var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, View);
-            // activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
-			activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + View.Frame.Y;
+			// find the topmost scrollview (fix problem with RootElement)
+			var nextSuperView = scrollView;
+			while(nextSuperView != null)
+			{
+				scrollView = nextSuperView;
+				nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
+			}
 
-            // Check if the activeField will be partially or entirely covered by the keyboard
-            if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
-            {
-                // Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-                var scrollPoint = new PointF(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
-                scrollView.SetContentOffset(scrollPoint, true);
-            }
+			var keyboardBounds = ((NSValue)notification.UserInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey)).RectangleFValue;
+
+			var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardBounds.Size.Height + this.View.Frame.Y, 0.0f);
+			scrollView.ContentInset = contentInsets;
+			scrollView.ScrollIndicatorInsets = contentInsets;
+
+			// If activeField is hidden by keyboard, scroll it so it's visible
+			var viewRectAboveKeyboard = new RectangleF(this.View.Frame.Location, new SizeF(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
+
+			var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
+			// activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
+			activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
+
+			// Check if the activeField will be partially or entirely covered by the keyboard
+			if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
+			{
+				// Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
+				var scrollPoint = new PointF(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
+				scrollView.SetContentOffset(scrollPoint, true);
+			}
         }
         
         protected virtual void KeyboardWillHideNotification (NSNotification notification)

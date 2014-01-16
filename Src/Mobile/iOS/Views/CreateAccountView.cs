@@ -36,22 +36,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Main.ApplyTo (btnCreate);
 
 			var section = new Section () {
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmail"), ViewModel.Data.Email).Bind(this, "Value Data.Email"),
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullName"), ViewModel.Data.Name).Bind(this, "Value Data.Name"),
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhone"), ViewModel.Data.Phone).Bind(this, "Value Data.Phone")
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email)
+				{
+					KeyboardType = UIKeyboardType.EmailAddress		
+				}.Bind(this, "Value Data.Email"),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), ViewModel.Data.Name).Bind(this, "Value Data.Name"),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){
+					KeyboardType = UIKeyboardType.PhonePad		
+				}.Bind(this, "Value Data.Phone")
 			};
 
 			if (!ViewModel.HasSocialInfo) {
 				constraintTableViewHeight.Constant += 40*2;
 				section.AddAll (new List<Element> { 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPassword"), ViewModel.Data.Password, true).Bind(this, "Value Data.Password"), 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfrimation"), ViewModel.ConfirmPassword, true).Bind(this, "Value ConfirmPassword")
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true).Bind(this, "Value Data.Password"), 
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true).Bind(this, "Value ConfirmPassword")
 				});
 			}
 
 			var root = new RootElement(){ section };
 
-			var dialogView = new TaxiHailDialogViewController (UITableViewStyle.Plain, root, true).View;
+			var dialogView = new TaxiHailDialogViewController (UITableViewStyle.Plain, root, false).View;
 			dialogView.Frame = new RectangleF(0, 0, tableView.Frame.Width, tableView.Frame.Height);
 			tableView.BackgroundColor = UIColor.Clear;
 			tableView.AddSubview(dialogView);

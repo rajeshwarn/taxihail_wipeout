@@ -15,8 +15,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			((UITableView)this.View).RowHeight = 40;
 			((UITableView)this.View).ScrollEnabled = false;
 			((UITableView)this.View).SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			((UITableView)this.View).SeparatorColor = UIColor.FromRGB (0, 27, 47);
-			((UITableView)this.View).BackgroundView = null;
 			((UITableView)this.View).BackgroundColor = UIColor.Clear;
 		}
 
