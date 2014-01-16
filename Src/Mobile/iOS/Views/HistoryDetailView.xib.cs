@@ -107,7 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Apply ();
 
-            ViewModel.Load();
-        }
+                   }
     }
 }
