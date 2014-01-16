@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_SignUp; }
+			get { return Resource.String.View_CreateAccount; }
         }
 
         protected override void OnViewModelSet()

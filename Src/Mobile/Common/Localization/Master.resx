@@ -969,14 +969,11 @@
   <data name="View_MyLocations" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_SignUp" xml:space="preserve">
-    <value>Create Account</value>
+  <data name="View_CreateAccount" xml:space="preserve">
+    <value>Create your account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value />
-  </data>
-  <data name="View_SignUp_Label" xml:space="preserve">
-    <value>Create Profile</value>
   </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />
