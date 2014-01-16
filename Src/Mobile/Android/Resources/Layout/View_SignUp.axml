@@ -44,6 +44,7 @@
             android:layout_centerInParent="true"
             android:orientation="horizontal">
             <Button
+                local:MvxBind="Click CloseCommand"
                 android:text="Cancel"
                 android:layout_weight=".475"
                 android:layout_width="0dip"
