@@ -498,3 +498,7 @@
 "View_MyLocations"="Locations";
 "HistoryViewNoHistoryLabel"="No booking history";
 "View_History"="History";
+"UpdatePasswordNewPasswordLabel"="New Password";
+"Done"="Done";
+"UpdatePasswordCurrentPasswordLabel"="Current Password";
+"UpdatePasswordConfirmationLabel"="Confirmation";

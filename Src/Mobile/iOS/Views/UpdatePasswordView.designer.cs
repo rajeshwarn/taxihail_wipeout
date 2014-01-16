@@ -1,12 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class UpdatePasswordView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+		MonoTouch.UIKit.UILabel lblConfirmation { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblCurrentPassword { get; set; }
@@ -23,16 +22,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblNewPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNewPasswordConfirmation { get; set; }
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
-		TextField txtCurrentPassword { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtConfirmation { get; set; }
 
 		[Outlet]
-		TextField txtNewPassword { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCurrentPassword { get; set; }
 
 		[Outlet]
-		TextField txtNewPasswordConfirmation { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNewPassword { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -51,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblNewPassword = null;
 			}
 
-			if (lblNewPasswordConfirmation != null) {
-				lblNewPasswordConfirmation.Dispose ();
-				lblNewPasswordConfirmation = null;
+			if (lblConfirmation != null) {
+				lblConfirmation.Dispose ();
+				lblConfirmation = null;
 			}
 
 			if (txtCurrentPassword != null) {
@@ -66,9 +65,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNewPassword = null;
 			}
 
-			if (txtNewPasswordConfirmation != null) {
-				txtNewPasswordConfirmation.Dispose ();
-				txtNewPasswordConfirmation = null;
+			if (txtConfirmation != null) {
+				txtConfirmation.Dispose ();
+				txtConfirmation = null;
 			}
 		}
 	}
