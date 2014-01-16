@@ -8,11 +8,13 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using TinyIoC;
+using CrossUI.Droid;
+using CrossUI.Droid.Dialog;
+using CrossUI.Droid.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	//TODO: Rename (There are 3 c's in acccount)
-    public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
+	public class CreateAccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
 		readonly IFacebookService _facebookService;
 
@@ -21,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
-		public CreateAcccountViewModel()
+		public CreateAccountViewModel()
 		{
 			_facebookService = TinyIoCContainer.Current.Resolve<IFacebookService>();
 		}
@@ -33,9 +35,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
 			} else
 			{
-				Data = new RegisterAccount();
-			}
+				Data = new RegisterAccount();	
+			}		
 		}
+
 
 		private bool IsEmail(string inputEmail)
 		{
