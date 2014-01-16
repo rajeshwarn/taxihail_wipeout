@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -42,6 +43,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public virtual void Unload()
         {
         }
+
+		protected bool ShowSubViewModel<TViewModel, TResult>(object parameterValuesObject, Action<TResult> onResult)
+				where TViewModel : BaseSubViewModel<TResult>
+		{
+			return ShowSubViewModel<TViewModel, TResult>(parameterValuesObject.ToSimplePropertyDictionary(), onResult);
+		}
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)

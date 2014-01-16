@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					.Authenticate (email, password),
 					error => { /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
-                return await GetAccount (false);
+                return await GetAccount ();
             }
             catch(WebException e)
             {
@@ -339,7 +339,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
         {
-            try {
+            try
+			{
 				var auth = Mvx.Resolve<IAuthServiceClient> ();
 				var authResponse = auth
 					.AuthenticateFacebook(facebookId)
@@ -347,35 +348,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 				SaveCredentials (await authResponse);
 
-                //TODO: refactor to async
-                var account = GetAccount (false);
-                account.Wait();
-                return account.Result;
+				return await GetAccount ();
 
-			} catch(Exception e) {
+			}
+			catch(Exception e)
+			{
 				Logger.LogError(e);
-				return null;
+				throw;
             }
         }
 
-        public Account GetTwitterAccount (string twitterId)
+		public async Task<Account> GetTwitterAccount (string twitterId)
         {
-            try {
-                var parameters = new NamedParameterOverloads ();
-                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId));
+            try
+			{
+				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {});
                 SaveCredentials (authResponse);
 
-                parameters.Add ("credential", authResponse);
-                //TODO: refactor to async
-                var account = GetAccount (false);
-                account.Wait();
-                return account.Result;
-            } catch {
-                return null;
+				return await GetAccount ();
+            }
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				throw;
             }
         }
 
-		private async Task<Account> GetAccount (bool showInvalidMessage)
+		private async Task<Account> GetAccount ()
         {
             Account data = null;
 
@@ -399,13 +398,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 			catch
 			{
-                if (showInvalidMessage)
-				{
-					var title = _localize["InvalidLoginMessageTitle"];
-					var message = _localize["InvalidLoginMessage"];
-					_messageService.ShowMessage (title, message);
-                }
-
                 return null;
             }
 
