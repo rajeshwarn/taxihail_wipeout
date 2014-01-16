@@ -10,17 +10,18 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.ViewModels;
+using Cirrious.CrossCore.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class PhoneService : IPhoneService
     {
         readonly ILogger _logger;
-        readonly IMvxTouchViewPresenter _viewPresenter;
+        readonly IMvxTouchModalHost _modalHost;
 
-        public PhoneService(ILogger logger, IMvxTouchViewPresenter viewPresenter)
+        public PhoneService(ILogger logger, IMvxTouchModalHost modalHost)
         {
-            _viewPresenter = viewPresenter;
+            _modalHost = modalHost;
             _logger = logger;
             
         }
@@ -66,17 +67,23 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             mailComposer.SetToRecipients (new [] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (subject);
-            mailComposer.Finished += delegate
+            mailComposer.Finished += (sender, args) =>
             {
-				//TODO: Does this work with null ?
-                _viewPresenter.ChangePresentation(new MvxClosePresentationHint(null)); 
+                var uiViewController = sender as UIViewController;
+                if (uiViewController == null)
+                {
+                    throw new ArgumentException("sender");
+                }
+
+                uiViewController.DismissViewController(true, () => { });
+                _modalHost.NativeModalViewControllerDisappearedOnItsOwn();
+
                 if (File.Exists (errorLogPath))
                 {
                     File.Delete (errorLogPath);
                 }
             };
-
-            _viewPresenter.PresentModalViewController(mailComposer, true);
+            _modalHost.PresentModalViewController(mailComposer, true);
         }
 
 
