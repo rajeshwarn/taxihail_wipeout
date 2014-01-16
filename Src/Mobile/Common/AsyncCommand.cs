@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Cirrious.CrossCore;
 using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public AsyncCommand(Action execute, Func<bool> canExecute)
         {
-			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
+			_logger = Mvx.Resolve<ILogger>();
             _execute = execute;
             _canExecute = canExecute;
         }
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public AsyncCommand(Action<T> execute, Func<T,bool> canExecute)
         {
-			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
+			_logger = Mvx.Resolve<ILogger>();
             _execute = execute;
             _canExecute = canExecute;
         }

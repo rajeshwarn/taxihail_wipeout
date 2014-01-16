@@ -12,6 +12,7 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 
-			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( Cellid, CellBindingText ); };
+			source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.InfoTableView.TwoLinesCell( Cellid, CellBindingText ); };
 
  			var set = this.CreateBindingSet<AddressSearchView, AddressSearchViewModel>();
 			set.Bind(source)
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_SearchAddress"), true);
+			NavigationItem.Title = Localize.GetValue("View_SearchAddress");
         
             NavigationController.SetViewControllers(NavigationController.ViewControllers.Where ( v=> v.GetType () != typeof(  BookStreetNumberView ) ).ToArray (), false );
         }

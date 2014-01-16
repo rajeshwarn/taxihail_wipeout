@@ -4,18 +4,17 @@ using Android.Content;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Models;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Localization
 {
 	public class ResourceManager : ILocalization
     {
-        
-        private Context _context;
+		readonly Context _context;
 
-
-        public ResourceManager(Context context)
+		public ResourceManager(IMvxAndroidGlobals globals)
         {
-            _context = context;
+			_context = globals.ApplicationContext;
         }
 
         public AppLanguage CurrentLanguage

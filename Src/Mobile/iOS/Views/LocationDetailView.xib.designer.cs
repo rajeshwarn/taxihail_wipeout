@@ -1,12 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,49 +13,65 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class LocationDetailView
 	{
 		[Outlet]
-		GradientButton btnBook { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDelete { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnDelete { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRebook { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnSave { get; set; }
+		MonoTouch.UIKit.UILabel lblAddress { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblApartment { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtAddress { get; set; }
+		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtAptNumber { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAddress { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtName { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAptNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtRingCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtRingCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnBook != null) {
-				btnBook.Dispose ();
-				btnBook = null;
-			}
-
 			if (btnDelete != null) {
 				btnDelete.Dispose ();
 				btnDelete = null;
 			}
 
-			if (btnSave != null) {
-				btnSave.Dispose ();
-				btnSave = null;
+			if (btnRebook != null) {
+				btnRebook.Dispose ();
+				btnRebook = null;
+			}
+
+			if (lblAddress != null) {
+				lblAddress.Dispose ();
+				lblAddress = null;
+			}
+
+			if (lblApartment != null) {
+				lblApartment.Dispose ();
+				lblApartment = null;
 			}
 
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
+			}
+
+			if (lblRingCode != null) {
+				lblRingCode.Dispose ();
+				lblRingCode = null;
 			}
 
 			if (txtAddress != null) {

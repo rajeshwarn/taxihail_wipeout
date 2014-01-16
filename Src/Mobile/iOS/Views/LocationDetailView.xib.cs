@@ -1,71 +1,59 @@
-using System.Collections.Generic;
-using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Cirrious.MvvmCross.Binding.BindingContext;
+using System.Collections.Generic;
+using System.Drawing;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LocationDetailView : MvxViewController
+	public partial class LocationDetailView : BaseViewController<LocationDetailViewModel>
     {
-        public LocationDetailView () 
-			: base("LocationDetailView", null)
+		public LocationDetailView () : base("LocationDetailView", null)
 		{
-			Initialize();
 		}
 
-        void Initialize()
-        {
-        }
-
-		public new LocationDetailViewModel ViewModel
+		public override void ViewWillAppear (bool animated)
 		{
-			get
-			{
-				return (LocationDetailViewModel)DataContext;
-			}
+			base.ViewWillAppear (animated);
+
+			NavigationItem.HidesBackButton = false;
+			NavigationItem.Title = Localize.GetValue("View_LocationDetail");
 		}
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-            NavigationItem.HidesBackButton = false;
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_LocationDetail"), true);
+			FlatButtonStyle.Red.ApplyTo (btnDelete);
+			FlatButtonStyle.Green.ApplyTo (btnRebook);
 
-            lblName.Text = Localize.GetValue("LocationDetailGiveItANameLabel");
+			lblName.Text = Localize.GetValue("LocationDetailNameLabel");
+			lblAddress.Text = Localize.GetValue("LocationDetailAddressLabel");
+			lblApartment.Text = Localize.GetValue("LocationDetailApartmentLabel");
+			lblRingCode.Text = Localize.GetValue("LocationDetailRingCodeLabel");
 
-            ((TextField)txtAddress).PaddingLeft = 3;
-            ((TextField)txtAptNumber).PaddingLeft = 3;
-            ((TextField)txtRingCode).PaddingLeft = 3;
-            ((TextField)txtName).PaddingLeft = 3;
-
-            txtAddress.Placeholder = Localize.GetValue("LocationDetailStreetAddressPlaceholder");
-            txtAptNumber.Placeholder = Localize.GetValue("LocationDetailAptPlaceholder");
-            txtRingCode.Placeholder = Localize.GetValue("LocationDetailRingCodePlaceholder");
-            txtName.Placeholder = Localize.GetValue("LocationDetailGiveItANamePlaceholder");
+			btnRebook.SetTitle (Localize.GetValue("Rebook"), UIControlState.Normal);
+			btnDelete.SetTitle (Localize.GetValue("Delete"), UIControlState.Normal);
 
             txtAddress.ShouldReturn = HandleShouldReturn;
             txtAptNumber.ShouldReturn = HandleShouldReturn;
             txtRingCode.ShouldReturn = HandleShouldReturn;
             txtName.ShouldReturn = HandleShouldReturn;
 
-            AppButtons.FormatStandardButton((GradientButton)btnSave, Localize.GetValue("SaveButton"), AppStyle.ButtonColor.Green); 
-			(btnBook).SetTitle(Localize.GetValue("LocationDetailRebookButton"), UIControlState.Normal);
-            AppButtons.FormatStandardButton((GradientButton)btnDelete, Localize.GetValue("DeleteButton"), AppStyle.ButtonColor.Red); 
-
             if ( !ViewModel.ShowRingCodeField )
             {
+				lblRingCode.Hidden = true;
                 txtRingCode.Hidden = true;
-                txtAptNumber.Frame = new RectangleF( txtAptNumber.Frame.X, txtAptNumber.Frame.Y, txtAddress.Frame.Width, txtAptNumber.Frame.Height );
             }
+
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute());
 
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();
 
@@ -88,14 +76,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.FriendlyName);
 
-			set.Bind(btnSave)
-				.For("TouchUpInside")
-				.To(vm => vm.SaveAddress);
-
-			set.Bind(btnBook)
+			set.Bind(btnRebook)
 				.For("TouchUpInside")
 				.To(vm => vm.RebookOrder);
-			set.Bind(btnBook)
+			set.Bind(btnRebook)
 				.For(v => v.Hidden)
 				.To(vm => vm.RebookIsAvailable)
 				.WithConversion("BoolInverter");
@@ -108,12 +92,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.IsNew);
 
 			set.Apply();
-            
-            btnSave.Hidden = true;
-
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("SaveButton"), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute());
-
-            View.ApplyAppFont ();
         }
 
         public override void ViewWillDisappear (bool animated)
@@ -125,7 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             return textField.ResignFirstResponder();
         }
-
     }
 }
 

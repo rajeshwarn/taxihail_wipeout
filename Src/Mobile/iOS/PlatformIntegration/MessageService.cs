@@ -8,7 +8,6 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using TinyIoC;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 
@@ -19,10 +18,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		public const string ActionServiceMessage = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
 		public const string ActionExtraMessage = "Mk_Taxi.ActionExtraMessage";
 
-	    #region IMessageService implementation
+        readonly IMvxTouchViewPresenter _viewPresenter;
 
-      
-        #endregion
+        public MessageService(IMvxTouchViewPresenter viewPresenter)
+        {
+            _viewPresenter = viewPresenter;
+        }
 
 		public Task ShowMessage(string title, string message)
 		{
@@ -78,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void ShowDialogActivity(Type type)
         {
             UIApplication.SharedApplication.InvokeOnMainThread(delegate {
-                var presenter = TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
-				presenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
+                _viewPresenter.Show(new MvxViewModelRequest(type, null, null, MvxRequestedBy.UserAction));
             });
         }
 

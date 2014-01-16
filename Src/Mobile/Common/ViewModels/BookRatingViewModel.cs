@@ -78,46 +78,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		public void Init()
-        {
-            RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
-			{
-				RatingTypeId = c.Id, 
-				RatingTypeName = c.Name 
-			})
-				.OrderBy(c=>c.RatingTypeId).ToList();
-            CanRating = false;
-        }
-
 		public void Init(string orderId, string canRate="false")
 		{
-			var ratingTypes = this.Services().Booking.GetRatingType();
-            RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
-			{
-				RatingTypeId = c.Id, 
-				RatingTypeName = c.Name 
-			}).OrderBy(c=>c.RatingTypeId).ToList();
-
-			foreach (var rating in RatingList) {
-				rating.PropertyChanged += HandleRatingPropertyChanged;
-			}
-
-			Guid id;
-			if (Guid.TryParse (orderId, out id)) {
-				OrderId = id;
-			}
-            CanRating = bool.Parse(canRate);
-            if(!CanRating)
-            {
-                var orderRatings = this.Services().Booking.GetOrderRating(Guid.Parse(orderId));
-                Note = orderRatings.Note;
-                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
+			RatingList = this.Services().Booking.GetRatingType().Select(c => new RatingModel
 				{
-					RatingTypeId = c.RatingTypeId,
-					Score = c.Score,
-					RatingTypeName = c.Name
-				}).OrderBy(c=>c.RatingTypeId).ToList();
-            }
+					RatingTypeId = c.Id, 
+					RatingTypeName = c.Name 
+				})
+				.OrderBy(c=>c.RatingTypeId).ToList();
+			CanRating = false;
+
+			if (orderId != null)
+			{
+				var ratingTypes = this.Services().Booking.GetRatingType();
+				RatingList = ratingTypes.Select(c => new RatingModel(bool.Parse(canRate)) 
+					{
+						RatingTypeId = c.Id, 
+						RatingTypeName = c.Name 
+					}).OrderBy(c=>c.RatingTypeId).ToList();
+
+				foreach (var rating in RatingList) {
+					rating.PropertyChanged += HandleRatingPropertyChanged;
+				}
+
+				Guid id;
+				if (Guid.TryParse (orderId, out id)) {
+					OrderId = id;
+				}
+
+				CanRating = bool.Parse(canRate);
+				if(!CanRating)
+				{
+					var orderRatings = this.Services().Booking.GetOrderRating(Guid.Parse(orderId));
+					Note = orderRatings.Note;
+					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
+						{
+							RatingTypeId = c.RatingTypeId,
+							Score = c.Score,
+							RatingTypeName = c.Name
+						}).OrderBy(c=>c.RatingTypeId).ToList();
+				}
+			}
         }
 
         void HandleRatingPropertyChanged (object sender, PropertyChangedEventArgs e)

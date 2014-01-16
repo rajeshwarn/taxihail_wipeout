@@ -17,8 +17,6 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	//TODO: [MvvmCRoss v3] Required? 
-	[MvxViewFor(typeof(BookConfirmationViewModel))]
 	public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
         public ConfirmationView () 
@@ -196,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear (bool animated)
         {
             base.ViewDidAppear (animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_BookingDetail"), true);
+			NavigationItem.Title = Localize.GetValue("View_BookingDetail");
           
         }
     }

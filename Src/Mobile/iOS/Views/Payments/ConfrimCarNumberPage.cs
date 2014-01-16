@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green); 
 
 			var set = this.CreateBindingSet<ConfrimCarNumberPage, ConfirmCarNumberViewModel>();
+
 			set.Bind(ConfirmButton)
 				.For("TouchDown")
 				.To(vm => vm.ConfirmTaxiNumber);
