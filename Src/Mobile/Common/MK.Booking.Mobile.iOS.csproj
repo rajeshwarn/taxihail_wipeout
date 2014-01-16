@@ -305,6 +305,7 @@
     <Compile Include="IoC\TinyIoCProvider.cs" />
     <Compile Include="IoC\ViewModelLocator.cs" />
     <Compile Include="AppServices\AuthException.cs" />
+    <Compile Include="BindingConverter\OrderStatusToImageNameConverter.cs" />
     <Compile Include="AppServices\AuthFailure.cs" />
   </ItemGroup>
   <ItemGroup>

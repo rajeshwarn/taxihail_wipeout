@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class MyLocationsView : BaseViewController<MyLocationsViewModel>
 	{
+		const string CellId = "LocationCell";
 		const string CellBindingText = @"
                    FirstLine Address.FriendlyName;
                    SecondLine Address.FullAddress;
@@ -45,12 +46,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableLocations.SeparatorColor = UIColor.Clear;
 
 			var source = new BindableAddressTableViewSource (
-				             tableLocations, 
-				             UITableViewCellStyle.Subtitle, 
-				             new NSString ("LocationCell"), 
-				             CellBindingText, 
-				             UITableViewCellAccessory.None
-			             );
+	             tableLocations, 
+	             UITableViewCellStyle.Subtitle, 
+				 new NSString (CellId), 
+	             CellBindingText, 
+	             UITableViewCellAccessory.None
+             );
 			source.CellCreator = CellCreator;
 			tableLocations.Source = source;
 
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
 		{
-			var cell = new TwoLinesCell(new NSString("LocationCell"), CellBindingText, UITableViewCellAccessory.Checkmark);
+			var cell = new TwoLinesCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.Checkmark);
 			cell.HideBottomBar = tableView.IsLastCell(indexPath);
 			return cell;
 		}
