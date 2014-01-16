@@ -7,21 +7,18 @@ using Android.Graphics.Drawables;
 using Android.Provider;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using CrossUI.Droid;
-using CrossUI.Droid.Dialog;
-using CrossUI.Droid.Dialog.Elements;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
-
+using CrossUI.Droid.Dialog.Elements;
+using CrossUI.Droid.Dialog;
+using CrossUI.Droid;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Sign Up",
-        ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "Sign Up", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SignUpActivity : BaseBindingActivity<CreateAccountViewModel>
     {
-
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_SignUp; }
@@ -45,24 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			signMenu.Root = InitializeRoot(signMenu);
 			signMenu.SetScrollContainer (false);
 			mainContainer.AddView(signMenu, positionInMainContainer);
-//			SetPasswordTypeface (mainContainer);
-
 		}
-
-//		public void SetPasswordTypeface(ViewGroup container)
-//		{
-//			for (int i=0; i<((ViewGroup)container).ChildCount; ++i) {
-//				View nextChild = ((ViewGroup)container).GetChildAt (i);
-//				if (typeof(ViewGroup).IsInstanceOfType (nextChild)) {
-//					SetPasswordTypeface ((ViewGroup)nextChild);
-//				} else {
-//					// Check if it's an EditText with attribute for password
-//					if (typeof(EditText).IsInstanceOfType (nextChild)) { // its a password
-//						((EditText)nextChild).SetTypeface (Android.Graphics.Typeface.Default, Android.Graphics.TypefaceStyle.Normal);
-//					}
-//				}
-//			}
-//		}
 
 		RootElement InitializeRoot(DialogListView dlv)
 		{

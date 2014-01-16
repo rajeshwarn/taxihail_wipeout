@@ -8,9 +8,6 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using TinyIoC;
-using CrossUI.Droid;
-using CrossUI.Droid.Dialog;
-using CrossUI.Droid.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
