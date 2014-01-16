@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.ListViewCell2 xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/listviencell1"
-  android:layout_width="fill_parent"
-  android:layout_height="50dip"
-  android:layout_weight="1"
-  android:paddingTop="5dip"
-  android:paddingBottom="5dip"
-  android:paddingLeft="15dip"
-  local:MvxBind="TextLine1 DisplayLine; TextLine2 DisplayLine2; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow; ShowPlusSign ShowPlusSign; Icon Icon" />
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listviencell1"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:layout_weight="1"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:paddingLeft="15dip"
+    local:MvxBind="TextLine1 DisplayLine1; TextLine2 DisplayLine2; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow; ShowPlusSign ShowPlusSign; Icon Icon" />

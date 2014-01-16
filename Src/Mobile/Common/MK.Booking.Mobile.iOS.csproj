@@ -201,6 +201,7 @@
     <Compile Include="ListViewStructure\SingleLineItem.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
+    <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqChangePaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\Payment\Cmt\CmtRideLinqConfirmPairViewModel.cs" />
@@ -234,7 +235,6 @@
     <Compile Include="Messages\SubNavigationResultMessage.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
-    <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
