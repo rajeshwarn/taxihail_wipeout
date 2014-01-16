@@ -6,10 +6,6 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Provider;
 using Android.Views;
-using CrossUI.Droid.Dialog;
-using CrossUI.Droid;
-using CrossUI.Core.Elements.Menu;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account

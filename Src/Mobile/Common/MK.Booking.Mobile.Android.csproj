@@ -297,6 +297,7 @@
     <Compile Include="Extensions\ICommandExtensions.cs" />
     <Compile Include="IoC\ViewModelLocator.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
+    <Compile Include="BindingConverter\OrderStatusToImageNameConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
