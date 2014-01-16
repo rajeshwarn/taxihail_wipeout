@@ -1,12 +1,13 @@
 using System;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
-using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnSignIn.SetTitle (Localize.GetValue ("SignInButton"), UIControlState.Normal);
 			btnSignUp.SetTitle (Localize.GetValue ("SignUpButton"), UIControlState.Normal);
 
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            var settings = this.Services().AppSettings;;
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 

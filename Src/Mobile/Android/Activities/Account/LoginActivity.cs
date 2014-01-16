@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
