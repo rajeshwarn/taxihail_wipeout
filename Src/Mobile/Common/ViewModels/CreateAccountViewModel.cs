@@ -32,9 +32,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
 			} else
 			{
-				Data = new RegisterAccount();
-			}
+				Data = new RegisterAccount();	
+			}		
 		}
+
 
 		private bool IsEmail(string inputEmail)
 		{
@@ -47,6 +48,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 		    return (false);
 		}
+
+		public AsyncCommand Cancel {
+		get {
+				return GetCommand (() => {
+					Close();
+				});
+			}
+		}	
 
         public AsyncCommand CreateAccount
 		{
