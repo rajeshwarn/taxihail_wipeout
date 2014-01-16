@@ -16,7 +16,6 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
