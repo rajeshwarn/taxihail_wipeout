@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _status = new OrderStatusDetail
             {
-                IbsStatusDescription = this.Services().Localize["LoadingMessage"]
+				IbsStatusDescription = this.Services().Localize["LoadingText"]
             };
         }
 
@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-                           : this.Services().Localize["ConfirmDestinationNotSpecified"];
+						: this.Services().Localize["DestinationNotSpecifiedText"];
             }
         }
 
@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var orderStatus = new OrderStatusDetail
 					{ 
 							IbsOrderId = Order.IbsOrderId,
-							IbsStatusDescription = "Loading...",
+							IbsStatusDescription = this.Services().Localize["LoadingText"],
 							IbsStatusId = "",
 							OrderId = OrderId,
 							Status = OrderStatus.Unknown,
@@ -388,10 +388,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            var result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
+			var result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
+			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
             return result;
         }
     }

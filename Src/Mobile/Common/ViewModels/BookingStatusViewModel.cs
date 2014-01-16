@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			base.Load ();
 
-            StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingText"]);
 
 			Pickup = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
