@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 View.BringSubviewToFront (statusBar);
 
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
-                lblConfirmation.Text = Localize.GetValue("LoadingMessage");
+				lblConfirmation.Text = Localize.GetValue("LoadingText");
                 txtDriver.Text = Localize.GetValue("DriverInfoDriver");
                 txtDriver.TextColor = AppStyle.GreyText;
                 txtLicence.Text = Localize.GetValue("DriverInfoLicence");
