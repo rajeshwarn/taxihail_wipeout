@@ -322,9 +322,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-            string result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
+			string result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
 			result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
+			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
 			return result;
 		}
 
@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return buildingName;
 			}
-            return this.Services().Localize["HistoryDetailBuildingNameNotSpecified"];
+			return this.Services().Localize["BuildingNameText"];
 		}
 
 	    private string FormatPrice(double? price)
