@@ -421,7 +421,7 @@
     <AndroidResource Include="Resources\Layout\DialogCenter.axml" />
     <AndroidResource Include="Resources\Drawable\dialog_center.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_pressed.xml" />
-    <Compile Include="Controls\EditTextEntry.cs" />
+    <Compile Include="Controls\Widgets\EditTextEntry.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\orderStatus_Canceled.png" />
@@ -649,7 +649,6 @@
   -->
   <ItemGroup>
     <Folder Include="Resources\Non-Utilise-Drawable\" />
-    <Folder Include="Dialog\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Droid.Platform;
+using Cirrious.MvvmCross.Dialog.Droid;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.Client.Cache;
@@ -23,13 +22,12 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.IoC;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup
-		: MvxAndroidSetup
+        : MvxAndroidDialogSetup
     {
         readonly TinyIoCContainer _container;
 

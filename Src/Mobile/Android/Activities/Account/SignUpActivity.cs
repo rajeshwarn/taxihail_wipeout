@@ -1,15 +1,11 @@
 using Android.App;
 using Android.Content.PM;
 using Android.Widget;
-using Android.Content;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.Provider;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using System;
 using CrossUI.Droid.Dialog.Elements;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid;
@@ -37,50 +33,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 		public void SetDialog(ViewGroup mainContainer, int positionInMainContainer)
 		{
-			DialogListView signMenu = new DialogListView(this);
+			var signMenu = new DialogListView(this);
 			signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.WrapContent);
-			signMenu.Root = InitializeRoot(signMenu);
+			signMenu.Root = InitializeRoot();
 			signMenu.SetScrollContainer (false);
 			mainContainer.AddView(signMenu, positionInMainContainer);
 		}
 
-		RootElement InitializeRoot(DialogListView dlv)
+		RootElement InitializeRoot()
 		{
-			RootElement root = new RootElement();
+			var root = new RootElement();
+			var section = new Section ();
 
-			Section section = new Section ();
+			var email = new EntryElement (Localize ("CreateAccountEmail"), "DialogTop") {IsEmail = true};
+		    email.Bind(this, "Value Data.Email");
 
-			section = new Section ();
+            var name = new EntryElement(Localize("CreateAccountFullName"), "DialogCenter");
+		    name.Bind(this, "Value Data.Name");
 
-			var Email = new TaxiHailEntryElement (Localize ("CreateAccountEmail"), "DialogTop",  
-			                                      (s, e) => { 
-				ViewModel.Data.Email = ((EntryElement)s).Value; 
-			});
+            var phone = new EntryElement(Localize("CreateAccountPhone"), "DialogCenter") { Numeric = true };
+		    phone.Bind(this, "Value Data.Phone");
 
-			var Name = new TaxiHailEntryElement (Localize ("CreateAccountFullName"), "DialogCenter",  
-			                                     (s, e) => { 
-				ViewModel.Data.Name = ((EntryElement)s).Value; 
-			});
+            var password = new EntryElement(Localize("CreateAccountPassword"), "DialogCenter") { Password = true };
+            password.Bind(this, "Value Data.Password");
 
-			var Phone = new TaxiHailEntryElement (Localize ("CreateAccountPhone"), "DialogCenter",  
-			                                      (s, e) => { 
-				ViewModel.Data.Phone = ((EntryElement)s).Value; 
-			});
+            var passwordConfirm = new EntryElement(Localize("CreateAccountPasswordConfrimation"), "DialogBottom") { Password = true };
+            passwordConfirm.Bind(this, "Value ConfirmPassword");
 
-			var Password = new TaxiHailEntryElement (Localize ("CreateAccountPassword"), "DialogCenter",  
-			                                         (s, e) => { 
-				ViewModel.Data.Password = ((EntryElement)s).Value; 
-			}, true);
-
-			var PasswordConfirm = new TaxiHailEntryElement (Localize ("CreateAccountPasswordConfrimation"), "DialogBottom",  
-			                                                (s, e) => {
-				ViewModel.ConfirmPassword = ((EntryElement)s).Value;
-			}, true);
-
-			section.Add (new Element[] { Email, Name, Phone });
+			section.Add (new Element[] { email, name, phone });
 
 			if (!ViewModel.HasSocialInfo) {
-				section.Add (new Element[] { Password, PasswordConfirm });
+				section.Add (new Element[] { password, passwordConfirm });
 			}
 
 			root.Add (section);
@@ -88,14 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			return root;
 		}
 
-		public class TaxiHailEntryElement: EntryElement
-		{
-			public TaxiHailEntryElement(string hint, string layoutName, EventHandler action, bool isPassword = false, string prePopulatedWith = null):base(null,hint,prePopulatedWith, layoutName)
-			{
-				Password = isPassword;
-				ValueChanged += action;
-			}
-		}
+		
 
 		private string Localize(string value)
 		{
