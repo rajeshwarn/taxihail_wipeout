@@ -502,3 +502,11 @@
 "Done"="Done";
 "UpdatePasswordCurrentPasswordLabel"="Current Password";
 "UpdatePasswordConfirmationLabel"="Confirmation";
+"HistoryDetailPickupLabel"="Pickup:";
+"LoadingText"="Loading...";
+"NoAptText"="No apt.";
+"DestinationNotSpecifiedText"="Destination not specified";
+"SendReceipt"="Send receipt";
+"HistoryDetailOrderLabel"="Order:";
+"BuildingNameText"="Not specified";
+"NoRingCodeText"="No code";

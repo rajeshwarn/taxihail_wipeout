@@ -10,33 +10,35 @@
 	
 	<color name="button_border_color">#000000</color>
 	<color name="button_background_color">#004785</color>
-	<color name="button_pressed_background_color">#0469c2</color>
+	<color name="button_text_color">#ffffff</color>
+	<color name="button_pressed_background_color">#aa004785</color>
 
-  <color name="button_main_background_color">#004f94</color>
-	<color name="button_main_pressed_background_color">#004f94</color>
+  	<color name="button_main_background_color">#004f94</color>
+	<color name="button_main_pressed_background_color">#aa004f94</color>
 
-  <color name="button_green_border_color">#1fbf21</color>
-  <color name="button_red_border_color">#ff0000</color>
-  <color name="button_gray_border_color">#707070</color><!-- temp color -->
-  <color name="button_black_border_color">#000000</color>
+    <color name="button_green_border_color">#1fbf21</color>
+    <color name="button_red_border_color">#ff0000</color>
+    <color name="button_gray_border_color">#707070</color><!-- temp color -->
+    <color name="button_black_border_color">#000000</color>
   
-  <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
+    <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
 
-  <color name="button_subview_color">#000000</color>
-  <color name="button_background_color">#004785</color>
-  <color name="button_pressed_background_color">#0469c2</color>
+    <color name="button_subview_color">#000000</color>
+    <color name="button_background_color">#004785</color>
+    <color name="button_pressed_background_color">#0469c2</color>
 
-  <color name="button_border_color">#000000</color>
-  <color name="button_background_color">#004785</color>
-  <color name="button_pressed_background_color">#0469c2</color>
+    <color name="button_border_color">#000000</color>
+    <color name="button_background_color">#004785</color>
+    <color name="button_pressed_background_color">#0469c2</color>
 
-  <color name="subview_background_color">#f0f0f0</color>
-  <color name="subview_label_color">#f0f0f0</color>
+	<color name="subview_background_color">#f0f0f0</color>
+	<color name="subview_label_color">#f0f0f0</color>
 
-  <color name="listitem_text_line1_color">#000000</color>
+  	<color name="listitem_text_line1_color">#000000</color>
 	<color name="listitem_text_line2_color">#000000</color>		
 	<color name="itemlist_cell_background_color">#ffffff</color>
 	<color name="itemlist_cell_border_color">#727272</color>
+	
 	<color name="itemlist_cell_selected_semi_transparent_color">#dd727272</color>
 	
 	<color name="location_top_bar_color">#ffffff</color>	
@@ -87,9 +89,8 @@
         <item name="android:singleLine">true</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:color">@color/edit_text_foreground_color</item>
-        <item name="android:gravity">center_vertical|center_horizontal</item>
-        <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textColor">@color/button_text_color</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>        
         <item name="android:textSize">20dip</item>
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:focusable">true</item>
