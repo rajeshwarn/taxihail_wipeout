@@ -8,6 +8,9 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.Text;
 using TinyIoC;
+using CrossUI.Droid;
+using CrossUI.Droid.Dialog;
+using CrossUI.Droid.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,9 +35,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
 			} else
 			{
-				Data = new RegisterAccount();
-			}
+				Data = new RegisterAccount();	
+			}		
 		}
+
 
 		private bool IsEmail(string inputEmail)
 		{

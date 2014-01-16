@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    local:HideLogo="false"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -9,6 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
+        android:id="@+id/mainContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dip"
@@ -34,6 +34,8 @@
             android:layout_height="@dimen/Height"
             android:text="Create your account"
             style="@style/TitleTextBold" />
+    <!--
+        
         <EditText
             android:id="@+id/SignUpEditEmail"
             local:MvxBind="Text Data.Email"
@@ -58,11 +60,11 @@
             android:padding="10dip"
             android:inputType="phone"
             android:layout_width="fill_parent" />
-    <!--<LinearLayout
+    	<LinearLayout
         	local:MvxBind="Visibility HasSocialInfo, Converter=InvertedVisibility"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">  -->
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/SignUpPassword"
             local:MvxBind="Text Data.Password"
@@ -79,14 +81,14 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:inputType="textPassword"
-            android:layout_width="fill_parent" />
+            android:layout_width="fill_parent" /> 
+            -->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="horizontal">
             <Button
-                local:MvxBind="Click Cancel"
                 android:text="Cancel"
                 android:layout_weight=".475"
                 android:layout_width="0dip"
