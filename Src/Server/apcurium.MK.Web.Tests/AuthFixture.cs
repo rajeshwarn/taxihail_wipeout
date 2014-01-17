@@ -80,7 +80,7 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_invalid_twitter_id()
         {
             var sut = new AuthServiceClient(BaseUrl, null, "Test");
-            Assert.Throws<AggregateException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+            Assert.Throws<WebServiceException>(async () => await sut.AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }
