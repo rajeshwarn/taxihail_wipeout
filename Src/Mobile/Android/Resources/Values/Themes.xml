@@ -11,10 +11,10 @@
 	<color name="button_border_color">#000000</color>
 	<color name="button_background_color">#004785</color>
 	<color name="button_text_color">#ffffff</color>
-	<color name="button_pressed_background_color">#aa004785</color>
+	<color name="button_pressed_background_color">#33004785</color>
 
   	<color name="button_main_background_color">#004f94</color>
-	<color name="button_main_pressed_background_color">#aa004f94</color>
+	<color name="button_main_pressed_background_color">#006f14</color>
 
     <color name="button_green_border_color">#1fbf21</color>
     <color name="button_red_border_color">#ff0000</color>
