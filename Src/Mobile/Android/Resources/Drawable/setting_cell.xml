@@ -9,13 +9,13 @@
 			        <solid android:color="@color/transparent" />
 			  </shape>
 			</item>
-			
+			<!---
 			<item android:left="8px" android:right="16px" android:top="44dip">
 			 <shape>
 			       <size android:height="1px"/>
 			       <solid android:color="@color/setting_menu_separator_color" />
 			 </shape>
-			</item>
+			</item>-->
 		</layer-list>
 	</item>
 </selector>

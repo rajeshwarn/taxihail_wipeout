@@ -39,6 +39,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center" />
+                <View
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="10px" />
                 <Button
                     android:id="@+id/settingsFavorites"
                     style="@style/SettingItemTitle"
@@ -50,6 +55,12 @@
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
                     local:MvxBind="Click Panel.NavigateToMyLocations" />
+                <View
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsHistory"
                     style="@style/SettingItemTitle"
@@ -61,6 +72,12 @@
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
                     local:MvxBind="Click Panel.NavigateToOrderHistory" />
+                <View
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsProfile"
                     local:MvxBind="Click Panel.NavigateToUpdateProfile"
@@ -72,6 +89,12 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+                <View
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsCallCompany"
                     local:MvxBind="Click Panel.Call; Visibility Panel.CanCall, Converter=Visibility"
@@ -83,6 +106,13 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+                <View
+                    local:MvxBind="Visibility Panel.CanCall, Converter=Visibility"
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsTutorial"
                     local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.TutorialEnabled, Converter=Visibility"
@@ -94,6 +124,13 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+                <View
+                    local:MvxBind="isibility Panel.TutorialEnabled"
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsAbout"
                     local:MvxBind="Click Panel.NavigateToAboutUs"
@@ -105,6 +142,12 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+                <View
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsSupport"
                     local:MvxBind="Click Panel.ReportProblem; Visibility Panel.CanReportProblem, Converter=Visibility"
@@ -116,6 +159,13 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
+                <View
+                    local:MvxBind="Visibility Panel.CanReportProblem, Converter=Visibility"
+                    android:background="@color/setting_menu_separator_color"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px" />
                 <Button
                     android:id="@+id/settingsLogout"
                     style="@style/SettingItemTitle"

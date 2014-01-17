@@ -30,7 +30,7 @@
   <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
   <string name="ApartmentLabel">Apartment</string>
   <string name="EntryCodeLabel">Entry code</string>
-  <string name="View_Book_Menu_MyOrders">My Bookings</string>
+  <string name="View_Book_Menu_MyOrders">History</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="NbPassengers"> ({0} passengers)</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
