@@ -41,7 +41,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
-        OrderStatusDetail GetOrderStatus(Guid orderId);
+		[Obsolete("Migrate to async/await")]
+		OrderStatusDetail GetOrderStatus(Guid orderId);
+		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
         
 		Task<OrderStatusDetail> GetLastOrderStatus();
         
@@ -51,7 +53,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 			    
 	    List<RatingType> GetRatingType();
 
-	    OrderRatings GetOrderRating(Guid orderId);
+		[Obsolete("Migrate to async/await")]
+		OrderRatings GetOrderRating(Guid orderId);
+		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
 	    void SendRatingReview(OrderRatings orderRatings);
 

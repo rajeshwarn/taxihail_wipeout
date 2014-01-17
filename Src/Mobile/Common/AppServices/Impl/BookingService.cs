@@ -146,10 +146,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
-            var r = new OrderStatusDetail ();
-            UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
-            return r;
+			//TODO: Migrate code to async/await
+			var task = GetOrderStatusAsync(orderId);
+			task.Wait();
+			return task.Result;
         }
+
+		public Task<OrderStatusDetail> GetOrderStatusAsync (Guid orderId)
+		{
+			return UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus(orderId));
+		}
 
         public bool HasLastOrder {
             get{ return Cache.Get<string> ("LastOrderId").HasValue ();}
@@ -323,9 +329,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderRatings GetOrderRating (Guid orderId)
         {
-            var orderRate = UseServiceClientAsync<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
-            return orderRate;
+			// TODO: Migrate code to async version
+			var task = GetOrderRatingAsync(orderId);
+			task.Wait();
+			return task.Result;
         }
+
+		public Task<OrderRatings> GetOrderRatingAsync (Guid orderId)
+		{
+			return UseServiceClient<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
+		}
 
         public void SendRatingReview (OrderRatings orderRatings)
         {

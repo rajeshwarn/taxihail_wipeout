@@ -234,10 +234,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public override void OnViewLoaded ()
+		public override async void OnViewLoaded ()
         {
 			base.OnViewLoaded ();
-            LoadOrder();
+			LoadOrder();
             LoadStatus();
         }
 
@@ -248,29 +248,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public Task LoadOrder() 
+		public async void LoadOrder() 
 		{
-			return Task.Factory.StartNew(() => {
-                Order = this.Services().Account.GetHistoryOrder(OrderId);
-			});
+			Order = await this.Services().Account.GetHistoryOrderAsync(OrderId);
 		}
 
-		public event EventHandler Loaded;
-
-		public Task LoadStatus ()
+		public async void LoadStatus ()
 		{
-			return Task.Factory.StartNew(()=> {
-                HasRated = this.Services().Booking.GetOrderRating(OrderId).RatingScores.Any();
-                Status = this.Services().Booking.GetOrderStatus(OrderId);
-                IsCompleted = this.Services().Booking.IsStatusCompleted(Status.IbsStatusId);
-                IsDone = this.Services().Booking.IsStatusDone(Status.IbsStatusId);
-                
-				CanCancel = !IsCompleted;
+			var bookingService = this.Services().Booking;
 
-				if(Loaded!=null){
-					Loaded(this, null);
-				}
-			});
+			var ratings = bookingService.GetOrderRatingAsync(OrderId);
+			var status = bookingService.GetOrderStatusAsync(OrderId);
+
+			HasRated = (await ratings).RatingScores.Any();
+			Status = await status;
+			IsCompleted = bookingService.IsStatusCompleted(Status.IbsStatusId);
+			IsDone = bookingService.IsStatusDone(Status.IbsStatusId);
+            
+			CanCancel = !IsCompleted;
 		}
 
         public AsyncCommand NavigateToRatingPage

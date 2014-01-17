@@ -168,12 +168,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return client.GetOrders();
         }
 
-        public Order GetHistoryOrder (Guid id)
+		public Order GetHistoryOrder (Guid id)
         {
-            var result = 
-            UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
-            return result;
+			// TODO: remove ussage of this method in favor of async version
+			var task = GetHistoryOrderAsync(id);
+			task.Wait();
+			return task.Result;
         }
+
+		public Task<Order> GetHistoryOrderAsync (Guid id)
+		{
+			return UseServiceClient<OrderServiceClient, Order> (service => service.GetOrder (id));
+		}
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {

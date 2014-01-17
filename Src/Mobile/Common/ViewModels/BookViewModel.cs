@@ -180,8 +180,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        var order = this.Services().Account.GetHistoryOrder(t.Result.OrderId);
-                        ShowStatusActivity(order, t.Result);
+						// TODO: Convert to async
+						var order = this.Services().Account.GetHistoryOrder(t.Result.OrderId);
+						ShowStatusActivity(order, t.Result);
                     }
                 }, TaskContinuationOptions.OnlyOnRanToCompletion);
             }
