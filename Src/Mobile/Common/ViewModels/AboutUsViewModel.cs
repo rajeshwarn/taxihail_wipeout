@@ -15,9 +15,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public void Init()
-        {
-            Uri = this.Services().Config.GetSetting("Client.AboutUsUrl");
-        }
+		public override void Start()
+		{
+			Uri = this.Services().Config.GetSetting("Client.AboutUsUrl");
+		}
     }
 }

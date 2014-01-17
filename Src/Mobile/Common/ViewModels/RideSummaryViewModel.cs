@@ -105,13 +105,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			get {
 				return new AsyncCommand (() => ShowSubViewModel<BookRatingViewModel, OrderRated> (new 
-				{
-				    orderId = Order.Id.ToString (), 
-				    canRate = true.ToString (CultureInfo.InvariantCulture), 
-				    isFromStatus = true.ToString (CultureInfo.InvariantCulture)
-				}.ToStringDictionary(),_=>{
-				                              IsRatingButtonShown = false;
-				}));
+					{
+					    orderId = Order.Id, 
+					    canRate = true, 
+					}, _ => IsRatingButtonShown = false));
 			}
 		}
 
