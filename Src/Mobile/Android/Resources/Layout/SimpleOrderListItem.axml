@@ -8,4 +8,4 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="TextLine1 Title; TextLine2 PickupAddress.DisplayAddress; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow; Icon Icon" />
+    local:MvxBind="TextLine1 Title; TextLine2 PickupAddress.DisplayAddress; IsTop IsFirst; IsBottom IsLast; ShowRightArrow ShowRightArrow; Icon Status, Converter=OrderStatusToImageNameConverter" />
