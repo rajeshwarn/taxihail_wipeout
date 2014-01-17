@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 
 
-		public void Init()
+		public override void Start()
         {
             LoadCreditCards();
         }
