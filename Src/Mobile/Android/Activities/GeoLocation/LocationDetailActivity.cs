@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
-    [Activity(Label = "Location Details",
+	[Activity(Label = "Location Details", Theme = "@style/OnlineTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationDetailActivity : BaseBindingActivity<LocationDetailViewModel>
     {

@@ -12,7 +12,7 @@ using CrossUI.Droid;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Sign Up", ScreenOrientation = ScreenOrientation.Portrait)]
+	[Activity(Label = "Sign Up", Theme = "@style/OfflineTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class SignUpActivity : BaseBindingActivity<CreateAccountViewModel>
     {
         protected override int ViewTitleResourceId
