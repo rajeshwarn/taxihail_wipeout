@@ -50,9 +50,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CheckVersion();
         }
 
-        private async void CheckVersion()
+        private void CheckVersion()
         {
-            await Task.Delay(1000);
             this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
@@ -177,7 +176,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch (AuthException e)
                 {
                     var localize = this.Services().Localize;
-                    if(e.Failure == AuthFailure.NetworkError || e.Failure == AuthFailure.InvalidServiceUrl)
+                    if(e.Failure == AuthFailure.NetworkError 
+                        || e.Failure == AuthFailure.InvalidServiceUrl)
                     {
                         var title = localize["NoConnectionTitle"];
                         var msg = localize["NoConnectionMessage"];
