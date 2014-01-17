@@ -598,8 +598,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f07003b
-			public const int abc_search_url_text_holo = 2131165243;
+			// aapt resource value: 0x7f07003a
+			public const int abc_search_url_text_holo = 2131165242;
 			
 			// aapt resource value: 0x7f070000
 			public const int abc_search_url_text_normal = 2131165184;
@@ -706,11 +706,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070008
 			public const int common_signin_btn_light_text_pressed = 2131165192;
 			
-			// aapt resource value: 0x7f07003c
-			public const int common_signin_btn_text_dark = 2131165244;
+			// aapt resource value: 0x7f07003b
+			public const int common_signin_btn_text_dark = 2131165243;
 			
-			// aapt resource value: 0x7f07003d
-			public const int common_signin_btn_text_light = 2131165245;
+			// aapt resource value: 0x7f07003c
+			public const int common_signin_btn_text_light = 2131165244;
 			
 			// aapt resource value: 0x7f070018
 			public const int darkgray = 2131165208;
@@ -733,29 +733,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070017
 			public const int gray = 2131165207;
 			
+			// aapt resource value: 0x7f070034
+			public const int itemlist_cell_background_color = 2131165236;
+			
 			// aapt resource value: 0x7f070035
-			public const int itemlist_cell_background_color = 2131165237;
+			public const int itemlist_cell_border_color = 2131165237;
 			
 			// aapt resource value: 0x7f070036
-			public const int itemlist_cell_border_color = 2131165238;
+			public const int itemlist_cell_selected_semi_transparent_color = 2131165238;
 			
-			// aapt resource value: 0x7f070037
-			public const int itemlist_cell_selected_semi_transparent_color = 2131165239;
+			// aapt resource value: 0x7f070032
+			public const int listitem_text_line1_color = 2131165234;
 			
 			// aapt resource value: 0x7f070033
-			public const int listitem_text_line1_color = 2131165235;
+			public const int listitem_text_line2_color = 2131165235;
 			
-			// aapt resource value: 0x7f070034
-			public const int listitem_text_line2_color = 2131165236;
+			// aapt resource value: 0x7f070037
+			public const int location_top_bar_color = 2131165239;
 			
 			// aapt resource value: 0x7f070038
-			public const int location_top_bar_color = 2131165240;
-			
-			// aapt resource value: 0x7f070039
-			public const int location_top_bar_separator_color = 2131165241;
+			public const int location_top_bar_separator_color = 2131165240;
 			
 			// aapt resource value: 0x7f070020
-			public const int main_background_color = 2131165216;
+			public const int offline_background_color = 2131165216;
+			
+			// aapt resource value: 0x7f070031
+			public const int online_background_color = 2131165233;
 			
 			// aapt resource value: 0x7f070012
 			public const int orange = 2131165202;
@@ -769,14 +772,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07002f
 			public const int setting_menu_text_color = 2131165231;
 			
-			// aapt resource value: 0x7f070031
-			public const int subview_background_color = 2131165233;
-			
-			// aapt resource value: 0x7f070032
-			public const int subview_label_color = 2131165234;
-			
-			// aapt resource value: 0x7f07003a
-			public const int top_bar_title_color = 2131165242;
+			// aapt resource value: 0x7f070039
+			public const int top_bar_title_color = 2131165241;
 			
 			// aapt resource value: 0x7f070014
 			public const int transparent = 2131165204;
@@ -4943,9 +4940,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0b008b
 			public const int ButtonTextLarge = 2131427467;
 			
-			// aapt resource value: 0x7f0b00ae
-			public const int CustomTheme = 2131427502;
-			
 			// aapt resource value: 0x7f0b0087
 			public const int DataLabelText = 2131427463;
 			
@@ -4996,6 +4990,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0b0085
 			public const int MultilineFormLabelText_Small = 2131427461;
+			
+			// aapt resource value: 0x7f0b00ae
+			public const int OfflineTheme = 2131427502;
+			
+			// aapt resource value: 0x7f0b00af
+			public const int OnlineTheme = 2131427503;
 			
 			// aapt resource value: 0x7f0b008c
 			public const int SearchButtonText = 2131427468;

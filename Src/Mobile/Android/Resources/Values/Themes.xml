@@ -45,7 +45,7 @@
   <dimen name="HeightButton">41dip</dimen>
   <dimen name="HeightEditText">40dip</dimen>
   <dimen name="HeightEditTextFlat">44dip</dimen>
-	<dimen name="VerticalPadding">22dip</dimen>
+	<dimen name="VerticalPadding">14dip</dimen>
 	<dimen name="DefaultFontSize">14dip</dimen>
 	<dimen name="top_bar_title_font_size">18dp</dimen>
   <dimen name="top_bar_title_height">52dip</dimen>  
