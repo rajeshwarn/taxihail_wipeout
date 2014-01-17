@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.ViewModels;
-using CrossUI.Touch.Dialog.Elements;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using Cirrious.MvvmCross.Views;
 using CrossUI.Touch.Dialog;
+using CrossUI.Touch.Dialog.Elements;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
