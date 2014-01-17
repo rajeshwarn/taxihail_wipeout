@@ -22,13 +22,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			UITextField textField;
 			if (UIHelper.IsOS7orHigher)
 			{
-				textField  = base.CreateTextField(frame.SetX(20).IncrementWidth(-30));
+				textField  = base.CreateTextField(frame.SetX(14).SetWidth(320 - 2*8 - 2*14)); // 320 - margin - padding
+				textField.TintColor = UIColor.Black; // cursor color
 			}
 			else
 			{
-				textField  = base.CreateTextField(frame);
+				textField  = base.CreateTextField(frame.SetX(14).IncrementY(-11).SetHeight(21));
 			}
 
+			textField.TextColor = UIColor.FromRGB(44, 44, 44);
+			textField.Font = UIFont.FromName("HelveticaNeue-Light", 38/2);
 			textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
 
 			if (_isPassword)

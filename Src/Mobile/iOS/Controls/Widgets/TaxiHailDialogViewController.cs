@@ -5,6 +5,7 @@ using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -33,9 +34,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 		{
+			var cellWidth = 304;
+			var cellHeight = 40;
+
 			var cell =  base.GetCell(tableView, indexPath);
-			cell.Frame  = new RectangleF(cell.ContentView.Frame.X, cell.ContentView.Frame.Y, 200, cell.ContentView.Frame.Height);
-			cell.ContentView.Frame = new RectangleF(cell.ContentView.Frame.X, cell.ContentView.Frame.Y, 200, cell.ContentView.Frame.Height);
+			cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
+			cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
+
 			UIRectCorner cornerPlace = 0;
 			var borders = Border.Right | Border.Left | Border.Bottom;
 
@@ -65,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			if (UIHelper.IsOS7orHigher)
 			{
-				view.Frame = new RectangleF(0, 0, 304, 40);
+				view.Frame = new RectangleF(0, 0, cellWidth, cellHeight);
 				var container = new UIView { BackgroundColor = UIColor.Clear };
 				container.AddSubview(view);
 				cell.BackgroundView = container;  
@@ -73,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 			else
 			{
-				cell.BackgroundView = view; 
+				cell.BackgroundView = view;
 			}
 
 			cell.ContentView.BackgroundColor = UIColor.Clear;
