@@ -11,31 +11,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private BookingSettings _bookingSettings;
 
-		public void Init(string bookingSettings)
+		public async void Init(string bookingSettings)
         {
-			Init(bookingSettings.FromJson<BookingSettings>());
-        }
+			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 
-		public void Init(BookingSettings bookingSettings)
-        {
-            _bookingSettings = bookingSettings;
+			var refData = await this.Services().Account.GetReferenceDataAsync();
 
-            var refDataTask = this.Services().Account.GetReferenceDataAsync();
+			var v = this.Services().Account.GetVehiclesList();
+			_vehicules = v == null ? new ListItem[0] : v.ToArray();
+			RaisePropertyChanged(() => Vehicles );
+			RaisePropertyChanged(() => VehicleTypeId );
+			RaisePropertyChanged(() => VehicleTypeName );
 
-            refDataTask.ContinueWith(result =>
-            {
-                var v = this.Services().Account.GetVehiclesList();
-                _vehicules = v == null ? new ListItem[0] : v.ToArray();
-				RaisePropertyChanged(() => Vehicles );
-				RaisePropertyChanged(() => VehicleTypeId );
-				RaisePropertyChanged(() => VehicleTypeName );
-
-                var p = this.Services().Account.GetPaymentsList();
-                _payments = p == null ? new ListItem[0] : p.ToArray();
-				RaisePropertyChanged(() => Payments );
-				RaisePropertyChanged(() => ChargeTypeId );
-				RaisePropertyChanged(() => ChargeTypeName );
-            });
+			var p = this.Services().Account.GetPaymentsList();
+			_payments = p == null ? new ListItem[0] : p.ToArray();
+			RaisePropertyChanged(() => Payments );
+			RaisePropertyChanged(() => ChargeTypeId );
+			RaisePropertyChanged(() => ChargeTypeName );
         }
 
         public bool ShouldDisplayTipSlider
