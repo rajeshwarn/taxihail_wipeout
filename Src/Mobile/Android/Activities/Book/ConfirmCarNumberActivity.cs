@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Payments_ConfirmCarNumber);
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
     }
 }

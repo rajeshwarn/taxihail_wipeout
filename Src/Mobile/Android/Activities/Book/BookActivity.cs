@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
             ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
 
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
 
             FindViewById<TouchMap>(Resource.Id.mapPickup).PostInvalidateDelayed(100);
         }
@@ -164,16 +164,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (ViewModel != null) ViewModel.Start();
         }
 
-        protected override void OnRestart()
-        {
-            base.OnRestart();
-            if (ViewModel != null) ViewModel.Restart();
-        }
-
         protected override void OnStop()
         {
             base.OnStop();
-            if (ViewModel != null) ViewModel.Stop();
+            if (ViewModel != null) ViewModel.OnViewStopped();
         }
 
         protected override void OnDestroy()
@@ -182,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (ViewModel != null)
             {
-                ViewModel.Unload();
+                ViewModel.OnViewUnloaded();
                 ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
             }
 

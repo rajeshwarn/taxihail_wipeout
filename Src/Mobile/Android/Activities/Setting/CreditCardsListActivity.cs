@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_CreditCardsList);
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
     }
 }

@@ -58,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 			get { return this.Services().AppSettings.ApplicationName; }
 		}
 
-		public override void Load()
+        public override void OnViewLoaded()
 		{
-			base.Load();
+            base.OnViewLoaded();
 			_isClosed = false;
 
 			_orderNotified = new List<int?>();

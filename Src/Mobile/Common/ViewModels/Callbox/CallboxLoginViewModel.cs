@@ -11,9 +11,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     public class CallboxLoginViewModel : BaseViewModel
     {
 
-        public override void Load()
+        public override void Start()
         {
-            base.Load();
 #if DEBUG
             Email = "john@taxihail.com";
             Password = "password";

@@ -76,9 +76,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		public override void Load()
+		public override void OnViewLoaded()
         {
-			base.Load();
+			base.OnViewLoaded();
 
             if ( Order == null || !_useExistingOrder )
             {
@@ -143,9 +143,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public override void Start(bool firstStart = false)
+		public override void OnViewStarted(bool firstTime = false)
         {
-            base.Start(firstStart);
+			base.OnViewStarted(firstTime);
             ObserveAvailableVehicles();
         }
         
@@ -156,9 +156,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-        public override void Stop ()
+        public override void OnViewStopped ()
         {
-            base.Stop ();
+            base.OnViewStopped ();
             Subscriptions.DisposeAll ();
         }
 

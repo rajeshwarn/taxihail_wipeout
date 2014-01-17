@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
         }
 
-        public override void Start(bool firstStart)
+        public override void OnViewStarted(bool firstTime)
         {
-            base.Start(firstStart);
+            base.OnViewStarted(firstTime);
 
             CheckVersion();
         }

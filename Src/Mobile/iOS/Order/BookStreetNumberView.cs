@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
             set.Apply();
             
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
             View.ApplyAppFont ();
         }
 		

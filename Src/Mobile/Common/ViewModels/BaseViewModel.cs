@@ -24,23 +24,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
 
-        public virtual void Load()
+        public virtual void OnViewLoaded()
         {
         }
 
-        public virtual void Start(bool firstStart)
+        public virtual void OnViewStarted(bool firstTime)
         {
         }
 
-        public virtual void Restart()
+        public virtual void OnViewStopped()
         {
         }
 
-        public virtual void Stop()
-        {
-        }
-
-        public virtual void Unload()
+        public virtual void OnViewUnloaded()
         {
         }
 
