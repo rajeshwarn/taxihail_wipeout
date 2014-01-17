@@ -511,4 +511,8 @@
   <string name="NoRingCodeText">No code</string>
   <string name="CreateAccountPhonePlaceHolder">Mobile</string>
   <string name="CreateAccountEmailPlaceHolder">Email</string>
+  <string name="UpdatePasswordNewPasswordLabel">New Password</string>
+  <string name="Done">Done</string>
+  <string name="UpdatePasswordCurrentPasswordLabel">Current Password</string>
+  <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
 </resources>

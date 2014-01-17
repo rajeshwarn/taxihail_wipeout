@@ -29,20 +29,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private string _newPasswordConfirmation;
-		public string NewPasswordConfirmation
+		private string _Confirmation;
+		public string Confirmation
 		{
-			get { return _newPasswordConfirmation; }
+			get { return _Confirmation; }
 			set
 			{
-				_newPasswordConfirmation = value;
+				_Confirmation = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => NewPasswordIsConfirmed);
 			}
 		}
 
 		public bool NewPasswordIsConfirmed { 
-			get { return NewPassword == NewPasswordConfirmation; }
+			get { return NewPassword == Confirmation; }
 		}
 
 		public bool CanUpdatePassword { 

@@ -512,3 +512,7 @@
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "CreateAccountPhonePlaceHolder"="Mobile";
 "CreateAccountEmailPlaceHolder"="Email";
+"UpdatePasswordNewPasswordLabel"="New Password";
+"Done"="Done";
+"UpdatePasswordCurrentPasswordLabel"="Current Password";
+"UpdatePasswordConfirmationLabel"="Confirmation";

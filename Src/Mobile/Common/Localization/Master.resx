@@ -471,7 +471,7 @@
   <data name="SaveAddressEmptyFieldTitle" xml:space="preserve">
     <value>Friendly name required</value>
   </data>
-  <data name="DoneButton" xml:space="preserve">
+  <data name="Done" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="FavoritesButton" xml:space="preserve">
@@ -1005,15 +1005,6 @@
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>The account cannot be created, this email is already in use.</value>
   </data>
-  <data name="CurrentPasswordLabel" xml:space="preserve">
-    <value>Current Password</value>
-  </data>
-  <data name="NewPasswordLabel" xml:space="preserve">
-    <value>New Password</value>
-  </data>
-  <data name="NewPasswordConfirmationLabel" xml:space="preserve">
-    <value>Confirmation</value>
-  </data>
   <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
     <value>Passenger Settings</value>
   </data>
@@ -1029,6 +1020,15 @@
   <data name="View_UpdatePassword" xml:space="preserve">
     <value>Update Password</value>
   </data>
+  <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="UpdatePasswordNewPasswordLabel" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>  
   <data name="NbPassenger" xml:space="preserve">
     <value> ({0} passenger)</value>
   </data>
