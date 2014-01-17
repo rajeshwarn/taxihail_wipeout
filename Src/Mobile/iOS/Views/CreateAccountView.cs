@@ -52,22 +52,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private void BuildTableView(UIView container)
 		{
+			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
+
 			var section = new Section () {
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email)
-				{
-					KeyboardType = UIKeyboardType.EmailAddress		
-				}.Bind(this, "Value Data.Email"),
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), ViewModel.Data.Name).Bind(this, "Value Data.Name"),
-				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){
-					KeyboardType = UIKeyboardType.PhonePad		
-				}.Bind(this, "Value Data.Phone")
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email){ KeyboardType = UIKeyboardType.EmailAddress }
+					.Bind(bindings, vm => vm.Data.Email),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), ViewModel.Data.Name)
+					.Bind(bindings, vm => vm.Data.Name),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){ KeyboardType = UIKeyboardType.PhonePad }
+					.Bind(bindings, vm => vm.Data.Phone)
 			};
 
 			if (!ViewModel.HasSocialInfo) {
 				constraintTableViewHeight.Constant += 40*2;
 				section.AddAll (new List<Element> { 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true).Bind(this, "Value Data.Password"), 
-					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true).Bind(this, "Value ConfirmPassword")
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true)
+						.Bind(bindings, vm => vm.Data.Password), 
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true)
+						.Bind(bindings, vm => vm.ConfirmPassword)
 				});
 			}
 
