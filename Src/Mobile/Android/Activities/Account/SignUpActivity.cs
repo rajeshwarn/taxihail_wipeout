@@ -45,20 +45,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var root = new RootElement();
 			var section = new Section ();
 
+			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
+
 			var email = new EntryElement (null, Localize ("CreateAccountEmail"), null,  "DialogTop") {IsEmail = true};
-		    email.Bind(this, "Value Data.Email");
+			email.Bind(bindings, vm => vm.Data.Email);
 
             var name = new EntryElement(null, Localize("CreateAccountFullName"), null, "DialogCenter");
-		    name.Bind(this, "Value Data.Name");
+			name.Bind(bindings, vm => vm.Data.Name);
 
             var phone = new EntryElement(null, Localize("CreateAccountPhone"), null, "DialogCenter") { Numeric = true };
-		    phone.Bind(this, "Value Data.Phone");
+			phone.Bind(bindings, vm => vm.Data.Phone);
 
             var password = new EntryElement(null, Localize("CreateAccountPassword"), null, "DialogCenter") { Password = true };
-            password.Bind(this, "Value Data.Password");
+			password.Bind(bindings, vm => vm.Data.Password);
 
             var passwordConfirm = new EntryElement(null, Localize("CreateAccountPasswordConfrimation"), null, "DialogBottom") { Password = true };
-            passwordConfirm.Bind(this, "Value ConfirmPassword");
+			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
 			section.Add (new Element[] { email, name, phone });
 
