@@ -64,21 +64,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 				UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
 			}
 
+			var titleFont = UIFont.FromName ("HelveticaNeue-Medium", 34/2);
+			var navBarButtonFont = UIFont.FromName ("HelveticaNeue-Light", 34/2);
+
 			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
 				TextColor = gray44,
-				Font = UIFont.BoldSystemFontOfSize (18),
+				Font = titleFont,
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			});
 
 			var buttonTextColor = new UITextAttributes () {
-				Font = UIFont.SystemFontOfSize (18),
+				Font = navBarButtonFont,
 				TextColor = gray44,
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
 			var selectedButtonTextColor = new UITextAttributes () {
-				Font = UIFont.SystemFontOfSize (18),
+				Font = navBarButtonFont,
 				TextColor = gray44.ColorWithAlpha(0.5f),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
