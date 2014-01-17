@@ -22,7 +22,6 @@
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:focusable="true"
-            local:HideLogo="false"
             android:id="@+id/MainLayout"
             local:RightButtonSource="main_settings"
             android:focusableInTouchMode="true">
@@ -215,7 +214,7 @@
                     android:background="@color/transparent"
                     android:layout_width="50dip"
                     android:layout_height="fill_parent"
-                    android:layout_gravity="right"
+                    android:layout_gravity="left"
                     local:MvxBind="Visibility Panel.MenuIsOpen, Converter=Visibility" />
             </FrameLayout>
         </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

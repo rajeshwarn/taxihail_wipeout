@@ -255,7 +255,7 @@
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
   <string name="SettingViewLoginInfo">You are currently signed in as : {0}</string>
   <string name="TabSearch">Search</string>
-  <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
+  <string name="View_Book_Menu_MyLocations">Locations</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_en.png</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>

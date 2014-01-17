@@ -985,13 +985,13 @@
     <value>Profile</value>
   </data>
   <data name="View_Book_Menu_MyLocations" xml:space="preserve">
-    <value>Manage My Locations</value>
+    <value>Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>My Bookings</value>
+    <value>History</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
-    <value>Update My Profile</value>
+    <value>Update Account</value>
   </data>
   <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
     <value>Update My Password</value>

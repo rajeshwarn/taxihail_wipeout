@@ -436,6 +436,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Pending.png" />
     <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Removed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Unknown.png" />
+    <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
