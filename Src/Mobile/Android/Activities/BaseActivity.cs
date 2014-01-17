@@ -47,26 +47,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnStart()
         {
             base.OnStart();
-            ViewModel.Start(_firstStart);
+            ViewModel.OnViewStarted(_firstStart);
             _firstStart = false;
-        }
-
-        protected override void OnRestart()
-        {
-            base.OnRestart();
-            ViewModel.Restart();
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-            ViewModel.Stop();
+            ViewModel.OnViewStopped();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            ViewModel.Unload();
+            ViewModel.OnViewUnloaded();
         }
     }
 

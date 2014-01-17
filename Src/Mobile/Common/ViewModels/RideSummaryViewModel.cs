@@ -21,9 +21,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-        public override void Start(bool firstStart = false)
+        public override void OnViewStarted(bool firstStart = false)
         {
-            base.Start(firstStart);
+            base.OnViewStarted(firstStart);
 			RaisePropertyChanged(() => IsPayButtonShown);
 			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
 			RaisePropertyChanged(() => IsSendReceiptButtonShown);

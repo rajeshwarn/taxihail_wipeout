@@ -269,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.CreditCardCompany = item.ToSafeString();	
 		}); } }
 
-        public AsyncCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
+        public AsyncCommand AddCreditCardCommand { get { return GetCommand(() => AddCrediCard()); } }
 
 #endregion
 

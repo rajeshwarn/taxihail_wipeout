@@ -76,9 +76,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		public override void Load()
+		public override void OnViewLoaded()
         {
-			base.Load();
+			base.OnViewLoaded();
 
             if ( Order == null || !_useExistingOrder )
             {
@@ -101,15 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (! _useExistingOrder ) 
             {
-                var tutorialWasDisplayed = this.Services().AppCache.Get<string>("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty() || !tutorialWasDisplayed.SoftEqual(this.Services().Account.CurrentAccount.Email))
-                {
-                    Task.Run( () => Pickup.RequestCurrentLocationCommand.Execute());
-                }
-                else
-                {
-                    Pickup.RequestCurrentLocationCommand.Execute();            
-                }
+                Pickup.RequestCurrentLocationCommand.Execute();
             }
             else
             {                
@@ -151,9 +143,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             });
         }
 
-        public override void Start(bool firstStart = false)
+		public override void OnViewStarted(bool firstTime = false)
         {
-            base.Start(firstStart);
+			base.OnViewStarted(firstTime);
             ObserveAvailableVehicles();
         }
         
@@ -164,9 +156,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-        public override void Stop ()
+        public override void OnViewStopped ()
         {
-            base.Stop ();
+            base.OnViewStopped ();
             Subscriptions.DisposeAll ();
         }
 
@@ -197,12 +189,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void CheckVersion()
         {
-            //The 2 second delay is required because the view might not be created.
-            await Task.Delay(2000);
-            if (this.Services().Account.CurrentAccount != null)
-            {
-                this.Services().ApplicationInfo.CheckVersionAsync();
-            }
+            await Task.Delay(1000);
+            this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
         void AddressChanged(object sender, EventArgs e)

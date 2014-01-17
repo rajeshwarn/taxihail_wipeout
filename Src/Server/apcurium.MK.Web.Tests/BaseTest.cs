@@ -15,7 +15,7 @@ namespace apcurium.MK.Web.Tests
     public class BaseTest
     {
         static readonly AppHost AppHost;
-        protected string BaseUrl { get { return "http://localhost:6901/"; } }
+        protected string BaseUrl { get { return "http://localhost:6903/"; } }
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }
         protected string TestAdminAccountPassword { get { return "password1"; } }
@@ -45,7 +45,8 @@ namespace apcurium.MK.Web.Tests
 
         public virtual void Setup()
         {
-            var authResponseTask = new AuthServiceClient(BaseUrl, null, "Test").Authenticate(TestAccount.Email, TestAccountPassword);
+            var authResponseTask = new AuthServiceClient(BaseUrl, null, "Test")
+                .Authenticate(TestAccount.Email, TestAccountPassword);
             authResponseTask.Wait();
             SessionId = authResponseTask.Result.SessionId;
         }

@@ -20,9 +20,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
 
-		public override void Load()
+		public override void OnViewLoaded()
 		{
-		    base.Load();
+		    base.OnViewLoaded();
 			ShowWarningIfNecessary();
 			ShowFareEstimateAlertDialogIfNecessary();
 		}

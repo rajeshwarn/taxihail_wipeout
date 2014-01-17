@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<EditText>(Resource.Id.largeBagsEditText).Maybe(x => x.InputType = InputTypes.ClassNumber);
 
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
     }
 }

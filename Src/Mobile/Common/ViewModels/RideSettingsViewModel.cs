@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async void Init(string bookingSettings)
         {
 			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
+			//TODO: This doesn't work [MvvmCross v3] 
 
 			var refData = await this.Services().Account.GetReferenceDataAsync();
 
@@ -47,9 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return setting.IsPayInTaxiEnabled;
             }
         }
-        public override void Restart()
+		public override void OnViewStarted(bool firstTime)
         {
-            base.Restart();
+			base.OnViewStarted(firstTime);
             PaymentPreferences.LoadCreditCards();
         }
 

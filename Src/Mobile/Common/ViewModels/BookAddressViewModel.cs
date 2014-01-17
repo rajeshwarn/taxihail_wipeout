@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(ClearAddress);
+                return GetCommand(() => ClearAddress());
             }
         }
 

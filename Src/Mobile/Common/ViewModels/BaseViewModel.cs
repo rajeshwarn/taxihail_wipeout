@@ -8,6 +8,8 @@ using TinyIoC;
 using System.Runtime.CompilerServices;
 using Cirrious.MvvmCross.ViewModels;
 using System.Windows.Input;
+using System.Threading.Tasks;
+using Cirrious.MvvmCross.Platform;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -22,25 +24,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected ILogger Logger { get { return Container.Resolve<ILogger>(); } }
 
-        public virtual void Load()
+        public virtual void OnViewLoaded()
         {
         }
 
-        public virtual void Start(bool firstStart)
+        public virtual void OnViewStarted(bool firstTime)
         {
         }
 
-        public virtual void Restart()
+        public virtual void OnViewStopped()
         {
         }
 
-        public virtual void Stop()
+        public virtual void OnViewUnloaded()
         {
         }
 
-        public virtual void Unload()
-        {
-        }
+		protected bool ShowSubViewModel<TViewModel, TResult>(object parameterValuesObject, Action<TResult> onResult)
+				where TViewModel : BaseSubViewModel<TResult>
+		{
+			return ShowSubViewModel<TViewModel, TResult>(parameterValuesObject.ToSimplePropertyDictionary(), onResult);
+		}
 
 		protected bool ShowSubViewModel<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)
@@ -74,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return new AsyncCommand(action);
         }
+
+		protected AsyncCommand GetCommand(Func<Task> action)
+		{
+			return new AsyncCommand(action);
+		}
 
         protected AsyncCommand<T> GetCommand<T>(Action<T> action)
         {
