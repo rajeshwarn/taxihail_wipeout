@@ -106,15 +106,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowPlusSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_location), 6.ToPixels(),
-                    10.ToPixels(), null);
+				var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_location);								
+				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
+				canvas.DrawBitmap(bitmapIcon,  10.ToPixels(),offsetIcon.ToPixels(), null);
+
             }
             else if (Icon.HasValue())
             {
                 var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
 
-
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 10.ToPixels(), null);
+				var bitmapIcon = BitmapFactory.DecodeResource (Resources, identifier);									
+				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
+				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(),offsetIcon.ToPixels(),  null);
             }
 
 

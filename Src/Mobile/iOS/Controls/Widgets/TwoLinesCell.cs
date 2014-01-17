@@ -94,11 +94,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			TextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			TextLabel.BackgroundColor = UIColor.Clear;
-			TextLabel.Font = UIFont.BoldSystemFontOfSize(14);
+			TextLabel.Font = UIFont.FromName("HelveticaNeue-Bold", 28/2);
 
 			DetailTextLabel.TextColor = UIColor.FromRGB(44, 44, 44);
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
-			DetailTextLabel.Font = UIFont.SystemFontOfSize(14);
+			DetailTextLabel.Font = UIFont.FromName("HelveticaNeue-Light", 28/2);
 
 			ContentView.BackgroundColor = UIColor.Clear;
 			BackgroundColor = UIColor.Clear;

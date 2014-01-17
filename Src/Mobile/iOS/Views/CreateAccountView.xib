@@ -46,16 +46,16 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="elq-aW-7GL">
-                                    <rect key="frame" x="8" y="157" width="304" height="119"/>
+                                    <rect key="frame" x="8" y="157" width="304" height="121"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="119" id="nfZ-yA-VOU"/>
+                                        <constraint firstAttribute="height" constant="121" id="nfZ-yA-VOU"/>
                                         <constraint firstAttribute="width" constant="304" id="qT1-p5-J6I"/>
                                     </constraints>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="svg-Pw-eY0" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="290" width="144" height="41"/>
+                                    <rect key="frame" x="8" y="292" width="144" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="144" id="g5T-eD-iqD"/>
@@ -66,7 +66,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bww-wK-2XM" customClass="FlatButton">
-                                    <rect key="frame" x="168" y="290" width="144" height="41"/>
+                                    <rect key="frame" x="168" y="292" width="144" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="144" id="SmK-ZK-QYL"/>

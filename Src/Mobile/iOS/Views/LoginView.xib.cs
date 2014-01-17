@@ -75,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-			btnServer.SetLeftImage("server.png");
 			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
 			btnServer.Hidden = !settings.CanChangeServiceUrl;

@@ -607,8 +607,6 @@
     <Content Include="Assets\Social\TW\login_down.png" />
     <Content Include="Assets\Social\TW\logout.png" />
     <Content Include="Assets\Social\TW\logout_down.png" />
-    <Content Include="Assets\server.png" />
-    <Content Include="Assets\server%402x.png" />
     <Content Include="Assets\Cells\rightArrow.png" />
     <Content Include="Assets\Cells\rightArrow%402x.png" />
     <Content Include="Assets\VerticalButtonBar\wheel.png" />
@@ -755,8 +753,6 @@
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
     <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
-    <BundleResource Include="Resources\server.png" />
-    <BundleResource Include="Resources\server%402x.png" />
     <BundleResource Include="Resources\twitter_icon.png" />
     <BundleResource Include="Resources\twitter_icon%402x.png" />
     <BundleResource Include="Resources\facebook_icon.png" />
