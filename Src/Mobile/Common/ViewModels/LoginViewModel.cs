@@ -13,6 +13,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,26 +33,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_twitterService = twitterService;
 			_twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 
-            CheckVersion();
         }
 
-        public override void Load()
+        public override void Start()
         {
-            base.Load();
 #if DEBUG
             Email = "john@taxihail.com";
-            Password = "password";			
+            Password = "password";          
 #endif
         }
 
-        private async void CheckVersion()
+        public override void OnViewStarted(bool firstTime)
         {
-            //The 2 second delay is required because the view might not be created.
-            await Task.Delay(2000);
-            if (this.Services().Account.CurrentAccount != null)
-            {
-                this.Services().ApplicationInfo.CheckVersionAsync();
-            }
+            base.OnViewStarted(firstTime);
+
+            CheckVersion();
+        }
+
+        private void CheckVersion()
+        {
+            this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
 
@@ -77,104 +78,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand SignInCommand
+        public bool CallIsEnabled
         {
             get
             {
-                return GetCommand(() =>
+                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
+            }
+
+        }
+
+        public ICommand SignInCommand
+        {
+            get
+            {
+				return GetCommand(async () =>
                 {
                     this.Services().Account.ClearCache();
-                    SignIn();
+					await SignIn();
                 });
             }
         }
-		public bool CallIsEnabled
-		{
-			get{
 
-                return !this.Services().Config.GetSetting("Client.HideCallDispatchButton", false);
-			}
-
-		}
-        private void SignIn()
-        {
-            bool needToHideProgress = true;
-            try
-            {
-                Logger.LogMessage("SignIn with server {0}", this.Services().Settings.ServiceUrl);
-                this.Services().Message.ShowProgress(true);
-                var account = default(Account);
-                try
-                {
-                    account = this.Services().Account.GetAccount(Email, Password);                 
-                }
-                catch (Exception e)
-                {
-                    var title = this.Services().Localize["InvalidLoginMessageTitle"];
-                    var message = this.Services().Localize[e.Message];
-
-                    if(e.Message == AuthenticationErrorCode.AccountDisabled){
-						if ( CallIsEnabled )
-						{
-                            var companyName = this.Services().Settings.ApplicationName;
-                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
-                            message = string.Format(this.Services().Localize[e.Message], companyName, phoneNumber);
-						}
-						else 
-						{
-                            message = this.Services().Localize["AccountDisabled_NoCall"];
-						}
-                    }
-                    this.Services().Message.ShowMessage(title, message);
-                }
-
-                if (account != null)
-                {
-                    needToHideProgress = false;
-                    Password = string.Empty;
-                
-
-                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications(force: true));
-
-                    Task.Factory.SafeStartNew(() =>
-                        {
-                            try
-                            {
-                                OnLoginSuccess();
-                            }
-                            finally
-                            {
-                                Thread.Sleep(1000);
-								InvokeOnMainThread(() => this.Services().Message.ShowProgress(false));
-                            }
-                        });
-
-                }
-            }
-            finally
-            {
-                if (needToHideProgress)
-                {
-                    this.Services().Message.ShowProgress(false);
-                }
-            }
-        }
-
-        public AsyncCommand ResetPassword
-        {
-            get
-            {
-                return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
-                {
-                    if (email.HasValue())
-                    {
-                        Email = email;
-                    }
-                }));
-            }
-        }
-
-        public AsyncCommand SignUp
+        public ICommand SignUp
         {
             get
             {
@@ -182,121 +107,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void DoSignUp(RegisterAccount registerDataFromSocial = null)
+        public ICommand ResetPassword
         {
-            string serialized = null;
-            if (registerDataFromSocial != null)
+            get
             {
-                serialized = registerDataFromSocial.ToJson();
-            }
-			ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(new Dictionary<string, string> { { "data", serialized } }, OnAccountCreated);
-        }
-
-        void OnAccountCreated(RegisterAccount data)
-        {
-            if (data != null)
-            {
-                if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
-                {
-                    var facebookId = data.FacebookId;
-                    var twitterId = data.TwitterId;
-
-                    try
+                return GetCommand(() => ShowSubViewModel<ResetPasswordViewModel, string>(null, email =>
                     {
-                        Thread.Sleep(1500);
-                        Account account;
-                        if (facebookId.HasValue() || twitterId.HasValue())
+                        if (email.HasValue())
                         {
-                            if (facebookId.HasValue())
-                            {
-                                var task = this.Services().Account.GetFacebookAccount(facebookId);
-                                task.Wait();
-                                account = task.Result;
-                            }
-                            else
-                            {
-                                account = this.Services().Account.GetTwitterAccount(twitterId);
-                            }
+                            Email = email;
                         }
-                        else
-                        {
-                            account = this.Services().Account.GetAccount(data.Email, data.Password);
-                        }
-
-                        if (account != null)
-                        {
-                            OnLoginSuccess();
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Logger.LogError(ex);
-                    }
-                    finally
-                    {
-                        this.Services().Message.ShowProgress(false);
-                    }
-                }
-                else
-                {
-                    Email = data.Email;
-                }
+                    }));
             }
         }
 
-		public ICommand LoginTwitter
-		{
-			get
-			{
-				return base.GetCommand(() =>
-				{
-					if (_twitterService.IsConnected)
-					{
-						CheckTwitterAccount();
-					}
-					else
-					{
-						_twitterService.Connect();
-					}
-					}, () => true);
-			}
-		}
-
-        private void CheckTwitterAccount()
+        public ICommand LoginTwitter
         {
-			this.Services().Message.ShowProgress(true);
-
-            _twitterService.GetUserInfos(info =>
+            get
             {
-                var data = new RegisterAccount();
-                data.TwitterId = info.Id;
-                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-
-                try
+                return GetCommand(() =>
                 {
-						var account = this.Services().Account.GetTwitterAccount(data.TwitterId);
-                    if (account == null)
+                    if (_twitterService.IsConnected)
                     {
-                        DoSignUp(data);
+                        CheckTwitterAccount();
                     }
                     else
                     {
-						Task.Factory.SafeStartNew(() => OnLoginSuccess());
+                        _twitterService.Connect();
                     }
-                }
-                finally
-                {
-						this.Services().Message.ShowProgress(false);
-                }
-            });
-        }
-
-
-        void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
-        {
-            if (e.IsConnected)
-            {
-                CheckTwitterAccount();
+                }, () => true);
             }
         }
 
@@ -304,24 +143,129 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return base
-                        .GetCommand(
-							async () => {
-								try
-								{
-									await _facebookService.Connect();
-									CheckFacebookAccount();
-								}
-								catch(TaskCanceledException)
-								{
-									Logger.LogMessage("FacebookService.Connect was cancelled");
-								}
-								catch(Exception e)
-								{
-									Logger.LogError(e);
-								}
-							},
-                            () => true);
+                return GetCommand(async () =>
+                {
+                    try
+                    {
+                        await _facebookService.Connect();
+                        await CheckFacebookAccount();
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        Logger.LogMessage("FacebookService.Connect was cancelled");
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError(e);
+                    }
+                }, () => true);
+            }
+        }
+
+        private async Task SignIn()
+        {
+            using(this.Services().Message.ShowProgress())
+            {
+                try
+                {
+                    await this.Services().Account.SignIn(Email, Password);   
+                    Password = string.Empty;
+                    _pushService.RegisterDeviceForPushNotifications(force: true);
+                    OnLoginSuccess();
+                }
+                catch (AuthException e)
+                {
+                    var localize = this.Services().Localize;
+                    if(e.Failure == AuthFailure.NetworkError 
+                        || e.Failure == AuthFailure.InvalidServiceUrl)
+                    {
+                        var title = localize["NoConnectionTitle"];
+                        var msg = localize["NoConnectionMessage"];
+                        this.Services().Message.ShowMessage (title, msg);
+                    }
+                    else if(e.Failure == AuthFailure.InvalidUsernameOrPassword)
+                    {
+                        var title = localize["InvalidLoginMessageTitle"];
+                        var message = localize["InvalidLoginMessage"];
+                        this.Services().Message.ShowMessage (title, message);
+                    }
+                    else if(e.Failure == AuthFailure.AccountDisabled)
+                    {
+                        var title = this.Services().Localize["InvalidLoginMessageTitle"];
+                        string message = null;
+                        if (CallIsEnabled)
+                        {
+                            var companyName = this.Services().Settings.ApplicationName;
+                            var phoneNumber = this.Services().Config.GetSetting("DefaultPhoneNumberDisplay");
+                            message = string.Format(localize[e.Message], companyName, phoneNumber);
+                        }
+                        else 
+                        {
+                            message = localize["AccountDisabled_NoCall"];
+                        }
+                        this.Services().Message.ShowMessage(title, message);
+                    }
+                }
+                catch (Exception e)
+                {
+                    var localize = this.Services().Localize;
+                    var title = localize["InvalidLoginMessageTitle"];
+                    var message = localize[e.Message];
+
+                    this.Services().Message.ShowMessage(title, message);
+                }
+
+            }
+        }
+
+        private void DoSignUp(object registerDataFromSocial = null)
+        {
+            ShowSubViewModel<CreateAccountViewModel, RegisterAccount>(registerDataFromSocial, OnAccountCreated);
+        }
+
+        private async void OnAccountCreated(RegisterAccount data)
+        {
+            if (data.FacebookId.HasValue() || data.TwitterId.HasValue() || data.AccountActivationDisabled)
+            {
+                var facebookId = data.FacebookId;
+                var twitterId = data.TwitterId;
+
+                using (this.Services().Message.ShowProgress())
+                {
+                    try
+                    {
+                        if (facebookId.HasValue())
+                        {
+                            await this.Services().Account.GetFacebookAccount(facebookId);
+                        }
+                        else if (twitterId.HasValue())
+                        {
+                            await this.Services().Account.GetTwitterAccount(twitterId);
+                        }
+                        else
+                        {
+                            await this.Services().Account.SignIn(data.Email, data.Password);
+                        }
+
+                        OnLoginSuccess();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex);
+                    }
+                }
+            }
+            else
+            {
+                Email = data.Email;
+            }
+        }
+
+        private void HandleTwitterConnectionStatusChanged(object sender, TwitterStatus e)
+        {
+            if (e.IsConnected)
+            {
+                CheckTwitterAccount();
             }
         }
 
@@ -337,14 +281,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
 
-			ShowViewModel<BookViewModel>(true);
+			ShowViewModel<BookViewModel>();
 			if (LoginSucceeded != null)
 			{
 				LoginSucceeded(this, EventArgs.Empty);
 			}
         }
 
-		private async void CheckFacebookAccount()
+        private async Task CheckFacebookAccount()
 		{
 			using (this.Services().Message.ShowProgress())
 			{
@@ -356,18 +300,49 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				data.Name = Params.Get(info.Firstname, info.Lastname)
 					.Where(n => n.HasValue()).JoinBy(" ");
 
-				var account = await this.Services().Account.GetFacebookAccount(data.FacebookId);
-				if (account == null)
-				{
-					DoSignUp(data);
-				}
-				else
-				{
-					OnLoginSuccess();
-				}
+                try
+                {
+                    await this.Services().Account.GetFacebookAccount(info.Id);
+    				OnLoginSuccess();
+                }
+                catch(Exception)
+                {
+                    DoSignUp(new
+                        {
+                            facebookId = info.Id,
+                            name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
+                            email = info.Email,
+                        });
+                }
 			}
 
 		}
+
+        private void CheckTwitterAccount()
+        {
+            this.Services().Message.ShowProgress(true);
+
+            _twitterService.GetUserInfos(async info =>
+                {
+                    try
+                    {
+                        await this.Services().Account.GetTwitterAccount(info.Id);
+                        OnLoginSuccess();
+                    }
+                    catch(Exception)
+                    {
+                        DoSignUp(new
+                            {
+                                twitterId = info.Id,
+                                name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" "),
+                            });
+                    }
+                    finally
+                    {
+                        this.Services().Message.ShowProgress(false);
+                    }
+                });
+        }
 
     }
 }

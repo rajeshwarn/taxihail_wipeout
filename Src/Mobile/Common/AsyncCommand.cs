@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile
     {
 		readonly ILogger _logger;
         private Func<bool> _canExecute;
-        private Action _execute;
+		private Func<Task> _execute;
         private bool _isExecuting;
 
         public AsyncCommand(Action execute)
@@ -20,12 +20,24 @@ namespace apcurium.MK.Booking.Mobile
         {
         }
 
+		public AsyncCommand(Func<Task> execute)
+			: this(execute, null)
+		{
+		}
+
         public AsyncCommand(Action execute, Func<bool> canExecute)
         {
 			_logger = Mvx.Resolve<ILogger>();
-            _execute = execute;
+			_execute = Wrap(execute);
             _canExecute = canExecute;
         }
+
+		public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
+		{
+			_logger = Mvx.Resolve<ILogger>();
+			_execute = execute;
+			_canExecute = canExecute;
+		}
 
         public bool CanExecute(object parameter)
         {
@@ -45,10 +57,8 @@ namespace apcurium.MK.Booking.Mobile
                 OnCanExecuteChanged();
 				try
 				{
-					await Task.Factory.StartNew(() => _execute(),
-						default(CancellationToken),
-						TaskCreationOptions.None,
-						GetTaskScheduler());
+                    var t = _execute();
+                    await t;
 				}
 				catch(Exception e)
 				{
@@ -77,7 +87,8 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private TaskScheduler GetTaskScheduler()
+		private TaskScheduler 
+        GetTaskScheduler()
 		{
 			try
 			{
@@ -88,6 +99,17 @@ namespace apcurium.MK.Booking.Mobile
 				_logger.LogError(e);
 				return TaskScheduler.Default;
 			}
+		}
+
+		private Func<Task> Wrap(Action execute)
+		{
+            return () =>
+            {
+                return Task.Factory.StartNew(execute,
+                    default(CancellationToken),
+                    TaskCreationOptions.None,
+                    GetTaskScheduler());
+            };
 		}
 
         #region IDisposable implementation

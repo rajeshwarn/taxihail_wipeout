@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
              
             View.ApplyAppFont ();
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
 
             _menu = new PanelMenuView (bookView, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
@@ -222,21 +222,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
-            if (_firstStart) {
-                _firstStart = false;
-                ViewModel.Start (firstStart: true);
-            } else {
-                ViewModel.Restart();
-                ViewModel.Start(firstStart: false);
-            }
+            ViewModel.OnViewStarted (_firstStart);
+            _firstStart = false;
             NavigationController.NavigationBar.Hidden = true;
-
         }
 
         public override void ViewWillDisappear (bool animated)
         {
             base.ViewWillDisappear (animated);
-            if(ViewModel!= null) ViewModel.Stop();
+            if(ViewModel!= null) ViewModel.OnViewStopped();
         }
         
         public override void ViewDidAppear (bool animated)

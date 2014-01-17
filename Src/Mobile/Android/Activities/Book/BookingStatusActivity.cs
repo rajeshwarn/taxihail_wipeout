@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
 
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
 
         protected override void OnResume()

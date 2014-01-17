@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //{
             //    FindViewById<TableLayout>( Resource.Id.tableAptRingCode ).Visibility = Android.Views.ViewStates.Gone;
             //}
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
 
         private void HandleFocusChange(object sender, View.FocusChangeEventArgs e)

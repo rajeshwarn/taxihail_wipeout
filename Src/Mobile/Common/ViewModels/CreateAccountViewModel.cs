@@ -17,17 +17,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
 
-        public new void Init(string data)
+		public void Init(string twitterId, string facebookId, string name, string email)
 		{
-			if (data != null)
+			Data = new RegisterAccount
 			{
-				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
-			} else
-			{
-				Data = new RegisterAccount();	
-			}		
+				FacebookId = facebookId,
+				TwitterId = twitterId,
+				Name = name,
+				Email = email,
+			};
 		}
-
 
 		private bool IsEmail(string inputEmail)
 		{

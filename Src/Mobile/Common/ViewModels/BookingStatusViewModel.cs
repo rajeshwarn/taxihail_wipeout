@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_waitingToNavigateAfterTimeOut = false;
 		}
 	
-		public override void Load ()
+		public override void OnViewLoaded ()
         {
-			base.Load ();
+			base.OnViewLoaded ();
 
 			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingText"]);
 
@@ -48,9 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CenterMap ();
         }
 
-		public override void Start (bool firstStart = false)
+		public override void OnViewStarted (bool firstStart = false)
 		{
-			base.Start (firstStart);
+			base.OnViewStarted (firstStart);
 
             var periodInSettings = this.Services().Config.GetSetting("Client.OrderStatus.ClientPollingInterval");
             int periodInSettingsValue;
@@ -72,9 +72,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-		public override void Stop ()
+		public override void OnViewStopped ()
 		{
-			base.Stop ();
+			base.OnViewStopped ();
             Subscriptions.DisposeAll ();
 		}
 
