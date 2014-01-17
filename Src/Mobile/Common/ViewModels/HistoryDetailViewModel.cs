@@ -14,13 +14,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		public void Init()
-        {
-            _status = new OrderStatusDetail
-            {
+		public void Init(string orderId)
+		{
+			Guid id;
+			if(Guid.TryParse(orderId, out id))
+			{
+				OrderId = id;
+			}
+		}
+
+		public override void Start()
+		{
+			base.Start();
+			_status = new OrderStatusDetail
+			{
 				IbsStatusDescription = this.Services().Localize["LoadingText"]
-            };
-        }
+			};
+		}
 
         private Guid _orderId;
         public Guid OrderId
@@ -224,14 +234,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public void Init(string orderId)
-        {
-			Guid id;
-            if(Guid.TryParse(orderId, out id)) {
-				OrderId = id;
-			}
-        }
-
 		public override void Load ()
         {
 			base.Load ();
@@ -281,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 					            	                    {														
 															orderId = OrderId, 
-															canRate = canRate.ToString()
+															canRate = canRate
 														}.ToStringDictionary(),RefreshOrderStatus);
                                                });
             }
