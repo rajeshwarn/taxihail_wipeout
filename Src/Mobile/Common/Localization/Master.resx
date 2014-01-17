@@ -432,34 +432,19 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
-  <data name="CreateAccountEmail" xml:space="preserve">
+  <data name="CreateAccountEmailPlaceHolder" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="CreateAccountTitle" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="CreateAccountFullName" xml:space="preserve">
+  <data name="CreateAccountFullNamePlaceHolder" xml:space="preserve">
     <value>Full Name</value>
   </data>
-  <data name="CreateAccountPhone" xml:space="preserve">
+  <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
     <value>Mobile</value>
   </data>
-  <data name="CreateAccountMobile" xml:space="preserve">
-    <value>Mobile</value>
-  </data>
-  <data name="CreateAccountLanguage" xml:space="preserve">
-    <value>Language</value>
-  </data>
-  <data name="CreateAccountLanguageEn" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="CreateAccountLanguageFr" xml:space="preserve">
-    <value>French</value>
-  </data>
-  <data name="CreateAccountPassword" xml:space="preserve">
+  <data name="CreateAccountPasswordPlaceHolder" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
+  <data name="CreateAccountPasswordConfirmationPlaceHolder" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
@@ -960,14 +945,11 @@
   <data name="View_MyLocations" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_SignUp" xml:space="preserve">
-    <value>Create Account</value>
+  <data name="View_CreateAccount" xml:space="preserve">
+    <value>Create your account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value />
-  </data>
-  <data name="View_SignUp_Label" xml:space="preserve">
-    <value>Create Profile</value>
   </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />

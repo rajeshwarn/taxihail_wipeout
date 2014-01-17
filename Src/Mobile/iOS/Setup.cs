@@ -22,11 +22,12 @@ using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Dialog.Touch;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup: MvxTouchSetup
+	public class Setup: MvxTouchDialogSetup
     {
         public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
 			: base(applicationDelegate, window)

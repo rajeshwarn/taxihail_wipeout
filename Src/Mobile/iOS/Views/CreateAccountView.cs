@@ -8,13 +8,15 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.ViewModels;
+using CrossUI.Touch.Dialog.Elements;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using CrossUI.Touch.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreateAccountView : BaseViewController<CreateAccountViewModel>
     {
-        public CreateAccountView() 
-			: base("CreateAccountView", null)
+        public CreateAccountView() : base("CreateAccountView", null)
         {
         }
 
@@ -22,86 +24,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
-			NavigationController.NavigationBar.Hidden = false;
+			NavigationController.NavigationBar.Hidden = true;
 		}
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
+			View.BackgroundColor = UIColor.FromRGB(0, 72, 129);
 
-            lblEmail.Text = Localize.GetValue("CreateAccountEmail");
-            lblName.Text = Localize.GetValue("CreateAccountFullName");
-            lblPhone.Text = Localize.GetValue("CreateAccountPhone");
-            lblPassword.Text = Localize.GetValue("CreateAccountPassword");
-            lblConfirmPassword.Text = Localize.GetValue("CreateAccountPasswordConfrimation");
+			FlatButtonStyle.Main.ApplyTo (btnCreate);
 
-            DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
-            
-            txtPassword.SecureTextEntry = true;
-            txtConfirmPassword.SecureTextEntry = true;
-
-			var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
-			AddButton(scrollView, 60, buttonsY, Localize.GetValue("CreateAccountCreate"), "CreateAccount", AppStyle.ButtonColor.Green);
+			BuildTableView (tableView);
 
 			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
 
-			set.Bind(txtName)
-				.For(v => v.Text)
-				.To(vm => vm.Data.Name);
+			set.Bind(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.CloseCommand);
 
-			set.Bind(txtEmail)
-				.For(v => v.Text)
-				.To(vm => vm.Data.Email);
-
-			set.Bind(txtPhone)
-				.For(v => v.Text)
-				.To(vm => vm.Data.Phone);
-
-			set.Bind(txtPassword)
-				.For(v => v.Text)
-				.To(vm => vm.Data.Password);
-			set.Bind(txtPassword)
-				.For(v => v.Hidden)
-				.To(vm => vm.HasSocialInfo);
-
-			set.Bind(txtConfirmPassword)
-				.For(v => v.Text)
-				.To(vm => vm.ConfirmPassword);
-			set.Bind(txtConfirmPassword)
-				.For(v => v.Hidden)
-				.To(vm => vm.HasSocialInfo);
-
-			set.Bind(lblPassword)
-				.For(v => v.Hidden)
-				.To(vm => vm.HasSocialInfo);
-
-			set.Bind(lblConfirmPassword)
-				.For(v => v.Hidden)
-				.To(vm => vm.HasSocialInfo);
+			set.Bind(btnCreate)
+				.For("TouchUpInside")
+				.To(vm => vm.CreateAccount);
 
 			set.Apply ();
-
-			NavigationItem.Title = Localize.GetValue("View_SignUp");
-
-            View.ApplyAppFont ();
         }
 
-        private void AddButton(UIView parent, float x, float y, string title, string command, AppStyle.ButtonColor bcolor)
-        {
-            var btn = AppButtons.CreateStandardButton(new RectangleF(x, y, 200, 40), title, bcolor);
-            btn.TextShadowColor = null;
-            parent.AddSubview(btn);
+		private void BuildTableView(UIView container)
+		{
+			var section = new Section () {
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email)
+				{
+					KeyboardType = UIKeyboardType.EmailAddress		
+				}.Bind(this, "Value Data.Email"),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), ViewModel.Data.Name).Bind(this, "Value Data.Name"),
+				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){
+					KeyboardType = UIKeyboardType.PhonePad		
+				}.Bind(this, "Value Data.Phone")
+			};
 
-			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
+			if (!ViewModel.HasSocialInfo) {
+				constraintTableViewHeight.Constant += 40*2;
+				section.AddAll (new List<Element> { 
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true).Bind(this, "Value Data.Password"), 
+					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true).Bind(this, "Value ConfirmPassword")
+				});
+			}
 
-			set.Bind(btn)
-				.For("TouchUpInside")
-				.To(command);
+			var root = new RootElement(){ section };
 
-			set.Apply ();            
-        }
+			tableView.BackgroundColor = UIColor.Clear;
+			tableView.AddSubview(new TaxiHailDialogViewController (UITableViewStyle.Plain, root, true).TableView);
+		}
     }
 }
 
