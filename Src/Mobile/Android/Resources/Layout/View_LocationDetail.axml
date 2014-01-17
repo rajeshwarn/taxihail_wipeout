@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:background="@color/subview_background_color"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -49,8 +48,8 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:layout_height="80dip"
+                android:gravity="center_vertical">
                 <TextView
                     style="@style/BlackTextLabel"
                     android:singleLine="true"
@@ -59,7 +58,6 @@
                     android:gravity="left"
                     android:layout_height="wrap_content" />
                 <EditText
-                    style="@style/custom_FlatEditTextStyle"
                     android:id="@+id/LocationFriendlyName"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightEditTextFlat"
@@ -68,8 +66,8 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal">
+                android:layout_height="80dip"
+                android:gravity="center_vertical">
                 <TextView
                     style="@style/BlackTextLabel"
                     android:layout_width="fill_parent"
@@ -77,7 +75,6 @@
                     android:text="Address"
                     android:layout_height="wrap_content" />
                 <EditText
-                    style="@style/custom_FlatEditTextStyle"
                     android:id="@+id/LocationAddress"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightEditTextFlat"
@@ -85,7 +82,7 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dip"
                 android:orientation="horizontal"
                 local:MvxBind="Visibility ShowRingCodeField, Converter=Visibility"
                 android:gravity="center_horizontal">
@@ -102,7 +99,6 @@
                         android:text="@string/ApartmentLabel"
                         android:layout_height="wrap_content" />
                     <EditText
-                        style="@style/custom_FlatEditTextStyle"
                         android:id="@+id/LocationAppartment"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
@@ -128,7 +124,6 @@
                         android:text="@string/EntryCodeLabel"
                         android:layout_height="wrap_content" />
                     <EditText
-                        style="@style/custom_FlatEditTextStyle"
                         android:id="@+id/RingCode"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"

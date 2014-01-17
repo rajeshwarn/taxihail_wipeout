@@ -24,7 +24,7 @@ using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book",
+	[Activity(Label = "Book", Theme = "@style/OnlineTheme",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
     public class BookActivity : MvxActivity
