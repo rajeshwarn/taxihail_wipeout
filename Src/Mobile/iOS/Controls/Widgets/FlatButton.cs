@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
 
-            DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor); 
+			DrawBackground(context, rect, roundedRectanglePath, fillColor.CGColor); 
             DrawStroke(context, roundedRectanglePath, strokeColor.CGColor);
 
             if (_leftImage != null)
