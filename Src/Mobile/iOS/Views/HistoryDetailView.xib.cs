@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 		}
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationItem.HidesBackButton = false;
+			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
+		}
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -31,9 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 			View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
-            NavigationItem.HidesBackButton = false;
-			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
-
+            
 			FlatButtonStyle.Red.ApplyTo (btnDelete);
 			FlatButtonStyle.Green.ApplyTo (btnRebook);
 
@@ -75,16 +81,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
 
-			set.Bind(txtOrder)
+					set.Bind(txtOrder)
 				.For(v => v.Text)
 				.To(vm => vm.ConfirmationTxt);
 
-			set.Bind(txtDestination)
-				.For(v => v.Text)
-				.To(vm => vm.DestinationTxt);
-			set.Bind(txtDestination)
-				.For(v => v.Hidden)
-				.To(vm => vm.HideDestination);
+			if (!ViewModel.HideDestination)
+			{
+				set.Bind (txtDestination)
+				.For (v => v.Text)
+				.To (vm => vm.DestinationTxt);
+				set.Bind (txtDestination)
+				.For (v => v.Hidden)
+				.To (vm => vm.HideDestination);
+			}
 
 			set.Bind(txtPickup)
 				.For(v => v.Text)
