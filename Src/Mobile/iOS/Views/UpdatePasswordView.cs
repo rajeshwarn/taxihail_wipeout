@@ -39,15 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
 			txtConfirmation.ShouldReturn = ShouldReturnDelegate;
 
-			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, (s, e) => 
-				{
-					if( ViewModel.UpdateCommand.CanExecute() )
-					{
-						ViewModel.UpdateCommand.Execute();
-					}
-				});
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem (Localize.GetValue ("Save"), UIBarButtonItemStyle.Plain, null);
 
 			var set = this.CreateBindingSet<UpdatePasswordView, UpdatePasswordViewModel>();
+
+			set.Bind (NavigationItem.RightBarButtonItem)
+				.For ("Clicked")
+				.To(vm => vm.UpdateCommand);
 
 			set.Bind(txtCurrentPassword)
 				.For(v => v.Text)
