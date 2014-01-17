@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
 			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-
 			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
 			txtEmail.ShouldReturn = delegate {                          
 				txtEmail.ResignFirstResponder ();
@@ -83,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
-                .To(vm => vm.SignInCommand);
+				.To(vm => vm.SignInCommand);
 
             set.Bind(btnForgotPassword)
                 .For("TouchUpInside")

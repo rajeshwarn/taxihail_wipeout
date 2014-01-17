@@ -510,6 +510,9 @@
     <Compile Include="Views\HistoryView.designer.cs">
       <DependentUpon>HistoryView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
+    <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
+    <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

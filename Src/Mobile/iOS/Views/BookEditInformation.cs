@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidAppear(animated);
 			NavigationItem.Title = Localize.GetValue("View_BookingDetail");
 
-            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            var btnDone = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, delegate
             {
                 if( ViewModel.SaveCommand.CanExecute() )
                 {

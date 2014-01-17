@@ -48,10 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void SetAppearance()
 		{
+			var gray44 = UIColor.FromRGB (44, 44, 44);
+
 			// navigation bar
 			if (UIHelper.IsOS7orHigher) {
 				UINavigationBar.Appearance.BarTintColor = UIColor.White;
-				UINavigationBar.Appearance.TintColor = UIColor.FromRGB (44, 44, 44); //in ios7, this is for the back chevron
+				UINavigationBar.Appearance.TintColor = gray44; //in ios7, this is for the back chevron
 			} else {
 				UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
 
@@ -63,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 
 			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
-				TextColor = UIColor.FromRGB (44, 44, 44),
+				TextColor = gray44,
 				Font = UIFont.BoldSystemFontOfSize (18),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
@@ -71,13 +73,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var buttonTextColor = new UITextAttributes () {
 				Font = UIFont.SystemFontOfSize (18),
-				TextColor = UIColor.FromRGB (44, 44, 44),
+				TextColor = gray44,
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};
 			var selectedButtonTextColor = new UITextAttributes () {
 				Font = UIFont.SystemFontOfSize (18),
-				TextColor = UIColor.FromRGB (44, 44, 44).ColorWithAlpha(0.5f),
+				TextColor = gray44.ColorWithAlpha(0.5f),
 				TextShadowColor = UIColor.Clear,
 				TextShadowOffset = new UIOffset(0,0)
 			};

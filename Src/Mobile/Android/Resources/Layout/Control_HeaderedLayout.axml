@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:gravity="center_horizontal"
-  android:focusable="true"
-  android:focusableInTouchMode="true"
-  android:id="@+id/HeaderedLayout">
-  <RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/NavBarSection"
-    android:gravity="center">
-    <ImageView
-      android:layout_width="fill_parent"
-      android:layout_height="50dip"
-      android:src="@drawable/navBar"
-      android:scaleType="fitXY"
-      android:id="@+id/NavBarSectionBackground"
-      android:adjustViewBounds="true" />
-    <TextView
-      android:id="@+id/ViewTitle"
-      style="@style/ViewTitleStyle"
-      android:layout_height="wrap_content"
-      android:layout_width="fill_parent"
-      android:layout_centerInParent="true"
-      android:gravity="center_horizontal" />
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/HeaderedLayout">
     <RelativeLayout
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginRight="5dip"
-      android:id="@+id/ButtonLayout">
-      <ImageButton
-        android:id="@+id/ViewNavBarRightButton"
-        style="@style/ButtonText"
-        android:background="@drawable/black_button"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:src="@drawable/main_settings"
-        android:layout_alignParentRight="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/NavBarSection"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:src="@drawable/navBar"
+            android:scaleType="fitXY"
+            android:id="@+id/NavBarSectionBackground"
+            android:adjustViewBounds="true" />
+        <TextView
+            android:id="@+id/ViewTitle"
+            style="@style/ViewTitleStyle"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:id="@+id/ButtonLayout">
+            <ImageButton
+                android:id="@+id/ViewNavBarRightButton"
+                style="@style/ButtonText"
+                android:background="@drawable/black_button"
+                android:layout_width="40dip"
+                android:layout_height="40dip"
+                android:src="@drawable/main_settings"
+                android:layout_alignParentLeft="true" />
+        </RelativeLayout>
     </RelativeLayout>
-  </RelativeLayout>
-  <ImageView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:src="@drawable/background"
-    android:scaleType="centerCrop"
-    android:adjustViewBounds="true"
-    android:layout_below="@+id/NavBarSection"
-    android:id="@+id/BackgroundImage" />
-  <LinearLayout
-    android:id="@+id/ContentLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_below="@+id/NavBarSection"
-    android:orientation="vertical" />
-  <RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="10dip"
-    android:gravity="top"
-    android:layout_marginTop="3dip"
-    android:id="@+id/LogoLayout">
     <ImageView
-      android:layout_alignParentTop="true"
-      android:layout_width="82dip"
-      android:layout_height="56dip"
-      android:src="@drawable/Logo"
-      android:id="@+id/MainLogo" />
-  </RelativeLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_below="@+id/NavBarSection"
+        android:id="@+id/BackgroundImage" />
+    <LinearLayout
+        android:id="@+id/ContentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/NavBarSection"
+        android:orientation="vertical" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:gravity="top"
+        android:layout_marginTop="3dip"
+        android:id="@+id/LogoLayout">
+        <ImageView
+            android:layout_alignParentTop="true"
+            android:layout_width="82dip"
+            android:layout_height="56dip"
+            android:src="@drawable/Logo"
+            android:id="@+id/MainLogo" />
+    </RelativeLayout>
 </RelativeLayout>

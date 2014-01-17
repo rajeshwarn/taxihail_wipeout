@@ -24,7 +24,7 @@ using Cirrious.MvvmCross.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "Book",
         ScreenOrientation = ScreenOrientation.Portrait, ClearTaskOnLaunch = true,
         FinishOnTaskLaunch = true)]
     public class BookActivity : MvxActivity
@@ -94,9 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             bigButton.Click -= MainSettingsButtonOnClick;
             bigButton.Click += MainSettingsButtonOnClick;
 
-            var headerLayoutMenu = FindViewById<HeaderedLayout>(Resource.Id.HeaderLayoutMenu);
-            var titleText = headerLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
-            titleText.Text = GetString(Resource.String.View_BookSettingMenu);
+			//var mainLayoutMenu = FindViewById<RelativeLayout>(Resource.Id.MainLayoutMenu);
+			//var titleText = mainLayoutMenu.FindViewById<TextView>(Resource.Id.ViewTitle);
+            //titleText.Text = GetString(Resource.String.View_BookSettingMenu);
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
@@ -207,8 +207,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
 
-            var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : -(_menuWidth),
-                ViewModel.Panel.MenuIsOpen ? -(_menuWidth) : 0, _interpolator);
+            var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0 : (_menuWidth),
+                ViewModel.Panel.MenuIsOpen ? (_menuWidth) : 0, _interpolator);
             animation.Duration = 400;
             animation.AnimationStart +=
                 (sender, e) => { if (ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Visible; };

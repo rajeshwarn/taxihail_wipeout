@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             DismissKeyboardOnReturn(txtName, txtPhone);
 
-            var button = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            var button = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, delegate
             {
                 ViewModel.SaveCommand.Execute();
             });

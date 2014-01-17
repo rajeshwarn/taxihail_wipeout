@@ -30,7 +30,7 @@
   <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
   <string name="ApartmentLabel">Apartment</string>
   <string name="EntryCodeLabel">Entry code</string>
-  <string name="View_Book_Menu_MyOrders">My Bookings</string>
+  <string name="View_Book_Menu_MyOrders">History</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="NbPassengers"> ({0} passengers)</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
@@ -255,7 +255,7 @@
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
   <string name="SettingViewLoginInfo">You are currently signed in as : {0}</string>
   <string name="TabSearch">Search</string>
-  <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
+  <string name="View_Book_Menu_MyLocations">Locations</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_en.png</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>
@@ -497,4 +497,22 @@
   <string name="dummyaaa">xaaa</string>
   <string name="CancelButton">Cancel</string>
   <string name="Twitter">Sign in with Twitter</string>
+  <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirm</string>
+  <string name="CreateAccountPasswordPlaceHolder">Password</string>
+  <string name="HistoryDetailPickupLabel">Pickup:</string>
+  <string name="NoAptText">No apt.</string>
+  <string name="LoadingText">Loading...</string>
+  <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
+  <string name="DestinationNotSpecifiedText">Destination not specified</string>
+  <string name="SendReceipt">Send receipt</string>
+  <string name="HistoryDetailOrderLabel">Order:</string>
+  <string name="View_CreateAccount">Create your account</string>
+  <string name="BuildingNameText">Not specified</string>
+  <string name="NoRingCodeText">No code</string>
+  <string name="CreateAccountPhonePlaceHolder">Mobile</string>
+  <string name="CreateAccountEmailPlaceHolder">Email</string>
+  <string name="UpdatePasswordNewPasswordLabel">New Password</string>
+  <string name="Done">Done</string>
+  <string name="UpdatePasswordCurrentPasswordLabel">Current Password</string>
+  <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
 </resources>
