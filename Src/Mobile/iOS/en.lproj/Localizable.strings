@@ -23,7 +23,7 @@
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
 "ConfirmAptRingCodeLabel"="Apt / Entry code:";
-"View_Book_Menu_MyOrders"="My Bookings";
+"View_Book_Menu_MyOrders"="History";
 "PickupMapTitle"="Pickup location";
 "NbPassengers"=" ({0} passengers)";
 "BookPickupLabel"="Confirm your pickup location";
@@ -235,7 +235,7 @@
 "PasswordLabel"="Password";
 "BuildingName"="Building Name / Remark";
 "ResetPasswordSucessMessage"="Password was reset successfully";
-"View_Book_Menu_UpdateMyProfile"="Update My Profile";
+"View_Book_Menu_UpdateMyProfile"="Update Account";
 "TabBook"="Book";
 "View_BookSettingMenu"="Settings";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
@@ -248,7 +248,7 @@
 "InvalidBookinInfoTitle"="Invalid booking info";
 "SettingViewLoginInfo"="You are currently signed in as : {0}";
 "TabSearch"="Search";
-"View_Book_Menu_MyLocations"="Manage My Locations";
+"View_Book_Menu_MyLocations"="Locations";
 "InvalidAddressTitle"="Invalid address";
 "PickupOnButtonImageName"="Assets/Button/btnPickup_on_en.png";
 "SettingViewNotSignedIn"="Your are currently not signed in. You must be signed in to use this app.";
