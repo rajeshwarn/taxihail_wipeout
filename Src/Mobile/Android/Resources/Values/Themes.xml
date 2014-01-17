@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
-    <color name="main_background_color">#004785</color>		
+    <color name="offline_background_color">#004785</color>		
 	
 	<color name="edit_text_background_color">#ffffff</color>
 	<color name="edit_text_foreground_color">#000000</color>
@@ -26,9 +26,8 @@
     <color name="setting_menu_text_color">#707070</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
 
-	<color name="subview_background_color">#f0f0f0</color>
-	<color name="subview_label_color">#f0f0f0</color>
-
+	<color name="online_background_color">#f0f0f0</color>
+	
   	<color name="listitem_text_line1_color">#000000</color>
 	<color name="listitem_text_line2_color">#000000</color>		
 	<color name="itemlist_cell_background_color">#ffffff</color>
@@ -98,39 +97,42 @@
     <!--- Buttons  -->
     <style name="ButtonMainStyle" parent="@style/custom_ButtonStyle">
     	<item name="android:background">@drawable/button_main_selector</item>      
+    	<item name="android:textSize">20dip</item>
     </style>
 
     <style name="ButtonNoBgGreenStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_nobg_green_selector</item>
-      <item name="android:textColor">@color/button_green_border_color</item>
-      <item name="android:textSize">20dip</item>
+      <item name="android:textColor">@color/button_green_border_color</item>      
     </style>
 
     <style name="ButtonNoBgRedStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_nobg_red_selector</item>
-      <item name="android:textColor">@color/button_red_border_color</item>
-      <item name="android:textSize">20dip</item>
+      <item name="android:textColor">@color/button_red_border_color</item>      
     </style>
 
     <style name="ButtonNoBgGrayStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_nobg_gray_selector</item>
-      <item name="android:textColor">@color/button_gray_border_color</item>
-      <item name="android:textSize">20dip</item>
+      <item name="android:textColor">@color/button_gray_border_color</item>      
     </style>
 
     <style name="ButtonNoBgBlackStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_nobg_black_selector</item>
-      <item name="android:textColor">@color/button_black_border_color</item>
-      <item name="android:textSize">20dip</item>
+      <item name="android:textColor">@color/button_black_border_color</item>      
     </style>
 
 
-  <!--- Custom Theme Design -->
-
-    <style name="CustomTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/main_background_color</item>
+  <!--- Themes -->
+    <style name="OfflineTheme" parent="@android:style/Theme.Holo">
+        <item name="android:windowBackground">@color/offline_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
       	<item name="android:editTextStyle">@style/custom_EditTextStyle</item>              
+      	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
+    </style>
+    
+    <style name="OnlineTheme" parent="@android:style/Theme.Holo">
+        <item name="android:windowBackground">@color/online_background_color</item>
+      	<item name="android:windowNoTitle">true</item>  
+      	<item name="android:editTextStyle">@style/custom_FlatEditTextStyle</item>            
       	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
     </style>
 </resources>

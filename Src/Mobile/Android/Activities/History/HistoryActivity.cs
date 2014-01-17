@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-    [Activity(Label = "History",
+	[Activity(Label = "History", Theme = "@style/OnlineTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class HistoryListActivity : BaseBindingActivity<HistoryViewModel>
     {
