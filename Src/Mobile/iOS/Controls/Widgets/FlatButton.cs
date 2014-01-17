@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			var blue = UIColor.FromRGB(0, 72, 129);
 
-			Font = UIFont.FromName ("HelveticaNeue-Light", 40/2);
+            Font = UIFont.FromName ("HelveticaNeue-Light", 40/2);
 
 			SetFillColor(blue, UIControlState.Normal);
 			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
@@ -64,7 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void Draw (RectangleF rect)
 		{
 			// fix problem with ios6 using the default font
-			if (Font.Name != FlatButtonStyle.ClearButtonFont.Name) {
+            // ClearButton needs a bold typeface, otherwise, apply Light font.
+            // TODO: Need to understand why we need this specific hack for iSO 6
+            if (Font.Name != FlatButtonStyle.ClearButtonFont.Name)
+            {
 				Font = UIFont.FromName ("HelveticaNeue-Light", 40/2);
 			}
 
@@ -92,8 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				var center = (Frame.Width - _leftImage.Size.Width - StandardImagePadding - 3) / 2;
                 TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
             }
-
-			SetNeedsDisplay();
         }
 
         public override bool Enabled {
