@@ -621,7 +621,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return GetCommand(() => ShowViewModel<BookRatingViewModel>(new {
 					canRate = true,
-				});
+				}));
                     
             }
         }
