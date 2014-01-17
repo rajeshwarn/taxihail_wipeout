@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -22,11 +22,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="64" width="320" height="416"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Zp-NS-bDo">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ZZ-Hz-cBp">
@@ -34,75 +34,77 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Nickname" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="12">
-                                    <rect key="frame" x="17" y="10" width="68" height="18"/>
+                                    <rect key="frame" x="17" y="10" width="71" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatTextField">
-                                    <rect key="frame" x="15" y="40" width="290" height="40"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Apcurium" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatTextField">
+                                    <rect key="frame" x="15" y="43" width="290" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="290" id="6Kt-GH-y8U"/>
                                         <constraint firstAttribute="height" constant="40" id="wJu-7I-aFC"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adU-6a-bFK">
-                                    <rect key="frame" x="17" y="89" width="54" height="18"/>
+                                    <rect key="frame" x="17" y="92" width="59" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9" customClass="FlatTextField">
-                                    <rect key="frame" x="15" y="119" width="290" height="40"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="5250 rue Ferrier, Montreal, Quebec, truc" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="9" customClass="FlatTextField">
+                                    <rect key="frame" x="15" y="125" width="290" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="JKe-eW-cVD"/>
+                                        <constraint firstAttribute="width" constant="290" id="dtH-8M-0Oh"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ca2-ex-ozo">
-                                    <rect key="frame" x="17" y="172" width="68" height="18"/>
+                                    <rect key="frame" x="17" y="178" width="74" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Entry Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Dq-AK-8w5">
-                                    <rect key="frame" x="178" y="172" width="73" height="18"/>
+                                    <rect key="frame" x="178" y="178" width="80" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="10" customClass="FlatTextField">
-                                    <rect key="frame" x="15" y="202" width="144" height="40"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="5145557829" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="10" customClass="FlatTextField">
+                                    <rect key="frame" x="15" y="211" width="144" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="144" id="A0y-AM-f4H"/>
                                         <constraint firstAttribute="height" constant="40" id="Wcf-b6-icc"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="11" customClass="FlatTextField">
-                                    <rect key="frame" x="175" y="202" width="130" height="40"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="11" customClass="FlatTextField">
+                                    <rect key="frame" x="175" y="211" width="130" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="130" id="X9D-Zf-sqp"/>
                                         <constraint firstAttribute="height" constant="40" id="z6a-4h-rba"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="16" customClass="FlatButton">
-                                    <rect key="frame" x="30" y="316" width="260" height="41"/>
+                                    <rect key="frame" x="15" y="325" width="290" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Save"/>
                                     <constraints>
@@ -116,7 +118,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28" customClass="FlatButton">
-                                    <rect key="frame" x="30" y="262" width="260" height="41"/>
+                                    <rect key="frame" x="15" y="271" width="290" height="41"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Save"/>
                                     <constraints>
@@ -132,12 +134,12 @@
                                 <constraint firstAttribute="trailing" secondItem="11" secondAttribute="trailing" constant="15" id="3xd-ag-e8F"/>
                                 <constraint firstItem="9" firstAttribute="top" secondItem="adU-6a-bFK" secondAttribute="bottom" constant="12" id="7Jk-Vd-Y2u"/>
                                 <constraint firstItem="adU-6a-bFK" firstAttribute="top" secondItem="13" secondAttribute="bottom" constant="9" id="9Eq-hG-cPD"/>
-                                <constraint firstItem="16" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="30" id="9op-gC-zCV"/>
+                                <constraint firstItem="16" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="15" id="9op-gC-zCV"/>
                                 <constraint firstItem="13" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="12" id="DXa-lW-vJb"/>
                                 <constraint firstItem="9Dq-AK-8w5" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="178" id="F4p-f3-jSw"/>
                                 <constraint firstAttribute="height" constant="360" id="FZD-UU-6Us"/>
                                 <constraint firstItem="11" firstAttribute="top" secondItem="9Dq-AK-8w5" secondAttribute="bottom" constant="12" id="GCa-E0-igH"/>
-                                <constraint firstAttribute="trailing" secondItem="16" secondAttribute="trailing" constant="30" id="Ghd-C7-jqn"/>
+                                <constraint firstAttribute="trailing" secondItem="16" secondAttribute="trailing" constant="15" id="Ghd-C7-jqn"/>
                                 <constraint firstItem="28" firstAttribute="top" secondItem="10" secondAttribute="bottom" constant="20" id="KMM-d5-NGf"/>
                                 <constraint firstItem="10" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="15" id="LbT-o7-Bge"/>
                                 <constraint firstItem="Ca2-ex-ozo" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="17" id="N9r-18-pOr"/>
@@ -145,9 +147,9 @@
                                 <constraint firstItem="adU-6a-bFK" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="17" id="PjP-V5-ncY"/>
                                 <constraint firstItem="13" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="15" id="SG1-LM-gNy"/>
                                 <constraint firstItem="10" firstAttribute="top" secondItem="Ca2-ex-ozo" secondAttribute="bottom" constant="12" id="UAf-fv-ZDs"/>
-                                <constraint firstItem="28" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="30" id="Xdf-nK-GjP"/>
+                                <constraint firstItem="28" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="15" id="Xdf-nK-GjP"/>
                                 <constraint firstItem="16" firstAttribute="top" secondItem="28" secondAttribute="bottom" constant="13" id="aiO-qf-xVM"/>
-                                <constraint firstAttribute="trailing" secondItem="28" secondAttribute="trailing" constant="30" id="deg-DE-g23"/>
+                                <constraint firstAttribute="trailing" secondItem="28" secondAttribute="trailing" constant="15" id="deg-DE-g23"/>
                                 <constraint firstItem="9" firstAttribute="leading" secondItem="5ZZ-Hz-cBp" secondAttribute="leading" constant="15" id="eEG-ai-hJT"/>
                                 <constraint firstAttribute="width" constant="320" id="oQm-cc-PGl"/>
                                 <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="15" id="tnu-dR-821"/>
@@ -174,7 +176,7 @@
                 <constraint firstItem="4Zp-NS-bDo" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="uYf-xp-9yA"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
         </view>
     </objects>
 </document>

@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var section = new Section () {
 				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email)
 				{
-					KeyboardType = UIKeyboardType.EmailAddress		
+					KeyboardType = UIKeyboardType.EmailAddress
 				}.Bind(this, "Value Data.Email"),
 				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), ViewModel.Data.Name).Bind(this, "Value Data.Name"),
 				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPhonePlaceHolder"), ViewModel.Data.Phone){
