@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;           
 

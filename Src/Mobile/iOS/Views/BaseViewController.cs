@@ -64,19 +64,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
-            if (_firstStart) {
-                _firstStart = false;
-                ViewModel.Start (firstStart: true);
-            } else {
-                ViewModel.Restart();
-                ViewModel.Start(firstStart: false);
-            }
+            ViewModel.OnViewStarted (_firstStart);
+            _firstStart = false;
         }
 
         public override void ViewWillDisappear (bool animated)
         {
             base.ViewWillDisappear (animated);
-            if(ViewModel!= null) ViewModel.Stop();
+            if(ViewModel!= null) ViewModel.OnViewStopped();
         }
 				
         public override void ViewDidLoad ()
@@ -91,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void DidReceiveMemoryWarning ()
         {
             UnregisterKeyboardNotifications();
-            ViewModel.Unload ();
+            ViewModel.OnViewUnloaded ();
             base.DidReceiveMemoryWarning ();
         }
 

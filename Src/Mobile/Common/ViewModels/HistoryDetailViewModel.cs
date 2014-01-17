@@ -232,9 +232,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public override void Load ()
+		public override void OnViewLoaded ()
         {
-			base.Load ();
+			base.OnViewLoaded ();
             LoadOrder();
             LoadStatus();
         }

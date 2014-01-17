@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			else
 				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding;
 
-            ViewModel.Load ();    
+            ViewModel.OnViewLoaded ();    
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)

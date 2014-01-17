@@ -45,7 +45,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         protected override void OnStart()
         {
             base.OnStart();
-            ViewModel.Start();
+            ViewModel.OnViewStarted();
         }
 
         protected override void OnRestart()

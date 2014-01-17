@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(BookingSettings bookingSettings)
         {
+			//TODO: This doesn't work [MvvmCross v3] 
             _bookingSettings = bookingSettings;
 
             var refDataTask = this.Services().Account.GetReferenceDataAsync();
@@ -55,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return setting.IsPayInTaxiEnabled;
             }
         }
-        public override void Restart()
+		public override void OnViewStarted(bool firstTime)
         {
-            base.Restart();
+			base.OnViewStarted(firstTime);
             PaymentPreferences.LoadCreditCards();
         }
 

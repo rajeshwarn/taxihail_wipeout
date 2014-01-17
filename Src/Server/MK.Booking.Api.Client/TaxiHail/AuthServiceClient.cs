@@ -26,21 +26,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<Account>("/account");
         }
 
-        public Task<AuthenticationData> Authenticate(string email, string password)
+        public async Task<AuthenticationData> Authenticate(string email, string password)
         {
-			var responseTask = AuthenticateAsync (new Auth {
+            var response = await AuthenticateAsync (new Auth {
 				UserName = email,
 				Password = password,
 				RememberMe = true,
 			}, "credentials");
-			//todo remove when using the async await patten in service layer
-			responseTask.Wait ();
-			var response = responseTask.Result;
-			return Task.FromResult(new AuthenticationData
+			
+            return new AuthenticationData
             {
                 UserName = response.UserName,
                 SessionId = response.SessionId
-			});
+			};
         }
 
 		public async Task<AuthenticationData> AuthenticateFacebook(string facebookId)
@@ -60,22 +58,21 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 			};
 		}
 
-        public Task<AuthenticationData> AuthenticateTwitter(string twitterId)
+        public async Task<AuthenticationData> AuthenticateTwitter(string twitterId)
         {
-			var responseTask = AuthenticateAsync(new Auth
+            var response = await AuthenticateAsync(new Auth
             {
                 UserName = twitterId,
                 Password = twitterId,
                 RememberMe = true,
             }, "credentialstw");
-			//todo remove when using the async await patten in service layer
-			responseTask.Wait ();
-			var response = responseTask.Result;
-			return Task.FromResult(new AuthenticationData
-				{
-					UserName = response.UserName,
-					SessionId = response.SessionId
-				});
+			
+
+            return new AuthenticationData
+            {
+                UserName = response.UserName,
+                SessionId = response.SessionId
+            };
         }
 
         private Task<AuthResponse> AuthenticateAsync(Auth auth, string provider)

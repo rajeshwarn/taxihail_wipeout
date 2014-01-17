@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-        protected async Task<TResult> UseServiceClient<TService, TResult>(Func<TService, Task<TResult>> action, [CallerMemberName] string method = "") where TResult : class  where TService : class
+		protected async Task<TResult> UseServiceClient<TService, TResult>(Func<TService, Task<TResult>> action, Action<Exception> errorHandler = null, [CallerMemberName] string method = "") where TResult : class  where TService : class
         {
             var service = TinyIoCContainer.Current.Resolve<TService>();
 
@@ -57,13 +57,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 using(Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
                 {
-                    return await action(service);
+                    return await action(service)
+                            .ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {                    
                 Logger.LogError(ex);
-                TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+				if (errorHandler == null)
+				{
+					TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+				}
+				else
+				{
+					errorHandler (ex);
+				} 
+                throw;
             }
             return default(TResult);
         }
