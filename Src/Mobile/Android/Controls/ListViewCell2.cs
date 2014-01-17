@@ -107,14 +107,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (ShowPlusSign)
             {
                 canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_location), 6.ToPixels(),
-                    15.ToPixels(), null);
+                    10.ToPixels(), null);
             }
             else if (Icon.HasValue())
             {
                 var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
 
 
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 15.ToPixels(), null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 10.ToPixels(), null);
             }
 
 
