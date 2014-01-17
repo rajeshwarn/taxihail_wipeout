@@ -6,7 +6,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public abstract class FlatButtonStyle
 	{
 		UIColor Gray = UIColor.FromRGB(45, 45, 45);
-
 		UIColor DarkBlue = UIColor.FromRGB(68, 118, 218);
 		UIColor LightBlue = UIColor.FromRGB(111, 152, 235);
 
