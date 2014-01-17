@@ -176,6 +176,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (scrollView == null)
                 return;
             
+			// find the topmost scrollview (fix problem with RootElement)
+			var nextSuperView = scrollView;
+			while(nextSuperView != null)
+			{
+				scrollView = nextSuperView;
+				nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
+			}
+
             // Reset the content inset of the scrollView and animate using the current keyboard animation duration
             var animationDuration = UIKeyboard.AnimationDurationFromNotification(notification);
             var contentInsets = new UIEdgeInsets(0.0f, 0.0f, 0.0f, 0.0f);

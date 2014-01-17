@@ -35,6 +35,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Main.ApplyTo (btnCreate);
 
+			BuildTableView (tableView);
+
+			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
+
+			set.Bind(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.CloseCommand);
+
+			set.Bind(btnCreate)
+				.For("TouchUpInside")
+				.To(vm => vm.CreateAccount);
+
+			set.Apply ();
+        }
+
+		private void BuildTableView(UIView container)
+		{
 			var section = new Section () {
 				new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email)
 				{
@@ -56,23 +73,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var root = new RootElement(){ section };
 
-			var dialogView = new TaxiHailDialogViewController (UITableViewStyle.Plain, root, false).View;
-			dialogView.Frame = new RectangleF(0, 0, tableView.Frame.Width, tableView.Frame.Height);
 			tableView.BackgroundColor = UIColor.Clear;
-			tableView.AddSubview(dialogView);
-
-			var set = this.CreateBindingSet<CreateAccountView, CreateAccountViewModel>();
-
-			set.Bind(btnCancel)
-				.For("TouchUpInside")
-				.To(vm => vm.CloseCommand);
-
-			set.Bind(btnCreate)
-				.For("TouchUpInside")
-				.To(vm => vm.CreateAccount);
-
-			set.Apply ();
-        }
+			tableView.AddSubview(new TaxiHailDialogViewController (UITableViewStyle.Plain, root, true).TableView);
+		}
     }
 }
 
