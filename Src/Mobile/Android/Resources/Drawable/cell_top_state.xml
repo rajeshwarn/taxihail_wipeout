@@ -4,7 +4,7 @@
  <item android:state_pressed="true" android:drawable="@drawable/cell_selected"  />
  <item> 
     <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:top="1px" android:left="40dip">
+            <item android:top="1px" android:left="5dip">
                 <shape xmlns:android="http://schemas.android.com/apk/res/android">                                                     
                     <solid android:color="@color/itemlist_cell_border_color" />   
                     <corners android:radius="0dp" android:bottomRightRadius="0dp" android:bottomLeftRadius="0dp"  android:topLeftRadius="0dp" android:topRightRadius="0dp"/>

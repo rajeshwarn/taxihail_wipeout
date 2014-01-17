@@ -225,7 +225,7 @@
   <data name="DontHaveAnAccountLabel" xml:space="preserve">
     <value>Don't have an account?</value>
   </data>
-  <data name="LoadingText" xml:space="preserve">
+  <data name="LoadingMessage" xml:space="preserve">
     <value>Loading...</value>
   </data>
   <data name="InvalidLoginMessageTitle" xml:space="preserve">
@@ -285,6 +285,9 @@
   <data name="PickupMapTitle" xml:space="preserve">
     <value>Pickup location</value>
   </data>
+  <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
+    <value>Authorization:</value>
+  </data>
 	<data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -336,13 +339,13 @@
   <data name="ChargeTypeLabel" xml:space="preserve">
     <value>Charge type</value>
   </data>
-  <data name="NoAptText" xml:space="preserve">
+  <data name="ConfirmNoApt" xml:space="preserve">
     <value>No apt.</value>
   </data>
-  <data name="NoRingCodeText" xml:space="preserve">
+  <data name="ConfirmNoRingCode" xml:space="preserve">
     <value>No code</value>
   </data>
-  <data name="DestinationNotSpecifiedText" xml:space="preserve">
+  <data name="ConfirmDestinationNotSpecified" xml:space="preserve">
     <value>Destination not specified</value>
   </data>
   <data name="DateToday" xml:space="preserve">
@@ -432,19 +435,34 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
-  <data name="CreateAccountEmailPlaceHolder" xml:space="preserve">
+  <data name="CreateAccountEmail" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="CreateAccountFullNamePlaceHolder" xml:space="preserve">
+  <data name="CreateAccountTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="CreateAccountFullName" xml:space="preserve">
     <value>Full Name</value>
   </data>
-  <data name="CreateAccountPhonePlaceHolder" xml:space="preserve">
+  <data name="CreateAccountPhone" xml:space="preserve">
     <value>Mobile</value>
   </data>
-  <data name="CreateAccountPasswordPlaceHolder" xml:space="preserve">
+  <data name="CreateAccountMobile" xml:space="preserve">
+    <value>Mobile</value>
+  </data>
+  <data name="CreateAccountLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="CreateAccountLanguageEn" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="CreateAccountLanguageFr" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="CreateAccountPassword" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="CreateAccountPasswordConfirmationPlaceHolder" xml:space="preserve">
+  <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
@@ -471,7 +489,7 @@
   <data name="SaveAddressEmptyFieldTitle" xml:space="preserve">
     <value>Friendly name required</value>
   </data>
-  <data name="Done" xml:space="preserve">
+  <data name="DoneButton" xml:space="preserve">
     <value>Done</value>
   </data>
   <data name="FavoritesButton" xml:space="preserve">
@@ -510,38 +528,41 @@
   <data name="RideSettingsCompany" xml:space="preserve">
     <value>Company</value>
   </data>
-  <data name="View_HistoryDetail" xml:space="preserve">
-    <value>Order Details</value>
+  <data name="HistoryDetailHideButton" xml:space="preserve">
+    <value>Hide from history</value>
   </data>
-  <data name="HistoryDetailOrderLabel" xml:space="preserve">
-    <value>Order:</value>
-  </data>
-  <data name="HistoryDetailRequestedLabel" xml:space="preserve">
-    <value>Requested:</value>
-  </data>
-  <data name="HistoryDetailPickupLabel" xml:space="preserve">
-    <value>Pickup:</value>
-  </data>
-  <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
-    <value>Apt / Entry code:</value>
+  <data name="HistoryDetailRebookButton" xml:space="preserve">
+    <value>Rebook trip</value>
   </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
   </data>
-  <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
-    <value>Pickup Date:</value>
+  <data name="HistoryDetailRequestedLabel" xml:space="preserve">
+    <value>Requested:</value>
+  </data>
+  <data name="HistoryDetailOriginLabel" xml:space="preserve">
+    <value>Pickup:</value>
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Status:</value>
   </data>
-  <data name="BuildingNameText" xml:space="preserve">
-    <value>Not specified</value>
-  </data>
-  <data name="SendReceipt" xml:space="preserve">
-    <value>Send receipt</value>
+  <data name="HistoryDetailConfirmationLabel" xml:space="preserve">
+    <value>Order:</value>
   </data>
   <data name="StatusStatusLabel" xml:space="preserve">
     <value>Status: {0}</value>
+  </data>
+  <data name="HistoryDetailPickupDateLabel" xml:space="preserve">
+    <value>Pickup Date:</value>
+  </data>
+  <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
+    <value>Apt / Entry code:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameLabel" xml:space="preserve">
+    <value>Building Name:</value>
+  </data>
+  <data name="HistoryDetailBuildingNameNotSpecified" xml:space="preserve">
+    <value>Not specified</value>
   </data>
   <data name="DestinationViewDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
@@ -939,17 +960,23 @@
   <data name="View_BookSettingMenu" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="View_HistoryDetail" xml:space="preserve">
+    <value>Order Details</value>
+  </data>
   <data name="View_History" xml:space="preserve">
     <value>History</value>
   </data>
   <data name="View_MyLocations" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_CreateAccount" xml:space="preserve">
-    <value>Create your account</value>
+  <data name="View_SignUp" xml:space="preserve">
+    <value>Create Account</value>
   </data>
   <data name="View_TermsAndConditions" xml:space="preserve">
     <value />
+  </data>
+  <data name="View_SignUp_Label" xml:space="preserve">
+    <value>Create Profile</value>
   </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />
@@ -958,13 +985,13 @@
     <value>Profile</value>
   </data>
   <data name="View_Book_Menu_MyLocations" xml:space="preserve">
-    <value>Manage My Locations</value>
+    <value>Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>My Bookings</value>
+    <value>History</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
-    <value>Update My Profile</value>
+    <value>Update Account</value>
   </data>
   <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
     <value>Update My Password</value>
@@ -1005,6 +1032,15 @@
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>The account cannot be created, this email is already in use.</value>
   </data>
+  <data name="CurrentPasswordLabel" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="NewPasswordLabel" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="NewPasswordConfirmationLabel" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
   <data name="ConfirmPassengerSettingsTitle" xml:space="preserve">
     <value>Passenger Settings</value>
   </data>
@@ -1020,20 +1056,14 @@
   <data name="View_UpdatePassword" xml:space="preserve">
     <value>Update Password</value>
   </data>
-  <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
-    <value>Current Password</value>
-  </data>
-  <data name="UpdatePasswordNewPasswordLabel" xml:space="preserve">
-    <value>New Password</value>
-  </data>
-  <data name="UpdatePasswordConfirmationLabel" xml:space="preserve">
-    <value>Confirmation</value>
-  </data>  
   <data name="NbPassenger" xml:space="preserve">
     <value> ({0} passenger)</value>
   </data>
   <data name="NbPassengers" xml:space="preserve">
     <value> ({0} passengers)</value>
+  </data>
+  <data name="HistoryDetailSendReceiptButton" xml:space="preserve">
+    <value>Send receipt</value>
   </data>
   <data name="CreateAccountTitleArray" xml:space="preserve">
     <value>MrMrs</value>

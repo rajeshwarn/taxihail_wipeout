@@ -192,6 +192,10 @@
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/black</item>
   </style>
+  <style name="SettingItemTitle">
+    <item name="android:textColor">@color/setting_menu_text_color</item>    
+    <item name="android:textSize">@dimen/setting_menu_text_size</item>
+  </style>
   <style name="TopTitleText">
     <item name="android:textSize">@dimen/top_bar_title_font_size</item>
     <item name="android:textStyle">normal</item>
