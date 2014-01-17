@@ -22,15 +22,7 @@
     <color name="button_black_border_color">#000000</color>
   
     <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
-
-    <color name="button_subview_color">#000000</color>
-    <color name="button_background_color">#004785</color>
-    <color name="button_pressed_background_color">#0469c2</color>
-
-    <color name="button_border_color">#000000</color>
-    <color name="button_background_color">#004785</color>
-    <color name="button_pressed_background_color">#0469c2</color>
-    
+  
     <color name="setting_menu_text_color">#707070</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
 
