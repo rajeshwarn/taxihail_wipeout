@@ -3,6 +3,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -28,7 +29,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		void Initialize ()
 		{
-			TintColor = UIColor.Black;
+			if(UIHelper.IsOS7orHigher)
+			{
+				TintColor = UIColor.Black;
+			}
+
 			Font = UIFont.SystemFontOfSize(34/2);
 			LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
 			LeftViewMode = UITextFieldViewMode.Always;
