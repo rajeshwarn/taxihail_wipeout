@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			MessageLabel.TextColor = AppStyle.GreyText;
 			MessageLabel.Font = AppStyle.GetNormalFont (MessageLabel.Font.PointSize);
 
-			AppButtons.FormatStandardButton (SendRecieptButton, Localize.GetValue ("HistoryDetailSendReceiptButton"), AppStyle.ButtonColor.Green);
+			AppButtons.FormatStandardButton (SendRecieptButton, Localize.GetValue ("SendReceipt"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton ((GradientButton)RateButton, Localize.GetValue ("RateBtn"), AppStyle.ButtonColor.Green);
 			AppButtons.FormatStandardButton (PayButton, Localize.GetValue ("StatusPayButton"), AppStyle.ButtonColor.Green);
             AppButtons.FormatStandardButton (ReSendConfirmationButton, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
