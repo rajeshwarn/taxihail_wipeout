@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtRingCode.Hidden = true;
             }
 
-			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, (s, e) => ViewModel.SaveAddress.Execute());
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();
 
@@ -75,6 +75,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtName)
 				.For(v => v.Text)
 				.To(vm => vm.FriendlyName);
+
+			set.Bind (NavigationItem.RightBarButtonItem)
+				.For ("Clicked")
+				.To(vm => vm.SaveAddress);
 
 			set.Bind(btnRebook)
 				.For("TouchUpInside")
