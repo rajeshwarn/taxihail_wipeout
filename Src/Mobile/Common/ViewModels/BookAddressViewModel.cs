@@ -293,7 +293,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AsyncCommand RequestCurrentLocationCommand
         {
-            get {
+            get
+			{
                 return GetCommand(() =>
                 {
 

@@ -7,6 +7,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Diagnostic;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -69,21 +70,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public DirectionInfo GetDirectionInfo(Address origin, Address dest)
+		public Task<DirectionInfo> GetDirectionInfo(Address origin, Address dest)
         {
             if (origin.HasValidCoordinate() && dest.HasValidCoordinate())
             {
                 return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude);
             }
-            return new DirectionInfo();
+			return Task.FromResult(new DirectionInfo());
         }
 
-        public DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
+		public async Task<DirectionInfo> GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
         {
 
             try
             {
-				var direction = _directions.GetDirection(originLat, originLong, destLat, destLong, date);
+				var direction = await Task.Run(() => _directions
+					.GetDirection(originLat, originLong, destLat, destLong, date));
+
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, FormattedPrice = direction.FormattedPrice, Price = direction.Price };
             }
             catch

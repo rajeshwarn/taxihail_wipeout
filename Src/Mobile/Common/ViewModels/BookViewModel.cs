@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         void SetupPushNotification()
         {
-            InvokeOnMainThread(() => _pushNotificationService.RegisterDeviceForPushNotifications(true));
+            _pushNotificationService.RegisterDeviceForPushNotifications(true);
         }
 
 
@@ -167,30 +167,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ActivatePickup.Execute();
         }
 
-        void LoadLastActiveOrder( )
+		private async void LoadLastActiveOrder( )
         {
             if (this.Services().Booking.HasLastOrder)
             {
-                this.Services().Booking.GetLastOrderStatus().ContinueWith(t => 
+				var orderStatus = await this.Services().Booking.GetLastOrderStatus();
+				var isCompleted = this.Services().Booking.IsStatusCompleted(orderStatus.IbsStatusId);
+                if (isCompleted)
                 {
-                    var isCompleted = this.Services().Booking.IsStatusCompleted(t.Result.IbsStatusId);
-                    if (isCompleted)
-                    {
-                        this.Services().Booking.ClearLastOrder();
-                    }
-                    else
-                    {
-						// TODO: Convert to async
-						var order = this.Services().Account.GetHistoryOrder(t.Result.OrderId);
-						ShowStatusActivity(order, t.Result);
-                    }
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    this.Services().Booking.ClearLastOrder();
+                }
+                else
+                {
+					var order = await this.Services().Account.GetHistoryOrderAsync(orderStatus.OrderId);
+					ShowViewModel<BookingStatusViewModel>(new
+						{
+							order = order.ToJson(),
+							orderStatus = orderStatus.ToJson()
+						});
+                }
             }
         }
 
         private async void CheckVersion()
         {
-            await Task.Delay(1000);
             this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
@@ -212,15 +212,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => CanClearAddress);
         }
 
-        private void CalculateEstimate() 
+		private async void CalculateEstimate() 
         {
-            _fareEstimate = this.Services().Localize["EstimatingFare"];
+			FareEstimate = this.Services().Localize["EstimatingFare"];
 
-			RaisePropertyChanged(() => FareEstimate);
-
-            _fareEstimate = this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
-            
-			RaisePropertyChanged(() => FareEstimate);
+			FareEstimate = await this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
         }
 
         public void InitializeOrder()
@@ -294,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string FareEstimate
         {
             get { return _fareEstimate; }
-            set
+			private set
             {
                 _fareEstimate = value;
 				RaisePropertyChanged();
@@ -608,8 +604,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Order.Settings.Passengers = 1;
                 }
 
+				//TODO: Convert to async/await
                 var estimate = this.Services().Booking.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
-                Order.Estimate.Price = estimate.Price;
+				estimate.Wait();
+				Order.Estimate.Price = estimate.Result.Price;
 
                 var serialized = Order.ToJson();
                 ShowViewModel<BookConfirmationViewModel>(new {order = serialized});
@@ -630,15 +628,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void CompleteOrder()
         {   
             NewOrder();
-        }
-
-        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
-        {
-            ShowViewModel<BookingStatusViewModel>(new
-            {
-                order = data.ToJson(),
-                orderStatus = orderInfo.ToJson()
-            });
         }
 
         private async void ObserveAvailableVehicles()

@@ -41,18 +41,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAppSettings _appSettings;
 		readonly IFacebookService _facebookService;
 		readonly ITwitterService _twitterService;
-		readonly IMessageService _messageService;
 		readonly ILocalization _localize;
 
 		public AccountService(IConfigurationManager configurationManager,
 			IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
-			IMessageService messageService,
 			ILocalization localize)
 		{
 			_localize = localize;
-			_messageService = messageService;
 			_twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
@@ -77,11 +74,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void ClearReferenceData()
         {
             Cache.Clear(RefDataCacheKey);
-        }
-
-        public void ResendConfirmationEmail (string email)
-        {
-
         }
 
         public void ClearCache ()

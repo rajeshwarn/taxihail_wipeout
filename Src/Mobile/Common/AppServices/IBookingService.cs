@@ -11,9 +11,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-        DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
+		Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
        
-        string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
+		Task<string> GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 
         bool IsValid(CreateOrder info);
 				

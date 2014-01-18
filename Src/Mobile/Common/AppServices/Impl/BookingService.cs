@@ -163,21 +163,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<OrderStatusDetail> GetLastOrderStatus ()
         {
-            var task = Task.Factory.StartNew (() =>
+			try
             {
                 var result = new OrderStatusDetail ();
 
-                if (!HasLastOrder) {
+                if (!HasLastOrder)
+                {
                     throw new InvalidOperationException ();
                 }
                 var lastOrderId = Cache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
-                result = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
-                return result;
-            });
-
-            task.ContinueWith (t => Logger.LogError (t.Exception), TaskContinuationOptions.OnlyOnFaulted);
-
-            return task;
+				return UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.GetOrderStatus (new Guid (lastOrderId)));
+            }
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				throw;
+			}
         }
 
         public void ClearLastOrder ()
@@ -230,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual (VehicleStatuses.Common.Done);
         }
 
-        public DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
+		public async Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate)
         {
 			var tarifMode = _configurationManager.GetSetting<DirectionSetting.TarifMode>("Direction.TarifMode", DirectionSetting.TarifMode.AppTarif);            
             var directionInfo = new DirectionInfo();
@@ -239,12 +240,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 if (tarifMode != DirectionSetting.TarifMode.AppTarif)
                 {
-                    directionInfo = UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
+					directionInfo = await UseServiceClient<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude));                                                            
                 }
 
                 if (tarifMode == DirectionSetting.TarifMode.AppTarif || (tarifMode == DirectionSetting.TarifMode.Both && directionInfo.Price == 0d))
                 {
-					directionInfo = _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
+					directionInfo = await _geolocService.GetDirectionInfo(pickup.Latitude, pickup.Longitude, destination.Latitude, destination.Longitude, pickupDate);                    
                 }            
 
                 return directionInfo ?? new DirectionInfo();
@@ -253,13 +254,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new DirectionInfo();
         }
 
-        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
+		public async Task<string> GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
         {
 			var fareEstimate = _localize[defaultFare];
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {
-                var estimatedFare = GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate);
+				var estimatedFare = await GetFareEstimate(order.PickupAddress, order.DropOffAddress, order.PickupDate)
+					.ConfigureAwait(false);
 
                 var willShowFare = estimatedFare.Price.HasValue && estimatedFare.Price.Value > 0;                                
 
