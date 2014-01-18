@@ -14,17 +14,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public async void Init(string bookingSettings)
         {
 			_bookingSettings = bookingSettings.FromJson<BookingSettings>();
-			//TODO: This doesn't work [MvvmCross v3] 
 
-			var refData = await this.Services().Account.GetReferenceDataAsync();
-
-			var v = this.Services().Account.GetVehiclesList();
+			var v = await this.Services().Account.GetVehiclesList();
 			_vehicules = v == null ? new ListItem[0] : v.ToArray();
 			RaisePropertyChanged(() => Vehicles );
 			RaisePropertyChanged(() => VehicleTypeId );
 			RaisePropertyChanged(() => VehicleTypeName );
 
-			var p = this.Services().Account.GetPaymentsList();
+			var p = await this.Services().Account.GetPaymentsList();
 			_payments = p == null ? new ListItem[0] : p.ToArray();
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );

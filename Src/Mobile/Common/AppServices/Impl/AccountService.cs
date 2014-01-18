@@ -60,23 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		}
 	
-        [Obsolete("User async method instead")]
-        public ReferenceData GetReferenceData()
-        {
-            var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
-
-            if (cached == null)
-            {
-                var referenceData = GetReferenceDataAsync();
-                referenceData.Start();
-
-                return referenceData.Result;
-            }
-            return cached;
-
-        }
-
-        public async Task<ReferenceData> GetReferenceDataAsync()
+        public async Task<ReferenceData> GetReferenceData()
         {
             var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
 
@@ -513,51 +497,54 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             );
         }
 
-        public IEnumerable<ListItem> GetCompaniesList ()
+		public async Task<IList<ListItem>> GetCompaniesList ()
         {
-            var refData = GetReferenceData();
+			var refData = await GetReferenceData();
 			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.CompaniesList != null)
             {
-                refData.CompaniesList.Insert(0, new ListItem
-                                            {
-                    Id = null,
+				refData.CompaniesList.Insert(0,
+					new ListItem
+					{
+						Id = null,
 						Display = _localize["NoPreference"]
-                });
+					});
             }
             
             return refData.CompaniesList;         
         }
 
-        public IEnumerable<ListItem> GetVehiclesList ()
+		public async Task<IList<ListItem>> GetVehiclesList ()
         {
-            var refData = GetReferenceData();
+			var refData = await GetReferenceData();
 
 			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.VehiclesList != null)
             {
-                refData.VehiclesList.Insert(0, new ListItem
-                                         {
-                                            Id = null,
+                refData.VehiclesList.Insert(0,
+					new ListItem
+                    {
+                        Id = null,
 						Display = _localize["NoPreference"]
-                                         });
+					});
             }
 
             return refData.VehiclesList;
         }
 
-        public IEnumerable<ListItem> GetPaymentsList ()
+		public async Task<IList<ListItem>> GetPaymentsList ()
         {
-            var refData = GetReferenceData();
+			var refData = await GetReferenceData();
 		
 			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
-                refData.PaymentsList.Insert(0, new ListItem
-                {
-                    Id = null,
-						Display = _localize["NoPreference"]
-                });
+                refData.PaymentsList.Insert(0,
+					new ListItem
+                	{
+                        Id = null,
+					    Display = _localize["NoPreference"]
+                	});
             }
 
             return refData.PaymentsList;

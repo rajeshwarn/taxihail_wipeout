@@ -21,10 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         void ClearCache();
 
-        [Obsolete("Use async method instead")]
-        ReferenceData GetReferenceData();
-
-        Task<ReferenceData> GetReferenceDataAsync();
+        Task<ReferenceData> GetReferenceData();
 
         void ClearReferenceData();
         
@@ -32,11 +29,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account CurrentAccount { get; }
         
-        IEnumerable<ListItem> GetCompaniesList( );
+		Task<IList<ListItem>> GetCompaniesList();
         
-        IEnumerable<ListItem> GetVehiclesList(  );
+		Task<IList<ListItem>> GetVehiclesList();
         
-        IEnumerable<ListItem> GetPaymentsList(  );
+		Task<IList<ListItem>> GetPaymentsList();
         
         
         void RemoveCreditCard(Guid creditCardId);

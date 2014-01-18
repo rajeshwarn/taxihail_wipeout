@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile
         private void LoadAppCache()
         {
 			_container.Resolve<IApplicationInfoService>().GetAppInfoAsync();
-			_container.Resolve<IAccountService>().GetReferenceDataAsync();
+			_container.Resolve<IAccountService>().GetReferenceData();
 			_container.Resolve<IConfigurationManager>().GetSettings();
         }
 
