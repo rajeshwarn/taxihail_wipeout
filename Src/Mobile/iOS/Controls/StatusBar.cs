@@ -50,6 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private float _minHeight;
         private float _maxHeight;
+
+        public StatusBar(IntPtr handle) : base(handle)
+        {
+            
+        }
         
         void SetShadow ()
         {
