@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile
         private bool _isExecuting;
 
         public AsyncCommand(Action execute)
-            : this(execute, null)
+			: this(execute, null)
         {
         }
 
@@ -26,10 +26,8 @@ namespace apcurium.MK.Booking.Mobile
 		}
 
         public AsyncCommand(Action execute, Func<bool> canExecute)
+			: this(Wrap(execute), canExecute)
         {
-			_logger = Mvx.Resolve<ILogger>();
-			_execute = Wrap(execute);
-            _canExecute = canExecute;
         }
 
 		public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
@@ -87,8 +85,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private TaskScheduler 
-        GetTaskScheduler()
+        private static TaskScheduler GetTaskScheduler()
 		{
 			try
 			{
@@ -96,12 +93,11 @@ namespace apcurium.MK.Booking.Mobile
 			}
 			catch(Exception e)
 			{
-				_logger.LogError(e);
 				return TaskScheduler.Default;
 			}
 		}
 
-		private Func<Task> Wrap(Action execute)
+        private static Func<Task> Wrap(Action execute)
 		{
             return () =>
             {
@@ -137,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile
     {
 		readonly ILogger _logger;
         private Func<T,bool> _canExecute;
-        private Action<T> _execute;
+		private Func<T, Task> _execute;
         private bool _isExecuting;
 
         public AsyncCommand(Action<T> execute)
@@ -145,12 +141,22 @@ namespace apcurium.MK.Booking.Mobile
         {
         }
 
+		public AsyncCommand(Func<T, Task> execute)
+			: this(execute, null)
+		{
+		}
+
         public AsyncCommand(Action<T> execute, Func<T,bool> canExecute)
+			: this(Wrap(execute), canExecute)
         {
-			_logger = Mvx.Resolve<ILogger>();
-            _execute = execute;
-            _canExecute = canExecute;
         }
+
+        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute)
+		{
+			_logger = Mvx.Resolve<ILogger>();
+			_execute = execute;
+			_canExecute = canExecute;
+		}
 
         public bool CanExecute(object parameter)
         {
@@ -171,11 +177,8 @@ namespace apcurium.MK.Booking.Mobile
 
 				try
 				{
-					await Task.Factory.StartNew(() => _execute((T)parameter),
-						default(CancellationToken),
-						TaskCreationOptions.None,
-						GetTaskScheduler()
-					);
+                    var t = _execute((T)parameter);
+					await t;
 				}
 				catch(Exception e)
 				{
@@ -204,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private TaskScheduler GetTaskScheduler()
+        private static TaskScheduler GetTaskScheduler()
 		{
 			try
 			{
@@ -212,9 +215,19 @@ namespace apcurium.MK.Booking.Mobile
 			}
 			catch(Exception e)
 			{
-				_logger.LogError(e);
 				return TaskScheduler.Default;
 			}
+		}
+
+        private static Func<T, Task> Wrap(Action<T> execute)
+		{
+			return p =>
+			{
+				return Task.Factory.StartNew(() => execute(p),
+					default(CancellationToken),
+					TaskCreationOptions.None,
+					GetTaskScheduler());
+			};
 		}
 
         #region IDisposable implementation
