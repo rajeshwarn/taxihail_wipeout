@@ -55,7 +55,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
 			FindViewById<RelativeLayout>(Resource.Id.orderListLayout).Touch += (sender, e) => DisposeBlinkScreen();
 
-			ViewModel.Load();
+			ViewModel.OnViewLoaded();
 		}
 
 		private void ViewModelOnOrderCompleted(object sender, EventArgs args)

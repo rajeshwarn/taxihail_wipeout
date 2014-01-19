@@ -260,8 +260,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                             newOrderCreated.Note = this.Services().Localize["Callbox.noPassengerName"];
                             newOrderCreated.Settings.Name = this.Services().Localize["NotSpecified"];
 						}      
-
-						var orderInfo = this.Services().Booking.CreateOrder(newOrderCreated);
+                        // TODO: Refactor to async/await
+                        var orderInfoTask = this.Services().Booking.CreateOrder(newOrderCreated);
+                        orderInfoTask.Wait();
+                        var orderInfo = orderInfoTask.Result;
 
 						InvokeOnMainThread (() =>
 							{                    

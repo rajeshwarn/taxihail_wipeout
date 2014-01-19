@@ -35,7 +35,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 
 			container.Register<IMessageService, MessageService>();
 			container.Register<IPackageInfo, PackageInfo>();
-			container.Register<IAppSettings>(new AppSettings());
+			container.Register<IAppSettings, AppSettings>();
 			container.Register<ILocalization, ResourceManager>();
 			container.Register<ILogger, LoggerImpl>();
 			container.Register<IErrorHandler, ErrorHandler>();

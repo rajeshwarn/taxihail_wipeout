@@ -43,7 +43,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			}
 			try
 			{
-				var intent = Intent.CreateChooser(emailIntent, resource["SendEmail"]);                    
+				var intent = Intent.CreateChooser(emailIntent, _localize["SendEmail"]);                    
 				intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 				_context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();

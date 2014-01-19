@@ -24,6 +24,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
 
     public abstract class BaseBindingActivity<TViewModel> : MvxActivity where TViewModel : BaseViewModel, IMvxViewModel
     {
+		private bool _firstStart = true;
         protected abstract int ViewTitleResourceId { get; }
 
 		public new TViewModel ViewModel
@@ -45,25 +46,20 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         protected override void OnStart()
         {
             base.OnStart();
-            ViewModel.OnViewStarted();
-        }
-
-        protected override void OnRestart()
-        {
-            base.OnRestart();
-            ViewModel.Restart();
+			ViewModel.OnViewStarted(_firstStart);
+			_firstStart = false;
         }
 
         protected override void OnStop()
         {
             base.OnStop();
-            ViewModel.Stop();
+			ViewModel.OnViewStopped();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            ViewModel.Unload();
+			ViewModel.OnViewUnloaded();
         }
 
     }
