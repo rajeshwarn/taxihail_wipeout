@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -137,10 +138,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AppActivated()
         {
-            this.Services().Location.GetNextPosition(new TimeSpan(0, 0, 2), 20).Subscribe(p =>
-            {
-                NewOrder();
-            });
+			this.Services()
+				.Location
+				.GetNextPosition(new TimeSpan(0, 0, 2), 20)
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(p =>
+				{
+					NewOrder();
+				});
         }
 
 		public override void OnViewStarted(bool firstTime = false)
@@ -189,18 +194,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private async void CheckVersion()
+        private void CheckVersion()
         {
             this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
         void AddressChanged(object sender, EventArgs e)
         {
-            InvokeOnMainThread(() =>
-                {
-					RaisePropertyChanged(() => Pickup);
-					RaisePropertyChanged(() => Dropoff);
-                });
+			RaisePropertyChanged(() => Pickup);
+			RaisePropertyChanged(() => Dropoff);
 
             var isUserInitiated = sender is bool && (bool)sender;
             if (!isUserInitiated)
@@ -208,7 +210,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CenterMap(true);
             }
 
-            Task.Factory.SafeStartNew(CalculateEstimate);
+			CalculateEstimate();
 			RaisePropertyChanged(() => CanClearAddress);
         }
 
@@ -255,20 +257,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private void NewOrder()
         {
-			InvokeOnMainThread(() =>
+            InitializeOrder();
+
+            ForceRefresh();
+
+            if (AddressSelectionMode != AddressSelectionMode.PickupSelection)
             {
-                InitializeOrder();
+                ActivatePickup.Execute();
+            }
 
-                ForceRefresh();
-
-                if (AddressSelectionMode != AddressSelectionMode.PickupSelection)
-                {
-                    ActivatePickup.Execute();
-                    Thread.Sleep(300);
-                }
-
-                Pickup.RequestCurrentLocationCommand.Execute();
-            });
+            Pickup.RequestCurrentLocationCommand.Execute();
         }
 
         public void Reset()
@@ -412,18 +410,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => InvokeOnMainThread(delegate
-                    {
-                        // Close the menu if it was open
-                        Panel.MenuIsOpen = false;
+				return GetCommand(() =>
+				{
+					// Close the menu if it was open
+					Panel.MenuIsOpen = false;
 
-                        AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.PickupSelection
+					AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.PickupSelection
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.PickupSelection;
 
-						RaisePropertyChanged(() => SelectedAddress);
-                        CenterMap(false);
-                    }));
+					RaisePropertyChanged(() => SelectedAddress);
+					CenterMap(false);
+				});
             }
         }
 
@@ -431,18 +429,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return GetCommand(() => InvokeOnMainThread(delegate
-                    {
-                        // Close the menu if it was open
-                        Panel.MenuIsOpen = false;
+				return GetCommand(() =>
+				{
+					// Close the menu if it was open
+					Panel.MenuIsOpen = false;
 
-                        AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.DropoffSelection
+					AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.DropoffSelection
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.DropoffSelection;
 
-						RaisePropertyChanged(() => SelectedAddress);
-                        CenterMap(false);
-                    }));
+					RaisePropertyChanged(() => SelectedAddress);
+					CenterMap(false);
+				});
             }
         }
                
@@ -500,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     else
                     {
                         Order.PickupDate = date;
-                        InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new DateTimePicked(this, Order.PickupDate)));
+                        this.Services().MessengerHub.Publish(new DateTimePicked(this, Order.PickupDate));
 
                         if (date.HasValue)
                         {
@@ -516,13 +514,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => {
+				return GetCommand(() =>
+				{
+					// Ensure PickupDate is null (= now). It will be set to DateTime.Now later
+					Order.PickupDate = null;
+					ProcessOrder();
 
-                    // Ensure PickupDate is null (= now). It will be set to DateTime.Now later
-                    Order.PickupDate = null;
-                    ProcessOrder();
-
-                });
+				});
             }
         }
 
@@ -549,7 +547,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void ProcessOrder()
+		public async void ProcessOrder()
         {
             using (this.Services().Message.ShowProgress())
 			{
@@ -560,11 +558,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var destinationIsRequired = this.Services().Config.GetSetting("Client.DestinationIsRequired", false);
                     if ( destinationIsRequired )
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]));
+                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                     }
                     else
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]));
+                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                     }
                     return;
                 }
@@ -572,7 +570,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
                 {
                     Order.PickupDate = null;
-                    InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]));
+                    this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                     return;
                 }
 
@@ -594,7 +592,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        Task.Factory.StartNew(CompleteOrder);
+						CompleteOrder();
                     }
                 });
 
@@ -604,10 +602,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Order.Settings.Passengers = 1;
                 }
 
-				//TODO: Convert to async/await
-                var estimate = this.Services().Booking.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
-				estimate.Wait();
-				Order.Estimate.Price = estimate.Result.Price;
+				var estimate = await this.Services().Booking.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
+				Order.Estimate.Price = estimate.Price;
 
                 var serialized = Order.ToJson();
                 ShowViewModel<BookConfirmationViewModel>(new {order = serialized});

@@ -73,15 +73,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isPaired;
         }
 
-        public OrderStatusDetail CreateOrder (CreateOrder order)
+		public async Task<OrderStatusDetail> CreateOrder (CreateOrder order)
         {
-            var orderDetail = UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
+			var orderDetail = await UseServiceClient<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
-			if (orderDetail.IbsOrderId.HasValue && orderDetail.IbsOrderId > 0) {
+			if (orderDetail.IbsOrderId.HasValue
+				&& orderDetail.IbsOrderId > 0)
+			{
                 Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
-			ThreadPool.QueueUserWorkItem (_ => _accountService.RefreshCache (true));
+			Task.Run(() => _accountService.RefreshCache (true));
 
             return orderDetail;
         }

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    bool IsPaired(Guid orderId);
 
-        OrderStatusDetail CreateOrder(CreateOrder info);
+		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
 
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
