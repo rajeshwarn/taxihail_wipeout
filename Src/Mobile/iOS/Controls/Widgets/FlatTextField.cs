@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				TintColor = UIColor.Black; // cursor color
 			}
 
-			Font = UIFont.FromName("HelveticaNeue-Light", 38/2);
+			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 			LeftView = new UIView(new RectangleF(0f,0f,13f,1f)); //left padding
 			LeftViewMode = UITextFieldViewMode.Always;
 		}

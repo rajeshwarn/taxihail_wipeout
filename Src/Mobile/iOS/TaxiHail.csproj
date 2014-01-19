@@ -513,6 +513,7 @@
     <Compile Include="Controls\Widgets\TaxiHailEntryElement.cs" />
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
+    <Compile Include="FontName.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			var blue = UIColor.FromRGB(0, 72, 129);
 
-            Font = UIFont.FromName ("HelveticaNeue-Light", 40/2);
+			Font = UIFont.FromName (FontName.HelveticaNeueLight, 40/2);
 
 			SetFillColor(blue, UIControlState.Normal);
 			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             // TODO: Need to understand why we need this specific hack for iSO 6
             if (Font.Name != FlatButtonStyle.ClearButtonFont.Name)
             {
-				Font = UIFont.FromName ("HelveticaNeue-Light", 40/2);
+				Font = UIFont.FromName (FontName.HelveticaNeueLight, 40/2);
 			}
 
             var context = UIGraphics.GetCurrentContext ();

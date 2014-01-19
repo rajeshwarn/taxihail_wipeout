@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 
 			textField.TextColor = UIColor.FromRGB(44, 44, 44);
-			textField.Font = UIFont.FromName("HelveticaNeue-Light", 38/2);
+			textField.Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 			textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
 
 			this.AutocorrectionType = UITextAutocorrectionType.No;

@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		UIColor LightBlue = UIColor.FromRGB(111, 152, 235);
 		UIColor GreenColor = UIColor.FromRGB(31, 191, 33);
 
-		public static UIFont ClearButtonFont = UIFont.FromName("HelveticaNeue-Bold", 28/2);
+		public static UIFont ClearButtonFont = UIFont.FromName(FontName.HelveticaNeueBold, 28/2);
 
 		public abstract void ApplyTo(FlatButton button);
 

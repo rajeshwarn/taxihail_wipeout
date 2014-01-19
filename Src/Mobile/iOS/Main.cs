@@ -64,8 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
 			}
 
-			var titleFont = UIFont.FromName ("HelveticaNeue-Medium", 34/2);
-			var navBarButtonFont = UIFont.FromName ("HelveticaNeue-Light", 34/2);
+			var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+			var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
 			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
 				TextColor = gray44,
