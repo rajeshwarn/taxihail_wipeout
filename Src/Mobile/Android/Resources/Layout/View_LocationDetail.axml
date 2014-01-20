@@ -102,7 +102,6 @@
                         android:text="@string/ApartmentLabel"
                         android:layout_height="wrap_content" />
                     <EditText
-                        android:id="@+id/LocationAppatrment"
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:lines="0"
