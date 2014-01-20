@@ -1,21 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-	<item android:state_pressed="true" android:drawable="@drawable/cell_selected"  />
-	<item android:state_pressed="false">
-		<layer-list xmlns:android="http://schemas.android.com/apk/res/android">		
-			<item>
-			  <shape>
-			        <size android:height="45dip"/>
-			        <solid android:color="@color/transparent" />
-			  </shape>
-			</item>
-			<!---
-			<item android:left="8px" android:right="16px" android:top="44dip">
-			 <shape>
-			       <size android:height="1px"/>
-			       <solid android:color="@color/setting_menu_separator_color" />
-			 </shape>
-			</item>-->
-		</layer-list>
+	<item android:state_pressed="true">
+	  <shape>   	        
+	        <solid android:color="@color/setting_item_pressed_background_color" />
+	  </shape>
+	</item>
+	<item android:state_pressed="false">		
+	  <shape>	        
+	        <solid android:color="@color/transparent" />
+	  </shape>			
 	</item>
 </selector>
