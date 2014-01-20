@@ -4,7 +4,6 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android">
             <stroke android:width="0.5dp" android:color="@color/black" />
             <corners android:radius="3dp" />
-            <solid android:color="@color/button_nobg_pressed_background_color" />
         </shape>
     </item>
     <item>

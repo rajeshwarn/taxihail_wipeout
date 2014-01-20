@@ -222,7 +222,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <Button
-                    style="@style/ButtonNoBgGreenStyle"
+                    style="@style/ButtonActionGreenStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/RebookTripBtn"
@@ -230,7 +230,7 @@
                     android:visibility="gone"
                     local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
                 <Button
-                    style="@style/ButtonNoBgGrayStyle"
+                    style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/StatusBtn"
@@ -238,7 +238,7 @@
                     android:visibility="gone"
                     local:MvxBind="Enabled IsCompleted; Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click NavigateToOrderStatus" />
                 <Button
-                    style="@style/ButtonNoBgGrayStyle"
+                    style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/RateBtn"
@@ -246,7 +246,7 @@
                     android:visibility="gone"
                     local:MvxBind="Click NavigateToRatingPage; Enabled ShowRateButton; Visibility ShowRateButton, Converter=Visibility" />
                 <Button
-                    style="@style/ButtonNoBgGrayStyle"
+                    style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/ViewRatingBtn"
@@ -254,7 +254,7 @@
                     android:visibility="gone"
                     local:MvxBind="Click NavigateToRatingPage; Enabled HasRated; Visibility HasRated, Converter=Visibility" />
                 <Button
-                    style="@style/ButtonNoBgRedStyle"
+                    style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/CancelTripBtn"
@@ -262,7 +262,7 @@
                     android:visibility="gone"
                     local:MvxBind="Enabled IsCompleted, Converter=BoolInverter; Visibility IsCompleted, Converter=InvertedVisibility; Click CancelOrder" />
                 <Button
-                    style="@style/ButtonNoBgGrayStyle"
+                    style="@style/ButtonActionGrayStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/SendReceiptBtn"
@@ -270,7 +270,7 @@
                     android:visibility="gone"
                     local:MvxBind="Enabled SendReceiptAvailable; Visibility SendReceiptAvailable, Converter=Visibility; Click SendReceipt" />
                 <Button
-                    style="@style/ButtonNoBgRedStyle"
+                    style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/HistoryOrderDeleteBtn"

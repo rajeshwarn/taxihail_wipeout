@@ -2,6 +2,9 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
+
+    <!--- 	LoginTheme Color -->
+
     <color name="login_background_color">#004785</color>		
 	
 	<color name="edit_text_background_color">#ffffff</color>
@@ -9,50 +12,60 @@
 	<color name="edit_text_border_color">#ffffff</color>				 
 
 	<color name="button_border_color">#031b31</color>
-	<color name="button_background_color">#004785</color>
 	<color name="button_text_color">#ffffff</color>
 	<color name="button_pressed_background_color">#70004785</color>
 	<color name="button_pressed_text_color">#70ffffff</color>
 
-  	<color name="button_main_background_color">#004f94</color>
-	<color name="button_main_pressed_background_color">#70004f94</color>
+	<!--- 	MainTheme Colors -->
+
+	<color name="main_background_color">#f0f0f0</color>	
+
+	<!--		Main Button Colors -->
+
+  	<color name="button_main_background_color">#004f94</color>	
 
     <color name="button_green_border_color">#1fbf21</color>
     <color name="button_red_border_color">#ff0000</color>
-    <color name="button_gray_border_color">#707070</color><!-- temp color -->
+    <color name="button_gray_border_color">#707070</color>
     <color name="button_black_border_color">#000000</color>  
-    <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
+
+    <color name="button_action_text_color">#ffffff</color>
+    <color name="button_action_pressed_text_color">#70ffffff</color>
   
+	<!--		Settings Item Colors -->
+
     <color name="setting_menu_text_color">#707070</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
 	<color name="setting_item_pressed_background_color">#ffffff</color>
 
-	<color name="main_background_color">#f0f0f0</color>
-	
+	<!--		List Item [Orders, Locations] Colors -->
+
   	<color name="listitem_text_line1_color">#000000</color>
 	<color name="listitem_text_line2_color">#000000</color>		
 	<color name="listitem_cell_background_color">#ffffff</color>
 	<color name="listitem_cell_border_color">#727272</color>	
 	<color name="listitem_cell_selected_background_color">#eeeeee</color>
-	
+
+	<!--		Top Bar Colors -->
+
 	<color name="top_bar_color">#ffffff</color>	
 	<color name="top_bar_separator_color">#666666</color>		
 	<color name="top_bar_title_color">#000000</color>	
 	
 	<!--- Dimensions -->
-  <dimen name="Height">41dip</dimen>
-  <dimen name="HeightButton">41dip</dimen>
-  <dimen name="HeightEditText">40dip</dimen>
-  <dimen name="HeightEditTextFlat">44dip</dimen>
+  	<dimen name="Height">41dip</dimen>
+  	<dimen name="HeightButton">41dip</dimen>
+  	<dimen name="HeightEditText">40dip</dimen>
+  	<dimen name="HeightEditTextFlat">44dip</dimen>
 	<dimen name="VerticalPadding">14dip</dimen>
 	<dimen name="DefaultFontSize">14dip</dimen>
 	<dimen name="top_bar_title_font_size">18dp</dimen>
-  <dimen name="top_bar_title_height">52dip</dimen>  
-  <dimen name="setting_menu_text_size">20dip</dimen>
+  	<dimen name="top_bar_title_height">52dip</dimen>  
+  	<dimen name="setting_menu_text_size">20dip</dimen>
 
-  <!--- Styles -->
+  	<!--- Styles -->
 
-	<!--- EditText -->
+	<!--	Login Theme EditText -->
     <style name="custom_EditTextStyle" parent="@android:style/Widget.EditText">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -65,6 +78,7 @@
         <item name="android:inputType">textNoSuggestions|textVisiblePassword</item>
     </style>
 
+    <!--	Main Theme EditText -->
     <style name="custom_FlatEditTextStyle" parent="@style/custom_EditTextStyle">
       <item name="android:layout_marginTop">8dp</item>
       <item name="android:layout_marginBottom">8dp</item>
@@ -76,7 +90,7 @@
       <item name="android:textColor">@color/edit_text_foreground_color</item>
     </style>
   
-    <!--- Button -->
+    <!--	Login Theme Button -->
     <style name="custom_ButtonStyle" parent="@android:style/Widget.Button">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -93,35 +107,36 @@
         <item name="android:layout_gravity">clip_vertical</item>
     </style>
 
-    <!--- Buttons  -->
+    <!--	Login MainAction Button  -->
     <style name="ButtonMainStyle" parent="@style/custom_ButtonStyle">
     	<item name="android:textColor">@drawable/button_main_text_selector</item>
     	<item name="android:background">@drawable/button_main_selector</item>      
     	<item name="android:textSize">20dip</item>
     </style>
 
-    <style name="ButtonNoBgGreenStyle" parent="@style/custom_ButtonStyle">
-      <item name="android:background">@drawable/button_nobg_green_selector</item>
+    <!--	Main Theme Action (colorized) Buttons  -->
+
+    <style name="ButtonActionGreenStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_action_green_selector</item>
       <item name="android:textColor">@color/button_green_border_color</item>      
     </style>
 
-    <style name="ButtonNoBgRedStyle" parent="@style/custom_ButtonStyle">
-      <item name="android:background">@drawable/button_nobg_red_selector</item>
+    <style name="ButtonActionRedStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_action_red_selector</item>
       <item name="android:textColor">@color/button_red_border_color</item>      
     </style>
 
-    <style name="ButtonNoBgGrayStyle" parent="@style/custom_ButtonStyle">
-      <item name="android:background">@drawable/button_nobg_gray_selector</item>
+    <style name="ButtonActionGrayStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_action_gray_selector</item>
       <item name="android:textColor">@color/button_gray_border_color</item>      
     </style>
 
-    <style name="ButtonNoBgBlackStyle" parent="@style/custom_ButtonStyle">
-      <item name="android:background">@drawable/button_nobg_black_selector</item>
+    <style name="ButtonActionBlackStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_action_black_selector</item>
       <item name="android:textColor">@color/button_black_border_color</item>      
     </style>
 
-
-  <!--- Themes -->
+  	<!--- Themes -->
     <style name="LoginTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowBackground">@color/login_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
