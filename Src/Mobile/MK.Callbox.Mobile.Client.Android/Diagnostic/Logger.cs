@@ -105,7 +105,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Diagnostic
 		
 		public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log_callbox.txt");
 		
-		private static void Write(string message)
+		private void Write(string message)
 		{
 			try
 			{                

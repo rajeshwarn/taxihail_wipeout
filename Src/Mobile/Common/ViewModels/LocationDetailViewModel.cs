@@ -14,15 +14,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Init(string address)
 		{
-            _address = address.FromJson<Address>();
-            IsNew = false;
-		}
+			_address = new Address();
+			IsNew = true;
 
-		public void Init()
-        {
-            _address = new Address();
-            IsNew = true;
-        }
+			if (!string.IsNullOrEmpty (address))
+			{
+				_address = address.FromJson<Address>();
+				IsNew = false;
+			} 
+		}
 
         public bool ShowRingCodeField {
             get
@@ -207,7 +207,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	                 var account = this.Services().Account.CurrentAccount;
 	                 order.Settings = account.Settings;
 	                 var serialized = JsonSerializer.SerializeToString(order);
-							// TODO: [MvvmCroos v3] ClearTop parameter was removed here
 					 ShowViewModel<BookViewModel>(new { order = serialized });
 				});
 			}

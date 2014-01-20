@@ -29,11 +29,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_waitingToNavigateAfterTimeOut = false;
 		}
 	
-		public override void Load ()
+		public override void OnViewLoaded ()
         {
-			base.Load ();
+			base.OnViewLoaded ();
 
-            StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["StatusStatusLabel"], this.Services().Localize["LoadingText"]);
 
 			Pickup = new BookAddressViewModel(){
 				EmptyAddressPlaceholder = this.Services().Localize["BookPickupLocationEmptyPlaceholder"]
@@ -48,9 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CenterMap ();
         }
 
-		public override void Start (bool firstStart = false)
+		public override void OnViewStarted (bool firstStart = false)
 		{
-			base.Start (firstStart);
+			base.OnViewStarted (firstStart);
 
             var periodInSettings = this.Services().Config.GetSetting("Client.OrderStatus.ClientPollingInterval");
             int periodInSettingsValue;
@@ -72,9 +72,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 		
 		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-		public override void Stop ()
+		public override void OnViewStopped ()
 		{
-			base.Stop ();
+			base.OnViewStopped ();
             Subscriptions.DisposeAll ();
 		}
 
@@ -398,7 +398,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 			this.Services().Booking.ClearLastOrder();
                         _waitingToNavigateAfterTimeOut = true;
-							// TODO: [MvvmCross v3] ClearTop parameter was removed here
                         ShowViewModel<BookViewModel>();
 						Close(this);
                     }));
@@ -440,8 +439,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["YesButton"], 
                     () => { 
                         this.Services().Booking.ClearLastOrder();
-					//TODO: [MvvmCross v3] ClearTop parameter was removed here
-                    ShowViewModel<BookViewModel> ();
+                    	ShowViewModel<BookViewModel> ();
                     },
                     this.Services().Localize["NoButton"], NoAction));
             }
@@ -471,8 +469,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (isSuccess) 
                                 {
                                     this.Services().Booking.ClearLastOrder();
-								//TODO: [MvvmCross v3] ClearTop parameter was removed here
-                                ShowViewModel<BookViewModel> ();
+									ShowViewModel<BookViewModel> ();
                                 } 
                                 else 
                                 {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Touch.Views;
@@ -12,8 +11,6 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
-	//TODO: [MvvmCross v3] NoHistory attribute not defined
-    //[NoHistory]
     public partial class BookStreetNumberView : MvxViewController
     {
         public BookStreetNumberView() 
@@ -34,8 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
         }
-		
-      
 
         public override void ViewDidLoad ()
         {
@@ -70,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
                 //return false;
             };
 
-            var button = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            var button = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, delegate
             {
                 ViewModel.SaveCommand.Execute();
             });
@@ -100,14 +95,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 
             set.Apply();
             
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
             View.ApplyAppFont ();
         }
 		
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("StreetNumberTitle"), true);
+			NavigationItem.Title = Localize.GetValue("StreetNumberTitle");
         }
 
     }

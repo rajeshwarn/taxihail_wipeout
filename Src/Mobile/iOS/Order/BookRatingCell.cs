@@ -10,14 +10,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 	public partial class BookRatingCell : MvxStandardTableViewCell
 	{
 		public static NSString Identifier = new NSString("BookRatingCell");
-		public const string BindingText = @"{'RatingTypeName':{'Path':'RatingTypeName'},
-'SetRateCommand': {'Path': 'SetRateCommand'},
-'CanRate': {'Path': 'CanRating'},
-'MadSelected': {'Path': 'MadSelected'},
-'UnhappySelected': {'Path': 'UnhappySelected'},
-'NeutralSelected': {'Path': 'NeutralSelected'},
-'HappySelected': {'Path': 'HappySelected'},
-'EcstaticSelected': {'Path': 'EcstaticSelected'}}";
+		public const string BindingText = @"
+RatingTypeName RatingTypeName;
+SetRateCommand SetRateCommand;
+CanRate CanRating;
+MadSelected MadSelected;
+UnhappySelected UnhappySelected;
+NeutralSelected NeutralSelected;
+HappySelected HappySelected;
+EcstaticSelected EcstaticSelected;";
 		
 		public static BookRatingCell LoadFromNib(NSObject owner)
 		{

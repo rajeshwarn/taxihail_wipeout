@@ -13,31 +13,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 	partial class CmtRideLinqConfirmPairView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnCancel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnCancel { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnChangePaymentSettings { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnChangePaymentSettings { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.GradientButton btnConfirm { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.GradientButton btnConfirm { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardNumber { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCardNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardNumberValue { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCardNumberValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCarNumber { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCarNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblCarNumberValue { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblCarNumberValue { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTip { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblTip { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipValue { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.FormLabel lblTipValue { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

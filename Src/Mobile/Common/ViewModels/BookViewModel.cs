@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -76,9 +77,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		public override void Load()
+		public override void OnViewLoaded()
         {
-			base.Load();
+			base.OnViewLoaded();
 
             if ( Order == null || !_useExistingOrder )
             {
@@ -101,15 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (! _useExistingOrder ) 
             {
-                var tutorialWasDisplayed = this.Services().AppCache.Get<string>("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty() || !tutorialWasDisplayed.SoftEqual(this.Services().Account.CurrentAccount.Email))
-                {
-                    Task.Run( () => Pickup.RequestCurrentLocationCommand.Execute());
-                }
-                else
-                {
-                    Pickup.RequestCurrentLocationCommand.Execute();            
-                }
+                Pickup.RequestCurrentLocationCommand.Execute();
             }
             else
             {                
@@ -145,28 +138,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AppActivated()
         {
-            this.Services().Location.GetNextPosition(new TimeSpan(0, 0, 2), 20).Subscribe(p =>
-            {
-                NewOrder();
-            });
+			this.Services()
+				.Location
+				.GetNextPosition(new TimeSpan(0, 0, 2), 20)
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(p =>
+				{
+					NewOrder();
+				});
         }
 
-        public override void Start(bool firstStart = false)
+		public override void OnViewStarted(bool firstTime = false)
         {
-            base.Start(firstStart);
+			base.OnViewStarted(firstTime);
             ObserveAvailableVehicles();
         }
         
         void SetupPushNotification()
         {
-            InvokeOnMainThread(() => _pushNotificationService.RegisterDeviceForPushNotifications(true));
+            _pushNotificationService.RegisterDeviceForPushNotifications(true);
         }
 
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable ();
-        public override void Stop ()
+        public override void OnViewStopped ()
         {
-            base.Stop ();
+            base.OnViewStopped ();
             Subscriptions.DisposeAll ();
         }
 
@@ -175,43 +172,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ActivatePickup.Execute();
         }
 
-        void LoadLastActiveOrder( )
+		private async void LoadLastActiveOrder( )
         {
             if (this.Services().Booking.HasLastOrder)
             {
-                this.Services().Booking.GetLastOrderStatus().ContinueWith(t => 
+				var orderStatus = await this.Services().Booking.GetLastOrderStatus();
+				var isCompleted = this.Services().Booking.IsStatusCompleted(orderStatus.IbsStatusId);
+                if (isCompleted)
                 {
-                    var isCompleted = this.Services().Booking.IsStatusCompleted(t.Result.IbsStatusId);
-                    if (isCompleted)
-                    {
-                        this.Services().Booking.ClearLastOrder();
-                    }
-                    else
-                    {
-                        var order = this.Services().Account.GetHistoryOrder(t.Result.OrderId);
-                        ShowStatusActivity(order, t.Result);
-                    }
-                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                    this.Services().Booking.ClearLastOrder();
+                }
+                else
+                {
+					var order = await this.Services().Account.GetHistoryOrderAsync(orderStatus.OrderId);
+					ShowViewModel<BookingStatusViewModel>(new
+						{
+							order = order.ToJson(),
+							orderStatus = orderStatus.ToJson()
+						});
+                }
             }
         }
 
-        private async void CheckVersion()
+        private void CheckVersion()
         {
-            //The 2 second delay is required because the view might not be created.
-            await Task.Delay(2000);
-            if (this.Services().Account.CurrentAccount != null)
-            {
-                this.Services().ApplicationInfo.CheckVersionAsync();
-            }
+            this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
         void AddressChanged(object sender, EventArgs e)
         {
-            InvokeOnMainThread(() =>
-                {
-					RaisePropertyChanged(() => Pickup);
-					RaisePropertyChanged(() => Dropoff);
-                });
+			RaisePropertyChanged(() => Pickup);
+			RaisePropertyChanged(() => Dropoff);
 
             var isUserInitiated = sender is bool && (bool)sender;
             if (!isUserInitiated)
@@ -219,19 +210,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CenterMap(true);
             }
 
-            Task.Factory.SafeStartNew(CalculateEstimate);
+			CalculateEstimate();
 			RaisePropertyChanged(() => CanClearAddress);
         }
 
-        private void CalculateEstimate() 
+		private async void CalculateEstimate() 
         {
-            _fareEstimate = this.Services().Localize["EstimatingFare"];
+			FareEstimate = this.Services().Localize["EstimatingFare"];
 
-			RaisePropertyChanged(() => FareEstimate);
-
-            _fareEstimate = this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
-            
-			RaisePropertyChanged(() => FareEstimate);
+			FareEstimate = await this.Services().Booking.GetFareEstimateDisplay(Order, "EstimatePriceFormat", "NoFareText", true, "EstimatedFareNotAvailable");
         }
 
         public void InitializeOrder()
@@ -270,20 +257,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private void NewOrder()
         {
-			InvokeOnMainThread(() =>
+            InitializeOrder();
+
+            ForceRefresh();
+
+            if (AddressSelectionMode != AddressSelectionMode.PickupSelection)
             {
-                InitializeOrder();
+                ActivatePickup.Execute();
+            }
 
-                ForceRefresh();
-
-                if (AddressSelectionMode != AddressSelectionMode.PickupSelection)
-                {
-                    ActivatePickup.Execute();
-                    Thread.Sleep(300);
-                }
-
-                Pickup.RequestCurrentLocationCommand.Execute();
-            });
+            Pickup.RequestCurrentLocationCommand.Execute();
         }
 
         public void Reset()
@@ -305,7 +288,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string FareEstimate
         {
             get { return _fareEstimate; }
-            set
+			private set
             {
                 _fareEstimate = value;
 				RaisePropertyChanged();
@@ -427,26 +410,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => InvokeOnMainThread(delegate
-                    {
-                        // Close the menu if it was open
-                        Panel.MenuIsOpen = false;
+				return GetCommand(() =>
+				{
+					// Close the menu if it was open
+					Panel.MenuIsOpen = false;
 
-                        AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.PickupSelection
+					AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.PickupSelection
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.PickupSelection;
 
-                        if (AddressSelectionMode == AddressSelectionMode.PickupSelection 
-							/* TODO: IsVisible does not existsin v3 
-							 * http://stackoverflow.com/questions/16299639/detecting-whether-a-viewmodels-associated-view-is-showing-not-showing
-							 * && IsVisible
-							 */)
-                        {
-                            this.Services().Message.ShowToast(this.Services().Localize["PickupWasActivatedToastMessage"], ToastDuration.Long);
-                        }
-						RaisePropertyChanged(() => SelectedAddress);
-                        CenterMap(false);
-                    }));
+					RaisePropertyChanged(() => SelectedAddress);
+					CenterMap(false);
+				});
             }
         }
 
@@ -454,26 +429,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return GetCommand(() => InvokeOnMainThread(delegate
-                    {
-                        // Close the menu if it was open
-                        Panel.MenuIsOpen = false;
+				return GetCommand(() =>
+				{
+					// Close the menu if it was open
+					Panel.MenuIsOpen = false;
 
-                        AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.DropoffSelection
+					AddressSelectionMode = AddressSelectionMode == AddressSelectionMode.DropoffSelection
                                                         ? AddressSelectionMode.None
                                                         : AddressSelectionMode.DropoffSelection;
 
-                        if (AddressSelectionMode == AddressSelectionMode.DropoffSelection 
-							/* TODO: IsVisible does not exist in v3
-							 * http://stackoverflow.com/questions/16299639/detecting-whether-a-viewmodels-associated-view-is-showing-not-showing
-							 * && IsVisible
-							 */)
-                        {
-                            this.Services().Message.ShowToast(this.Services().Localize["DropoffWasActivatedToastMessage"], ToastDuration.Long);
-                        }
-						RaisePropertyChanged(() => SelectedAddress);
-                        CenterMap(false);
-                    }));
+					RaisePropertyChanged(() => SelectedAddress);
+					CenterMap(false);
+				});
             }
         }
                
@@ -531,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     else
                     {
                         Order.PickupDate = date;
-                        InvokeOnMainThread(() => this.Services().MessengerHub.Publish(new DateTimePicked(this, Order.PickupDate)));
+                        this.Services().MessengerHub.Publish(new DateTimePicked(this, Order.PickupDate));
 
                         if (date.HasValue)
                         {
@@ -547,13 +514,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => {
+				return GetCommand(() =>
+				{
+					// Ensure PickupDate is null (= now). It will be set to DateTime.Now later
+					Order.PickupDate = null;
+					ProcessOrder();
 
-                    // Ensure PickupDate is null (= now). It will be set to DateTime.Now later
-                    Order.PickupDate = null;
-                    ProcessOrder();
-
-                });
+				});
             }
         }
 
@@ -580,7 +547,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void ProcessOrder()
+		public async void ProcessOrder()
         {
             using (this.Services().Message.ShowProgress())
 			{
@@ -591,11 +558,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var destinationIsRequired = this.Services().Config.GetSetting("Client.DestinationIsRequired", false);
                     if ( destinationIsRequired )
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]));
+                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                     }
                     else
                     {
-                        InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]));
+                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                     }
                     return;
                 }
@@ -603,7 +570,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now)
                 {
                     Order.PickupDate = null;
-                    InvokeOnMainThread(() => this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]));
+                    this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                     return;
                 }
 
@@ -625,7 +592,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        Task.Factory.StartNew(CompleteOrder);
+						CompleteOrder();
                     }
                 });
 
@@ -635,8 +602,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Order.Settings.Passengers = 1;
                 }
 
-                var estimate = this.Services().Booking.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
-                Order.Estimate.Price = estimate.Price;
+				var estimate = await this.Services().Booking.GetFareEstimate(Order.PickupAddress, Order.DropOffAddress, Order.PickupDate);
+				Order.Estimate.Price = estimate.Price;
 
                 var serialized = Order.ToJson();
                 ShowViewModel<BookConfirmationViewModel>(new {order = serialized});
@@ -647,23 +614,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => ShowViewModel<BookRatingViewModel>(
-                    new KeyValuePair<string, bool>("canRate", true)));
+				return GetCommand(() => ShowViewModel<BookRatingViewModel>(new {
+					canRate = true,
+				}));
+                    
             }
         }
 		       
         private void CompleteOrder()
         {   
             NewOrder();
-        }
-
-        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
-        {
-            ShowViewModel<BookingStatusViewModel>(new
-            {
-                order = data.ToJson(),
-                orderStatus = orderInfo.ToJson()
-            });
         }
 
         private async void ObserveAvailableVehicles()

@@ -177,9 +177,6 @@
   <data name="LocationViewTitle" xml:space="preserve">
     <value>My Locations</value>
   </data>
-  <data name="LocationDetailViewTitle" xml:space="preserve">
-    <value>Location</value>
-  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>Settings</value>
   </data>
@@ -192,10 +189,10 @@
   <data name="PasswordLabel" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="SignInButton" xml:space="preserve">
+  <data name="SignIn" xml:space="preserve">
     <value>Sign In</value>
   </data>
-  <data name="SignUpButton" xml:space="preserve">
+  <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
   <data name="TermsAndConditionsLabel" xml:space="preserve">
@@ -216,11 +213,14 @@
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
-  <data name="FacebookButton" xml:space="preserve">
-    <value>Sign In with Facebook</value>
+ 	<data name="ChangeServer" xml:space="preserve">
+    <value>Change server</value>
   </data>
-  <data name="TwitterButton" xml:space="preserve">
-    <value>Sign In with Twitter</value>
+  <data name="Facebook" xml:space="preserve">
+    <value>Sign in with Facebook</value>
+  </data>
+  <data name="Twitter" xml:space="preserve">
+    <value>Sign in with Twitter</value>
   </data>
   <data name="DontHaveAnAccountLabel" xml:space="preserve">
     <value>Don't have an account?</value>
@@ -291,6 +291,12 @@
 	<data name="CancelButton" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 <data name="ResetButton" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -357,7 +363,7 @@
   <data name="ChangeBookingSettingsButton" xml:space="preserve">
     <value>Change booking settings</value>
   </data>
-  <data name="NoHistoryLabel" xml:space="preserve">
+  <data name="HistoryViewNoHistoryLabel" xml:space="preserve">
     <value>No booking history</value>
   </data>
   <data name="LocationNoHistory" xml:space="preserve">
@@ -369,14 +375,32 @@
   <data name="LocationAddFavoriteSubtitle" xml:space="preserve">
     <value>Select to add a new location</value>
   </data>
-  <data name="LocationDetailInstructionLabel" xml:space="preserve">
-    <value>Save as a favorite location</value>
+
+  <data name="LoginViewEmailPlaceHolder" xml:space="preserve">
+    <value>Email</value>
   </data>
-  <data name="LocationDetailGiveItANameLabel" xml:space="preserve">
-    <value>Friendly Name</value>
+  <data name="LoginViewPasswordPlaceHolder" xml:space="preserve">
+    <value>Password</value>
   </data>
-  <data name="LocationDetailStreetAddressPlaceholder" xml:space="preserve">
-    <value>Street address</value>
+
+
+  <data name="View_LocationDetail" xml:space="preserve">
+    <value>Location Detail</value>
+  </data>
+  <data name="LocationDetailNameLabel" xml:space="preserve">
+    <value>Nickname</value>
+  </data>
+  <data name="LocationDetailAddressLabel" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="LocationDetailApartmentLabel" xml:space="preserve">
+    <value>Apartment</value>
+  </data>
+  <data name="LocationDetailRingCodeLabel" xml:space="preserve">
+    <value>Entry code</value>
+  </data>
+	<data name="Rebook" xml:space="preserve">
+    <value>Rebook trip</value>
   </data>
   <data name="ApartmentLabel" xml:space="preserve">
     <value>Apartment</value>
@@ -384,13 +408,13 @@
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>Entry code</value>
   </data>
-  <data name="LocationDetailGiveItANamePlaceholder" xml:space="preserve">
-    <value>Home, work, friend's house...</value>
-  </data>
-  <data name="SaveButton" xml:space="preserve">
+  <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="DeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+<data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="InvalidAddressTextEdit" xml:space="preserve">
@@ -439,7 +463,7 @@
     <value>Password</value>
   </data>
   <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Confirm password</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
     <value>You are currently signed in as : {0}</value>
@@ -509,9 +533,6 @@
   </data>
   <data name="HistoryDetailRebookButton" xml:space="preserve">
     <value>Rebook trip</value>
-  </data>
-  <data name="LocationDetailRebookButton" xml:space="preserve">
-    <value>Book using this address</value>
   </data>
   <data name="HistoryDetailDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
@@ -600,8 +621,14 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>View Status</value>
   </data>
-  <data name="LoginForgotPasswordButton" xml:space="preserve">
-    <value>Forgot Password?</value>
+	<data name="ResetPasswordTitleLabel" xml:space="preserve">
+    	<value>Forgot your password?</value>
+  </data>
+	<data name="ResetPasswordSubtitleLabel" xml:space="preserve">
+    	<value>Enter your email and we'll send you a new one.</value>
+  </data>
+ <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
+    <value>Email</value>
   </data>
 	<data name="LoginForgotPassword" xml:space="preserve">
     	<value>Forgot your password?</value>
@@ -665,18 +692,6 @@
   </data>
   <data name="AboutUsUrl" xml:space="preserve">
     <value>Assets/About_en.html</value>
-  </data>
-  <data name="ResetPasswordLabel" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="ResetPasswordReset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="ResetPasswordCancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="ResetPasswordPlaceholder" xml:space="preserve">
-    <value>Enter your email here</value>
   </data>
   <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
     <value>Invalid email</value>
@@ -888,12 +903,6 @@
   <data name="BuildingName" xml:space="preserve">
     <value>Building Name / Remark</value>
   </data>
-  <data name="DropoffWasActivatedToastMessage" xml:space="preserve">
-    <value>Destination selection is active.</value>
-  </data>
-  <data name="PickupWasActivatedToastMessage" xml:space="preserve">
-    <value>Pickup selection is active.</value>
-  </data>
   <data name="InvalidLocalContactTitle" xml:space="preserve">
     <value>Invalid contact</value>
   </data>
@@ -954,13 +963,10 @@
   <data name="View_HistoryDetail" xml:space="preserve">
     <value>Order Details</value>
   </data>
-  <data name="View_HistoryList" xml:space="preserve">
+  <data name="View_History" xml:space="preserve">
     <value>History</value>
   </data>
-  <data name="View_LocationDetail" xml:space="preserve">
-    <value>Location Detail</value>
-  </data>
-  <data name="View_LocationList" xml:space="preserve">
+  <data name="View_MyLocations" xml:space="preserve">
     <value>Locations</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
@@ -979,13 +985,13 @@
     <value>Profile</value>
   </data>
   <data name="View_Book_Menu_MyLocations" xml:space="preserve">
-    <value>Manage My Locations</value>
+    <value>Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>My Bookings</value>
+    <value>History</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
-    <value>Update My Profile</value>
+    <value>Update Account</value>
   </data>
   <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
     <value>Update My Password</value>
@@ -1049,12 +1055,6 @@
   </data>
   <data name="View_UpdatePassword" xml:space="preserve">
     <value>Update Password</value>
-  </data>
-  <data name="View_PasswordRecoveryReset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
-  <data name="ResetPasswordLabel" xml:space="preserve">
-    <value>Email</value>
   </data>
   <data name="NbPassenger" xml:space="preserve">
     <value> ({0} passenger)</value>

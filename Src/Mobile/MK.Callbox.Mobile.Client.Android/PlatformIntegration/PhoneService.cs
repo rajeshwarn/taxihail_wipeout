@@ -5,32 +5,33 @@ using Java.Util;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.IO;
 using apcurium.MK.Callbox.Mobile.Client.Diagnostic;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
     public class PhoneService : IPhoneService
     {
-		public PhoneService(Context context)
-        {
-            Context = context;
-        }
-        public Context Context { get; set; }
+		readonly Context _context;
+		readonly ILocalization _localize;
 
+		public PhoneService(IMvxAndroidGlobals globals, ILocalization localize)
+        {
+			_localize = localize;
+			_context = globals.ApplicationContext;
+        }
 
         public void Call(string phoneNumber)
         {
             Intent callIntent = new Intent(Intent.ActionCall);
             callIntent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             callIntent.SetData(Android.Net.Uri.Parse("tel:" + phoneNumber));
-            Context.StartActivity(callIntent);
+            _context.StartActivity(callIntent);
         }
 
 		public void SendFeedbackErrorLog (string errorLogPath, string supportEmail, string subject)
 		{
 			Intent emailIntent = new Intent(Intent.ActionSend);
 
-			var resource = TinyIoC.TinyIoCContainer.Current.Resolve<ILocalization>();
-			
 			emailIntent.SetType("message/rfc822");
 			emailIntent.PutExtra(Intent.ExtraEmail, new String[] { supportEmail });
 			emailIntent.PutExtra(Intent.ExtraSubject, subject);
@@ -42,14 +43,14 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			}
 			try
 			{
-				var intent = Intent.CreateChooser(emailIntent, resource["SendEmail"]);                    
+				var intent = Intent.CreateChooser(emailIntent, _localize["SendEmail"]);                    
 				intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-				Context.StartActivity(intent);
+				_context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();
 			}
 			catch
 			{
-				Toast.MakeText(Context, resource["NoMailClient"], ToastLength.Short).Show();
+				Toast.MakeText(_context, _localize["NoMailClient"], ToastLength.Short).Show();
 			}
 		}
 
@@ -59,7 +60,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			string eventUriString = "content://com.android.calendar/events";
 			string reminderUriString = "content://com.android.calendar/reminders";
 
-			var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse (uriCalendars), new String[] { "_id" }, null, null, null);
+			var cursor = _context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse (uriCalendars), new String[] { "_id" }, null, null, null);
 			cursor.MoveToFirst ();
 			int[] CalIds = new int[cursor.Count];
 			for (int i = 0; i < CalIds.Length; i++) {
@@ -84,7 +85,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 			eventValues.Put ("eventTimezone", "UTC");
 			eventValues.Put ("eventEndTimezone", "UTC");        
 
-			Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
+			Android.Net.Uri eventUri = _context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
 			long eventID = long.Parse (eventUri.LastPathSegment);
 
 

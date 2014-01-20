@@ -11,9 +11,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public string Url { get; private set; }
 
-		public override void Load ()
+		public override void OnViewLoaded ()
 		{
-			base.Load ();
+			base.OnViewLoaded ();
 			// Show progress indicator while loading first request
             this.Services().Message.ShowProgress(true);
 		}

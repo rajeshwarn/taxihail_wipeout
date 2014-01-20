@@ -16,13 +16,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);
 			RideSettings = new RideSettingsViewModel();
-			RideSettings.Init(Order.Settings);
+			RideSettings.Init(Order.Settings.ToJson());
 			RideSettings.OnPropertyChanged().Subscribe(p => RaisePropertyChanged(() => RideSettings));
 		}
 
-		public override void Load()
+		public override void OnViewLoaded()
 		{
-		    base.Load();
+		    base.OnViewLoaded();
 			ShowWarningIfNecessary();
 			ShowFareEstimateAlertDialogIfNecessary();
 		}
@@ -144,9 +144,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return GetCommand(() => ShowSubViewModel<BookEditInformationViewModel, Order>(
-					new {
-                            order = Order.ToJson()
-					}.ToStringDictionary(), result =>
+					new
+					{
+                    	order = Order.ToJson()
+					}, result =>
 				{
 					if (result == null)
 						return;
@@ -160,20 +161,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Order.Settings.Phone = result.Settings.Phone;
 					Order.Settings.Passengers = result.Settings.Passengers;
 					Order.Settings.LargeBags = result.Settings.LargeBags;
-					InvokeOnMainThread(() =>
-					{
-						RaisePropertyChanged(() => RideSettings);
-						RaisePropertyChanged(() => AptRingCode);
-						RaisePropertyChanged(() => BuildingName);
-						RaisePropertyChanged(() => OrderPassengerNumber);
-						RaisePropertyChanged(() => OrderLargeBagsNumber);
-						RaisePropertyChanged(() => OrderPhone);
-						RaisePropertyChanged(() => OrderName);
-						RaisePropertyChanged(() => OrderApt);
-						RaisePropertyChanged(() => OrderRingCode);
-						RaisePropertyChanged(() => VehicleName);
-						RaisePropertyChanged(() => ChargeType);
-					});
+
+					RaisePropertyChanged(() => RideSettings);
+					RaisePropertyChanged(() => AptRingCode);
+					RaisePropertyChanged(() => BuildingName);
+					RaisePropertyChanged(() => OrderPassengerNumber);
+					RaisePropertyChanged(() => OrderLargeBagsNumber);
+					RaisePropertyChanged(() => OrderPhone);
+					RaisePropertyChanged(() => OrderName);
+					RaisePropertyChanged(() => OrderApt);
+					RaisePropertyChanged(() => OrderRingCode);
+					RaisePropertyChanged(() => VehicleName);
+					RaisePropertyChanged(() => ChargeType);
 				}));
 			}
 		}
@@ -182,55 +181,52 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return GetCommand(() =>
+				return GetCommand(async () =>
 				{
 					Order.Id = Guid.NewGuid();
-					try
+					using(this.Services().Message.ShowProgress())
 					{
-                        this.Services().Message.ShowProgress(true);
-                        var orderInfo = this.Services().Booking.CreateOrder(Order);
-
-						if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
-							return;
-
-						var orderCreated = new Order
+						try
 						{
-							CreatedDate = DateTime.Now, 
-							DropOffAddress = Order.DropOffAddress, 
-							IbsOrderId = orderInfo.IbsOrderId, 
-							Id = Order.Id, PickupAddress = Order.PickupAddress,
-							Note = Order.Note, 
-							PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
-							Settings = Order.Settings
-						};
-	    						
-						ShowViewModel<BookingStatusViewModel>(new
-						        {
-						            order = orderCreated.ToJson(),
-						            orderStatus = orderInfo.ToJson()
-						        });	
-						Close(this);
-                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
-					}
-					catch
-					{
-						InvokeOnMainThread(() =>
+	                        this.Services().Message.ShowProgress(true);
+								var orderInfo = await this.Services().Booking.CreateOrder(Order);
+
+							if (!orderInfo.IbsOrderId.HasValue || !(orderInfo.IbsOrderId > 0))
+								return;
+
+							var orderCreated = new Order
+							{
+								CreatedDate = DateTime.Now, 
+								DropOffAddress = Order.DropOffAddress, 
+								IbsOrderId = orderInfo.IbsOrderId, 
+								Id = Order.Id, PickupAddress = Order.PickupAddress,
+								Note = Order.Note, 
+								PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now,
+								Settings = Order.Settings
+							};
+		    						
+							ShowViewModel<BookingStatusViewModel>(new
+							        {
+							            order = orderCreated.ToJson(),
+							            orderStatus = orderInfo.ToJson()
+							        });	
+							Close(this);
+	                        this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, false));
+						}
+						catch
 						{
 							if (CallIsEnabled)
 							{
-                                var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
-                                this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
+	                            var err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], this.Services().Settings.ApplicationName, this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"));
+	                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 							}
 							else
 							{
-                                this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
+	                            this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], this.Services().Localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]);
 							}
-						});
+						}
 					}
-					finally
-					{
-                        this.Services().Message.ShowProgress(false);
-					}                         
+					                         
 				}); 
 			}
 		}
@@ -249,7 +245,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return GetCommand(() =>
 				{
-						Close(this);
+					Close(this);
                     this.Services().MessengerHub.Publish(new OrderConfirmed(this, Order, true));
 				});            
 			}
@@ -322,9 +318,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-            string result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
+			string result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
 			result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
+			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
 			return result;
 		}
 
@@ -334,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return buildingName;
 			}
-            return this.Services().Localize["HistoryDetailBuildingNameNotSpecified"];
+			return this.Services().Localize["BuildingNameText"];
 		}
 
 	    private string FormatPrice(double? price)

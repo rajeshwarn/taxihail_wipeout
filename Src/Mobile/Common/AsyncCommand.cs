@@ -2,8 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Cirrious.CrossCore;
 using apcurium.MK.Common.Diagnostic;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
@@ -12,20 +12,30 @@ namespace apcurium.MK.Booking.Mobile
     {
 		readonly ILogger _logger;
         private Func<bool> _canExecute;
-        private Action _execute;
+		private Func<Task> _execute;
         private bool _isExecuting;
 
         public AsyncCommand(Action execute)
-            : this(execute, null)
+			: this(execute, null)
         {
         }
 
+		public AsyncCommand(Func<Task> execute)
+			: this(execute, null)
+		{
+		}
+
         public AsyncCommand(Action execute, Func<bool> canExecute)
+			: this(Wrap(execute), canExecute)
         {
-			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
-            _execute = execute;
-            _canExecute = canExecute;
         }
+
+		public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
+		{
+			_logger = Mvx.Resolve<ILogger>();
+			_execute = execute;
+			_canExecute = canExecute;
+		}
 
         public bool CanExecute(object parameter)
         {
@@ -45,10 +55,8 @@ namespace apcurium.MK.Booking.Mobile
                 OnCanExecuteChanged();
 				try
 				{
-					await Task.Factory.StartNew(() => _execute(),
-						default(CancellationToken),
-						TaskCreationOptions.None,
-						GetTaskScheduler());
+                    var t = _execute();
+                    await t;
 				}
 				catch(Exception e)
 				{
@@ -77,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private TaskScheduler GetTaskScheduler()
+        private static TaskScheduler GetTaskScheduler()
 		{
 			try
 			{
@@ -85,9 +93,19 @@ namespace apcurium.MK.Booking.Mobile
 			}
 			catch(Exception e)
 			{
-				_logger.LogError(e);
 				return TaskScheduler.Default;
 			}
+		}
+
+        private static Func<Task> Wrap(Action execute)
+		{
+            return () =>
+            {
+                return Task.Factory.StartNew(execute,
+                    default(CancellationToken),
+                    TaskCreationOptions.None,
+                    GetTaskScheduler());
+            };
 		}
 
         #region IDisposable implementation
@@ -115,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile
     {
 		readonly ILogger _logger;
         private Func<T,bool> _canExecute;
-        private Action<T> _execute;
+		private Func<T, Task> _execute;
         private bool _isExecuting;
 
         public AsyncCommand(Action<T> execute)
@@ -123,12 +141,22 @@ namespace apcurium.MK.Booking.Mobile
         {
         }
 
+		public AsyncCommand(Func<T, Task> execute)
+			: this(execute, null)
+		{
+		}
+
         public AsyncCommand(Action<T> execute, Func<T,bool> canExecute)
+			: this(Wrap(execute), canExecute)
         {
-			_logger = TinyIoCContainer.Current.Resolve<ILogger>();
-            _execute = execute;
-            _canExecute = canExecute;
         }
+
+        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute)
+		{
+			_logger = Mvx.Resolve<ILogger>();
+			_execute = execute;
+			_canExecute = canExecute;
+		}
 
         public bool CanExecute(object parameter)
         {
@@ -149,11 +177,8 @@ namespace apcurium.MK.Booking.Mobile
 
 				try
 				{
-					await Task.Factory.StartNew(() => _execute((T)parameter),
-						default(CancellationToken),
-						TaskCreationOptions.None,
-						GetTaskScheduler()
-					);
+                    var t = _execute((T)parameter);
+					await t;
 				}
 				catch(Exception e)
 				{
@@ -182,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-		private TaskScheduler GetTaskScheduler()
+        private static TaskScheduler GetTaskScheduler()
 		{
 			try
 			{
@@ -190,9 +215,19 @@ namespace apcurium.MK.Booking.Mobile
 			}
 			catch(Exception e)
 			{
-				_logger.LogError(e);
 				return TaskScheduler.Default;
 			}
+		}
+
+        private static Func<T, Task> Wrap(Action<T> execute)
+		{
+			return p =>
+			{
+				return Task.Factory.StartNew(() => execute(p),
+					default(CancellationToken),
+					TaskCreationOptions.None,
+					GetTaskScheduler());
+			};
 		}
 
         #region IDisposable implementation

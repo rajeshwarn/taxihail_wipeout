@@ -9,7 +9,7 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-    [Activity(Label = "History Details", Theme = "@android:style/Theme.NoTitleBar",
+	[Activity(Label = "History Details", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class HistoryDetailActivity : BaseBindingActivity<HistoryDetailViewModel>
     {
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_HistoryDetail);
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
         }
     }
 }

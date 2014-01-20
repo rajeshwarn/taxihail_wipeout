@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
 
 			// Hide navigation bar, full screen height is required for displaying paypal page
 			NavigationController.NavigationBarHidden = true;

@@ -78,9 +78,6 @@
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System.Json" />
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
     <Reference Include="Cirrious.CrossCore">
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
     </Reference>
@@ -95,6 +92,21 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -230,7 +242,6 @@
     <Compile Include="Messages\SubNavigationResultMessage.cs" />
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
-    <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
@@ -293,6 +304,11 @@
     <Compile Include="IoC\TinyIoC.cs" />
     <Compile Include="IoC\TinyIoCProvider.cs" />
     <Compile Include="Extensions\ICommandExtensions.cs" />
+    <Compile Include="IoC\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\CreateAccountViewModel.cs" />
+    <Compile Include="BindingConverter\OrderStatusToImageNameConverter.cs" />
+    <Compile Include="AppServices\Auth\AuthException.cs" />
+    <Compile Include="AppServices\Auth\AuthFailure.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -352,5 +368,8 @@
       <Version>2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppServices\Auth\" />
   </ItemGroup>
 </Project>

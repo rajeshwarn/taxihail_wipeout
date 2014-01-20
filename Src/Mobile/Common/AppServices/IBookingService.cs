@@ -11,9 +11,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-        DirectionInfo GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
+		Task<DirectionInfo> GetFareEstimate(Address pickup, Address destination, DateTime? pickupDate = null);
        
-        string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
+		Task<string> GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance, string cannotGetFareText);
 
         bool IsValid(CreateOrder info);
 				
@@ -37,11 +37,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    bool IsPaired(Guid orderId);
 
-        OrderStatusDetail CreateOrder(CreateOrder info);
+		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
 
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
-        OrderStatusDetail GetOrderStatus(Guid orderId);
+		[Obsolete("Migrate to async/await")]
+		OrderStatusDetail GetOrderStatus(Guid orderId);
+		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);
         
 		Task<OrderStatusDetail> GetLastOrderStatus();
         
@@ -51,7 +53,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 			    
 	    List<RatingType> GetRatingType();
 
-	    OrderRatings GetOrderRating(Guid orderId);
+		[Obsolete("Migrate to async/await")]
+		OrderRatings GetOrderRating(Guid orderId);
+		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
 	    void SendRatingReview(OrderRatings orderRatings);
 

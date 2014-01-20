@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
-    [Activity(Label = "History", Theme = "@android:style/Theme.NoTitleBar",
+	[Activity(Label = "History", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class HistoryListActivity : BaseBindingActivity<HistoryViewModel>
     {
@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_HistoryList; }
+            get { return Resource.String.View_History; }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             _listView = FindViewById<ListView>(Resource.Id.HistoryList);
             _listView.Divider = null;
             _listView.DividerHeight = 0;
-            _listView.SetPadding(10, 0, 10, 0);
+            _listView.SetPadding(0, 0, 0, 0);
         }
 
         protected override void OnViewModelSet()

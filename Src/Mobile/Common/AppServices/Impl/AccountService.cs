@@ -8,6 +8,11 @@ using ServiceStack.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using Cirrious.CrossCore;
+using TinyIoC;
+using apcurium.MK.Common.Enumeration;
+
+
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -20,7 +25,6 @@ using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Net;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
@@ -32,31 +36,28 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string FavoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string HistoryAddressesCacheKey = "Account.HistoryAddresses";
         private const string RefDataCacheKey = "Account.ReferenceData";
-        protected IConfigurationManager Config
-        {
-            get { return TinyIoCContainer.Current.Resolve < IConfigurationManager>(); }
-        }
+
+		readonly IConfigurationManager _configurationManager;
+		readonly IAppSettings _appSettings;
+		readonly IFacebookService _facebookService;
+		readonly ITwitterService _twitterService;
+		readonly ILocalization _localize;
+
+		public AccountService(IConfigurationManager configurationManager,
+			IAppSettings appSettings,
+			IFacebookService facebookService,
+			ITwitterService twitterService,
+			ILocalization localize)
+		{
+			_localize = localize;
+			_twitterService = twitterService;
+			_facebookService = facebookService;
+			_appSettings = appSettings;
+			_configurationManager = configurationManager;
+
+		}
 	
-        [Obsolete("User async method instead")]
-        public ReferenceData GetReferenceData()
-        {
-            var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
-
-            if (cached == null)
-            {
-                var referenceData = GetReferenceDataAsync();
-                referenceData.Start();
-//                if (!referenceData.IsCompleted)
-//                {
-//                    Task.WaitAll(referenceData);
-//                }
-                return referenceData.Result;
-            }
-            return cached;
-
-        }
-
-        public async Task<ReferenceData> GetReferenceDataAsync()
+        public async Task<ReferenceData> GetReferenceData()
         {
             var cached = Cache.Get<ReferenceData>(RefDataCacheKey);
 
@@ -75,44 +76,39 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             Cache.Clear(RefDataCacheKey);
         }
 
-        public void ResendConfirmationEmail (string email)
-        {
-
-        }
-
         public void ClearCache ()
         {
-            var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
+			var serverUrl = _appSettings.ServiceUrl;
+
             Cache.Clear (HistoryAddressesCacheKey);
             Cache.Clear (FavoriteAddressesCacheKey);
             Cache.Clear ("AuthenticationData");
             Cache.ClearAll ();
-            TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
+			// TODO: Clearing the cache should not clear ServiceUrl
+			_appSettings.ServiceUrl = serverUrl; 
         }
 
         public void SignOut ()
         {
             try
 			{
-                var facebook = TinyIoCContainer.Current.Resolve<IFacebookService> ();
-                facebook.Disconnect ();
+				_facebookService.Disconnect ();
             } 
 			catch( Exception ex )
             {
-                Console.WriteLine(ex.Message);
+				Logger.LogError(ex);
             }
 
             try
 			{
-                var twitterService = TinyIoCContainer.Current.Resolve<ITwitterService> ();
-                if (twitterService.IsConnected)
+				if (_twitterService.IsConnected)
 				{
-                    twitterService.Disconnect ();
+					_twitterService.Disconnect ();
                 }
             } 
             catch( Exception ex )
             {
-                Console.WriteLine(ex.Message);
+				Logger.LogError(ex);
             }
 
             ClearCache ();
@@ -144,16 +140,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<IList<Order>> GetHistoryOrders ()
         {
-            var client = TinyIoCContainer.Current.Resolve<OrderServiceClient>();
+			var client = Mvx.Resolve<OrderServiceClient>();
             return client.GetOrders();
         }
 
-        public Order GetHistoryOrder (Guid id)
+		public Order GetHistoryOrder (Guid id)
         {
-            var result = 
-            UseServiceClientAsync<OrderServiceClient, Order> (service => service.GetOrder (id));
-            return result;
+			// TODO: remove ussage of this method in favor of async version
+			var task = GetHistoryOrderAsync(id);
+			task.Wait();
+			return task.Result;
         }
+
+		public Task<Order> GetHistoryOrderAsync (Guid id)
+		{
+			return UseServiceClient<OrderServiceClient, Order> (service => service.GetOrder (id));
+		}
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
@@ -240,19 +242,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }                
             }
         }
-
-        public bool CheckSession ()
-        {
-            try {
-                var client = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
-                client.CheckSession ();
-
-                return true;
-
-            } catch {
-                return false;
-            }
-        }
+		
         public void UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
         {
             var bsr = new BookingSettingsRequest
@@ -286,85 +276,111 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return response;
         }
 
-        public Account GetAccount (string email, string password)
+		public async Task<Account> SignIn (string email, string password)
         {
-            try {
-                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.Authenticate (email, password));
+			Logger.LogMessage("SignIn with server {0}", _appSettings.ServiceUrl);
+            try 
+			{
+				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service
+					.Authenticate (email, password),
+					error => { /* Avoid trigerring global error handler */ });
                 SaveCredentials (authResponse);                
-                return GetAccount (true);
-            } catch (Exception ex) {
-				if (ex is WebException || (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.NotFound)) {
-                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionTitle"];
-                    var msg = TinyIoCContainer.Current.Resolve<ILocalization>()["NoConnectionMessage"];
-                    var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
-                    mService.ShowMessage (title, msg);
-					return null;
-				}
-				throw;
+                return await GetAccount ();
+            }
+            catch(WebException e)
+            {
+                // Happen when device is not connected
+                throw new AuthException("Network error", AuthFailure.NetworkError, e);
+            }
+            catch(WebServiceException e)
+            {
+                if (e.StatusCode == (int)HttpStatusCode.NotFound)
+                {
+                    throw new AuthException("Invalid service url", AuthFailure.InvalidServiceUrl, e);
+                }
+                else if (e.StatusCode == (int)HttpStatusCode.Unauthorized)
+                {
+                    throw new AuthException("Invalid username or password", AuthFailure.InvalidUsernameOrPassword, e);
+                }
+                throw;
+            }
+            catch (Exception e)
+            {
+                if(e.Message == AuthenticationErrorCode.AccountDisabled)
+                {
+                    throw new AuthException("Account disabled", AuthFailure.AccountDisabled, e);
+                }
+                throw;
             }
         }
 
         private static void SaveCredentials (AuthenticationData authResponse)
         {         
-            TinyIoCContainer.Current.Resolve < ICacheService>().Set ("AuthenticationData", authResponse);
+			Mvx.Resolve<ICacheService>().Set ("AuthenticationData", authResponse);
         }
 
 		public async Task<Account> GetFacebookAccount (string facebookId)
         {
-            try {
-                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
+            try
+			{
+				var auth = Mvx.Resolve<IAuthServiceClient> ();
 				var authResponse = auth
 					.AuthenticateFacebook(facebookId)
 					.ConfigureAwait(false);
 
 				SaveCredentials (await authResponse);
 
-                return GetAccount (false);
+				return await GetAccount ();
 
-			} catch(Exception e) {
+			}
+			catch(Exception e)
+			{
 				Logger.LogError(e);
-				return null;
+				throw;
             }
         }
 
-        public Account GetTwitterAccount (string twitterId)
+		public async Task<Account> GetTwitterAccount (string twitterId)
         {
-            try {
-                var parameters = new NamedParameterOverloads ();
-                var authResponse = UseServiceClientAsync<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId));
+            try
+			{
+				var authResponse = await UseServiceClient<IAuthServiceClient, AuthenticationData>(service => service.AuthenticateTwitter(twitterId), e => {});
                 SaveCredentials (authResponse);
 
-                parameters.Add ("credential", authResponse);
-                return GetAccount (false);
-            } catch {
-                return null;
+				return await GetAccount ();
+            }
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				throw;
             }
         }
 
-        private Account GetAccount (bool showInvalidMessage)
+		private async Task<Account> GetAccount ()
         {
             Account data = null;
 
-            try {
+            try
+			{
+                //todo avoir une cache propre au login du user
                 Cache.Clear (HistoryAddressesCacheKey);
                 Cache.Clear (FavoriteAddressesCacheKey);
 
-                var account = UseServiceClientAsync<IAccountServiceClient, Account>(service => service.GetMyAccount ());
-                if (account != null) {
+				var account = await UseServiceClient<IAccountServiceClient, Account>(service => service.GetMyAccount ());
+                if (account != null)
+				{
                     CurrentAccount = account;
                     data = account;
                 }
                 
-            } catch (WebException ex) {
-                TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
+            }
+			catch (WebException ex)
+			{
+				Mvx.Resolve<IErrorHandler>().HandleError (ex);
                 return null;
-			} catch{
-                if (showInvalidMessage) {
-                    var title = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessageTitle"];
-                    var message = TinyIoCContainer.Current.Resolve<ILocalization>()["InvalidLoginMessage"];
-                    TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);
-                }
-
+			}
+			catch
+			{
                 return null;
             }
 
@@ -396,7 +412,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError;
 
             data.AccountId = Guid.NewGuid();
-            data.Language = TinyIoCContainer.Current.Resolve<ILocalization>()["LanguageCode"];
+			data.Language = _localize["LanguageCode"];
 
             try {
                 lError = UseServiceClient<IAccountServiceClient> (service =>
@@ -473,51 +489,54 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             );
         }
 
-        public IEnumerable<ListItem> GetCompaniesList ()
+		public async Task<IList<ListItem>> GetCompaniesList ()
         {
-            var refData = GetReferenceData();
-            if (!Config.GetSetting("Client.HideNoPreference", false)
+			var refData = await GetReferenceData();
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.CompaniesList != null)
             {
-                refData.CompaniesList.Insert(0, new ListItem
-                                            {
-                    Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
-                });
+				refData.CompaniesList.Insert(0,
+					new ListItem
+					{
+						Id = null,
+						Display = _localize["NoPreference"]
+					});
             }
             
             return refData.CompaniesList;         
         }
 
-        public IEnumerable<ListItem> GetVehiclesList ()
+		public async Task<IList<ListItem>> GetVehiclesList ()
         {
-            var refData = GetReferenceData();
+			var refData = await GetReferenceData();
 
-            if (!Config.GetSetting("Client.HideNoPreference", false)
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.VehiclesList != null)
             {
-                refData.VehiclesList.Insert(0, new ListItem
-                                         {
-                                            Id = null,
-                                            Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
-                                         });
+                refData.VehiclesList.Insert(0,
+					new ListItem
+                    {
+                        Id = null,
+						Display = _localize["NoPreference"]
+					});
             }
 
             return refData.VehiclesList;
         }
 
-        public IEnumerable<ListItem> GetPaymentsList ()
+		public async Task<IList<ListItem>> GetPaymentsList ()
         {
-            var refData = GetReferenceData();
+			var refData = await GetReferenceData();
 		
-		    if (!Config.GetSetting("Client.HideNoPreference", false)
+			if (!_configurationManager.GetSetting("Client.HideNoPreference", false)
                 && refData.PaymentsList != null)
             {
-                refData.PaymentsList.Insert(0, new ListItem
-                {
-                    Id = null,
-                    Display = TinyIoCContainer.Current.Resolve<ILocalization>()["NoPreference"]
-                });
+                refData.PaymentsList.Insert(0,
+					new ListItem
+                	{
+                        Id = null,
+					    Display = _localize["NoPreference"]
+                	});
             }
 
             return refData.PaymentsList;
@@ -567,9 +586,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return true;
 
         }
-
-
-
     }
 }
 

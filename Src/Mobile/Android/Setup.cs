@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using Cirrious.MvvmCross.Droid.Platform;
+using Cirrious.MvvmCross.Dialog.Droid;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
@@ -11,7 +11,6 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using apcurium.MK.Booking.Mobile.Client.Cache;
@@ -23,15 +22,18 @@ using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Client.Services.Social;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.IoC;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
+using Cirrious.CrossCore.Droid.Platform;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup
-		: MvxAndroidSetup
+        : MvxAndroidDialogSetup
     {
+        readonly TinyIoCContainer _container;
+
 		public Setup(Context applicationContext) : base(applicationContext)
         {
+            _container = TinyIoCContainer.Current;
         }
 
 		protected override IMvxApplication CreateApp()
@@ -51,20 +53,20 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			base.InitializeLastChance();
 
-			TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
-			TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
-			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(ApplicationContext));
-			TinyIoCContainer.Current.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
+            _container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
+            _container.Register<ILogger, LoggerImpl>();
+            _container.Register<IMessageService>(new MessageService(ApplicationContext));
+            _container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-			TinyIoCContainer.Current.Register<AbstractLocationService>(new LocationService());
+            _container.Register<AbstractLocationService>(new LocationService());
 
-			TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
-            TinyIoCContainer.Current.Register<ILocalization>(new Localize(ApplicationContext));
-			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-			TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
-			TinyIoCContainer.Current.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
-			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(ApplicationContext));
-			TinyIoCContainer.Current.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
+            _container.Register<IAppSettings, AppSettings>();
+            _container.Register<ILocalization>(new Localize(ApplicationContext));
+            _container.Register<IErrorHandler, ErrorHandler>();
+            _container.Register<ICacheService>(new CacheService());
+            _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
+            _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
+            _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IConfigurationManager>()));
 
 			InitializeSocialNetwork();
         }
@@ -83,8 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
-			var facebookService = new FacebookService(settings.FacebookAppId, () => LoginActivity.TopInstance);
-			TinyIoCContainer.Current.Register<IFacebookService>(facebookService);
+            var facebookService = new FacebookService(settings.FacebookAppId, () => _container.Resolve<IMvxAndroidCurrentTopActivity>().Activity);
+            _container.Register<IFacebookService>(facebookService);
 
 			var oauthConfig = new OAuthConfig
 			{
@@ -96,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				AuthorizeUrl = settings.TwitterAuthorizeUrl
 			};
 
-			TinyIoCContainer.Current.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
+            _container.Register<ITwitterService>((c,p) => new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>()));
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()

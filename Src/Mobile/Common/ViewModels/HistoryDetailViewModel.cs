@@ -14,13 +14,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		public void Init()
-        {
-            _status = new OrderStatusDetail
-            {
-                IbsStatusDescription = this.Services().Localize["LoadingMessage"]
-            };
-        }
+		public void Init(string orderId)
+		{
+			Guid id;
+			if(Guid.TryParse(orderId, out id))
+			{
+				OrderId = id;
+			}
+		}
+
+		public override void Start()
+		{
+			base.Start();
+			_status = new OrderStatusDetail
+			{
+				IbsStatusDescription = this.Services().Localize["LoadingText"]
+			};
+		}
 
         private Guid _orderId;
         public Guid OrderId
@@ -211,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 return Order.DropOffAddress.FullAddress.HasValue()
                            ? Order.DropOffAddress.FullAddress
-                           : this.Services().Localize["ConfirmDestinationNotSpecified"];
+						: this.Services().Localize["DestinationNotSpecifiedText"];
             }
         }
 
@@ -224,18 +234,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public void Init(string orderId)
+		public override async void OnViewLoaded ()
         {
-			Guid id;
-            if(Guid.TryParse(orderId, out id)) {
-				OrderId = id;
-			}
-        }
-
-		public override void Load ()
-        {
-			base.Load ();
-            LoadOrder();
+			base.OnViewLoaded ();
+			LoadOrder();
             LoadStatus();
         }
 
@@ -246,29 +248,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public Task LoadOrder() 
+		public async void LoadOrder() 
 		{
-			return Task.Factory.StartNew(() => {
-                Order = this.Services().Account.GetHistoryOrder(OrderId);
-			});
+			Order = await this.Services().Account.GetHistoryOrderAsync(OrderId);
 		}
 
-		public event EventHandler Loaded;
-
-		public Task LoadStatus ()
+		public async void LoadStatus ()
 		{
-			return Task.Factory.StartNew(()=> {
-                HasRated = this.Services().Booking.GetOrderRating(OrderId).RatingScores.Any();
-                Status = this.Services().Booking.GetOrderStatus(OrderId);
-                IsCompleted = this.Services().Booking.IsStatusCompleted(Status.IbsStatusId);
-                IsDone = this.Services().Booking.IsStatusDone(Status.IbsStatusId);
-                
-				CanCancel = !IsCompleted;
+			var bookingService = this.Services().Booking;
 
-				if(Loaded!=null){
-					Loaded(this, null);
-				}
-			});
+			var ratings = bookingService.GetOrderRatingAsync(OrderId);
+			var status = bookingService.GetOrderStatusAsync(OrderId);
+
+			HasRated = (await ratings).RatingScores.Any();
+			Status = await status;
+			IsCompleted = bookingService.IsStatusCompleted(Status.IbsStatusId);
+			IsDone = bookingService.IsStatusDone(Status.IbsStatusId);
+            
+			CanCancel = !IsCompleted;
 		}
 
         public AsyncCommand NavigateToRatingPage
@@ -281,7 +278,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 													ShowSubViewModel<BookRatingViewModel,OrderRated>(new 
 					            	                    {														
 															orderId = OrderId, 
-															canRate = canRate.ToString()
+															canRate = canRate
 														}.ToStringDictionary(),RefreshOrderStatus);
                                                });
             }
@@ -296,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var orderStatus = new OrderStatusDetail
 					{ 
 							IbsOrderId = Order.IbsOrderId,
-							IbsStatusDescription = "Loading...",
+							IbsStatusDescription = this.Services().Localize["LoadingText"],
 							IbsStatusId = "",
 							OrderId = OrderId,
 							Status = OrderStatus.Unknown,
@@ -334,8 +331,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
-						// TODO: Clear top parameter has been removed when migrating to MvvMCRoss v3
-						// Find out if it was necessary
                     ShowViewModel<BookViewModel>(new { order = serialized });
                 });
             }
@@ -390,10 +385,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            var result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
+			var result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
+			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
             return result;
         }
     }

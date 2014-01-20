@@ -22,11 +22,12 @@ using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Dialog.Touch;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class Setup: MvxTouchSetup
+	public class Setup: MvxTouchDialogSetup
     {
         public Setup(MvxApplicationDelegate applicationDelegate, UIWindow window)
 			: base(applicationDelegate, window)
@@ -58,25 +59,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void InitializeLastChance()
         {
 			base.InitializeLastChance();
+            var container = TinyIoCContainer.Current;
 
-            TinyIoCContainer.Current.Register<IAnalyticsService, GoogleAnalyticsService>();
+            container.Register<IAnalyticsService, GoogleAnalyticsService>();
 
             var locationService = new LocationService( );
             locationService.Start();
 
-            TinyIoCContainer.Current.Register<AbstractLocationService>(locationService );
-			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
-            TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
-            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
+            container.Register<AbstractLocationService>(locationService );
+            container.Register<IMessageService, MessageService>();
+            container.Register<IAppSettings, AppSettings>();
+            container.Register<IPackageInfo>(new PackageInfo());
 
-            TinyIoCContainer.Current.Register<ILocalization, Localize>();
-            TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
-            TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            
-            TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
-            TinyIoCContainer.Current.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
+            container.Register<ILocalization, Localize>();
+            container.Register<ILogger, LoggerWrapper>();
+            container.Register<IErrorHandler, ErrorHandler>();            
+            container.Register<ICacheService>(new CacheService());
+            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
 
-            TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
-            TinyIoCContainer.Current.Register<IPushNotificationService, PushNotificationService>();
+            container.Register<IPhoneService, PhoneService>();
+            container.Register<IPushNotificationService, PushNotificationService>();
 
             InitializeSocialNetwork();
         }
@@ -106,9 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AuthorizeUrl = settings.TwitterAuthorizeUrl 
             };
 
-			var twitterService = new TwitterService(oauthConfig, ()=> {
-                return AppContext.Current.Controller; 
-            });
+            var twitterService = new TwitterService(oauthConfig, () => Mvx.Resolve<UINavigationController>());
             
 			TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
