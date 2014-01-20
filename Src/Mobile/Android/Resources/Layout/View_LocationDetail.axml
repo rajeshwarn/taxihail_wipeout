@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/location_top_bar_color"
+            android:background="@color/top_bar_color"
             android:orientation="horizontal">
             <TextView
                 android:text="Location Details"
@@ -30,7 +30,7 @@
             android:layout_margin="0dip"
             android:layout_width="fill_parent"
             android:layout_height="1px"
-            android:background="@color/location_top_bar_separator_color"
+            android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
         <LinearLayout
             android:orientation="vertical"
