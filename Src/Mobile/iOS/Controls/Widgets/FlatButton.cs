@@ -88,8 +88,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 SetImage(_leftImage, UIControlState.Normal);
                 HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-				var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; //calculate the left padding for this image to have images centered instead of left-aligned
+
+				//calculate the left padding for this image to have images centered instead of left-aligned
+				var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; 
 				ImageEdgeInsets = new UIEdgeInsets(0.0f, leftPaddingForThisImage, 0.0f, 0.0f);
+
                 //compute the left margin for the text and center it
                 var halfTextSize = TitleLabel.Frame.Width / 2; 
 				var center = (Frame.Width - _leftImage.Size.Width - StandardImagePadding - 3) / 2;

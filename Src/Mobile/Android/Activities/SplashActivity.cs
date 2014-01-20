@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Cirrious.MvvmCross.Droid.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
+using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+			DensityHelper.OutputToConsole();
 
 			if (Intent.Extras != null && Intent.Extras.ContainsKey("orderId"))
 			{
