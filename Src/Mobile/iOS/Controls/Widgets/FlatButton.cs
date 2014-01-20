@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			Font = UIFont.FromName (FontName.HelveticaNeueLight, 40/2);
 
+            var DarkBlue = UIColor.FromRGB(3, 27, 49);
+
             SetFillColor(UIColor.Clear, UIControlState.Normal);
             SetFillColor(UIColor.Clear, UIControlState.Selected);
             SetFillColor(UIColor.Clear, UIControlState.Highlighted);
@@ -54,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-			SetStrokeColor(UIColor.Black, UIControlState.Normal);
-			SetStrokeColor(UIColor.Black, UIControlState.Selected);
-			SetStrokeColor(UIColor.Black, UIControlState.Highlighted);
+            SetStrokeColor(DarkBlue, UIControlState.Normal);
+            SetStrokeColor(DarkBlue, UIControlState.Selected);
+            SetStrokeColor(DarkBlue, UIControlState.Highlighted);
 		}
 
         public override void Draw (RectangleF rect)
