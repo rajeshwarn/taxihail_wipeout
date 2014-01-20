@@ -17,7 +17,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
 		public event EventHandler LoginSucceeded; 
         readonly IPushNotificationService _pushService;
@@ -206,10 +206,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         this.Services().Message.ShowMessage(title, message);
                     }
                 }
-				catch (Exception e)
+                catch (Exception e)
                 {
-					Logger.LogError(e);
-
                     var localize = this.Services().Localize;
                     var title = localize["InvalidLoginMessageTitle"];
                     var message = localize[e.Message];

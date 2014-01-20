@@ -32,8 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if(button == null) return;
 
 				button.SetFillColor(MainColor, UIControlState.Normal);
-				button.SetFillColor(MainColor.ColorWithAlpha(0.5f), UIControlState.Selected);
-				button.SetFillColor(MainColor.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+				button.SetFillColor(MainColor, UIControlState.Selected);
+				button.SetFillColor(MainColor, UIControlState.Highlighted);
 
 				button.SetTitleColor(UIColor.White, UIControlState.Normal);
 				button.SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
