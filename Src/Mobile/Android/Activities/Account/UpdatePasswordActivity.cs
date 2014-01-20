@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "UpdatePasswordActivity", Theme = "@style/OnlineTheme",
+	[Activity(Label = "UpdatePasswordActivity", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class UpdatePasswordActivity : BaseBindingActivity<UpdatePasswordViewModel>
     {
