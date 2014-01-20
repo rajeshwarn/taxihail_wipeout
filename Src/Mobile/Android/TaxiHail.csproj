@@ -440,6 +440,8 @@
     <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
     <Compile Include="Helpers\DensityHelper.cs" />
+    <AndroidResource Include="Resources\Drawable\apc_logo_menu.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\apc_logo_menu.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

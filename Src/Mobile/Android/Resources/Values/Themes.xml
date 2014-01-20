@@ -1,8 +1,8 @@
-﻿﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
-    <color name="offline_background_color">#004785</color>		
+    <color name="login_background_color">#004785</color>		
 	
 	<color name="edit_text_background_color">#ffffff</color>
 	<color name="edit_text_foreground_color">#000000</color>
@@ -20,25 +20,23 @@
     <color name="button_green_border_color">#1fbf21</color>
     <color name="button_red_border_color">#ff0000</color>
     <color name="button_gray_border_color">#707070</color><!-- temp color -->
-    <color name="button_black_border_color">#000000</color>
-  
+    <color name="button_black_border_color">#000000</color>  
     <color name="button_nobg_pressed_background_color">#aa000000</color><!-- should be an alpha mask -->
   
     <color name="setting_menu_text_color">#707070</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
+	<color name="setting_item_pressed_background_color">#ffffff</color>
 
-	<color name="online_background_color">#f0f0f0</color>
+	<color name="main_background_color">#f0f0f0</color>
 	
   	<color name="listitem_text_line1_color">#000000</color>
 	<color name="listitem_text_line2_color">#000000</color>		
-	<color name="itemlist_cell_background_color">#ffffff</color>
-	<color name="itemlist_cell_border_color">#727272</color>
+	<color name="listitem_cell_background_color">#ffffff</color>
+	<color name="listitem_cell_border_color">#727272</color>	
+	<color name="listitem_cell_selected_background_color">#eeeeee</color>
 	
-	<color name="itemlist_cell_selected_semi_transparent_color">#dd727272</color>
-	
-	<color name="location_top_bar_color">#ffffff</color>	
-	<color name="location_top_bar_separator_color">#666666</color>	
-	
+	<color name="top_bar_color">#ffffff</color>	
+	<color name="top_bar_separator_color">#666666</color>		
 	<color name="top_bar_title_color">#000000</color>	
 	
 	<!--- Dimensions -->
@@ -50,7 +48,7 @@
 	<dimen name="DefaultFontSize">14dip</dimen>
 	<dimen name="top_bar_title_font_size">18dp</dimen>
   <dimen name="top_bar_title_height">52dip</dimen>  
-  <dimen name="setting_menu_text_size">28dip</dimen>
+  <dimen name="setting_menu_text_size">20dip</dimen>
 
   <!--- Styles -->
 
@@ -125,14 +123,14 @@
 
   <!--- Themes -->
     <style name="LoginTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/offline_background_color</item>
+        <item name="android:windowBackground">@color/login_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
       	<item name="android:editTextStyle">@style/custom_EditTextStyle</item>              
       	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
     </style>
     
     <style name="MainTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/online_background_color</item>
+        <item name="android:windowBackground">@color/main_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
       	<item name="android:editTextStyle">@style/custom_FlatEditTextStyle</item>            
       	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
