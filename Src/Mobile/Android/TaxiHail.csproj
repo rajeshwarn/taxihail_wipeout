@@ -439,6 +439,7 @@
     <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
+    <Compile Include="Helpers\DensityHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

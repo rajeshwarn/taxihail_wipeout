@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
@@ -124,14 +124,14 @@
 
 
   <!--- Themes -->
-    <style name="OfflineTheme" parent="@android:style/Theme.Holo">
+    <style name="LoginTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowBackground">@color/offline_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
       	<item name="android:editTextStyle">@style/custom_EditTextStyle</item>              
       	<item name="android:buttonStyle">@style/custom_ButtonStyle</item>     
     </style>
     
-    <style name="OnlineTheme" parent="@android:style/Theme.Holo">
+    <style name="MainTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowBackground">@color/online_background_color</item>
       	<item name="android:windowNoTitle">true</item>  
       	<item name="android:editTextStyle">@style/custom_FlatEditTextStyle</item>            
