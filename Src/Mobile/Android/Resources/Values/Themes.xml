@@ -48,7 +48,7 @@
 	<dimen name="DefaultFontSize">14dip</dimen>
 	<dimen name="top_bar_title_font_size">18dp</dimen>
   <dimen name="top_bar_title_height">52dip</dimen>  
-  <dimen name="setting_menu_text_size">28dip</dimen>
+  <dimen name="setting_menu_text_size">20dip</dimen>
 
   <!--- Styles -->
 
