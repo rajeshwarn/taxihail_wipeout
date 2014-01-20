@@ -18,7 +18,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "Login", Theme = "@style/OfflineTheme",
+	[Activity(Label = "Login", Theme = "@style/LoginTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
