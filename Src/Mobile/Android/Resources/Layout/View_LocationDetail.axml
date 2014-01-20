@@ -143,21 +143,21 @@
                 android:gravity="center_horizontal">
                 <Button
                     android:id="@+id/LocationSaveBtn"
-                    style="@style/ButtonNoBgBlackStyle"
+                    style="@style/ButtonActionBlackStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:text="@string/SaveButton"
                     local:MvxBind="Click SaveAddress" />
                 <Button
                     android:id="@+id/LocationBookBtn"
-                    style="@style/ButtonNoBgGreenStyle"
+                    style="@style/ButtonActionGreenStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:text="@string/LocationDetailRebookButton"
                     local:MvxBind="Click RebookOrder;Visibility RebookIsAvailable, Converter=Visibility" />
                 <Button
                     android:id="@+id/LocationDeleteBtn"
-                    style="@style/ButtonNoBgRedStyle"
+                    style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:text="@string/DeleteButton"
