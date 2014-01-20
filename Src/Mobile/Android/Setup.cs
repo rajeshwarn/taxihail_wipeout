@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _container.Register<AbstractLocationService>(new LocationService());
 
             _container.Register<IAppSettings, AppSettings>();
-            _container.Register<ILocalization>(new Localize(ApplicationContext));
+            _container.Register<ILocalization>(new Localize(ApplicationContext, _container.Resolve<ILogger>()));
             _container.Register<IErrorHandler, ErrorHandler>();
             _container.Register<ICacheService>(new CacheService());
             _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "AppCache");
