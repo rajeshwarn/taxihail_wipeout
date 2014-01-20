@@ -463,7 +463,7 @@
     <value>Password</value>
   </data>
   <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Confirm password</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">
     <value>You are currently signed in as : {0}</value>
