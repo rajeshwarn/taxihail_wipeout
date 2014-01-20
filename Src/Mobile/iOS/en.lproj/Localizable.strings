@@ -42,7 +42,7 @@
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
 "NetworkErrorMessage"="Cannot connect to Internet. Please check your connection settings and try again.";
 "BookPickupLocationButtonTitle"="Pickup";
-"CreateAccountPasswordConfrimation"="Confirm";
+"CreateAccountPasswordConfrimation"="Confirm password";
 "ResetPasswordCancel"="Cancel";
 "ConfirmPassengersLabel"="Passengers:";
 "WarningEstimateTitle"="Warning";
