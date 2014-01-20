@@ -110,7 +110,7 @@ namespace MK.DeploymentService.Mobile
 					UpdateJob ("Deploy");
 					Deploy (sourceDirectory, _job.Company, releaseiOSAdHocDir, releaseiOSAppStoreDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
-					CreateNewVersionInCustomerPortalIfNecessary(releaseiOSAdHocDir, releaseAndroidDir);
+					CreateNewVersionInCustomerPortal(releaseiOSAdHocDir, releaseAndroidDir);
 					UpdateJob ("Done", JobStatus.Success);
 
 
@@ -126,21 +126,18 @@ namespace MK.DeploymentService.Mobile
 		}
 
 
-		private void CreateNewVersionInCustomerPortalIfNecessary(string ipaAdHocPath, string apkPath)
+		private void CreateNewVersionInCustomerPortal(string ipaAdHocPath, string apkPath)
 		{
-			if ((_job.ServerUrl.Contains("services.taxihail.com") || _job.ServerUrl.Contains("staging.taxihail.com")) && _job.Revision.Tag != null && _job.IosAdhoc && _job.Android)
-			{
-				UpdateJob("Creating new version in Customer Portal");
+			UpdateJob("Creating new version in Customer Portal");
 
-				var ipaAdHocFile = GetiOSAdHocFile(ipaAdHocPath);
-				var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
+			var ipaAdHocFile = GetiOSAdHocFile(ipaAdHocPath);
+			var ipaAdHocFileName = new FileInfo(ipaAdHocFile).Name;
 
-				var apkFile = GetAndroidFile(apkPath);
-				var apkFileName = new FileInfo(apkFile).Name;				 
+			var apkFile = GetAndroidFile(apkPath);
+			var apkFileName = new FileInfo(apkFile).Name;				 
 
-				var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
-				UpdateJob (message);
-			}
+			var message = _customerPortalRepository.CreateNewVersion(_job.Company.CompanyKey, _job.Revision.Tag, _job.ServerUrl, ipaAdHocFileName, File.OpenRead(ipaAdHocFile), apkFileName, File.OpenRead(apkFile));
+			UpdateJob (message);
 		}
 
 		private async void DownloadAndInstallProfileIfNecessary()
