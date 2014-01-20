@@ -34,7 +34,7 @@
   
 	<!--		Settings Item Colors -->
 
-    <color name="setting_menu_text_color">#707070</color>    
+    <color name="setting_menu_text_color">#4f4c47</color>    
     <color name="setting_menu_separator_color">#a09f9c</color>
 	<color name="setting_item_pressed_background_color">#ffffff</color>
 
@@ -53,6 +53,7 @@
 	<color name="top_bar_title_color">#000000</color>	
 	
 	<!--- Dimensions -->
+
   	<dimen name="Height">41dip</dimen>
   	<dimen name="HeightButton">41dip</dimen>
   	<dimen name="HeightEditText">40dip</dimen>
@@ -66,6 +67,7 @@
   	<!--- Styles -->
 
 	<!--	Login Theme EditText -->
+
     <style name="custom_EditTextStyle" parent="@android:style/Widget.EditText">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -79,6 +81,7 @@
     </style>
 
     <!--	Main Theme EditText -->
+
     <style name="custom_FlatEditTextStyle" parent="@style/custom_EditTextStyle">
       <item name="android:layout_marginTop">8dp</item>
       <item name="android:layout_marginBottom">8dp</item>
@@ -91,6 +94,7 @@
     </style>
   
     <!--	Login Theme Button -->
+
     <style name="custom_ButtonStyle" parent="@android:style/Widget.Button">
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -108,6 +112,7 @@
     </style>
 
     <!--	Login MainAction Button  -->
+
     <style name="ButtonMainStyle" parent="@style/custom_ButtonStyle">
     	<item name="android:textColor">@drawable/button_main_text_selector</item>
     	<item name="android:background">@drawable/button_main_selector</item>      
@@ -137,6 +142,7 @@
     </style>
 
   	<!--- Themes -->
+
     <style name="LoginTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowBackground">@color/login_background_color</item>
       	<item name="android:windowNoTitle">true</item>  

@@ -59,6 +59,8 @@
                     style="@style/DetailText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:text="#185841"
                     local:MvxBind="Text ConfirmationTxt" />
             </LinearLayout>

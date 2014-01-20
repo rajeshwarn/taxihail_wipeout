@@ -370,7 +370,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <AndroidResource Include="Resources\drawable-hdpi\paypal.png" />
-    <Compile Include="Resources\Resource.Designer.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -447,6 +446,7 @@
     <AndroidResource Include="Resources\Drawable\button_action_green_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_text_selector.xml" />
+    <Compile Include="Resources\Resource.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
