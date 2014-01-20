@@ -44,13 +44,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void ApplyDefaultStyle()
 		{
-			var blue = UIColor.FromRGB(0, 72, 129);
-
 			Font = UIFont.FromName (FontName.HelveticaNeueLight, 40/2);
 
-			SetFillColor(blue, UIControlState.Normal);
-			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
-			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+            SetFillColor(UIColor.Clear, UIControlState.Normal);
+            SetFillColor(UIColor.Clear, UIControlState.Selected);
+            SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
 			SetTitleColor(UIColor.White, UIControlState.Normal);
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
