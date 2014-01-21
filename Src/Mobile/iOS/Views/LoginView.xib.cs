@@ -1,39 +1,43 @@
 using System;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
-using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.UIKit;
-using TinyIoC;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class LoginView : BaseViewController<LoginViewModel>, INavigationView
+	public partial class LoginView : BaseViewController<LoginViewModel>
     {
 		public LoginView () : base("LoginView", null)
         {
         }
 
-        public bool HideNavigationBar {
-            get { return true;}
-        }
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = true;
+		}
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-			txtEmail.Placeholder = Localize.GetValue("EmailLabel");
-			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
+			View.BackgroundColor = UIColor.FromRGB(0, 72, 129);
 
+			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
+			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
 			txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
 			txtEmail.ShouldReturn = delegate {                          
 				txtEmail.ResignFirstResponder ();
 				return true;
 			};
 
-			txtPassword.Placeholder = Localize.GetValue("PasswordLabel");
+			txtPassword.Placeholder = Localize.GetValue("LoginViewPasswordPlaceHolder");
 			txtPassword.SecureTextEntry = true;
 			txtPassword.ReturnKeyType = UIReturnKeyType.Done;
 			txtPassword.ShouldReturn = delegate {                          
@@ -44,17 +48,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Clear.ApplyTo (btnForgotPassword);
 			FlatButtonStyle.Main.ApplyTo (btnSignIn);
 
-			btnSignIn.SetTitle (Localize.GetValue ("SignInButton"), UIControlState.Normal);
-			btnSignUp.SetTitle (Localize.GetValue ("SignUpButton"), UIControlState.Normal);
+			btnSignIn.SetTitle (Localize.GetValue ("SignIn"), UIControlState.Normal);
+			btnSignUp.SetTitle (Localize.GetValue ("Register"), UIControlState.Normal);
 
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            var settings = this.Services().AppSettings;;
 
             var set = this.CreateBindingSet<LoginView, LoginViewModel>();
 
 			if (settings.FacebookEnabled)
 			{
 				btnFbLogin.SetLeftImage("facebook_icon.png");
-				btnFbLogin.SetTitle (Localize.GetValue ("FacebookButton"), UIControlState.Normal);
+				btnFbLogin.SetTitle (Localize.GetValue ("Facebook"), UIControlState.Normal);
                 set.Bind(btnFbLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginFacebook);
@@ -64,21 +68,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (settings.TwitterEnabled)
 			{
 				btnTwLogin.SetLeftImage("twitter_icon.png");
-				btnTwLogin.SetTitle (Localize.GetValue ("TwitterButton"), UIControlState.Normal);
+				btnTwLogin.SetTitle (Localize.GetValue ("Twitter"), UIControlState.Normal);
                 set.Bind(btnTwLogin)
                     .For("TouchUpInside")
                     .To(vm => vm.LoginTwitter);
             }
             btnTwLogin.Hidden = !settings.TwitterEnabled;
 
-			btnServer.SetLeftImage("server.png");
-			btnServer.SetTitle (Localize.GetValue ("Change Server"), UIControlState.Normal);
+			btnServer.SetTitle (Localize.GetValue ("ChangeServer"), UIControlState.Normal);
             btnServer.TouchUpInside += ChangeServerTouchUpInside;
 			btnServer.Hidden = !settings.CanChangeServiceUrl;
 
             set.Bind(btnSignIn)
                 .For("TouchUpInside")
-                .To(vm => vm.SignInCommand);
+				.To(vm => vm.SignInCommand);
 
             set.Bind(btnForgotPassword)
                 .For("TouchUpInside")
@@ -108,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			else
 				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding;
 
-            ViewModel.Load ();      
+            ViewModel.OnViewLoaded ();    
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)

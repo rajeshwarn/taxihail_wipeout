@@ -1,12 +1,11 @@
 // WARNING
 //
-// This file has been generated automatically by MonoDevelop to store outlets and
-// actions made in the Xcode designer. If it is removed, they will be lost.
+// This file has been generated automatically by Xamarin Studio to store outlets and
+// actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,93 +13,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreateAccountView
 	{
 		[Outlet]
-		FormLabel lblEmail { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCancel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtEmail { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCreate { get; set; }
 
 		[Outlet]
-		FormLabel lblName { get; set; }
+		MonoTouch.UIKit.NSLayoutConstraint constraintTableViewHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtName { get; set; }
+		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
-		FormLabel lblPhone { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtPhone { get; set; }
-
-		[Outlet]
-		FormLabel lblPassword { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtPassword { get; set; }
-
-		[Outlet]
-		FormLabel lblConfirmPassword { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtConfirmPassword { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+		MonoTouch.UIKit.UIView tableView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblEmail != null) {
-				lblEmail.Dispose ();
-				lblEmail = null;
+			if (btnCancel != null) {
+				btnCancel.Dispose ();
+				btnCancel = null;
 			}
 
-			if (txtEmail != null) {
-				txtEmail.Dispose ();
-				txtEmail = null;
+			if (btnCreate != null) {
+				btnCreate.Dispose ();
+				btnCreate = null;
 			}
 
-			if (lblName != null) {
-				lblName.Dispose ();
-				lblName = null;
+			if (lblTitle != null) {
+				lblTitle.Dispose ();
+				lblTitle = null;
 			}
 
-			if (txtName != null) {
-				txtName.Dispose ();
-				txtName = null;
+			if (tableView != null) {
+				tableView.Dispose ();
+				tableView = null;
 			}
 
-			if (lblPhone != null) {
-				lblPhone.Dispose ();
-				lblPhone = null;
-			}
-
-			if (txtPhone != null) {
-				txtPhone.Dispose ();
-				txtPhone = null;
-			}
-
-			if (lblPassword != null) {
-				lblPassword.Dispose ();
-				lblPassword = null;
-			}
-
-			if (txtPassword != null) {
-				txtPassword.Dispose ();
-				txtPassword = null;
-			}
-
-			if (lblConfirmPassword != null) {
-				lblConfirmPassword.Dispose ();
-				lblConfirmPassword = null;
-			}
-
-			if (txtConfirmPassword != null) {
-				txtConfirmPassword.Dispose ();
-				txtConfirmPassword = null;
-			}
-
-			if (scrollView != null) {
-				scrollView.Dispose ();
-				scrollView = null;
+			if (constraintTableViewHeight != null) {
+				constraintTableViewHeight.Dispose ();
+				constraintTableViewHeight = null;
 			}
 		}
 	}

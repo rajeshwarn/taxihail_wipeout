@@ -11,22 +11,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        bool CheckSession();
-        
         void UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
         
-        Account GetAccount(string email, string password);
+		Task<Account> SignIn(string email, string password);
         
 		Task<Account> GetFacebookAccount(string facebookId);
         
-        Account GetTwitterAccount(string twitterId);
+		Task<Account> GetTwitterAccount(string twitterId);
         
         void ClearCache();
 
-        [Obsolete("Use async method instead")]
-        ReferenceData GetReferenceData();
-
-        Task<ReferenceData> GetReferenceDataAsync();
+        Task<ReferenceData> GetReferenceData();
 
         void ClearReferenceData();
         
@@ -34,19 +29,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
         Account CurrentAccount { get; }
         
-        IEnumerable<ListItem> GetCompaniesList( );
+		Task<IList<ListItem>> GetCompaniesList();
         
-        IEnumerable<ListItem> GetVehiclesList(  );
+		Task<IList<ListItem>> GetVehiclesList();
         
-        IEnumerable<ListItem> GetPaymentsList(  );
+		Task<IList<ListItem>> GetPaymentsList();
         
         
         void RemoveCreditCard(Guid creditCardId);
         void ResetPassword( string email );
         
         string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
-        
-        void ResendConfirmationEmail(string email);
         
         bool Register (RegisterAccount data, out string error);
 
@@ -65,7 +58,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<IList<Order>> GetHistoryOrders();
 		OrderStatusDetail[] GetActiveOrdersStatus();
         
-        Order GetHistoryOrder(Guid id);
+		[Obsolete("Migrate to async/await")]
+		Order GetHistoryOrder(Guid id);
+		Task<Order> GetHistoryOrderAsync(Guid id);
         
         IEnumerable<CreditCardDetails> GetCreditCards();
         

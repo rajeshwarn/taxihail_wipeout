@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            ViewModel.Load();
+            ViewModel.OnViewLoaded();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = false;           
 
@@ -136,9 +136,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            NavigationItem.TitleView = new TitleView(null, Localize.GetValue("View_BookingDetail"), true);
+			NavigationItem.Title = Localize.GetValue("View_BookingDetail");
 
-            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
+            var btnDone = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, delegate
             {
                 if( ViewModel.SaveCommand.CanExecute() )
                 {

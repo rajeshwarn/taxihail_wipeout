@@ -10,11 +10,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookEditInformationViewModel : BaseSubViewModel<Order>
     {
-		public void Init(string order)
+		public new void Init(string order)
         {
             Order = JsonSerializer.DeserializeFromString<Order>(order);
 			RideSettings = new RideSettingsViewModel();
-			RideSettings.Init(Order.Settings);
+			RideSettings.Init(Order.Settings.ToJson());
             RideSettings.OnPropertyChanged().Subscribe(p => 
             {
 				RaisePropertyChanged(()=> RideSettings);
@@ -137,20 +137,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return GetCommand(() => 
-                                  { 
-                                    if(RideSettings.ValidateRideSettings()) {
-                                        ReturnResult(Order);
-                                    }
-                                  });
+				return GetCommand(() =>
+				{ 
+					if (RideSettings.ValidateRideSettings())
+					{
+						ReturnResult(Order);
+					}
+				});
             }
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            string result = apt.HasValue() ? apt : this.Services().Localize["ConfirmNoApt"];
+			string result = apt.HasValue() ? apt : this.Services().Localize["NoAptText"];
             result += @" / ";
-            result += rCode.HasValue() ? rCode : this.Services().Localize["ConfirmNoRingCode"];
+			result += rCode.HasValue() ? rCode : this.Services().Localize["NoRingCodeText"];
             return result;
         }
 
@@ -160,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return buildingName;
             }
-            return this.Services().Localize["HistoryDetailBuildingNameNotSpecified"];
+			return this.Services().Localize["BuildingNameText"];
         }
 
         private string FormatDateTime(DateTime? pickupDate)

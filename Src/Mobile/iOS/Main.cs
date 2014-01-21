@@ -22,16 +22,16 @@ using apcurium.MK.Common.Configuration.Impl;
 using MonoTouch.FacebookConnect;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-
     public class Application
     {
         static void Main(string[] args)
         {
             try
-            {
+			{
                 UIApplication.Main(args);  
             }
             catch (Exception ex)
@@ -46,24 +46,60 @@ namespace apcurium.MK.Booking.Mobile.Client
         private bool _callbackFromFb;
         private bool _isStarting;
 
-
 		private void SetAppearance()
 		{
-		
+			var gray44 = UIColor.FromRGB (44, 44, 44);
+
+			// navigation bar
+			if (UIHelper.IsOS7orHigher) {
+				UINavigationBar.Appearance.BarTintColor = UIColor.White;
+				UINavigationBar.Appearance.TintColor = gray44; //in ios7, this is for the back chevron
+			} else {
+				UINavigationBar.Appearance.TintColor = UIColor.White; //in ios6, this is for the bar color
+
+				//change the default ios6 back button look to the ios7 look
+				var clearBackground = UIImage.FromFile ("clearButton.png").CreateResizableImage(UIEdgeInsets.Zero);
+				var backBackground = UIImage.FromFile ("left_arrow.png").CreateResizableImage (new UIEdgeInsets (0, 8, 15, 0));
+				UIBarButtonItem.Appearance.SetBackgroundImage(clearBackground, UIControlState.Normal, UIBarMetrics.Default); 
+				UIBarButtonItem.Appearance.SetBackButtonBackgroundImage(backBackground, UIControlState.Normal, UIBarMetrics.Default); 
+			}
+
+			var titleFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+			var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
+
+			UINavigationBar.Appearance.SetTitleTextAttributes (new UITextAttributes () {
+				TextColor = gray44,
+				Font = titleFont,
+				TextShadowColor = UIColor.Clear,
+				TextShadowOffset = new UIOffset(0,0)
+			});
+
+			var buttonTextColor = new UITextAttributes () {
+				Font = navBarButtonFont,
+				TextColor = gray44,
+				TextShadowColor = UIColor.Clear,
+				TextShadowOffset = new UIOffset(0,0)
+			};
+			var selectedButtonTextColor = new UITextAttributes () {
+				Font = navBarButtonFont,
+				TextColor = gray44.ColorWithAlpha(0.5f),
+				TextShadowColor = UIColor.Clear,
+				TextShadowOffset = new UIOffset(0,0)
+			};
+
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+			UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
 		}
 
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
+            _isStarting = true;
 
 			SetAppearance ();
 
-
-            _isStarting = true;
-            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
-
             Background.Load (window, "Assets/background_full_nologo.png", false);          
 
-            AppContext.Initialize (window);
             var @params = new Dictionary<string, string> ();
             if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
                 var remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
@@ -82,7 +118,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             window.MakeKeyAndVisible();
 
             return true;
-
         }
 
         // This method is required in iPhoneOS 3.0
@@ -99,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Start ();
             }
 
-            ThreadHelper.ExecuteInThread ( () =>        Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+            ThreadHelper.ExecuteInThread (() => Runtime.StartWWAN( new Uri ( Mvx.Resolve<AppSettings>().ServiceUrl )));
 
             Logger.LogMessage("OnActivated");
 
@@ -133,14 +168,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<GeoObj>();
             JsConfig.RegisterTypeForAot<GeoResult>();
 
-
-
             if (!_callbackFromFb)
             {    
-
-				if( !_isStarting &&  AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+                var navController = Mvx.Resolve<UINavigationController>();
+                if( !_isStarting &&  navController != null && navController.TopViewController is BookView )
 				{
-					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+                    var model = ((BookView)navController.TopViewController).ViewModel;
                     model.Reset ();
                     if ( model.AddressSelectionMode != AddressSelectionMode.PickupSelection )
                     {
@@ -165,10 +198,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 locService.Stop();
             }
 
-
             base.DidEnterBackground (application);
-
         }
+
         public override void ReceiveMemoryWarning(UIApplication application)
         {
             Logger.LogMessage("ReceiveMemoryWarning");
@@ -203,9 +235,5 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Console.WriteLine("Received Remote Notification!");
         }
-
-
-
     }
-    
 }

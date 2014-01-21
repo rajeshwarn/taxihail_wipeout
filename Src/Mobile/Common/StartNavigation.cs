@@ -39,18 +39,14 @@ namespace apcurium.MK.Booking.Mobile
 				var bookingService = Mvx.Resolve<IBookingService> ();
                 
                 var orderStatus = bookingService.GetOrderStatus (orderId);
-                var order = accountService.GetHistoryOrder (orderId);
+				var order = accountService.GetHistoryOrder(orderId);
                 
-                if (order != null && orderStatus != null) {
+				if (order != null && orderStatus != null) {
                     
 					ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-                        {"order", order.ToJson()},
+						{"order", order.ToJson()},
                         {"orderStatus", orderStatus.ToJson()},
-                    }
-						/* 
-						 * TODO: Figure out if this was needed
-						 * ,clearTop: true
-						 */);
+                    });
                     
                 }
             }

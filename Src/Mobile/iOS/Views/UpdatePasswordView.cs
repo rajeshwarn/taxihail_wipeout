@@ -16,33 +16,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			: base("UpdatePasswordView", null)
 		{
 		}
-		
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationItem.HidesBackButton = false;
+			NavigationItem.Title = Localize.GetValue("View_UpdatePassword");
+		}
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, txtNewPassword.Frame.Bottom + 200);
-            NavigationItem.Title = Localize.GetValue("Password");
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-            lblCurrentPassword.Text = Localize.GetValue("CurrentPasswordLabel");
-            lblNewPassword.Text = Localize.GetValue("NewPasswordLabel");
-            lblNewPasswordConfirmation.Text = Localize.GetValue("NewPasswordConfirmationLabel");
+			View.BackgroundColor = UIColor.FromRGB (239,239,239);
+
+			lblCurrentPassword.Text = Localize.GetValue("UpdatePasswordCurrentPasswordLabel");
+			lblNewPassword.Text = Localize.GetValue("UpdatePasswordNewPasswordLabel");
+			lblConfirmation.Text = Localize.GetValue("UpdatePasswordConfirmationLabel");
 			
             txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
-			txtNewPasswordConfirmation.ShouldReturn = ShouldReturnDelegate;
+			txtConfirmation.ShouldReturn = ShouldReturnDelegate;
 
-            var btnDone = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, delegate
-            {
-				if( ViewModel.UpdateCommand.CanExecute() )
-				{
-					ViewModel.UpdateCommand.Execute();
-				}
-			});
-			NavigationItem.HidesBackButton = false;
-			NavigationItem.RightBarButtonItem = btnDone;
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem (Localize.GetValue ("Save"), UIBarButtonItemStyle.Plain, null);
 
 			var set = this.CreateBindingSet<UpdatePasswordView, UpdatePasswordViewModel>();
+
+			set.Bind (NavigationItem.RightBarButtonItem)
+				.For ("Clicked")
+				.To(vm => vm.UpdateCommand);
 
 			set.Bind(txtCurrentPassword)
 				.For(v => v.Text)
@@ -52,13 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.NewPassword);
 
-			set.Bind(txtNewPasswordConfirmation)
+			set.Bind(txtConfirmation)
 				.For(v => v.Text)
-				.To(vm => vm.NewPasswordConfirmation);
+				.To(vm => vm.Confirmation);
 
 			set.Apply ();
-
-            View.ApplyAppFont ();
 		}
 
 		private bool ShouldReturnDelegate( UITextField textField )

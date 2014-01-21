@@ -3,6 +3,7 @@ using Android.App;
 using Android.Runtime;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using Cirrious.CrossCore;
 
 namespace apcurium.MK.Callbox.Mobile.Client
 {
@@ -45,7 +46,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
             {
                 if (e.ExceptionObject is Exception)
                 {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
+					Mvx.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
                 }
             }
             catch (Exception)
@@ -59,7 +60,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
         {
             try
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
+				Mvx.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
             }
             catch (Exception)
             {

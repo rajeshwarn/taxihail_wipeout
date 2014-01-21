@@ -80,12 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			var TextColorLine2 = Resources.GetColor (Resource.Color.listitem_text_line2_color);
 
-            //var textX = ShowPlusSign ? 65.ToPixels() : 8.ToPixels();
 			var textX = 8.ToPixels();
 
             if (ShowPlusSign || Icon.HasValue())
             {
-                textX = 40.ToPixels();
+				textX = 45.ToPixels();
             }
 
             if (!TextLine1.IsNullOrEmpty())
@@ -106,15 +105,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowPlusSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_location), 6.ToPixels(),
-                    15.ToPixels(), null);
+				var bitmapIcon = BitmapFactory.DecodeResource (Resources, Resource.Drawable.add_location);								
+				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
+				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon, null);
+
             }
             else if (Icon.HasValue())
             {
                 var identifier = Context.Resources.GetIdentifier(Icon, "drawable", Context.PackageName);
 
-
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, identifier), 6.ToPixels(), 15.ToPixels(), null);
+				var bitmapIcon = BitmapFactory.DecodeResource (Resources, identifier);									
+				var offsetIcon = (canvas.Height - bitmapIcon.Height) / 2;
+				canvas.DrawBitmap(bitmapIcon, 10.ToPixels(), offsetIcon,  null);
             }
 
 

@@ -13,9 +13,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class MyLocationsViewModel: BaseViewModel
     {
-        public override void Start(bool firstStart = false)
+        public override void OnViewStarted(bool firstStart = false)
         {
-            base.Start (firstStart);
+            base.OnViewStarted (firstStart);
             LoadAllAddresses();
         }
 

@@ -1,7 +1,8 @@
 using System;
+using Cirrious.CrossCore;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
-using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Extensions
 {
@@ -14,19 +15,19 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
 		public static string UseServiceClient<T>(this IUseServiceClient service, string name, Action<T> action, Action<Exception> errorHandler = null ) where T : class
 		{
+			var logger = Mvx.Resolve<ILogger>();
 			try
 			{
-                var logger = TinyIoCContainer.Current.Resolve<ILogger>();
 				using(logger.StartStopwatch("UseServiceClient : " + typeof(T)))
                 {
     				T client;
     				if( name == null )
     				{
-    					client = TinyIoCContainer.Current.Resolve<T>();
+						client = TinyIoCContainer.Current.Resolve<T>();
     				}
     				else
     				{
-    					client = TinyIoCContainer.Current.Resolve<T>(name);
+						client = TinyIoCContainer.Current.Resolve<T>(name);
     				}
     				action(client);
                 }
@@ -34,10 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 			}
 			catch (Exception ex)
 			{                    
-				TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+				logger.LogError(ex);
 				if (errorHandler == null)
 				{
-					TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+					Mvx.Resolve<IErrorHandler>().HandleError(ex);
 				}
 				else
 				{

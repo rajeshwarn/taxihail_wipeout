@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             _loading = new CAlertView();
                         }
 
-                        _loading.Message = text.IsNullOrEmpty() ? Localize.GetValue("LoadingMessage") : text;
+							_loading.Message = text.IsNullOrEmpty() ? Localize.GetValue("LoadingText") : text;
                     
                         if (canceled != null)
                         {

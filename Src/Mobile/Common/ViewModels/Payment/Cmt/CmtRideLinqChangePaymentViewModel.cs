@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
 		public PaymentInformation DefaultPaymentInformations { get; set ; }
 		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
-		public ICommand CancelCommand
+		public AsyncCommand CancelCommand
         {
             get
             {
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt
             }
         }
 
-		public ICommand SaveCommand
+		public AsyncCommand SaveCommand
         {
             get
             {

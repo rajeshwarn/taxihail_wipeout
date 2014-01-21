@@ -25,21 +25,22 @@ namespace apcurium.MK.Callbox.Mobile.Client
             : base(applicationContext)
         {
 
-
         }
 
 		protected override void InitializeLastChance()
         {
 			base.InitializeLastChance();
 
-			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
-            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));
-            TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
-			TinyIoCContainer.Current.Register<ILocalization>(new ResourceManager(this.ApplicationContext));
-            TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
-            TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
-            TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-            TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+			var container = TinyIoCContainer.Current;
+
+			container.Register<IMessageService, MessageService>();
+			container.Register<IPackageInfo, PackageInfo>();
+			container.Register<IAppSettings, AppSettings>();
+			container.Register<ILocalization, ResourceManager>();
+			container.Register<ILogger, LoggerImpl>();
+			container.Register<IErrorHandler, ErrorHandler>();
+			container.Register<IPhoneService, PhoneService>();
+			container.Register<ICacheService>(new CacheService());
 
         }
 

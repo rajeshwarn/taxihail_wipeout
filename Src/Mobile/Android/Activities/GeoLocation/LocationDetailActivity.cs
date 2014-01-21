@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
-    [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar",
+	[Activity(Label = "Location Details", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationDetailActivity : BaseBindingActivity<LocationDetailViewModel>
     {

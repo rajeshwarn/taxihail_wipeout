@@ -11,7 +11,7 @@ using Cirrious.MvvmCross.Binding.Droid.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.GeoLocation
 {
-    [Activity(Label = "Locations",
+	[Activity(Label = "Locations", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {

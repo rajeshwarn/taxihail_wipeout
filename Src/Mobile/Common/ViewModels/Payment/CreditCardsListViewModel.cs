@@ -44,20 +44,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 
 
-		public void Init()
+		public override void Start()
         {
             LoadCreditCards();
         }
 
-        public override void Start (bool firstStart = false)
+        public override void OnViewStarted (bool firstStart = false)
         {
-            base.Start (firstStart);
+            base.OnViewStarted (firstStart);
             _removeCreditCardToken = this.Services().MessengerHub.Subscribe<RemoveCreditCard>(creditCardId => RemoveCreditCard(creditCardId.Content));
         }
 
-        public override void Stop ()
+        public override void OnViewStopped ()
         {
-            base.Stop ();
+            base.OnViewStopped ();
 
             if (_removeCreditCardToken != null) {
                 this.Services().MessengerHub.Unsubscribe<RemoveCreditCard>(_removeCreditCardToken);

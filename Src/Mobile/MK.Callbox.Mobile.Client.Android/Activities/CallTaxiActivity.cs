@@ -34,7 +34,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                       .Where(s => s.Count == 5)
                       .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute()));
 
-            ViewModel.Load();
+			ViewModel.OnViewLoaded();
         }
     }
 }

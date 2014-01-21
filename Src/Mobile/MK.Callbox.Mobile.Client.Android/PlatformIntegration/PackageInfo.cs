@@ -4,17 +4,18 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Text;
 using System;
 using Android.OS;
+using Cirrious.CrossCore.Droid;
 
 namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
 
     public class PackageInfo : IPackageInfo
     {
-        private Context _appContext;
+		readonly Context _appContext;
         private static string _userAgent = null;
-        public PackageInfo(Context appContext)
+		public PackageInfo(IMvxAndroidGlobals globals)
         {
-            _appContext = appContext;
+			_appContext = globals.ApplicationContext;
         }
 
         public string Platform

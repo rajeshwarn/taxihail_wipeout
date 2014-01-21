@@ -13,8 +13,10 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
+    // TODO: We don't need a full MvvmCross view model here
+    // Just need NotifyPropertyChanged and GetCommand
     public class BookAddressViewModel : BaseViewModel
-       {
+    {
         private CancellationTokenSource _cancellationToken;
         private bool _isExecuting;
         private Func<Address> _getAddress;
@@ -285,13 +287,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(ClearAddress);
+                return GetCommand(() => ClearAddress());
             }
         }
 
         public AsyncCommand RequestCurrentLocationCommand
         {
-            get {
+            get
+			{
                 return GetCommand(() =>
                 {
 
