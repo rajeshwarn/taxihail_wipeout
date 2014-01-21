@@ -138,6 +138,7 @@
                     local:MvxBind="Text Data.CCV" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Green"
+            <Button
                     android:id="@+id/SaveSettingsButton"
                     style="@style/ButtonText"
                     android:background="@drawable/green_button"

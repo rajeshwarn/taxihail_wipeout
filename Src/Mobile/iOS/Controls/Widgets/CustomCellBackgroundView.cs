@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	{
 		private UIColor _strokeColor = UIColor.FromRGB(190, 190, 190);
 		private UIColor _selectedBackgroundColor = UIColor.FromRGB(190, 190, 190);
-		private UIColor _backgroundColor = UIColor.White;
+        private UIColor _backgroundColor = UIColor.White;
 
 		private Line _bottomLine;
 
@@ -34,8 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		{
 			set
 			{
-				_bottomLine.Hidden = value;
-				SetNeedsDisplay();
+                _bottomLine.Hidden = value;
+                SetNeedsDisplay();
 			}
 		}
 	}

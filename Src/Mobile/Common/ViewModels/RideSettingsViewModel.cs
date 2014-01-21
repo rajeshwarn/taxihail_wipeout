@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => ChargeTypeName );
         }
 
-        public bool ShouldDisplayTipSlider
+        public bool ShouldDisplayTip
         {
             get
             {
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return _payments;
+				return _payments;
             }
         }
 

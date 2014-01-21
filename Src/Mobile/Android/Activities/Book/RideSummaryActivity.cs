@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait,
+	[Activity(Label = "Book", Theme = "@style/MainTheme", ScreenOrientation = ScreenOrientation.Portrait,
         ClearTaskOnLaunch = true, FinishOnTaskLaunch = true)]
     public class RideSummaryActivity : BaseBindingActivity<RideSummaryViewModel>
     {
@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (ViewModel.ReceiptSent)
                 {
-                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
+					var sendReceiptBtn = FindViewById<Button>(Resource.Id.SendReceiptBtn);
                     sendReceiptBtn.SetText(Resource.String.HistoryViewSendReceiptSuccess,
                         TextView.BufferType.Normal);
                     sendReceiptBtn.Enabled = false;
