@@ -169,13 +169,22 @@ namespace apcurium.MK.Booking.ConfigTool
 						}
 					},
 					/** Version 1.5 */
-					new ConfigXML(this)
-					{  
-						Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
-						NodeSelector=@"//resources/color[@name=""login_background_color""]", 
-						SetterEle = (app,ele) => ele.InnerText = Company.CompanySettings.First(x => x.Key == "TaxiHail.AccentColor").Value 
-					},	
-					new ConfigFile(this){ Source=@"logo_1_5.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },     
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+					NodeSelector=@"//resources/color[@name=""login_background_color""]", 
+					SetterEle = (app,ele) => ele.InnerText = Company.CompanySettings.First(x => x.Key == "TaxiHail.AccentColor").Value 
+				},	
+				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },
+				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
+				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
+
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\iOS\Style\Theme.xml", 
+					NodeSelector=@"//ThemeValues/LoginBackgroundColor", 
+					SetterEle = (app,ele) => ele.InnerText = Company.CompanySettings.First(x => x.Key == "TaxiHail.AccentColor").Value 
+				}
 
            };
         }
