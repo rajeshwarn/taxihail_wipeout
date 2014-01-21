@@ -18,29 +18,29 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class HistoryDetailView : BaseViewController<HistoryDetailViewModel>
-    {
+	{
 		public HistoryDetailView() 
 			: base("HistoryDetailView", null)
 		{
 		}
 
-		public override void ViewWillAppear (bool animated)
+		public override void ViewWillAppear(bool animated)
 		{
-			base.ViewWillAppear (animated);
+			base.ViewWillAppear(animated);
 
 			NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_HistoryDetail");
 		}
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-            ViewModel.OnViewLoaded();
+		public override void ViewDidLoad()
+		{
+			base.ViewDidLoad();
+			ViewModel.OnViewLoaded();
             
-			View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
+			View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-			FlatButtonStyle.Red.ApplyTo (btnDelete);
-			FlatButtonStyle.Green.ApplyTo (btnRebook);
+			FlatButtonStyle.Red.ApplyTo(btnDelete);
+			FlatButtonStyle.Green.ApplyTo(btnRebook);
 
 			lblOrder.Text = Localize.GetValue("HistoryDetailOrderLabel");
 			lblRequested.Text = Localize.GetValue("HistoryDetailRequestedLabel");
@@ -51,15 +51,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			txtDestination.Text = Localize.GetValue("DestinationNotSpecifiedText");
 			lblPickupDate.Text = Localize.GetValue("HistoryDetailPickupDateLabel");
 			lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
-			txtStatus.Text =  Localize.GetValue("LoadingText");
+			txtStatus.Text = Localize.GetValue("LoadingText");
 
-			btnRebook.SetTitle (Localize.GetValue("Rebook"), UIControlState.Normal);
-			btnDelete.SetTitle (Localize.GetValue("Delete"), UIControlState.Normal);
+			btnRebook.SetTitle(Localize.GetValue("Rebook"), UIControlState.Normal);
+			btnDelete.SetTitle(Localize.GetValue("Delete"), UIControlState.Normal);
 
 			if (ViewModel.HideDestination)
 			{
-				lblDestination.RemoveFromSuperview ();
-				txtDestination.RemoveFromSuperview ();
+				lblDestination.RemoveFromSuperview();
+				txtDestination.RemoveFromSuperview();
 			}
 
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
@@ -79,19 +79,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
 
-            set.Bind(txtOrder)
+			set.Bind(txtOrder)
 				.For(v => v.Text)
 				.To(vm => vm.ConfirmationTxt);
 
-			if (!ViewModel.HideDestination)
-			{
-				set.Bind (txtDestination)
-				    .For (v => v.Text)
-				    .To (vm => vm.DestinationTxt);
-				set.Bind (txtDestination)
-				    .For (v => v.Hidden)
-				    .To (vm => vm.HideDestination);
-			}
+			set.BindSafe(txtDestination)
+				    .For(v => v.Text)
+				    .To(vm => vm.DestinationTxt);
+			set.BindSafe(txtDestination)
+				    .For(v => v.Hidden)
+				    .To(vm => vm.HideDestination);
 
 			set.Bind(txtPickup)
 				.For(v => v.Text)
@@ -113,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.PickUpDateTxt);
 
-			set.Apply ();
-         }
-    }
+			set.Apply();
+		}
+	}
 }
