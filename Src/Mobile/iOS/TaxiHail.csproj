@@ -771,20 +771,16 @@
     <BundleResource Include="Assets\Logo.png" />
     <BundleResource Include="Assets\Logo%402x.png" />
     <BundleResource Include="Resources\clearButton.png" />
-    <BundleResource Include="Resources\orderStatus_Canceled.png" />
-    <BundleResource Include="Resources\orderStatus_Canceled%402x.png" />
-    <BundleResource Include="Resources\orderStatus_Completed.png" />
-    <BundleResource Include="Resources\orderStatus_Completed%402x.png" />
-    <BundleResource Include="Resources\orderStatus_Created.png" />
-    <BundleResource Include="Resources\orderStatus_Created%402x.png" />
-    <BundleResource Include="Resources\orderStatus_Pending.png" />
-    <BundleResource Include="Resources\orderStatus_Pending%402x.png" />
-    <BundleResource Include="Resources\orderStatus_Removed.png" />
-    <BundleResource Include="Resources\orderStatus_Removed%402x.png" />
-    <BundleResource Include="Resources\orderStatus_Unknown.png" />
-    <BundleResource Include="Resources\orderStatus_Unknown%402x.png" />
     <BundleResource Include="Resources\left_arrow.png" />
     <BundleResource Include="Resources\left_arrow%402x.png" />
+    <BundleResource Include="Resources\active.png" />
+    <BundleResource Include="Resources\active%402x.png" />
+    <BundleResource Include="Resources\cancelled.png" />
+    <BundleResource Include="Resources\cancelled%402x.png" />
+    <BundleResource Include="Resources\completed.png" />
+    <BundleResource Include="Resources\completed%402x.png" />
+    <BundleResource Include="Resources\scheduled.png" />
+    <BundleResource Include="Resources\scheduled%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
