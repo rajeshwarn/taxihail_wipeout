@@ -10,117 +10,90 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class PanelMenuView : UIViewController
+	public partial class PanelMenuView : MvxView
     {
-        private readonly UIView _viewToAnimate;
-        private readonly PanelViewModel _viewModel;
-        
-        public PanelMenuView () 
-			: base("PanelMenuView", null)
+		private const string Cellid = "PanelMenuCell";
+
+		private const string CellBindingText = @"
+                   TitleText Text;
+                   SelectedCommand NavigationCommand;
+                ";
+
+		public UIView ViewToAnimate
+		{
+			get;
+			set;
+		}
+
+		private bool _menuIsOpen;
+		public bool MenuIsOpen
+		{
+			get { return _menuIsOpen; }
+			set
+			{
+				if (_menuIsOpen != value)
+				{
+					_menuIsOpen = value;
+					AnimateMenu ();
+				}
+			}
+		}
+
+		public PanelMenuView (IntPtr handle)
+			:base(handle)
         {
-        }
-
-        public PanelMenuView (UIView viewToAnimate, PanelViewModel viewModel) 
-            : this()
-        {
-            _viewToAnimate = viewToAnimate;
-            _viewModel = viewModel;
-        }
-
-        public override void ViewDidLoad ()
-        {
-            base.ViewDidLoad ();
-
-            View.Frame = new RectangleF (View.Frame.X, View.Frame.Y, View.Frame.Width, View.Frame.Height);
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-
-            panelView.Title = Localize.GetValue("TabSettings");
-            
-            logoImageView.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
-            versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo> ().Version;
-
-            InitializeMenu ();  
-            View.ApplyAppFont ();
+			this.DelayBind (() => {
+				InitializeMenu();
+			});
         }
 
         private void InitializeMenu ()
         {
-          
-            var structure = new InfoStructure (40, false);
-            var sect = structure.AddSection ();
-            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.NavigateToMyLocations.Execute();
-                })              
-            });
-            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_MyOrders")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.NavigateToOrderHistory.Execute();
-                })              
-            });
-            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_UpdateMyProfile")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.NavigateToUpdateProfile.Execute();
-                })              
-            });
+			menuContainer.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
-            if (_viewModel.TutorialEnabled) {
-                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.NavigateToTutorial.Execute();
-                })              
-            });
-            }
+			var source = new MvxActionBasedTableViewSource(
+				menuListView, 
+				UITableViewCellStyle.Default,
+				new NSString(Cellid), 
+				CellBindingText,
+				UITableViewCellAccessory.None);
 
-            if (_viewModel.CanCall) {               
-                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_CallDispatch")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.Call.Execute();
-                })              
-            });
-            }
-            sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_AboutUs")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.NavigateToAboutUs.Execute();
-                })              
-            });
+			source.CellCreator = (tview , iPath, state ) =>
+			{ 
+				return new PanelMenuCell(Cellid, CellBindingText); 
+			};
 
-            if (_viewModel.CanReportProblem) {
-                sect.AddItem (new SingleLineItem (Localize.GetValue ("View_Book_Menu_ReportProblem")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                        _viewModel.ReportProblem.Execute();                 
-                    })              
-                });
-            }
-            sect.AddItem(new SingleLineItem(Localize.GetValue("View_Book_Menu_SignOut"))
-            {
-                OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-                    _viewModel.SignOut.Execute();
-                })              
-            });
+			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
-            menuListView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-            menuListView.BackgroundColor = UIColor.Clear;
-            menuListView.ScrollEnabled = false;
-            menuListView.DataSource = new TableViewDataSource (structure);
-            menuListView.Delegate = new TableViewDelegate (structure);
-            menuListView.ReloadData ();
+			set.Bind(source)
+				.For(v => v.ItemsSource)
+				.To(vm => vm.ItemMenuList);
 
-            _viewModel.PropertyChanged += HandlePropertyChanged;
-        }
+			set.Bind (this)
+				.For (v => v.MenuIsOpen)
+				.To (vm => vm.MenuIsOpen);
 
-        void HandlePropertyChanged (object sender, PropertyChangedEventArgs e)
-        {
+			set.Apply ();
 
-            if (e.PropertyName == "MenuIsOpen") {
-                AnimateMenu ();
-            }
+			menuListView.Source = source;
+
         }
 
         private void AnimateMenu ()
         {
             InvokeOnMainThread (() =>
             {
-                var slideAnimation = new SlideViewAnimation (_viewToAnimate, new SizeF ((_viewModel.MenuIsOpen ? -menuView.Frame.Width : menuView.Frame.Width), 0f));
+				var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f));
                 slideAnimation.Animate ();
             });
         }
+
     }
 }
 
