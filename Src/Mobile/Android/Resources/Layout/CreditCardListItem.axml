@@ -9,7 +9,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:paddingLeft="15dip"
-        local:MvxBind="TextLeft CreditCardDetails.FriendlyName; TextRight Last4DigitsWithStars; IsTop IsFirst; IsBottom IsLast ;ShowAddSign ShowPlusSign; Picture Picture" />
+        local:MvxBind="TextLeft CreditCardDetails.FriendlyName; TextRight Last4DigitsWithStars; IsTop IsFirst; IsBottom IsLast; ShowAddSign ShowPlusSign; Picture Picture" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
