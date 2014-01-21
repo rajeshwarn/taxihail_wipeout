@@ -26,14 +26,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => Payments );
 			RaisePropertyChanged(() => ChargeTypeId );
 			RaisePropertyChanged(() => ChargeTypeName );
-
-			_tips = new ListItem[] { new ListItem{ Display = "0%", Id = 0 }, new ListItem{ Display = "5%", Id = 5 }, new ListItem{ Display = "10%", Id = 10 }, new ListItem{ Display = "15%", Id = 15 }, new ListItem{ Display = "20%", Id = 20 } };
-			TipId = PaymentPreferences.Tip;
-			RaisePropertyChanged(() => TipId );
-
         }
 
-        public bool ShouldDisplayTipSlider
+        public bool ShouldDisplayTip
         {
             get
             {
@@ -85,16 +80,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _vehicules;
             }
         }
-
-
-		private ListItem[] _tips;
-		public ListItem[] Tips
-		{
-			get
-			{
-				return _tips;
-			}
-		}
 
         private ListItem[] _payments;
         public ListItem[] Payments
@@ -212,30 +197,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
-
-		private int? _tipId;
-		public int? TipId
-		{
-			get
-			{
-				return _tipId;
-			}
-			set
-			{
-				_tipId = value;
-				PaymentPreferences.Tip = (int)value;
-				RaisePropertyChanged();
-				RaisePropertyChanged("TipAmount");
-			}
-		}
-
-		public string TipAmount
-		{
-			get
-			{
-				return TipId.ToString() + "%";
-			}
-		}
 
         public AsyncCommand<int?> SetVehiculeType
         {

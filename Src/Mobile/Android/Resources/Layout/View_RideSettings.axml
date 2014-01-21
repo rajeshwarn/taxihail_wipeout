@@ -140,7 +140,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
-                        local:MvxBind="Text TipAmount; Data Tips; SelectedItem TipId" />
+                        local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
                     <Button
                         style="@style/ButtonActionGreenStyle"
                         android:id="@+id/SaveSettingsButton"

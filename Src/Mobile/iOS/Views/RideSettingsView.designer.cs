@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintContentViewHeight { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
@@ -26,6 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblPhone { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
@@ -46,10 +52,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtTip { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtVehicleType { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblChargeType != null) {
+				lblChargeType.Dispose ();
+				lblChargeType = null;
+			}
+
+			if (lblCreditCard != null) {
+				lblCreditCard.Dispose ();
+				lblCreditCard = null;
+			}
+
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
@@ -70,14 +89,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblVehicleType = null;
 			}
 
-			if (lblChargeType != null) {
-				lblChargeType.Dispose ();
-				lblChargeType = null;
+			if (txtChargeType != null) {
+				txtChargeType.Dispose ();
+				txtChargeType = null;
 			}
 
-			if (lblCreditCard != null) {
-				lblCreditCard.Dispose ();
-				lblCreditCard = null;
+			if (txtCreditCard != null) {
+				txtCreditCard.Dispose ();
+				txtCreditCard = null;
 			}
 
 			if (txtName != null) {
@@ -100,14 +119,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtVehicleType = null;
 			}
 
-			if (txtChargeType != null) {
-				txtChargeType.Dispose ();
-				txtChargeType = null;
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
 			}
 
-			if (txtCreditCard != null) {
-				txtCreditCard.Dispose ();
-				txtCreditCard = null;
+			if (txtTip != null) {
+				txtTip.Dispose ();
+				txtTip = null;
+			}
+
+			if (constraintContentViewHeight != null) {
+				constraintContentViewHeight.Dispose ();
+				constraintContentViewHeight = null;
 			}
 		}
 	}

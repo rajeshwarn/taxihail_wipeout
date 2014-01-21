@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.Title = Localize.GetValue("View_RideSettings");
+            NavigationItem.Title = Localize.GetValue("RideSettingsView");
         }
 
         public override void ViewDidLoad ()
@@ -33,28 +33,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-//			if (!ViewModel.ShouldDisplayCreditCards) {
-//                lblCreditCard.RemoveFromSuperview();//lblCreditCard.Hidden = true;           
-//                txtCreditCard.RemoveFromSuperview();//btnCreditCard.Hidden = true;
-//				lblTipAmount.SetY (364);
-//				TipSlider.SetY (393);
-//            }
-//
-//			if (!ViewModel.ShouldDisplayTipSlider) {
-//				lblTipAmount.Hidden = true;
-//				TipSlider.Hidden = true;
-//			}
-//                        
-//			if (!ViewModel.ShouldDisplayTipSlider && !ViewModel.ShouldDisplayCreditCards) {
-//				Container.SetBottom (lblChargeType.Frame.Bottom);
-//			}
+			if (!ViewModel.ShouldDisplayCreditCards) {
+                lblCreditCard.RemoveFromSuperview();
+                txtCreditCard.RemoveFromSuperview();
+                constraintContentViewHeight.Constant -= 80;
+            }
 
-			lblName.Text= Localize.GetValue("RideSettingsName");
-			lblPhone.Text= Localize.GetValue("RideSettingsPhone");
-			lblVehicleType.Text= Localize.GetValue("RideSettingsVehiculeType");
-			lblChargeType.Text= Localize.GetValue("RideSettingsChargeType");
+			if (!ViewModel.ShouldDisplayTip) {
+                lblTip.RemoveFromSuperview();
+                txtTip.RemoveFromSuperview();
+                constraintContentViewHeight.Constant -= 80;
+			}
+
+            lblName.Text = Localize.GetValue("RideSettingsName");
+            lblPhone.Text = Localize.GetValue("RideSettingsPhone");
+            lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
+            lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+            lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName, txtPhone);
@@ -67,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
-//            txtTip.Configure("Tip", ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
+            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
 
 			var set = this.CreateBindingSet<RideSettingsView, RideSettingsViewModel> ();
 
@@ -80,11 +77,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.Phone);
 
             set.Bind(txtVehicleType)
-				.For("Text")
+                .For(v => v.Text)
 				.To(vm => vm.VehicleTypeName);
 
             set.Bind(txtChargeType)
-				.For("Text")
+                .For(v => v.Text)
 				.To(vm => vm.ChargeTypeName);
 
 			set.Bind(txtPassword)
@@ -92,22 +89,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToUpdatePassword);
 
             set.Bind(txtCreditCard)
-				.For("Text")
+                .For(v => v.Text)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
             set.Bind(txtCreditCard)
 				.For(v => v.Last4Digits)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
             set.Bind(txtCreditCard)
-				.For("CreditCardCompany")
+                .For("CreditCardCompany")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
             set.Bind(txtCreditCard)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
 
-//			set.Bind(TipSlider)
-//				.For("Value")
-//				.To(vm => vm.PaymentPreferences.Tip);
-//
+            set.Bind(txtTip)
+                .For(v => v.Text)
+                .To(vm => vm.PaymentPreferences.TipAmount);
+
 			set.Apply ();       
         }
     }
