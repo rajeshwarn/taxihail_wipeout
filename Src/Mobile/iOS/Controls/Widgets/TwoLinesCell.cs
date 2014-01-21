@@ -13,17 +13,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private bool _showPlusSign;
 		private bool _showArrow;
 		private bool _hideBottomBar;
-
-		private string _icon;
-		public TwoLinesCell (IntPtr handle, string bindingText) : base(bindingText, handle)
+        private string _icon;
+		
+        public TwoLinesCell (IntPtr handle, string bindingText) : base(bindingText, handle)
 		{       
 		}
 
 		public TwoLinesCell (string cellIdentifier, string bindingText, UITableViewCellAccessory accessory) : base( bindingText, UITableViewCellStyle.Subtitle, new NSString(cellIdentifier), accessory  )
 		{                   
 			SelectionStyle = UITableViewCellSelectionStyle.None;
-
-			Initialize ();
+            Initialize ();
 		}
 
 		public string FirstLine 

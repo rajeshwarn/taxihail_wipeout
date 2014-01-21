@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 
-			source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.InfoTableView.TwoLinesCell( Cellid, CellBindingText ); };
+            source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.Controls.Widgets.TwoLinesCell( Cellid, CellBindingText, UITableViewCellAccessory.None ); };
 
  			var set = this.CreateBindingSet<AddressSearchView, AddressSearchViewModel>();
 			set.Bind(source)

@@ -7,21 +7,20 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardsListView : BaseViewController<CreditCardsListViewModel>
     {
         private const string Cellid = "CreditCardsCell";
-        
         const string CellBindingText = @"
                    LeftText CreditCardDetails.FriendlyName;
                    RightText Last4DigitsWithStars;
-                   ShowPlusSign ShowPlusSign;
-                   IsFirst IsFirst;
-                   IsLast IsLast;
-                   Picture Picture;
                    IsAddNewCell IsAddNew;
+                   Icon Picture;
                    DeleteCommand RemoveCreditCards
                 ";
         
@@ -30,25 +29,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
    
+        public override void ViewWillAppear (bool animated)
+        {
+            base.ViewWillAppear (animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.Title = Localize.GetValue ("CreditCardsListTitle");
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
             
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+            View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
             tableCardsList.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableCardsList.BackgroundColor = UIColor.Clear;
+            tableCardsList.SeparatorColor = UIColor.Clear;
             
-            var source = new BindableCommandTableViewSource(
+            var source = new BindableTableViewSource(
                 tableCardsList, 
                 UITableViewCellStyle.Subtitle,
                 new NSString(Cellid), 
                 CellBindingText,
                 UITableViewCellAccessory.None);
             
-            source.CellCreator = (tview , iPath, state ) => { 
-                return new SingleLinePictureCell( Cellid, CellBindingText ); 
-            };
+            source.CellCreator = CellCreator;
+            tableCardsList.Source = source;
 
 			var set = this.CreateBindingSet<CreditCardsListView, CreditCardsListViewModel>();
 
@@ -65,17 +72,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.NavigateToAddOrSelect);
 
 			set.Apply();
-
-            tableCardsList.Source = source;
-
-            NavigationItem.Title = Localize.GetValue("CreditCardsListTitle");
-            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
-            View.ApplyAppFont ();
         }   
-        public override void ViewWillAppear (bool animated)
+
+        private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
         {
-            base.ViewWillAppear (animated);
-            NavigationController.NavigationBar.Hidden = false;
+            var cell = new SingleLinePictureCell( Cellid, CellBindingText );
+            cell.HideBottomBar = tableView.IsLastCell(indexPath);
+            return cell;
         }
     }
 }
