@@ -226,7 +226,7 @@
                         <constraint firstItem="80" firstAttribute="top" secondItem="29" secondAttribute="top" id="0JU-jv-7be"/>
                         <constraint firstItem="80" firstAttribute="leading" secondItem="29" secondAttribute="leading" id="3v8-Zt-PXf"/>
                         <constraint firstAttribute="width" secondItem="80" secondAttribute="width" id="Ae0-jJ-5hl"/>
-                        <constraint firstAttribute="bottom" secondItem="80" secondAttribute="bottom" constant="-67" id="Iym-XT-iXT"/>
+                        <constraint firstAttribute="bottom" secondItem="80" secondAttribute="bottom" id="Iym-XT-iXT"/>
                         <constraint firstAttribute="trailing" secondItem="80" secondAttribute="trailing" id="poG-yk-dYI"/>
                     </constraints>
                 </scrollView>

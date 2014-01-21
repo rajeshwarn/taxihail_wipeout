@@ -5,12 +5,11 @@ using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.MonoTouchDialog;
 using System.Linq;
-
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -68,16 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
             }
-        }
-
-        public void Configure<T>(string title, Func <ListItem<T>[]> getValues,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected, IObservable<string> listObservable = null) where T: struct
-        {
-            if (listObservable != null)
-            {
-                listObservable.Subscribe(_ => Configure( title, getValues(), selectedId , onItemSelected ));
-            }
-
-            Configure( title, getValues(), selectedId , onItemSelected );
         }
 
         public void Configure<T>(string title, ListItem<T>[] values,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected ) where T: struct

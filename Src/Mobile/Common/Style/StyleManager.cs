@@ -58,6 +58,13 @@ namespace apcurium.MK.Booking.Mobile.Style
         public string CustomMediumFont{get;set;}
         public string CustomItalicFont{get;set;}
 			
+
+
+        public ButtonStyle[] Buttons {
+            get;
+            set;
+        }
+
         public float? ButtonCornerRadius {
             get;
             set;
