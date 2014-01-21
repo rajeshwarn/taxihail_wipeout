@@ -141,20 +141,15 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text TipAmount; Data Tips; SelectedItem TipId" />
-                    <LinearLayout
+                    <Button
+                        style="@style/ButtonActionGreenStyle"
+                        android:id="@+id/SaveSettingsButton"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="15dip"
-                        android:background="@color/transparent">
-                        <Button
-                            style="@style/ButtonActionGreenStyle"
-                            android:id="@+id/SaveSettingsButton"
-                            android:layout_width="fill_parent"
-                            android:layout_height="@dimen/HeightButton"
-                            android:text="@string/SaveButton"
-                            local:MvxBind="Click SaveCommand" />
-                    </LinearLayout>
+                        android:layout_height="@dimen/HeightButton"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/SaveButton"
+                        local:MvxBind="Click SaveCommand" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
