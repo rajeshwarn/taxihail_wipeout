@@ -60,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				{
 					return;
 				}
+
 				ImageView.Image = value.HasValue () ? UIImage.FromFile(string.Format ("{0}.png", value)) : null;
 			}
 		}

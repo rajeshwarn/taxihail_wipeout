@@ -109,9 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			else if (!btnFbLogin.Hidden)
 				constraintContentViewHeight.Constant = btnFbLogin.Frame.Bottom + BottomPadding;
 			else
-				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding;
-
-            ViewModel.OnViewLoaded ();    
+				constraintContentViewHeight.Constant = btnSignIn.Frame.Bottom + BottomPadding; 
         }
 
         void ChangeServerTouchUpInside (object sender, EventArgs e)

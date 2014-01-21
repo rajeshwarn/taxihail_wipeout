@@ -15,8 +15,20 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			if (name == null) {
 				throw new ArgumentException ("Unknown Enum member - please update this converter");
 			}
-			name = name.ToLower ();
-			return string.Format ("orderstatus_{0}", name);
+
+            switch (name)
+            {
+                case "Pending":
+                    return "scheduled";
+                case "Created":
+                    return "active";
+                case "Canceled":
+                    return "cancelled";
+                case "Completed":
+                    return "completed";
+                default:
+                    return null;
+            }   
 		}
 	}
 }

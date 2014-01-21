@@ -1,294 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:gravity="center_horizontal"
-  android:focusable="true"
-  android:noHistory="true"
-  android:focusableInTouchMode="true">
-  <ScrollView
-    android:id="@+id/mainScroll"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:gravity="center_horizontal"
-      android:orientation="vertical">
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <LinearLayout
-        android:id="@+id/passengerNameLayout"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        local:MvxBind="Visibility ShowPassengerName, Converter=Visibility">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/PassengerNameLabel"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderName" />
-      </LinearLayout>
-      <LinearLayout
-        android:id="@+id/passengerPhoneLayout"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        local:MvxBind="Visibility ShowPassengerPhone, Converter=Visibility">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/PassengerPhoneLabel"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderPhone" />
-      </LinearLayout>
-      <LinearLayout
-        android:id="@+id/passengerNumberLayout"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        local:MvxBind="Visibility ShowPassengerNumber, Converter=Visibility">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/PassengerNumberLabel"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderPassengerNumber" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/ApartmentLabel"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderApt" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/EntryCodeLabel"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderRingCode" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/RideSettingsVehiculeType"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text RideSettings.VehicleTypeName" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/RideSettingsChargeType"
-          android:layout_width="150dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text RideSettings.ChargeTypeName" />
-      </LinearLayout>
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <RelativeLayout
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:noHistory="true"
+    android:focusableInTouchMode="true">
+    <ScrollView
+        android:id="@+id/mainScroll"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-          local:ButtonStyle="Grey"
-          style="@style/ButtonTextLarge"
-          android:background="@drawable/gray_button"
-          android:layout_width="180dip"
-          android:layout_height="40dip"
-          android:text="@string/EditDetails"
-          android:layout_centerInParent="true"
-          android:layout_marginRight="5dp"
-          local:MvxBind="Click NavigateToEditInformations" />
-      </RelativeLayout>
-      <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="2dp"
-        android:orientation="vertical">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/NotesToDriveLabel"
-          android:layout_width="wrap_content"
-          android:gravity="left"
-          android:layout_height="wrap_content" />
-        <EditText
-          android:id="@+id/noteEditText"
-          local:MvxBind="Text Order.Note"
-          android:layout_height="100dip"
-          android:layout_width="fill_parent"
-          android:maxLines="4"
-          android:gravity="top|left"
-          android:singleLine="false"
-          android:hint="@string/NotesToDriverHint"
-          android:inputType="textMultiLine"
-          android:scrollHorizontally="false"
-          android:paddingLeft="15dp" />
-      </LinearLayout>
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-          local:ButtonStyle="Green"
-          style="@style/ButtonTextLarge"
-          android:background="@drawable/green_button"
-          android:layout_width="180dip"
-          android:layout_height="40dip"
-          android:text="@string/ConfirmButton"
-          android:layout_centerInParent="true"
-          android:layout_marginRight="5dp"
-          local:MvxBind="Click ConfirmOrderCommand" />
-      </RelativeLayout>
-    </LinearLayout>
-  </ScrollView>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <LinearLayout
+                android:id="@+id/passengerNameLayout"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                local:MvxBind="Visibility ShowPassengerName, Converter=Visibility">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/PassengerNameLabel"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderName" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/passengerPhoneLayout"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility ShowPassengerPhone, Converter=Visibility">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/PassengerPhoneLabel"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderPhone" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/passengerNumberLayout"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="Visibility ShowPassengerNumber, Converter=Visibility">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/PassengerNumberLabel"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderPassengerNumber" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/ApartmentLabel"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderApt" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/EntryCodeLabel"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderRingCode" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/RideSettingsVehiculeType"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text RideSettings.VehicleTypeName" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/RideSettingsChargeType"
+                    android:layout_width="150dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text RideSettings.ChargeTypeName" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!-- Grey -->
+                <Button
+                    android:layout_width="180dip"
+                    android:layout_height="40dip"
+                    android:text="@string/EditDetails"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="Click NavigateToEditInformations" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="18dp"
+                android:paddingBottom="2dp"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/NotesToDriveLabel"
+                    android:layout_width="wrap_content"
+                    android:gravity="left"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/noteEditText"
+                    local:MvxBind="Text Order.Note"
+                    android:layout_height="100dip"
+                    android:layout_width="fill_parent"
+                    android:maxLines="4"
+                    android:gravity="top|left"
+                    android:singleLine="false"
+                    android:hint="@string/NotesToDriverHint"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:paddingLeft="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!-- Green -->
+                <Button
+                    android:layout_width="180dip"
+                    android:layout_height="40dip"
+                    android:text="@string/ConfirmButton"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="Click ConfirmOrderCommand" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

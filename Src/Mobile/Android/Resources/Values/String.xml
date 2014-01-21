@@ -49,7 +49,7 @@
   <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
   <string name="NetworkErrorMessage">Cannot connect to Internet. Please check your connection settings and try again.</string>
   <string name="BookPickupLocationButtonTitle">Pickup</string>
-  <string name="CreateAccountPasswordConfrimation">Confirm</string>
+  <string name="CreateAccountPasswordConfrimation">Confirm password</string>
   <string name="ResetPasswordCancel">Cancel</string>
   <string name="ConfirmPassengersLabel">Passengers:</string>
   <string name="WarningEstimateTitle">Warning</string>
@@ -242,7 +242,7 @@
   <string name="PasswordLabel">Password</string>
   <string name="BuildingName">Building Name / Remark</string>
   <string name="ResetPasswordSucessMessage">Password was reset successfully</string>
-  <string name="View_Book_Menu_UpdateMyProfile">Update My Profile</string>
+  <string name="View_Book_Menu_UpdateMyProfile">Update Account</string>
   <string name="TabBook">Book</string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="BookPickupLocationEmptyPlaceholder">Tap to choose pickup</string>
@@ -515,4 +515,5 @@
   <string name="Done">Done</string>
   <string name="UpdatePasswordCurrentPasswordLabel">Current Password</string>
   <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
+  <string name="RideSettingsView">Profile</string>
 </resources>

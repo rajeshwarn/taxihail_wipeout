@@ -1,262 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:gravity="center_horizontal"
-  android:focusable="true"
-  android:noHistory="true"
-  android:focusableInTouchMode="true">
-  <ScrollView
-    android:id="@+id/mainScroll"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:gravity="center_horizontal"
-      android:orientation="vertical">
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/ConfirmOriginLablel"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:lines="2"
-          android:maxLines="2"
-          android:singleLine="false"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text Order.PickupAddress.DisplayAddress" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/ConfirmDestinationLabel"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:lines="2"
-          android:maxLines="2"
-          android:singleLine="false"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text Order.DropOffAddress.DisplayAddress" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/EstimatePrice"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text FareEstimate" />
-      </LinearLayout>
-      <LinearLayout
-        android:id="@+id/largeBagsLayout"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/LargeBagsLabel"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="left"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text OrderLargeBagsNumber" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/RideSettingsVehiculeType"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text VehicleName" />
-      </LinearLayout>
-      <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text="@string/RideSettingsChargeType"
-          android:layout_width="110dp"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormLabelDataText"
-          android:text=": "
-          android:layout_width="wrap_content"
-          android:gravity="right"
-          android:layout_height="wrap_content" />
-        <TextView
-          style="@style/FormDataText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="5dp"
-          android:paddingRight="5dp"
-          local:MvxBind="Text ChargeType" />
-      </LinearLayout>
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <RelativeLayout
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:noHistory="true"
+    android:focusableInTouchMode="true">
+    <ScrollView
+        android:id="@+id/mainScroll"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-          local:ButtonStyle="Grey"
-          style="@style/ButtonTextLarge"
-          android:background="@drawable/gray_button"
-          android:layout_width="180dip"
-          android:layout_height="40dip"
-          android:text="@string/EditDetails"
-          android:layout_centerInParent="true"
-          android:layout_marginRight="5dp"
-          local:MvxBind="Click NavigateToEditInformations" />
-      </RelativeLayout>
-      <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="18dp"
-        android:paddingBottom="2dp"
-        android:orientation="vertical">
-        <EditText
-          android:id="@+id/noteEditText"
-          local:MvxBind="Text Order.Note"
-          android:layout_height="100dip"
-          android:layout_width="fill_parent"
-          android:maxLines="4"
-          android:gravity="top|left"
-          android:singleLine="false"
-          android:hint="@string/NotesToDriveLabel"
-          android:inputType="textMultiLine"
-          android:scrollHorizontally="false"
-          android:paddingLeft="15dp" />
-      </LinearLayout>
-      <LinearLayout
-        android:orientation="horizontal"
-        android:paddingTop="0dip"
-        android:paddingBottom="0dip"
-        android:layout_width="fill_parent"
-        android:layout_height="10dip"
-        android:layout_centerInParent="true" />
-      <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-          local:ButtonStyle="Green"
-          style="@style/ButtonTextLarge"
-          android:background="@drawable/green_button"
-          android:layout_width="180dip"
-          android:layout_height="40dip"
-          android:text="@string/ConfirmButton"
-          android:layout_centerInParent="true"
-          android:layout_marginRight="5dp"
-          local:MvxBind="Click ConfirmOrderCommand" />
-      </RelativeLayout>
-    </LinearLayout>
-  </ScrollView>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/ConfirmOriginLablel"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text Order.PickupAddress.DisplayAddress" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/ConfirmDestinationLabel"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text Order.DropOffAddress.DisplayAddress" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/EstimatePrice"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text FareEstimate" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/largeBagsLayout"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/LargeBagsLabel"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="left"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text OrderLargeBagsNumber" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/RideSettingsVehiculeType"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text VehicleName" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text="@string/RideSettingsChargeType"
+                    android:layout_width="110dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormLabelDataText"
+                    android:text=": "
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    style="@style/FormDataText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    local:MvxBind="Text ChargeType" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!-- Grey -->
+                <Button
+                    android:layout_width="180dip"
+                    android:layout_height="40dip"
+                    android:text="@string/EditDetails"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="Click NavigateToEditInformations" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="18dp"
+                android:paddingBottom="2dp"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/noteEditText"
+                    local:MvxBind="Text Order.Note"
+                    android:layout_height="100dip"
+                    android:layout_width="fill_parent"
+                    android:maxLines="4"
+                    android:gravity="top|left"
+                    android:singleLine="false"
+                    android:hint="@string/NotesToDriveLabel"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:paddingLeft="15dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingTop="0dip"
+                android:paddingBottom="0dip"
+                android:layout_width="fill_parent"
+                android:layout_height="10dip"
+                android:layout_centerInParent="true" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!-- Green -->
+                <Button
+                    android:layout_width="180dip"
+                    android:layout_height="40dip"
+                    android:text="@string/ConfirmButton"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="Click ConfirmOrderCommand" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

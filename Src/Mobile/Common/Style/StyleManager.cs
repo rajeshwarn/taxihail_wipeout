@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Style
         public string CustomBoldFont{get;set;}
         public string CustomMediumFont{get;set;}
         public string CustomItalicFont{get;set;}
-
+			
 
 
         public ButtonStyle[] Buttons {
