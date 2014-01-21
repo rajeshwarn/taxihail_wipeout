@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 FindViewById<CreditCardButton>(Resource.Id.btCC).Visibility = ViewStates.Gone;
             }
 
-            if (!ViewModel.ShouldDisplayTipSlider)
+            if (!ViewModel.ShouldDisplayTip)
             {
                 FindViewById<TextView>(Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
 				FindViewById<EditTextSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
