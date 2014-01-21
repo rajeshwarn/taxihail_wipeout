@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return Task.Factory.StartNew(() =>
             {
                 var creditCards = this.Services().Account.GetCreditCards().ToList();
-                creditCards.Add(new CreditCardDetails
+				creditCards.Insert(0, new CreditCardDetails
                 {
                     FriendlyName = this.Services().Localize["AddCreditCardTitle"],
                 });
@@ -141,7 +141,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     InvokeOnMainThread(()=>
                     {
-                         CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
+								//CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
+								CreditCards.Add(new CreditCardViewModel
                          {
                              CreditCardDetails = new CreditCardDetails
                              {
@@ -155,9 +156,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						RaisePropertyChanged("CreditCards");
                     });                                                                                         
                     CreditCards[0].IsFirst=true;
+					CreditCards[0].IsAddNew = true;
                     CreditCards.Last().IsFirst=false;                        
-                    CreditCards.Last().IsLast = true;
-                    CreditCards.Last().IsAddNew = true;
+                    CreditCards.Last().IsLast = true;					
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                  }));
                 
