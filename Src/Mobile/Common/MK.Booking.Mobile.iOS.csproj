@@ -215,7 +215,6 @@
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
-    <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
@@ -307,6 +306,7 @@
     <Compile Include="BindingConverter\OrderStatusToImageNameConverter.cs" />
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
+    <Compile Include="ViewModels\PanelMenuViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
