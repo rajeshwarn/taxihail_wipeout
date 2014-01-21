@@ -30,7 +30,7 @@
     <color name="button_black_border_color">#000000</color>  
 
     <color name="button_action_text_color">#ffffff</color>
-    <color name="button_action_pressed_text_color">#70ffffff</color>
+    <color name="button_action_pressed_text_color">#ffffff</color>
   
 	<!--		Settings Item Colors -->
 
@@ -123,22 +123,22 @@
 
     <style name="ButtonActionGreenStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_green_selector</item>
-      <item name="android:textColor">@color/button_green_border_color</item>      
+      <item name="android:textColor">@drawable/button_action_green_text_selector</item>      
     </style>
 
     <style name="ButtonActionRedStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_red_selector</item>
-      <item name="android:textColor">@color/button_red_border_color</item>      
+      <item name="android:textColor">@color/button_action_red_text_selector</item>      
     </style>
 
     <style name="ButtonActionGrayStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_gray_selector</item>
-      <item name="android:textColor">@color/button_gray_border_color</item>      
+      <item name="android:textColor">@color/button_action_gray_text_selector</item>      
     </style>
 
     <style name="ButtonActionBlackStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_black_selector</item>
-      <item name="android:textColor">@color/button_black_border_color</item>      
+      <item name="android:textColor">@color/button_action_black_text_selector</item>      
     </style>
 
   	<!--- Themes -->

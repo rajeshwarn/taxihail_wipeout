@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "CreditCardsListActivity", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "CreditCardsListActivity", Theme = "@style/MainTheme",
         WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreditCardsListActivity : BaseBindingActivity<CreditCardsListViewModel>
     {
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_CreditCardsList);
+            SetContentView(Resource.Layout.View_Payments_CreditCardsList);
             ViewModel.OnViewLoaded();
         }
     }

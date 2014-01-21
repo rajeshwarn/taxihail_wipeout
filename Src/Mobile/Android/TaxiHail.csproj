@@ -270,8 +270,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
     <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
-    <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Drawable\amex.png" />
     <AndroidResource Include="Resources\Drawable\mastercard.png" />
     <AndroidResource Include="Resources\Drawable\visa.png" />
@@ -398,7 +396,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\active.png" />
     <AndroidResource Include="Resources\Drawable\cancelled.png" />
     <AndroidResource Include="Resources\Drawable\completed.png" />
@@ -419,6 +416,10 @@
     <Compile Include="Controls\Widgets\SlidingPanel.cs" />
     <Compile Include="Controls\Widgets\TouchMap.cs" />
     <Compile Include="Controls\Widgets\HorizontalPager.cs" />
+    <AndroidResource Include="Resources\Drawable\button_action_black_text_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

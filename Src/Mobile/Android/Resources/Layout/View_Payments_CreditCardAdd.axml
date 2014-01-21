@@ -50,8 +50,9 @@
                     android:text="@string/CreditCardName"
                     style="@style/FormLabelText" />
                 <EditText
+                    android:layout_marginBottom="10dip"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/HeightEditTextFlat"
                     android:singleLine="true"
                     local:MvxBind="Text Data.NameOnCard" />
                 <TextView
@@ -60,8 +61,9 @@
                     android:text="@string/CreditCardNumber"
                     style="@style/FormLabelText" />
                 <EditText
+                    android:layout_marginBottom="10dip"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/HeightEditTextFlat"
                     android:singleLine="true"
                     android:inputType="number"
                     local:MvxBind="Text Data.CardNumber" />
@@ -71,18 +73,10 @@
                     android:text="@string/CreditCardCategory"
                     style="@style/FormLabelText" />
                 <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                    android:layout_marginBottom="10dip"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/HeightEditTextFlat"
                     local:MvxBind="Text CreditCardCategoryName; Data CardCategories; SelectedItem CreditCardCategory" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/CreditCardType"
-                    style="@style/FormLabelText" />
-            <!---<apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-	                android:layout_width="fill_parent"
-	                android:layout_height="wrap_content"
-	                local:MvxBind="Text CreditCardTypeName; LeftImage CreditCardTypeName; Data CreditCardCompanies; SelectedItem CreditCardType" />-->
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -104,23 +98,22 @@
                         style="@style/FormLabelText" />
                 </LinearLayout>
                 <LinearLayout
+                    android:layout_marginBottom="10dip"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/HeightEditTextFlat"
                     android:orientation="horizontal">
                     <EditText
-                        android:gravity="left"
                         android:layout_width="135dip"
                         android:layout_weight="1"
                         android:layout_marginRight="10dip"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text Data.ExpirationMonth" />
                     <EditText
-                        android:gravity="left"
                         android:layout_width="135dip"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:inputType="number"
                         android:singleLine="true"
                         local:MvxBind="Text Data.ExpirationYear" />
@@ -131,19 +124,18 @@
                     android:text="@string/CreditCardCCV"
                     style="@style/FormLabelText" />
                 <EditText
+                    android:layout_marginBottom="7dip"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/HeightEditTextFlat"
                     android:inputType="number"
                     android:singleLine="true"
                     local:MvxBind="Text Data.CCV" />
-                <apcurium.mk.booking.mobile.client.controls.StyledButton
-                    local:ButtonStyle="Green"
-            <Button
+                <Button
+                    android:layout_marginBottom="10dip"
+                    style="@style/ButtonActionGreenStyle"
                     android:id="@+id/SaveSettingsButton"
-                    style="@style/ButtonText"
-                    android:background="@drawable/green_button"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip"
+                    android:layout_height="@dimen/HeightButton"
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/SaveButton"
