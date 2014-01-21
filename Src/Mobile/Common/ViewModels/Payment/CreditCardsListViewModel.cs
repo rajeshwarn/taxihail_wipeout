@@ -78,11 +78,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
 						RaisePropertyChanged("CreditCards");
                     }
-                    CreditCards[0].IsFirst = true;
 
                     if (CreditCards.Count.Equals(1))
                     {
-                        CreditCards[0].IsLast = true;
                         CreditCards[0].IsAddNew = true;
                     }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
@@ -105,10 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     CreditCardDetails = x,
                     IsAddNew = x.CreditCardId.IsNullOrEmpty(),
-                    ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
-                    IsFirst = x.Equals(creditCards.First()),
-                    IsLast = x.Equals(creditCards.Last()),
-                    Picture = x.CreditCardCompany,
+                    Picture = x.CreditCardCompany
                 }));
                 //todo utiliser une propriété calculée
                 HasCards = CreditCards.Any();
@@ -141,8 +136,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     InvokeOnMainThread(()=>
                     {
-								//CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel
-								CreditCards.Add(new CreditCardViewModel
+						 CreditCards.Add(new CreditCardViewModel
                          {
                              CreditCardDetails = new CreditCardDetails
                              {
@@ -155,13 +149,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         });
 						RaisePropertyChanged("CreditCards");
                     });                                                                                         
-                    CreditCards[0].IsFirst=true;
-					CreditCards[0].IsAddNew = true;
-                    CreditCards.Last().IsFirst=false;                        
-                    CreditCards.Last().IsLast = true;					
+					CreditCards[0].IsAddNew = true;				
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                  }));
-                
             }
         }
 
