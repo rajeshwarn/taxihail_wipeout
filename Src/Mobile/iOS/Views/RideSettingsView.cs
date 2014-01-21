@@ -33,12 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-			if (!ViewModel.ShouldDisplayCreditCards) {
-                lblCreditCard.RemoveFromSuperview();//lblCreditCard.Hidden = true;           
-                txtCreditCard.RemoveFromSuperview();//btnCreditCard.Hidden = true;
+//			if (!ViewModel.ShouldDisplayCreditCards) {
+//                lblCreditCard.RemoveFromSuperview();//lblCreditCard.Hidden = true;           
+//                txtCreditCard.RemoveFromSuperview();//btnCreditCard.Hidden = true;
 //				lblTipAmount.SetY (364);
 //				TipSlider.SetY (393);
-            }
+//            }
 //
 //			if (!ViewModel.ShouldDisplayTipSlider) {
 //				lblTipAmount.Hidden = true;
