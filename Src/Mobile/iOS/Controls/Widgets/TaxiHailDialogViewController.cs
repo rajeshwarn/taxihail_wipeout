@@ -1,92 +1,120 @@
 using System;
+using System.Drawing;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.UIKit;
 using MonoTouch.Foundation;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
-	public class TaxiHailDialogViewController : DialogViewController
-	{
-		public TaxiHailDialogViewController(UITableViewStyle tableViewStyle, RootElement _rootElement, bool pushing) : base (tableViewStyle, _rootElement, pushing)
-		{
-			((UITableView)this.View).RowHeight = 40;
-			((UITableView)this.View).ScrollEnabled = false;
-			((UITableView)this.View).SeparatorStyle = UITableViewCellSeparatorStyle.None;
-			((UITableView)this.View).BackgroundColor = UIColor.Clear;
-		}
+    public class TaxiHailDialogViewController : DialogViewController
+    {
+        private bool _willBeContainedInOtherView;
 
-		public override Source CreateSizingSource(bool unevenRows)
-		{
-			return new TaxiHailDialogSource(this);
-		}
-	}
+        public TaxiHailDialogViewController(RootElement _rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (_rootElement, pushing)
+        {
+            _willBeContainedInOtherView = willBeContainedInOtherView;
 
-	public class TaxiHailDialogSource : CrossUI.Touch.Dialog.DialogViewController.Source
-	{
-		public TaxiHailDialogSource(DialogViewController container) : base(container)
-		{
+            if (!_willBeContainedInOtherView)
+            {
+                Style = UITableViewStyle.Grouped;
+                TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.FromRGB(239, 239, 239) };
+                Title = string.Empty;
+            }
+            else
+            {
+                Style = UITableViewStyle.Plain;
+            }
 
-		}
+            TableView.RowHeight = 40;
+            TableView.ScrollEnabled = !_willBeContainedInOtherView;
+            TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            TableView.BackgroundColor = UIColor.Clear;
+        }
 
-		public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
-		{
-			var cellWidth = 304;
-			var cellHeight = 40;
+        public override Source CreateSizingSource(bool unevenRows)
+        {
+            return new TaxiHailDialogSource(this, _willBeContainedInOtherView);
+        }
+    }
 
-			var cell =  base.GetCell(tableView, indexPath);
-			cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
-			cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
+    public class TaxiHailDialogSource : CrossUI.Touch.Dialog.DialogViewController.Source
+    {
+        private bool _willBeContainedInOtherView;
 
-			UIRectCorner cornerPlace = 0;
-			var borders = Border.Right | Border.Left | Border.Bottom;
+        public TaxiHailDialogSource(DialogViewController container, bool willBeContainedInOtherView) : base(container)
+        {
+            _willBeContainedInOtherView = willBeContainedInOtherView;
+        }
 
-			//first and last cells have different rounded corners
-			if (indexPath.Section == 0
-				&& indexPath.Row == 0)
-			{
-				cornerPlace = UIRectCorner.TopLeft | UIRectCorner.TopRight;
-			}
+        public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
+        {
+            var cell =  base.GetCell(tableView, indexPath);
+            cell.Frame  = cell.ContentView.Frame.SetHeight(tableView.RowHeight);
+            cell.ContentView.Frame = cell.ContentView.Frame.SetHeight(tableView.RowHeight);
+            cell.ContentView.BackgroundColor = UIColor.Clear;
+            cell.BackgroundColor = UIColor.Clear;
+            cell.IndentationLevel = 1;
 
-			if (indexPath.Row == tableView.NumberOfRowsInSection(indexPath.Section) - 1)
-			{
-				cornerPlace = UIRectCorner.BottomLeft | UIRectCorner.BottomRight;
-			}
+            if (_willBeContainedInOtherView)
+            {
+                var cellWidth = 304;
+                cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
+                cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
 
-			//the one before the last: remove the bottom border already present in the cell below
-			if (indexPath.Row == tableView.NumberOfRowsInSection(indexPath.Section) - 2)
-			{
-				borders = borders ^ Border.Bottom;
-			}
+                UIRectCorner cornerPlace = 0;
+                var borders = Border.Right | Border.Left | Border.Bottom;
 
-			var view = new RoundedCornerView( );
-			view.Borders = borders;
-			view.Corners = cornerPlace;
-			view.BackColor = UIColor.White;
-			view.FirstRowOfTwoRowsTable = indexPath.Row == 0 && tableView.NumberOfRowsInSection(indexPath.Section) == 2;
+                //first and last cells have different rounded corners
+                if (indexPath.Section == 0
+                    && indexPath.Row == 0)
+                {
+                    cornerPlace = UIRectCorner.TopLeft | UIRectCorner.TopRight;
+                }
 
-			if (UIHelper.IsOS7orHigher)
-			{
-				view.Frame = new RectangleF(0, 0, cellWidth, cellHeight);
-				var container = new UIView { BackgroundColor = UIColor.Clear };
-				container.AddSubview(view);
-				cell.BackgroundView = container;  
-				cell.SeparatorInset = new UIEdgeInsets(9, 9, 9, 9);
-			}
-			else
-			{
-				cell.BackgroundView = view;
-			}
+                if (indexPath.Row == tableView.NumberOfRowsInSection(indexPath.Section) - 1)
+                {
+                    cornerPlace = UIRectCorner.BottomLeft | UIRectCorner.BottomRight;
+                }
 
-			cell.ContentView.BackgroundColor = UIColor.Clear;
-			cell.BackgroundColor = UIColor.Clear;
-			cell.IndentationLevel = 1;
+                //the one before the last: remove the bottom border already present in the cell below
+                if (indexPath.Row == tableView.NumberOfRowsInSection(indexPath.Section) - 2)
+                {
+                    borders = borders ^ Border.Bottom;
+                }
 
-			return cell;
-		}
-	}
+                var view = new RoundedCornerView();
+                view.Borders = borders;
+                view.Corners = cornerPlace;
+                view.BackColor = UIColor.White;
+                view.FirstRowOfTwoRowsTable = indexPath.Row == 0 && tableView.NumberOfRowsInSection(indexPath.Section) == 2;
+
+                if (UIHelper.IsOS7orHigher)
+                {
+                    view.Frame = new RectangleF(0, 0, cellWidth, tableView.RowHeight);
+                    var container = new UIView { BackgroundColor = UIColor.Clear };
+                    container.AddSubview(view);
+                    cell.BackgroundView = container;  
+                    cell.SeparatorInset = new UIEdgeInsets(9, 9, 9, 9);
+                }
+                else
+                {
+                    cell.BackgroundView = view;
+                }
+            }
+            else
+            {
+                var cellWidth = 320;
+                cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
+                cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
+                cell.SelectedBackgroundView = new UIView(cell.Frame) { BackgroundColor = UIColor.FromRGB(190, 190, 190) };
+            }
+
+            return cell;
+        }
+    }
 }
 
