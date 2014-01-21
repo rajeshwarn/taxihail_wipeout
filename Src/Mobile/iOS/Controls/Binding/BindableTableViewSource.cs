@@ -3,9 +3,9 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
-	public class BindableAddressTableViewSource : BindableCommandTableViewSource
+	public class BindableTableViewSource : BindableCommandTableViewSource
 	{
-		public BindableAddressTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
+        public BindableTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
 			base( tableView, cellStyle, identifier, bindingText, accessory )
 		{
 		}

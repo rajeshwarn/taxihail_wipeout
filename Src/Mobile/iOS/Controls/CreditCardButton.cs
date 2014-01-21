@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
-
         [UsedImplicitly]
 		private string _last4Digits { get; set; }
         public string Last4Digits {

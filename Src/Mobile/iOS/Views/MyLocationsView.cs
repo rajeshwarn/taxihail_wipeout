@@ -39,13 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+            View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
 			tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
 			tableLocations.BackgroundColor = UIColor.Clear;
 			tableLocations.SeparatorColor = UIColor.Clear;
 
-			var source = new BindableAddressTableViewSource (
+            var source = new BindableTableViewSource (
 	             tableLocations, 
 	             UITableViewCellStyle.Subtitle, 
 				 new NSString (CellId), 
