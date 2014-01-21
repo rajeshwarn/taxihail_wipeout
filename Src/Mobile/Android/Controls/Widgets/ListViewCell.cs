@@ -11,24 +11,24 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class ListViewCell2 : TextView
+    public class ListViewCell : TextView
     {
         private bool _isBottom;
         private bool _isTop;
 
-        public ListViewCell2(Context context)
+        public ListViewCell(Context context)
             : base(context)
         {
             Ctor();
         }
 
-        public ListViewCell2(Context context, IAttributeSet attrs)
+        public ListViewCell(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
             Ctor();
         }
 
-        public ListViewCell2(IntPtr ptr, JniHandleOwnership handle)
+        public ListViewCell(IntPtr ptr, JniHandleOwnership handle)
             : base(ptr, handle)
         {
             Ctor();

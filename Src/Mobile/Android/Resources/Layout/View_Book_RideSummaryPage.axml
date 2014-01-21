@@ -63,12 +63,10 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/darkgray"
                 android:layout_marginBottom="20dip" />
+        <!-- Green -->
             <Button
                 android:id="@+id/SendReceiptBtn"
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
                 local:MvxBind="Click SendReceiptCommand; Visibility IsSendReceiptButtonShown, Converter=Visibility"
-                android:background="@drawable/green_button"
                 android:text="@string/HistoryDetailSendReceiptButton"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -77,11 +75,9 @@
                 android:paddingTop="5dip"
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
+        <!-- Green -->
             <Button
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
                 local:MvxBind="Click NavigateToRatingPage; Visibility IsRatingButtonShown, Converter=Visibility"
-                android:background="@drawable/green_button"
                 android:text="@string/RateBtn"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -90,11 +86,9 @@
                 android:paddingTop="5dip"
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
+        <!-- Green -->
             <Button
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
                 local:MvxBind="Click ResendConfirmationCommand; Visibility IsResendConfirmationButtonShown, Converter=Visibility"
-                android:background="@drawable/green_button"
                 android:text="@string/ReSendConfirmationButton"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"
@@ -103,11 +97,9 @@
                 android:paddingTop="5dip"
                 android:width="10dip"
                 android:layout_marginBottom="10dip" />
+        <!-- Green -->
             <Button
-                local:ButtonStyle="Green"
-                style="@style/ButtonText"
                 local:MvxBind="Click PayCommand; Visibility IsPayButtonShown, Converter=Visibility"
-                android:background="@drawable/green_button"
                 android:text="@string/StatusPayButton"
                 android:layout_width="match_parent"
                 android:layout_height="40dip"

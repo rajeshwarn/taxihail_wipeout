@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 if (ViewModel.ReceiptSent)
                 {
-                    var sendReceiptBtn = FindViewById<StyledButton>(Resource.Id.SendReceiptBtn);
+					var sendReceiptBtn = FindViewById<Button>(Resource.Id.SendReceiptBtn);
                     sendReceiptBtn.SetText(Resource.String.HistoryViewSendReceiptSuccess,
                         TextView.BufferType.Normal);
                     sendReceiptBtn.Enabled = false;

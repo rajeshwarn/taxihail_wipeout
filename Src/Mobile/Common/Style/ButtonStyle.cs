@@ -1,6 +1,6 @@
 namespace apcurium.MK.Booking.Mobile.Style
 {
-    public class ButtonStyle
+	public class StyledButtonStyle
     {
         public string Key {get;set;}
         public ColorDefinition[] Colors{get;set;}

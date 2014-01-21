@@ -203,7 +203,6 @@
     <Compile Include="Settings\AppSettingsData.cs" />
     <Compile Include="StartCallboxNavigation.cs" />
     <Compile Include="StartNavigation.cs" />
-    <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
     <Compile Include="Style\FontDefinition.cs" />
     <Compile Include="Style\ShadowDefinition.cs" />

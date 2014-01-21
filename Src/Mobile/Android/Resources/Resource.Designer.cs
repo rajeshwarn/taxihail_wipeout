@@ -107,9 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f01008e
 			public const int BackgroundSource = 2130772110;
 			
-			// aapt resource value: 0x7f010095
-			public const int ButtonStyle = 2130772117;
-			
 			// aapt resource value: 0x7f01008c
 			public const int HideLogo = 2130772108;
 			
@@ -5984,13 +5981,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 1
 			public const int apcurium_mk_booking_mobile_client_controls_HeaderedLayout_RightButtonSource = 1;
-			
-			public static int[] apcurium_mk_booking_mobile_client_controls_StyledButton = new int[]
-			{
-					2130772117};
-			
-			// aapt resource value: 0
-			public const int apcurium_mk_booking_mobile_client_controls_StyledButton_ButtonStyle = 0;
 			
 			public static int[] com_facebook_friend_picker_fragment = new int[]
 			{
