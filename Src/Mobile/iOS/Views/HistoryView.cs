@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewDidLoad ();
 			
-			View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+            View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
 			tableOrders.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
 			tableOrders.BackgroundColor = UIColor.Clear;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblNoHistory.Text = Localize.GetValue("HistoryViewNoHistoryLabel");
 			lblNoHistory.Hidden = true;
 
-			var source = new BindableAddressTableViewSource (
+            var source = new BindableTableViewSource (
 				tableOrders, 
 				UITableViewCellStyle.Subtitle, 
 				new NSString (CellId), 

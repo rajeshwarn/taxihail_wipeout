@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			((SearchTextField)SearchTextField).SetImageLeft( "Assets/Search/SearchIcon.png" );
 			SearchTextField.Placeholder = Localize.GetValue("searchHint");
             			
-			var source = new BindableAddressTableViewSource(
+            var source = new BindableTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
                                 new NSString(Cellid), 
