@@ -4,7 +4,6 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             if (!ViewModel.ShouldDisplayTipSlider)
             {
                 FindViewById<TextView>(Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
-                FindViewById<TipSlider>(Resource.Id.tipSlider).Visibility = ViewStates.Gone;
+				FindViewById<EditTextSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
             }
         }
     }

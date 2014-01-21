@@ -84,7 +84,7 @@
                         style="@style/BlackTextLabel" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text VehicleTypeName; Data Vehicles; SelectedItem VehicleTypeId" />
                     <TextView
@@ -97,7 +97,7 @@
                         style="@style/BlackTextLabel" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text ChargeTypeName; Data Payments; SelectedItem ChargeTypeId" />
                     <TextView
@@ -109,7 +109,7 @@
                         style="@style/BlackTextLabel" />
                     <apcurium.mk.booking.mobile.client.controls.EditTextNavigate
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         android:id="@+id/rideSettingsPassword"
                         local:MvxBind="NavigateCommand NavigateToUpdatePassword" />
@@ -124,7 +124,7 @@
                     <apcurium.mk.booking.mobile.client.controls.CreditCardButton
                         android:id="@+id/btCC"
                         android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightButton"
+                        android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:MvxBind="NavigateCommand PaymentPreferences.NavigateToCreditCardsList; Text PaymentPreferences.SelectedCreditCard.FriendlyName; Last4Digits PaymentPreferences.SelectedCreditCard.Last4Digits; CreditCardCompany PaymentPreferences.SelectedCreditCard.CreditCardCompany" />
                     <LinearLayout
@@ -139,14 +139,12 @@
                             android:text="@string/PaymentDetails.TipAmountLabel"
                             style="@style/BlackTextLabel" />
                     </LinearLayout>
-                    <apcurium.mk.booking.mobile.client.controls.TipSlider
+                    <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                        android:id="@+id/tipPicker"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal"
-                        android:id="@+id/tipSlider"
-                        android:layout_marginRight="-4dp"
-                        local:MvxBind="Percent PaymentPreferences.Tip, Mode=TwoWay" />
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:layout_marginBottom="10dip"
+                        local:MvxBind="Text TipAmount; Data Tips; SelectedItem TipId" />
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
