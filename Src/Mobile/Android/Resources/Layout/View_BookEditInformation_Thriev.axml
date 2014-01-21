@@ -1,88 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:local="http://schemas.android.com/apk/res-auto"
-  android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent"
-  android:gravity="center_horizontal"
-  android:focusable="true"
-  android:noHistory="true"
-  android:focusableInTouchMode="true">
-  <ScrollView
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"
-      android:gravity="center_horizontal"
-      android:orientation="vertical">
-      <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
-        <TextView
-          android:layout_width="120dip"
-          android:layout_height="wrap_content"
-          android:text="@string/LargeBagsLabel"
-          style="@style/FormLabelText" />
-        <EditText
-          local:MvxBind="Text Order.Settings.LargeBags"
-          android:id="@+id/largeBagsEditText"
-          android:layout_height="wrap_content"
-          android:maxLines="1"
-          android:singleLine="true"
-          android:layout_width="fill_parent" />
-      </LinearLayout>
-      <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:text="@string/RideSettingsVehiculeType"
-        style="@style/FormLabelText" />
-      <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        local:MvxBind="Text VehicleName; Data Vehicles; SelectedItem VehicleTypeId" />
-      <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:text="@string/RideSettingsChargeType"
-        style="@style/FormLabelText" />
-      <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        local:MvxBind="Text ChargeType; Data Payments; SelectedItem ChargeTypeId" />
-      <RelativeLayout
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:noHistory="true"
+    android:focusableInTouchMode="true">
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-          local:ButtonStyle="Green"
-          style="@style/ButtonTextLarge"
-          android:background="@drawable/green_button"
-          android:layout_width="180dip"
-          android:layout_height="40dip"
-          android:text="@string/SaveButton"
-          android:layout_centerInParent="true"
-          android:layout_marginRight="5dp"
-          local:MvxBind="Click SaveCommand" />
-      </RelativeLayout>
-    </LinearLayout>
-  </ScrollView>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+                <TextView
+                    android:layout_width="120dip"
+                    android:layout_height="wrap_content"
+                    android:text="@string/LargeBagsLabel"
+                    style="@style/FormLabelText" />
+                <EditText
+                    local:MvxBind="Text Order.Settings.LargeBags"
+                    android:id="@+id/largeBagsEditText"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:layout_width="fill_parent" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="@string/RideSettingsVehiculeType"
+                style="@style/FormLabelText" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                local:MvxBind="Text VehicleName; Data Vehicles; SelectedItem VehicleTypeId" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="@string/RideSettingsChargeType"
+                style="@style/FormLabelText" />
+            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                local:MvxBind="Text ChargeType; Data Payments; SelectedItem ChargeTypeId" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <!-- Green -->
+                <Button
+                    android:layout_width="180dip"
+                    android:layout_height="40dip"
+                    android:text="@string/SaveButton"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="Click SaveCommand" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

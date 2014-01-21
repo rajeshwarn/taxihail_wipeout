@@ -4,18 +4,17 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "RideSettingsActivity", Theme = "@android:style/Theme.NoTitleBar",
+	[Activity(Label = "RideSettingsActivity", Theme = "@style/MainTheme",
         WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = ScreenOrientation.Portrait)]
     public class RideSettingsActivity : BaseBindingActivity<RideSettingsViewModel>
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_RideSettings; }
+            get { return Resource.String.RideSettingsView; }
         }
 
         protected override void OnViewModelSet()
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             if (!ViewModel.ShouldDisplayTipSlider)
             {
                 FindViewById<TextView>(Resource.Id.tipAmountLabel).Visibility = ViewStates.Gone;
-                FindViewById<TipSlider>(Resource.Id.tipSlider).Visibility = ViewStates.Gone;
+				FindViewById<EditTextSpinner>(Resource.Id.tipPicker).Visibility = ViewStates.Gone;
             }
         }
     }

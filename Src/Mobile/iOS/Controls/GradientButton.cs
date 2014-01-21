@@ -2,11 +2,12 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using apcurium.MK.Booking.Mobile.Style;
+
 using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
