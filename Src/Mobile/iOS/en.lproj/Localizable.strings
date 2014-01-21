@@ -37,7 +37,6 @@
 "ServiceErrorDefaultMessage"="An error occurred. Please try again.";
 "View_LocationList"="Locations";
 "Time"="Time";
-"AboutUsUrl"="Assets/About_en.html";
 "RefineAddressTitle"="Refine an address";
 "ConfirmPassengerSettingsTitle"="Passenger Settings";
 "NetworkErrorMessage"="Cannot connect to Internet. Please check your connection settings and try again.";
@@ -517,3 +516,4 @@
 "UpdatePasswordCurrentPasswordLabel"="Current Password";
 "UpdatePasswordConfirmationLabel"="Confirmation";
 "RideSettingsView"="Profile";
+"View_AboutUs"="About Us";
