@@ -12,8 +12,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="15dip"
-        android:paddingRight="15dip"
-        android:paddingLeft="15dip"
+        android:paddingRight="7dip"
+        android:paddingLeft="7dip"
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <ImageView

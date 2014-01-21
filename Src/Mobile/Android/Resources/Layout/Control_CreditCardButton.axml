@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content"
-  android:background="#00000000">
-  <EditText
-    android:id="@+id/creditCardName"
-    android:editable="false"
-    android:layout_height="wrap_content"
     android:layout_width="fill_parent"
-    android:layout_centerVertical="true"
-    android:paddingLeft="70dip" />
-  <TextView
-    style="@style/SearchButtonText"
-    android:id="@+id/creditCardLast4Digits"
-    android:textColor="#858585"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
-    android:gravity="right|center_vertical"
-    android:paddingRight="40dp"
-    android:paddingBottom="5dp" />
-  <ImageView
-    android:src="@drawable/right_arrow_light"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_alignParentRight="true"
-    android:layout_marginRight="20dp"
-    android:paddingBottom="5dp" />
-  <ImageView
-    android:id="@+id/creditCardImage"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_alignParentLeft="true"
-    android:layout_marginLeft="5dp"
-    android:paddingBottom="5dp" />
-  <Button
-    android:id="@+id/creditCardButton"
-    android:background="@android:color/transparent"
-    android:layout_width="fill_parent"
-    android:layout_height="43dip" />
+    android:background="#00000000">
+    <EditText
+        android:id="@+id/creditCardName"
+        android:editable="false"
+        android:layout_height="@dimen/HeightEditTextFlat"
+        android:layout_width="fill_parent"
+        android:layout_centerVertical="true"
+        android:paddingLeft="70dip" />
+    <TextView
+        style="@style/SearchButtonText"
+        android:id="@+id/creditCardLast4Digits"
+        android:textColor="#858585"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="right|center_vertical"
+        android:paddingRight="40dp" />
+    <ImageView
+        android:src="@drawable/right_arrow_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="5dp"
+        android:layout_marginRight="20dp"
+        android:paddingBottom="5dp" />
+    <ImageView
+        android:id="@+id/creditCardImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:paddingBottom="2dp" />
+    <Button
+        android:id="@+id/creditCardButton"
+        android:background="@android:color/transparent"
+        android:layout_width="fill_parent"
+        android:layout_height="43dip" />
 </RelativeLayout>

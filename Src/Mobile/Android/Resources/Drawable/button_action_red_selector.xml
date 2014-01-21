@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <stroke android:width="0.5dp" android:color="@color/black" />
+            <corners android:radius="3dp" />          
+        </shape>
+    </item>
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <stroke android:width="0.5dp" android:color="@color/button_red_border_color" />
+            <corners android:radius="3dp" />
+            <solid android:color="@color/transparent" />
+        </shape>
+    </item>
+</selector>

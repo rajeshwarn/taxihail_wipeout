@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
     {
         private readonly CellItemBindingProperty _property;
 
-		public CellItemBinding(ListViewCell2 target, CellItemBindingProperty property)
+		public CellItemBinding(ListViewCell target, CellItemBindingProperty property)
 			:base(target)
         {
             _property = property;
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Binding
 
 		protected override void SetValueImpl(object target, object value)
         {
-			var control = (ListViewCell2)target;
+			var control = (ListViewCell)target;
             if (_property == CellItemBindingProperty.IsBottom)
             {
                 control.IsBottom = (bool) value;

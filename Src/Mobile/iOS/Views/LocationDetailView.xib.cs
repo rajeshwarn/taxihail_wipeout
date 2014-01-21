@@ -57,6 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var set = this.CreateBindingSet<LocationDetailView, LocationDetailViewModel> ();
 
+            set.Bind (NavigationItem.RightBarButtonItem)
+                .For ("Clicked")
+                .To(vm => vm.SaveAddress);
+
 			set.Bind(txtAddress)
 				.For(v => v.Text)
 				.To(vm => vm.BookAddress);
@@ -75,10 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtName)
 				.For(v => v.Text)
 				.To(vm => vm.FriendlyName);
-
-			set.Bind (NavigationItem.RightBarButtonItem)
-				.For ("Clicked")
-				.To(vm => vm.SaveAddress);
 
 			set.Bind(btnRebook)
 				.For("TouchUpInside")

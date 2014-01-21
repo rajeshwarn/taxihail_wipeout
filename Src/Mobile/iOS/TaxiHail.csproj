@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -305,9 +305,6 @@
     <Compile Include="Controls\TextField.cs" />
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
-    <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
-    <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
-    <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
@@ -343,7 +340,6 @@
     </Compile>
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
-    <Compile Include="Controls\Binding\BindableAddressTableViewSource.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
     <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
@@ -359,7 +355,6 @@
     <Compile Include="Views\UpdatePasswordView.designer.cs">
       <DependentUpon>UpdatePasswordView.xib</DependentUpon>
     </Compile>
-    <Compile Include="MonoTouchDialog\NavigationElement.cs" />
     <Compile Include="Views\LoginView.xib.cs">
       <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
@@ -514,6 +509,11 @@
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
     <Compile Include="FontName.cs" />
     <Compile Include="Controls\Widgets\PanelMenuCell.cs" />
+    <Compile Include="Controls\Widgets\ModalFlatTextField.cs" />
+    <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
+    <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
+    <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
+    <Compile Include="Controls\Binding\BindableTableViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -751,6 +751,31 @@
     <BundleResource Include="Assets\Logo.png" />
     <BundleResource Include="Assets\Logo%402x.png" />
     <BundleResource Include="app.png" />
+    <BundleResource Include="Resources\clearButton.png" />
+    <BundleResource Include="Resources\left_arrow.png" />
+    <BundleResource Include="Resources\left_arrow%402x.png" />
+    <BundleResource Include="Resources\active.png" />
+    <BundleResource Include="Resources\active%402x.png" />
+    <BundleResource Include="Resources\cancelled.png" />
+    <BundleResource Include="Resources\cancelled%402x.png" />
+    <BundleResource Include="Resources\completed.png" />
+    <BundleResource Include="Resources\completed%402x.png" />
+    <BundleResource Include="Resources\scheduled.png" />
+    <BundleResource Include="Resources\scheduled%402x.png" />
+    <BundleResource Include="Resources\amex.png" />
+    <BundleResource Include="Resources\amex%402x.png" />
+    <BundleResource Include="Resources\credit_card_generic.png" />
+    <BundleResource Include="Resources\credit_card_generic%402x.png" />
+    <BundleResource Include="Resources\mastercard.png" />
+    <BundleResource Include="Resources\mastercard%402x.png" />
+    <BundleResource Include="Resources\paypal.png" />
+    <BundleResource Include="Resources\paypal%402x.png" />
+    <BundleResource Include="Resources\visa.png" />
+    <BundleResource Include="Resources\visa%402x.png" />
+    <BundleResource Include="Resources\visa_electron.png" />
+    <BundleResource Include="Resources\visa_electron%402x.png" />
+    <BundleResource Include="Resources\delete_card_btn.png" />
+    <BundleResource Include="Resources\delete_card_btn%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

@@ -44,21 +44,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		private void ApplyDefaultStyle()
 		{
-			var blue = UIColor.FromRGB(0, 72, 129);
-
 			Font = UIFont.FromName (FontName.HelveticaNeueLight, 40/2);
 
-			SetFillColor(blue, UIControlState.Normal);
-			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Selected);
-			SetFillColor(blue.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+            var DarkBlue = UIColor.FromRGB(3, 27, 49);
+
+            SetFillColor(UIColor.Clear, UIControlState.Normal);
+            SetFillColor(UIColor.Clear, UIControlState.Selected);
+            SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
 			SetTitleColor(UIColor.White, UIControlState.Normal);
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Selected);
 			SetTitleColor(UIColor.White.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-			SetStrokeColor(UIColor.Black, UIControlState.Normal);
-			SetStrokeColor(UIColor.Black, UIControlState.Selected);
-			SetStrokeColor(UIColor.Black, UIControlState.Highlighted);
+            SetStrokeColor(DarkBlue, UIControlState.Normal);
+            SetStrokeColor(DarkBlue, UIControlState.Selected);
+            SetStrokeColor(DarkBlue, UIControlState.Highlighted);
 		}
 
         public override void Draw (RectangleF rect)
@@ -88,8 +88,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 SetImage(_leftImage, UIControlState.Normal);
                 HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-				var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; //calculate the left padding for this image to have images centered instead of left-aligned
+
+				//calculate the left padding for this image to have images centered instead of left-aligned
+				var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; 
 				ImageEdgeInsets = new UIEdgeInsets(0.0f, leftPaddingForThisImage, 0.0f, 0.0f);
+
                 //compute the left margin for the text and center it
                 var halfTextSize = TitleLabel.Frame.Width / 2; 
 				var center = (Frame.Width - _leftImage.Size.Width - StandardImagePadding - 3) / 2;

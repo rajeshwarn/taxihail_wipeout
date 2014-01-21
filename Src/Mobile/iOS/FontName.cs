@@ -4,9 +4,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public static class FontName
 	{
-		public static string HelveticaNeueLight = "HelveticaNeue-Light";
-		public static string HelveticaNeueMedium = "HelveticaNeue-Medium";
-		public static string HelveticaNeueBold = "HelveticaNeue-Bold";
+        public const string HelveticaNeueLight = "HelveticaNeue-Light";
+        public const string HelveticaNeueMedium = "HelveticaNeue-Medium";
+        public const string HelveticaNeueBold = "HelveticaNeue-Bold";
 	}
 }
 

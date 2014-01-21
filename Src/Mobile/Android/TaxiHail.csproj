@@ -192,18 +192,7 @@
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheItem.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
-    <Compile Include="Controls\BaloonLayout.cs" />
-    <Compile Include="Controls\BindableSelectionButton.cs" />
-    <Compile Include="Controls\EditTextDelete.cs" />
-    <Compile Include="Controls\EditTextSpinner.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
-    <Compile Include="Controls\HorizontalPager.cs" />
-    <Compile Include="Controls\PictureListViewCell.cs" />
-    <Compile Include="Controls\TextButton.cs" />
-    <Compile Include="Controls\IconActionControl.cs" />
-    <Compile Include="Controls\TouchMap.cs" />
-    <Compile Include="Controls\UnderlineTextView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
@@ -230,26 +219,16 @@
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\ListStructure.cs" />
-    <Compile Include="ListViewCell\LabelValueCell.cs" />
-    <Compile Include="ListViewCell\InfoCell.cs" />
-    <Compile Include="ListViewCell\SectionItemCellRegistry.cs" />
-    <Compile Include="ListViewCell\TextEditCell.cs" />
     <Compile Include="ListViewStructure\TextEditSectionItem.cs" />
     <Compile Include="Activities\Setting\RideSettingsActivity.cs" />
-    <Compile Include="ListViewCell\ListViewAdapter.cs" />
     <Compile Include="ListViewStructure\SpinnerSectionItem.cs" />
-    <Compile Include="ListViewCell\SpinnerCell.cs" />
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Controls\ReclickableTabHost.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
     <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
     <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
-    <Compile Include="Controls\ListViewCell2.cs" />
-    <Compile Include="Controls\SpinningSearch.cs" />
-    <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
     <AndroidResource Include="Resources\Drawable\pin_cab.png" />
@@ -274,7 +253,6 @@
     <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <Compile Include="Controls\EditTextNavigate.cs" />
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -284,12 +262,7 @@
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
-    <Compile Include="Controls\StyledButton.cs" />
-    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
-    <Compile Include="Controls\SearchButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -305,9 +278,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\amex.png" />
     <AndroidResource Include="Resources\drawable-hdpi\visa.png" />
     <AndroidResource Include="Resources\drawable-hdpi\mastercard.png" />
-    <Compile Include="Controls\BindableRadioButton.cs" />
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
-    <Compile Include="Controls\CreditCardButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
@@ -318,7 +289,6 @@
     <AndroidResource Include="Resources\Drawable\notification_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\notification_icon.png" />
     <Compile Include="Animations\SlideDownAnimation.cs" />
-    <Compile Include="Controls\SlidingPanel.cs" />
     <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
     <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
@@ -344,15 +314,11 @@
     <Compile Include="Binding\TextViewBinding.cs" />
     <Compile Include="Binding\TipSliderBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
-    <Compile Include="Controls\Slider\HeaderMarks.cs" />
-    <Compile Include="Controls\Slider\Control.cs" />
-    <Compile Include="Controls\Slider\SliderControl.cs" />
     <Compile Include="Controls\TipSlider.cs" />
     <Compile Include="Extensions\DisplayExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
     <AndroidResource Include="Resources\Drawable\sliderYellowBar.png" />
     <AndroidResource Include="Resources\Drawable\sliderYellowBarBody.png" />
-    <Compile Include="Controls\Slider\GrayBarControl.cs" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
     <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <Compile Include="Activities\Book\BookPayPalActivity.cs">
@@ -370,7 +336,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\splash.9.png" />
     <AndroidResource Include="Resources\Drawable\paypal.png" />
     <AndroidResource Include="Resources\drawable-hdpi\paypal.png" />
-    <Compile Include="Resources\Resource.Designer.cs" />
     <AndroidResource Include="Resources\Layout\View_BookingDetail_Thriev.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -385,7 +350,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Account\TermsAndConditionsActivity.cs" />
-    <Compile Include="Controls\EditTextLeftImage.cs" />
     <AndroidResource Include="Resources\Layout\Control_EditTextLeftImage.axml" />
     <Compile Include="Binding\EditTextCreditCardNumberBinding.cs" />
     <AndroidResource Include="Resources\Drawable\credit_card_generic.png" />
@@ -424,19 +388,37 @@
     <Compile Include="Controls\Widgets\EditTextEntry.cs" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Canceled.png" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Completed.png" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Created.png" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Pending.png" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Removed.png" />
-    <AndroidResource Include="Resources\Drawable\orderStatus_Unknown.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Canceled.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Completed.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Created.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Pending.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Removed.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\orderStatus_Unknown.png" />
     <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
+    <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_text_selector.xml" />
+    <Compile Include="Helpers\DensityHelper.cs" />
+    <AndroidResource Include="Resources\Drawable\apc_logo_menu.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\apc_logo_menu.png" />
+    <AndroidResource Include="Resources\Drawable\button_action_black_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_gray_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_green_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_red_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_text_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\active.png" />
+    <AndroidResource Include="Resources\Drawable\cancelled.png" />
+    <AndroidResource Include="Resources\Drawable\completed.png" />
+    <AndroidResource Include="Resources\Drawable\scheduled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cancelled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\completed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\scheduled.png" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Controls\Widgets\CreditCardButton.cs" />
+    <Compile Include="Controls\Widgets\ListViewCell.cs" />
+    <Compile Include="Controls\Widgets\EditTextLeftImage.cs" />
+    <Compile Include="Controls\Widgets\TextProgressButton.cs" />
+    <Compile Include="Controls\Widgets\BindableSelectionButton.cs" />
+    <Compile Include="Controls\Widgets\EditTextNavigate.cs" />
+    <Compile Include="Controls\Widgets\EditTextSpinner.cs" />
+    <Compile Include="Controls\Widgets\PictureListViewCell.cs" />
+    <Compile Include="Controls\Widgets\SlidingPanel.cs" />
+    <Compile Include="Controls\Widgets\TouchMap.cs" />
+    <Compile Include="Controls\Widgets\HorizontalPager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -632,10 +614,6 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_nobg_black_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_nobg_gray_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_nobg_green_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_nobg_red_selector.xml" />
     <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\add_location.png" />
     <AndroidResource Include="Resources\drawable-hdpi\favorites.png" />
