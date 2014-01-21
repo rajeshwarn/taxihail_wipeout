@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_RideSettings; }
+            get { return Resource.String.RideSettingsView; }
         }
 
         protected override void OnViewModelSet()

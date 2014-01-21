@@ -6,17 +6,20 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSettingsView">
             <connections>
+                <outlet property="constraintContentViewHeight" destination="47M-E8-ka7" id="dYI-5L-LRF"/>
                 <outlet property="lblChargeType" destination="LEQ-dq-bRV" id="yP7-hg-oui"/>
                 <outlet property="lblCreditCard" destination="0n6-Zc-YNm" id="e5b-Wb-SXX"/>
                 <outlet property="lblName" destination="HWN-Pq-yPZ" id="K04-uw-tT9"/>
                 <outlet property="lblPassword" destination="m1K-K7-Ypz" id="vB7-U6-P2V"/>
                 <outlet property="lblPhone" destination="o6C-2X-Wpz" id="yHo-VV-j8s"/>
+                <outlet property="lblTip" destination="f9f-Bd-JUM" id="Ww8-cP-vCo"/>
                 <outlet property="lblVehicleType" destination="H5h-hf-udS" id="46H-t5-5DB"/>
                 <outlet property="txtChargeType" destination="qOe-Cq-18G" id="cT5-i7-EWU"/>
                 <outlet property="txtCreditCard" destination="ncl-SZ-qgo" id="7bg-U3-uRM"/>
                 <outlet property="txtName" destination="1fn-yd-ctg" id="daH-eY-I3p"/>
                 <outlet property="txtPassword" destination="mLf-L5-n69" id="fPZ-ys-Vqf"/>
                 <outlet property="txtPhone" destination="qvL-aD-nFd" id="JhY-wW-IEh"/>
+                <outlet property="txtTip" destination="TGv-zj-jdK" id="IhG-IE-9ad"/>
                 <outlet property="txtVehicleType" destination="Gk7-FK-bNN" id="QSy-4k-hol"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -35,7 +38,7 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWN-Pq-yPZ">
-                                    <rect key="frame" x="6" y="14" width="140" height="21"/>
+                                    <rect key="frame" x="8" y="14" width="140" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="140" id="0x4-qa-zZF"/>
@@ -206,13 +209,14 @@
                                 <constraint firstItem="LEQ-dq-bRV" firstAttribute="top" secondItem="Gk7-FK-bNN" secondAttribute="bottom" constant="12" id="aM8-Pd-Q6g"/>
                                 <constraint firstItem="TGv-zj-jdK" firstAttribute="top" secondItem="f9f-Bd-JUM" secondAttribute="bottom" constant="6" id="eJI-kW-ys9"/>
                                 <constraint firstAttribute="trailing" secondItem="qOe-Cq-18G" secondAttribute="trailing" constant="8" id="gbT-pc-geX"/>
+                                <constraint firstItem="f9f-Bd-JUM" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" priority="1" constant="12" id="j18-NO-lkm"/>
                                 <constraint firstItem="ncl-SZ-qgo" firstAttribute="top" secondItem="0n6-Zc-YNm" secondAttribute="bottom" constant="6" id="kUA-mP-jJg"/>
                                 <constraint firstAttribute="trailing" secondItem="qvL-aD-nFd" secondAttribute="trailing" constant="8" id="lf9-ex-Ixb"/>
                                 <constraint firstItem="m1K-K7-Ypz" firstAttribute="top" secondItem="qvL-aD-nFd" secondAttribute="bottom" constant="12" id="pER-6b-WIV"/>
                                 <constraint firstItem="0n6-Zc-YNm" firstAttribute="top" secondItem="qOe-Cq-18G" secondAttribute="bottom" constant="12" id="q5O-33-94M"/>
                                 <constraint firstItem="H5h-hf-udS" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="sFt-ft-Zg8"/>
                                 <constraint firstAttribute="trailing" secondItem="1fn-yd-ctg" secondAttribute="trailing" constant="8" id="tbb-lJ-Cj5"/>
-                                <constraint firstItem="HWN-Pq-yPZ" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="6" id="tyH-4y-PGs"/>
+                                <constraint firstItem="HWN-Pq-yPZ" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="tyH-4y-PGs"/>
                                 <constraint firstItem="ncl-SZ-qgo" firstAttribute="leading" secondItem="80" secondAttribute="leading" constant="8" id="wJF-We-AHj"/>
                                 <constraint firstItem="qOe-Cq-18G" firstAttribute="top" secondItem="LEQ-dq-bRV" secondAttribute="bottom" constant="6" id="xL5-mb-D8B"/>
                                 <constraint firstAttribute="trailing" secondItem="ncl-SZ-qgo" secondAttribute="trailing" constant="8" id="y1x-Tq-XEp"/>
