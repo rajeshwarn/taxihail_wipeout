@@ -99,6 +99,6 @@ Src/Mobile/Infrastructure/Cirrious.MvvmCross/Touch/Platform/Tasks/._MvxImagePick
 Config/._default device taxihail no 3gs apcurium.txt
 Config/._default device taxihail.txt
 *_log.csv
-Src\Mobile\Android\Resources\Resource.Designer.cs
+*Resource.Designer.cs
 syntax: regexp
 Deployment/Database/*

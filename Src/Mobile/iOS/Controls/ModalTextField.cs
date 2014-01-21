@@ -28,7 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
-        private void Initialize() {
+        private void Initialize() 
+        {
+
         }
 
         public override void WillMoveToSuperview (UIView newsuper)
@@ -81,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
             var selected = 0;
-            var section = new SectionWithBackground(title);
+            var section = new Section(title);
 
             foreach (var v in values)
             {

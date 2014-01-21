@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Extensions;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -17,59 +19,55 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 		
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.Title = Localize.GetValue("View_RideSettings");
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
-            NavigationController.NavigationBar.Hidden = false;
-            Container.BackgroundColor = UIColor.Clear;
-			scrollView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            View.BackgroundColor = UIColor.Clear; 
+            View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
 			if (!ViewModel.ShouldDisplayCreditCards) {
-                lblCreditCard.Hidden = true;           
-                btnCreditCard.Hidden = true;
-				lblTipAmount.SetY (364);
-				TipSlider.SetY (393);
+                lblCreditCard.RemoveFromSuperview();//lblCreditCard.Hidden = true;           
+                txtCreditCard.RemoveFromSuperview();//btnCreditCard.Hidden = true;
+//				lblTipAmount.SetY (364);
+//				TipSlider.SetY (393);
             }
-
-			if (!ViewModel.ShouldDisplayTipSlider) {
-				lblTipAmount.Hidden = true;
-				TipSlider.Hidden = true;
-			}
-                        
-			if (!ViewModel.ShouldDisplayTipSlider && !ViewModel.ShouldDisplayCreditCards) {
-				Container.SetBottom (lblChargeType.Frame.Bottom);
-			}
-
-            scrollView.AutoSize ();
+//
+//			if (!ViewModel.ShouldDisplayTipSlider) {
+//				lblTipAmount.Hidden = true;
+//				TipSlider.Hidden = true;
+//			}
+//                        
+//			if (!ViewModel.ShouldDisplayTipSlider && !ViewModel.ShouldDisplayCreditCards) {
+//				Container.SetBottom (lblChargeType.Frame.Bottom);
+//			}
 
 			lblName.Text= Localize.GetValue("RideSettingsName");
 			lblPhone.Text= Localize.GetValue("RideSettingsPhone");
 			lblVehicleType.Text= Localize.GetValue("RideSettingsVehiculeType");
 			lblChargeType.Text= Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
+            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+            txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName, txtPhone);
 
-            var button = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, delegate
+            var button = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, delegate
             {
                 ViewModel.SaveCommand.Execute();
             });
-
-            NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
-            NavigationItem.Title = Localize.GetValue("View_RideSettings");
 
-// ReSharper disable CoVariantArrayConversion
-            (pickerVehiculeType).Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
-
-            (pickerChargeType).Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
- // ReSharper restore CoVariantArrayConversion
-
-            lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
-
-            txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
+            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
+            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
+//            txtTip.Configure("Tip", ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
 
 			var set = this.CreateBindingSet<RideSettingsView, RideSettingsViewModel> ();
 
@@ -81,11 +79,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Phone);
 
-			set.Bind(pickerVehiculeType)
+            set.Bind(txtVehicleType)
 				.For("Text")
 				.To(vm => vm.VehicleTypeName);
 
-			set.Bind(pickerChargeType)
+            set.Bind(txtChargeType)
 				.For("Text")
 				.To(vm => vm.ChargeTypeName);
 
@@ -93,23 +91,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.NavigateToUpdatePassword);
 
-			set.Bind(btnCreditCard)
+            set.Bind(txtCreditCard)
 				.For("Text")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.FriendlyName);
-			set.Bind(btnCreditCard)
+            set.Bind(txtCreditCard)
 				.For(v => v.Last4Digits)
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.Last4Digits);
-			set.Bind(btnCreditCard)
+            set.Bind(txtCreditCard)
 				.For("CreditCardCompany")
 				.To(vm => vm.PaymentPreferences.SelectedCreditCard.CreditCardCompany);
-			set.Bind(btnCreditCard)
+            set.Bind(txtCreditCard)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
 
-			set.Bind(TipSlider)
-				.For("Value")
-				.To(vm => vm.PaymentPreferences.Tip);
-
+//			set.Bind(TipSlider)
+//				.For("Value")
+//				.To(vm => vm.PaymentPreferences.Tip);
+//
 			set.Apply ();       
         }
     }

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
