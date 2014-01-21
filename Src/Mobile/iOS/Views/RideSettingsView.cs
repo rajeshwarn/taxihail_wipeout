@@ -56,17 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             DismissKeyboardOnReturn(txtName, txtPhone);
 
-            var button = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, delegate
-            {
-                ViewModel.SaveCommand.Execute();
-            });
-            NavigationItem.RightBarButtonItem = button;
-
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
             txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
 
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
+
 			var set = this.CreateBindingSet<RideSettingsView, RideSettingsViewModel> ();
+
+            set.Bind (NavigationItem.RightBarButtonItem)
+                .For ("Clicked")
+                .To(vm => vm.SaveCommand);
 
 			set.Bind(txtName)
 				.For(v => v.Text)

@@ -39,10 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             
 			View.BackgroundColor = UIColor.FromRGB (239, 239, 239);
 
-            
 			FlatButtonStyle.Red.ApplyTo (btnDelete);
 			FlatButtonStyle.Green.ApplyTo (btnRebook);
-
 
 			lblOrder.Text = Localize.GetValue("HistoryDetailOrderLabel");
 			lblRequested.Text = Localize.GetValue("HistoryDetailRequestedLabel");
@@ -81,18 +79,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.CancelOrder);
 
-					set.Bind(txtOrder)
+            set.Bind(txtOrder)
 				.For(v => v.Text)
 				.To(vm => vm.ConfirmationTxt);
 
 			if (!ViewModel.HideDestination)
 			{
 				set.Bind (txtDestination)
-				.For (v => v.Text)
-				.To (vm => vm.DestinationTxt);
+				    .For (v => v.Text)
+				    .To (vm => vm.DestinationTxt);
 				set.Bind (txtDestination)
-				.For (v => v.Hidden)
-				.To (vm => vm.HideDestination);
+				    .For (v => v.Hidden)
+				    .To (vm => vm.HideDestination);
 			}
 
 			set.Bind(txtPickup)
@@ -116,7 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.PickUpDateTxt);
 
 			set.Apply ();
-
          }
     }
 }
