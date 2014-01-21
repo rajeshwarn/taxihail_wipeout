@@ -1,11 +1,12 @@
 using MonoTouch.UIKit;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public abstract class FlatButtonStyle
 	{
-		UIColor MainColor = UIColor.FromRGB(0, 71, 148);
+		UIColor MainColor = Theme.MainButtonBackgroundColor;
 		UIColor DarkBlue = UIColor.FromRGB(3, 27, 49);
 		UIColor GreenColor = UIColor.FromRGB(31, 191, 33);
 

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -27,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-			View.BackgroundColor = UIColor.FromRGB(0, 72, 129);
+			View.BackgroundColor = Theme.BackgroundColor;
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
 			txtEmail.ReturnKeyType = UIReturnKeyType.Done;
