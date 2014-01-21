@@ -128,17 +128,17 @@
 
     <style name="ButtonActionRedStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_red_selector</item>
-      <item name="android:textColor">@color/button_action_red_text_selector</item>      
+      <item name="android:textColor">@drawable/button_action_red_text_selector</item>      
     </style>
 
     <style name="ButtonActionGrayStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_gray_selector</item>
-      <item name="android:textColor">@color/button_action_gray_text_selector</item>      
+      <item name="android:textColor">@drawable/button_action_gray_text_selector</item>      
     </style>
 
     <style name="ButtonActionBlackStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_black_selector</item>
-      <item name="android:textColor">@color/button_action_black_text_selector</item>      
+      <item name="android:textColor">@drawable/button_action_black_text_selector</item>      
     </style>
 
   	<!--- Themes -->
