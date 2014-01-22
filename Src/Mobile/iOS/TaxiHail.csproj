@@ -287,12 +287,6 @@
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
     <Compile Include="Controls\Binding\Binding.cs" />
-    <Compile Include="Settings\AboutUsView.xib.cs">
-      <DependentUpon>AboutUsView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\AboutUsView.xib.designer.cs">
-      <DependentUpon>AboutUsView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -514,6 +508,12 @@
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
     <Compile Include="Controls\Binding\BindableTableViewSource.cs" />
+    <Compile Include="Views\AboutUsView.xib.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutUsView.xib.designer.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -528,7 +528,6 @@
   <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="Settings\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -559,6 +558,7 @@
     <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
+    <InterfaceDefinition Include="Views\AboutUsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
