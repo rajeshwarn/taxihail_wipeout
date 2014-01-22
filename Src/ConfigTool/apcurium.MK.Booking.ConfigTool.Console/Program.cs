@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     Console.WriteLine("");
                     Console.WriteLine("Enter the config number:");
                     var selectedText = Console.ReadLine();
-					int selected = 0;//int.Parse(selectedText);
+					int selected = 1;//int.Parse(selectedText);
 
 					Console.WriteLine("Enter the server url:");
 					var url = "http://test.taxihail.biz:8181/taxihaildemo/api/";//Console.ReadLine();
