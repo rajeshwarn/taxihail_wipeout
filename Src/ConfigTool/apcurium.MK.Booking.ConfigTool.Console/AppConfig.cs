@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""button_main_background_color""]", 
-					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) + "4B" 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) + "4b" 
 				},
 				new ConfigXML(this)
 				{  
