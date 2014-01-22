@@ -196,6 +196,18 @@ namespace apcurium.MK.Booking.ConfigTool
 					Destination=@"Mobile\iOS\Style\Theme.xml", 
 					NodeSelector=@"//ThemeValues/LoginBackgroundColor", 
 					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
+				},
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\iOS\Style\Theme.xml", 
+					NodeSelector=@"//ThemeValues/ButtonTextColor", 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
+				},
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\iOS\Style\Theme.xml", 
+					NodeSelector=@"//ThemeValues/LabelTextColor", 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
 				}
 
            };

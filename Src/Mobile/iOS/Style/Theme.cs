@@ -22,12 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 			get{ return ToUIColor(_themeValues.LoginBackgroundColor, ref _backgroundColor); }
 		}
 
-		static UIColor _mainButtonBackgroundColor;
-		public static UIColor MainButtonBackgroundColor
-		{
-			get{ return ToUIColor(_themeValues.MainButtonBackgroundColor, ref _mainButtonBackgroundColor); }
-		}
-
 		static UIColor _labelTextColor;
 		public static UIColor LabelTextColor
 		{
@@ -56,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 	public class ThemeValues 
 	{
 		public string LoginBackgroundColor { get; set; }
-		public string MainButtonBackgroundColor { get; set; }
 		public string LabelTextColor { get; set; }
 		public string ButtonTextColor { get; set; }
 	}
