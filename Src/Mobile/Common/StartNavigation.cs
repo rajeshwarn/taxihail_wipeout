@@ -11,6 +11,10 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -26,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
             Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
-
 
             if (TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount == null)
 			{
@@ -52,7 +55,14 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				ShowViewModel<BookViewModel>();
+				ShowViewModel<ConfirmCarNumberViewModel>(
+					new
+					{
+						order = new Order().ToJson(),
+						orderStatus = new OrderStatusDetail(){VehicleNumber = "123"}.ToJson()
+					});
+
+//				ShowViewModel<BookViewModel>();
             }
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
