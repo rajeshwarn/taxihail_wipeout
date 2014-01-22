@@ -776,6 +776,25 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\delete_card_btn.png" />
     <BundleResource Include="Resources\delete_card_btn%402x.png" />
+    <BundleResource Include="Resources\add_location.png" />
+    <BundleResource Include="Resources\add_location%402x.png" />
+    <BundleResource Include="Resources\apc_logo_menu.png" />
+    <BundleResource Include="Resources\apc_logo_menu%402x.png" />
+    <BundleResource Include="Resources\facebook_icon.png" />
+    <BundleResource Include="Resources\facebook_icon%402x.png" />
+    <BundleResource Include="Resources\favorites.png" />
+    <BundleResource Include="Resources\favorites%402x.png" />
+    <BundleResource Include="Resources\history.png" />
+    <BundleResource Include="Resources\history%402x.png" />
+    <BundleResource Include="Resources\right_arrow.png" />
+    <BundleResource Include="Resources\right_arrow%402x.png" />
+    <BundleResource Include="Resources\th_logo.png" />
+    <BundleResource Include="Resources\th_logo%402x.png" />
+    <BundleResource Include="Resources\twitter_icon.png" />
+    <BundleResource Include="Resources\twitter_icon%402x.png" />
+    <BundleResource Include="Default-568h%402x.png" />
+    <BundleResource Include="Default.png" />
+    <BundleResource Include="Default%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
