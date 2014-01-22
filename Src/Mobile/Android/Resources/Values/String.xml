@@ -94,8 +94,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">An email has been sent. Please follow the link in the email to confirm your address.</string>
@@ -196,7 +195,7 @@
   <string name="CurrentPasswordLabel">Current Password</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
   <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
-  <string name="ApplicationName">Yellow Cab</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="ChargeTypeLabel">Charge type</string>
   <string name="EmailLabel">Email</string>
   <string name="CreateAccountPassword">Password</string>
@@ -311,8 +310,7 @@
   <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle">
-  </string>
+  <string name="GenericTitle"></string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">View Tutorial</string>
   <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
@@ -436,8 +434,7 @@
   <string name="VehicleNumberNotice">Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</string>
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
   <string name="InvalidBookinInfoWhenDestinationIsRequired">To book a ride, you need to enter a valid pickup address and destination address.</string>
-  <string name="EmptyString">
-  </string>
+  <string name="EmptyString"></string>
   <string name="LargeBagsLabel">Large Bags</string>
   <string name="EstimatePriceFormat">Estimated Fare : {0}</string>
   <string name="ConfirmationOfPaymentSent">Confirmation of payment has been sent to the driver.</string>
@@ -446,8 +443,7 @@
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
   <string name="TermsAndConditionsAcknowledgment">By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</string>
   <string name="AcceptButton">Accept</string>
-  <string name="View_TermsAndConditions">
-  </string>
+  <string name="View_TermsAndConditions"></string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="LocationDetailRebookButton">Book using this address</string>
   <string name="ConfirmationPaymentAmountOver100Title">Confirmation Required</string>
