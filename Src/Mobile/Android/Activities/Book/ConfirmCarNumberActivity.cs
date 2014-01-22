@@ -1,7 +1,17 @@
+using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
-
+using Android.OS;
+using Android.Text;
+using Android.Views;
+using Android.Widget;
+using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Activities;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

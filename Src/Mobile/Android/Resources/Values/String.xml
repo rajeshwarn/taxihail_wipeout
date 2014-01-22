@@ -531,4 +531,5 @@
   <string name="PaymentView">Payment Info</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="PaymentViewTotalText">Total</string>
+  <string name="CreateAccountPasswordConfirmation">Confirm password</string>
 </resources>

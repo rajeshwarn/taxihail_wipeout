@@ -306,7 +306,7 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmPaymentViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

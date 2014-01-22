@@ -6,10 +6,9 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 
-
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class ConfirmPaymentViewModel : BaseViewModel
+	public class ConfirmCarNumberViewModel : BaseViewModel
 	{
 		public void Init(string order, string orderStatus)
 		{
@@ -47,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public AsyncCommand ConfirmPayment 
+		public AsyncCommand ConfirmCarNumber 
 		{
 			get {
 				return GetCommand (() =>

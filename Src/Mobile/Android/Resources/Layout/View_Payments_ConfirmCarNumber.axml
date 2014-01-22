@@ -142,19 +142,12 @@
                 android:gravity="fill"
                 android:layout_alignParentBottom="true" />
             <Button
-                android:id="@+id/ConfirmPaymentBtn"
+                android:id="@+id/ConfirmCarBtn"
                 android:text="Confirm"
                 style="@style/ButtonActionGreenStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 local:MvxBind="Click ConfirmPayment" />
-            <Button
-                android:id="@+id/ChangePaymentInfoBtn"
-                android:text="Change"
-                style="@style/ButtonActionGrayStyle"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/HeightButton"
-                local:MvxBind="Click ChangePayment" />
             <Button
                 android:id="@+id/CancelPaymentBtn"
                 android:text="Cancel"
