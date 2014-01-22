@@ -263,6 +263,7 @@
     <None Include="Assets\Info.plist" />
     <None Include="Assets\VerticalButtonBar\.DS_Store" />
     <None Include="packages.config" />
+    <None Include="Style\Theme.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -514,6 +515,7 @@
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
     <Compile Include="Controls\Binding\BindableTableViewSource.cs" />
+    <Compile Include="Style\Theme.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
