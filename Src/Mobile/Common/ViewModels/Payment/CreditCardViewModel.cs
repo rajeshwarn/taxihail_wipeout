@@ -1,6 +1,7 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return "";
             }
         }
-        public bool IsAddNew { get; set; }
+		public bool IsAddNew { get { return CreditCardDetails.CreditCardId.IsNullOrEmpty(); } }
         public string Picture { get; set; }
         public AsyncCommand RemoveCreditCards
         {

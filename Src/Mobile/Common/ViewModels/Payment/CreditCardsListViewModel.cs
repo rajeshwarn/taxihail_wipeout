@@ -42,8 +42,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-
-
 		public override void Start()
         {
             LoadCreditCards();
@@ -79,10 +77,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						RaisePropertyChanged("CreditCards");
                     }
 
-                    if (CreditCards.Count.Equals(1))
-                    {
-                        CreditCards[0].IsAddNew = true;
-                    }
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
                 this.Services().Localize["CancelButton"],
@@ -102,7 +96,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel
                 {
                     CreditCardDetails = x,
-                    IsAddNew = x.CreditCardId.IsNullOrEmpty(),
                     Picture = x.CreditCardCompany
                 }));
                 //todo utiliser une propriété calculée
@@ -148,8 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                              Picture = newCreditCard.CreditCardCompany
                         });
 						RaisePropertyChanged("CreditCards");
-                    });                                                                                         
-					CreditCards[0].IsAddNew = true;				
+                    });                                                                                         		
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                  }));
             }

@@ -518,4 +518,13 @@
   <string name="RideSettingsView">Profile</string>
   <string name="CreditCardsListView">Credit Cards</string>
   <string name="CreditCardAddView">New Credit Card</string>
+  <string name="PanelMenuViewAboutUsText">About Us</string>
+  <string name="PanelMenuViewOrderHistoryText">History</string>
+  <string name="PanelMenuViewSignOutText">Sign Out</string>
+  <string name="PanelMenuViewTutorialText">View Tutorial</string>
+  <string name="View_AboutUs">About Us</string>
+  <string name="PanelMenuViewLocationsText">Locations</string>
+  <string name="PanelMenuViewUpdateProfileText">Update Account</string>
+  <string name="PanelMenuViewCallDispatchText">Call</string>
+  <string name="PanelMenuViewReportProblemText">Report A Problem</string>
 </resources>
