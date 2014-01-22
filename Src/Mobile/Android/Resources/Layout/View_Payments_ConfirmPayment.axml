@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_margin="0dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Confirm Payment"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="15dip"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.45"
+                    android:paddingRight="8dip"
+                    android:gravity="right"
+                    android:text="Car number" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"
+                    android:text=":" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:textSize="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:textColor="@color/black"
+                    android:text="4585"
+                    local:MvxBind="Text CarNumber" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.45"
+                    android:paddingRight="8dip"
+                    android:gravity="right"
+                    android:text="Card number" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"
+                    android:text=":" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:textSize="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.23"
+                    local:MvxBind="Text PaymentPreferences.SelectedCreditCard.CreditCardCompany" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.04" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:textSize="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.23"
+                    android:text="-"
+                    local:MvxBind="Text PaymentPreferences.SelectedCreditCard.Last4Digits" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.45"
+                    android:paddingRight="8dip"
+                    android:gravity="right"
+                    android:text="Tip" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.05"
+                    android:text=":" />
+                <TextView
+                    style="@style/BlackTextLabel"
+                    android:textSize="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.50"
+                    android:textColor="@color/black"
+                    local:MvxBind="Text PaymentPreferences.TipAmount" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dip"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:gravity="fill"
+                android:layout_alignParentBottom="true" />
+            <Button
+                android:id="@+id/ConfirmPaymentBtn"
+                android:text="Confirm"
+                style="@style/ButtonActionGreenStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                local:MvxBind="Click ConfirmPayment" />
+            <Button
+                android:id="@+id/ChangePaymentInfoBtn"
+                android:text="Change"
+                style="@style/ButtonActionGrayStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                local:MvxBind="Click ChangePayment" />
+            <Button
+                android:id="@+id/CancelPaymentBtn"
+                android:text="Cancel"
+                style="@style/ButtonActionRedStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/HeightButton"
+                local:MvxBind="Click CloseCommand" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

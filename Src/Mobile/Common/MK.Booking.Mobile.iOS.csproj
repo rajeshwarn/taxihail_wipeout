@@ -261,7 +261,6 @@
     <Compile Include="Infrastructure\AbstractLocationService.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
@@ -307,6 +306,7 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
+    <Compile Include="ViewModels\Payment\ConfirmPaymentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

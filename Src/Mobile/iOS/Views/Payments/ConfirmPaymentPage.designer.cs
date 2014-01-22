@@ -10,8 +10,8 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	[Register ("ConfrimCarNumberPage")]
-	partial class ConfrimCarNumberPage
+    [Register ("ConfirmPaymentPage")]
+    partial class ConfirmPaymentPage
 	{
 		[Outlet]
 		MonoTouch.UIKit.UILabel CarNumber { get; set; }

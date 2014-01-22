@@ -507,7 +507,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     else
                     {
-                        ShowViewModel<ConfirmCarNumberViewModel>(
+							ShowViewModel<ConfirmPaymentViewModel>(
                             new
                             {
                                 order = Order.ToJson(),
