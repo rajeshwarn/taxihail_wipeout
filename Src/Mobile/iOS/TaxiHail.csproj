@@ -481,10 +481,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
-    <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.designer.cs" />
     <Compile Include="Views\HistoryView.cs" />
     <Compile Include="Views\HistoryView.designer.cs">
       <DependentUpon>HistoryView.cs</DependentUpon>
@@ -506,6 +502,10 @@
     <Compile Include="Views\AboutUsView.xib.designer.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
+    <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -547,10 +547,10 @@
     <InterfaceDefinition Include="Views\BookEditInformation_Thriev.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\MyLocationsView.xib" />
-    <InterfaceDefinition Include="Views\Payments\CmtRideLinqChangePaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\CmtRideLinqConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\HistoryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
+    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
+    <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -808,5 +808,6 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+    <Folder Include="Views\Payments\Cmt\" />
   </ItemGroup>
 </Project>
