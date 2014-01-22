@@ -532,4 +532,5 @@
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="PaymentViewTotalText">Total</string>
   <string name="CreateAccountPasswordConfirmation">Confirm password</string>
+  <string name="CmtRideLinqConfirmPairView">Confirm Payment Information</string>
 </resources>

@@ -1,17 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Views;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Binding;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -21,23 +22,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		{
 		}
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.HidesBackButton = true;
+            NavigationItem.Title = Localize.GetValue("CmtRideLinqConfirmPairView");
+        }
+
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
+            
+            View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-			NavigationController.NavigationBar.Hidden = false;
-			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            lblCarNumber.Text = Localize.GetValue("CmtCarNumber");
+            lblCardNumber.Text = Localize.GetValue("CmtCardNumber");
+            lblTip.Text = Localize.GetValue("CmtTipAmount");
+            btnConfirm.SetTitle(Localize.GetValue("CmtConfirmPayment"), UIControlState.Normal);
+            btnChangePaymentSettings.SetTitle(Localize.GetValue("CmtChangePaymentInfo"), UIControlState.Normal);
+            btnCancel.SetTitle(Localize.GetValue("CmtCancelPayment"), UIControlState.Normal);
 
-			NavigationItem.HidesBackButton = true;
-			NavigationItem.Title = Localize.GetValue("CmtConfirmBookingInfo");
-
-			lblCarNumber.Text = Localize.GetValue("CmtCarNumber");
-			lblCardNumber.Text = Localize.GetValue("CmtCardNumber");
-			lblTip.Text = Localize.GetValue("CmtTipAmount");
-
-			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Localize.GetValue("CmtConfirmPayment"), AppStyle.ButtonColor.Green );
-			AppButtons.FormatStandardButton((GradientButton)btnChangePaymentSettings, Localize.GetValue("CmtChangePaymentInfo"), AppStyle.ButtonColor.Silver );
-			AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("CmtCancelPayment"), AppStyle.ButtonColor.Red );
+            FlatButtonStyle.Green.ApplyTo(btnConfirm);
+            FlatButtonStyle.Silver.ApplyTo(btnChangePaymentSettings);
+            FlatButtonStyle.Red.ApplyTo(btnCancel);
 
 			var set = this.CreateBindingSet<CmtRideLinqConfirmPairView, CmtRideLinqConfirmPairViewModel>();
 
@@ -66,8 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				.To(vm => vm.TipAmountInPercent);
 
 			set.Apply ();
-
-			View.ApplyAppFont ();
 		}
 	}
 }
