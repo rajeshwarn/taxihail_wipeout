@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -19,60 +20,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		Order Order { get; set; }
 		OrderStatusDetail OrderStatus { get; set; }
 
-		public string CarNumber{
+		public string CarNumber
+		{
 			get{
 				return OrderStatus.VehicleNumber;
 			}
 		}
 
-		private PaymentDetailsViewModel _paymentPreferences;
-		public PaymentDetailsViewModel PaymentPreferences
-		{
-			get
-			{
-				if (_paymentPreferences == null)
-				{
-					var account = this.Services().Account.CurrentAccount;
-					var paymentInformation = new PaymentInformation
-					{
-						CreditCardId = account.DefaultCreditCard,
-						TipPercent = account.DefaultTipPercent,
-					};
-
-					_paymentPreferences = new PaymentDetailsViewModel();
-					_paymentPreferences.Init(paymentInformation);
-				}
-				return _paymentPreferences;
-			}
-		}
-
-		public AsyncCommand ConfirmCarNumber 
+		public ICommand ConfirmCarNumber 
 		{
 			get {
 				return GetCommand (() =>
 				{ 
-						ShowSubViewModel<PaymentViewModel,object>(
-                    new { 
-                        order = Order.ToJson(),
-                        orderStatus = OrderStatus.ToJson(),
-                    }.ToStringDictionary(), 
-                    _=>{
-                    });
+					ShowSubViewModel<PaymentViewModel,object>(
+	                    new { 
+	                        order = Order.ToJson(),
+	                        orderStatus = OrderStatus.ToJson(),
+	                    }.ToStringDictionary(), 
+                    	_=>{});
 					
 					Close(this);
 				});
 			}
-		}	
-
-		public AsyncCommand ChangePayment 
-		{
-			get {
-				return GetCommand (() =>
-					{ 
-						Close(this);
-					});
-			}
-		}	
+		}
 	}
 }
 

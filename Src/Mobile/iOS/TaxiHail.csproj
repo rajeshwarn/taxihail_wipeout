@@ -500,11 +500,11 @@
     <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberPage.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberPage.designer.cs">
-      <DependentUpon>ConfirmCarNumberPage.cs</DependentUpon>
-    </Compile>
     <Compile Include="LinkerPleaseInclude.cs" />
+    <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
+    <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
+      <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -549,7 +549,7 @@
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberPage.xib" />
+    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
