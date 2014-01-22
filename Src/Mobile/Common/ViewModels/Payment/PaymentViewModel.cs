@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				return true;
                 var payPalSettings = this.Services().Config.GetPaymentSettings().PayPalClientSettings;
                 return payPalSettings.IsEnabled;
             }
@@ -54,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
-				return true;
                 var setting = this.Services().Config.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
