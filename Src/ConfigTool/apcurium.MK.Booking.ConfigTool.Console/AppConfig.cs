@@ -173,8 +173,20 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""login_background_color""]", 
-					SetterEle = (app,ele) => ele.InnerText = "#" + Company.Style.NavigationBarColor 
-				},	
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
+				},
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+					NodeSelector=@"//resources/color[@name=""button_text_color""]", 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
+				},
+				new ConfigXML(this)
+				{  
+					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
+					NodeSelector=@"//resources/color[@name=""label_text_color""]", 
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
+				},
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
@@ -183,7 +195,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\iOS\Style\Theme.xml", 
 					NodeSelector=@"//ThemeValues/LoginBackgroundColor", 
-					SetterEle = (app,ele) => ele.InnerText = Company.Style.NavigationBarColor
+					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.NavigationBarColor) 
 				}
 
            };
@@ -211,6 +223,16 @@ namespace apcurium.MK.Booking.ConfigTool
         {
            
         }
+
+		string GetHexaColorCode (string color)
+		{
+			if(!string.IsNullOrWhiteSpace(color)
+				&& color[0] != '#')
+			{
+				color = "#" + color;
+			}
+			return color;
+		}
 
         public string Name { get; private set; }
 

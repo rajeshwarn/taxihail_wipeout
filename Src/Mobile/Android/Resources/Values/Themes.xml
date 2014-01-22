@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
     <!--- Colors -->
@@ -13,6 +13,7 @@
 
 	<color name="button_border_color">#031b31</color>
 	<color name="button_text_color">#ffffff</color>
+	<color name="label_text_color">#ffffff</color>
 	<color name="button_pressed_background_color">#70004785</color>
 	<color name="button_pressed_text_color">#70ffffff</color>
 
