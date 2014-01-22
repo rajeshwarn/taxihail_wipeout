@@ -44,9 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 
 		static UIColor ToUIColor(string hexaDecimaleValue)
 		{
-			var red = Convert.ToInt32(hexaDecimaleValue.Substring(0, 2), 16) / 255f;
-			var green = Convert.ToInt32(hexaDecimaleValue.Substring(2, 2), 16) / 255f;
-			var blue = Convert.ToInt32(hexaDecimaleValue.Substring(4, 2), 16) / 255f;
+			var red = Convert.ToInt32(hexaDecimaleValue.Substring(1, 3), 16) / 255f;
+			var green = Convert.ToInt32(hexaDecimaleValue.Substring(3, 2), 16) / 255f;
+			var blue = Convert.ToInt32(hexaDecimaleValue.Substring(5, 2), 16) / 255f;
 			return UIColor.FromRGB(red, green, blue);
 		}
     }
