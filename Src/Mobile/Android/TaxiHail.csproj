@@ -294,9 +294,6 @@
     <Compile Include="Activities\GeoLocation\LocationDetailActivity.cs" />
     <Compile Include="Activities\GeoLocation\LocationsActivity.cs" />
     <Compile Include="Activities\Book\BookPaymentActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
@@ -313,7 +310,6 @@
     <AndroidResource Include="Resources\Drawable\sliderYellowBar.png" />
     <AndroidResource Include="Resources\Drawable\sliderYellowBarBody.png" />
     <Compile Include="Extensions\ImageViewExtensions.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
     <Compile Include="Activities\Book\BookPayPalActivity.cs">
       <DependentUpon>BookPaymentActivity.cs</DependentUpon>
     </Compile>
@@ -415,6 +411,14 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqChangePayment.axml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_CmtRideLinqConfirmPair.axml" />
+    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPayment.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <Compile Include="Activities\Book\CmtRideLinqChangePaymentActivity.cs" />
+    <Compile Include="Activities\Book\CmtRideLinqConfirmPairActivity.cs" />
+    <Compile Include="Activities\Book\ConfirmPaymentActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

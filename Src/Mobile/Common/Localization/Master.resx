@@ -459,7 +459,7 @@
   <data name="CreateAccountPassword" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="CreateAccountPasswordConfrimation" xml:space="preserve">
+  <data name="CreateAccountPasswordConfirmation" xml:space="preserve">
     <value>Confirm password</value>
   </data>
   <data name="SettingViewLoginInfo" xml:space="preserve">

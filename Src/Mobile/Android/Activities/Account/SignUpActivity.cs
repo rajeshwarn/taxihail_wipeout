@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var password = new EntryElement(null, Localize("CreateAccountPassword"), null, "DialogCenter") { Password = true };
 			password.Bind(bindings, vm => vm.Data.Password);
 
-            var passwordConfirm = new EntryElement(null, Localize("CreateAccountPasswordConfrimation"), null, "DialogBottom") { Password = true };
+            var passwordConfirm = new EntryElement(null, Localize("CreateAccountPasswordConfirmation"), null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
 			section.Add (new Element[] { email, name, phone });

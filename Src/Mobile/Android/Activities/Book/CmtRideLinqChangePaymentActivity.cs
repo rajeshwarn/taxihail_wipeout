@@ -1,39 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
+using Android.Content.PM;
 using Android.Widget;
+using Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Activities;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using CrossUI.Droid.Dialog.Elements;
+using CrossUI.Droid.Dialog;
+using CrossUI.Droid;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment.Cmt;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Label = "CmtRideLinqChangePaymentActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "CmtRideLinqChangePaymentActivity", Theme = "@style/MainTheme", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class CmtRideLinqChangePaymentActivity : BaseBindingActivity<CmtRideLinqChangePaymentViewModel>
     {
-        protected override void OnStart()
-        {
-            base.OnStart();
-        }
-
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_Payments_CmtRideLinqChangePaymentTitle; }
         }
 
-
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Payments_CmtRideLinqChangePayment);
-            ViewModel.Load();
         }
     }
 }

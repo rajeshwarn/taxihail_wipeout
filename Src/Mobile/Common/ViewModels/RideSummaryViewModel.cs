@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public AsyncCommand PayCommand
         {
 			get {
-				return new AsyncCommand (() => ShowViewModel<ConfirmCarNumberViewModel>(
+				return new AsyncCommand (() => ShowViewModel<ConfirmPaymentViewModel>(
 				    new 
 				    { 
 				        order = Order.ToJson(),

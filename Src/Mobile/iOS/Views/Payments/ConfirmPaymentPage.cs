@@ -11,11 +11,11 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	[MvxViewFor(typeof(ConfirmCarNumberViewModel))]
-	public partial class ConfrimCarNumberPage :  BaseViewController<ConfirmCarNumberViewModel>
+    [MvxViewFor(typeof(ConfirmPaymentViewModel))]
+    public partial class ConfirmPaymentPage :  BaseViewController<ConfirmPaymentViewModel>
     {
-        public ConfrimCarNumberPage() 
-			: base("ConfrimCarNumberPage", null)
+        public ConfirmPaymentPage() 
+            : base("ConfirmPaymentPage", null)
         {
         }
 
@@ -31,11 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             AppButtons.FormatStandardButton((GradientButton)ConfirmButton, Localize.GetValue("ConfirmButton"), AppStyle.ButtonColor.Green); 
 
-			var set = this.CreateBindingSet<ConfrimCarNumberPage, ConfirmCarNumberViewModel>();
+            var set = this.CreateBindingSet<ConfirmPaymentPage, ConfirmPaymentViewModel>();
 
 			set.Bind(ConfirmButton)
 				.For("TouchDown")
-				.To(vm => vm.ConfirmTaxiNumber);
+                .To(vm => vm.ConfirmPayment);
 
 			set.Bind(CarNumber)
 				.For(v => v.Text)
