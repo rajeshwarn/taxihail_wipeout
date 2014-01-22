@@ -58,7 +58,6 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/string.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
     <AndroidSupportedAbis>armeabi;armeabi-v7a</AndroidSupportedAbis>
@@ -620,13 +619,13 @@
     <AndroidResource Include="Resources\drawable-hdpi\favorites.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-     Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+    <!-- <Exec Command="..\..\LocalizationTool\GenerateAndroidResources.sh" WorkingDirectory=""  /> -->
+    <Exec Command="mono &quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" Condition="'$(Os)'=='Unix'" />
+    <Exec Command="&quot;../../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;../../Mobile/Common/Localization/Master.resx&quot; -d=&quot;../Android/Resources/Values/String.xml&quot; -s=&quot;../../Mobile/Common/Settings/Settings.json&quot;" Condition="'$(Os)'!='Unix'" />
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
   <ItemGroup>
     <Folder Include="Resources\Non-Utilise-Drawable\" />
   </ItemGroup>
