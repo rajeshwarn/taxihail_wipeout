@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
         public PaymentView() : base("PaymentView", null)
         {
         }
-		
 
         double MeterAmount
         {
@@ -74,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             NavigationController.NavigationBarHidden = false;
             NavigationItem.HidesBackButton = false;
-            NavigationItem.Title = Localize.GetValue("View_PaymentCreditCardsOnFile");
+            NavigationItem.Title = Localize.GetValue("PaymentView");
         }
 
         public override void ViewDidLoad ()
@@ -95,9 +94,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 });
 
             lblCreditCard.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+            lblTip.Text = Localize.GetValue("PaymentViewTipText");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
-//            lblMeterAmount.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
-//            lblTotal.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
+            lblMeterAmount.Text = Localize.GetValue("PaymentViewMeterAmountText");
+            lblTotal.Text = Localize.GetValue("PaymentViewTotalText");
             btnConfirm.SetTitle(Localize.GetValue("StatusPayButton"), UIControlState.Normal);
 
             FlatButtonStyle.Green.ApplyTo(btnConfirm); 
@@ -108,18 +108,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
                 TipAmount = TipAmount; //Format
             };
 
+            txtMeterAmount.ClearsOnBeginEditing = true;
             txtTipAmount.ClearsOnBeginEditing = true;
 
             txtTipAmount.EditingChanged+= (sender, e) => {
                 UpdateAmounts(false);
             };
 
-			payPalToggle.ValueChanged+= (sender, e) => {   
-                txtCreditCard.Hidden = ((PaymentSelector)sender).PayPalSelected;
-                lblCreditCard.Hidden = ((PaymentSelector)sender).PayPalSelected;
-                imgPayPal.Hidden = !((PaymentSelector)sender).PayPalSelected;
-			};
-		
             btnConfirm.TouchDown += (sender, e) =>
 			{
                 if ( txtMeterAmount.IsFirstResponder )
@@ -173,6 +168,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             set.Bind(txtCreditCard)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.PaymentPreferences.NavigateToCreditCardsList);
+            set.Bind(txtCreditCard)
+                .For(v => v.Hidden)
+                .To(vm => vm.PayPalSelected);
+
+            set.Bind(lblCreditCard)
+                .For(v => v.Hidden)
+                .To(vm => vm.PayPalSelected);
+
+            set.Bind(imgPayPal)
+                .For(v => v.Hidden)
+                .To(vm => vm.PayPalSelected)
+                .WithConversion("BoolInverter");
 
 			set.Apply ();
         }

@@ -1245,7 +1245,7 @@
   <data name="NoCreditCardSelected" xml:space="preserve">
     <value>Please select a credit card</value>
   </data>
-  <data name="View_PaymentCreditCardsOnFile" xml:space="preserve">
+  <data name="PaymentView" xml:space="preserve">
     <value>Payment Info</value>
   </data>
   <data name="BackButton" xml:space="preserve">
@@ -1479,5 +1479,13 @@
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>You need to update Google Play Services in order to use this application.</value>
   </data>
-
+  <data name="PaymentViewTotalText" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="PaymentViewTipText" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="PaymentViewMeterAmountText" xml:space="preserve">
+    <value>Meter Amount</value>
+  </data>
 </root>

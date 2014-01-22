@@ -191,7 +191,7 @@
                                 <constraint firstItem="wdY-aH-O3R" firstAttribute="top" secondItem="gAL-T5-p9h" secondAttribute="bottom" constant="17" id="Gpg-K1-2w8"/>
                                 <constraint firstItem="auu-19-pSg" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="Guw-LF-S8K"/>
                                 <constraint firstItem="33" firstAttribute="top" secondItem="auu-19-pSg" secondAttribute="bottom" constant="17" id="HMt-Hn-bwe"/>
-                                <constraint firstItem="10" firstAttribute="top" secondItem="1" secondAttribute="top" priority="1" constant="12" id="Jaq-tr-6PO"/>
+                                <constraint firstItem="10" firstAttribute="top" secondItem="1" secondAttribute="top" priority="500" constant="12" id="Jaq-tr-6PO"/>
                                 <constraint firstItem="wdY-aH-O3R" firstAttribute="centerY" secondItem="rBR-MF-uNd" secondAttribute="centerY" constant="-0.5" id="Kul-Ph-NeJ"/>
                                 <constraint firstItem="SfL-9z-V23" firstAttribute="top" secondItem="33" secondAttribute="bottom" constant="18" id="Mhr-u6-sB9"/>
                                 <constraint firstItem="59" firstAttribute="top" secondItem="1" secondAttribute="top" constant="15" id="Rl2-Jh-HUZ"/>
@@ -215,7 +215,6 @@
                                 <constraint firstItem="33" firstAttribute="centerY" secondItem="34" secondAttribute="centerY" constant="-0.5" id="rB1-fM-Sgj"/>
                                 <constraint firstItem="5" firstAttribute="top" secondItem="31" secondAttribute="bottom" constant="23" id="tor-av-bUH"/>
                                 <constraint firstItem="63" firstAttribute="top" secondItem="10" secondAttribute="bottom" id="veN-sq-5f6"/>
-                                <constraint firstItem="63" firstAttribute="top" secondItem="59" secondAttribute="bottom" constant="31" id="vn4-qe-cSA"/>
                                 <constraint firstItem="SfL-9z-V23" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="z1c-4y-FbI"/>
                                 <constraint firstItem="gAL-T5-p9h" firstAttribute="top" secondItem="SfL-9z-V23" secondAttribute="bottom" constant="6" id="zNC-CW-ntc"/>
                                 <constraint firstItem="31" firstAttribute="top" secondItem="wdY-aH-O3R" secondAttribute="bottom" constant="24" id="zar-4c-d0F"/>
