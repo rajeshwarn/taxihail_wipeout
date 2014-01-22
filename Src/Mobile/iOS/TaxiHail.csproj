@@ -504,6 +504,7 @@
     <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.designer.cs" />
+    <Compile Include="LinkerPleaseInclude.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

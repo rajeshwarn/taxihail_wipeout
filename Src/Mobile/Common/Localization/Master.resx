@@ -1434,8 +1434,8 @@
   <data name="CmtChangePaymentInfo" xml:space="preserve">
     <value>Change Payment Settings</value>
   </data>
-  <data name="CmtConfirmBookingInfo" xml:space="preserve">
-    <value>Confirm payment information</value>
+  <data name="CmtRideLinqConfirmPairView" xml:space="preserve">
+    <value>Confirm Payment Information</value>
   </data>
   <data name="CmtConfirmPayment" xml:space="preserve">
     <value>Confirm</value>
