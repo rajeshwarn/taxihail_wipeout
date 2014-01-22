@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client.MonoTouchDialog
+namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class RadioElementWithId<TId> : RadioElement where TId: struct
     {

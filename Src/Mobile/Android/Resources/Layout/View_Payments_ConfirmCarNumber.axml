@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
+        android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:orientation="vertical"
-        android:gravity="fill">
-        <View
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="15dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:background="@color/top_bar_color"
+            android:orientation="horizontal">
+            <TextView
+                android:text="Locations"
+                style="@style/TopTitleText"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/top_bar_title_height"
+                android:gravity="center" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/top_bar_separator_color"
+            android:orientation="horizontal" />
         <TextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -48,27 +64,21 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:text="@string/VehicleNumberNotice"
-            android:textStyle="normal"
-            style="@style/MultilineFormLabelText"
+            style="@style/BlackTextLabelMultiline"
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="35dp"
             android:layout_weight="1" />
-        
-        <!-- Green -->
         <Button
             android:id="@+id/ConfirmBtn"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:text="@string/CreateAccountPasswordConfrimation"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
             local:MvxBind="Click ConfirmTaxiNumber"
+            style="@style/ButtonActionGreenStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/HeightButton"
             android:layout_gravity="bottom"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
             android:layout_alignParentBottom="true" />
     </LinearLayout>
-</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
+</RelativeLayout>

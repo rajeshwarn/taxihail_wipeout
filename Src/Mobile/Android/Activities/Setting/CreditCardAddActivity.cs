@@ -6,13 +6,13 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "CreditCardAddActivity", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "CreditCardAddActivity", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreditCardAddActivity : BaseBindingActivity<CreditCardAddViewModel>
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.CreditCardsAddTitle; }
+            get { return Resource.String.CreditCardAddView; }
         }
 
         protected override void OnViewModelSet()
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
-            SetContentView(Resource.Layout.View_CreditCardAdd);
+            SetContentView(Resource.Layout.View_Payments_CreditCardAdd);
         }
     }
 }

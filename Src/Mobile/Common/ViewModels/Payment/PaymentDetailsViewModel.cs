@@ -21,12 +21,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         
             SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
         
-			Tips = new ListItem[] { 
+			Tips = new ListItem[]
+			{ 
 				new ListItem { Id = 0,  Display = "0%" }, 
 				new ListItem { Id = 5,  Display = "5%" }, 
 				new ListItem { Id = 10, Display = "10%" }, 
 				new ListItem { Id = 15, Display = "15%" }, 
-				new ListItem { Id = 20, Display = "20%" } 
+				new ListItem { Id = 20, Display = "20%" },
+				new ListItem { Id = 25, Display = "25%" }
 			};
 
             Tip = paymentDetails.TipPercent.HasValue 

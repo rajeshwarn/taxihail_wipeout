@@ -5,6 +5,7 @@ using System.Drawing;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -13,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	{
 	    private const float RadiusCorner = 2;
         private const float Padding = 13f;
+        private UIImageView _leftImageView;
 
 	    public FlatTextField (IntPtr handle) : base (handle)
 		{
@@ -68,12 +70,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
+        private string _imageLeftSource;
+        public string ImageLeftSource
+        {
+            get { return _imageLeftSource; }
+            set
+            {
+                if (value.HasValue() && value != _imageLeftSource)
+                {
+                    _imageLeftSource = value;
+
+                    var image = UIImage.FromFile(value);
+
+                    if (_leftImageView != null)
+                    {
+                        _leftImageView.RemoveFromSuperview();
+                    }
+
+                    _leftImageView = new UIImageView(new RectangleF(0, (Frame.Height - image.Size.Height)/2, image.Size.Width, image.Size.Height));
+                    _leftImageView.Image = image;
+                    AddSubview(_leftImageView);
+
+                    // Adjust the left padding of the text for image width
+                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + 5);
+
+                    // And the right padding
+                    RightView = new UIView(new RectangleF(Frame.Right - 5, 0f, 5, 1f));
+
+                    SetNeedsDisplay();
+                }
+            }
+        }
+
         private bool _hasRightArrow { get; set; }
         public bool HasRightArrow {
-            get {
-                return _hasRightArrow;
-            }
-            set {
+            get { return _hasRightArrow; }
+            set 
+            {
                 _hasRightArrow = value;
 
                 if(value)

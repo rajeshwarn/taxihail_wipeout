@@ -286,7 +286,6 @@
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
-    <Compile Include="Controls\Binding\Binding.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -321,9 +320,6 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\SingleLineCell.cs" />
-    <Compile Include="InfoTableView\TableViewDelegate.cs" />
-    <Compile Include="InfoTableView\TableViewDataSource.cs" />
     <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
@@ -360,7 +356,6 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -421,7 +416,6 @@
     <Compile Include="Views\CreditCardsListView.designer.cs">
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
     <Compile Include="Controls\CreditCardButton.cs" />
     <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Controls\NavigateTextField.cs" />
@@ -455,7 +449,6 @@
     </Compile>
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Controls\Binding\TipSliderBinding.cs" />
     <Compile Include="Views\Payments\PayPalView.cs" />
     <Compile Include="Views\Payments\PayPalView.designer.cs">
       <DependentUpon>PayPalView.cs</DependentUpon>
@@ -488,8 +481,6 @@
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
     <Compile Include="Controls\Widgets\Line.cs" />
-    <Compile Include="InfoTableView\CustomCellBackgroundView.cs" />
-    <Compile Include="InfoTableView\TwoLinesCell.cs" />
     <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.cs" />
     <Compile Include="Views\Payments\CmtRideLinqChangePaymentView.designer.cs" />
     <Compile Include="Views\Payments\CmtRideLinqConfirmPairView.cs" />
@@ -507,7 +498,8 @@
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
-    <Compile Include="Controls\Binding\BindableTableViewSource.cs" />
+    <Compile Include="Controls\Widgets\BindableTableViewSource.cs" />
+    <Compile Include="Controls\Widgets\SingleLinePictureCell.cs" />
     <Compile Include="Views\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -776,6 +768,8 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\delete_card_btn.png" />
     <BundleResource Include="Resources\delete_card_btn%402x.png" />
+    <BundleResource Include="Resources\add_btn.png" />
+    <BundleResource Include="Resources\add_btn%402x.png" />
     <BundleResource Include="Resources\add_location.png" />
     <BundleResource Include="Resources\add_location%402x.png" />
     <BundleResource Include="Resources\apc_logo_menu.png" />
