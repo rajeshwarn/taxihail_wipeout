@@ -256,7 +256,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="About_fr.html" />
     <None Include="Info.plist" />
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
@@ -286,12 +285,8 @@
     <Compile Include="Controls\LoadingOverlay.cs" />
     <Compile Include="Helper\SerializerHelper.cs" />
     <Compile Include="Helper\NSDefaultHelper.cs" />
-    <Compile Include="Controls\GraphicsUtil.cs" />
-    <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="Controls\VerticalButtonBar.cs" />
     <Compile Include="Controls\Background.cs" />
-    <Compile Include="Controls\VerticalButton.cs" />
     <Compile Include="Controls\GradientButton.cs" />
     <Compile Include="AppButtons.cs" />
     <Compile Include="Cache\CacheService.cs" />
@@ -301,8 +296,6 @@
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
-    <Compile Include="Controls\AnimatedArrowButton.cs" />
-    <Compile Include="Controls\AnimatedWheelButton.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Views\BookView.xib.cs">
       <DependentUpon>BookView.xib</DependentUpon>
@@ -312,8 +305,6 @@
     </Compile>
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Controls\SegmentedButton.cs" />
-    <Compile Include="Controls\SegmentedButtonBar.cs" />
     <Compile Include="Views\AddressSearchView.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
@@ -373,7 +364,6 @@
     <Compile Include="Views\TutorialView.designer.cs">
       <DependentUpon>TutorialView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\UndelinedLabel.cs" />
     <Compile Include="Views\BookViewActionsView.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
@@ -416,16 +406,11 @@
     <Compile Include="Views\CreditCardsListView.designer.cs">
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CreditCardButton.cs" />
     <Compile Include="Controls\TextFieldWithArrow.cs" />
-    <Compile Include="Controls\NavigateTextField.cs" />
-    <Compile Include="Controls\TipButtons.cs" />
-    <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
     <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
     <Compile Include="Controls\StackView.cs" />
-    <Compile Include="Binding\Binding.cs" />
     <Compile Include="Extensions\UIScrollViewerExtensions.cs" />
     <Compile Include="Extensions\Helpers\UIViewHelper.cs" />
     <Compile Include="Extensions\RectangleFExtensions.cs" />
@@ -449,7 +434,6 @@
     <Compile Include="Views\RideSummaryPage.designer.cs">
       <DependentUpon>RideSummaryPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PaymentSelector.cs" />
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
@@ -505,6 +489,7 @@
     <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
       <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widgets\PaymentSelector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

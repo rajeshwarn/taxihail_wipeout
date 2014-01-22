@@ -3355,6 +3355,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0a0211
 			public const int CmtRideLinqCancelChanges = 2131362321;
 			
+			// aapt resource value: 0x7f0a0254
+			public const int CmtRideLinqConfirmPairView = 2131362388;
+			
 			// aapt resource value: 0x7f0a0215
 			public const int CmtRideLinqErrorTitle = 2131362325;
 			
