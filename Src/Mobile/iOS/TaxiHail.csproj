@@ -263,7 +263,6 @@
     <None Include="Assets\Info.plist" />
     <None Include="Assets\VerticalButtonBar\.DS_Store" />
     <None Include="packages.config" />
-    <None Include="Style\Theme.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -816,5 +815,10 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Style\Theme.xml">
+      <LogicalName>Theme.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
