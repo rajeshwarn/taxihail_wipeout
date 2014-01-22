@@ -22,23 +22,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             set
 			{ 
 				_creditCards = value;
-				RaisePropertyChanged(); }
+				RaisePropertyChanged(); 
+				RaisePropertyChanged(() => HasCards);
+			}
         }
-
-        private bool _hasCards;
+		
         public bool HasCards
         {
             get
             {
-                return _hasCards;
-            }
-            set
-            {
-                if (value != _hasCards)
-                {
-                    _hasCards = value;
-					RaisePropertyChanged();
-                }
+				return _creditCards.Any();
             }
         }
 
@@ -98,8 +91,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     CreditCardDetails = x,
                     Picture = x.CreditCardCompany
                 }));
-                //todo utiliser une propriété calculée
-                HasCards = CreditCards.Any();
             });
         }
 
