@@ -621,10 +621,10 @@
   <data name="HistoryViewStatusButton" xml:space="preserve">
     <value>View Status</value>
   </data>
-	<data name="ResetPasswordTitleLabel" xml:space="preserve">
+	<data name="ResetPasswordTitleText" xml:space="preserve">
     	<value>Forgot your password?</value>
   </data>
-	<data name="ResetPasswordSubtitleLabel" xml:space="preserve">
+	<data name="ResetPasswordSubtitleText" xml:space="preserve">
     	<value>Enter your email and we'll send you a new one.</value>
   </data>
  <data name="ResetPasswordEmailPlaceHolder" xml:space="preserve">
@@ -1023,12 +1023,6 @@
   <data name="BookingService_MobileBookingNoteBuildingName" xml:space="preserve">
     <value>Building name {0}.</value>
   </data>
-  <data name="View_BookingStatus_ThankYouTitle" xml:space="preserve">
-    <value>Thank you</value>
-  </data>
-  <data name="View_BookingStatus_ThankYouMessage" xml:space="preserve">
-    <value>Thank you for riding with {0}, we look forward to serving you again soon.</value>
-  </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>The account cannot be created, this email is already in use.</value>
   </data>
@@ -1046,9 +1040,6 @@
   </data>
   <data name="HistoryViewSendReceiptButton" xml:space="preserve">
     <value>Send Receipt</value>
-  </data>
-  <data name="HistoryViewSendReceiptSuccess" xml:space="preserve">
-    <value>Receipt sent</value>
   </data>
   <data name="HistoryViewSendReceiptError" xml:space="preserve">
     <value>Error sending receipt for this order</value>
@@ -1082,9 +1073,6 @@
   </data>
   <data name="NotesToDriverHint" xml:space="preserve">
     <value>Name of business, specific entrance</value>
-  </data>
-  <data name="RateBtn" xml:space="preserve">
-    <value>Rate my ride</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
@@ -1305,12 +1293,32 @@
   <data name="LargeBagsLabel" xml:space="preserve">
     <value>Large Bags</value>
   </data>
-  <data name="StatusPayButton" xml:space="preserve">
+
+  <data name="View_RideSummary" xml:space="preserve">
+    <value>Ride Summary</value>
+  </data>
+  <data name="PayNow" xml:space="preserve">
     <value>Pay now</value>
   </data>
-  <data name="ReSendConfirmationButton" xml:space="preserve">
-    <value>Notify Driver Of Payment</value>
+  <data name="ReSendConfirmation" xml:space="preserve">
+    <value>Notify driver of payment</value>
   </data>
+  <data name="RideSummaryTitleText" xml:space="preserve">
+    <value>Thank you</value>
+  </data>
+  <data name="RideSummarySubTitleText" xml:space="preserve">
+    <value>Thank you for riding with {0}, we look forward to serving you again soon.</value>
+  </data>
+  <data name="SendReceipt" xml:space="preserve">
+    <value>Send receipt</value>
+  </data>
+  <data name="RateRide" xml:space="preserve">
+    <value>Rate my ride</value>
+  </data>
+  <data name="ReceiptSent" xml:space="preserve">
+    <value>Receipt sent</value>
+  </data>
+
   <data name="CmtTransactionSuccessMessage" xml:space="preserve">
     <value>Confirmation sent to the driver (Authorization Code:  {0})</value>
   </data>

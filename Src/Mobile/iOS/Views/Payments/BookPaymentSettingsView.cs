@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             NavigationItem.HidesBackButton = false;
 			NavigationItem.Title = Localize.GetValue("View_PaymentCreditCardsOnFile");
 
-			AppButtons.FormatStandardButton(btConfirm, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green );  
+			AppButtons.FormatStandardButton(btConfirm, Localize.GetValue("PayNow"), AppStyle.ButtonColor.Green );  
 
             TotalAmountLabel.TextColor = AppStyle.DarkText;
             TotalAmountLabel.Font = AppStyle.GetBoldFont (TotalAmountLabel.Font.PointSize);

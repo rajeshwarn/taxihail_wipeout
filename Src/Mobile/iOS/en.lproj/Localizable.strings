@@ -517,3 +517,12 @@
 "UpdatePasswordCurrentPasswordLabel"="Current Password";
 "UpdatePasswordConfirmationLabel"="Confirmation";
 "RideSettingsView"="Profile";
+"RideSummarySubTitleText"="Thank you for riding with {0}, we look forward to serving you again soon.";
+"RideSummaryTitleText"="Thank you";
+"ReSendConfirmation"="Notify driver of payment";
+"View_RideSummary"="Ride Summary";
+"ReceiptSent"="Receipt sent";
+"PayNow"="Pay now";
+"RateRide"="Rate my ride";
+"ResetPasswordTitleText"="Forgot your password?";
+"ResetPasswordSubtitleText"="Enter your email and we'll send you a new one.";

@@ -29,18 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			RaisePropertyChanged(() => IsSendReceiptButtonShown);
         }
 
-		public string ThankYouTitle {
-			get{
-                return this.Services().Localize["View_BookingStatus_ThankYouTitle"];
-			}
-		}
-
-		public string ThankYouMessage {
-			get{
-                return String.Format(this.Services().Localize["View_BookingStatus_ThankYouMessage"], this.Services().Settings.ApplicationName);
-			}
-		}
-
 	    private bool _receiptSent;
         public bool ReceiptSent 
         {

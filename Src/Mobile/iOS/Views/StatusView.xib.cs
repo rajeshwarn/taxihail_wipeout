@@ -64,8 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 AppButtons.FormatStandardButton((GradientButton)btnCall, Localize.GetValue("StatusCallButton"), AppStyle.ButtonColor.Black);
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusCancelButton"), AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Localize.GetValue("StatusNewRideButton"), AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("StatusPayButton"), AppStyle.ButtonColor.Green);
-                AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmationButton"), AppStyle.ButtonColor.Green);
+				AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("PayNow"), AppStyle.ButtonColor.Green);
+				AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmation"), AppStyle.ButtonColor.Green);
 				AppButtons.FormatStandardButton((GradientButton)btnUnpair, Localize.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
 
 				NavigationItem.Title = Localize.GetValue("GenericTitle");
