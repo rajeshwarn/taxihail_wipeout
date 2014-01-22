@@ -1179,8 +1179,8 @@
   <data name="View_PaymentPreference" xml:space="preserve">
     <value>Payment Preference</value>
   </data>
-  <data name="CreditCardsListTitle" xml:space="preserve">
-    <value>Credit Cards On File</value>
+  <data name="CreditCardsListView" xml:space="preserve">
+    <value>Credit Cards</value>
   </data>
   <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
     <value>Cards</value>
@@ -1197,7 +1197,7 @@
   <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
     <value>Invalid payment information</value>
   </data>
-  <data name="CreditCardsAddTitle" xml:space="preserve">
+  <data name="CreditCardAddView" xml:space="preserve">
     <value>New Credit Card</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">

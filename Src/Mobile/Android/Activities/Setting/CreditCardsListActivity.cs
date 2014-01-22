@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.CreditCardsListTitle; }
+            get { return Resource.String.CreditCardsListView; }
         }
 
         protected override void OnCreate(Bundle bundle)
