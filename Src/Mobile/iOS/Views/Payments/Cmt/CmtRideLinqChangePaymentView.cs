@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             NavigationItem.LeftBarButtonItem = new UIBarButtonItem(Localize.GetValue("CancelButton"), UIBarButtonItemStyle.Plain, null);
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, null);
 
-            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
+            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
 
 			var set = this.CreateBindingSet<CmtRideLinqChangePaymentView, CmtRideLinqChangePaymentViewModel>();
 
