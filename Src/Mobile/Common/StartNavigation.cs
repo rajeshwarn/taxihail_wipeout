@@ -55,14 +55,7 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				ShowViewModel<ConfirmCarNumberViewModel>(
-					new
-					{
-						order = new Order().ToJson(),
-						orderStatus = new OrderStatusDetail(){VehicleNumber = "123"}.ToJson()
-					});
-
-//				ShowViewModel<BookViewModel>();
+				ShowViewModel<BookViewModel>();
             }
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
