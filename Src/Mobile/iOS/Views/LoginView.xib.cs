@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad ();
 
 			View.BackgroundColor = Theme.BackgroundColor;
+			btnForgotPassword.SetTitleColor(Theme.LabelTextColor, UIControlState.Normal);
 
 			txtEmail.Placeholder = Localize.GetValue("LoginViewEmailPlaceHolder");
 			txtEmail.ReturnKeyType = UIReturnKeyType.Done;

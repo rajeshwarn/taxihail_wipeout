@@ -187,9 +187,9 @@ namespace apcurium.MK.Booking.ConfigTool
 					NodeSelector=@"//resources/color[@name=""label_text_color""]", 
 					SetterEle = (app,ele) => ele.InnerText = GetHexaColorCode(Company.Style.TitleColor) 
 				},
-				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },
+				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
-				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
+				new ConfigFile(this){ Source="logo_1_5@2x.png", Destination=@"Mobile\iOS\Resources\th_logo@2x.png" },
 
 				new ConfigXML(this)
 				{  

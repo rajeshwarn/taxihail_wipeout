@@ -19,35 +19,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 		static UIColor _backgroundColor;
 		public static UIColor BackgroundColor
 		{
-			get
-			{ 
-				if (_backgroundColor == null)
-				{
-					_backgroundColor = ToUIColor(_themeValues.LoginBackgroundColor);
-				}
-				return _backgroundColor; 
-			}
+			get{ return ToUIColor(_themeValues.LoginBackgroundColor, ref _backgroundColor); }
 		}
 
 		static UIColor _mainButtonBackgroundColor;
 		public static UIColor MainButtonBackgroundColor
 		{
-			get
-			{ 
-				if (_mainButtonBackgroundColor == null)
-				{
-					_mainButtonBackgroundColor = ToUIColor(_themeValues.MainButtonBackgroundColor);
-				}
-				return _mainButtonBackgroundColor; 
-			}
+			get{ return ToUIColor(_themeValues.MainButtonBackgroundColor, ref _mainButtonBackgroundColor); }
 		}
 
-		static UIColor ToUIColor(string hexaDecimaleValue)
+		static UIColor _labelTextColor;
+		public static UIColor LabelTextColor
 		{
-			var red = Convert.ToInt32(hexaDecimaleValue.Substring(1, 3), 16) / 255f;
-			var green = Convert.ToInt32(hexaDecimaleValue.Substring(3, 2), 16) / 255f;
-			var blue = Convert.ToInt32(hexaDecimaleValue.Substring(5, 2), 16) / 255f;
-			return UIColor.FromRGB(red, green, blue);
+			get{ return ToUIColor(_themeValues.LabelTextColor, ref _labelTextColor); }
+		}
+
+		static UIColor _buttonTextColor;
+		public static UIColor ButtonTextColor
+		{
+			get{ return ToUIColor(_themeValues.ButtonTextColor, ref _buttonTextColor); }
+		}
+
+		static UIColor ToUIColor(string hexaDecimaleValue, ref UIColor color)
+		{
+			if (color == null)
+			{
+				var red = Convert.ToInt32(hexaDecimaleValue.Substring(1, 3), 16) / 255f;
+				var green = Convert.ToInt32(hexaDecimaleValue.Substring(3, 2), 16) / 255f;
+				var blue = Convert.ToInt32(hexaDecimaleValue.Substring(5, 2), 16) / 255f;
+				color =  UIColor.FromRGB(red, green, blue);
+			}
+			return color;
 		}
     }
 
@@ -55,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 	{
 		public string LoginBackgroundColor { get; set; }
 		public string MainButtonBackgroundColor { get; set; }
+		public string LabelTextColor { get; set; }
+		public string ButtonTextColor { get; set; }
 	}
 
 
