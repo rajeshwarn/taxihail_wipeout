@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.CreditCardsAddTitle; }
+            get { return Resource.String.CreditCardAddView; }
         }
 
         protected override void OnViewModelSet()

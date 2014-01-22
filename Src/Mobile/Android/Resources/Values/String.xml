@@ -516,4 +516,6 @@
   <string name="UpdatePasswordCurrentPasswordLabel">Current Password</string>
   <string name="UpdatePasswordConfirmationLabel">Confirmation</string>
   <string name="RideSettingsView">Profile</string>
+  <string name="CreditCardsListView">Credit Cards</string>
+  <string name="CreditCardAddView">New Credit Card</string>
 </resources>

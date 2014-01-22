@@ -24,8 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    DeleteCommand RemoveCreditCards
                 ";
         
-        public CreditCardsListView () 
-			: base("CreditCardsListView", null)
+        public CreditCardsListView () : base("CreditCardsListView", null)
         {
         }
    
@@ -34,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewWillAppear (animated);
 
             NavigationController.NavigationBar.Hidden = false;
-            NavigationItem.Title = Localize.GetValue ("CreditCardsListTitle");
+            NavigationItem.Title = Localize.GetValue ("CreditCardsListView");
         }
 
         public override void ViewDidLoad ()

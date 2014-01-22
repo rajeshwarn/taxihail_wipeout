@@ -4,9 +4,8 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-
-using apcurium.MK.Booking.Mobile.Client.Controls;
 using MonoTouch.Foundation;
+using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -14,60 +13,61 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class CreditCardAddView
 	{
 		[Outlet]
-		FormLabel lblCardCategory { get; set; }
+		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		FormLabel lblCardNumber { get; set; }
+		MonoTouch.UIKit.UILabel lblCategory { get; set; }
 
 		[Outlet]
-		FormLabel lblExpMonth { get; set; }
+		MonoTouch.UIKit.UILabel lblCvv { get; set; }
 
 		[Outlet]
-		FormLabel lblExpYear { get; set; }
+		MonoTouch.UIKit.UILabel lblExpMonth { get; set; }
 
 		[Outlet]
-		FormLabel lblNameOnCard { get; set; }
+		MonoTouch.UIKit.UILabel lblExpYear { get; set; }
 
 		[Outlet]
-		FormLabel lblSecurityCode { get; set; }
+		MonoTouch.UIKit.UILabel lblNameOnCard { get; set; }
 
 		[Outlet]
-		FormLabel lblTypeCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerCreditCardCategory { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtCategory { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerCreditCardType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCvv { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerExpirationMonth { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtExpMonth { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerExpirationYear { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtExpYear { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
-
-		[Outlet]
-		TextField txtCardNumber { get; set; }
-
-		[Outlet]
-		TextField txtNameOnCard { get; set; }
-
-		[Outlet]
-		TextField txtSecurityCode { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNameOnCard { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblCardCategory != null) {
-				lblCardCategory.Dispose ();
-				lblCardCategory = null;
+			if (lblNameOnCard != null) {
+				lblNameOnCard.Dispose ();
+				lblNameOnCard = null;
 			}
 
 			if (lblCardNumber != null) {
 				lblCardNumber.Dispose ();
 				lblCardNumber = null;
+			}
+
+			if (lblCategory != null) {
+				lblCategory.Dispose ();
+				lblCategory = null;
+			}
+
+			if (lblCvv != null) {
+				lblCvv.Dispose ();
+				lblCvv = null;
 			}
 
 			if (lblExpMonth != null) {
@@ -80,59 +80,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblExpYear = null;
 			}
 
-			if (lblNameOnCard != null) {
-				lblNameOnCard.Dispose ();
-				lblNameOnCard = null;
-			}
-
-			if (lblSecurityCode != null) {
-				lblSecurityCode.Dispose ();
-				lblSecurityCode = null;
-			}
-
-			if (lblTypeCard != null) {
-				lblTypeCard.Dispose ();
-				lblTypeCard = null;
-			}
-
-			if (pickerCreditCardCategory != null) {
-				pickerCreditCardCategory.Dispose ();
-				pickerCreditCardCategory = null;
-			}
-
-			if (pickerCreditCardType != null) {
-				pickerCreditCardType.Dispose ();
-				pickerCreditCardType = null;
-			}
-
-			if (pickerExpirationMonth != null) {
-				pickerExpirationMonth.Dispose ();
-				pickerExpirationMonth = null;
-			}
-
-			if (pickerExpirationYear != null) {
-				pickerExpirationYear.Dispose ();
-				pickerExpirationYear = null;
-			}
-
-			if (scrollView != null) {
-				scrollView.Dispose ();
-				scrollView = null;
-			}
-
 			if (txtCardNumber != null) {
 				txtCardNumber.Dispose ();
 				txtCardNumber = null;
 			}
 
+			if (txtCategory != null) {
+				txtCategory.Dispose ();
+				txtCategory = null;
+			}
+
+			if (txtCvv != null) {
+				txtCvv.Dispose ();
+				txtCvv = null;
+			}
+
+			if (txtExpMonth != null) {
+				txtExpMonth.Dispose ();
+				txtExpMonth = null;
+			}
+
+			if (txtExpYear != null) {
+				txtExpYear.Dispose ();
+				txtExpYear = null;
+			}
+
 			if (txtNameOnCard != null) {
 				txtNameOnCard.Dispose ();
 				txtNameOnCard = null;
-			}
-
-			if (txtSecurityCode != null) {
-				txtSecurityCode.Dispose ();
-				txtSecurityCode = null;
 			}
 		}
 	}
