@@ -222,7 +222,6 @@
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
-    <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="ViewModels\AddressSearchViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
@@ -309,6 +308,7 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
+    <Compile Include="ViewModels\PanelMenuViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -347,13 +347,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild">        
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <ItemGroup>
     <EmbeddedResource Include="Style\Style.json" />
   </ItemGroup>

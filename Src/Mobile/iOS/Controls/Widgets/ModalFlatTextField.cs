@@ -49,63 +49,55 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public override void WillMoveToSuperview (UIView newsuper)
+        public void Configure<T>(string title, Func<ListItem<T>[]> getValues,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected) where T : struct
         {
-            base.WillMoveToSuperview (newsuper);
+            Button.TouchUpInside += (sender, e) => {
+                var values = getValues();
 
-            Button.TouchUpInside -= HandleTouchUpInside;
-            Button.TouchUpInside += HandleTouchUpInside;
-        }
+                if ( values == null )
+                {
+                    return;
+                }
 
-        void HandleTouchUpInside (object sender, EventArgs e)
-        {
-            var controller = this.FindViewController();
-            if(controller == null) return;
-            controller.View.EndEditing(true);
-            if (_rootElement != null) {
+                var selected = 0;
+                var section = new Section();
+
+                foreach (var v in values)
+                {
+                    // Keep a reference to value in order for callbacks to work correctly
+                    var value = v;
+                    var display = value.Display;
+                    if (!value.Id.HasValue)
+                    {
+                        display = Localize.GetValue("NoPreference");
+                    }
+
+                    var item = new RadioElementWithId<T>(value.Id, display, value.Image, values.Last() != value);
+                    item.Tapped += () =>
+                    {
+                        onItemSelected(value);
+                        var controller = this.FindViewController();
+                        if (controller != null)
+                            controller.NavigationController.PopViewControllerAnimated(true);
+                    };
+                    section.Add(item);
+                    if (selectedId.Equals(value.Id))
+                    {
+                        selected = Array.IndexOf(values, value);
+                    }
+                }
+
+                _rootElement = new RootElement(title, new RadioGroup(selected));
+                _rootElement.Add(section);
+
+                var currentController = this.FindViewController();
+                if(currentController == null) return;
+                currentController.View.EndEditing(true);
+
                 var newDvc = new TaxiHailDialogViewController (_rootElement, true, false);
-                controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
-                controller.NavigationController.PushViewController(newDvc, true);
-            }
-        }
-
-        public void Configure<T>(string title, ListItem<T>[] values,  Nullable<T> selectedId, Action<ListItem<T>> onItemSelected ) where T: struct
-        {
-            if ( values == null )
-            {
-                return;
-            }
-
-            var selected = 0;
-            var section = new Section();
-
-            foreach (var v in values)
-            {
-                // Keep a reference to value in order for callbacks to work correctly
-                var value = v;
-                var display = value.Display;
-                if (!value.Id.HasValue)
-                {
-                    display = Localize.GetValue("NoPreference");
-                }
-
-                var item = new RadioElementWithId<T>(value.Id, display, value.Image, values.Last() != value);
-                item.Tapped += () =>
-                {
-                    onItemSelected(value);
-                    var controller = this.FindViewController();
-                    if (controller != null)
-                        controller.NavigationController.PopViewControllerAnimated(true);
-                };
-                section.Add(item);
-                if (selectedId.Equals(value.Id))
-                {
-                    selected = Array.IndexOf(values, value);
-                }
-            }
-
-            _rootElement = new RootElement(title, new RadioGroup(selected));
-            _rootElement.Add(section);
+                currentController.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
+                currentController.NavigationController.PushViewController(newDvc, true);
+            };
         }
     }
 }

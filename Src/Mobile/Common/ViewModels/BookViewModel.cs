@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _initialized = true;
 
-            Panel = new PanelViewModel(this);
+			Panel = new PanelMenuViewModel(this);
 
             this.Services().MessengerHub.Subscribe<AppActivated>(_ => AppActivated());
 
@@ -347,7 +347,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             } 
         }
 
-        public PanelViewModel Panel { get; set; }
+		public PanelMenuViewModel Panel { get; set; }
 
         public BookAddressViewModel Pickup { get; set; }
 

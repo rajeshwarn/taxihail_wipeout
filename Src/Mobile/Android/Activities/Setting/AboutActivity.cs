@@ -7,7 +7,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-    [Activity(Label = "About", Theme = "@android:style/Theme.NoTitleBar",
+    [Activity(Label = "About", Theme = "@style/MainTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
     public class AboutActivity : BaseBindingActivity<AboutUsViewModel>
     {

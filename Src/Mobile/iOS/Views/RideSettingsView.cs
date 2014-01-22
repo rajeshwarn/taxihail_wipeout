@@ -56,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             DismissKeyboardOnReturn(txtName, txtPhone);
 
-            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
-            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
-            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
+            txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.Execute(x.Id));
+            txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.Execute(x.Id));
+            txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 

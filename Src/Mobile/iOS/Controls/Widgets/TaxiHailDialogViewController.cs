@@ -50,6 +50,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _willBeContainedInOtherView = willBeContainedInOtherView;
         }
 
+        public override float GetHeightForHeader(UITableView tableView, int section)
+        {
+            return 22;
+        }
+
+        public override float GetHeightForFooter(UITableView tableView, int section)
+        {
+            return 22;
+        }
+
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             var cell =  base.GetCell(tableView, indexPath);
