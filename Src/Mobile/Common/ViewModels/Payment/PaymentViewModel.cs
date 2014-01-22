@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
+				return true;
                 var payPalSettings = this.Services().Config.GetPaymentSettings().PayPalClientSettings;
                 return payPalSettings.IsEnabled;
             }
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         { 
             get
             {
+				return true;
                 var setting = this.Services().Config.GetPaymentSettings();
                 return setting.IsPayInTaxiEnabled;
             }
@@ -60,10 +62,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         Order Order { get; set; }
 
-// ReSharper disable once UnusedAutoPropertyAccessor.Local
         OrderStatusDetail OrderStatus { get; set; }
 
-        public bool PayPalSelected { get; set; }
+		private bool _payPalSelected { get; set; }
+        public bool PayPalSelected 
+		{ 
+			get { return _payPalSelected; }
+			set {
+				_payPalSelected = value;
+				RaisePropertyChanged(() => PayPalSelected);
+			}
+		}
 
         public bool PaymentSelectorToggleIsVisible { get; set; }
 
@@ -74,8 +83,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = true;
-					//TODO: Property should RaisePropertyChanged
-					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
@@ -87,8 +94,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return GetCommand(() => InvokeOnMainThread(delegate
                 {
                     PayPalSelected = false;
-					//TODO: Property should RaisePropertyChanged
-					RaisePropertyChanged(() => PayPalSelected);
                 }));
             }
         }
@@ -108,23 +113,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        public string TipAmount
-        {
-            get;
-            set;
-        }
+		public string TipAmount { get; set; }
 
-        public string MeterAmount
-        {
-            get;
-            set;
-        }
+		public string MeterAmount { get; set; }
 
-        public PaymentDetailsViewModel PaymentPreferences
-        {
-            get;
-            private set;
-        }
+		public PaymentDetailsViewModel PaymentPreferences { get; private set; }
 
         public AsyncCommand ConfirmOrderCommand
         {
@@ -132,7 +125,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             {
                 return GetCommand(() =>
                 {                    
-
                     Action executePayment = () =>
                     {
                         if (PayPalSelected)
@@ -147,11 +139,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                     if (Amount > 100)
                     {
-
                         string message = string.Format(this.Services().Localize["ConfirmationPaymentAmountOver100"], CultureProvider.FormatCurrency(Amount));
-
-                        this.Services().Message.ShowMessage(this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, this.Services().Localize["OkButtonText"], () => Task.Factory.SafeStartNew(executePayment), this.Services().Localize["CancelBoutton"], Nothing);
-
+						this.Services().Message.ShowMessage(this.Services().Localize["ConfirmationPaymentAmountOver100Title"], message, this.Services().Localize["OkButtonText"], () => Task.Factory.SafeStartNew(executePayment), this.Services().Localize["CancelBoutton"], () => {});
                     }
                     else
                     {
@@ -159,10 +148,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     }
                 }); 
             }
-        }
-
-        private void Nothing()
-        {
         }
 
         private void PayPalFlow()
