@@ -74,6 +74,7 @@
     <Compile Include="ConfigSource.cs" />
     <Compile Include="Unzip.cs" />
     <Compile Include="Entities\CompanySetting.cs" />
+    <Compile Include="Entities\Style.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

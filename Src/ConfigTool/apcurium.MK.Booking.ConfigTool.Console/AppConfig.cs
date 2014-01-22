@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\Android\Resources\Values\Themes.xml", 
 					NodeSelector=@"//resources/color[@name=""login_background_color""]", 
-					SetterEle = (app,ele) => ele.InnerText = Company.CompanySettings.First(x => x.Key == "TaxiHail.AccentColor").Value 
+					SetterEle = (app,ele) => ele.InnerText = "#" + Company.Style.NavigationBarColor 
 				},	
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\th_logo.png" },
 				new ConfigFile(this){ Source="logo_1_5.png", Destination=@"Mobile\iOS\Resources\th_logo.png" },
@@ -183,7 +183,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				{  
 					Destination=@"Mobile\iOS\Style\Theme.xml", 
 					NodeSelector=@"//ThemeValues/LoginBackgroundColor", 
-					SetterEle = (app,ele) => ele.InnerText = Company.CompanySettings.First(x => x.Key == "TaxiHail.AccentColor").Value 
+					SetterEle = (app,ele) => ele.InnerText = Company.Style.NavigationBarColor
 				}
 
            };
