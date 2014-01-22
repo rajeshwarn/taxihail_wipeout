@@ -91,7 +91,7 @@
                     style="@style/ButtonActionGreenStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
-                    local:MvxBind="Click ConfirmPayment"
+                    local:MvxBind="Click ConfirmCarNumber"
                     layout_alignParentBottom="true" />
                 <Button
                     android:id="@+id/CancelPaymentBtn"
