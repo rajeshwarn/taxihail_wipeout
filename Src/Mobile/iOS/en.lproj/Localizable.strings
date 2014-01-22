@@ -515,5 +515,13 @@
 "Done"="Done";
 "UpdatePasswordCurrentPasswordLabel"="Current Password";
 "UpdatePasswordConfirmationLabel"="Confirmation";
+"PanelMenuViewAboutUsText"="About Us";
+"PanelMenuViewOrderHistoryText"="History";
+"PanelMenuViewSignOutText"="Sign Out";
+"PanelMenuViewTutorialText"="View Tutorial";
+"PanelMenuViewLocationsText"="Locations";
+"PanelMenuViewUpdateProfileText"="Update Account";
+"PanelMenuViewCallDispatchText"="Call";
+"PanelMenuViewReportProblemText"="Report A Problem";
 "RideSettingsView"="Profile";
 "View_AboutUs"="About Us";

@@ -174,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.PickupDateSelectedCommand);
 
             set.Bind(_bottomAction.ClearLocationButton)
-                .For(v => v.Hidden)
+				.For(v => v.Hidden)
                 .To(vm => vm.CanClearAddress)
                 .WithConversion("BoolInverter");
             set.Bind(_bottomAction.ClearLocationButton)
@@ -200,7 +200,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.Panel.MenuIsOpen)
                 .WithConversion("BoolInverter");
 
-            set.Apply();
+			var nib = UINib.FromName ("PanelMenuView", null);
+			_menu = (PanelMenuView)nib.Instantiate (this, null)[0];
+			_menu.ViewToAnimate = bookView;
+
+			set.Bind (_menu)
+				.For (v => v.DataContext)
+				.To (vm => vm.Panel);
+
+			set.Apply();
+
 
             if (ViewModel.HideDestination)
             {
@@ -210,12 +219,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapView.SetY(headerBackgroundView.Frame.Bottom);
                 mapView.IncrementHeight(heightToCut);
             }
-             
-            View.ApplyAppFont ();
+            
+			View.ApplyAppFont ();
             ViewModel.OnViewLoaded();
 
-            _menu = new PanelMenuView (bookView, ViewModel.Panel);
-            View.InsertSubviewBelow (_menu.View, bookView);
+            View.InsertSubviewBelow (_menu, bookView);
         }
 
         private bool _firstStart = true;
@@ -237,7 +245,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidAppear (animated);
 
-            var button = AppButtons.CreateStandardButton( new RectangleF( 16,2,40,40 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
+			var button = AppButtons.CreateStandardButton( new RectangleF( 0,2,40,40 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
             button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
 
             var offsetView = UIButton.FromType(UIButtonType.Custom);
@@ -246,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             offsetView.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
 
             var btn = new UIBarButtonItem ( offsetView );
-            navBar.TopItem.RightBarButtonItem = btn;
+			navBar.TopItem.LeftBarButtonItem = btn;
             ViewModel.ShowTutorial.Execute ();
         }
 
@@ -258,7 +266,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ViewModel.Reset ();
             ViewModel.Dropoff.ClearAddress ();        
         }
-
 
 
     }
