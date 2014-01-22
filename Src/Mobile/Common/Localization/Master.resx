@@ -132,9 +132,6 @@
   <data name="TabHistory" xml:space="preserve">
     <value>History</value>
   </data>
-  <data name="TabSettings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
   <data name="TabSearch" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -690,9 +687,6 @@
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
     <value>Estimated fare not available</value>
   </data>
-  <data name="AboutUsUrl" xml:space="preserve">
-    <value>Assets/About_en.html</value>
-  </data>
   <data name="ResetPasswordInvalidDataTitle" xml:space="preserve">
     <value>Invalid email</value>
   </data>
@@ -948,7 +942,7 @@
   <data name="View_SearchAddress" xml:space="preserve">
     <value>Address Search</value>
   </data>
-  <data name="View_About" xml:space="preserve">
+  <data name="View_AboutUs" xml:space="preserve">
     <value>About Us</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
@@ -984,28 +978,28 @@
   <data name="RideSettingsView" xml:space="preserve">
     <value>Profile</value>
   </data>
-  <data name="View_Book_Menu_MyLocations" xml:space="preserve">
+  <data name="PanelMenuViewLocationsText" xml:space="preserve">
     <value>Locations</value>
   </data>
-  <data name="View_Book_Menu_MyOrders" xml:space="preserve">
+  <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
     <value>History</value>
   </data>
-  <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
+  <data name="PanelMenuViewUpdateProfileText" xml:space="preserve">
     <value>Update Account</value>
   </data>
-  <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
-    <value>Update My Password</value>
+  <data name="PanelMenuViewTutorialText" xml:space="preserve">
+    <value>View Tutorial</value>
   </data>
-  <data name="View_Book_Menu_CallDispatch" xml:space="preserve">
-    <value>Call Dispatch Center</value>
+  <data name="PanelMenuViewCallDispatchText" xml:space="preserve">
+    <value>Call</value>
   </data>
-  <data name="View_Book_Menu_AboutUs" xml:space="preserve">
+  <data name="PanelMenuViewAboutUsText" xml:space="preserve">
     <value>About Us</value>
   </data>
-  <data name="View_Book_Menu_ReportProblem" xml:space="preserve">
+  <data name="PanelMenuViewReportProblemText" xml:space="preserve">
     <value>Report A Problem</value>
   </data>
-  <data name="View_Book_Menu_SignOut" xml:space="preserve">
+  <data name="PanelMenuViewSignOutText" xml:space="preserve">
     <value>Sign Out</value>
   </data>
   <data name="View_RefineAddress" xml:space="preserve">
@@ -1103,9 +1097,6 @@
   </data>
   <data name="ChooseProviderDialogTitle" xml:space="preserve">
     <value>Pick a provider</value>
-  </data>
-  <data name="View_Book_Menu_Tutorial" xml:space="preserve">
-    <value>View Tutorial</value>
   </data>
   <data name="ChangePasswordConfirmmation" xml:space="preserve">
     <value>You password has been updated, please sign in.</value>

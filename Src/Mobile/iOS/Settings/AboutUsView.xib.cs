@@ -4,15 +4,16 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Touch.Views;
 using Cirrious.MvvmCross.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class AboutUsView : MvxViewController
 	{   
-        public AboutUsView (string nibName, NSBundle bundle) 
+		public AboutUsView () 
 			: base("AboutUsView", null)
-        {
-        }
+		{
+		}
 
 		public new AboutUsViewModel ViewModel
 		{
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.ViewWillAppear (animated);
 
 			NavigationController.NavigationBar.Hidden = false;
+			NavigationItem.Title = Localize.GetValue ("View_AboutUs");
 		}
 	}
 }

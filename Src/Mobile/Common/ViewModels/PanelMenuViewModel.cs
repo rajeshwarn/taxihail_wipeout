@@ -2,16 +2,46 @@ using System;
 using apcurium.MK.Booking.Mobile.Extensions;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class PanelViewModel : BaseViewModel
+	public class PanelMenuViewModel : BaseViewModel
     {
         private readonly BookViewModel _parent;
-        public PanelViewModel (BookViewModel parent)
+		public PanelMenuViewModel (BookViewModel parent)
         {
             _parent = parent;
+
+			ItemMenuList = new ObservableCollection<ItemMenuModel>();
+			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations});
+			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory});
+			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile});
+			if (TutorialEnabled)
+				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial});
+			if (CanCall)
+				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call});
+			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs});
+			if (CanReportProblem)
+				ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem});
+			ItemMenuList.Add(new ItemMenuModel(){Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut});
         }
+		
+		private ObservableCollection<ItemMenuModel> _itemMenuList;
+		public ObservableCollection<ItemMenuModel> ItemMenuList
+		{
+			get
+			{
+				return _itemMenuList;
+			}
+
+			set
+			{
+				_itemMenuList = value;
+			}
+		}
+
 
         public bool TutorialEnabled {
             get{
@@ -99,6 +129,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public AsyncCommand NavigateToReportProblem
+		{
+			get {
+				return GetCommand(() =>
+					{
+						MenuIsOpen = false;
+						InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(this.Services().Settings.ErrorLog, this.Services().Config.GetSetting("Client.SupportEmail"), this.Services().Localize["TechSupportEmailTitle"]));
+					});
+			}
+		}
+
         public AsyncCommand NavigateToTutorial
         {
             get {
@@ -145,16 +186,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand ReportProblem
-        {
-            get {
-                return GetCommand(() =>
-                {
-                    MenuIsOpen = false;
-                    InvokeOnMainThread(() => this.Services().Phone.SendFeedbackErrorLog(this.Services().Settings.ErrorLog, this.Services().Config.GetSetting("Client.SupportEmail"), this.Services().Localize["TechSupportEmailTitle"]));
-                });
-            }
-        }
+		public class ItemMenuModel
+		{
+			public string Text { get; set;}
+
+			public ICommand NavigationCommand{ get; set;}
+
+			public bool Visibility { get; set;}
+		}
     }
 }
 

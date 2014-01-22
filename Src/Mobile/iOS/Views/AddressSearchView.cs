@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using apcurium.MK.Booking.Mobile.ViewModels;

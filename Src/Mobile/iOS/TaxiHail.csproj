@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -326,9 +326,6 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
-    <Compile Include="InfoTableView\SingleLineCell.cs" />
-    <Compile Include="InfoTableView\TableViewDelegate.cs" />
-    <Compile Include="InfoTableView\TableViewDataSource.cs" />
     <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
@@ -337,7 +334,6 @@
     <Compile Include="Views\PanelMenuView.designer.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -503,6 +499,7 @@
     <Compile Include="Controls\Widgets\TaxiHailDialogViewController.cs" />
     <Compile Include="Controls\Widgets\RoundedCornerView.cs" />
     <Compile Include="FontName.cs" />
+    <Compile Include="Controls\Widgets\PanelMenuCell.cs" />
     <Compile Include="Controls\Widgets\ModalFlatTextField.cs" />
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
@@ -558,9 +555,6 @@
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
-    <Content Include="app.png" />
-    <Content Include="Default.png" />
-    <Content Include="Default%402x.png" />
     <Content Include="Assets\Button\btnBookIt_en.png" />
     <Content Include="Assets\Button\btnBookIt_en%402x.png" />
     <Content Include="Assets\Button\btnBookIt_fr.png" />
@@ -583,8 +577,6 @@
     <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
     <Content Include="Assets\VerticalButtonBar\rightArrow.png" />
     <Content Include="Assets\VerticalButtonBar\rightArrow%402x.png" />
-    <Content Include="Assets\apcuriumLogo.png" />
-    <Content Include="Assets\apcuriumLogo%402x.png" />
     <Content Include="Assets\background.png" />
     <Content Include="Assets\background%402x.png" />
     <Content Include="Assets\background_full.png" />
@@ -623,7 +615,6 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Default-568h%402x.png" />
     <Content Include="Assets\Rating\ecstatic.png" />
     <Content Include="Assets\Rating\ecstatic%402x.png" />
     <Content Include="Assets\Rating\ecstatic-selected.png" />
@@ -749,22 +740,9 @@
     <BundleResource Include="Assets\Social\FB\facebook-icon%402x.png" />
     <BundleResource Include="Assets\Social\TW\twitter.png" />
     <BundleResource Include="Assets\Social\TW\twitter%402x.png" />
-    <BundleResource Include="Resources\twitter_icon.png" />
-    <BundleResource Include="Resources\twitter_icon%402x.png" />
-    <BundleResource Include="Resources\facebook_icon.png" />
-    <BundleResource Include="Resources\facebook_icon%402x.png" />
-    <BundleResource Include="Resources\add_location.png" />
-    <BundleResource Include="Resources\add_location%402x.png" />
-    <BundleResource Include="Resources\favorites.png" />
-    <BundleResource Include="Resources\favorites%402x.png" />
-    <BundleResource Include="Resources\history.png" />
-    <BundleResource Include="Resources\history%402x.png" />
-    <BundleResource Include="Resources\right_arrow.png" />
-    <BundleResource Include="Resources\right_arrow%402x.png" />
-    <BundleResource Include="Resources\th_logo.png" />
-    <BundleResource Include="Resources\th_logo%402x.png" />
     <BundleResource Include="Assets\Logo.png" />
     <BundleResource Include="Assets\Logo%402x.png" />
+    <BundleResource Include="app.png" />
     <BundleResource Include="Resources\clearButton.png" />
     <BundleResource Include="Resources\left_arrow.png" />
     <BundleResource Include="Resources\left_arrow%402x.png" />

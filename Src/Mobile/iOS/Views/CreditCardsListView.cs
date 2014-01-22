@@ -5,7 +5,6 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.Touch.Views;
