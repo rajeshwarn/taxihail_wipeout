@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    local:MvxBind="Text Status.IBSStatusDescription" />
+                    local:MvxBind="Text Status.IbsStatusDescription" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

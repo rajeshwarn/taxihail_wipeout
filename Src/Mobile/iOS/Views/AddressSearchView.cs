@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -51,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 
-			source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.InfoTableView.TwoLinesCell( Cellid, CellBindingText ); };
+            source.CellCreator = (tview , iPath, state ) => { return new apcurium.MK.Booking.Mobile.Client.Controls.Widgets.TwoLinesCell( Cellid, CellBindingText, UITableViewCellAccessory.None ); };
 
  			var set = this.CreateBindingSet<AddressSearchView, AddressSearchViewModel>();
 			set.Bind(source)
