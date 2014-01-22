@@ -71,8 +71,7 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigFile(this){ Source="backPickupDestination.png", Destination=@"Mobile\iOS\Assets\backPickupDestination.png" },    
                     new ConfigFile(this){ Source="backPickupDestination@2x.png", Destination=@"Mobile\iOS\Assets\backPickupDestination@2x.png" },                    
 
-                    new ConfigFile(this){ Source="Styles.xml", Destination=@"Mobile\Android\Resources\Values\Styles.xml" },    
-	             
+                      
                     new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
                     new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
 
