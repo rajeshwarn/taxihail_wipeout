@@ -14,6 +14,7 @@ using Cirrious.MvvmCross.Views;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -23,15 +24,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            NavigationItem.HidesBackButton = false;
+            NavigationItem.Title = Localize.GetValue("GenericTitle");
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
 
             try {
                 ViewModel.OnViewLoaded();
-
-                NavigationItem.HidesBackButton = false;
-                View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
                 View.BringSubviewToFront (statusBar);
 
@@ -57,17 +63,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 viewLine.Frame = new RectangleF( 0,topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1 );
 
-                AppButtons.FormatStandardButton ((GradientButton)btnCallDriver, "", AppStyle.ButtonColor.Grey, "Assets/phone.png");
+                btnCallDriver.SetImage(UIImage.FromFile("Assets/phone.png"), UIControlState.Normal);
+                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+                btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
+                btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
+                btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
+                btnResend.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
+                btnUnpair.SetTitle(Localize.GetValue("CmtRideLinqUnpair"), UIControlState.Normal);
 
-                AppButtons.FormatStandardButton((GradientButton)btnCall, Localize.GetValue("StatusCallButton"), AppStyle.ButtonColor.Black);
-                AppButtons.FormatStandardButton((GradientButton)btnCancel, Localize.GetValue("StatusCancelButton"), AppStyle.ButtonColor.Red);
-                AppButtons.FormatStandardButton((GradientButton)btnNewRide, Localize.GetValue("StatusNewRideButton"), AppStyle.ButtonColor.Green);
-				AppButtons.FormatStandardButton((GradientButton)btnPay, Localize.GetValue("PayNow"), AppStyle.ButtonColor.Green);
-				AppButtons.FormatStandardButton((GradientButton)btnResend, Localize.GetValue ("ReSendConfirmation"), AppStyle.ButtonColor.Green);
-				AppButtons.FormatStandardButton((GradientButton)btnUnpair, Localize.GetValue ("CmtRideLinqUnpair"), AppStyle.ButtonColor.Red);
-
-				NavigationItem.Title = Localize.GetValue("GenericTitle");
-                                
+                FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
+                FlatButtonStyle.Silver.ApplyTo(btnCall);
+                FlatButtonStyle.Red.ApplyTo(btnCancel);
+                FlatButtonStyle.Green.ApplyTo(btnNewRide);
+                FlatButtonStyle.Green.ApplyTo(btnPay);
+                FlatButtonStyle.Green.ApplyTo(btnResend);
+                FlatButtonStyle.Red.ApplyTo(btnUnpair);
+                                                
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged+= (sender, e) => {
@@ -87,7 +98,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                     var callFrame = btnCall.Frame;
                     UpdateCallButtonSize (callFrame);
-                    ViewModel.PropertyChanged+= (sender, e) => {
+                    ViewModel.PropertyChanged += (sender, e) => 
+                    {
                         InvokeOnMainThread(()=>
                         {
                             UpdateCallButtonSize (callFrame);
@@ -268,8 +280,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             } catch (Exception ex) {
                 Logger.LogError (ex);
             }
-
-            View.ApplyAppFont ();
         }
 
         void UpdateCallButtonSize (RectangleF callFrame)
@@ -277,7 +287,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
             {
                 btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
-                AppButtons.FormatStandardButton((GradientButton)btnCall, Localize.GetValue("StatusCallButton"), AppStyle.ButtonColor.Black);
+                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+                FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
             else
             {

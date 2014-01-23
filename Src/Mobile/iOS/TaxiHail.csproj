@@ -770,6 +770,8 @@
     <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Default.png" />
     <BundleResource Include="Default%402x.png" />
+    <BundleResource Include="Resources\grip.png" />
+    <BundleResource Include="Resources\grip%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">

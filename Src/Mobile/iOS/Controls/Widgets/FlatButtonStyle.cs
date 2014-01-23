@@ -77,13 +77,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				button.SetFillColor(UIColor.Clear, UIControlState.Selected);
 				button.SetFillColor(UIColor.Clear, UIControlState.Highlighted);
 
-				button.SetTitleColor(UIColor.Gray, UIControlState.Normal);
-				button.SetTitleColor(UIColor.Gray.ColorWithAlpha(0.5f), UIControlState.Selected);
-				button.SetTitleColor(UIColor.Gray.ColorWithAlpha(0.5f), UIControlState.Highlighted);
+                button.SetTitleColor(UIColor.Red, UIControlState.Normal);
+                button.SetTitleColor(UIColor.Red.ColorWithAlpha(0.5f), UIControlState.Selected);
+                button.SetTitleColor(UIColor.Red.ColorWithAlpha(0.5f), UIControlState.Highlighted);
 
-				button.SetStrokeColor(UIColor.Gray, UIControlState.Normal);
-				button.SetStrokeColor(UIColor.Gray, UIControlState.Selected);
-				button.SetStrokeColor(UIColor.Gray, UIControlState.Highlighted);
+                button.SetStrokeColor(UIColor.Red, UIControlState.Normal);
+                button.SetStrokeColor(UIColor.Red, UIControlState.Selected);
+                button.SetStrokeColor(UIColor.Red, UIControlState.Highlighted);
             }
         }
 
