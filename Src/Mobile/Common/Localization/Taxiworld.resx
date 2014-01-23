@@ -129,7 +129,7 @@
   <data name="AptNumber" xml:space="preserve">
     <value>Flat No.</value>
   </data>  
-  <data name="ConfirmNoApt" xml:space="preserve">
+  <data name="NoAptText" xml:space="preserve">
     <value>No flat</value>
   </data>
    <data name="ApartmentLabel" xml:space="preserve">

@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Message.ShowMessage(string.Empty,
                                                 this.Services().Config.GetSetting("DefaultPhoneNumberDisplay"),
                                                this.Services().Localize["CallButton"],
-                                               call, this.Services().Localize["CancelButton"], 
+                                               call, this.Services().Localize["Cancel"], 
                                                () => {});
                 });
             }

@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start();
 			_status = new OrderStatusDetail
 			{
-				IbsStatusDescription = this.Services().Localize["LoadingText"]
+				IbsStatusDescription = this.Services().Localize["LoadingMessage"]
 			};
 		}
 
@@ -293,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var orderStatus = new OrderStatusDetail
 					{ 
 							IbsOrderId = Order.IbsOrderId,
-							IbsStatusDescription = this.Services().Localize["LoadingText"],
+							IbsStatusDescription = this.Services().Localize["LoadingMessage"],
 							IbsStatusId = "",
 							OrderId = OrderId,
 							Status = OrderStatus.Unknown,
