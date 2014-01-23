@@ -45,8 +45,8 @@
             android:gravity="center_horizontal">
             <TextView
                 style="@style/BlackTextLabelMultiline"
+                android:id="@+id/lblSubTitle"
                 android:text="@string/View_BookingStatus_ThankYouMessage"
-                local:MvxBind="Text ThankYouMessage'"
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:layout_width="250dp"

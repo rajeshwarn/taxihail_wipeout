@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                     CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                 },
-                this.Services().Localize["CancelButton"],
+                this.Services().Localize["Cancel"],
                 () => { });
                                                                   
         }

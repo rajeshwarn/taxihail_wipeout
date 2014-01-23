@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     style="@style/BlackTextLabel"
-                    android:text="@string/HistoryDetailConfirmationLabel"
+                    android:text="@string/HistoryDetailOrderLabel"
                     android:layout_width="130dp"
                     android:gravity="right"
                     android:layout_height="wrap_content" />
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     style="@style/BlackTextLabel"
-                    android:text="@string/HistoryDetailOriginLabel"
+                    android:text="@string/HistoryDetailPickupLabel"
                     android:layout_width="130dp"
                     android:gravity="right"
                     android:layout_height="wrap_content" />
@@ -228,7 +228,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/RebookTripBtn"
-                    android:text="@string/HistoryDetailRebookButton"
+                    android:text="@string/Rebook"
                     android:visibility="gone"
                     local:MvxBind="Enabled IsCompleted; Visibility RebookIsAvailable, Converter=Visibility; Click RebookOrder" />
                 <Button
@@ -277,7 +277,7 @@
                     android:layout_height="@dimen/HeightButton"
                     android:id="@+id/HistoryOrderDeleteBtn"
                     android:layout_weight="0.33"
-                    android:text="@string/DeleteButton"
+                    android:text="@string/Delete"
                     android:visibility="gone"
                     local:MvxBind="Enabled IsCompleted; Visibility IsCompleted, Converter=Visibility; Click DeleteOrder" />
             </LinearLayout>

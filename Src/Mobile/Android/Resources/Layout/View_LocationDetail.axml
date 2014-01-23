@@ -160,7 +160,7 @@
                     style="@style/ButtonActionRedStyle"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/HeightButton"
-                    android:text="@string/DeleteButton"
+                    android:text="@string/Delete"
                     local:MvxBind="Click DeleteAddress;Visibility IsNew, Converter=InvertedVisibility" />
             </LinearLayout>
         </LinearLayout>

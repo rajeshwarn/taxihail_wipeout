@@ -38,8 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
             lblCardOnFile.Text = Localize.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 
-            NavigationItem.LeftBarButtonItem = new UIBarButtonItem(Localize.GetValue("CancelButton"), UIBarButtonItemStyle.Plain, null);
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("DoneButton"), UIBarButtonItemStyle.Plain, null);
+            NavigationItem.LeftBarButtonItem = new UIBarButtonItem(Localize.GetValue("Cancel"), UIBarButtonItemStyle.Plain, null);
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Plain, null);
 
             txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip, x => ViewModel.PaymentPreferences.Tip = (int)x.Id);
 

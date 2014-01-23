@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                return GetCommand(() =>
+				return GetCommand(async () =>
 				{
 					if (!IsEmail(Data.Email))
 					{
@@ -86,35 +86,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					try
 					{
-						string error;
-
                         var setting = this.Services().Config.GetSetting("AccountActivationDisabled");
                         Data.AccountActivationDisabled = bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+						try{
 
-                        var result = this.Services().Account.Register(Data, out error);
-						if (result)
-						{
+							await this.Services().Account.Register(Data);
 							if (!HasSocialInfo && !Data.AccountActivationDisabled)
 							{
-                                this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["AccountActivationTitle"], this.Services().Localize["AccountActivationMessage"]);
 							}
-                            ReturnResult(Data);
-						}
-						else
+							ReturnResult(Data);
+
+						}catch(Exception e)
 						{
+							var error = e.Message;
 							if (error.Trim().IsNullOrEmpty())
 							{
-                                error = this.Services().Localize["CreateAccountErrorNotSpecified"];
+								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
 							}
-                            if (this.Services().Localize["ServiceError" + error] != "ServiceError" + error)
+							if (this.Services().Localize["ServiceError" + error] != "ServiceError" + error)
 							{
-                                this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize["ServiceError" + error]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize["ServiceError" + error]);
 							}
 							else
 							{
-                                this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + error);
+								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + error);
 							}
-						}
+						}						
 					}
 					finally
 					{
