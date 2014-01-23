@@ -7,6 +7,7 @@ using ServiceStack.Text;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration.Impl;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -17,8 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = order.FromJson<Order> ();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();
 
-            IsRatingButtonShown = this.Services().Config.GetSetting( "Client.RatingEnabled", false );  
-
+			IsRatingButtonShown = this.Services().Config.GetSetting("Client.RatingEnabled", false);  
 		}
 
         public override void OnViewStarted(bool firstStart = false)
@@ -33,17 +33,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool ReceiptSent 
         {
             get { return _receiptSent; }
-            set {
+            set 
+			{
                 _receiptSent = value;
 				RaisePropertyChanged();
             }
         }
 
-		private Order Order {get; set;}
-		OrderStatusDetail OrderStatus{ get; set;}
+		private Order Order { get; set; }
+		private OrderStatusDetail OrderStatus { get; set;}
 
-		public bool IsPayButtonShown{
-			get{
+		public bool IsPayButtonShown
+		{
+			get
+			{
                 var setting = this.Services().Config.GetPaymentSettings();
 				var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
 				return isPayEnabled && setting.PaymentMode != PaymentMethod.RideLinqCmt && !this.Services().Payment.GetPaymentFromCache(Order.Id).HasValue; // TODO not sure about this
@@ -60,50 +63,57 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public bool IsSendReceiptButtonShown {
-			get{
+		public bool IsSendReceiptButtonShown 
+		{
+			get
+			{
                 var sendReceiptAvailable = this.Services().Config.GetSetting("Client.SendReceiptAvailable", false);
                 return (OrderStatus != null) && OrderStatus.FareAvailable && sendReceiptAvailable;
 			}
 		}
 
 		bool _isRatingButtonShow;		
-		public bool IsRatingButtonShown {
-			get { 
+		public bool IsRatingButtonShown 
+		{
+			get 
+			{ 
 				return _isRatingButtonShow;
 			}
-			set { 
+			set 
+			{ 
 				_isRatingButtonShow = value;
 				RaisePropertyChanged ();
 			}
 		}
 
-        public AsyncCommand SendReceiptCommand
+		public ICommand SendReceiptCommand
         {
 			get {
-				return new AsyncCommand (() =>
+				return GetCommand(() =>
 				{
-                    this.Services().Booking.SendReceipt(Order.Id);
+					this.Services().Booking.SendReceipt(Order.Id);
                     ReceiptSent = true;
 				});
 			}
 		}
 
-        public AsyncCommand NavigateToRatingPage
+		public ICommand NavigateToRatingPage
         {
 			get {
-				return new AsyncCommand (() => ShowSubViewModel<BookRatingViewModel, OrderRated> (new 
-					{
-					    orderId = Order.Id, 
-					    canRate = true, 
-					}, _ => IsRatingButtonShown = false));
+				return GetCommand(() => 
+					ShowSubViewModel<BookRatingViewModel, OrderRated>(
+						new 
+						{
+							orderId = Order.Id, 
+							canRate = true, 
+						}, _ => IsRatingButtonShown = false));
 			}
 		}
 
-        public AsyncCommand ResendConfirmationCommand
+		public ICommand ResendConfirmationCommand
         {
             get {
-                return new AsyncCommand (() =>
+				return GetCommand(() =>
                 {
 					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
                     this.Services().Payment.ResendConfirmationToDriver(Order.Id);
@@ -111,15 +121,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public AsyncCommand PayCommand
+		public ICommand PayCommand
         {
 			get {
-				return new AsyncCommand (() => ShowViewModel<ConfirmCarNumberViewModel>(
-				    new 
-				    { 
-				        order = Order.ToJson(),
-				        orderStatus = OrderStatus.ToJson()
-				    }));
+				return GetCommand(() => 
+					ShowViewModel<ConfirmCarNumberViewModel>(
+					    new 
+					    { 
+					        order = Order.ToJson(),
+					        orderStatus = OrderStatus.ToJson()
+					    }));
 			}
 		}
 	}

@@ -494,7 +494,6 @@
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
-    <Compile Include="Controls\Binding\BindableTableViewSource.cs" />
     <Compile Include="Views\RideSummaryView.cs" />
     <Compile Include="Views\RideSummaryView.designer.cs">
       <DependentUpon>RideSummaryView.cs</DependentUpon>

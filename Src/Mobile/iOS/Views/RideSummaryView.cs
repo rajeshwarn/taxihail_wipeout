@@ -1,24 +1,22 @@
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using MonoTouch.UIKit;
-using Cirrious.MvvmCross.ViewModels;
-using Cirrious.MvvmCross.Views;
-using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Binding;
+using System;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using System;
+using Cirrious.MvvmCross.ViewModels;
+using Cirrious.MvvmCross.Views;
+using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-
 	public partial class RideSummaryView  : BaseViewController<RideSummaryViewModel>
 	{     
-		public RideSummaryView() 
-			: base("RideSummaryView", null)
+		public RideSummaryView() : base("RideSummaryView", null)
 		{
 		}
 
@@ -36,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			View.BackgroundColor = UIColor.FromRGB(239, 239, 239);
 
-			FlatButtonStyle.Green.ApplyTo(btnRateRide);
+            FlatButtonStyle.Green.ApplyTo(btnRateRide);
 			FlatButtonStyle.Green.ApplyTo(btnSendReceipt);
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
@@ -44,52 +42,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTitle.Text = Localize.GetValue ("RideSummaryTitleText");
 			lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
 
-			if (ViewModel.IsSendReceiptButtonShown)
-				btnSendReceipt.RemoveFromSuperview();
-			else
-				btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
-
-			if (ViewModel.IsRatingButtonShown)
-				btnRateRide.RemoveFromSuperview();
-			else
-				btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
-
-			if (ViewModel.IsPayButtonShown)
-				btnPay.RemoveFromSuperview();
-			else
-				btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-
-			if (ViewModel.IsResendConfirmationButtonShown)
-				btnReSendConfirmation.RemoveFromSuperview();
-			else
-				btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
+            btnSendReceipt.SetTitle(Localize.GetValue("SendReceipt"), UIControlState.Normal);
+            btnRateRide.SetTitle(Localize.GetValue("RateRide"), UIControlState.Normal);
+            btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
+            btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
 			var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
-			set.BindSafe(btnSendReceipt)
+            set.Bind(btnSendReceipt)
 				.For("TouchUpInside")
 				.To(vm => vm.SendReceiptCommand);
+            set.Bind(btnSendReceipt)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.IsSendReceiptButtonShown)
+                .WithConversion("BoolInverter");
 
-			set.BindSafe(btnRateRide)
+            set.Bind(btnRateRide)
 				.For("TouchUpInside")
 				.To(vm => vm.NavigateToRatingPage);
+            set.Bind(btnRateRide)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.IsRatingButtonShown)
+                .WithConversion("BoolInverter");
 
-			set.BindSafe(btnPay)
+            set.Bind(btnPay)
 				.For("TouchUpInside")
 				.To(vm => vm.PayCommand);
+            set.Bind(btnPay)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.IsPayButtonShown)
+                .WithConversion("BoolInverter");
 
-			set.BindSafe(btnReSendConfirmation)
+            set.Bind(btnReSendConfirmation)
 				.For("TouchUpInside")
 				.To(vm => vm.ResendConfirmationCommand);
+            set.Bind(btnReSendConfirmation)
+                .For(v => v.HiddenWithConstraints)
+                .To(vm => vm.IsResendConfirmationButtonShown)
+                .WithConversion("BoolInverter");
 
 			set.Apply ();
 
             ViewModel.PropertyChanged += (sender, e) => 
             {
-                if(ViewModel.ReceiptSent)
+                if(e.PropertyName == "ReceiptSent")
                 {
-					btnSendReceipt.SetTitle(Localize.GetValue("ReceiptSent"), UIControlState.Normal);
-					btnSendReceipt.Enabled = false;
+                    if(ViewModel.ReceiptSent)
+                    {
+                        btnSendReceipt.SetTitle(Localize.GetValue("ReceiptSent"), UIControlState.Normal);
+                        btnSendReceipt.Enabled = false;
+                    }
                 }
             };
 		}
