@@ -151,7 +151,7 @@
     <item name="android:lines">1</item>
     <item name="android:singleLine">true</item>
     <item name="android:ellipsize">end</item>
-    <item name="android:textColor">#f0f0f0</item>
+    <item name="android:textColor">@color/label_text_color</item>
   </style>
   <style name="TitleText">
     <item name="android:textSize">14dip</item>

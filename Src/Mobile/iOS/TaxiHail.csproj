@@ -460,6 +460,7 @@
     <Compile Include="Controls\Widgets\NavigateFlatTextField.cs" />
     <Compile Include="Controls\Widgets\CreditCardFlatTextField.cs" />
     <Compile Include="Controls\Widgets\RadioElementWithId.cs" />
+    <Compile Include="Style\Theme.cs" />
     <Compile Include="Views\RideSummaryView.cs" />
     <Compile Include="Views\RideSummaryView.designer.cs">
       <DependentUpon>RideSummaryView.cs</DependentUpon>
@@ -792,5 +793,10 @@
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Controls\Widgets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Style\Theme.xml">
+      <LogicalName>Theme.xml</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
