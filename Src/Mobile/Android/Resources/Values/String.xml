@@ -441,7 +441,7 @@
   <string name="EstimatingFare">Estimating your fare...</string>
   <string name="app_id">134284363380764</string>
   <string name="TermsAndConditionsLabel">Terms and Conditions</string>
-  <string name="TermsAndConditionsAcknowledgment">By clicking Accept, you acknowledge that you have read and understood the Terms and Conditions specified above.</string>
+  <string name="TermsAndConditionsAcknowledgment">I acknowledge that I have read and understood the Terms and Conditions.</string>
   <string name="AcceptButton">Accept</string>
   <string name="View_TermsAndConditions"></string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
