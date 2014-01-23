@@ -265,10 +265,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
-    <Compile Include="Order\BookRatingCell.cs" />
-    <Compile Include="Order\BookRatingCell.designer.cs">
-      <DependentUpon>BookRatingCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Converters\AppConverters.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -343,10 +339,6 @@
       <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
     <Compile Include="Extensions\UIViewExtensions.cs" />
-    <Compile Include="Order\BookRatingView.cs" />
-    <Compile Include="Order\BookRatingView.designer.cs">
-      <DependentUpon>BookRatingView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\HistoryDetailView.xib.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
@@ -479,6 +471,14 @@
     <Compile Include="Views\AboutUsView.xib.designer.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\BookRatingCell.cs" />
+    <Compile Include="Views\BookRatingCell.designer.cs">
+      <DependentUpon>BookRatingCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookRatingView.cs" />
+    <Compile Include="Views\BookRatingView.designer.cs">
+      <DependentUpon>BookRatingView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Payments\PaymentView.cs" />
     <Compile Include="Views\Payments\PaymentView.designer.cs" />
     <Compile Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.cs" />
@@ -510,8 +510,6 @@
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
     <InterfaceDefinition Include="Views\TutorialView.xib" />
@@ -532,6 +530,8 @@
     <InterfaceDefinition Include="Views\HistoryView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
+    <InterfaceDefinition Include="Views\BookRatingCell.xib" />
+    <InterfaceDefinition Include="Views\BookRatingView.xib" />
     <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqChangePaymentView.xib" />
     <InterfaceDefinition Include="Views\Payments\Cmt\CmtRideLinqConfirmPairView.xib" />
@@ -600,26 +600,6 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Assets\Rating\ecstatic.png" />
-    <Content Include="Assets\Rating\ecstatic%402x.png" />
-    <Content Include="Assets\Rating\ecstatic-selected.png" />
-    <Content Include="Assets\Rating\ecstatic-selected%402x.png" />
-    <Content Include="Assets\Rating\happy.png" />
-    <Content Include="Assets\Rating\happy%402x.png" />
-    <Content Include="Assets\Rating\happy-selected.png" />
-    <Content Include="Assets\Rating\happy-selected%402x.png" />
-    <Content Include="Assets\Rating\mad.png" />
-    <Content Include="Assets\Rating\mad%402x.png" />
-    <Content Include="Assets\Rating\mad-selected.png" />
-    <Content Include="Assets\Rating\mad-selected%402x.png" />
-    <Content Include="Assets\Rating\neutral.png" />
-    <Content Include="Assets\Rating\neutral%402x.png" />
-    <Content Include="Assets\Rating\neutral-selected.png" />
-    <Content Include="Assets\Rating\neutral-selected%402x.png" />
-    <Content Include="Assets\Rating\unhappy.png" />
-    <Content Include="Assets\Rating\unhappy%402x.png" />
-    <Content Include="Assets\Rating\unhappy-selected.png" />
-    <Content Include="Assets\Rating\unhappy-selected%402x.png" />
     <Content Include="Assets\pin_cab.png" />
     <Content Include="Assets\pin_cab%402x.png" />
     <Content Include="Assets\pin_destination.png" />
@@ -774,6 +754,26 @@
     <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Default.png" />
     <BundleResource Include="Default%402x.png" />
+    <BundleResource Include="Resources\ecstatic-selected.png" />
+    <BundleResource Include="Resources\ecstatic-selected%402x.png" />
+    <BundleResource Include="Resources\ecstatic.png" />
+    <BundleResource Include="Resources\ecstatic%402x.png" />
+    <BundleResource Include="Resources\happy-selected.png" />
+    <BundleResource Include="Resources\happy-selected%402x.png" />
+    <BundleResource Include="Resources\happy.png" />
+    <BundleResource Include="Resources\happy%402x.png" />
+    <BundleResource Include="Resources\mad-selected.png" />
+    <BundleResource Include="Resources\mad-selected%402x.png" />
+    <BundleResource Include="Resources\mad.png" />
+    <BundleResource Include="Resources\mad%402x.png" />
+    <BundleResource Include="Resources\neutral-selected.png" />
+    <BundleResource Include="Resources\neutral-selected%402x.png" />
+    <BundleResource Include="Resources\neutral.png" />
+    <BundleResource Include="Resources\neutral%402x.png" />
+    <BundleResource Include="Resources\unhappy-selected.png" />
+    <BundleResource Include="Resources\unhappy-selected%402x.png" />
+    <BundleResource Include="Resources\unhappy.png" />
+    <BundleResource Include="Resources\unhappy%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.mobile">
